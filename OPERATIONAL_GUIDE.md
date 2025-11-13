@@ -267,7 +267,7 @@ from saaaaaa.analysis.Analyzer_one import SemanticAnalyzer, PerformanceAnalyzer
 from saaaaaa.analysis.contradiction_deteccion import PolicyContradictionDetector
 from saaaaaa.analysis.embedding_policy import BayesianNumericalAnalyzer
 from saaaaaa.analysis.teoria_cambio import TeoriaCambio, AdvancedDAGValidator
-from saaaaaa.analysis.dereck_beach import CDAFFramework, BeachEvidentialTest
+from saaaaaa.analysis.derek_beach import CDAFFramework, BeachEvidentialTest
 from saaaaaa.analysis.bayesian_multilevel_system import BayesianMultilevelScorer
 
 # Processing modules - CPP Ingestion (CANONICAL)
@@ -513,7 +513,7 @@ python3 -m saaaaaa.analysis.teoria_cambio \
   --output data/producers/producer_5_toc.json
 
 # Producer 6: Beach Tests & Mechanisms
-python3 -m saaaaaa.analysis.dereck_beach \
+python3 -m saaaaaa.analysis.derek_beach \
   --input data/processed/policy_analysis.json \
   --output data/producers/producer_6_beach.json
 
@@ -811,13 +811,13 @@ python3 -m saaaaaa.analysis.teoria_cambio \
 #### Producer 6: Beach Evidential Tests
 ```bash
 # Beach test execution
-python3 -m saaaaaa.analysis.dereck_beach \
+python3 -m saaaaaa.analysis.derek_beach \
   --input data/processed/policy_analysis.json \
   --output data/producers/producer_6_beach.json \
   --test-types straw_in_the_wind,hoop,smoking_gun,doubly_decisive
 
 # With mechanism inference
-python3 -m saaaaaa.analysis.dereck_beach \
+python3 -m saaaaaa.analysis.derek_beach \
   --input data/processed/policy_analysis.json \
   --output data/producers/producer_6_beach.json \
   --infer-mechanisms \
@@ -1886,7 +1886,7 @@ python3 -m saaaaaa.analysis.teoria_cambio \
   --output data/producers/producer_5.json
 
 # Producer 6: Beach Tests
-python3 -m saaaaaa.analysis.dereck_beach \
+python3 -m saaaaaa.analysis.derek_beach \
   --input data/processed/policy_analysis.json \
   --output data/producers/producer_6.json
 

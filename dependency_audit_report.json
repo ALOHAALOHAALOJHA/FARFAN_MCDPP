@@ -97,7 +97,7 @@
   "package_usage": {
     "PyMuPDF": [
       "src/saaaaaa/analysis/factory.py",
-      "src/saaaaaa/analysis/dereck_beach.py"
+      "src/saaaaaa/analysis/derek_beach.py"
     ],
     "PyPDF2": [
       "src/saaaaaa/processing/document_ingestion.py",
@@ -127,7 +127,7 @@
       "src/saaaaaa/api/api_server.py"
     ],
     "fuzzywuzzy": [
-      "src/saaaaaa/analysis/dereck_beach.py"
+      "src/saaaaaa/analysis/derek_beach.py"
     ],
     "httpx": [
       "src/saaaaaa/core/orchestrator/signals.py",
@@ -153,7 +153,7 @@
     "networkx": [
       "src/saaaaaa/analysis/financiero_viabilidad_tablas.py",
       "src/saaaaaa/analysis/teoria_cambio.py",
-      "src/saaaaaa/analysis/dereck_beach.py",
+      "src/saaaaaa/analysis/derek_beach.py",
       "src/saaaaaa/analysis/contradiction_deteccion.py",
       "src/saaaaaa/core/orchestrator/executors.py",
       "tests/test_graph_resolution.py",
@@ -175,7 +175,7 @@
       "src/saaaaaa/analysis/financiero_viabilidad_tablas.py",
       "src/saaaaaa/analysis/micro_prompts.py",
       "src/saaaaaa/analysis/teoria_cambio.py",
-      "src/saaaaaa/analysis/dereck_beach.py",
+      "src/saaaaaa/analysis/derek_beach.py",
       "src/saaaaaa/analysis/contradiction_deteccion.py",
       "src/saaaaaa/utils/determinism/seeds.py",
       "src/saaaaaa/core/orchestrator/executors.py",
@@ -192,7 +192,7 @@
     "pandas": [
       "src/saaaaaa/analysis/Analyzer_one.py",
       "src/saaaaaa/analysis/financiero_viabilidad_tablas.py",
-      "src/saaaaaa/analysis/dereck_beach.py"
+      "src/saaaaaa/analysis/derek_beach.py"
     ],
     "pdfplumber": [
       "src/saaaaaa/processing/factory.py",
@@ -229,7 +229,7 @@
       "src/saaaaaa/flux/gates.py",
       "src/saaaaaa/flux/configs.py",
       "src/saaaaaa/flux/models.py",
-      "src/saaaaaa/analysis/dereck_beach.py",
+      "src/saaaaaa/analysis/derek_beach.py",
       "src/saaaaaa/utils/validation/schema_validator.py",
       "src/saaaaaa/utils/validation/aggregation_models.py",
       "src/saaaaaa/core/orchestrator/signals.py",
@@ -241,7 +241,7 @@
       "scripts/verify_weights.py"
     ],
     "pydot": [
-      "src/saaaaaa/analysis/dereck_beach.py"
+      "src/saaaaaa/analysis/derek_beach.py"
     ],
     "pyjwt": [
       "src/saaaaaa/api/api_server.py"
@@ -311,7 +311,7 @@
     "pyyaml": [
       "src/saaaaaa/utils/metadata_loader.py",
       "src/saaaaaa/analysis/factory.py",
-      "src/saaaaaa/analysis/dereck_beach.py"
+      "src/saaaaaa/analysis/derek_beach.py"
     ],
     "scikit-learn": [
       "src/saaaaaa/processing/embedding_policy.py",
@@ -324,7 +324,7 @@
       "src/saaaaaa/analysis/bayesian_multilevel_system.py",
       "src/saaaaaa/analysis/financiero_viabilidad_tablas.py",
       "src/saaaaaa/analysis/teoria_cambio.py",
-      "src/saaaaaa/analysis/dereck_beach.py",
+      "src/saaaaaa/analysis/derek_beach.py",
       "src/saaaaaa/analysis/contradiction_deteccion.py"
     ],
     "sentence_transformers": [
@@ -335,7 +335,7 @@
     "spacy": [
       "src/saaaaaa/analysis/factory.py",
       "src/saaaaaa/analysis/financiero_viabilidad_tablas.py",
-      "src/saaaaaa/analysis/dereck_beach.py"
+      "src/saaaaaa/analysis/derek_beach.py"
     ],
     "sse-starlette": [
       "src/saaaaaa/api/signals_service.py"
