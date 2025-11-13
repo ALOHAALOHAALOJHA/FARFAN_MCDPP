@@ -26,7 +26,7 @@ Información general del catálogo:
 
 9 módulos principales identificados con códigos:
 - **PP**: policy_processor.py (3 clases)
-- **CD**: contradiction_deteccion.py (3 clases)
+- **CD**: contradiction_detection.py (3 clases)
 - **FV**: financiero_viabilidad_tablas.py (2 clases)
 - **DB**: dereck_beach.py (7 clases)
 - **RA**: report_assembly.py (1 clase)
