@@ -23,6 +23,7 @@ Version: 1.0.0
 """
 
 import logging
+import traceback
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime
@@ -159,7 +160,7 @@ class Span:
                 {
                     "exception.type": type(exception).__name__,
                     "exception.message": str(exception),
-                    "exception.stacktrace": str(exception.__traceback__)
+                    "exception.stacktrace": ''.join(traceback.format_tb(exception.__traceback__))
                 }
             )
 

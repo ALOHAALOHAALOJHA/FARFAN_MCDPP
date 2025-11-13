@@ -23,7 +23,9 @@ Version: 1.0.0
 import json
 import logging
 import math
+import random
 from abc import ABC, abstractmethod
+from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -90,10 +92,7 @@ class ExecutorMetrics:
         # Cost efficiency reward (cheaper is better, normalized to 0-1)
         # Assume typical cost is $0.01, scale accordingly
         typical_cost = 0.01
-        if typical_cost > 0:
-            cost_reward = max(0, 1 - (self.cost_usd / (2 * typical_cost)))
-        else:
-            cost_reward = 1.0
+        cost_reward = max(0, 1 - (self.cost_usd / (2 * typical_cost)))
 
         # Weighted combination
         reward = (
@@ -131,7 +130,7 @@ class BanditArm:
     total_cost_usd: float = 0.0
 
     # Recent performance (last N executions)
-    recent_rewards: List[float] = field(default_factory=list)
+    recent_rewards: deque = field(default_factory=lambda: deque(maxlen=100))
     max_recent: int = 100
 
     @property
@@ -181,10 +180,8 @@ class BanditArm:
         self.total_tokens += metrics.tokens_used
         self.total_cost_usd += metrics.cost_usd
 
-        # Update recent rewards (sliding window)
+        # Update recent rewards (sliding window with deque automatically handles maxlen)
         self.recent_rewards.append(reward)
-        if len(self.recent_rewards) > self.max_recent:
-            self.recent_rewards.pop(0)
 
     def sample_thompson(self, rng: np.random.Generator) -> float:
         """
@@ -304,7 +301,7 @@ class UCB1Algorithm(BanditAlgorithm):
         # Force exploration of unplayed arms first
         unplayed = [arm for arm in arms if arm.pulls == 0]
         if unplayed:
-            selected = rng.choice(unplayed)
+            selected = random.choice(unplayed)
             logger.debug(f"UCB1: Exploring unplayed arm {selected.name}")
             return selected
 
@@ -356,7 +353,7 @@ class EpsilonGreedyAlgorithm(BanditAlgorithm):
 
         # Explore with probability epsilon
         if rng.random() < self.epsilon:
-            selected = rng.choice(arms)
+            selected = random.choice(arms)
             logger.debug(f"Epsilon-Greedy: Exploring {selected.name} (ε={self.epsilon:.4f})")
             return selected
 

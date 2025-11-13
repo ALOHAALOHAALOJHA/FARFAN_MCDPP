@@ -19,7 +19,6 @@ Version: 1.0.0
 """
 
 import logging
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -401,7 +400,17 @@ def compensate_file_write(file_path: str, original_content: Optional[str] = None
 
 
 def compensate_database_insert(db_connection, table: str, record_id: Any) -> None:
-    """Compensate a database insert by deleting the record."""
+    """Compensate a database insert by deleting the record.
+    
+    Note: This is a simplified example. In production, validate table name
+    against a whitelist to prevent SQL injection attacks.
+    """
+    # Validate table name against allowed tables
+    # In a real implementation, this should be configured per application
+    allowed_tables = {"users", "orders", "transactions", "policies", "executors"}
+    if table not in allowed_tables:
+        raise ValueError(f"Invalid table name: {table}. Allowed tables: {allowed_tables}")
+    
     cursor = db_connection.cursor()
     cursor.execute(f"DELETE FROM {table} WHERE id = ?", (record_id,))
     db_connection.commit()

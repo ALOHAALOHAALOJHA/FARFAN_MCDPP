@@ -20,7 +20,6 @@ Version: 1.0.0
 """
 
 import ast
-import inspect
 import json
 import logging
 import sys
@@ -28,7 +27,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -368,12 +367,14 @@ class AuditSystem:
 
             # Verify dependency injection pattern
             uses_dependency_injection = False
-            if any(pattern in content for pattern in [
-                'questionnaire: Mapping',
-                'questionnaire: dict',
-                'def __init__' and 'questionnaire',
-                '@dataclass' and 'questionnaire'
-            ]):
+            if (
+                any(pattern in content for pattern in [
+                    'questionnaire: Mapping',
+                    'questionnaire: dict',
+                ])
+                or ('def __init__' in content and 'questionnaire' in content)
+                or ('@dataclass' in content and 'questionnaire' in content)
+            ):
                 uses_dependency_injection = True
 
             if has_violations:

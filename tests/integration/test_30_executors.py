@@ -30,7 +30,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from saaaaaa.audit import AuditSystem
-from saaaaaa.patterns import EventTracker, EventCategory, record_event
+from saaaaaa.patterns import EventTracker
 
 
 class TestExecutorArchitecture:
@@ -41,22 +41,22 @@ class TestExecutorArchitecture:
     """
 
     @pytest.fixture(scope="class")
-    def repo_root(self) -> Path:
+    def repo_root(cls) -> Path:
         """Get repository root."""
         return Path(__file__).parent.parent.parent
 
     @pytest.fixture(scope="class")
-    def audit_system(self, repo_root: Path) -> AuditSystem:
+    def audit_system(cls, repo_root: Path) -> AuditSystem:
         """Create audit system."""
         return AuditSystem(repo_root)
 
     @pytest.fixture(scope="class")
-    def event_tracker(self) -> EventTracker:
+    def event_tracker() -> EventTracker:
         """Create event tracker for tests."""
         return EventTracker("Executor Integration Tests")
 
     @pytest.fixture(scope="class")
-    def expected_executors(self) -> List[str]:
+    def expected_executors() -> List[str]:
         """Get list of expected executors."""
         return [
             f"D{d}Q{q}_Executor"
@@ -65,7 +65,7 @@ class TestExecutorArchitecture:
         ]
 
     @pytest.fixture(scope="class")
-    def dimension_names(self) -> Dict[int, str]:
+    def dimension_names() -> Dict[int, str]:
         """Get dimension names."""
         return {
             1: "INSUMOS (Diagnóstico y Recursos)",
@@ -326,7 +326,7 @@ class TestExecutorIntegrationWithRealData:
     """
 
     @pytest.fixture(scope="class")
-    def sample_policy_data(self) -> Dict[str, Any]:
+    def sample_policy_data() -> Dict[str, Any]:
         """Create sample policy data for testing."""
         return {
             "policy_id": "TEST_POLICY_001",
@@ -338,7 +338,7 @@ class TestExecutorIntegrationWithRealData:
         }
 
     @pytest.fixture(scope="class")
-    def questionnaire_data(self, repo_root: Path) -> Dict[str, Any]:
+    def questionnaire_data(cls, repo_root: Path) -> Dict[str, Any]:
         """Load questionnaire data if available."""
         questionnaire_path = repo_root / "data" / "questionnaire_monolith.json"
 
