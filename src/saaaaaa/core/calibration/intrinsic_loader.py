@@ -27,7 +27,8 @@ class IntrinsicScoreLoader:
     The intrinsic score represents the base layer (@b) quality and is computed as:
         intrinsic_score = w_th * b_theory + w_imp * b_impl + w_dep * b_deploy
 
-    Where the weights are defined in the JSON metadata:
+    Weights are read from the JSON file's "_base_weights" section at load time.
+    Default fallback weights (if not in JSON):
         - w_th = 0.4 (theoretical foundation quality)
         - w_imp = 0.35 (implementation quality)
         - w_dep = 0.25 (deployment maturity)
@@ -48,10 +49,10 @@ class IntrinsicScoreLoader:
             print("Method is calibrated!")
     """
 
-    # Weights for computing intrinsic score (from JSON metadata)
-    W_THEORY = 0.4
-    W_IMPL = 0.35
-    W_DEPLOY = 0.25
+    # Default weights (used if not specified in JSON)
+    DEFAULT_W_THEORY = 0.4
+    DEFAULT_W_IMPL = 0.35
+    DEFAULT_W_DEPLOY = 0.25
 
     def __init__(self, calibration_path: Path | str = "config/intrinsic_calibration.json"):
         """
@@ -68,6 +69,11 @@ class IntrinsicScoreLoader:
         self._methods: Optional[Dict[str, Dict[str, Any]]] = None
         self._lock = threading.Lock()
         self._loaded = False
+
+        # Weights (loaded from JSON, fallback to defaults)
+        self.w_theory: float = self.DEFAULT_W_THEORY
+        self.w_impl: float = self.DEFAULT_W_IMPL
+        self.w_deploy: float = self.DEFAULT_W_DEPLOY
 
         logger.debug(
             "intrinsic_loader_initialized",
@@ -107,6 +113,35 @@ class IntrinsicScoreLoader:
 
             self._methods = self._data.get("methods", {})
 
+            # Load weights from JSON
+            base_weights = self._data.get("_base_weights", {})
+            if base_weights:
+                self.w_theory = float(base_weights.get("w_th", self.DEFAULT_W_THEORY))
+                self.w_impl = float(base_weights.get("w_imp", self.DEFAULT_W_IMPL))
+                self.w_deploy = float(base_weights.get("w_dep", self.DEFAULT_W_DEPLOY))
+
+                # Validate weights sum to 1.0
+                weight_sum = self.w_theory + self.w_impl + self.w_deploy
+                if abs(weight_sum - 1.0) > 1e-6:
+                    logger.warning(
+                        "intrinsic_weights_not_normalized",
+                        extra={
+                            "w_theory": self.w_theory,
+                            "w_impl": self.w_impl,
+                            "w_deploy": self.w_deploy,
+                            "sum": weight_sum
+                        }
+                    )
+            else:
+                logger.info(
+                    "using_default_weights",
+                    extra={
+                        "w_theory": self.w_theory,
+                        "w_impl": self.w_impl,
+                        "w_deploy": self.w_deploy
+                    }
+                )
+
             # Compute statistics
             stats = self._compute_statistics()
 
@@ -118,7 +153,12 @@ class IntrinsicScoreLoader:
                     "computed": stats["computed"],
                     "excluded": stats["excluded"],
                     "unknown_status": stats["unknown_status"],
-                    "version": self._data.get("_metadata", {}).get("version", "unknown")
+                    "version": self._data.get("_metadata", {}).get("version", "unknown"),
+                    "weights": {
+                        "w_theory": self.w_theory,
+                        "w_impl": self.w_impl,
+                        "w_deploy": self.w_deploy
+                    }
                 }
             )
 
@@ -191,11 +231,11 @@ class IntrinsicScoreLoader:
             b_impl = float(method_data.get("b_impl", 0.0))
             b_deploy = float(method_data.get("b_deploy", 0.0))
 
-            # Weighted average
+            # Weighted average using JSON-loaded weights
             intrinsic_score = (
-                self.W_THEORY * b_theory +
-                self.W_IMPL * b_impl +
-                self.W_DEPLOY * b_deploy
+                self.w_theory * b_theory +
+                self.w_impl * b_impl +
+                self.w_deploy * b_deploy
             )
 
             # Clamp to [0.0, 1.0]
