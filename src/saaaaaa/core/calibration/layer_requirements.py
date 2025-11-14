@@ -11,7 +11,7 @@ Design:
 - Integrates with IntrinsicScoreLoader to read role from calibration JSON
 """
 import logging
-from typing import Set, Optional
+from typing import Set
 
 from .data_structures import LayerID
 from .intrinsic_loader import IntrinsicScoreLoader
