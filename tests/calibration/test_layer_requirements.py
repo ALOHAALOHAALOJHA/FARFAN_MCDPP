@@ -68,7 +68,6 @@ def sample_calibration_data():
                 "method_id": "test.NoLayer.method",
                 "calibration_status": "computed",
                 "b_theory": 0.5, "b_impl": 0.5, "b_deploy": 0.5
-                # No "layer" field
             }
         }
     }
