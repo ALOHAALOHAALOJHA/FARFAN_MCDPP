@@ -39,9 +39,9 @@ grep -r "catalogo_principal.yaml" src/ tests/
 # Expected: No results or only commented references
 ```
 
-#### **causal_exctractor_2**
-- **Path:** `/home/user/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE/causal_exctractor_2`
-- **Status:** Duplicate file (identical to `causal_exctractor.yaml`, likely backup)
+#### **causal_extractor_2**
+- **Path:** `/home/user/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE/causal_extractor_2`
+- **Status:** Duplicate file (identical to `causal_extractor.yaml`, likely backup)
 - **Reason:** No unique content
 - **Replacement:** N/A
 - **Action:** DELETE immediately
