@@ -19,7 +19,7 @@ import importlib
 import importlib.util
 from pathlib import Path
 from typing import Set, Dict, List, Tuple, Optional
-from collections import defaultdict, deque
+from collections import defaultdict
 
 class ImportAnalyzer:
     """Analyze Python imports and detect circular dependencies."""
