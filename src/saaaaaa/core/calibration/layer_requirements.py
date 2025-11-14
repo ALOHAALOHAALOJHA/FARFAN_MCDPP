@@ -282,10 +282,22 @@ class LayerRequirementsResolver:
         role = self.intrinsic_loader.get_layer(method_id)
         required_layers = self.get_required_layers(method_id)
 
-        layer_names = ", ".join(f"@{layer.value}" for layer in sorted(
-            required_layers,
-            key=lambda x: ["b", "u", "q", "d", "p", "C", "chain", "m"].index(x.value)
-        ))
+        layer_order = {
+            "b": 0,
+            "u": 1,
+            "q": 2,
+            "d": 3,
+            "p": 4,
+            "C": 5,
+            "chain": 6,
+            "m": 7
+        }
+        layer_names = ", ".join(
+            f"@{layer.value}" for layer in sorted(
+                required_layers,
+                key=lambda x: layer_order.get(x.value, 999)
+            )
+        )
 
         if role:
             return f"{role} role → {len(required_layers)} layers: {layer_names}"
