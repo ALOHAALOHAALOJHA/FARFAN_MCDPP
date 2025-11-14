@@ -12,6 +12,7 @@ from .data_structures import (
     LayerID, LayerScore, ContextTuple, CalibrationSubject, CalibrationResult
 )
 from .config import CalibrationSystemConfig, DEFAULT_CALIBRATION_CONFIG
+from .base_layer import BaseLayerEvaluator
 from .unit_layer import UnitLayerEvaluator
 from .pdt_structure import PDTStructure
 from .compatibility import CompatibilityRegistry, ContextualLayerEvaluator
@@ -26,13 +27,14 @@ logger = logging.getLogger(__name__)
 class CalibrationOrchestrator:
     """
     Top-level orchestrator for method calibration.
-    
+
     Usage:
         orchestrator = CalibrationOrchestrator(
             config=DEFAULT_CALIBRATION_CONFIG,
+            intrinsic_calibration_path="config/intrinsic_calibration.json",
             compatibility_path="data/method_compatibility.json"
         )
-        
+
         result = orchestrator.calibrate(
             method_id="pattern_extractor_v2",
             method_version="v2.1.0",
@@ -40,17 +42,33 @@ class CalibrationOrchestrator:
             pdt_structure=PDTStructure(...)
         )
     """
-    
+
     def __init__(
         self,
         config: CalibrationSystemConfig = None,
+        intrinsic_calibration_path: Path | str = None,
         compatibility_path: Path | str = None,
         method_registry_path: Path | str = None,
         method_signatures_path: Path | str = None
     ):
         self.config = config or DEFAULT_CALIBRATION_CONFIG
 
-        # Initialize layer evaluators
+        # Initialize BASE layer evaluator
+        if intrinsic_calibration_path:
+            self.base_evaluator = BaseLayerEvaluator(intrinsic_calibration_path)
+        else:
+            # Try default path
+            default_intrinsic = Path("config/intrinsic_calibration.json")
+            if default_intrinsic.exists():
+                self.base_evaluator = BaseLayerEvaluator(default_intrinsic)
+            else:
+                logger.warning(
+                    "No intrinsic_calibration.json found, BASE layer will use penalty scores"
+                )
+                # Create a minimal evaluator that always returns penalty
+                self.base_evaluator = None
+
+        # Initialize UNIT layer evaluator
         self.unit_evaluator = UnitLayerEvaluator(self.config.unit_layer)
 
         # Load compatibility registry
@@ -119,7 +137,8 @@ class CalibrationOrchestrator:
             "calibration_orchestrator_initialized",
             extra={
                 "config_hash": self.config.compute_system_hash(),
-                "anti_universality_enabled": self.config.enable_anti_universality_check
+                "anti_universality_enabled": self.config.enable_anti_universality_check,
+                "base_evaluator_loaded": self.base_evaluator is not None,
             }
         )
     
@@ -171,17 +190,23 @@ class CalibrationOrchestrator:
         
         # Collect layer scores
         layer_scores = {}
-        
-        # Layer 1: Base (@b) - ASSUMED COMPLETE
-        # This comes from intrinsic calibration (already done)
-        # TODO: This should come from actual base layer evaluation, not hardcoded
-        base_score = 0.9  # Placeholder until base layer integration complete
-        layer_scores[LayerID.BASE] = LayerScore(
-            layer=LayerID.BASE,
-            score=base_score,
-            rationale=f"Base layer (intrinsic quality) - STUB using {base_score}",
-            metadata={"stub": True, "warning": "Hardcoded value pending integration"}
-        )
+
+        # Layer 1: Base (@b) - Intrinsic Quality
+        # Loads from intrinsic_calibration.json (populated by rigorous_calibration_triage.py)
+        if self.base_evaluator:
+            layer_scores[LayerID.BASE] = self.base_evaluator.evaluate(method_id)
+        else:
+            # Fallback if no calibration data available
+            logger.warning(
+                "base_evaluator_not_available",
+                extra={"method": method_id, "using_penalty": True}
+            )
+            layer_scores[LayerID.BASE] = LayerScore(
+                layer=LayerID.BASE,
+                score=0.1,
+                rationale="BASE layer: intrinsic calibration not available (penalty applied)",
+                metadata={"penalty": True, "reason": "no_calibration_file"}
+            )
         
         # Layer 2: Unit (@u)
         unit_score = self.unit_evaluator.evaluate(pdt_structure)

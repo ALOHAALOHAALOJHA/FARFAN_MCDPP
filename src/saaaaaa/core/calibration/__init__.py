@@ -37,12 +37,25 @@ from .compatibility import (
     ContextualLayerEvaluator,
 )
 
+from .base_layer import BaseLayerEvaluator
 from .unit_layer import UnitLayerEvaluator
 from .congruence_layer import CongruenceLayerEvaluator
 from .chain_layer import ChainLayerEvaluator
 from .meta_layer import MetaLayerEvaluator
 from .choquet_aggregator import ChoquetAggregator
 from .orchestrator import CalibrationOrchestrator
+
+# Import protocols for type checking
+from .protocols import (
+    LayerEvaluator,
+    BaseLayerEvaluatorProtocol,
+    UnitLayerEvaluatorProtocol,
+    ContextualLayerEvaluatorProtocol,
+    CongruenceLayerEvaluatorProtocol,
+    ChainLayerEvaluatorProtocol,
+    MetaLayerEvaluatorProtocol,
+    validate_evaluator_protocol,
+)
 
 __all__ = [
     # Data structures
@@ -61,6 +74,7 @@ __all__ = [
     "CalibrationSystemConfig",
     "DEFAULT_CALIBRATION_CONFIG",
     # Layer Evaluators
+    "BaseLayerEvaluator",
     "UnitLayerEvaluator",
     "CompatibilityRegistry",
     "ContextualLayerEvaluator",
@@ -70,4 +84,13 @@ __all__ = [
     # Aggregation & Orchestration
     "ChoquetAggregator",
     "CalibrationOrchestrator",
+    # Protocols
+    "LayerEvaluator",
+    "BaseLayerEvaluatorProtocol",
+    "UnitLayerEvaluatorProtocol",
+    "ContextualLayerEvaluatorProtocol",
+    "CongruenceLayerEvaluatorProtocol",
+    "ChainLayerEvaluatorProtocol",
+    "MetaLayerEvaluatorProtocol",
+    "validate_evaluator_protocol",
 ]

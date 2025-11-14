@@ -145,22 +145,22 @@ class CompatibilityRegistry:
 class ContextualLayerEvaluator:
     """
     Evaluates the three contextual layers: @q, @d, @p.
-    
+
     These scores are direct lookups from the compatibility registry.
     """
-    
+
     def __init__(self, registry: CompatibilityRegistry):
         self.registry = registry
-    
-    def evaluate_question(self, method_id: str, question_id: str) -> float:
+
+    def _evaluate_question_raw(self, method_id: str, question_id: str) -> float:
         """
-        Evaluate @q (question compatibility).
-        
+        Internal: Evaluate @q (question compatibility) - returns raw float.
+
         Returns score ∈ {1.0, 0.7, 0.3, 0.1}
         """
         mapping = self.registry.get(method_id)
         score = mapping.get_question_score(question_id)
-        
+
         logger.debug(
             "question_compatibility",
             extra={
@@ -169,18 +169,18 @@ class ContextualLayerEvaluator:
                 "score": score
             }
         )
-        
+
         return score
-    
-    def evaluate_dimension(self, method_id: str, dimension: str) -> float:
+
+    def _evaluate_dimension_raw(self, method_id: str, dimension: str) -> float:
         """
-        Evaluate @d (dimension compatibility).
-        
+        Internal: Evaluate @d (dimension compatibility) - returns raw float.
+
         Returns score ∈ {1.0, 0.7, 0.3, 0.1}
         """
         mapping = self.registry.get(method_id)
         score = mapping.get_dimension_score(dimension)
-        
+
         logger.debug(
             "dimension_compatibility",
             extra={
@@ -189,18 +189,18 @@ class ContextualLayerEvaluator:
                 "score": score
             }
         )
-        
+
         return score
-    
-    def evaluate_policy(self, method_id: str, policy_area: str) -> float:
+
+    def _evaluate_policy_raw(self, method_id: str, policy_area: str) -> float:
         """
-        Evaluate @p (policy area compatibility).
-        
+        Internal: Evaluate @p (policy area compatibility) - returns raw float.
+
         Returns score ∈ {1.0, 0.7, 0.3, 0.1}
         """
         mapping = self.registry.get(method_id)
         score = mapping.get_policy_score(policy_area)
-        
+
         logger.debug(
             "policy_compatibility",
             extra={
@@ -209,24 +209,146 @@ class ContextualLayerEvaluator:
                 "score": score
             }
         )
-        
+
         return score
-    
+
+    # Public methods for backward compatibility
+    def evaluate_question(self, method_id: str, question_id: str) -> float:
+        """Evaluate @q - backward compatibility (returns float)."""
+        return self._evaluate_question_raw(method_id, question_id)
+
+    def evaluate_dimension(self, method_id: str, dimension: str) -> float:
+        """Evaluate @d - backward compatibility (returns float)."""
+        return self._evaluate_dimension_raw(method_id, dimension)
+
+    def evaluate_policy(self, method_id: str, policy_area: str) -> float:
+        """Evaluate @p - backward compatibility (returns float)."""
+        return self._evaluate_policy_raw(method_id, policy_area)
+
     def evaluate_all_contextual(
-        self, 
-        method_id: str, 
+        self,
+        method_id: str,
         question_id: str,
         dimension: str,
         policy_area: str
     ) -> dict[str, float]:
         """
         Evaluate all three contextual layers at once.
-        
+
         Returns:
             Dict with keys 'q', 'd', 'p' and their scores
         """
         return {
-            'q': self.evaluate_question(method_id, question_id),
-            'd': self.evaluate_dimension(method_id, dimension),
-            'p': self.evaluate_policy(method_id, policy_area),
+            'q': self._evaluate_question_raw(method_id, question_id),
+            'd': self._evaluate_dimension_raw(method_id, dimension),
+            'p': self._evaluate_policy_raw(method_id, policy_area),
         }
+
+    # New LayerScore-based methods
+    def evaluate_question_layer(self, method_id: str, question_id: str) -> "LayerScore":  # type: ignore
+        """
+        Evaluate @q layer and return LayerScore.
+
+        Args:
+            method_id: Method identifier
+            question_id: Question ID (e.g., "Q001")
+
+        Returns:
+            LayerScore for QUESTION layer
+        """
+        from .data_structures import LayerID, LayerScore
+
+        score = self._evaluate_question_raw(method_id, question_id)
+
+        # Interpret score level
+        if score == 1.0:
+            level = "primary"
+        elif score == 0.7:
+            level = "secondary"
+        elif score == 0.3:
+            level = "compatible"
+        else:
+            level = "undeclared (penalty)"
+
+        return LayerScore(
+            layer=LayerID.QUESTION,
+            score=score,
+            rationale=f"Question compatibility for {question_id}: {level}",
+            metadata={
+                "method": method_id,
+                "question": question_id,
+                "compatibility_level": level,
+            }
+        )
+
+    def evaluate_dimension_layer(self, method_id: str, dimension: str) -> "LayerScore":  # type: ignore
+        """
+        Evaluate @d layer and return LayerScore.
+
+        Args:
+            method_id: Method identifier
+            dimension: Dimension code (e.g., "DIM01")
+
+        Returns:
+            LayerScore for DIMENSION layer
+        """
+        from .data_structures import LayerID, LayerScore
+
+        score = self._evaluate_dimension_raw(method_id, dimension)
+
+        # Interpret score level
+        if score == 1.0:
+            level = "primary"
+        elif score == 0.7:
+            level = "secondary"
+        elif score == 0.3:
+            level = "compatible"
+        else:
+            level = "undeclared (penalty)"
+
+        return LayerScore(
+            layer=LayerID.DIMENSION,
+            score=score,
+            rationale=f"Dimension compatibility for {dimension}: {level}",
+            metadata={
+                "method": method_id,
+                "dimension": dimension,
+                "compatibility_level": level,
+            }
+        )
+
+    def evaluate_policy_layer(self, method_id: str, policy_area: str) -> "LayerScore":  # type: ignore
+        """
+        Evaluate @p layer and return LayerScore.
+
+        Args:
+            method_id: Method identifier
+            policy_area: Policy area code (e.g., "PA01")
+
+        Returns:
+            LayerScore for POLICY layer
+        """
+        from .data_structures import LayerID, LayerScore
+
+        score = self._evaluate_policy_raw(method_id, policy_area)
+
+        # Interpret score level
+        if score == 1.0:
+            level = "primary"
+        elif score == 0.7:
+            level = "secondary"
+        elif score == 0.3:
+            level = "compatible"
+        else:
+            level = "undeclared (penalty)"
+
+        return LayerScore(
+            layer=LayerID.POLICY,
+            score=score,
+            rationale=f"Policy compatibility for {policy_area}: {level}",
+            metadata={
+                "method": method_id,
+                "policy_area": policy_area,
+                "compatibility_level": level,
+            }
+        )
