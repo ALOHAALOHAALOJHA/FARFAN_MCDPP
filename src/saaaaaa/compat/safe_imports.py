@@ -24,14 +24,41 @@ from typing import Optional
 class ImportErrorDetailed(ImportError):
     """
     Enhanced import error with context and actionable guidance.
-    
+
     This exception is raised when a required import fails and provides:
     - The module that failed to import
     - Installation instructions or hints
     - Alternative packages if available
     - Context about why the import is needed
     """
-    pass
+
+    def __init__(self, module_name: str, hint: str = "", install_cmd: str = ""):
+        """
+        Initialize detailed import error.
+
+        Parameters
+        ----------
+        module_name : str
+            Name of the module that failed to import
+        hint : str, optional
+            Human-readable context about why this module is needed
+        install_cmd : str, optional
+            Installation command to resolve the missing dependency
+        """
+        parts = [f"Failed to import '{module_name}'"]
+
+        if hint:
+            parts.append(f"Context: {hint}")
+
+        if install_cmd:
+            parts.append(f"Install with: {install_cmd}")
+
+        message = ". ".join(parts)
+        super().__init__(message)
+
+        self.module_name = module_name
+        self.hint = hint
+        self.install_cmd = install_cmd
 
 
 def try_import(
@@ -109,19 +136,19 @@ def try_import(
             except Exception as alt_error:
                 # Both primary and alternative failed
                 combined_error = ImportErrorDetailed(
-                    f"{msg}; alt '{alt}' failed: {alt_error}. {hint}"
+                    modname, hint=f"{hint}; alternative '{alt}' also failed"
                 )
                 combined_error.__cause__ = alt_error
-                
+
                 if required:
                     raise combined_error from primary_error
                 else:
                     sys.stderr.write(f"{msg} (optional); alt also failed. {hint}\n")
                     return None
-        
+
         # Required import failed - abort immediately
         if required:
-            raise ImportErrorDetailed(f"{msg}. {hint}") from primary_error
+            raise ImportErrorDetailed(modname, hint=hint) from primary_error
         
         # Optional dependency: log and defer failure to call site
         # This allows the module to load but fail when the feature is used
