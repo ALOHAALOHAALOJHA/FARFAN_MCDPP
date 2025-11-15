@@ -53,6 +53,13 @@ def load_monolith(monolith_path: str = None):
             "Orchestrator module not available. Cannot load questionnaire monolith."
         )
 
+    if monolith_path is not None:
+        import logging
+        logging.warning(
+            "load_monolith: monolith_path parameter is IGNORED. "
+            "Questionnaire always loads from canonical path for integrity."
+        )
+
     # Always use canonical loader for integrity verification
     canonical = load_questionnaire()
     return dict(canonical.data)

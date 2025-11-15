@@ -225,8 +225,9 @@ def get_canonical_dimensions(questionnaire_path: Path | None = None) -> dict[str
     if 'dimensions' not in canonical.data['canonical_notation']:
         raise KeyError("dimensions section missing from canonical_notation")
 
-    # Return a shallow copy
-    return dict(canonical.data['canonical_notation']['dimensions'])
+    # Return deep copy to prevent side-effects on nested dictionaries
+    import copy
+    return copy.deepcopy(canonical.data['canonical_notation']['dimensions'])
 
 def get_canonical_policy_areas(questionnaire_path: Path | None = None) -> dict[str, dict[str, str]]:
     """
@@ -265,8 +266,9 @@ def get_canonical_policy_areas(questionnaire_path: Path | None = None) -> dict[s
     if 'policy_areas' not in canonical.data['canonical_notation']:
         raise KeyError("policy_areas section missing from canonical_notation")
 
-    # Return a shallow copy
-    return dict(canonical.data['canonical_notation']['policy_areas'])
+    # Return deep copy to prevent side-effects on nested dictionaries
+    import copy
+    return copy.deepcopy(canonical.data['canonical_notation']['policy_areas'])
 
 def load_schema(path: Path | None = None) -> dict[str, Any]:
     """Load questionnaire schema JSON file.

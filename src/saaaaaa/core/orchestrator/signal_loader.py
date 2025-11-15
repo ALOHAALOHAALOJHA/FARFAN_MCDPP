@@ -391,7 +391,7 @@ def build_all_signal_packs(
     # Import here to avoid circular dependency
     from .questionnaire import load_questionnaire
 
-    # Handle legacy monolith parameter
+    # Handle legacy monolith parameter and ensure questionnaire is loaded only once
     if monolith is not None:
         import warnings
         warnings.warn(
@@ -400,6 +400,9 @@ def build_all_signal_packs(
             DeprecationWarning,
             stacklevel=2
         )
+    elif questionnaire is None:
+        # Load questionnaire once to avoid redundant I/O in loop
+        questionnaire = load_questionnaire()
 
     policy_areas = [f"PA{i:02d}" for i in range(1, 11)]
 
