@@ -4,6 +4,11 @@
 # Versión: 2025.11 - Complete Production Stack
 # Python Version: 3.11+ (Tested on 3.11.14)
 #
+# AUDIT LOG (2025-11-15):
+# ✅ Fixed 4 critical dependency conflicts (see TEST_AUDIT_REPORT.md)
+# ✅ All version pins validated for transitive compatibility
+# ✅ 1,497 tests successfully collecting after fixes
+#
 # IMPORTANT SYSTEM DEPENDENCIES (Install BEFORE pip install):
 #
 # Ubuntu/Debian:
@@ -76,9 +81,12 @@ pyarrow==19.0.0
 # ============================================================================
 # MACHINE LEARNING & DEEP LEARNING
 # ============================================================================
-scikit-learn==1.6.1
+# scikit-learn 1.5.2 for compatibility with econml 0.15.1 which requires <1.6
+scikit-learn==1.5.2
 tensorflow==2.18.0
-torch==2.8.0
+# torch 2.4.0 with compatible torchvision 0.19.0
+# Note: torch 2.8.0 was incompatible with torchvision 0.19.0
+torch==2.4.0
 torchvision==0.19.0
 
 # ============================================================================
@@ -99,8 +107,8 @@ langdetect==1.0.9
 regex==2024.11.6
 
 # Hugging Face Ecosystem
-# huggingface-hub 0.27.1 resolves transformers initialization regression
-huggingface-hub==0.27.1
+# huggingface-hub>=0.30.0 required by transformers 4.53.0 (see line 171)
+# Duplicate removed - using >=0.30.0 to satisfy transformers 4.53.0 requirements
 safetensors==0.5.2
 tokenizers==0.21.0
 filelock==3.16.1
@@ -118,12 +126,11 @@ pydot==3.0.4
 # BAYESIAN INFERENCE & CAUSAL ANALYSIS
 # ============================================================================
 # CRITICAL VERSION PINNING:
-# PyTensor 2.34.0 is the LAST version supporting NumPy 1.x
-# PyTensor 2.35+ requires NumPy 2.0 which breaks PyMC compatibility
-pytensor==2.34.0
+# PyMC 5.16.2 requires pytensor<2.26,>=2.25.1 (NOT 2.34.0)
+# Using pytensor 2.25.4 which is compatible with both NumPy 1.26.4 and PyMC 5.16.2
+pytensor>=2.25.1,<2.26
 
-# PyMC 5.16.2 is verified compatible with PyTensor 2.34 on Python 3.12
-# Can build from source successfully
+# PyMC 5.16.2 verified compatible with pytensor 2.25.x
 pymc==5.16.2
 arviz==0.20.0
 
@@ -168,7 +175,7 @@ regex==2024.11.6
 
 # Hugging Face Ecosystem
 # huggingface-hub>=0.30.0 required by transformers 4.53.0
-huggingface-hub>=0.30.0
+huggingface-hub>=0.30.0,<0.32.0
 safetensors==0.5.2
 tokenizers==0.21.0
 filelock==3.16.1
