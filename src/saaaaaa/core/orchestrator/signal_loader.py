@@ -452,17 +452,16 @@ def build_signal_manifests(
             stacklevel=2
         )
         monolith_data = monolith
-        monolith_path = QUESTIONNAIRE_PATH
     elif questionnaire is not None:
         # Use canonical questionnaire (preferred)
         monolith_data = dict(questionnaire.data)
-        monolith_path = QUESTIONNAIRE_PATH
     else:
         # Load from canonical loader
         canonical = load_questionnaire()
         monolith_data = dict(canonical.data)
-        monolith_path = QUESTIONNAIRE_PATH
 
+    # Always use canonical path
+    monolith_path = QUESTIONNAIRE_PATH
     manifests = generate_signal_manifests(monolith_data, monolith_path)
 
     logger.info(
