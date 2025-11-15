@@ -265,7 +265,7 @@ def get_canonical_policy_areas(questionnaire_path: Path | None = None) -> dict[s
     if 'policy_areas' not in canonical.data['canonical_notation']:
         raise KeyError("policy_areas section missing from canonical_notation")
 
-    # Return immutable copy
+    # Return a shallow copy
     return dict(canonical.data['canonical_notation']['policy_areas'])
 
 def load_schema(path: Path | None = None) -> dict[str, Any]:
