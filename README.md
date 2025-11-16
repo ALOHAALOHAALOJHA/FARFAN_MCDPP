@@ -1017,9 +1017,9 @@ d2b5f4e  Add bandit security scan to CI
 | Versión Python | Soporte | Notas |
 |----------------|---------|-------|
 | 3.9.x | ❌ No | Requiere TypedDict features de 3.10+ |
-| 3.10.x | ✅ Completo | Versión mínima requerida |
-| 3.11.x | ✅ Completo | **Recomendado** (mejor performance) |
-| 3.12.x | ✅ Completo | Testeado, compatible |
+| 3.10.x | ⚠️ Legacy | Ya no soportado; migrar a 3.12.x |
+| 3.11.x | ⚠️ Legacy | Ya no soportado; migrar a 3.12.x |
+| 3.12.x | ✅ Completo | **Requerido** y recomendado |
 | 3.13.x | ⚠️ No testeado | Puede funcionar, sin garantías |
 
 #### Librerías Core
@@ -1160,4 +1160,3 @@ Solicitamos DOI en Zenodo para persistencia de citación. Una vez asignado, actu
 **Versión**: 1.0.0 (Academic Style)  
 **Estado**: Complete - Under Review  
 **Próxima Revisión**: 2026-01-06
-
