@@ -5,70 +5,14 @@
 
 ## Executive Summary
 
-- **Files Scanned:** 420
-- **Total Findings:** 181
+- **Files Scanned:** 422
+- **Total Findings:** 164
 - **Critical:** 0
-- **High:** 17
+- **High:** 0
 - **Medium:** 163
 - **Low:** 1
 
 ## Findings by Severity
-
-### HIGH (17)
-
-#### absolute_path (17 occurrences)
-
-- **tests/test_enhanced_recommendations.py:149**
-  - Absolute Unix path detected
-  - Code: `output_json = "/tmp/test_recommendations.json"`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/test_enhanced_recommendations.py:150**
-  - Absolute Unix path detected
-  - Code: `output_md = "/tmp/test_recommendations.md"`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/paths/test_paths_workspace_bounds.py:96**
-  - Absolute Unix path detected
-  - Code: `outside = Path("/tmp/outside")`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/paths/test_paths_workspace_bounds.py:103**
-  - Absolute Unix path detected
-  - Code: `outside = Path("/tmp/malicious.txt")`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/paths/test_paths_utils.py:127**
-  - Absolute Unix path detected
-  - Code: `outside = Path("/tmp/other")`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/paths/test_paths_utils.py:166**
-  - Absolute Unix path detected
-  - Code: `result = safe_join(base, "/tmp/other")`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/paths/test_paths_utils.py:233**
-  - Absolute Unix path detected
-  - Code: `outside = Path("/tmp/outside_workspace.txt")`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/paths/test_paths_no_absolutes.py:55**
-  - Absolute Unix path detected
-  - Code: `if 'native_check.py' in str(py_file) and ('/usr/lib' in line or '/usr/local/lib' in line):`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **tests/paths/test_paths_no_absolutes.py:61**
-  - Absolute Unix path detected
-  - Code: `if 'test_' in str(py_file) and '/tmp/' in line:`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-- **src/saaaaaa/compat/native_check.py:74**
-  - Absolute Unix path detected
-  - Code: `f"/usr/lib/lib{libname}.so",`
-  - Fix: Use proj_root() or data_dir() from saaaaaa.utils.paths
-
-  ... and 7 more occurrences
 
 ### MEDIUM (163)
 
@@ -84,17 +28,17 @@
   - Code: `return Path.cwd()`
   - Fix: Use proj_root() or explicit paths from saaaaaa.utils.paths
 
-- **src/saaaaaa/audit/audit_system.py:929**
+- **src/saaaaaa/audit/audit_system.py:927**
   - Current working directory usage - fragile in different execution contexts
   - Code: `default=Path.cwd(),`
   - Fix: Use proj_root() or explicit paths from saaaaaa.utils.paths
 
-- **src/saaaaaa/core/orchestrator/core.py:1457**
+- **src/saaaaaa/core/orchestrator/core.py:1494**
   - Current working directory usage - fragile in different execution contexts
   - Code: `candidates.append(os.path.join(os.getcwd(), path))`
   - Fix: Use proj_root() or explicit paths from saaaaaa.utils.paths
 
-- **src/saaaaaa/core/orchestrator/core.py:1459**
+- **src/saaaaaa/core/orchestrator/core.py:1496**
   - Current working directory usage - fragile in different execution contexts
   - Code: `candidates.append(os.path.join(os.getcwd(), "rules", "METODOS", path))`
   - Fix: Use proj_root() or explicit paths from saaaaaa.utils.paths
@@ -155,22 +99,22 @@
 
 #### hardcoded_separator (101 occurrences)
 
-- **setup.py:71**
+- **setup.py:75**
   - Potential hardcoded path separator detected
   - Code: `url="https://github.com/kkkkknhh/SAAAAAA",`
   - Fix: Use Path.joinpath() or / operator
 
-- **setup.py:73**
+- **setup.py:77**
   - Potential hardcoded path separator detected
   - Code: `"Bug Tracker": "https://github.com/kkkkknhh/SAAAAAA/issues",`
   - Fix: Use Path.joinpath() or / operator
 
-- **setup.py:74**
+- **setup.py:78**
   - Potential hardcoded path separator detected
   - Code: `"Documentation": "https://github.com/kkkkknhh/SAAAAAA#readme",`
   - Fix: Use Path.joinpath() or / operator
 
-- **setup.py:75**
+- **setup.py:79**
   - Potential hardcoded path separator detected
   - Code: `"Source Code": "https://github.com/kkkkknhh/SAAAAAA",`
   - Fix: Use Path.joinpath() or / operator
@@ -209,32 +153,32 @@
 
 #### os_path_usage (6 occurrences)
 
-- **scripts/smart_policy_chunks_canonic_phase_one.py:2884**
+- **scripts/smart_policy_chunks_canonic_phase_one.py:3262**
   - os.path usage detected
   - Code: `output_dir = os.path.dirname(args.output) or '.'`
   - Fix: Use pathlib.Path instead of os.path
 
-- **src/saaaaaa/compat/native_check.py:118**
+- **src/saaaaaa/compat/native_check.py:120**
   - os.path usage detected
   - Code: `dll_path = os.path.join(path_dir, f"{libname}.dll")`
   - Fix: Use pathlib.Path instead of os.path
 
-- **src/saaaaaa/core/orchestrator/core.py:1455**
+- **src/saaaaaa/core/orchestrator/core.py:1492**
   - os.path usage detected
   - Code: `base_dir = os.path.dirname(__file__)`
   - Fix: Use pathlib.Path instead of os.path
 
-- **src/saaaaaa/core/orchestrator/core.py:1456**
+- **src/saaaaaa/core/orchestrator/core.py:1493**
   - os.path usage detected
   - Code: `candidates.append(os.path.join(base_dir, path))`
   - Fix: Use pathlib.Path instead of os.path
 
-- **src/saaaaaa/core/orchestrator/core.py:1457**
+- **src/saaaaaa/core/orchestrator/core.py:1494**
   - os.path usage detected
   - Code: `candidates.append(os.path.join(os.getcwd(), path))`
   - Fix: Use pathlib.Path instead of os.path
 
-- **src/saaaaaa/core/orchestrator/core.py:1459**
+- **src/saaaaaa/core/orchestrator/core.py:1496**
   - os.path usage detected
   - Code: `candidates.append(os.path.join(os.getcwd(), "rules", "METODOS", path))`
   - Fix: Use pathlib.Path instead of os.path
@@ -253,8 +197,6 @@
 ### hardcoded_separator: 101 occurrences
 
 ### file_usage: 51 occurrences
-
-### absolute_path: 17 occurrences
 
 ### os_path_usage: 6 occurrences
 

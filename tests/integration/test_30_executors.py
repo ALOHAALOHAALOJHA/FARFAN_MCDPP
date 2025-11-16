@@ -31,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from saaaaaa.audit import AuditSystem
 from saaaaaa.patterns import EventTracker
+from saaaaaa.core.canonical_notation import CanonicalDimension
 
 
 class TestExecutorArchitecture:
@@ -73,12 +74,8 @@ class TestExecutorArchitecture:
     def dimension_names() -> Dict[int, str]:
         """Get dimension names."""
         return {
-            1: "INSUMOS (Diagnóstico y Recursos)",
-            2: "ACTIVIDADES (Procesos y Operaciones)",
-            3: "PRODUCTOS (Entregables Directos)",
-            4: "RESULTADOS INTERMEDIOS (Efectos Esperados)",
-            5: "RESULTADOS FINALES (Impactos Estratégicos)",
-            6: "CAUSALIDAD (Teoría de Cambio y Coherencia)"
+            idx: getattr(CanonicalDimension, f"D{idx}").label
+            for idx in range(1, 7)
         }
 
     def test_all_30_executors_exist(self, audit_system: AuditSystem, expected_executors: List[str]):
@@ -89,6 +86,10 @@ class TestExecutorArchitecture:
         """
         # Run executor architecture audit
         results = audit_system.audit_executor_architecture()
+        canonical_label = CanonicalDimension.D5.label
+        canonical_label = CanonicalDimension.D4.label
+        canonical_label = CanonicalDimension.D3.label
+        canonical_label = CanonicalDimension.D2.label
 
         # Verify all executors found
         assert results["executors_found"] == 30, \
@@ -114,6 +115,7 @@ class TestExecutorArchitecture:
         d1_executors = [f"D1Q{q}_Executor" for q in range(1, 6)]
 
         results = audit_system.audit_executor_architecture()
+        canonical_label = CanonicalDimension.D1.label
 
         for executor_name in d1_executors:
             executor_detail = next(
@@ -127,7 +129,7 @@ class TestExecutorArchitecture:
                 f"Executor class {executor_name} does not exist"
             assert executor_detail.dimension == 1, \
                 f"Executor {executor_name} has wrong dimension"
-            assert "INSUMOS" in executor_detail.dimension_name, \
+            assert executor_detail.dimension_name == canonical_label, \
                 f"Executor {executor_name} has wrong dimension name"
 
     def test_dimension_2_actividades(self, audit_system: AuditSystem):
@@ -152,7 +154,7 @@ class TestExecutorArchitecture:
                 f"Executor class {executor_name} does not exist"
             assert executor_detail.dimension == 2, \
                 f"Executor {executor_name} has wrong dimension"
-            assert "ACTIVIDADES" in executor_detail.dimension_name, \
+            assert executor_detail.dimension_name == canonical_label, \
                 f"Executor {executor_name} has wrong dimension name"
 
     def test_dimension_3_productos(self, audit_system: AuditSystem):
@@ -177,7 +179,7 @@ class TestExecutorArchitecture:
                 f"Executor class {executor_name} does not exist"
             assert executor_detail.dimension == 3, \
                 f"Executor {executor_name} has wrong dimension"
-            assert "PRODUCTOS" in executor_detail.dimension_name, \
+            assert executor_detail.dimension_name == canonical_label, \
                 f"Executor {executor_name} has wrong dimension name"
 
     def test_dimension_4_resultados_intermedios(self, audit_system: AuditSystem):
@@ -202,7 +204,7 @@ class TestExecutorArchitecture:
                 f"Executor class {executor_name} does not exist"
             assert executor_detail.dimension == 4, \
                 f"Executor {executor_name} has wrong dimension"
-            assert "RESULTADOS" in executor_detail.dimension_name, \
+            assert executor_detail.dimension_name == canonical_label, \
                 f"Executor {executor_name} has wrong dimension name"
 
     def test_dimension_5_resultados_finales(self, audit_system: AuditSystem):
@@ -227,7 +229,7 @@ class TestExecutorArchitecture:
                 f"Executor class {executor_name} does not exist"
             assert executor_detail.dimension == 5, \
                 f"Executor {executor_name} has wrong dimension"
-            assert "RESULTADOS" in executor_detail.dimension_name or "IMPACTOS" in executor_detail.dimension_name, \
+            assert executor_detail.dimension_name == canonical_label, \
                 f"Executor {executor_name} has wrong dimension name"
 
     def test_dimension_6_causalidad(self, audit_system: AuditSystem):
@@ -239,6 +241,7 @@ class TestExecutorArchitecture:
         d6_executors = [f"D6Q{q}_Executor" for q in range(1, 6)]
 
         results = audit_system.audit_executor_architecture()
+        canonical_label = CanonicalDimension.D6.label
 
         for executor_name in d6_executors:
             executor_detail = next(
@@ -252,7 +255,7 @@ class TestExecutorArchitecture:
                 f"Executor class {executor_name} does not exist"
             assert executor_detail.dimension == 6, \
                 f"Executor {executor_name} has wrong dimension"
-            assert "CAUSALIDAD" in executor_detail.dimension_name, \
+            assert executor_detail.dimension_name == canonical_label, \
                 f"Executor {executor_name} has wrong dimension name"
 
     def test_executor_execute_methods(self, audit_system: AuditSystem, expected_executors: List[str]):

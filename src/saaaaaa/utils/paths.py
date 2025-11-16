@@ -188,9 +188,11 @@ def is_within(base: Path, child: Path) -> bool:
         True if child is within base, False otherwise
         
     Example:
-        >>> is_within(Path("/home/user/project"), Path("/home/user/project/src/file.py"))
+        >>> project_root = Path("project_root")
+        >>> is_within(project_root, project_root / "src" / "file.py")
         True
-        >>> is_within(Path("/home/user/project"), Path("/home/user/other/file.py"))
+        >>> other_root = Path("other_project")
+        >>> is_within(project_root, other_root / "file.py")
         False
     """
     try:
@@ -221,9 +223,10 @@ def safe_join(base: Path, *parts: str) -> Path:
         PathTraversalError: If the resulting path would be outside base
         
     Example:
-        >>> safe_join(Path("/home/user/project"), "src", "file.py")
-        Path('/home/user/project/src/file.py')
-        >>> safe_join(Path("/home/user/project"), "..", "other")  # raises
+        >>> project_root = Path("project_root")
+        >>> safe_join(project_root, "src", "file.py")
+        project_root/src/file.py
+        >>> safe_join(project_root, "..", "other")  # raises
         PathTraversalError
     """
     result = base.joinpath(*parts).resolve()

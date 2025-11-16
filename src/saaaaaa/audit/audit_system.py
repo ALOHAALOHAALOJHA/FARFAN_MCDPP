@@ -29,6 +29,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from saaaaaa.core.canonical_notation import CanonicalDimension
+
 logger = logging.getLogger(__name__)
 
 
@@ -109,14 +111,10 @@ class AuditSystem:
         for q in range(1, 6)
     ]
 
-    # Dimension names
+    # Dimension names from canonical notation
     DIMENSION_NAMES = {
-        1: "INSUMOS (Diagnóstico y Recursos)",
-        2: "ACTIVIDADES (Procesos y Operaciones)",
-        3: "PRODUCTOS (Entregables Directos)",
-        4: "RESULTADOS INTERMEDIOS (Efectos Esperados)",
-        5: "RESULTADOS FINALES (Impactos Estratégicos)",
-        6: "CAUSALIDAD (Teoría de Cambio y Coherencia)"
+        idx: getattr(CanonicalDimension, f"D{idx}").label
+        for idx in range(1, 7)
     }
 
     # Core scripts that MUST use dependency injection

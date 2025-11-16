@@ -12,6 +12,8 @@ from pathlib import Path
 from typing import Dict, List, Any
 from collections import Counter, defaultdict
 
+from saaaaaa.core.canonical_notation import CanonicalDimension
+
 
 class CanonicalCatalogManager:
     """Gestor para interactuar con el catálogo canónico de executors."""
@@ -369,7 +371,8 @@ def ejemplo_3_optimizacion_ejecucion():
     # Obtener solo métodos críticos e importantes de D6-Q1
     prioritized = manager.obtener_metodos_priorizados("D6-Q1", min_priority=2)
 
-    print(f"\n🎯 Métodos priorizados para D6-Q1 (Integridad de Teoría de Cambio)")
+    d6_label = CanonicalDimension.D6.label
+    print(f"\n🎯 Métodos priorizados para D6-Q1 ({d6_label})")
     print(f"Total: {len(prioritized)} métodos")
 
     critical = [m for m in prioritized if m['priority'] == 3]
