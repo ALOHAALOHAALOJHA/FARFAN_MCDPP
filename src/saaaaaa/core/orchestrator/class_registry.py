@@ -57,7 +57,12 @@ def build_class_registry() -> dict[str, type[object]]:
         except ImportError as exc:
             exc_str = str(exc)
             # Check if this is an optional dependency error
-            if any(opt_dep in exc_str for opt_dep in ["torch", "tensorflow", "pyarrow"]):
+            optional_deps = [
+                "torch", "tensorflow", "pyarrow", "camelot",
+                "sentence_transformers", "transformers", "spacy",
+                "pymc", "arviz", "dowhy", "econml"
+            ]
+            if any(opt_dep in exc_str for opt_dep in optional_deps):
                 # Mark as skipped optional rather than missing
                 skipped_optional[name] = f"{path} (optional dependency: {exc})"
             else:

@@ -14,7 +14,7 @@ Tests for AntiMilagroStressTester including:
 
 import pytest
 
-from saaaaaa.processing.micro_prompts import (
+from saaaaaa.analysis.micro_prompts import (
     AntiMilagroStressTester,
     CausalChain,
     ProportionalityPattern,

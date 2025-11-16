@@ -27,6 +27,8 @@
 
 As a digital-nodal-substantive policy tool, F.A.R.F.A.N provides evidence-based, rigorous analysis of development plans through the lens of policy causal mechanisms using the value chain heuristic—the formal schema for organizing policy interventions in Colombia.
 
+For a detailed explanation of the system's design, including the 9-phase pipeline, cross-cut signals, and deterministic protocols, please see the **[ARCHITECTURE.md](ARCHITECTURE.md)** document.
+
 ### Key Components
 
 - **7 Producer Modules**: Independent parallel analysis engines
@@ -42,7 +44,7 @@ As a digital-nodal-substantive policy tool, F.A.R.F.A.N provides evidence-based,
 
 ### Required Software
 
-- **Python**: 3.10 or higher (3.11 recommended)
+- **Python**: 3.12.x exactly (strict requirement)
 - **pip**: Latest version
 - **Git**: For repository management
 - **Minimum RAM**: 8GB (16GB recommended for large analyses)
@@ -87,28 +89,25 @@ git clone https://github.com/kkkkknhh/SAAAAAA.git
 cd SAAAAAA
 ```
 
-#### Step 2: Create Virtual Environment (Optional but Recommended)
+#### Step 2: Create Virtual Environment (strongly recommended)
 
 ```bash
-# Create virtual environment
-python3 -m venv venv
-
-# Activate virtual environment
-# On Linux/macOS:
-source venv/bin/activate
-
-# On Windows:
-venv\Scripts\activate
+# Create and activate an isolated environment
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 ```
 
 #### Step 3: Install Python Dependencies
 
 ```bash
-# Install all required packages with pinned versions (RECOMMENDED)
-pip install -r requirements.txt
+# Ensure pip/setuptools/wheel are current
+python -m pip install --upgrade pip setuptools wheel
 
-# Or with constraints for stricter version control
-pip install -r requirements.txt -c constraints.txt
+# Install the full production stack with constraints
+python -m pip install -r requirements.txt -c constraints-complete.txt
+
+# Install editable package with developer extras for tooling/tests
+python -m pip install -e ".[dev]"
 ```
 
 **Note**: The project has 82+ dependencies defined in `requirements.txt`. While `pyproject.toml` exists for packaging metadata, **always use `requirements.txt` for installation** to ensure all dependencies are installed with correct versions.
@@ -130,7 +129,7 @@ python3 -m spacy download es_dep_news_trf
 This makes the `saaaaaa` package importable throughout your code:
 
 ```bash
-pip install -e .
+python -m pip install -e .
 ```
 
 #### Step 6: Configure Environment
@@ -146,10 +145,19 @@ nano .env
 #### Step 7: Verify Installation
 
 ```bash
-# Run verification script
-python3 scripts/verify_dependencies.py
+# Verify dependency health and calibration coverage
+python scripts/verify_dependencies.py
+python scripts/validate_calibration_coverage.py
 
-# Expected output: All dependencies verified successfully
+# Run architectural tooling
+python scripts/audit_paths.py
+python scripts/signature_ci_check.py --project-root . --output data/signature_diff_report.json
+
+# Core verification targets
+make equip
+make verify
+
+# Expected: every stage reports ✓ before moving on
 ```
 
 ---
@@ -167,10 +175,10 @@ Follow these commands in order to fully activate the SAAAAAA system:
 cd /path/to/SAAAAAA
 
 # Activate virtual environment (if using one)
-source venv/bin/activate
+source .venv/bin/activate
 
 # Verify Python version
-python3 --version  # Should be 3.10 or higher
+python3 --version  # Must report 3.12.x
 ```
 
 #### 2. Dependency Verification
@@ -240,6 +248,31 @@ python3 scripts/validate_system.py
 # Expected output: All system components validated ✓
 ```
 
+### Advanced Verification & Proof Artifacts
+
+Once the core checks pass, execute the following jobs to produce auditable artifacts:
+
+```bash
+# 1. Generate SPC work-package receipts for every policy area
+python3 scripts/verify_immaculate_distribution.py
+ls reports/distribution_receipt_PA01.json
+
+# 2. Re-verify calibration coverage (outputs PASS ≥ 73%)
+python3 scripts/validate_calibration_coverage.py
+
+# 3. Produce a fresh path hygiene report
+python3 scripts/audit_paths.py
+less PATHS_AUDIT.md
+
+# 4. Emit a signature registry diff for CI ingestion
+python3 scripts/signature_ci_check.py --project-root . --output data/signature_diff_report.json
+
+# 5. Validate cryptographic proofs for a completed run
+python3 verify_proof.py data/output/cpp_plan_1
+```
+
+Each command writes concrete evidence (`reports/distribution_receipt_*.json`, `PATHS_AUDIT.md`, `data/signature_diff_report.json`, `proof.json`) that can be archived with the delivery package.
+
 ---
 
 ## Import Conflict Resolution
@@ -270,13 +303,14 @@ from saaaaaa.analysis.teoria_cambio import TeoriaCambio, AdvancedDAGValidator
 from saaaaaa.analysis.derek_beach import CDAFFramework, BeachEvidentialTest
 from saaaaaa.analysis.bayesian_multilevel_system import BayesianMultilevelScorer
 
-# Processing modules - CPP Ingestion (CANONICAL)
-from saaaaaa.processing.cpp_ingestion import CPPIngestionPipeline
-from saaaaaa.utils.cpp_adapter import CPPAdapter
-from saaaaaa.processing.policy_processor import IndustrialPolicyProcessor
+# Processing modules - SPC Ingestion (CANONICAL)
+from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
+from saaaaaa.utils.spc_adapter import SPCAdapter
+from saaaaaa.processing.policy_processor import IndustrialPolicyProcessor  # LEGACY - Use SPC instead
 from saaaaaa.processing.embedding_policy import PolicyAnalysisEmbedder
 
-# Legacy processing (DEPRECATED - Use cpp_ingestion instead)
+# Legacy processing (DEPRECATED - Use spc_ingestion instead)
+# from saaaaaa.processing.cpp_ingestion import CPPIngestionPipeline  # OLD API
 # from saaaaaa.processing.document_ingestion import DocumentIngestionEngine  # DEPRECATED
 
 # Utilities
@@ -440,16 +474,21 @@ python3 run_complete_analysis_plan1.py \
 
 # Or use the CPP ingestion directly
 python3 -c "
+import asyncio
 from pathlib import Path
-from saaaaaa.processing.cpp_ingestion import CPPIngestionPipeline
+from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
 
-pipeline = CPPIngestionPipeline()
-outcome = pipeline.ingest(
-    Path('data/input_plans/plan_municipal_2024.pdf'),
-    Path('data/cpp_output/')
-)
-print(f'CPP ingestion completed: {outcome.success}')
-print(f'Quality metrics: {outcome.quality_metrics}')
+async def test():
+    pipeline = CPPIngestionPipeline()
+    cpp = await pipeline.process(
+        document_path=Path('data/input_plans/plan_municipal_2024.pdf'),
+        document_id='plan_municipal_2024',
+        max_chunks=50
+    )
+    print(f'SPC ingestion completed: {len(cpp.chunk_graph.chunks)} chunks')
+
+asyncio.run(test())
+print(f'Quality metrics: {cpp.quality_metrics}')
 "
 
 # This creates a Canon Policy Package with:
@@ -2271,4 +2310,3 @@ pip install -e .  # Required for saaaaaa.* imports
 ```bash
 cd /path/to/SAAAAAA  # Just be in repository root
 ```
-

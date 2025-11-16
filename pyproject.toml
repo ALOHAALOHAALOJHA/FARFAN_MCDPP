@@ -7,7 +7,7 @@ name = "saaaaaa"
 version = "0.1.0"
 description = "F.A.R.F.A.N: Framework for Advanced Retrieval of Administrativa Narratives - A mechanistic policy pipeline for Colombian development plan analysis"
 readme = "README.md"
-requires-python = ">=3.10,<3.11"
+requires-python = "~=3.12.0"
 authors = [
     {name = "F.A.R.F.A.N Development Team"}
 ]
@@ -114,7 +114,7 @@ where = ["src"]
 [tool.pyright]
 # Strict type checking configuration
 typeCheckingMode = "strict"
-pythonVersion = "3.10"
+pythonVersion = "3.12"
 pythonPlatform = "Linux"
 
 # Report missing imports
@@ -169,7 +169,7 @@ exclude = [
 
 [tool.mypy]
 # Strict type checking for mypy
-python_version = "3.10"
+python_version = "3.12"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
