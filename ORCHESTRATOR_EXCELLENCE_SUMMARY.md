@@ -10,7 +10,7 @@ This document summarizes the implementation of the comprehensive **Orchestrator 
 
 | Item | Status | Implementation |
 |------|--------|----------------|
-| Version pin | ✅ | `.python-version` contains `3.11.9` |
+| Version pin | ✅ | `.python-version` contains `3.12.x` |
 | Dependencies fixed | ✅ | `requirements.txt` and `constraints.txt` with pinned versions |
 | Structure | ✅ | `core/`, `orchestrator/`, `executors/`, `tests/`, `tools/`, `contracts/` |
 | PYTHONPATH | ✅ | sys.path modifications in tools, `pip install -e .` supported |

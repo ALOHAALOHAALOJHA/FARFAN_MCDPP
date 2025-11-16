@@ -55,7 +55,7 @@ class SentenceMetadata:
     page_number: int | None = None
     start_char: int | None = None
     end_char: int | None = None
-    extra: Mapping[str, Any] = field(default=_EMPTY_MAPPING)
+    extra: Mapping[str, Any] = field(default_factory=lambda: _EMPTY_MAPPING)
 
 @dataclass(frozen=True, slots=True)
 class TableAnnotation:
@@ -63,16 +63,16 @@ class TableAnnotation:
 
     table_id: str
     label: str
-    attributes: Mapping[str, Any] = field(default=_EMPTY_MAPPING)
+    attributes: Mapping[str, Any] = field(default_factory=lambda: _EMPTY_MAPPING)
 
 @dataclass(frozen=True, slots=True)
 class DocumentIndexesV1:
     """Indices built over a document for search and retrieval."""
 
-    term_index: Mapping[str, tuple[int, ...]] = field(default=_EMPTY_MAPPING)
-    numeric_index: Mapping[str, tuple[int, ...]] = field(default=_EMPTY_MAPPING)
-    temporal_index: Mapping[str, tuple[int, ...]] = field(default=_EMPTY_MAPPING)
-    entity_index: Mapping[str, tuple[int, ...]] = field(default=_EMPTY_MAPPING)
+    term_index: Mapping[str, tuple[int, ...]] = field(default_factory=lambda: _EMPTY_MAPPING)
+    numeric_index: Mapping[str, tuple[int, ...]] = field(default_factory=lambda: _EMPTY_MAPPING)
+    temporal_index: Mapping[str, tuple[int, ...]] = field(default_factory=lambda: _EMPTY_MAPPING)
+    entity_index: Mapping[str, tuple[int, ...]] = field(default_factory=lambda: _EMPTY_MAPPING)
 
 @dataclass(frozen=True, slots=True)
 class PreprocessedDocumentV1:

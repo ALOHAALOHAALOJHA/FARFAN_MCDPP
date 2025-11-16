@@ -4,10 +4,10 @@ This document describes the build hygiene practices and structure enforced in th
 
 ## Python Version
 
-This project uses **Python 3.11.x** specifically. The version is pinned in:
+This project uses **Python 3.12.x** specifically. The version is pinned in:
 - `.python-version` - for pyenv and similar tools
-- `pyproject.toml` - requires-python = "~=3.11.0"
-- All type checkers (mypy, pyright) are configured for Python 3.11
+- `pyproject.toml` - requires-python = "~=3.12.0"
+- All type checkers (mypy, pyright) are configured for Python 3.12
 
 ## Dependency Management
 
@@ -107,7 +107,7 @@ To verify your setup follows these guidelines:
 
 ```bash
 # Check Python version
-python --version  # Should be 3.11.x
+python --version  # Should be 3.12.x
 
 # Verify no wildcards in requirements
 grep -E '\*|>=|~=' requirements.txt  # Should return nothing

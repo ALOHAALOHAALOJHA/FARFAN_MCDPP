@@ -269,7 +269,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11.9'
+          python-version: '3.12.1'
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
@@ -363,7 +363,7 @@ pytest tests/test_orchestrator_golden.py
 
 ### Configuration
 - `pyproject.toml` - Python version, mypy, ruff, pytest config
-- `.python-version` - Python version lock (3.11.9)
+- `.python-version` - Python version lock (3.12.x)
 - `requirements.txt` - Pinned dependencies
 - `constraints.txt` - Transitive dependency locks
 - `Makefile` - Verification commands

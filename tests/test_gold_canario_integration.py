@@ -16,7 +16,7 @@ import time
 
 import pytest
 
-from saaaaaa.processing.macro_prompts import (
+from saaaaaa.analysis.macro_prompts import (
     BayesianPortfolioComposer,
     ContradictionScanner,
     CoverageGapStressor,
@@ -29,7 +29,7 @@ from saaaaaa.analysis.meso_cluster_analysis import (
     calibrate_against_peers,
     compose_cluster_posterior,
 )
-from saaaaaa.processing.micro_prompts import (
+from saaaaaa.analysis.micro_prompts import (
     AntiMilagroStressTester,
     BayesianPosteriorExplainer,
     CausalChain,

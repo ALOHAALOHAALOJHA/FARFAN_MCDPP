@@ -41,10 +41,14 @@ from .lazy_deps import (
     get_transformers,
 )
 
+# Backward compatibility alias
+OptionalDependencyError = ImportErrorDetailed
+
 # Re-export safe import utilities and lazy deps
 __all__ = [
     # Core import utilities
     "ImportErrorDetailed",
+    "OptionalDependencyError",  # Backward compatibility alias
     "try_import",
     "lazy_import",
     "check_import_available",

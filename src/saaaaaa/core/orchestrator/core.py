@@ -1234,7 +1234,44 @@ class Orchestrator:
         # ========================================================================
         validate_phase_definitions(self.FASES, self.__class__)
 
-        # Store paths for backward compatibility
+        # ========================================================================
+        # DEPRECATION WARNINGS for path parameters
+        # Path parameters trigger I/O and are deprecated in favor of pre-loaded data
+        # ========================================================================
+        import warnings
+
+        path_params = {
+            "catalog_path": (
+                catalog_path,
+                "Use 'catalog' parameter with pre-loaded data instead. "
+                "Load via: from saaaaaa.core.orchestrator.factory import build_processor",
+            ),
+            "monolith_path": (
+                monolith_path,
+                "Use 'questionnaire' parameter with CanonicalQuestionnaire instead. "
+                "Load via: from saaaaaa.core.orchestrator.questionnaire import load_questionnaire",
+            ),
+            "method_map_path": (
+                method_map_path,
+                "Use 'method_map' parameter with pre-loaded data instead. "
+                "Load via: from saaaaaa.core.orchestrator.factory import build_processor",
+            ),
+            "schema_path": (
+                schema_path,
+                "Use 'schema' parameter with pre-loaded data instead. "
+                "Load via: from saaaaaa.core.orchestrator.factory import build_processor",
+            ),
+        }
+
+        for param_name, (param_value, message) in path_params.items():
+            if param_value is not None:
+                warnings.warn(
+                    f"Orchestrator '{param_name}' parameter is DEPRECATED. {message}",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
+
+        # Store paths for backward compatibility (but deprecated)
         self.catalog_path = self._resolve_path(catalog_path) if catalog_path else None
         self.monolith_path = self._resolve_path(monolith_path) if monolith_path else None
         self.method_map_path = self._resolve_path(method_map_path) if method_map_path else None
@@ -1376,6 +1413,75 @@ class Orchestrator:
             logger.warning(f"Failed to initialize RecommendationEngine: {e}")
             self.recommendation_engine = None
 
+
+    def execute_sophisticated_engineering_operation(self, policy_area_id: str) -> dict[str, Any]:
+        """
+        Orchestrates a sophisticated engineering operation:
+        1. Generates 10 smart policy chunks using the canonical SPC ingestion pipeline.
+        2. Loads the corresponding signals (patterns and regex) for the policy area.
+        3. Instantiates an executor.
+        4. Distributes a "work package" (chunks and signals) to the executor.
+        5. Returns the generated artifacts as evidence.
+        """
+        logger.info(f"--- Starting Sophisticated Engineering Operation for: {policy_area_id} ---")
+
+        # 1. Generate 10 smart policy chunks
+        from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
+        from pathlib import Path
+
+        document_path = Path(f"data/policy_areas/{policy_area_id}.txt")
+        logger.info(f"Processing document: {document_path}")
+        
+        ingestion_pipeline = CPPIngestionPipeline()
+        canon_package = asyncio.run(ingestion_pipeline.process(document_path, max_chunks=10))
+        
+        logger.info(f"Generated {len(canon_package.chunk_graph.chunks)} chunks for {policy_area_id}.")
+
+        # 2. Load signals
+        from .signal_loader import build_signal_pack_from_monolith
+        from .questionnaire import load_questionnaire
+
+        questionnaire = load_questionnaire()
+        signal_pack = build_signal_pack_from_monolith(policy_area_id, questionnaire=questionnaire)
+        logger.info(f"Loaded signal pack for {policy_area_id} with {len(signal_pack.patterns)} patterns.")
+
+        # 3. Instantiate an executor
+        from . import executors
+
+        # Simple mock for the signal registry, as the executor expects an object with a 'get' method.
+        class MockSignalRegistry:
+            def __init__(self, pack):
+                self._pack = pack
+            def get(self, _policy_area):
+                return self._pack
+
+        executor_instance = executors.D1Q1_Executor(
+            method_executor=self.executor,
+            signal_registry=MockSignalRegistry(signal_pack)
+        )
+        logger.info(f"Instantiated executor: {executor_instance.__class__.__name__}")
+
+        # 4. Prepare and "distribute" the work package
+        work_package = {
+            "canon_policy_package": canon_package.to_dict(),
+            "signal_pack": signal_pack.to_dict(),
+        }
+        
+        logger.info(f"Distributing work package to executor for {policy_area_id}.")
+        # This simulates the distribution. The executor method will provide the evidence of receipt.
+        if hasattr(executor_instance, 'receive_and_process_work_package'):
+            executor_instance.receive_and_process_work_package(work_package)
+        else:
+            logger.error("Executor does not have the 'receive_and_process_work_package' method.")
+
+        logger.info(f"--- Completed Sophisticated Engineering Operation for: {policy_area_id} ---")
+
+        # 5. Return evidence
+        return {
+            "canon_package": canon_package.to_dict(),
+            "signal_pack": signal_pack.to_dict(),
+        }
+
     def _resolve_path(self, path: str | None) -> str | None:
         """Resolve a relative or absolute path, searching multiple candidate locations."""
         if path is None:
@@ -1412,6 +1518,44 @@ class Orchestrator:
             self.process_development_plan_async(
                 pdf_path, preprocessed_document=preprocessed_document
             )
+        )
+
+    async def process(self, preprocessed_document: Any) -> list[PhaseResult]:
+        """
+        DEPRECATED ALIAS for process_development_plan_async().
+
+        This method exists ONLY for backward compatibility with code
+        that incorrectly assumed Orchestrator had a .process() method.
+
+        Use process_development_plan_async() instead.
+
+        Args:
+            preprocessed_document: PreprocessedDocument to process
+
+        Returns:
+            List of phase results
+
+        Raises:
+            DeprecationWarning: This method is deprecated
+        """
+        import warnings
+        warnings.warn(
+            "Orchestrator.process() is deprecated. "
+            "Use process_development_plan_async(pdf_path, preprocessed_document=...) instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+
+        # Extract pdf_path from preprocessed_document if available
+        pdf_path = getattr(preprocessed_document, 'source_path', None)
+        if pdf_path is None:
+            # Try to get from metadata
+            metadata = getattr(preprocessed_document, 'metadata', {})
+            pdf_path = metadata.get('source_path', 'unknown.pdf')
+
+        return await self.process_development_plan_async(
+            pdf_path=str(pdf_path),
+            preprocessed_document=preprocessed_document
         )
 
     async def process_development_plan_async(

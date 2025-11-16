@@ -147,11 +147,11 @@ app = FastAPI(
 async def startup_event() -> None:
     """Load signals on startup."""
     global _signal_store
-    
-    # Try to load from default path
-    monolith_path = Path(__file__).parent.parent.parent.parent / "data" / "questionnaire_monolith.json"
-    _signal_store = load_signals_from_monolith(monolith_path)
-    
+
+    # Load from canonical questionnaire path (via questionnaire.load_questionnaire())
+    # Path parameter is deprecated and ignored - see load_signals_from_monolith() docstring
+    _signal_store = load_signals_from_monolith(monolith_path=None)
+
     logger.info(
         "signal_service_started",
         signal_count=len(_signal_store),
