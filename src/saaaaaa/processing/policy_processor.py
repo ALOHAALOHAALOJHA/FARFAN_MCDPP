@@ -1,4 +1,22 @@
 """
+⚠️  LEGACY MODULE - IndustrialPolicyProcessor (Pre-SPC Architecture)
+=======================================================================
+
+⚠️  WARNING: This module represents PRE-SPC architecture (before Smart Policy Chunks).
+
+For NEW code, use:
+    from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
+
+This module is kept for:
+- Backward compatibility with existing tests
+- Historical reference
+- Gradual migration support
+
+DO NOT use IndustrialPolicyProcessor in new scripts or features.
+Use the SPC (Smart Policy Chunks) ingestion pipeline instead.
+
+---
+
 Causal Framework Policy Plan Processor - Industrial Grade
 =========================================================
 
@@ -661,14 +679,15 @@ class IndustrialPolicyProcessor:
     State-of-the-art policy plan processor implementing rigorous causal
     framework analysis with Bayesian evidence scoring and graph-theoretic
     validation for Colombian local development plans.
-    """
 
-    QUESTIONNAIRE_PATH: ClassVar[Path] = Path("decalogo-industrial.latest.clean.json")
+    NOTE: This is a LEGACY component. Questionnaire access has been removed.
+    Modern pipelines use SPC (Smart Policy Chunks) ingestion instead.
+    """
 
     def __init__(
         self,
         config: ProcessorConfig | None = None,
-        questionnaire_path: Path | None = None,
+        questionnaire_path: Path | None = None,  # DEPRECATED: Kept for API compatibility only
         *,
         ontology: MunicipalOntology | None = None,
         semantic_analyzer: SemanticAnalyzer | None = None,
@@ -695,9 +714,10 @@ class IndustrialPolicyProcessor:
         self.confidence_calculator = confidence_calculator or BayesianConfidenceCalculator()
         self.municipal_analyzer = municipal_analyzer or MunicipalAnalyzer()
 
-        # Load canonical questionnaire structure
-        self.questionnaire_file_path = questionnaire_path or self.QUESTIONNAIRE_PATH
-        self.questionnaire_data = self._load_questionnaire()
+        # LEGACY: Questionnaire loading removed - this component is deprecated
+        # Modern SPC pipeline handles questionnaire injection separately
+        self.questionnaire_file_path = None
+        self.questionnaire_data = {"questions": []}  # Empty stub for backward compatibility
 
         # Compile pattern taxonomy
         self._pattern_registry = self._compile_pattern_registry()
@@ -710,20 +730,17 @@ class IndustrialPolicyProcessor:
         self.statistics: dict[str, Any] = defaultdict(int)
 
     def _load_questionnaire(self) -> dict[str, Any]:
-        """Load and validate DECALOGO questionnaire structure."""
-        # Delegate to factory for I/O operation
-        from .factory import load_json
+        """
+        LEGACY: Questionnaire loading disabled.
 
-        try:
-            data = load_json(self.questionnaire_file_path)
-
-            logger.info(
-                f"Loaded questionnaire: {len(data.get('questions', []))} questions"
-            )
-            return data
-        except Exception as e:
-            logger.error(f"Failed to load questionnaire: {e}")
-            raise OSError(f"Questionnaire unavailable: {self.questionnaire_file_path}") from e
+        This method is kept for backward compatibility but returns empty data.
+        Modern SPC pipeline handles questionnaire injection separately.
+        """
+        logger.warning(
+            "IndustrialPolicyProcessor._load_questionnaire called but questionnaire "
+            "loading is disabled. This is a legacy component. Use SPC ingestion instead."
+        )
+        return {"questions": []}
 
     def _compile_pattern_registry(self) -> dict[CausalDimension, dict[str, list[re.Pattern]]]:
         """Compile all causal patterns into efficient regex objects."""
@@ -737,10 +754,26 @@ class IndustrialPolicyProcessor:
         return registry
 
     def _build_point_patterns(self) -> None:
-        """Extract and compile patterns for each policy point from questionnaire."""
+        """
+        LEGACY: Pattern building from questionnaire disabled.
+
+        This method is kept for backward compatibility but does nothing.
+        Modern SPC pipeline handles question-aware chunking separately.
+        """
+        questions = self.questionnaire_data.get("questions", [])
+
+        if not questions:
+            logger.info(
+                "No questionnaire questions available. "
+                "This is expected for legacy IndustrialPolicyProcessor. "
+                "Use SPC ingestion for question-aware analysis."
+            )
+            return
+
+        # Legacy path (should not be reached in modern pipeline)
         point_keywords: dict[str, set[str]] = defaultdict(set)
 
-        for question in self.questionnaire_data.get("questions", []):
+        for question in questions:
             point_code = question.get("point_code")
             if not point_code:
                 continue
