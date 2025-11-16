@@ -12,6 +12,7 @@ from .data_structures import (
     LayerID, LayerScore, ContextTuple, CalibrationSubject, CalibrationResult
 )
 from .config import CalibrationSystemConfig, DEFAULT_CALIBRATION_CONFIG
+from .base_layer import BaseLayerEvaluator
 from .unit_layer import UnitLayerEvaluator
 from .pdt_structure import PDTStructure
 from .compatibility import CompatibilityRegistry, ContextualLayerEvaluator
@@ -28,13 +29,14 @@ logger = logging.getLogger(__name__)
 class CalibrationOrchestrator:
     """
     Top-level orchestrator for method calibration.
-    
+
     Usage:
         orchestrator = CalibrationOrchestrator(
             config=DEFAULT_CALIBRATION_CONFIG,
+            intrinsic_calibration_path="config/intrinsic_calibration.json",
             compatibility_path="data/method_compatibility.json"
         )
-        
+
         result = orchestrator.calibrate(
             method_id="pattern_extractor_v2",
             method_version="v2.1.0",
@@ -42,10 +44,11 @@ class CalibrationOrchestrator:
             pdt_structure=PDTStructure(...)
         )
     """
-    
+
     def __init__(
         self,
         config: CalibrationSystemConfig = None,
+        intrinsic_calibration_path: Path | str = None,
         compatibility_path: Path | str = None,
         method_registry_path: Path | str = None,
         method_signatures_path: Path | str = None,
@@ -53,12 +56,22 @@ class CalibrationOrchestrator:
     ):
         self.config = config or DEFAULT_CALIBRATION_CONFIG
 
-        # Initialize intrinsic calibration (GAP 0 integration)
-        intrinsic_path = intrinsic_calibration_path or "config/intrinsic_calibration.json"
-        self.intrinsic_loader = IntrinsicScoreLoader(intrinsic_path)
-        self.layer_resolver = LayerRequirementsResolver(self.intrinsic_loader)
+        # Initialize BASE layer evaluator
+        if intrinsic_calibration_path:
+            self.base_evaluator = BaseLayerEvaluator(intrinsic_calibration_path)
+        else:
+            # Try default path
+            default_intrinsic = Path("config/intrinsic_calibration.json")
+            if default_intrinsic.exists():
+                self.base_evaluator = BaseLayerEvaluator(default_intrinsic)
+            else:
+                logger.warning(
+                    "No intrinsic_calibration.json found, BASE layer will use penalty scores"
+                )
+                # Create a minimal evaluator that always returns penalty
+                self.base_evaluator = None
 
-        # Initialize layer evaluators
+        # Initialize UNIT layer evaluator
         self.unit_evaluator = UnitLayerEvaluator(self.config.unit_layer)
 
         # Load compatibility registry
@@ -130,12 +143,7 @@ class CalibrationOrchestrator:
             extra={
                 "config_hash": self.config.compute_system_hash(),
                 "anti_universality_enabled": self.config.enable_anti_universality_check,
-                "intrinsic_calibration": {
-                    "total_methods": intrinsic_stats["total"],
-                    "calibrated": intrinsic_stats["computed"],
-                    "excluded": intrinsic_stats["excluded"],
-                    "path": str(intrinsic_path)
-                }
+                "base_evaluator_loaded": self.base_evaluator is not None,
             }
         )
     
@@ -188,44 +196,22 @@ class CalibrationOrchestrator:
         # Collect layer scores
         layer_scores = {}
 
-        # Determine required layers for this method
-        required_layers = self.layer_resolver.get_required_layers(method_id)
-        layer_summary = self.layer_resolver.get_layer_summary(method_id)
-
-        logger.info(
-            "layer_requirements_determined",
-            extra={
-                "method": method_id,
-                "required_layers": [layer.value for layer in required_layers],
-                "summary": layer_summary
-            }
-        )
-
-        # Layer 1: BASE (@b) - ALWAYS REQUIRED
-        # Load intrinsic calibration score from JSON
-        base_score = self.intrinsic_loader.get_score(method_id, default=0.5)
-        is_calibrated = self.intrinsic_loader.is_calibrated(method_id)
-
-        layer_scores[LayerID.BASE] = LayerScore(
-            layer=LayerID.BASE,
-            score=base_score,
-            rationale=f"Base layer (intrinsic quality) score: {base_score:.3f}" +
-                     (" [from intrinsic calibration]" if is_calibrated else " [default - not calibrated]"),
-            metadata={
-                "source": "intrinsic_calibration" if is_calibrated else "default",
-                "calibrated": is_calibrated,
-                "method_id": method_id
-            }
-        )
-
-        logger.info(
-            "base_layer_score_loaded",
-            extra={
-                "method": method_id,
-                "base_score": base_score,
-                "source": "intrinsic_calibration" if is_calibrated else "default"
-            }
-        )
+        # Layer 1: Base (@b) - Intrinsic Quality
+        # Loads from intrinsic_calibration.json (populated by rigorous_calibration_triage.py)
+        if self.base_evaluator:
+            layer_scores[LayerID.BASE] = self.base_evaluator.evaluate(method_id)
+        else:
+            # Fallback if no calibration data available
+            logger.warning(
+                "base_evaluator_not_available",
+                extra={"method": method_id, "using_penalty": True}
+            )
+            layer_scores[LayerID.BASE] = LayerScore(
+                layer=LayerID.BASE,
+                score=BaseLayerEvaluator.UNCALIBRATED_PENALTY,
+                rationale="BASE layer: intrinsic calibration not available (penalty applied)",
+                metadata={"penalty": True, "reason": "no_calibration_file"}
+            )
         
         # Layer 2: Unit (@u)
         if not self.layer_resolver.should_skip_layer(method_id, LayerID.UNIT):

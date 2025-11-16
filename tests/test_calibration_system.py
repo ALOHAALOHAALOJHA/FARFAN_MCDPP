@@ -3,14 +3,22 @@ Tests for Three-Pillar Calibration System
 
 These tests validate the core calibration functionality according to
 the SUPERPROMPT specification.
+
+OBSOLETE: This test module uses the old calibration API that was refactored.
+The new calibration system is tested in tests/calibration/ subdirectory.
+See tests/calibration/test_gap0_complete.py for current calibration tests.
 """
 
 import pytest
-from calibration import (
-    calibrate, CalibrationEngine, validate_config_files,
-    Context, ComputationGraph, EvidenceStore,
-    LayerType, MethodRole
-)
+
+pytestmark = pytest.mark.skip(reason="obsolete - calibration API refactored, see tests/calibration/")
+
+# Old imports (no longer valid):
+# from calibration import (
+#     calibrate, CalibrationEngine, validate_config_files,
+#     Context, ComputationGraph, EvidenceStore,
+#     LayerType, MethodRole
+# )
 
 
 # Test constants

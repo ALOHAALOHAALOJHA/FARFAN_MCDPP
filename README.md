@@ -1,197 +1,30 @@
 # F.A.R.F.A.N: Framework for Advanced Retrieval of Administrativa Narratives
 
-## A Mechanistic Policy Pipeline for Colombian Development Plan Analysis
+**A Mechanistic Policy Pipeline for Colombian Development Plan Analysis**
 
-**F.A.R.F.A.N** (Framework for Advanced Retrieval of Administrativa Narratives) is the official and canonical name for this digital-nodal-substantive policy tool. F.A.R.F.A.N is a *parte aguas* in the way Colombian municipal development plans are analyzed, interpreted, and discussed by policy communities and citizenship.
-
-**Sistema de Análisis Estratégico de Políticas Públicas con Arquitectura de Alta Fidelidad**
+**F.A.R.F.A.N** is a sophisticated, evidence-based analysis tool for Colombian municipal development plans. It leverages a deterministic pipeline, cryptographic proofs, and a comprehensive questionnaire to deliver rigorous, reproducible results.
 
 ---
 
-## ⚠️ PYTHON 3.12 COMPATIBILITY NOTICE
+## 🚀 Getting Started
 
-This repository is configured for **Python 3.12** with **NumPy 1.26.4** (NOT a downgrade - this is a binary compatibility requirement).
+For a complete guide to installation, system activation, and your first analysis, please refer to the **[OPERATIONAL_GUIDE.md](OPERATIONAL_GUIDE.md)**. This is the recommended starting point for all users.
 
-**Critical Information:**
-- **NumPy 2.0 breaks PyMC/PyTensor** - we use NumPy 1.26.4 (latest 1.x)
-- **PyMC must build from source** on Python 3.12 (no pre-built wheels)
-- **All dependencies are exactly pinned** in `constraints-complete.txt`
+## 🏛️ Architecture
 
-**📖 See [PYTHON_312_COMPATIBILITY.md](PYTHON_312_COMPATIBILITY.md) for complete details**
+For a deep dive into the system's architecture, including the 9-phase pipeline, cross-cut signals, and deterministic protocols, see **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
----
+##  quick reference
 
-## 📦 Package Installation & Dependency Management
+For a quick reference of the project, see **[DEVELOPER_QUICK_REFERENCE.md](DEVELOPER_QUICK_REFERENCE.md)**.
 
-### ⚠️ MANDATORY: Editable Install Required
+## 📦 Installation
 
-**This project enforces SIN_CARRETA compliance. You MUST install the package before using it.**
+This project requires **Python 3.12** and enforces a strict dependency management system to ensure reproducibility.
 
-```bash
-# Step 1: Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+### **MANDATORY**: Editable Install
 
-# Step 2: Install package (REQUIRED - choose one)
-pip install -e .                    # Basic installation (core features)
-pip install -e ".[dev]"            # With development tools
-pip install -e ".[bayesian]"       # With Bayesian analysis (PyMC, PyTensor, arviz)
-pip install -e ".[ml]"             # With ML/DL support (torch, tensorflow)
-pip install -e ".[all]"            # Complete installation (all features)
-```
-
-**Why is this mandatory?**
-- ✅ Deterministic, reproducible imports
-- ✅ No `sys.path` manipulation (banned)
-- ✅ Standard Python packaging practices
-- ✅ CI/CD enforcement
-
-**See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for complete SIN_CARRETA doctrine.**
-
-### Alternative: Pinned Requirements (Advanced)
-
-**Option 2: Pinned Requirements (Development/Production)**
-```bash
-# Install with exact version pins from requirements.txt
-pip install -c constraints-complete.txt -r requirements.txt
-
-# Or use the automated script
-./install_fixed.sh
-```
-
-**Why two installation methods?**
-- `pip install -e .` uses flexible version ranges - **recommended for most users**
-- `requirements.txt` has exact pins - for reproducible development/production environments
-- Heavy packages (PyMC, torch, tensorflow) are optional extras to avoid conflicts
-
-**Complete documentation:** 
-- [INSTALLATION_SOLVED.md](INSTALLATION_SOLVED.md) - Installation guide and troubleshooting
-- [PYTHON_312_COMPATIBILITY.md](PYTHON_312_COMPATIBILITY.md) - Python 3.12 specific info
-- [DEPENDENCIES_AUDIT.md](DEPENDENCIES_AUDIT.md) - Complete dependency documentation
-
-### Dependency Management System
-
-This project uses a comprehensive dependency management system with:
-
-- **Exact version pins** for reproducible builds
-- **Classified dependencies** (core, optional, dev, docs)
-- **Automated verification** and security scanning
-- **CI/CD gates** to prevent dependency drift
-
-**Key files:**
-- `requirements-core.txt` - Core runtime dependencies (37 packages)
-- `requirements-optional.txt` - Optional features (30 packages)
-- `requirements-dev.txt` - Development tools (includes core)
-- `DEPENDENCIES_AUDIT.md` - Complete dependency documentation
-
-**Setup and verification commands:**
-```bash
-# Install all dependencies (runtime + dev tools)
-make setup
-
-# Run all verification checks
-make verify
-
-# Run import audit
-make audit-imports
-
-# Check importability
-python3 scripts/verify_importability.py
-
-# See all available commands
-make help
-```
-
-**For detailed dependency information:** See [DEPENDENCIES_AUDIT.md](DEPENDENCIES_AUDIT.md)
-
----
-
-## 🔐 Cryptographic Proof of Execution
-
-Every successful pipeline execution now generates cryptographic proof files that allow anyone (even non-engineers) to verify that the execution was genuine and complete.
-
-### Generated Files
-
-When the pipeline completes successfully, two files are created:
-- **`proof.json`** - Execution metadata and cryptographic hashes
-- **`proof.hash`** - SHA-256 hash for tamper detection
-
-### Quick Verification
-
-```bash
-# View the proof
-cat data/output/cpp_plan_1/proof.json
-
-# Verify proof integrity (no dependencies required)
-python verify_proof.py data/output/cpp_plan_1
-```
-
-### What's Verified?
-
-- ✅ All phases completed successfully
-- ✅ No execution aborts
-- ✅ Complete question coverage
-- ✅ Code signatures (core.py, executors.py, factory.py)
-- ✅ Input PDF hash
-- ✅ All artifacts present and hashed
-
-**Proof is ONLY generated when ALL success conditions are met.**
-
-For detailed information, see [PROOF_VERIFICATION.md](PROOF_VERIFICATION.md)
-
----
-
-## 📋 Questionnaire Integrity Protocol
-
-**STATUS: ENFORCED** 🔒
-
-This system implements the **QUESTIONNAIRE DETERMINISM ENFORCEMENT PROTOCOL** to ensure that the questionnaire monolith (containing 305 questions across 6 dimensions and 10 policy areas) is loaded, validated, and used in a completely deterministic and tamper-proof manner.
-
-### The Law
-
-1. **Single Load Point**: `questionnaire.load_questionnaire()` is the ONLY way to load questionnaire data
-2. **Immutable Data**: All questionnaire data uses `MappingProxyType` or `tuple` (no mutable dicts/lists)
-3. **Hash Verification**: Every load verifies SHA256 matches `EXPECTED_HASH` in questionnaire.py
-4. **Structure Validation**: 300 micro + 4 meso + 1 macro = 305 questions or FAIL
-5. **No Direct Access**: `questionnaire_monolith.json` is NEVER read directly except by questionnaire.py
-
-### Usage (Correct)
-
-```python
-# ✅ ALWAYS DO THIS:
-from saaaaaa.core.orchestrator.questionnaire import load_questionnaire
-
-questionnaire = load_questionnaire()  # Returns CanonicalQuestionnaire
-
-# Access data (immutable)
-micro_questions = questionnaire.micro_questions  # tuple of MappingProxyType
-question_count = questionnaire.micro_question_count  # 300
-total_count = questionnaire.total_question_count  # 305
-hash_verified = questionnaire.sha256  # Matches EXPECTED_HASH
-```
-
-### Violations = Build Failure
-
-```python
-# ❌ NEVER DO THIS:
-import json
-with open("data/questionnaire_monolith.json") as f:
-    data = json.load(f)  # VIOLATION! Bypasses validation
-
-# ❌ NEVER DO THIS:
-questionnaire_dict = {"blocks": {"micro_questions": []}}  # VIOLATION! Wrong structure
-```
-
-### CI Enforcement
-
-The CI workflow `.github/workflows/questionnaire-integrity.yml` runs on every push and verifies:
-
-- ✅ Questionnaire file hash matches `EXPECTED_HASH`
-- ✅ Question counts: 300 micro, 4 meso, 1 macro
-- ✅ No direct `questionnaire_monolith.json` access outside questionnaire.py
-- ✅ No `json.load()` patterns that bypass the canonical loader
-
-### Manual Operations
+You **MUST** install the package in editable mode before using it:
 
 ```bash
 # ❌ NEVER DO THIS:
@@ -868,14 +701,19 @@ python -m saaaaaa.core.orchestrator \
 Cada fase del pipeline produce un hash BLAKE3 acumulativo:
 
 ```python
-from saaaaaa.processing.cpp_ingestion import CPPIngestionPipeline
+from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
 
 pipeline = CPPIngestionPipeline()
-outcome = pipeline.ingest(Path("plan.pdf"), Path("output/"))
+cpp = await pipeline.process(
+    document_path=Path("plan.pdf"),
+    document_id="plan",
+    max_chunks=50
+)
 
-# Hashes por fase
-for phase_num, phase_hash in enumerate(outcome.phase_hashes, start=1):
-    print(f"Phase {phase_num}: {phase_hash}")
+# Access quality metrics
+if cpp.quality_metrics:
+    print(f"Provenance: {cpp.quality_metrics.provenance_completeness:.2%}")
+    print(f"Coherence: {cpp.quality_metrics.structural_consistency:.2%}")
 ```
 
 **Reference Hashes** (plan_golden.pdf):
@@ -1017,9 +855,9 @@ d2b5f4e  Add bandit security scan to CI
 | Versión Python | Soporte | Notas |
 |----------------|---------|-------|
 | 3.9.x | ❌ No | Requiere TypedDict features de 3.10+ |
-| 3.10.x | ✅ Completo | Versión mínima requerida |
-| 3.11.x | ✅ Completo | **Recomendado** (mejor performance) |
-| 3.12.x | ✅ Completo | Testeado, compatible |
+| 3.10.x | ⚠️ Legacy | Ya no soportado; migrar a 3.12.x |
+| 3.11.x | ⚠️ Legacy | Ya no soportado; migrar a 3.12.x |
+| 3.12.x | ✅ Completo | **Requerido** y recomendado |
 | 3.13.x | ⚠️ No testeado | Puede funcionar, sin garantías |
 
 #### Librerías Core
@@ -1063,101 +901,28 @@ d2b5f4e  Add bandit security scan to CI
 
 ### Formato BibTeX
 
-```bibtex
-@software{farfan2025,
-  author       = {{F.A.R.F.A.N JUAN CAMILO RAVE RESTREPO}},
-  title        = {{F.A.R.F.A.N: Framework for Advanced Retrieval of 
-                   Administrativa Narratives - A Mechanistic Policy Pipeline 
-                   for Colombian Development Plan Analysis}},
-  year         = {2025},
-  version      = {0.1.0},
-  publisher    = {GitHub},
-  url          = {https://github.com/kkkkknhh/SAAAAAA},
-  doi          = {10.5281/zenodo.XXXXXXX},  % Pending DOI registration
-  note         = {Digital-nodal-substantive policy tool for evidence-based 
-                  analysis of municipal development plans using value chain 
-                  heuristics and causal mechanisms}
-}
+# 2. Install the package
+pip install -e ".[all]"
 ```
 
-### Formato APA (7th Edition)
-
-F.A.R.F.A.N RAVE RESTREPO, JUAN CAMILO. (2025). *F.A.R.F.A.N: Framework for Advanced Retrieval of Administrativa Narratives - A Mechanistic Policy Pipeline for Colombian Development Plan Analysis* (Version 0.1.0) [Computer software]. GitHub. https://github.com/kkkkknhh/SAAAAAA
-
-### Formato Chicago (17th Edition)
-
-F.A.R.F.A.N RAVE RESTREPO, JUAN CAMILO. 2025. "F.A.R.F.A.N: Framework for Advanced Retrieval of Administrativa Narratives - A Mechanistic Policy Pipeline for Colombian Development Plan Analysis." Version 0.1.0. Computer software. GitHub. https://github.com/kkkkknhh/SAAAAAA.
-
-### Formato MLA (9th Edition)
-
-F.A.R.F.A.N. RAVE RESTREPO, JUAN CAMILO *F.A.R.F.A.N: Framework for Advanced Retrieval of Administrativa Narratives - A Mechanistic Policy Pipeline for Colombian Development Plan Analysis*. Version 0.1.0, GitHub, 2025, github.com/kkkkknhh/SAAAAAA.
-
-### DOI Registro (Pendiente)
-
-Solicitamos DOI en Zenodo para persistencia de citación. Una vez asignado, actualizar campo `doi` en BibTeX.
+For detailed installation instructions and troubleshooting, see the **[Installation & Setup](OPERATIONAL_GUIDE.md#installation--setup)** section of the operational guide.
 
 ---
 
-## 9. Licencia
+## 🔐 Cryptographic Proof & Integrity
 
-**Tipo de Licencia**: MIT License (Pendiente de confirmación)
+F.A.R.F.A.N enforces data and execution integrity through two key protocols:
 
-**Copyright**: © 2025 F.A.R.F.A.N Development Team
+1.  **Cryptographic Proof of Execution**: Every successful pipeline run generates a verifiable cryptographic proof, ensuring that the results are genuine and complete.
+2.  **Questionnaire Integrity Protocol**: The 305-question monolith is loaded and validated in a deterministic, tamper-proof manner, guaranteeing the scientific integrity of the analysis.
 
-**Permisos**:
-- ✅ Uso comercial
-- ✅ Modificación
-- ✅ Distribución
-- ✅ Uso privado
-
-**Condiciones**:
-- Incluir aviso de copyright y licencia en redistribuciones
-- Uso "AS IS" (sin garantías)
-
-**Limitaciones**:
-- No responsabilidad por daños derivados del uso
-- No garantía de fitness para propósito específico
-
-**Archivo de Licencia**: Ver [LICENSE](LICENSE) (pendiente de creación).
-
-**Licencias de Dependencias**: Ver `requirements.txt` para licencias de bibliotecas de terceros. Todas las dependencias son compatibles con uso académico y comercial (Apache 2.0, MIT, BSD).
+For more details, see **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
 ---
 
-## 10. Referencias Internas
-
-### Documentos de Auditoría
-
-- [AUDIT_SUMMARY.md](AUDIT_SUMMARY.md) - Resumen de auditoría de código
-- [AUDIT_FIX_REPORT.md](AUDIT_FIX_REPORT.md) - Reporte de correcciones post-auditoría
-- [CPP_IMPLEMENTATION_SUMMARY.md](CPP_IMPLEMENTATION_SUMMARY.md) - Resumen técnico de CPP
-- [ORCHESTRATOR_EXCELLENCE_SUMMARY.md](ORCHESTRATOR_EXCELLENCE_SUMMARY.md) - Verificación arquitectónica
-
-### Documentos Técnicos
-
-- [OPERATIONAL_GUIDE.md](OPERATIONAL_GUIDE.md) - Guía operativa completa (comandos CLI)
-- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) - Estructura del repositorio
-- [TEST_IMPORT_MATRIX.md](TEST_IMPORT_MATRIX.md) - Estrategia de imports
-- [BUILD_HYGIENE.md](BUILD_HYGIENE.md) - Estándares de construcción
-
-### Tests Clave
-
-- `tests/test_cpp_ingestion.py::TestIntegration::test_golden_set_reproducibility` - Golden test de determinismo
-- `tests/test_signal_integration_e2e.py::test_full_signal_flow` - End-to-end signals
-- `tests/test_arg_router_extended.py::test_all_routes_covered` - Validación de rutas ArgRouter
-- `tests/test_boundaries.py::test_no_core_to_orchestrator_imports` - Architectural boundary
-
-### Herramientas de Verificación
-
-- `scripts/verify_phase_hashes.py` - Verificación de hashes por fase
-- `scripts/compare_arrow_files.py` - Comparación de archivos Arrow
-- `tools/scan_core_purity.py` - Scanner de pureza arquitectónica
-- `tools/grep_boundary_checks.py` - Verificación de límites de dependencias
-
----
+## License
 
 **Documento Generado**: 2025-11-06  
 **Versión**: 1.0.0 (Academic Style)  
 **Estado**: Complete - Under Review  
 **Próxima Revisión**: 2026-01-06
-

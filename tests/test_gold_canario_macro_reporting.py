@@ -13,7 +13,7 @@ Tests for all 5 macro-level analysis prompts:
 
 import pytest
 
-from saaaaaa.processing.macro_prompts import (
+from saaaaaa.analysis.macro_prompts import (
     BayesianPortfolio,
     BayesianPortfolioComposer,
     ContradictionReport,

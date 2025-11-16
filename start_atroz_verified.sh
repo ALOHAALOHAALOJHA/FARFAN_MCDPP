@@ -24,7 +24,7 @@ NC='\033[0m' # No Color
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_PATH="${SCRIPT_DIR}/venv"
-PYTHON_REQUIRED="3.11"
+PYTHON_REQUIRED="3.12"
 API_PORT=5000
 WORKSPACE_DIR="${SCRIPT_DIR}/workspace"
 OUTPUT_DIR="${SCRIPT_DIR}/output"

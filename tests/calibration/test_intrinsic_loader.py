@@ -208,6 +208,60 @@ class TestIntrinsicScoreLoader:
         # Expected: 0.4*0.5 + 0.35*0.0 + 0.25*0.0 = 0.2
         assert score == pytest.approx(0.2, rel=1e-3)
 
+    def test_weights_loaded_from_json(self, sample_calibration_data):
+        """Test that weights are loaded from JSON _base_weights section."""
+        # Create JSON with custom weights
+        custom_data = sample_calibration_data.copy()
+        custom_data["_base_weights"] = {
+            "w_th": 0.5,
+            "w_imp": 0.3,
+            "w_dep": 0.2
+        }
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(custom_data, f)
+            temp_path = f.name
+
+        try:
+            loader = IntrinsicScoreLoader(temp_path)
+            loader._ensure_loaded()
+
+            # Verify weights were loaded from JSON
+            assert loader.w_theory == 0.5
+            assert loader.w_impl == 0.3
+            assert loader.w_deploy == 0.2
+
+            # Verify score computation uses loaded weights
+            # Expected: 0.5*0.8 + 0.3*0.75 + 0.2*0.7 = 0.4 + 0.225 + 0.14 = 0.765
+            score = loader.get_score("test.analyzer.AnalyzeMethod.analyze")
+            assert pytest.approx(score, rel=1e-3) == 0.765
+
+        finally:
+            Path(temp_path).unlink()
+
+    def test_default_weights_used_when_missing(self, sample_calibration_data):
+        """Test that default weights are used when _base_weights is missing."""
+        # Create JSON without _base_weights
+        custom_data = sample_calibration_data.copy()
+        if "_base_weights" in custom_data:
+            del custom_data["_base_weights"]
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(custom_data, f)
+            temp_path = f.name
+
+        try:
+            loader = IntrinsicScoreLoader(temp_path)
+            loader._ensure_loaded()
+
+            # Verify default weights are used
+            assert loader.w_theory == IntrinsicScoreLoader.DEFAULT_W_THEORY
+            assert loader.w_impl == IntrinsicScoreLoader.DEFAULT_W_IMPL
+            assert loader.w_deploy == IntrinsicScoreLoader.DEFAULT_W_DEPLOY
+
+        finally:
+            Path(temp_path).unlink()
+
 
 class TestIntrinsicScoreLoaderWithRealData:
     """Tests using the actual intrinsic_calibration.json file."""

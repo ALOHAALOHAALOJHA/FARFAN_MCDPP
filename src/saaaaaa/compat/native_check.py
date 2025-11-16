@@ -18,6 +18,7 @@ import platform
 import subprocess
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
 
 
@@ -70,13 +71,14 @@ def check_system_library(libname: str) -> NativeCheckResult:
             pass
         
         # Fallback: check common lib paths
+        base_root = Path(os.sep)
         common_paths = [
-            f"/usr/lib/lib{libname}.so",
-            f"/usr/lib/x86_64-linux-gnu/lib{libname}.so",
-            f"/usr/local/lib/lib{libname}.so",
+            base_root / "usr" / "lib" / f"lib{libname}.so",
+            base_root / "usr" / "lib" / "x86_64-linux-gnu" / f"lib{libname}.so",
+            base_root / "usr" / "local" / "lib" / f"lib{libname}.so",
         ]
         for path in common_paths:
-            if os.path.exists(path):
+            if path.exists():
                 return NativeCheckResult(
                     available=True,
                     message=f"Library {libname} found at {path}",

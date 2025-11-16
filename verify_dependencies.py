@@ -89,7 +89,7 @@ def check_system_dependencies() -> bool:
 
 
 def check_python_version() -> bool:
-    """Check Python version is 3.11+."""
+    """Check Python version is 3.12.x."""
     version = sys.version_info
     print("\n" + "=" * 80)
     print("PYTHON VERSION CHECK")
@@ -98,11 +98,11 @@ def check_python_version() -> bool:
     version_str = f"{version.major}.{version.minor}.{version.micro}"
     print(f"Python version: {version_str}")
 
-    if version.major == 3 and version.minor >= 11:
-        print("✓ Python version OK (3.11+ required)")
+    if version.major == 3 and version.minor == 12:
+        print("✓ Python version OK (3.12.x required)")
         return True
     else:
-        print(f"✗ Python version too old (3.11+ required, found {version_str})")
+        print(f"✗ Python version mismatch (3.12.x required, found {version_str})")
         return False
 
 

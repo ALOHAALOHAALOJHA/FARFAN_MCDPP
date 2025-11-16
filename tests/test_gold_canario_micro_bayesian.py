@@ -14,7 +14,7 @@ Tests for BayesianPosteriorExplainer including:
 
 import pytest
 
-from saaaaaa.processing.micro_prompts import (
+from saaaaaa.analysis.micro_prompts import (
     BayesianPosteriorExplainer,
     PosteriorJustification,
     Signal,

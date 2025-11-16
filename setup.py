@@ -37,10 +37,13 @@ install_requires = [
     "pandas>=2.2.0",
     "scipy>=1.14.0",
     "scikit-learn>=1.6.0",
+    "pyarrow>=19.0.0",
+    "polars>=1.19.0",
     "networkx>=3.4.0",
     "pydantic>=2.10.0",
     "flask>=3.0.0",
     "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
     "httpx>=0.28.0",
     "pyyaml>=6.0.2",
     "jsonschema>=4.23.0",
@@ -59,6 +62,7 @@ install_requires = [
     "pdfplumber>=0.11.0",
     "PyPDF2>=3.0.0",
     "PyMuPDF>=1.25.0",
+    "typer>=0.15.0",
 ]
 
 setup(
@@ -76,7 +80,7 @@ setup(
     },
     package_dir={"": "src"},
     packages=find_packages(where="src"),
-    python_requires=">=3.10,<3.14",
+    python_requires="~=3.12.0",
     install_requires=install_requires,
     extras_require={
         "dev": [
@@ -124,8 +128,6 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License",

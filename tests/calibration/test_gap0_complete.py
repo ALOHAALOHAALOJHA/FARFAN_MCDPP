@@ -117,11 +117,10 @@ class TestGAP0Integration:
     def test_layer_requirements_vary_by_role(self, orchestrator):
         """Test that different method roles result in different layer requirements."""
         # Find methods with different roles
-        # Use public API to ensure loader is ready and get calibrated methods
-        calibrated_methods = orchestrator.intrinsic_loader.get_all_calibrated_methods()
+        orchestrator.intrinsic_loader._ensure_loaded()
 
         roles_to_test = {}
-        for method_id, data in calibrated_methods.items():
+        for method_id, data in orchestrator.intrinsic_loader._methods.items():
             role = data.get("layer")
             if role and role not in roles_to_test and orchestrator.intrinsic_loader.is_calibrated(method_id):
                 roles_to_test[role] = method_id

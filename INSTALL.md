@@ -25,7 +25,7 @@ pytest tests/ -v
 
 ### 1. System Requirements
 
-- **Python**: 3.11+ (tested on 3.11.14)
+- **Python**: 3.12+ (tested on 3.12.1)
 - **OS**: Ubuntu 20.04+, Debian 11+, Fedora 35+, macOS 12+
 - **Memory**: 8GB RAM minimum, 16GB recommended
 - **Disk Space**: 10GB for dependencies and models
@@ -245,7 +245,7 @@ LOG_LEVEL=INFO
 
 ### 10. Verification Checklist
 
-- [ ] Python 3.11+ installed
+- [ ] Python 3.12+ installed
 - [ ] System dependencies installed (ghostscript, tk, graphviz, Java)
 - [ ] Virtual environment created and activated
 - [ ] All Python packages installed from requirements.txt
@@ -259,7 +259,7 @@ If you encounter issues not covered here:
 
 1. Check the test output for specific error messages
 2. Verify all system dependencies are installed
-3. Ensure you're using Python 3.11+
+3. Ensure you're using Python 3.12+
 4. Check that you're in the virtual environment
 5. Review pip installation logs for compilation errors
 
