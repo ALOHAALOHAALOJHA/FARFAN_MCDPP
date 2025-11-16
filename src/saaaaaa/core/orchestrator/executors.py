@@ -3233,6 +3233,25 @@ class D1Q1_Executor(AdvancedDataFlowExecutor):
         vals = [v for v in results.values() if v is not None]
         return vals[:4] if vals else []
 
+
+    def receive_and_process_work_package(self, work_package: dict):
+        """
+        Receives and processes a work package containing policy chunks and signals.
+        This method serves as the evidence of distribution.
+        """
+        logger.info("--- D1Q1_Executor: Work Package Received ---")
+        
+        canon_package = work_package.get("canon_policy_package", {})
+        signal_pack = work_package.get("signal_pack", {})
+
+        chunk_count = len(canon_package.get("chunk_graph", {}).get("chunks", []))
+        pattern_count = len(signal_pack.get("patterns", []))
+
+        logger.info(f"Received {chunk_count} policy chunks.")
+        logger.info(f"Received {pattern_count} patterns in signal pack.")
+        logger.info("--- D1Q1_Executor: Work Package Processed ---")
+
+
 class D1Q2_Executor(AdvancedDataFlowExecutor):
     """D1-Q2: Normalización y Fuentes"""
 
