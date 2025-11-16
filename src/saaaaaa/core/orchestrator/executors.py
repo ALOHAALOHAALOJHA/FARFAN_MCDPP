@@ -4675,15 +4675,16 @@ class FrontierExecutorOrchestrator:
         if signal_pack:
             logger.info(f"Using signals v{signal_pack.version} for {policy_area}")
 
-        # Process each chunk
-        executor_results = []
-        for i, chunk_dict in enumerate(chunks):
-            # Convert dict to ChunkData for chunk_router
-            from .core import ChunkData, PreprocessedDocument
+        # Convert all chunk dicts to ChunkData objects (do this ONCE, not per iteration)
+        from .core import ChunkData, PreprocessedDocument
 
-            # ChunkData requires all fields with correct types per core.py:244-259
+        chunk_data_list = []
+        chunk_index_map = {}
+        all_text_parts = []
+
+        for i, chunk_dict in enumerate(chunks):
             chunk = ChunkData(
-                id=i,  # int, not string
+                id=i,
                 text=chunk_dict.get('text', ''),
                 chunk_type=chunk_dict.get('chunk_type', 'diagnostic'),
                 sentences=chunk_dict.get('sentences', []),
@@ -4694,7 +4695,29 @@ class FrontierExecutorOrchestrator:
                 edges_out=chunk_dict.get('edges_out', []),
                 edges_in=chunk_dict.get('edges_in', [])
             )
+            chunk_data_list.append(chunk)
+            chunk_id_str = chunk_dict.get('id', f'{policy_area}_chunk_{i}')
+            chunk_index_map[chunk_id_str] = i
+            all_text_parts.append(chunk.text)
 
+        # Create ONE PreprocessedDocument with ALL chunks (efficient!)
+        combined_doc = PreprocessedDocument(
+            document_id=f'{policy_area}_document',
+            raw_text='\n\n'.join(all_text_parts),
+            sentences=[],
+            tables=[],
+            metadata={
+                'policy_area': policy_area,
+                'total_chunks': len(chunks)
+            },
+            chunks=chunk_data_list,
+            chunk_index=chunk_index_map,
+            processing_mode='chunked'
+        )
+
+        # Process each chunk with routing
+        executor_results = []
+        for i, chunk in enumerate(chunk_data_list):
             # Route to executor
             route = self.chunk_router.route_chunk(chunk)
 
@@ -4709,28 +4732,9 @@ class FrontierExecutorOrchestrator:
             if executor_class:
                 executor = executor_class(method_executor, self.signal_registry)
 
-                # Create PreprocessedDocument for chunk execution
-                # document_id must be string, chunk.id is int
-                chunk_id_str = chunk_dict.get('id', f'{policy_area}_chunk_{i}')
-                chunk_doc = PreprocessedDocument(
-                    document_id=chunk_id_str,
-                    raw_text=chunk.text,
-                    sentences=[],  # Will be extracted during execution if needed
-                    tables=[],
-                    metadata={
-                        'policy_area': policy_area,
-                        'chunk_type': chunk.chunk_type,
-                        'chunk_index': i,
-                        **chunk_dict.get('metadata', {})  # metadata from chunk_dict, not chunk
-                    },
-                    chunks=[chunk],  # Include the ChunkData object
-                    chunk_index={chunk_id_str: 0},  # Map string ID to position
-                    processing_mode='chunked'  # Enable chunk-aware processing
-                )
-
-                # Execute chunk with proper PreprocessedDocument
+                # Execute chunk using the SHARED PreprocessedDocument (no object creation in loop!)
                 try:
-                    result = executor.execute_chunk(chunk_doc, 0)  # chunk_id is 0 since we only have one chunk in this doc
+                    result = executor.execute_chunk(combined_doc, i)
                 except Exception as e:
                     logger.error(f"Executor {executor_key} failed on chunk {i}: {e}")
                     result = {'error': str(e), 'chunk_id': i}

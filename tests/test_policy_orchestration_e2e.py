@@ -240,9 +240,15 @@ class TestChunkCalibration:
     )
     def test_chunk_calibrator_exists(self):
         """Test that PolicyAreaChunkCalibrator class exists."""
-        import sys
-        sys.path.insert(0, 'scripts')
-        from smart_policy_chunks_canonic_phase_one import PolicyAreaChunkCalibrator
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "smart_policy_chunks_canonic_phase_one",
+            "scripts/smart_policy_chunks_canonic_phase_one.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        PolicyAreaChunkCalibrator = module.PolicyAreaChunkCalibrator
+
         assert PolicyAreaChunkCalibrator is not None
         assert PolicyAreaChunkCalibrator.TARGET_CHUNKS_PER_PA == 10
 
@@ -252,9 +258,14 @@ class TestChunkCalibration:
     )
     def test_calibrator_canonical_policy_areas(self):
         """Test that calibrator uses canonical policy areas."""
-        import sys
-        sys.path.insert(0, 'scripts')
-        from smart_policy_chunks_canonic_phase_one import PolicyAreaChunkCalibrator
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "smart_policy_chunks_canonic_phase_one",
+            "scripts/smart_policy_chunks_canonic_phase_one.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        PolicyAreaChunkCalibrator = module.PolicyAreaChunkCalibrator
 
         expected_areas = [
             "PA01", "PA02", "PA03", "PA04", "PA05",
