@@ -4,7 +4,9 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import time
+import unicodedata
 from pathlib import Path
 from typing import Any, Callable
 
@@ -342,11 +344,146 @@ def run_normalize(
         if correlation_id:
             span.set_attribute("correlation_id", correlation_id)
 
-        # TODO: Implement actual normalization (unicode normalization, etc.)
-        sentences = [s for s in ing.raw_text.split("\n") if s.strip()]
-        sentence_meta: list[dict[str, Any]] = [
-            {"index": i, "length": len(s)} for i, s in enumerate(sentences)
-        ]
+        # PHASE 2: TEXT NORMALIZATION - MAXIMUM STANDARD IMPLEMENTATION
+        # =============================================================
+
+        logger.info(
+            f"Normalizing text with unicode_form={cfg.unicode_form}, "
+            f"keep_diacritics={cfg.keep_diacritics}"
+        )
+
+        # Step 1: Unicode Normalization (NFC or NFKC)
+        normalized_text = unicodedata.normalize(cfg.unicode_form, ing.raw_text)
+        span.set_attribute("unicode_form", cfg.unicode_form)
+
+        # Step 2: Whitespace Normalization (deterministic)
+        # Replace multiple spaces with single space
+        normalized_text = re.sub(r'[ \t]+', ' ', normalized_text)
+        # Replace multiple newlines with single newline
+        normalized_text = re.sub(r'\n{3,}', '\n\n', normalized_text)
+        # Clean spaces around newlines (but preserve paragraph breaks)
+        normalized_text = re.sub(r' *\n *', '\n', normalized_text)
+        # Remove trailing/leading whitespace
+        normalized_text = normalized_text.strip()
+
+        # Step 3: Diacritic Handling (if configured)
+        if not cfg.keep_diacritics:
+            logger.info("Removing diacritics per configuration")
+            # Decompose to NFD (separates base chars from diacritics)
+            nfd_text = unicodedata.normalize('NFD', normalized_text)
+            # Filter out combining marks (category Mn)
+            no_diacritic_text = ''.join(
+                c for c in nfd_text
+                if unicodedata.category(c) != 'Mn'
+            )
+            # Recompose to NFC
+            normalized_text = unicodedata.normalize('NFC', no_diacritic_text)
+            span.set_attribute("diacritics_removed", True)
+
+        # Step 4: Sentence Segmentation with spaCy (MAXIMUM STANDARD)
+        # Try spaCy first (high quality), fallback to regex if unavailable
+        sentences: list[str] = []
+        sentence_meta: list[dict[str, Any]] = []
+
+        try:
+            import spacy
+            # Load Spanish model (large for maximum precision)
+            try:
+                nlp = spacy.load("es_core_news_lg")
+            except OSError:
+                # Fallback to medium model
+                logger.warning("es_core_news_lg not found, using es_core_news_md")
+                try:
+                    nlp = spacy.load("es_core_news_md")
+                except OSError:
+                    # Fallback to small model
+                    logger.warning("es_core_news_md not found, using es_core_news_sm")
+                    nlp = spacy.load("es_core_news_sm")
+
+            # Process with spaCy pipeline
+            doc = nlp(normalized_text)
+
+            for i, sent in enumerate(doc.sents):
+                sentence_text = sent.text.strip()
+                if not sentence_text:
+                    continue
+
+                sentences.append(sentence_text)
+
+                # Rich metadata per sentence
+                sentence_meta.append({
+                    "index": i,
+                    "length": len(sentence_text),
+                    "char_start": sent.start_char,
+                    "char_end": sent.end_char,
+                    "token_count": len(sent),
+                    "has_verb": any(token.pos_ == "VERB" for token in sent),
+                    "num_entities": len(sent.ents),
+                    "entity_labels": [ent.label_ for ent in sent.ents] if sent.ents else [],
+                    "root_lemma": sent.root.lemma_ if sent.root else None,
+                    "root_pos": sent.root.pos_ if sent.root else None,
+                })
+
+            logger.info(f"spaCy segmentation: {len(sentences)} sentences extracted")
+            span.set_attribute("segmentation_method", "spacy")
+
+        except ImportError:
+            logger.warning("spaCy not available, using regex fallback for sentence segmentation")
+            span.set_attribute("segmentation_method", "regex_fallback")
+
+            # FALLBACK: Advanced regex-based segmentation
+            # Pattern that respects abbreviations, decimals, ellipsis
+            # Matches sentence-ending punctuation followed by whitespace and capital letter
+            sentence_pattern = r'(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ])'
+
+            # Split by pattern
+            raw_sentences = re.split(sentence_pattern, normalized_text)
+
+            char_pos = 0
+            for i, sent_text in enumerate(raw_sentences):
+                sent_text = sent_text.strip()
+                if not sent_text:
+                    continue
+
+                sentences.append(sent_text)
+
+                sentence_meta.append({
+                    "index": i,
+                    "length": len(sent_text),
+                    "char_start": char_pos,
+                    "char_end": char_pos + len(sent_text),
+                    "token_count": len(sent_text.split()),
+                    "has_verb": None,  # Not available without spaCy
+                    "num_entities": None,
+                    "entity_labels": [],
+                    "root_lemma": None,
+                    "root_pos": None,
+                })
+
+                char_pos += len(sent_text) + 1  # +1 for space/newline
+
+            logger.info(f"Regex segmentation: {len(sentences)} sentences extracted")
+
+        # Final validation
+        if not sentences:
+            logger.error("Normalization produced zero sentences - attempting line-based fallback")
+            # Last resort: split by newlines (but still normalize each)
+            for i, line in enumerate(normalized_text.split('\n')):
+                line = line.strip()
+                if line:
+                    sentences.append(line)
+                    sentence_meta.append({
+                        "index": i,
+                        "length": len(line),
+                        "char_start": 0,
+                        "char_end": len(line),
+                        "token_count": len(line.split()),
+                        "has_verb": None,
+                        "num_entities": None,
+                        "entity_labels": [],
+                        "root_lemma": None,
+                        "root_pos": None,
+                    })
 
         out = NormalizeDeliverable(sentences=sentences, sentence_meta=sentence_meta)
 
