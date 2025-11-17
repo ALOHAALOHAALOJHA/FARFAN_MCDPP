@@ -1,7 +1,20 @@
-# AUDITORÍA CRÍTICA - TODAS LAS FASES 2 DEL PIPELINE
+# AUDITORÍA CRÍTICA - FLUX PHASE 2 (NORMALIZE) Y SPC QUALITY GATES
 **Fecha:** 2025-11-17
 **Auditor:** Claude Sonnet 4.5
 **Prioridad:** 🔴 CRÍTICA - MÁXIMO ESTÁNDAR REQUERIDO
+
+---
+
+## CONTEXTO
+
+**SPC (Smart Policy Chunks)** es el ÚNICO punto de entrada canónico para ingestion (Phase-One) vía `CPPIngestionPipeline` en `src/saaaaaa/processing/spc_ingestion/__init__.py`.
+
+**FLUX** proporciona fases complementarias que procesan el output de SPC (normalize, chunk, signals, aggregate, score, report).
+
+Esta auditoría identificó bugs críticos en:
+- FLUX Phase 2 (normalize): `run_normalize()` en `src/saaaaaa/flux/phases.py`
+- SPC Quality Gates: `SPCQualityGates` en `src/saaaaaa/processing/spc_ingestion/quality_gates.py`
+- SPC Converter: `SmartChunkConverter` en `src/saaaaaa/processing/spc_ingestion/converter.py`
 
 ---
 
@@ -9,11 +22,13 @@
 
 Se identificaron **5 BUGS CRÍTICOS** que violan los principios de máximo estándar y representan downgrades inaceptables del sistema:
 
-1. **🔴 CRÍTICO**: `run_normalize()` ignora completamente `NormalizeConfig` (unicode_form, keep_diacritics)
-2. **🔴 CRÍTICO**: Normalización Unicode NO implementada (comentario TODO en producción)
-3. **🔴 CRÍTICO**: Split simplista por `\n` sin procesamiento lingüístico real
-4. **🟡 ALTO**: SmartChunkConverter puede perder embeddings si numpy no disponible
-5. **🟡 MEDIO**: Quality gates no validan provenance_completeness = 1.0
+1. **🔴 CRÍTICO**: FLUX `run_normalize()` ignora completamente `NormalizeConfig` (unicode_form, keep_diacritics)
+2. **🔴 CRÍTICO**: Normalización Unicode NO implementada en FLUX (comentario TODO en producción)
+3. **🔴 CRÍTICO**: Split simplista por `\n` en FLUX sin procesamiento lingüístico real
+4. **🟡 ALTO**: SPC SmartChunkConverter puede perder embeddings si numpy no disponible
+5. **🟡 MEDIO**: SPC Quality gates no validan provenance_completeness = 1.0
+
+**NOTA**: Bug #1-3 fueron encontrados en FLUX Phase 2 (normalize), NO en SPC Phase-One que es independiente y canónico.
 
 ---
 
@@ -385,14 +400,20 @@ Para cada fix, validar:
 
 ## REFERENCIAS
 
-- README.md líneas 200-268: Pipeline de 9 fases CPP
-- README.md línea 31: "Unicode NFC normalization | ✅ | ICU-compatible via Rust"
-- CPP_IMPLEMENTATION_SUMMARY.md línea 31: Normalización Unicode prometida
+- README.md: SPC Phase-One como punto de entrada canónico
+- CANONICAL_FLUX.md: Arquitectura determinista del pipeline
+- src/saaaaaa/processing/spc_ingestion/__init__.py: CPPIngestionPipeline (ÚNICO punto de entrada)
 - src/saaaaaa/flux/configs.py líneas 30-46: NormalizeConfig bien diseñada
-- src/saaaaaa/flux/phases.py línea 345: TODO en producción (INACEPTABLE)
+- src/saaaaaa/flux/phases.py: FLUX Phase 2 (normalize) - tenía TODO en producción (AHORA CORREGIDO)
+- src/saaaaaa/processing/spc_ingestion/quality_gates.py: SPCQualityGates (AHORA EXTENDIDO)
+- src/saaaaaa/processing/spc_ingestion/converter.py: SmartChunkConverter (AHORA CON FAIL-FAST)
 
 ---
 
-**Conclusión**: Sistema tiene componentes de alto estándar (SmartChunkConverter, configs, quality gates) pero **run_normalize() es un placeholder de complejidad mínima** que viola todos los principios de máximo estándar.
+**Conclusión**: Sistema tiene arquitectura clara con SPC como Phase-One canónico. FLUX proporciona fases complementarias. Los bugs críticos en FLUX Phase 2 (normalize) y SPC quality gates han sido CORREGIDOS implementando máximo estándar:
 
-**Acción requerida**: Implementación completa de normalización Unicode + segmentación lingüística real.
+✅ **FLUX run_normalize()**: Unicode NFC/NFKC + spaCy sentence segmentation + metadata rica
+✅ **SPC SmartChunkConverter**: Fail-fast en pérdida de embeddings (no silent failures)
+✅ **SPC SPCQualityGates**: Validación de provenance_completeness = 1.0 y structural_consistency = 1.0
+
+**Estado**: TODOS LOS BUGS CRÍTICOS CORREGIDOS - Sistema ahora opera en MÁXIMO ESTÁNDAR.
