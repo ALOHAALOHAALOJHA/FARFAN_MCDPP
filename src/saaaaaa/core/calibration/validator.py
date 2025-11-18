@@ -194,11 +194,16 @@ class CalibrationValidator:
         """
         timestamp = datetime.utcnow().isoformat()
 
+        canonical_method_id = self._resolve_canonical_method_id(method_id)
+
         # Check if method is excluded from calibration
-        if self.intrinsic_loader and self.intrinsic_loader.is_excluded(method_id):
+        if self.intrinsic_loader and self.intrinsic_loader.is_excluded(canonical_method_id):
             logger.info(
                 "method_excluded_from_calibration",
-                extra={"method_id": method_id}
+                extra={
+                    "method_id": method_id,
+                    "canonical_method_id": canonical_method_id,
+                }
             )
             return ValidationResult(
                 method_id=method_id,
@@ -214,12 +219,16 @@ class CalibrationValidator:
         if override_threshold is not None:
             threshold = override_threshold
         else:
-            threshold = self._get_threshold_for_method(method_id)
+            threshold = self._get_threshold_for_method(
+                method_id,
+                canonical_method_id=canonical_method_id,
+            )
 
         logger.info(
             "validating_method",
             extra={
                 "method_id": method_id,
+                "canonical_method_id": canonical_method_id,
                 "threshold": threshold,
                 "context": context.to_dict() if hasattr(context, 'to_dict') else str(context)
             }
@@ -228,7 +237,7 @@ class CalibrationValidator:
         # Perform calibration
         try:
             calibration_result = self.orchestrator.calibrate(
-                method_id=method_id,
+                method_id=canonical_method_id,
                 method_version=method_version,
                 context=context,
                 pdt_structure=pdt_structure,
@@ -263,6 +272,7 @@ class CalibrationValidator:
                 "validation_complete",
                 extra={
                     "method_id": method_id,
+                    "canonical_method_id": canonical_method_id,
                     "decision": decision.value,
                     "score": final_score,
                     "threshold": threshold
@@ -285,7 +295,11 @@ class CalibrationValidator:
         except Exception as e:
             logger.error(
                 "validation_error",
-                extra={"method_id": method_id, "error": str(e)},
+                extra={
+                    "method_id": method_id,
+                    "canonical_method_id": canonical_method_id,
+                    "error": str(e),
+                },
                 exc_info=True
             )
 
@@ -396,7 +410,12 @@ class CalibrationValidator:
 
         return report
 
-    def _get_threshold_for_method(self, method_id: str) -> float:
+    def _get_threshold_for_method(
+        self,
+        method_id: str,
+        *,
+        canonical_method_id: Optional[str] = None,
+    ) -> float:
         """
         Determine the appropriate threshold for a method.
 
@@ -416,13 +435,19 @@ class CalibrationValidator:
             return threshold
 
         # Otherwise, get threshold by role
-        role = self.intrinsic_loader.get_layer(method_id) if self.intrinsic_loader else None
+        canonical = canonical_method_id or method_id
+        role = self.intrinsic_loader.get_layer(canonical) if self.intrinsic_loader else None
 
         if role:
             threshold = self.parameter_loader.get_validation_threshold_for_role(role)
             logger.debug(
                 "using_role_threshold",
-                extra={"method_id": method_id, "role": role, "threshold": threshold}
+                extra={
+                    "method_id": method_id,
+                    "canonical_method_id": canonical,
+                    "role": role,
+                    "threshold": threshold,
+                }
             )
             return threshold
 
@@ -433,6 +458,43 @@ class CalibrationValidator:
             extra={"method_id": method_id, "threshold": default_threshold}
         )
         return default_threshold
+
+    def _resolve_canonical_method_id(self, method_id: str) -> str:
+        """
+        Resolve display-level identifiers to canonical catalogue identifiers.
+
+        Args:
+            method_id: Input identifier (e.g., "D1Q1_Executor")
+
+        Returns:
+            Canonical identifier suitable for calibration lookups.
+        """
+        # Already canonical (src.* namespace)
+        if method_id.startswith("src."):
+            return method_id
+
+        # If intrinsic loader already knows this identifier, keep it
+        if self.intrinsic_loader:
+            try:
+                if self.intrinsic_loader.get_method_data(method_id):
+                    return method_id
+            except Exception:
+                # Fall back to heuristic resolutions
+                pass
+
+        if method_id.endswith("_Executor"):
+            canonical = f"src.saaaaaa.core.orchestrator.executors.{method_id}.execute"
+            if self.intrinsic_loader:
+                try:
+                    data = self.intrinsic_loader.get_method_data(canonical)
+                    if data:
+                        return canonical
+                except Exception:
+                    # Even if lookup fails, return canonical form for downstream systems
+                    pass
+            return canonical
+
+        return method_id
 
     def _analyze_failure(
         self,
