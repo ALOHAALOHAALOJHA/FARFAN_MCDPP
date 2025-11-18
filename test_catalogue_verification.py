@@ -195,7 +195,7 @@ class CatalogueVerifier:
                     try:
                         default_value = ast.unparse(default_node)
                         default_type = "expression"
-                    except:
+                    except Exception:
                         default_value = "<unparseable>"
                         default_type = "complex"
 
