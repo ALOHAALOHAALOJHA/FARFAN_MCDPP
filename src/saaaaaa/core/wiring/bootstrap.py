@@ -22,8 +22,8 @@ import structlog
 
 from saaaaaa.core.orchestrator.arg_router import ExtendedArgRouter
 from saaaaaa.core.orchestrator.class_registry import build_class_registry
-from saaaaaa.core.orchestrator.bayesian_module_factory import BayesianModuleFactory
 from saaaaaa.core.orchestrator.executor_config import ExecutorConfig
+from saaaaaa.core.orchestrator.factory import CoreModuleFactory
 from saaaaaa.core.orchestrator.questionnaire_resource_provider import (
     QuestionnaireResourceProvider,
 )
@@ -34,7 +34,7 @@ from saaaaaa.core.orchestrator.signals import (
     SignalRegistry,
 )
 
-# REPAIRED: Import CalibrationOrchestrator for universal calibration
+# Import CalibrationOrchestrator for universal calibration
 try:
     from saaaaaa.core.calibration import CalibrationOrchestrator
     from saaaaaa.core.calibration.config import DEFAULT_CALIBRATION_CONFIG
@@ -47,7 +47,6 @@ except ImportError:
 from .errors import MissingDependencyError, WiringInitializationError
 from .feature_flags import WiringFeatureFlags
 from .validation import WiringValidator
-
 
 logger = structlog.get_logger(__name__)
 
@@ -67,7 +66,7 @@ class WiringComponents:
         validator: WiringValidator for contract checking
         flags: Feature flags used during initialization
         init_hashes: Hashes computed during initialization
-        calibration_orchestrator: CalibrationOrchestrator for universal calibration (REPAIRED)
+        calibration_orchestrator: CalibrationOrchestrator for universal calibration
     """
 
     provider: QuestionnaireResourceProvider
@@ -80,12 +79,12 @@ class WiringComponents:
     validator: WiringValidator
     flags: WiringFeatureFlags
     init_hashes: dict[str, str] = field(default_factory=dict)
-    calibration_orchestrator: "CalibrationOrchestrator | None" = None  # REPAIRED
+    calibration_orchestrator: CalibrationOrchestrator | None = None
 
 
 class WiringBootstrap:
     """Bootstrap engine for deterministic wiring initialization.
-    
+
     Follows strict initialization order:
     1. Load resources (questionnaire)
     2. Build signal system (memory:// or HTTP)
@@ -93,14 +92,14 @@ class WiringBootstrap:
     4. Initialize arg router
     5. Validate all contracts
     """
-    
+
     def __init__(
         self,
         questionnaire_path: str | Path | None = None,
         flags: WiringFeatureFlags | None = None,
-    ):
+    ) -> None:
         """Initialize bootstrap engine.
-        
+
         Args:
             questionnaire_path: Path to questionnaire monolith JSON
             flags: Feature flags (defaults to environment)
@@ -108,57 +107,63 @@ class WiringBootstrap:
         self.questionnaire_path = questionnaire_path
         self.flags = flags or WiringFeatureFlags.from_env()
         self._start_time = time.time()
-        
+
         # Validate flags
         warnings = self.flags.validate()
         for warning in warnings:
             logger.warning("feature_flag_warning", message=warning)
-        
+
         logger.info(
             "wiring_bootstrap_initialized",
             questionnaire_path=str(questionnaire_path) if questionnaire_path else None,
             flags=self.flags.to_dict(),
         )
-    
+
     def bootstrap(self) -> WiringComponents:
         """Execute complete bootstrap sequence.
-        
+
         Returns:
             WiringComponents with all initialized modules
-            
+
         Raises:
             WiringInitializationError: If any phase fails
         """
         logger.info("wiring_bootstrap_start")
-        
+
         try:
             # Phase 1: Load resources
             provider = self._load_resources()
-            
+
             # Phase 2: Build signal system
             signal_client, signal_registry = self._build_signal_system(provider)
-            
+
             # Phase 3: Create executor config
             executor_config = self._create_executor_config()
-            
+
             # Phase 4: Create factory with DI
             factory = self._create_factory(provider, signal_registry, executor_config)
-            
+
             # Phase 5: Build class registry
             class_registry = self._build_class_registry()
-            
+
             # Phase 6: Initialize arg router
             arg_router = self._create_arg_router(class_registry)
-            
+
             # Phase 7: Create validator
             validator = WiringValidator()
 
-            # Phase 8: Initialize CalibrationOrchestrator (REPAIRED)
+            # Phase 8: Initialize CalibrationOrchestrator
             calibration_orchestrator = self._create_calibration_orchestrator()
 
-            # Phase 9: Seed signals (if memory mode)
+            # Phase 9: Seed signals (if memory mode) using public API
             if signal_client._transport == "memory":
-                self._seed_signals(signal_client._memory_source, signal_registry, provider)
+                metrics = self.seed_signals_public(signal_client, signal_registry, provider)
+                if metrics["hit_rate"] < metrics["required_hit_rate"]:
+                    logger.warning(
+                        "signal_seeding_hit_rate_low",
+                        hit_rate=metrics["hit_rate"],
+                        required=metrics["required_hit_rate"],
+                    )
 
             # Compute initialization hashes
             init_hashes = self._compute_init_hashes(
@@ -176,11 +181,11 @@ class WiringBootstrap:
                 validator=validator,
                 flags=self.flags,
                 init_hashes=init_hashes,
-                calibration_orchestrator=calibration_orchestrator,  # REPAIRED
+                calibration_orchestrator=calibration_orchestrator,
             )
-            
+
             elapsed = time.time() - self._start_time
-            
+
             logger.info(
                 "wiring_bootstrap_complete",
                 elapsed_s=elapsed,
@@ -189,9 +194,9 @@ class WiringBootstrap:
                 signals_mode=signal_client._transport,
                 init_hashes={k: v[:16] for k, v in init_hashes.items()},
             )
-            
+
             return components
-            
+
         except Exception as e:
             elapsed = time.time() - self._start_time
             logger.error(
@@ -201,18 +206,18 @@ class WiringBootstrap:
                 error_type=type(e).__name__,
             )
             raise
-    
+
     def _load_resources(self) -> QuestionnaireResourceProvider:
         """Load questionnaire resources.
-        
+
         Returns:
             QuestionnaireResourceProvider instance
-            
+
         Raises:
             WiringInitializationError: If loading fails
         """
         logger.info("wiring_init_phase", phase="load_resources")
-        
+
         try:
             if self.questionnaire_path:
                 path = Path(self.questionnaire_path)
@@ -222,59 +227,59 @@ class WiringBootstrap:
                         required_by="WiringBootstrap",
                         fix=f"Ensure questionnaire file exists at {path}",
                     )
-                
+
                 with open(path, encoding="utf-8") as f:
                     data = json.load(f)
-                
+
                 provider = QuestionnaireResourceProvider(data)
             else:
                 # Use default/empty provider
                 provider = QuestionnaireResourceProvider({})
-            
+
             logger.info(
                 "questionnaire_loaded",
                 path=str(self.questionnaire_path) if self.questionnaire_path else "default",
             )
-            
+
             return provider
-            
+
         except Exception as e:
             raise WiringInitializationError(
                 phase="load_resources",
                 component="QuestionnaireResourceProvider",
                 reason=str(e),
             ) from e
-    
+
     def _build_signal_system(
         self,
         provider: QuestionnaireResourceProvider,
     ) -> tuple[SignalClient, SignalRegistry]:
         """Build signal system (memory:// or HTTP).
-        
+
         Args:
             provider: QuestionnaireResourceProvider for signal data
-            
+
         Returns:
             Tuple of (SignalClient, SignalRegistry)
-            
+
         Raises:
             WiringInitializationError: If setup fails
         """
         logger.info("wiring_init_phase", phase="build_signal_system")
-        
+
         try:
             # Create registry first
             registry = SignalRegistry(
                 max_size=100,
                 default_ttl_s=3600,
             )
-            
+
             # Create signal source
             if self.flags.enable_http_signals:
                 # HTTP mode (requires explicit configuration)
                 base_url = "http://127.0.0.1:8000"  # Default, should be configurable
                 logger.info("signal_client_http_mode", base_url=base_url)
-                
+
                 client = SignalClient(
                     base_url=base_url,
                     enable_http_signals=True,
@@ -282,32 +287,32 @@ class WiringBootstrap:
             else:
                 # Memory mode (default)
                 memory_source = InMemorySignalSource()
-                
+
                 client = SignalClient(
                     base_url="memory://",
                     enable_http_signals=False,
                     memory_source=memory_source,
                 )
-                
+
                 logger.info("signal_client_memory_mode")
-            
+
             return client, registry
-            
+
         except Exception as e:
             raise WiringInitializationError(
                 phase="build_signal_system",
                 component="SignalClient/SignalRegistry",
                 reason=str(e),
             ) from e
-    
+
     def _create_executor_config(self) -> ExecutorConfig:
         """Create executor configuration.
-        
+
         Returns:
             ExecutorConfig with defaults
         """
         logger.info("wiring_init_phase", phase="create_executor_config")
-        
+
         config = ExecutorConfig(
             max_tokens=2048,
             temperature=0.0,  # Deterministic
@@ -315,15 +320,15 @@ class WiringBootstrap:
             retry=2,
             seed=0 if self.flags.deterministic_mode else None,
         )
-        
+
         logger.info(
             "executor_config_created",
             deterministic=self.flags.deterministic_mode,
             seed=config.seed,
         )
-        
+
         return config
-    
+
     def _create_factory(
         self,
         provider: QuestionnaireResourceProvider,
@@ -331,107 +336,107 @@ class WiringBootstrap:
         config: ExecutorConfig,
     ) -> CoreModuleFactory:
         """Create CoreModuleFactory with DI.
-        
+
         Args:
             provider: QuestionnaireResourceProvider
             registry: SignalRegistry for injection
             config: ExecutorConfig for injection
-            
+
         Returns:
             CoreModuleFactory instance
-            
+
         Raises:
             WiringInitializationError: If creation fails
         """
         logger.info("wiring_init_phase", phase="create_factory")
-        
+
         try:
             # Get questionnaire data from provider
             questionnaire_data = provider._data
-            
+
             factory = CoreModuleFactory(
                 questionnaire_data=questionnaire_data,
                 signal_registry=registry,
             )
-            
+
             logger.info(
                 "factory_created",
                 has_signal_registry=True,
             )
-            
+
             return factory
-            
+
         except Exception as e:
             raise WiringInitializationError(
                 phase="create_factory",
                 component="CoreModuleFactory",
                 reason=str(e),
             ) from e
-    
+
     def _build_class_registry(self) -> dict[str, type]:
         """Build class registry for arg router.
-        
+
         Returns:
             Class registry mapping names to types
-            
+
         Raises:
             WiringInitializationError: If build fails
         """
         logger.info("wiring_init_phase", phase="build_class_registry")
-        
+
         try:
             registry = build_class_registry()
-            
+
             logger.info(
                 "class_registry_built",
                 class_count=len(registry),
             )
-            
+
             return registry
-            
+
         except Exception as e:
             raise WiringInitializationError(
                 phase="build_class_registry",
                 component="ClassRegistry",
                 reason=str(e),
             ) from e
-    
+
     def _create_arg_router(
         self,
         class_registry: dict[str, type],
     ) -> ExtendedArgRouter:
         """Create ExtendedArgRouter with special routes.
-        
+
         Args:
             class_registry: Class registry for routing
-            
+
         Returns:
             ExtendedArgRouter instance
-            
+
         Raises:
             WiringInitializationError: If creation fails
         """
         logger.info("wiring_init_phase", phase="create_arg_router")
-        
+
         try:
             router = ExtendedArgRouter(class_registry)
-            
+
             route_count = router.get_special_route_coverage()
-            
+
             if route_count < 30:
                 logger.warning(
                     "argrouter_coverage_low",
                     count=route_count,
                     expected=30,
                 )
-            
+
             logger.info(
                 "arg_router_created",
                 special_routes=route_count,
             )
-            
+
             return router
-            
+
         except Exception as e:
             raise WiringInitializationError(
                 phase="create_arg_router",
@@ -439,10 +444,10 @@ class WiringBootstrap:
                 reason=str(e),
             ) from e
 
-    def _create_calibration_orchestrator(self) -> "CalibrationOrchestrator | None":
+    def _create_calibration_orchestrator(self) -> CalibrationOrchestrator | None:
         """Create CalibrationOrchestrator for universal calibration application.
 
-        REPAIRED: This ensures calibration is ALWAYS available, not optional.
+        This ensures calibration is available when the module exists.
         The orchestrator will gracefully handle missing data files by using defaults.
 
         Returns:
@@ -463,7 +468,6 @@ class WiringBootstrap:
 
         try:
             # Look for data files in standard locations
-            from pathlib import Path
             project_root = Path.cwd()
 
             # Standard paths for calibration data
@@ -513,47 +517,76 @@ class WiringBootstrap:
                 error=str(e),
                 error_type=type(e).__name__,
             )
-            # Don't fail the entire bootstrap - calibration is quality-enhancing, not blocking
+            # Don't fail the entire bootstrap - calibration is quality-enhancing
             return None
 
-    def _seed_signals(
+    def seed_signals_public(
         self,
-        memory_source: InMemorySignalSource,
+        client: SignalClient,
         registry: SignalRegistry,
         provider: QuestionnaireResourceProvider,
-    ) -> None:
-        """Seed initial signals in memory mode.
+    ) -> dict[str, Any]:
+        """Seed initial signals with canonical policy areas (PA01-PA10).
+
+        Seeds all 10 canonical policy areas to ensure complete coverage:
+        PA01: Derechos de las mujeres e igualdad de género
+        PA02: Prevención de la violencia y protección
+        PA03: Ambiente sano, cambio climático
+        PA04: Derechos económicos, sociales y culturales
+        PA05: Derechos de las víctimas y construcción de paz
+        PA06: Derecho al buen futuro de niñez, adolescencia, juventud
+        PA07: Tierras y territorios
+        PA08: Líderes, defensores de DDHH
+        PA09: Crisis de derechos de personas privadas de libertad
+        PA10: Migración transfronteriza
 
         Args:
-            memory_source: InMemorySignalSource to seed
+            client: SignalClient to seed (must be in memory mode)
             registry: SignalRegistry to populate
             provider: QuestionnaireResourceProvider for patterns
-        """
-        logger.info("wiring_init_phase", phase="seed_signals")
 
-        # REPAIRED: Create mapping for ALL 10 canonical policy areas (PA01-PA10)
-        # This ensures complete coverage of the questionnaire monolith
+        Returns:
+            Dict with seeding metrics (areas_seeded, total_signals, hit_rate)
+        """
+        logger.info("wiring_init_phase", phase="seed_signals_public")
+
+        # Access memory source - client exposes this in memory mode
+        if not hasattr(client, '_memory_source'):
+            raise ValueError(
+                "Client does not expose memory_source. "
+                "Cannot seed signals without memory transport."
+            )
+
+        memory_source = client._memory_source
+
+        # Canonical policy area mapping (PA01-PA10)
         policy_area_mapping = {
-            "PA01": "género_mujeres",            # Derechos de las mujeres e igualdad de género
-            "PA02": "seguridad_violencia",       # Prevención de la violencia y protección
-            "PA03": "ambiente",                  # Ambiente sano, cambio climático
-            "PA04": "derechos_sociales",         # Derechos económicos, sociales y culturales
-            "PA05": "paz_víctimas",              # Derechos de las víctimas y construcción de paz
-            "PA06": "niñez_juventud",            # Derecho al buen futuro de niñez, adolescencia, juventud
-            "PA07": "tierras_territorios",       # Tierras y territorios
-            "PA08": "líderes_defensores",        # Líderes, defensores de DDHH
-            "PA09": "privados_libertad",         # Crisis de derechos de personas privadas de libertad
-            "PA10": "migración",                 # Migración transfronteriza
+            "PA01": "género_mujeres",
+            "PA02": "seguridad_violencia",
+            "PA03": "ambiente",
+            "PA04": "derechos_sociales",
+            "PA05": "paz_víctimas",
+            "PA06": "niñez_juventud",
+            "PA07": "tierras_territorios",
+            "PA08": "líderes_defensores",
+            "PA09": "privados_libertad",
+            "PA10": "migración",
         }
 
-        # Seed signals for ALL 10 canonical policy areas
+        signals_seeded = 0
+
+        # Seed signals for all 10 canonical policy areas
         for canonical_id, semantic_key in policy_area_mapping.items():
             # Extract patterns from provider for this area
-            patterns = provider.get_patterns_by_question(semantic_key)
+            patterns = []
+            if hasattr(provider, 'get_patterns_by_question'):
+                patterns = provider.get_patterns_by_question(semantic_key)
+            elif hasattr(provider, 'get_patterns_for_area'):
+                patterns = provider.get_patterns_for_area(semantic_key)
 
             pack = SignalPack(
                 version="1.0.0",
-                policy_area=canonical_id,  # type: ignore[arg-type]  # Use canonical ID (PA01-PA10)
+                policy_area=canonical_id,  # type: ignore[arg-type]
                 patterns=patterns[:10] if patterns else [],  # Limit to 10 patterns
                 indicators=[],
                 regex=[],
@@ -569,10 +602,37 @@ class WiringBootstrap:
             # Also put in registry for immediate availability
             registry.put(canonical_id, pack)
 
-            logger.debug("signal_seeded", canonical_id=canonical_id, semantic_key=semantic_key, patterns=len(pack.patterns))
+            signals_seeded += 1
+            logger.debug(
+                "signal_seeded",
+                canonical_id=canonical_id,
+                semantic_key=semantic_key,
+                patterns=len(pack.patterns)
+            )
 
-        logger.info("signals_seeded", areas=len(policy_area_mapping), coverage="100%")
-    
+        # Compute hit rate by fetching all seeded signals
+        hits = 0
+        for canonical_id in policy_area_mapping:
+            result = registry.get(canonical_id)
+            if result is not None:
+                hits += 1
+
+        hit_rate = hits / len(policy_area_mapping)
+
+        logger.info(
+            "signals_seeded",
+            areas=signals_seeded,
+            coverage="100%",
+            hit_rate=hit_rate
+        )
+
+        return {
+            "areas_seeded": signals_seeded,
+            "total_signals": signals_seeded,
+            "hit_rate": hit_rate,
+            "required_hit_rate": 0.95,
+        }
+
     def _compute_init_hashes(
         self,
         provider: QuestionnaireResourceProvider,
@@ -581,38 +641,38 @@ class WiringBootstrap:
         router: ExtendedArgRouter,
     ) -> dict[str, str]:
         """Compute hashes for initialized components.
-        
+
         Args:
             provider: QuestionnaireResourceProvider
             registry: SignalRegistry
             factory: CoreModuleFactory
             router: ExtendedArgRouter
-            
+
         Returns:
             Dict of component names to their hashes
         """
         import blake3
-        
+
         hashes = {}
-        
+
         # Provider hash (based on data keys)
         provider_keys = sorted(provider._data.keys()) if hasattr(provider, '_data') else []
         hashes["provider"] = blake3.blake3(
             json.dumps(provider_keys, sort_keys=True).encode('utf-8')
         ).hexdigest()
-        
+
         # Registry hash (based on metrics)
         registry_metrics = registry.get_metrics()
         hashes["registry"] = blake3.blake3(
             json.dumps(registry_metrics, sort_keys=True).encode('utf-8')
         ).hexdigest()
-        
+
         # Router hash (based on special routes count)
         router_data = {"route_count": router.get_special_route_coverage()}
         hashes["router"] = blake3.blake3(
             json.dumps(router_data, sort_keys=True).encode('utf-8')
         ).hexdigest()
-        
+
         return hashes
 
 

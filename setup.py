@@ -54,15 +54,16 @@ install_requires = [
     "structlog>=24.4.0",
     "opentelemetry-api>=1.29.0",
     "opentelemetry-sdk>=1.29.0",
-    "huggingface-hub>=0.27.1",
-    "transformers>=4.48.0",
-    "sentence-transformers>=3.0.0",
+    "huggingface-hub>=0.20.0,<1.0.0",
+    "transformers>=4.41.0,<4.54.0",
+    "sentence-transformers>=3.1.0,<3.2.0",
     "spacy>=3.8.0",
     "nltk>=3.9.0",
     "pdfplumber>=0.11.0",
     "PyPDF2>=3.0.0",
     "PyMuPDF>=1.25.0",
     "typer>=0.15.0",
+    "ftfy>=6.0.0",  # Robust text encoding repair (mojibake fixing)
 ]
 
 setup(
