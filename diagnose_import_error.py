@@ -6,7 +6,6 @@ This script helps diagnose dependency issues by showing the actual error
 instead of simplifying it as "NOT INSTALLED".
 """
 
-import sys
 import subprocess
 from importlib import import_module
 
