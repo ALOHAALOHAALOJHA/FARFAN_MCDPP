@@ -60,7 +60,7 @@ class DimensionAggregationConfig(BaseModel):
     area_id: str = Field(..., pattern=r'^PA\d{2}$')
     weights: AggregationWeights | None = None
     expected_question_count: int = Field(default=5, ge=1, le=10)
-    group_by_keys: list[str] = Field(default=['dimension', 'policy_area'], min_length=1)
+    group_by_keys: list[str] = Field(default_factory=lambda: ['dimension', 'policy_area'], min_length=1)
 
 
 class AreaAggregationConfig(BaseModel):
