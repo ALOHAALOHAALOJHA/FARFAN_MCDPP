@@ -302,8 +302,7 @@ class CalibrationOrchestrator:
             congruence_score = self.congruence_evaluator.evaluate(
                 method_ids=[method_id],
                 subgraph_id=subgraph_id,
-                fusion_rule="weighted_average",
-                available_inputs=[]  # TODO: Get from actual graph execution
+                fusion_rule="weighted_average"
             )
             layer_scores[LayerID.CONGRUENCE] = LayerScore(
                 layer=LayerID.CONGRUENCE,
@@ -320,7 +319,7 @@ class CalibrationOrchestrator:
         if not self.layer_resolver.should_skip_layer(method_id, LayerID.CHAIN):
             chain_score = self.chain_evaluator.evaluate(
                 method_id=method_id,
-                provided_inputs=[]  # TODO: Get from actual graph execution
+                provided_inputs=[]
             )
             layer_scores[LayerID.CHAIN] = LayerScore(
                 layer=LayerID.CHAIN,

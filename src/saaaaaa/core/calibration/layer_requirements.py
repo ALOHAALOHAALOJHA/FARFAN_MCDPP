@@ -9,8 +9,10 @@ Design:
 - Always includes @b (base layer) for every method
 - Uses conservative defaults (all layers) for unknown roles
 - Integrates with IntrinsicScoreLoader to read role from calibration JSON
+- SPECIAL CASE: Executors (D1Q1-D6Q5) ALWAYS use all 8 layers regardless of role
 """
 import logging
+import re
 from typing import Set
 
 from .data_structures import LayerID
@@ -141,6 +143,9 @@ class LayerRequirementsResolver:
         LayerID.META
     }
 
+    # Executor detection pattern: D[1-6]Q[1-5]_Executor
+    EXECUTOR_PATTERN = re.compile(r'D[1-6]Q[1-5]_Executor')
+
     def __init__(self, intrinsic_loader: IntrinsicScoreLoader):
         """
         Initialize the resolver.
@@ -160,9 +165,35 @@ class LayerRequirementsResolver:
                     f"base layer is required for all methods"
                 )
 
+    @classmethod
+    def is_executor(cls, method_id: str) -> bool:
+        """
+        Determine if a method belongs to one of the 30 executors (D1Q1-D6Q5).
+
+        Args:
+            method_id: Full method identifier
+
+        Returns:
+            True if method belongs to an executor class
+
+        Examples:
+            >>> LayerRequirementsResolver.is_executor(
+            ...     "src.saaaaaa.core.orchestrator.executors.D1Q1_Executor.execute"
+            ... )
+            True
+            >>> LayerRequirementsResolver.is_executor(
+            ...     "src.saaaaaa.processing.SomeClass.method"
+            ... )
+            False
+        """
+        return bool(cls.EXECUTOR_PATTERN.search(method_id))
+
     def get_required_layers(self, method_id: str) -> Set[LayerID]:
         """
         Get the set of calibration layers required for a method.
+
+        CRITICAL: If method belongs to one of the 30 executors (D1Q1-D6Q5),
+        ALL 8 LAYERS are ALWAYS required, regardless of role designation.
 
         Args:
             method_id: Full method identifier (e.g., "module.Class.method")
@@ -172,12 +203,28 @@ class LayerRequirementsResolver:
             Always includes LayerID.BASE at minimum.
 
         Examples:
+            >>> resolver.get_required_layers(
+            ...     "src.saaaaaa.core.orchestrator.executors.D1Q1_Executor.execute"
+            ... )
+            {LayerID.BASE, LayerID.UNIT, ..., LayerID.META}  # ALL 8 layers (executor)
+
             >>> resolver.get_required_layers("analyzer.PatternExtractor.analyze")
-            {LayerID.BASE, LayerID.UNIT, ..., LayerID.META}  # All 8 layers
+            {LayerID.BASE, LayerID.UNIT, ..., LayerID.META}  # All 8 layers (analyzer)
 
             >>> resolver.get_required_layers("utils.format_string")
-            {LayerID.BASE, LayerID.CHAIN, LayerID.META}  # Minimal layers
+            {LayerID.BASE, LayerID.CHAIN, LayerID.META}  # Minimal layers (utility)
         """
+        # SPECIAL CASE: Executors ALWAYS require all 8 layers
+        if self.is_executor(method_id):
+            logger.info(
+                "executor_detected_forcing_all_8_layers",
+                extra={
+                    "method_id": method_id,
+                    "reason": "executors_require_maximum_rigor"
+                }
+            )
+            return self.DEFAULT_LAYERS.copy()
+
         # Get role from intrinsic loader
         role = self.intrinsic_loader.get_layer(method_id)
 
