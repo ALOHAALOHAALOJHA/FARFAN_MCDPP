@@ -312,7 +312,6 @@ class ValueDeterminator:
         """
         param_name = param['name']
         current_default = param['current_default']
-        inferred_type = param['inferred_type']
 
         # HIERARCHY LEVEL 1: Knowledge Base (Formal + Reference)
         kb_recommendation = self.kb.get_value_for_parameter(param_name, method_type)
