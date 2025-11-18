@@ -302,7 +302,7 @@ class MethodCatalogueGenerator:
         if func_node.returns:
             try:
                 return_type = ast.unparse(func_node.returns)
-            except:
+            except Exception:
                 return_type = "<unparseable>"
 
         # Extract docstring

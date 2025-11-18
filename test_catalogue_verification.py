@@ -350,7 +350,7 @@ class CatalogueVerifier:
                                     f"default_value mismatch - Source={src_default}, "
                                     f"Catalogue={cat_default}"
                                 )
-                        except:
+                        except Exception:
                             mismatches.append(
                                 f"{method_id}.{param_name}: "
                                 f"default_value mismatch - Source={src_default}, "
