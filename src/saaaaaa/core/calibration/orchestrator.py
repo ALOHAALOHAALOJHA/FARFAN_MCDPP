@@ -30,6 +30,22 @@ from .unit_layer import UnitLayerEvaluator
 
 logger = logging.getLogger(__name__)
 
+# Repository root (5 levels up from this file)
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+
+
+def _load_default_paths():
+    """Load default paths from config/calibration_paths.json."""
+    paths_file = _REPO_ROOT / "config" / "calibration_paths.json"
+    if not paths_file.exists():
+        return {}
+    try:
+        with open(paths_file, 'r') as f:
+            return json.load(f).get('defaults', {})
+    except Exception as e:
+        logger.error(f"Failed to load calibration_paths.json: {e}")
+        return {}
+
 
 class CalibrationOrchestrator:
     """
@@ -81,96 +97,124 @@ class CalibrationOrchestrator:
         """
         self.config = config or DEFAULT_CALIBRATION_CONFIG
 
+        # Load default paths from config
+        default_paths = _load_default_paths()
+
         # Initialize IntrinsicScoreLoader (singleton pattern, lazy-loaded)
         if intrinsic_calibration_path:
-            self.intrinsic_loader = IntrinsicScoreLoader(intrinsic_calibration_path)
+            intrinsic_path = Path(intrinsic_calibration_path)
         else:
-            # Try default path
-            default_intrinsic = Path("config/intrinsic_calibration.json")
-            self.intrinsic_loader = IntrinsicScoreLoader(default_intrinsic)
+            # Use path from calibration_paths.json
+            path_str = default_paths.get('intrinsic_calibration_path', 'config/intrinsic_calibration.json')
+            intrinsic_path = _REPO_ROOT / path_str
+
+        if not intrinsic_path.exists():
+            raise FileNotFoundError(
+                f"Intrinsic calibration file not found: {intrinsic_path}\n"
+                f"Configure path in config/calibration_paths.json"
+            )
+
+        self.intrinsic_loader = IntrinsicScoreLoader(str(intrinsic_path))
 
         # Initialize LayerRequirementsResolver
         self.layer_resolver = LayerRequirementsResolver(self.intrinsic_loader)
 
-        # Initialize BASE layer evaluator with optional parameter loader
-        if intrinsic_calibration_path:
-            self.base_evaluator = BaseLayerEvaluator(
-                intrinsic_calibration_path,
-                parameter_loader=parameter_loader
-            )
-        else:
-            # Try default path
-            default_intrinsic = Path("config/intrinsic_calibration.json")
-            if default_intrinsic.exists():
-                self.base_evaluator = BaseLayerEvaluator(
-                    default_intrinsic,
-                    parameter_loader=parameter_loader
-                )
-            else:
-                logger.warning(
-                    "No intrinsic_calibration.json found, BASE layer will use penalty scores"
-                )
-                # Create a minimal evaluator that always returns penalty
-                self.base_evaluator = None
+        # Initialize BASE layer evaluator with optional parameter loader (same path as intrinsic loader)
+        self.base_evaluator = BaseLayerEvaluator(
+            str(intrinsic_path),
+            parameter_loader=parameter_loader
+        )
 
         # Initialize UNIT layer evaluator
         self.unit_evaluator = UnitLayerEvaluator(self.config.unit_layer)
 
         # Load compatibility registry
         if compatibility_path:
-            self.compat_registry = CompatibilityRegistry(compatibility_path)
-            self.contextual_evaluator = ContextualLayerEvaluator(self.compat_registry)
-
-            # Validate anti-universality if enabled
-            if self.config.enable_anti_universality_check:
-                self.compat_registry.validate_anti_universality(
-                    threshold=self.config.max_avg_compatibility
-                )
+            compat_path = Path(compatibility_path)
         else:
+            path_str = default_paths.get('compatibility_path', 'config/canonical_method_catalog.json')
+            compat_path = _REPO_ROOT / path_str
+
+        if compat_path.exists():
+            try:
+                self.compat_registry = CompatibilityRegistry(str(compat_path))
+                self.contextual_evaluator = ContextualLayerEvaluator(self.compat_registry)
+                if self.config.enable_anti_universality_check:
+                    self.compat_registry.validate_anti_universality(
+                        threshold=self.config.max_avg_compatibility
+                    )
+            except (ValueError, KeyError) as e:
+                logger.warning(f"Compatibility file format issue: {e}. Skipping.")
+                self.compat_registry = None
+                self.contextual_evaluator = None
+        else:
+            logger.warning(f"Compatibility file not found: {compat_path}")
             self.compat_registry = None
             self.contextual_evaluator = None
 
         # Load method registry for congruence layer
         if method_registry_path:
             registry_path = Path(method_registry_path)
+        else:
+            path_str = default_paths.get('method_registry_path', 'config/canonical_method_catalog.json')
+            registry_path = _REPO_ROOT / path_str
+
+        if registry_path.exists():
             with open(registry_path, encoding='utf-8') as f:
                 registry_data = json.load(f)
-            self.congruence_evaluator = CongruenceLayerEvaluator(
-                method_registry=registry_data.get("methods", {})
-            )
-        else:
-            # Fallback: try default path or use empty registry
-            default_registry = Path("data/method_registry.json")
-            if default_registry.exists():
-                with open(default_registry, encoding='utf-8') as f:
-                    registry_data = json.load(f)
+            # Handle both formats: direct "methods" key or "layers" structure
+            if "methods" in registry_data:
                 self.congruence_evaluator = CongruenceLayerEvaluator(
-                    method_registry=registry_data.get("methods", {})
+                    method_registry=registry_data["methods"]
                 )
+            elif "layers" in registry_data:
+                # Flatten layers
+                all_methods = {}
+                for layer in registry_data.get("layers", {}).values():
+                    if isinstance(layer, list):
+                        for method in layer:
+                            mid = method.get("canonical_name") or method.get("method_name")
+                            if mid:
+                                all_methods[mid] = method
+                self.congruence_evaluator = CongruenceLayerEvaluator(method_registry=all_methods)
             else:
-                logger.warning("No method_registry.json found, using empty registry")
+                logger.warning("Unrecognized registry format")
                 self.congruence_evaluator = CongruenceLayerEvaluator(method_registry={})
+        else:
+            logger.warning(f"Method registry not found: {registry_path}")
+            self.congruence_evaluator = CongruenceLayerEvaluator(method_registry={})
 
         # Load method signatures for chain layer
         if method_signatures_path:
             signatures_path = Path(method_signatures_path)
+        else:
+            path_str = default_paths.get('method_signatures_path', 'config/canonical_method_catalog.json')
+            signatures_path = _REPO_ROOT / path_str
+
+        if signatures_path.exists():
             with open(signatures_path, encoding='utf-8') as f:
                 signatures_data = json.load(f)
-            self.chain_evaluator = ChainLayerEvaluator(
-                method_signatures=signatures_data.get("methods", {})
-            )
-        else:
-            # Fallback: try default path or use empty signatures
-            default_signatures = Path("data/method_signatures.json")
-            if default_signatures.exists():
-                with open(default_signatures, encoding='utf-8') as f:
-                    signatures_data = json.load(f)
+            # Handle both formats
+            if "methods" in signatures_data:
                 self.chain_evaluator = ChainLayerEvaluator(
-                    method_signatures=signatures_data.get("methods", {})
+                    method_signatures=signatures_data["methods"]
                 )
+            elif "layers" in signatures_data:
+                # Flatten layers
+                all_methods = {}
+                for layer in signatures_data.get("layers", {}).values():
+                    if isinstance(layer, list):
+                        for method in layer:
+                            mid = method.get("canonical_name") or method.get("method_name")
+                            if mid:
+                                all_methods[mid] = method
+                self.chain_evaluator = ChainLayerEvaluator(method_signatures=all_methods)
             else:
-                logger.warning("No method_signatures.json found, using empty signatures")
+                logger.warning("Unrecognized signatures format")
                 self.chain_evaluator = ChainLayerEvaluator(method_signatures={})
+        else:
+            logger.warning(f"Method signatures not found: {signatures_path}")
+            self.chain_evaluator = ChainLayerEvaluator(method_signatures={})
 
         self.meta_evaluator = MetaLayerEvaluator(self.config.meta_layer)
 
@@ -185,8 +229,8 @@ class CalibrationOrchestrator:
                 "config_hash": self.config.compute_system_hash(),
                 "anti_universality_enabled": self.config.enable_anti_universality_check,
                 "base_evaluator_loaded": self.base_evaluator is not None,
-                "total_calibrated_methods": stats["total_methods"],
-                "methods_by_layer": stats["by_layer"]
+                "total_calibrated_methods": stats.get("total", stats.get("total_methods", 0)),
+                "methods_by_layer": stats.get("by_layer", {})
             }
         )
 
