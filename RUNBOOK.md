@@ -1007,7 +1007,9 @@ echo ""
 
 # Check 3: Dependencies
 echo "3. Critical Dependencies"
-if python verify_dependencies.py 2>&1 | grep -q "Passed: [56]/6"; then
+DEP_CHECK_OUTPUT="$(python verify_dependencies.py 2>&1)"
+DEP_PASSED=$(echo "$DEP_CHECK_OUTPUT" | awk -F'[:/]' '/Passed:/ {gsub(/ /,"",$2); print $2}')
+if [ -n "$DEP_PASSED" ] && [ "$DEP_PASSED" -ge 5 ]; then
     echo -e "${GREEN}✓ All dependencies verified${NC}"
     ((HEALTH_SCORE++))
 else
