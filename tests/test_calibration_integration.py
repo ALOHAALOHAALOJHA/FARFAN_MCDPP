@@ -267,7 +267,6 @@ class TestValidatorIntegration:
         # This would test the full flow but requires a valid PDT structure
         # and context, which are complex to mock
         print("  (Skipped - requires full PDT structure)")
-        pass
 
 
 class TestEndToEndFlow:
