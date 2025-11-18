@@ -14,8 +14,10 @@ from __future__ import annotations
 
 import json
 import time
+from collections import OrderedDict
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 import structlog
 
@@ -32,6 +34,15 @@ from saaaaaa.core.orchestrator.signals import (
     SignalPack,
     SignalRegistry,
 )
+
+try:  # Optional dependency: calibration orchestrator
+    from saaaaaa.core.calibration.orchestrator import CalibrationOrchestrator as _CalibrationOrchestrator
+    from saaaaaa.core.calibration.config import DEFAULT_CALIBRATION_CONFIG as _DEFAULT_CALIBRATION_CONFIG
+    _HAS_CALIBRATION = True
+except Exception:  # pragma: no cover - only during stripped installs
+    _CalibrationOrchestrator = None  # type: ignore[assignment]
+    _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
+    _HAS_CALIBRATION = False
 
 from .errors import MissingDependencyError, WiringInitializationError
 from .feature_flags import WiringFeatureFlags
@@ -65,9 +76,98 @@ class WiringComponents:
     arg_router: ExtendedArgRouter
     class_registry: dict[str, type]
     validator: WiringValidator
+    calibration_orchestrator: "_CalibrationOrchestrator | None" = None
     flags: WiringFeatureFlags
     init_hashes: dict[str, str] = field(default_factory=dict)
 
+
+CANONICAL_POLICY_AREA_DEFINITIONS: "OrderedDict[str, dict[str, list[str] | str]]" = OrderedDict(
+    [
+        (
+            "PA01",
+            {
+                "name": "Derechos de las mujeres e igualdad de género",
+                "slug": "genero_mujeres",
+                "aliases": ["fiscal"],
+            },
+        ),
+        (
+            "PA02",
+            {
+                "name": "Prevención de la violencia y protección",
+                "slug": "seguridad_violencia",
+                "aliases": ["salud"],
+            },
+        ),
+        (
+            "PA03",
+            {
+                "name": "Ambiente sano y cambio climático",
+                "slug": "ambiente",
+                "aliases": ["ambiente"],
+            },
+        ),
+        (
+            "PA04",
+            {
+                "name": "Derechos económicos, sociales y culturales",
+                "slug": "derechos_sociales",
+                "aliases": ["energía"],
+            },
+        ),
+        (
+            "PA05",
+            {
+                "name": "Derechos de las víctimas y construcción de paz",
+                "slug": "paz_victimas",
+                "aliases": ["transporte"],
+            },
+        ),
+        (
+            "PA06",
+            {
+                "name": "Derecho al futuro de la niñez y juventud",
+                "slug": "ninez_juventud",
+                "aliases": [],
+            },
+        ),
+        (
+            "PA07",
+            {
+                "name": "Tierras y territorios",
+                "slug": "tierras_territorios",
+                "aliases": [],
+            },
+        ),
+        (
+            "PA08",
+            {
+                "name": "Líderes, lideresas y defensores de DD. HH.",
+                "slug": "liderazgos_ddhh",
+                "aliases": [],
+            },
+        ),
+        (
+            "PA09",
+            {
+                "name": "Derechos de personas privadas de libertad",
+                "slug": "privados_libertad",
+                "aliases": [],
+            },
+        ),
+        (
+            "PA10",
+            {
+                "name": "Migración transfronteriza",
+                "slug": "migracion",
+                "aliases": [],
+            },
+        ),
+    ]
+)
+
+SIGNAL_PACK_VERSION = "1.0.0"
+MAX_PATTERNS_PER_POLICY_AREA = 32
 
 class WiringBootstrap:
     """Bootstrap engine for deterministic wiring initialization.
@@ -139,9 +239,22 @@ class WiringBootstrap:
             # Phase 7: Create validator
             validator = WiringValidator()
 
-            # Phase 8: Seed signals (if memory mode)
+            # Phase 8: Create calibration orchestrator (optional enhancement)
+            calibration_orchestrator = self._create_calibration_orchestrator()
+
+            # Phase 9: Seed signals (if memory mode)
             if signal_client._transport == "memory":
-                self._seed_signals(signal_client._memory_source, signal_registry, provider)
+                metrics = self._seed_canonical_policy_area_signals(
+                    signal_client._memory_source,
+                    signal_registry,
+                    provider,
+                )
+                logger.info(
+                    "signals_seeded",
+                    areas=metrics["canonical_areas"],
+                    aliases=metrics["legacy_aliases"],
+                    hit_rate=metrics["hit_rate"],
+                )
 
             # Compute initialization hashes
             init_hashes = self._compute_init_hashes(
@@ -157,6 +270,7 @@ class WiringBootstrap:
                 arg_router=arg_router,
                 class_registry=class_registry,
                 validator=validator,
+                calibration_orchestrator=calibration_orchestrator,
                 flags=self.flags,
                 init_hashes=init_hashes,
             )
@@ -421,6 +535,145 @@ class WiringBootstrap:
                 reason=str(e),
             ) from e
 
+    def _create_calibration_orchestrator(self) -> "_CalibrationOrchestrator | None":
+        """
+        Create CalibrationOrchestrator when calibration stack is available.
+
+        Returns:
+            CalibrationOrchestrator instance or None if unavailable.
+        """
+        if not _HAS_CALIBRATION or _CalibrationOrchestrator is None or _DEFAULT_CALIBRATION_CONFIG is None:
+            logger.info("calibration_system_unavailable")
+            return None
+
+        try:
+            project_root = Path(__file__).resolve().parents[4]
+        except IndexError:  # pragma: no cover - unlikely
+            project_root = Path.cwd()
+
+        data_dir = project_root / "data"
+        config_dir = project_root / "config"
+
+        kwargs: dict[str, Any] = {"config": _DEFAULT_CALIBRATION_CONFIG}
+
+        intrinsic_path = config_dir / "intrinsic_calibration.json"
+        if intrinsic_path.exists():
+            kwargs["intrinsic_calibration_path"] = intrinsic_path
+
+        compatibility_path = data_dir / "method_compatibility.json"
+        if compatibility_path.exists():
+            kwargs["compatibility_path"] = compatibility_path
+
+        registry_path = data_dir / "method_registry.json"
+        if registry_path.exists():
+            kwargs["method_registry_path"] = registry_path
+
+        signatures_path = data_dir / "method_signatures.json"
+        if signatures_path.exists():
+            kwargs["method_signatures_path"] = signatures_path
+
+        try:
+            orchestrator = _CalibrationOrchestrator(**kwargs)
+            logger.info(
+                "calibration_orchestrator_ready",
+                intrinsic=str(intrinsic_path),
+                compatibility=str(compatibility_path),
+            )
+            return orchestrator
+        except Exception as exc:  # pragma: no cover - defensive guardrail
+            logger.warning(
+                "calibration_orchestrator_initialization_failed",
+                error=str(exc),
+            )
+            return None
+
+    def _build_signal_pack(
+        self,
+        provider: QuestionnaireResourceProvider,
+        canonical_id: str,
+        meta: dict[str, Any],
+        *,
+        alias: str | None = None,
+    ) -> SignalPack:
+        """Build a SignalPack for a canonical policy area (and optional alias)."""
+        pattern_source = getattr(provider, "get_patterns_for_area", None)
+        patterns = pattern_source(canonical_id, MAX_PATTERNS_PER_POLICY_AREA) if callable(pattern_source) else []
+
+        pack = SignalPack(
+            version=SIGNAL_PACK_VERSION,
+            policy_area=alias or canonical_id,  # type: ignore[arg-type]
+            patterns=patterns,
+            metadata={
+                "canonical_id": canonical_id,
+                "display_name": meta["name"],
+                "slug": meta["slug"],
+                "alias": alias,
+            },
+        )
+        fingerprint = pack.compute_hash()
+        return pack.model_copy(update={"source_fingerprint": fingerprint})
+
+    @staticmethod
+    def _register_signal_pack(
+        memory_source: InMemorySignalSource,
+        registry: SignalRegistry,
+        pack: SignalPack,
+    ) -> None:
+        """Register pack in both memory source and registry."""
+        memory_source.register(pack.policy_area, pack)
+        registry.put(pack.policy_area, pack)
+        logger.debug(
+            "signal_seeded",
+            policy_area=pack.policy_area,
+            canonical_id=pack.metadata.get("canonical_id"),
+            patterns=len(pack.patterns),
+        )
+
+    def _seed_canonical_policy_area_signals(
+        self,
+        memory_source: InMemorySignalSource,
+        registry: SignalRegistry,
+        provider: QuestionnaireResourceProvider,
+    ) -> dict[str, Any]:
+        """
+        Seed signal registry with canonical (PA01-PA10) policy areas.
+
+        Returns:
+            Metrics dict with coverage and legacy alias info.
+        """
+        canonical_count = 0
+        alias_count = 0
+
+        for area_id, meta in CANONICAL_POLICY_AREA_DEFINITIONS.items():
+            pack = self._build_signal_pack(provider, area_id, meta)
+            self._register_signal_pack(memory_source, registry, pack)
+            canonical_count += 1
+
+            for alias in meta["aliases"]:  # type: ignore[index]
+                alias_pack = self._build_signal_pack(
+                    provider,
+                    area_id,
+                    meta,
+                    alias=alias,
+                )
+                self._register_signal_pack(memory_source, registry, alias_pack)
+                alias_count += 1
+
+        hits = sum(
+            1
+            for area_id in CANONICAL_POLICY_AREA_DEFINITIONS
+            if registry.get(area_id) is not None
+        )
+        total_required = len(CANONICAL_POLICY_AREA_DEFINITIONS)
+        hit_rate = hits / total_required if total_required else 0.0
+
+        return {
+            "canonical_areas": canonical_count,
+            "legacy_aliases": alias_count,
+            "hit_rate": hit_rate,
+            "required_hit_rate": 0.95,
+        }
+
     def seed_signals_public(
         self,
         client: SignalClient,
@@ -430,9 +683,9 @@ class WiringBootstrap:
         """Seed initial signals in memory mode (PUBLIC API).
 
         This replaces the private _seed_signals method with a public API that:
-        1. Does not access private attributes (_transport, _memory_source)
-        2. Returns metrics for validation
-        3. Enforces 95% hit rate requirement
+        1. Validates the SignalClient is using memory transport
+        2. Returns deterministic metrics for validation
+        3. Enforces the ≥95% hit rate requirement
 
         Args:
             client: SignalClient to seed (must be in memory mode)
@@ -444,79 +697,37 @@ class WiringBootstrap:
 
         Raises:
             ValueError: If client is not in memory mode
+            WiringInitializationError: If hit rate requirement is not met
         """
         logger.info("wiring_init_phase", phase="seed_signals_public")
 
-        # Validate memory mode without accessing private attributes
-        # Use public method to fetch a test signal and detect transport mode
-        test_area = "__probe__"
-        try:
-            # This will fail for HTTP mode if no server is running
-            # For memory mode, it will return None (miss) but succeed
-            result = client.fetch_signals(test_area)
-            is_memory_mode = True  # If we get here, it's memory mode
-        except Exception:
+        if getattr(client, "_transport", None) != "memory":
             raise ValueError(
                 "Signal seeding requires memory mode. "
                 "Set enable_http_signals=False in WiringFeatureFlags."
             )
 
-        # Access memory source through client's public interface
-        # The client exposes memory_source when in memory mode
-        if not hasattr(client, '_memory_source'):
-            raise ValueError(
-                "Client does not expose memory_source. "
-                "Cannot seed signals without memory transport."
+        memory_source = getattr(client, "_memory_source", None)
+        if memory_source is None:
+            raise ValueError("Signal client memory source not initialized.")
+
+        metrics = self._seed_canonical_policy_area_signals(
+            memory_source,
+            registry,
+            provider,
+        )
+
+        if metrics["hit_rate"] < metrics["required_hit_rate"]:
+            raise WiringInitializationError(
+                phase="seed_signals",
+                component="SignalRegistry",
+                reason=(
+                    f"Signal hit rate {metrics['hit_rate']:.2%} below "
+                    f"required threshold {metrics['required_hit_rate']:.2%}"
+                ),
             )
 
-        memory_source = client._memory_source
-
-        # Create default signal packs for common policy areas
-        policy_areas = ["fiscal", "salud", "ambiente", "energía", "transporte"]
-        signals_seeded = 0
-
-        for area in policy_areas:
-            # Extract patterns from provider for this area
-            patterns = provider.get_patterns_for_area(area) if hasattr(provider, 'get_patterns_for_area') else []
-
-            pack = SignalPack(
-                version="1.0.0",
-                policy_area=area,  # type: ignore[arg-type]
-                patterns=patterns[:10] if patterns else [],  # Limit to 10 patterns
-                indicators=[],
-                regex=[],
-                verbs=[],
-                entities=[],
-                thresholds={},
-                ttl_s=3600,
-            )
-
-            # Register in memory source
-            memory_source.register(area, pack)
-
-            # Also put in registry for immediate availability
-            registry.put(area, pack)
-
-            signals_seeded += 1
-            logger.debug("signal_seeded", policy_area=area, patterns=len(pack.patterns))
-
-        logger.info("signals_seeded", areas=signals_seeded)
-
-        # Compute hit rate by fetching all seeded signals
-        hits = 0
-        for area in policy_areas:
-            result = registry.get(area)
-            if result is not None:
-                hits += 1
-
-        hit_rate = hits / len(policy_areas) if policy_areas else 0.0
-
-        return {
-            "areas_seeded": signals_seeded,
-            "total_signals": signals_seeded,
-            "hit_rate": hit_rate,
-            "required_hit_rate": 0.95,
-        }
+        return metrics
 
     def _seed_signals(
         self,
@@ -532,34 +743,13 @@ class WiringBootstrap:
             "_seed_signals is deprecated. Use seed_signals_public() instead."
         )
 
-        # Create default signal packs for common policy areas
-        policy_areas = ["fiscal", "salud", "ambiente", "energía", "transporte"]
-
-        for area in policy_areas:
-            # Extract patterns from provider for this area
-            patterns = provider.get_patterns_for_area(area) if hasattr(provider, 'get_patterns_for_area') else []
-
-            pack = SignalPack(
-                version="1.0.0",
-                policy_area=area,  # type: ignore[arg-type]
-                patterns=patterns[:10] if patterns else [],  # Limit to 10 patterns
-                indicators=[],
-                regex=[],
-                verbs=[],
-                entities=[],
-                thresholds={},
-                ttl_s=3600,
-            )
-
-            # Register in memory source
-            memory_source.register(area, pack)
-
-            # Also put in registry for immediate availability
-            registry.put(area, pack)
-
-            logger.debug("signal_seeded", policy_area=area, patterns=len(pack.patterns))
-
-        logger.info("signals_seeded", areas=len(policy_areas))
+        metrics = self._seed_canonical_policy_area_signals(memory_source, registry, provider)
+        logger.info(
+            "signals_seeded",
+            areas=metrics["canonical_areas"],
+            aliases=metrics["legacy_aliases"],
+            hit_rate=metrics["hit_rate"],
+        )
 
     def _compute_init_hashes(
         self,

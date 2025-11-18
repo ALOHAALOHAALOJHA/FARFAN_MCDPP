@@ -193,6 +193,8 @@ class QuestionnaireResourceProvider:
             )
 
         self._patterns_cache: dict[str, list[Pattern]] | None = None
+        self._all_patterns_cache: list[Pattern] | None = None
+        self._question_area_cache: dict[str, str] | None = None
         self._validations_cache: list[ValidationSpec] | None = None
 
     @classmethod
@@ -235,8 +237,8 @@ class QuestionnaireResourceProvider:
         Returns:
             List of all patterns (target: 2,207+)
         """
-        if self._patterns_cache is not None:
-            return list(self._patterns_cache.values())[0] if self._patterns_cache else []
+        if self._all_patterns_cache is not None:
+            return list(self._all_patterns_cache)
 
         all_patterns: list[Pattern] = []
         blocks = self._data.get("blocks", {})
@@ -305,7 +307,9 @@ class QuestionnaireResourceProvider:
         for p in all_patterns:
             self._patterns_cache[p.category].append(p)
 
-        return all_patterns
+        self._all_patterns_cache = all_patterns
+
+        return list(self._all_patterns_cache)
 
     def get_temporal_patterns(self) -> list[Pattern]:
         """
@@ -503,6 +507,67 @@ class QuestionnaireResourceProvider:
             fallback="PA01"
         )
         return "PA01"
+
+    def _ensure_question_area_cache(self) -> None:
+        """Build cache mapping question IDs to policy areas."""
+        if self._question_area_cache is not None:
+            return
+
+        cache: dict[str, str] = {}
+        blocks = self._data.get("blocks", {})
+        micro_questions = blocks.get("micro_questions", [])
+
+        for question in micro_questions:
+            q_id = question.get("question_id")
+            if not q_id:
+                continue
+            cache[q_id] = question.get("policy_area_id", "PA01")
+
+        self._question_area_cache = cache
+
+    def get_patterns_for_area(
+        self,
+        policy_area_id: str,
+        limit: int | None = None,
+    ) -> list[str]:
+        """
+        Get pattern strings associated with a policy area.
+
+        Args:
+            policy_area_id: Canonical policy area ID (PA01-PA10)
+            limit: Optional max number of patterns to return
+
+        Returns:
+            List of pattern strings (may be empty if area not found)
+        """
+        all_patterns = self.extract_all_patterns()
+        self._ensure_question_area_cache()
+
+        if not self._question_area_cache:
+            return []
+
+        matches: list[str] = []
+        remaining = limit if limit is not None else None
+
+        for pattern in all_patterns:
+            question_id = pattern.question_id or ""
+            area_id = self._question_area_cache.get(question_id)
+            if area_id != policy_area_id:
+                continue
+
+            matches.append(pattern.pattern)
+            if remaining is not None:
+                remaining -= 1
+                if remaining <= 0:
+                    break
+
+        logger.debug(
+            "patterns_for_area_retrieved",
+            policy_area_id=policy_area_id,
+            count=len(matches),
+            limit=limit,
+        )
+        return matches
 
     def get_pattern_statistics(self) -> dict[str, Any]:
         """

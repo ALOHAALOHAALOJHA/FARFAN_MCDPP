@@ -4526,6 +4526,11 @@ class FrontierExecutorOrchestrator:
         "PA01", "PA02", "PA03", "PA04", "PA05",
         "PA06", "PA07", "PA08", "PA09", "PA10"
     ]
+    EXPECTED_EXECUTOR_IDS = tuple(
+        f"D{dimension}Q{question}"
+        for dimension in range(1, 7)
+        for question in range(1, 6)
+    )
 
     def __init__(self, signal_registry=None) -> None:
         self.executors = {
@@ -4569,23 +4574,34 @@ class FrontierExecutorOrchestrator:
         from .signals import SignalRegistry
         self.signal_registry = signal_registry or SignalRegistry()
         self.chunk_router = ChunkRouter()
+        self._verify_executor_coverage()
 
     def execute_question(self, question_id: str, doc, method_executor) -> dict[str, Any]:
         """Execute specific question with frontier optimizations"""
-        if question_id not in self.executors:
+        canonical_id = self.normalize_question_id(question_id)
+        if canonical_id not in self.executors:
             logger.error(f"Unknown question ID: {question_id}")
             raise ValueError(f"Unknown question ID: {question_id}")
 
-        logger.info(f"Executing question {question_id}")
+        logger.info(
+            "executing_question",
+            requested_question=question_id,
+            canonical_question=canonical_id,
+        )
         start_time = time.time()
 
-        executor_class = self.executors[question_id]
+        executor_class = self.executors[canonical_id]
         executor = executor_class(method_executor)
 
         result = executor.execute(doc, method_executor)
 
         execution_time = time.time() - start_time
-        logger.info(f"Question {question_id} completed in {execution_time:.3f}s")
+        logger.info(
+            "question_completed",
+            canonical_question=canonical_id,
+            requested_question=question_id,
+            elapsed_s=f"{execution_time:.3f}",
+        )
 
         return result
 
@@ -4594,9 +4610,10 @@ class FrontierExecutorOrchestrator:
         logger.info(f"Starting batch execution of {len(question_ids)} questions")
         batch_start = time.time()
 
+        normalized_ids = [self.normalize_question_id(q) for q in question_ids]
         results = {}
 
-        execution_order = self._optimize_execution_order(question_ids)
+        execution_order = self._optimize_execution_order(normalized_ids)
         logger.info(f"Optimized execution order: {execution_order}")
 
         for qid in execution_order:
@@ -4655,6 +4672,29 @@ class FrontierExecutorOrchestrator:
                 logger.info(f"Loaded signal pack for {pa} v{signal_pack.version}")
 
         logger.info(f"Loaded {loaded_count}/{len(self.CANONICAL_POLICY_AREAS)} signal packs")
+
+    @staticmethod
+    def normalize_question_id(question_id: str) -> str:
+        """Normalize question identifiers to canonical format (e.g., D1Q1)."""
+        cleaned = (
+            question_id.replace("-", "")
+            .replace("_", "")
+            .replace(" ", "")
+            .upper()
+        )
+        return cleaned
+
+    def _verify_executor_coverage(self) -> None:
+        """Ensure all 30 canonical executors are present."""
+        missing = [
+            expected_id
+            for expected_id in self.EXPECTED_EXECUTOR_IDS
+            if expected_id not in self.executors
+        ]
+        if missing:
+            raise RuntimeError(
+                f"Executor coverage incomplete. Missing executors for: {', '.join(missing)}"
+            )
 
     def process_policy_area_chunks(
         self,
