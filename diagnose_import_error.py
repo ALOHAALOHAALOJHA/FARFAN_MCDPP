@@ -25,14 +25,14 @@ def check_package_with_traceback(package_name, description):
         check=False
     )
 
-    if result.returncode == 0:
+    if result.returncode != 0:
+        print(f"✗ NOT installed via pip")
+        return False
+    else:
         for line in result.stdout.split('\n'):
             if 'Version:' in line:
                 print(f"✓ Installed: {line.strip()}")
                 break
-    else:
-        print(f"✗ NOT installed via pip")
-        return False
 
     # 2. Try to import and capture real error
     print("\nAttempting import...")
