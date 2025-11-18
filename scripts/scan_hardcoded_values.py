@@ -194,7 +194,6 @@ def categorize_findings(findings: List[Dict]) -> Dict[str, List[Dict]]:
     for finding in findings:
         value = finding["value"]
         var_name = finding.get("variable", "")
-        context = finding.get("context", "")
         file_path = finding.get("file", "")
 
         # Type C: Weights (w_theory, w_impl, w_deploy, etc.)
