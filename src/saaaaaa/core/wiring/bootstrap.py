@@ -549,7 +549,7 @@ class WiringBootstrap:
         # Seed signals for ALL 10 canonical policy areas
         for canonical_id, semantic_key in policy_area_mapping.items():
             # Extract patterns from provider for this area
-            patterns = provider.get_patterns_for_area(semantic_key) if hasattr(provider, 'get_patterns_for_area') else []
+            patterns = provider.get_patterns_by_question(semantic_key)
 
             pack = SignalPack(
                 version="1.0.0",
