@@ -73,23 +73,11 @@ class MethodCatalogueGenerator:
 
             return value, "literal"
         except (ValueError, SyntaxError):
-            # Case 2: Try to evaluate as expression
+            # Case 2: Not a literal, return as string (complex)
             try:
                 code = ast.unparse(default_node)
-                # Try to evaluate simple expressions
-                try:
-                    # Safe evaluation for simple expressions
-                    value = eval(code, {"__builtins__": {}}, {})
-
-                    # Convert Python None to string "None"
-                    if value is None:
-                        return "None", "expression"
-
-                    return value, "expression"
-                except:
-                    # Cannot evaluate, keep as string
-                    return code, "complex"
-            except:
+                return code, "complex"
+            except Exception:
                 return "<unparseable>", "complex"
 
     def parse_parameters(self, func_node: ast.FunctionDef, file_path: str) -> List[Dict[str, Any]]:
