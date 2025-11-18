@@ -80,6 +80,7 @@ class MethodRecord:
     source_hash: str
     last_analyzed: str
     configurable_parameters: Dict[str, Any] = field(default_factory=dict)
+    auto_generated: bool = False
 
 
 class CatalogueBuilder:
@@ -163,10 +164,15 @@ class CatalogueBuilder:
         module_name: str,
         source: str,
     ) -> None:
+        has_init = False
         for node in class_node.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 self._record_method(node, class_node.name, file_path, module_name, source)
+                if node.name == "__init__":
+                    has_init = True
 
+        if self._is_dataclass(class_node) and not has_init:
+            self._add_dataclass_init(class_node, file_path, module_name)
     # --------------------------------------------------------------------- #
     # Method extraction helpers
     # --------------------------------------------------------------------- #
@@ -202,25 +208,6 @@ class CatalogueBuilder:
         layer_position = self.layer_counts[layer]
         self.layer_counts[layer] += 1
 
-        configurable = [
-            param for param in parameters if param.has_default and param.name != "self"
-        ]
-        configurable_summary = {
-            "count": len(configurable),
-            "names": [param.name for param in configurable],
-            "all_have_valid_defaults": all(
-                self._is_valid_default_value(param.default_value) and param.default_type != "complex"
-                for param in configurable
-            ),
-        }
-
-        self.stats["methods_scanned"] += 1
-        method_param_count = sum(1 for param in parameters if param.name != "self")
-        self.stats["total_parameters"] += method_param_count
-        if configurable_summary["count"] > 0:
-            self.stats["methods_with_defaults"] += 1
-            self.stats["parameters_with_defaults"] += configurable_summary["count"]
-
         record = MethodRecord(
             unique_id=unique_id,
             canonical_name=canonical_name,
@@ -244,8 +231,39 @@ class CatalogueBuilder:
             line_number=node.lineno,
             source_hash=source_hash,
             last_analyzed=datetime.now(UTC).isoformat(),
-            configurable_parameters=configurable_summary,
         )
+        self._register_method(record)
+
+    def _register_method(self, record: MethodRecord) -> None:
+        configurable = [
+            param for param in record.input_parameters if param.has_default and param.name != "self"
+        ]
+        record.configurable_parameters = {
+            "count": len(configurable),
+            "names": [param.name for param in configurable],
+            "all_have_valid_defaults": all(
+                self._is_valid_default_value(param.default_value) and param.default_type != "complex"
+                for param in configurable
+            ),
+        }
+
+        self.stats["methods_scanned"] += 1
+        method_param_count = sum(1 for param in record.input_parameters if param.name != "self")
+        self.stats["total_parameters"] += method_param_count
+        if configurable:
+            self.stats["methods_with_defaults"] += 1
+            self.stats["parameters_with_defaults"] += len(configurable)
+
+        for param in record.input_parameters:
+            if not param.has_default:
+                continue
+            if param.default_type == "complex":
+                self.complex_defaults.append(
+                    (record.canonical_name, param.name, str(param.default_value))
+                )
+            else:
+                self.stats["default_type_counts"][param.default_type] += 1
+
         self.methods.append(record)
 
     def _extract_parameters(
@@ -295,17 +313,23 @@ class CatalogueBuilder:
         default_type = None
         default_source = None
 
-        if has_default and default_node is not None:
+        if vararg:
+            has_default = True
+            required = False
+            default_value = "tuple()"
+            default_type = "literal"
+        elif kwarg:
+            has_default = True
+            required = False
+            default_value = "dict()"
+            default_type = "literal"
+        elif has_default and default_node is not None:
             value, default_type, rendered = self._evaluate_default(default_node)
             default_value = value
             default_source = f"line {getattr(default_node, 'lineno', arg.lineno)}"
-            if default_type == "complex":
-                self.complex_defaults.append((canonical_name, name, rendered))
-            else:
-                self.stats["default_type_counts"][default_type] += 1
         else:
             if vararg or kwarg:
-                required = True  # comply with validation rules
+                required = True  # fallback, though branch should not trigger
 
         return ParameterRecord(
             name=name,
@@ -352,6 +376,169 @@ class CatalogueBuilder:
         if isinstance(value, dict):
             return {str(key): CatalogueBuilder._make_json_safe(val) for key, val in value.items()}
         return repr(value)
+
+    def _is_dataclass(self, class_node: ast.ClassDef) -> bool:
+        for decorator in class_node.decorator_list:
+            name = self._safe_unparse(decorator)
+            if not name:
+                continue
+            if name.split("(")[0].endswith("dataclass"):
+                return True
+        return False
+
+    def _add_dataclass_init(self, class_node: ast.ClassDef, file_path: Path, module_name: str) -> None:
+        field_parameters = self._extract_dataclass_fields(class_node)
+        if not field_parameters:
+            return
+        if not any(param.has_default for param in field_parameters):
+            return
+
+        rel_path = file_path.relative_to(self.repo_root)
+        canonical_name = f"{module_name}.{class_node.name}.__init__"
+        unique_id = hashlib.sha256(
+            f"{rel_path}:{class_node.name}:__init__:{class_node.lineno}".encode("utf-8")
+        ).hexdigest()[:16]
+
+        parameters = [
+            ParameterRecord(
+                name="self",
+                type_hint=None,
+                required=True,
+                has_default=False,
+                default_value=None,
+                default_type=None,
+                default_source=None,
+            )
+        ]
+        parameters.extend(field_parameters)
+
+        signature = f"__init__({', '.join(param.name for param in parameters)})"
+        layer = self._determine_layer(rel_path)
+        calibration = self._determine_calibration_status(
+            canonical_name, "__init__", class_node.name, rel_path
+        )
+        source_hash = hashlib.sha256(signature.encode("utf-8")).hexdigest()[:16]
+
+        record = MethodRecord(
+            unique_id=unique_id,
+            canonical_name=canonical_name,
+            method_name="__init__",
+            class_name=class_node.name,
+            file_path=str(rel_path),
+            layer=layer,
+            layer_position=self.layer_counts[layer],
+            signature=signature,
+            input_parameters=parameters,
+            return_type=None,
+            requires_calibration=calibration["requires"],
+            calibration_status=calibration["status"],
+            calibration_location=calibration["location"],
+            docstring=f"Auto-generated dataclass __init__ for {class_node.name}",
+            decorators=["dataclass(auto-generated)"],
+            is_async=False,
+            is_private=False,
+            is_abstract=False,
+            complexity="low",
+            line_number=class_node.lineno,
+            source_hash=source_hash,
+            last_analyzed=datetime.now(UTC).isoformat(),
+            auto_generated=True,
+        )
+        self.layer_counts[layer] += 1
+        self._register_method(record)
+
+    def _extract_dataclass_fields(self, class_node: ast.ClassDef) -> List[ParameterRecord]:
+        parameters: list[ParameterRecord] = []
+        for node in class_node.body:
+            if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+                param = self._convert_annassign_to_parameter(node)
+                if param:
+                    parameters.append(param)
+        return parameters
+
+    def _convert_annassign_to_parameter(self, node: ast.AnnAssign) -> Optional[ParameterRecord]:
+        if node.annotation and self._annotation_is_classvar(node.annotation):
+            return None
+        if not isinstance(node.target, ast.Name):
+            return None
+
+        if isinstance(node.value, ast.Call) and self._is_field_call(node.value):
+            if not self._field_included_in_init(node.value):
+                return None
+
+        name = node.target.id
+        type_hint = self._safe_unparse(node.annotation) if node.annotation else None
+        has_default = node.value is not None
+        default_value = None
+        default_type = None
+        default_source = None
+
+        if node.value is not None:
+            default_value, default_type, default_source = self._resolve_dataclass_default(node.value)
+            if default_value is None:
+                has_default = False
+
+        return ParameterRecord(
+            name=name,
+            type_hint=type_hint,
+            required=not has_default,
+            has_default=has_default,
+            default_value=default_value,
+            default_type=default_type,
+            default_source=default_source,
+        )
+
+    def _resolve_dataclass_default(
+        self, value_node: ast.expr
+    ) -> Tuple[Optional[Any], Optional[str], Optional[str]]:
+        if isinstance(value_node, ast.Call) and self._is_field_call(value_node):
+            default_kw = next((kw for kw in value_node.keywords if kw.arg == "default"), None)
+            default_factory_kw = next(
+                (kw for kw in value_node.keywords if kw.arg == "default_factory"), None
+            )
+
+            if default_kw is not None:
+                value, default_type, _ = self._evaluate_default(default_kw.value)
+                return value, default_type, f"line {getattr(default_kw.value, 'lineno', value_node.lineno)}"
+
+            if default_factory_kw is not None:
+                factory_expr = self._safe_unparse(default_factory_kw.value)
+                return (
+                    f"factory:{factory_expr}",
+                    "complex",
+                    f"line {getattr(default_factory_kw.value, 'lineno', value_node.lineno)}",
+                )
+
+            if value_node.args:
+                value, default_type, _ = self._evaluate_default(value_node.args[0])
+                return value, default_type, f"line {getattr(value_node.args[0], 'lineno', value_node.lineno)}"
+
+            return None, None, None
+
+        value, default_type, _ = self._evaluate_default(value_node)
+        return value, default_type, f"line {getattr(value_node, 'lineno', 0)}"
+
+    def _annotation_is_classvar(self, annotation: ast.AST) -> bool:
+        text = self._safe_unparse(annotation) or ""
+        return "ClassVar" in text
+
+    @staticmethod
+    def _is_field_call(call_node: ast.Call) -> bool:
+        target = None
+        if isinstance(call_node.func, ast.Name):
+            target = call_node.func.id
+        elif isinstance(call_node.func, ast.Attribute):
+            target = call_node.func.attr
+        return target == "field"
+
+    def _field_included_in_init(self, call_node: ast.Call) -> bool:
+        for kw in call_node.keywords:
+            if kw.arg == "init":
+                try:
+                    return bool(ast.literal_eval(kw.value))
+                except Exception:
+                    return True
+        return True
 
     @staticmethod
     def _safe_unparse(node: Optional[ast.AST]) -> Optional[str]:

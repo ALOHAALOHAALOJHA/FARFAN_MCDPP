@@ -51,7 +51,11 @@ def test_internal_consistency() -> None:
 
 def test_catalogue_matches_source() -> None:
     catalogue = load_json(CATALOG_PATH)
-    method_ids = [name for name in catalogue if not name.startswith("_")]
+    method_ids = [
+        name
+        for name, data in catalogue.items()
+        if not name.startswith("_") and not data.get("auto_generated")
+    ]
     rng = random.Random(1337)
     sample_size = min(50, len(method_ids))
     sample = rng.sample(method_ids, sample_size)
@@ -250,6 +254,15 @@ def _build_param_record(name: str, has_default: bool, default_node: ast.expr | N
         "has_default": has_default,
         "default_value": None,
     }
+
+    if name.startswith("**"):
+        record["has_default"] = True
+        record["default_value"] = "dict()"
+        return record
+    if name.startswith("*"):
+        record["has_default"] = True
+        record["default_value"] = "tuple()"
+        return record
 
     if has_default and default_node is not None:
         record["default_value"] = _resolve_default_value(default_node)

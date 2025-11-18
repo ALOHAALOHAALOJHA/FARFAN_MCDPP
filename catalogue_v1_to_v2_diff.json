@@ -1,18 +1,56 @@
 {
-  "generated_at": "2025-11-18T01:39:31.915763+00:00",
+  "generated_at": "2025-11-18T02:09:00.071755+00:00",
   "baseline_catalog": "/Users/recovered/Library/CloudStorage/OneDrive-DefensoriadelPueblo/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_/config/canonical_method_catalog.json",
   "v2_catalog": "/Users/recovered/Library/CloudStorage/OneDrive-DefensoriadelPueblo/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_/canonical_method_catalogue_v2.json",
   "methods_added": [
+    "src.saaaaaa.analysis.Analyzer_one.CanonicalQuestionContract.__init__",
+    "src.saaaaaa.analysis.bayesian_multilevel_system.MacroLevelAnalysis.__init__",
+    "src.saaaaaa.analysis.bayesian_multilevel_system.MesoLevelAnalysis.__init__",
+    "src.saaaaaa.analysis.bayesian_multilevel_system.MicroLevelAnalysis.__init__",
+    "src.saaaaaa.analysis.bayesian_multilevel_system.PeerContext.__init__",
+    "src.saaaaaa.analysis.bayesian_multilevel_system.ValidationRule.__init__",
+    "src.saaaaaa.analysis.contradiction_deteccion.ContradictionEvidence.__init__",
+    "src.saaaaaa.analysis.contradiction_deteccion.PolicyStatement.__init__",
+    "src.saaaaaa.analysis.derek_beach.MetaNode.__init__",
+    "src.saaaaaa.analysis.financiero_viabilidad_tablas.CausalEdge.__init__",
+    "src.saaaaaa.analysis.financiero_viabilidad_tablas.CausalEffect.__init__",
+    "src.saaaaaa.analysis.financiero_viabilidad_tablas.CausalNode.__init__",
+    "src.saaaaaa.analysis.financiero_viabilidad_tablas.ExtractedTable.__init__",
+    "src.saaaaaa.analysis.macro_prompts.BayesianPortfolio.__init__",
+    "src.saaaaaa.analysis.macro_prompts.ContradictionReport.__init__",
+    "src.saaaaaa.analysis.macro_prompts.CoverageAnalysis.__init__",
+    "src.saaaaaa.analysis.macro_prompts.ImplementationRoadmap.__init__",
+    "src.saaaaaa.analysis.macro_prompts.PeerNormalization.__init__",
+    "src.saaaaaa.analysis.meso_cluster_analysis.MetricViolation.__init__",
+    "src.saaaaaa.analysis.micro_prompts.AuditResult.__init__",
+    "src.saaaaaa.analysis.micro_prompts.PosteriorJustification.__init__",
+    "src.saaaaaa.analysis.micro_prompts.ProvenanceNode.__init__",
+    "src.saaaaaa.analysis.micro_prompts.QMCMRecord.__init__",
+    "src.saaaaaa.analysis.micro_prompts.Signal.__init__",
+    "src.saaaaaa.analysis.micro_prompts.StressTestResult.__init__",
+    "src.saaaaaa.analysis.recommendation_engine.Recommendation.__init__",
     "src.saaaaaa.analysis.recommendation_engine.RecommendationEngine._render_template",
     "src.saaaaaa.analysis.recommendation_engine.RecommendationEngine._validate_budget",
     "src.saaaaaa.analysis.recommendation_engine.RecommendationEngine._validate_execution",
     "src.saaaaaa.analysis.recommendation_engine.RecommendationEngine._validate_ruleset_metadata",
+    "src.saaaaaa.analysis.recommendation_engine.RecommendationSet.__init__",
+    "src.saaaaaa.analysis.report_assembly.AnalysisReport.__init__",
+    "src.saaaaaa.analysis.report_assembly.QuestionAnalysis.__init__",
+    "src.saaaaaa.analysis.report_assembly.ReportMetadata.__init__",
+    "src.saaaaaa.analysis.scoring.Evidence.__init__",
+    "src.saaaaaa.analysis.scoring.ScoredResult.__init__",
+    "src.saaaaaa.analysis.scoring.ScoringConfig.__init__",
+    "src.saaaaaa.analysis.scoring.scoring.ModalityConfig.__init__",
+    "src.saaaaaa.analysis.scoring.scoring.ScoredResult.__init__",
     "src.saaaaaa.analysis.spc_causal_bridge.SPCCausalBridge.__init__",
     "src.saaaaaa.analysis.spc_causal_bridge.SPCCausalBridge._compute_causal_weight",
     "src.saaaaaa.analysis.spc_causal_bridge.SPCCausalBridge._remove_cycles",
     "src.saaaaaa.analysis.spc_causal_bridge.SPCCausalBridge.build_causal_graph_from_spc",
     "src.saaaaaa.analysis.spc_causal_bridge.SPCCausalBridge.enhance_graph_with_content",
+    "src.saaaaaa.analysis.teoria_cambio.AdvancedGraphNode.__init__",
     "src.saaaaaa.analysis.teoria_cambio.TeoriaCambio.construir_grafo_from_spc",
+    "src.saaaaaa.analysis.teoria_cambio.ValidacionResultado.__init__",
+    "src.saaaaaa.analysis.teoria_cambio.ValidationMetric.__init__",
     "src.saaaaaa.api.auth_admin.AdminAuthenticator.__init__",
     "src.saaaaaa.api.auth_admin.AdminAuthenticator._check_rate_limit",
     "src.saaaaaa.api.auth_admin.AdminAuthenticator._generate_session_id",
@@ -28,6 +66,7 @@
     "src.saaaaaa.api.auth_admin.AdminSession.update_activity",
     "src.saaaaaa.api.auth_admin.get_authenticator",
     "src.saaaaaa.api.auth_admin.require_auth",
+    "src.saaaaaa.api.pdet_colombia_data.PDETMunicipality.__init__",
     "src.saaaaaa.api.pdet_colombia_data.get_municipalities_by_department",
     "src.saaaaaa.api.pdet_colombia_data.get_municipalities_by_subregion",
     "src.saaaaaa.api.pdet_colombia_data.get_municipality_by_name",
@@ -42,6 +81,7 @@
     "src.saaaaaa.api.pipeline_connector.PipelineConnector.get_job_status",
     "src.saaaaaa.api.pipeline_connector.PipelineConnector.get_result",
     "src.saaaaaa.api.pipeline_connector.get_pipeline_connector",
+    "src.saaaaaa.audit.audit_system.AuditFinding.__init__",
     "src.saaaaaa.audit.audit_system.AuditFinding.__str__",
     "src.saaaaaa.audit.audit_system.AuditFinding.to_dict",
     "src.saaaaaa.audit.audit_system.AuditSystem.__init__",
@@ -54,8 +94,13 @@
     "src.saaaaaa.audit.audit_system.AuditSystem.audit_questionnaire_access",
     "src.saaaaaa.audit.audit_system.AuditSystem.generate_audit_report",
     "src.saaaaaa.audit.audit_system.AuditSystem.print_summary",
+    "src.saaaaaa.audit.audit_system.ExecutorAuditInfo.__init__",
     "src.saaaaaa.audit.audit_system.main",
+    "src.saaaaaa.compat.native_check.NativeCheckResult.__init__",
     "src.saaaaaa.compat.safe_imports.ImportErrorDetailed.__init__",
+    "src.saaaaaa.concurrency.concurrency.TaskMetrics.__init__",
+    "src.saaaaaa.concurrency.concurrency.TaskResult.__init__",
+    "src.saaaaaa.concurrency.concurrency.WorkerPoolConfig.__init__",
     "src.saaaaaa.config.paths._detect_project_root",
     "src.saaaaaa.config.paths.ensure_directories_exist",
     "src.saaaaaa.config.paths.get_cache_path",
@@ -89,11 +134,15 @@
     "src.saaaaaa.core.calibration.compatibility.ContextualLayerEvaluator.evaluate_policy_layer",
     "src.saaaaaa.core.calibration.compatibility.ContextualLayerEvaluator.evaluate_question",
     "src.saaaaaa.core.calibration.compatibility.ContextualLayerEvaluator.evaluate_question_layer",
+    "src.saaaaaa.core.calibration.config.CalibrationSystemConfig.__init__",
     "src.saaaaaa.core.calibration.config.CalibrationSystemConfig.compute_system_hash",
     "src.saaaaaa.core.calibration.config.CalibrationSystemConfig.to_dict",
+    "src.saaaaaa.core.calibration.config.ChoquetAggregationConfig.__init__",
     "src.saaaaaa.core.calibration.config.ChoquetAggregationConfig.__post_init__",
     "src.saaaaaa.core.calibration.config.ChoquetAggregationConfig.compute_hash",
+    "src.saaaaaa.core.calibration.config.MetaLayerConfig.__init__",
     "src.saaaaaa.core.calibration.config.MetaLayerConfig.__post_init__",
+    "src.saaaaaa.core.calibration.config.UnitLayerConfig.__init__",
     "src.saaaaaa.core.calibration.config.UnitLayerConfig.__post_init__",
     "src.saaaaaa.core.calibration.config.UnitLayerConfig.from_env",
     "src.saaaaaa.core.calibration.congruence_layer.CongruenceLayerEvaluator.__init__",
@@ -101,6 +150,7 @@
     "src.saaaaaa.core.calibration.congruence_layer.CongruenceLayerEvaluator._compute_scale_congruence",
     "src.saaaaaa.core.calibration.congruence_layer.CongruenceLayerEvaluator._compute_semantic_congruence",
     "src.saaaaaa.core.calibration.congruence_layer.CongruenceLayerEvaluator.evaluate",
+    "src.saaaaaa.core.calibration.data_structures.CalibrationResult.__init__",
     "src.saaaaaa.core.calibration.data_structures.CalibrationResult.__post_init__",
     "src.saaaaaa.core.calibration.data_structures.CalibrationResult.to_certificate_dict",
     "src.saaaaaa.core.calibration.data_structures.CalibrationResult.to_dict",
@@ -114,6 +164,7 @@
     "src.saaaaaa.core.calibration.data_structures.ContextTuple.to_dict",
     "src.saaaaaa.core.calibration.data_structures.InteractionTerm.compute",
     "src.saaaaaa.core.calibration.data_structures.InteractionTerm.to_dict",
+    "src.saaaaaa.core.calibration.data_structures.LayerScore.__init__",
     "src.saaaaaa.core.calibration.data_structures.LayerScore.__post_init__",
     "src.saaaaaa.core.calibration.data_structures.LayerScore.to_dict",
     "src.saaaaaa.core.calibration.engine.CalibrationEngine.__init__",
@@ -159,6 +210,7 @@
     "src.saaaaaa.core.calibration.meta_layer.MetaLayerEvaluator.evaluate",
     "src.saaaaaa.core.calibration.orchestrator.CalibrationOrchestrator.__init__",
     "src.saaaaaa.core.calibration.orchestrator.CalibrationOrchestrator.calibrate",
+    "src.saaaaaa.core.calibration.pdt_structure.PDTStructure.__init__",
     "src.saaaaaa.core.calibration.protocols.BaseLayerEvaluatorProtocol.evaluate",
     "src.saaaaaa.core.calibration.protocols.ChainLayerEvaluatorProtocol.evaluate",
     "src.saaaaaa.core.calibration.protocols.CongruenceLayerEvaluatorProtocol.evaluate",
@@ -186,6 +238,8 @@
     "src.saaaaaa.core.calibration.validators.CalibrationValidator.validate_layer_completeness",
     "src.saaaaaa.core.calibration.validators.validate_certificate",
     "src.saaaaaa.core.calibration.validators.validate_config_files",
+    "src.saaaaaa.core.layer_influence_model.LayerActivationRule.__init__",
+    "src.saaaaaa.core.layer_influence_model.LayerInfluence.__init__",
     "src.saaaaaa.core.orchestrator.__init__._QuestionnaireProvider.get_canonical",
     "src.saaaaaa.core.orchestrator.arg_router.ExtendedArgRouter.__init__",
     "src.saaaaaa.core.orchestrator.arg_router.ExtendedArgRouter._build_special_routes",
@@ -195,6 +249,7 @@
     "src.saaaaaa.core.orchestrator.arg_router.ExtendedArgRouter.get_special_route_coverage",
     "src.saaaaaa.core.orchestrator.arg_router.ExtendedArgRouter.list_special_routes",
     "src.saaaaaa.core.orchestrator.arg_router.ExtendedArgRouter.route",
+    "src.saaaaaa.core.orchestrator.arg_router.RoutingMetrics.__init__",
     "src.saaaaaa.core.orchestrator.bayesian_module_factory.BayesianEvidenceScorer.__init__",
     "src.saaaaaa.core.orchestrator.bayesian_module_factory.BayesianMechanismInference.__init__",
     "src.saaaaaa.core.orchestrator.bayesian_module_factory.BayesianModuleFactory.__init__",
@@ -212,22 +267,38 @@
     "src.saaaaaa.core.orchestrator.bayesian_module_factory.BayesianNumericalAnalyzer.__init__",
     "src.saaaaaa.core.orchestrator.bayesian_module_factory.BayesianSourceReliability.__init__",
     "src.saaaaaa.core.orchestrator.bayesian_module_factory.BayesianTemporalCoherence.__init__",
+    "src.saaaaaa.core.orchestrator.calibration_context.CalibrationContext.__init__",
+    "src.saaaaaa.core.orchestrator.calibration_context.CalibrationModifier.__init__",
     "src.saaaaaa.core.orchestrator.calibration_registry.MethodCalibration.__post_init__",
     "src.saaaaaa.core.orchestrator.calibration_registry._get_default_calibration",
     "src.saaaaaa.core.orchestrator.calibration_registry._load_calibration_data",
+    "src.saaaaaa.core.orchestrator.chunk_router.ChunkRoute.__init__",
     "src.saaaaaa.core.orchestrator.chunk_router.ChunkRouter.get_relevant_executors",
     "src.saaaaaa.core.orchestrator.chunk_router.ChunkRouter.route_chunk",
     "src.saaaaaa.core.orchestrator.chunk_router.ChunkRouter.should_use_full_graph",
+    "src.saaaaaa.core.orchestrator.contract_loader.LoadError.__init__",
+    "src.saaaaaa.core.orchestrator.contract_loader.LoadResult.__init__",
+    "src.saaaaaa.core.orchestrator.core.ChunkData.__init__",
+    "src.saaaaaa.core.orchestrator.core.Evidence.__init__",
     "src.saaaaaa.core.orchestrator.core.MethodExecutor.get_routing_metrics",
+    "src.saaaaaa.core.orchestrator.core.MicroQuestionRun.__init__",
     "src.saaaaaa.core.orchestrator.core.Orchestrator.execute_sophisticated_engineering_operation",
     "src.saaaaaa.core.orchestrator.core.Orchestrator.process",
+    "src.saaaaaa.core.orchestrator.core.PhaseResult.__init__",
+    "src.saaaaaa.core.orchestrator.core.PreprocessedDocument.__init__",
     "src.saaaaaa.core.orchestrator.core.PreprocessedDocument.__post_init__",
+    "src.saaaaaa.core.orchestrator.core.ScoredMicroQuestion.__init__",
+    "src.saaaaaa.core.orchestrator.evidence_registry.EvidenceRecord.__init__",
+    "src.saaaaaa.core.orchestrator.evidence_registry.ProvenanceDAG.__init__",
+    "src.saaaaaa.core.orchestrator.evidence_registry.ProvenanceNode.__init__",
+    "src.saaaaaa.core.orchestrator.executor_config.ExecutorMetadata.__init__",
     "src.saaaaaa.core.orchestrator.executors.AdvancedDataFlowExecutor._filter_methods_for_chunk",
     "src.saaaaaa.core.orchestrator.executors.AdvancedDataFlowExecutor._get_policy_area_for_question",
     "src.saaaaaa.core.orchestrator.executors.AdvancedDataFlowExecutor._validate_executor_config",
     "src.saaaaaa.core.orchestrator.executors.AdvancedDataFlowExecutor.execute_chunk",
     "src.saaaaaa.core.orchestrator.executors.AdvancedDataFlowExecutor.get_calibration_manifest_data",
     "src.saaaaaa.core.orchestrator.executors.D1Q1_Executor.receive_and_process_work_package",
+    "src.saaaaaa.core.orchestrator.executors.ExecutionMetrics.__init__",
     "src.saaaaaa.core.orchestrator.executors.ExecutorBase._check_calibration",
     "src.saaaaaa.core.orchestrator.executors.ExecutorBase._check_dependencies",
     "src.saaaaaa.core.orchestrator.executors.ExecutorBase._check_resources",
@@ -235,6 +306,7 @@
     "src.saaaaaa.core.orchestrator.executors.ExecutorBase.validate_before_execution",
     "src.saaaaaa.core.orchestrator.executors.FrontierExecutorOrchestrator.load_policy_signals",
     "src.saaaaaa.core.orchestrator.executors.FrontierExecutorOrchestrator.process_policy_area_chunks",
+    "src.saaaaaa.core.orchestrator.executors.ValidationResult.__init__",
     "src.saaaaaa.core.orchestrator.executors._ensure_rng",
     "src.saaaaaa.core.orchestrator.executors.deterministic",
     "src.saaaaaa.core.orchestrator.provider._enforce_boundary",
@@ -245,7 +317,10 @@
     "src.saaaaaa.core.orchestrator.questionnaire._compute_hash",
     "src.saaaaaa.core.orchestrator.questionnaire._validate_questionnaire_structure",
     "src.saaaaaa.core.orchestrator.questionnaire.load_questionnaire",
+    "src.saaaaaa.core.orchestrator.questionnaire_resource_provider.Pattern.__init__",
     "src.saaaaaa.core.orchestrator.questionnaire_resource_provider.QuestionnaireResourceProvider.get_policy_area_for_question",
+    "src.saaaaaa.core.orchestrator.questionnaire_resource_provider.ValidationSpec.__init__",
+    "src.saaaaaa.core.orchestrator.seed_registry.SeedRecord.__init__",
     "src.saaaaaa.core.orchestrator.seed_registry.SeedRegistry.__init__",
     "src.saaaaaa.core.orchestrator.seed_registry.SeedRegistry.clear_cache",
     "src.saaaaaa.core.orchestrator.seed_registry.SeedRegistry.derive_seed",
@@ -257,6 +332,7 @@
     "src.saaaaaa.core.orchestrator.seed_registry.reset_global_seed_registry",
     "src.saaaaaa.core.orchestrator.settings._get_bool",
     "src.saaaaaa.core.orchestrator.settings._get_int",
+    "src.saaaaaa.core.orchestrator.signal_consumption.SignalConsumptionProof.__init__",
     "src.saaaaaa.core.orchestrator.signal_consumption.SignalConsumptionProof.get_consumption_proof",
     "src.saaaaaa.core.orchestrator.signal_consumption.SignalConsumptionProof.record_pattern_match",
     "src.saaaaaa.core.orchestrator.signal_consumption.SignalConsumptionProof.save_to_file",
@@ -272,6 +348,8 @@
     "src.saaaaaa.core.orchestrator.signal_loader.extract_patterns_by_policy_area",
     "src.saaaaaa.core.orchestrator.signal_loader.extract_thresholds",
     "src.saaaaaa.core.orchestrator.signal_loader.get_git_sha",
+    "src.saaaaaa.core.orchestrator.signals.CacheEntry.__init__",
+    "src.saaaaaa.core.orchestrator.signals.SignalUsageMetadata.__init__",
     "src.saaaaaa.core.orchestrator.verification_manifest.VerificationManifest.__init__",
     "src.saaaaaa.core.orchestrator.verification_manifest.VerificationManifest._compute_hmac",
     "src.saaaaaa.core.orchestrator.verification_manifest.VerificationManifest.add_artifact",
@@ -290,7 +368,9 @@
     "src.saaaaaa.core.orchestrator.versions.get_all_versions",
     "src.saaaaaa.core.ports.PortCPPAdapter.to_preprocessed_document",
     "src.saaaaaa.core.ports.PortSPCAdapter.to_preprocessed_document",
+    "src.saaaaaa.core.wiring.bootstrap.WiringComponents.__init__",
     "src.saaaaaa.core.wiring.contracts.SPCDeliverable.validate_completeness",
+    "src.saaaaaa.core.wiring.feature_flags.WiringFeatureFlags.__init__",
     "src.saaaaaa.observability.opentelemetry_integration.ExecutorSpanDecorator.__call__",
     "src.saaaaaa.observability.opentelemetry_integration.ExecutorSpanDecorator.__init__",
     "src.saaaaaa.observability.opentelemetry_integration.OpenTelemetryObservability.__init__",
@@ -299,6 +379,7 @@
     "src.saaaaaa.observability.opentelemetry_integration.OpenTelemetryObservability.get_statistics",
     "src.saaaaaa.observability.opentelemetry_integration.OpenTelemetryObservability.get_tracer",
     "src.saaaaaa.observability.opentelemetry_integration.OpenTelemetryObservability.print_summary",
+    "src.saaaaaa.observability.opentelemetry_integration.Span.__init__",
     "src.saaaaaa.observability.opentelemetry_integration.Span.__post_init__",
     "src.saaaaaa.observability.opentelemetry_integration.Span.add_event",
     "src.saaaaaa.observability.opentelemetry_integration.Span.duration_ms",
@@ -308,6 +389,7 @@
     "src.saaaaaa.observability.opentelemetry_integration.Span.set_attribute",
     "src.saaaaaa.observability.opentelemetry_integration.Span.set_status",
     "src.saaaaaa.observability.opentelemetry_integration.Span.to_dict",
+    "src.saaaaaa.observability.opentelemetry_integration.SpanContext.__init__",
     "src.saaaaaa.observability.opentelemetry_integration.SpanContext.__post_init__",
     "src.saaaaaa.observability.opentelemetry_integration.Tracer.__init__",
     "src.saaaaaa.observability.opentelemetry_integration.Tracer.end_span",
@@ -319,6 +401,7 @@
     "src.saaaaaa.observability.opentelemetry_integration.get_global_observability",
     "src.saaaaaa.observability.opentelemetry_integration.get_tracer",
     "src.saaaaaa.optimization.rl_strategy.BanditAlgorithm.select_arm",
+    "src.saaaaaa.optimization.rl_strategy.BanditArm.__init__",
     "src.saaaaaa.optimization.rl_strategy.BanditArm.mean_cost_usd",
     "src.saaaaaa.optimization.rl_strategy.BanditArm.mean_duration_ms",
     "src.saaaaaa.optimization.rl_strategy.BanditArm.mean_reward",
@@ -329,6 +412,7 @@
     "src.saaaaaa.optimization.rl_strategy.BanditArm.update",
     "src.saaaaaa.optimization.rl_strategy.EpsilonGreedyAlgorithm.__init__",
     "src.saaaaaa.optimization.rl_strategy.EpsilonGreedyAlgorithm.select_arm",
+    "src.saaaaaa.optimization.rl_strategy.ExecutorMetrics.__init__",
     "src.saaaaaa.optimization.rl_strategy.ExecutorMetrics.reward",
     "src.saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.__init__",
     "src.saaaaaa.optimization.rl_strategy.RLStrategyOptimizer._create_algorithm",
@@ -342,8 +426,10 @@
     "src.saaaaaa.optimization.rl_strategy.ThompsonSamplingAlgorithm.select_arm",
     "src.saaaaaa.optimization.rl_strategy.UCB1Algorithm.__init__",
     "src.saaaaaa.optimization.rl_strategy.UCB1Algorithm.select_arm",
+    "src.saaaaaa.patterns.event_tracking.Event.__init__",
     "src.saaaaaa.patterns.event_tracking.Event.__str__",
     "src.saaaaaa.patterns.event_tracking.Event.to_dict",
+    "src.saaaaaa.patterns.event_tracking.EventSpan.__init__",
     "src.saaaaaa.patterns.event_tracking.EventSpan.complete",
     "src.saaaaaa.patterns.event_tracking.EventSpan.duration_ms",
     "src.saaaaaa.patterns.event_tracking.EventSpan.is_complete",
@@ -361,6 +447,7 @@
     "src.saaaaaa.patterns.event_tracking.get_global_tracker",
     "src.saaaaaa.patterns.event_tracking.record_event",
     "src.saaaaaa.patterns.event_tracking.span",
+    "src.saaaaaa.patterns.saga.SagaEvent.__init__",
     "src.saaaaaa.patterns.saga.SagaEvent.to_dict",
     "src.saaaaaa.patterns.saga.SagaOrchestrator.__init__",
     "src.saaaaaa.patterns.saga.SagaOrchestrator._compensate",
@@ -370,18 +457,45 @@
     "src.saaaaaa.patterns.saga.SagaOrchestrator.execute",
     "src.saaaaaa.patterns.saga.SagaOrchestrator.get_audit_trail",
     "src.saaaaaa.patterns.saga.SagaOrchestrator.to_dict",
+    "src.saaaaaa.patterns.saga.SagaStep.__init__",
     "src.saaaaaa.patterns.saga.SagaStep.compensate",
     "src.saaaaaa.patterns.saga.SagaStep.execute",
     "src.saaaaaa.patterns.saga.compensate_api_call",
     "src.saaaaaa.patterns.saga.compensate_database_insert",
     "src.saaaaaa.patterns.saga.compensate_file_write",
+    "src.saaaaaa.processing.aggregation.AreaScore.__init__",
+    "src.saaaaaa.processing.aggregation.ClusterScore.__init__",
+    "src.saaaaaa.processing.aggregation.DimensionScore.__init__",
+    "src.saaaaaa.processing.aggregation.MacroScore.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.Budget.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.CanonPolicyPackage.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.Chunk.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.ChunkGraph.__init__",
     "src.saaaaaa.processing.cpp_ingestion.models.ChunkGraph.add_chunk",
     "src.saaaaaa.processing.cpp_ingestion.models.ChunkGraph.add_edge",
+    "src.saaaaaa.processing.cpp_ingestion.models.Confidence.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.Entity.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.GeoFacet.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.IntegrityIndex.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.KPI.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.PolicyFacet.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.PolicyManifest.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.ProvenanceMap.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.QualityMetrics.__init__",
+    "src.saaaaaa.processing.cpp_ingestion.models.TimeFacet.__init__",
+    "src.saaaaaa.processing.document_ingestion.RawDocument.__init__",
+    "src.saaaaaa.processing.embedding_policy.ChunkingConfig.__init__",
+    "src.saaaaaa.processing.embedding_policy.PolicyEmbeddingConfig.__init__",
+    "src.saaaaaa.processing.policy_processor.EvidenceBundle.__init__",
+    "src.saaaaaa.processing.policy_processor.ProcessorConfig.__init__",
+    "src.saaaaaa.processing.semantic_chunking_policy.SemanticConfig.__init__",
+    "src.saaaaaa.processing.spc_ingestion.__init__.CPPIngestionPipeline._load_document_text",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter.__init__",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._build_provenance",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._calculate_quality_metrics",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._convert_smart_chunk_to_chunk",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._extract_budget",
+    "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._extract_budget_year",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._extract_entities",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._extract_geo_facets",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._extract_kpi",
@@ -390,6 +504,7 @@
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._generate_integrity_index",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter._preserve_spc_rich_data",
     "src.saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter.convert_to_canon_package",
+    "src.saaaaaa.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_quality_metrics",
     "src.saaaaaa.utils.contract_adapters.ContractMigrationHelper.log_migration_status",
     "src.saaaaaa.utils.contract_adapters.ContractMigrationHelper.wrap_v1_function_with_v2_contracts",
     "src.saaaaaa.utils.contract_adapters.adapt_analysis_input_v1_to_v2",
@@ -403,6 +518,7 @@
     "src.saaaaaa.utils.contract_io._canonical_json_bytes",
     "src.saaaaaa.utils.contract_io.sha256_hex",
     "src.saaaaaa.utils.contract_io.utcnow_iso",
+    "src.saaaaaa.utils.determinism.seeds.DeterministicContext.__init__",
     "src.saaaaaa.utils.determinism_helpers._seed_from",
     "src.saaaaaa.utils.determinism_helpers.create_deterministic_rng",
     "src.saaaaaa.utils.determinism_helpers.deterministic",
@@ -443,9 +559,14 @@
     "src.saaaaaa.utils.method_config_loader.MethodConfigLoader.get_parameter_spec",
     "src.saaaaaa.utils.method_config_loader.MethodConfigLoader.validate_parameter_value",
     "src.saaaaaa.utils.method_config_loader.MethodConfigLoader.validate_spec_schema",
+    "src.saaaaaa.utils.proof_generator.ProofData.__init__",
+    "src.saaaaaa.utils.schema_monitor.SchemaStats.__init__",
+    "src.saaaaaa.utils.signature_validator.FunctionSignature.__init__",
     "src.saaaaaa.utils.spc_adapter.SPCAdapter.__init__",
     "src.saaaaaa.utils.spc_adapter.SPCAdapter.to_preprocessed_document",
-    "src.saaaaaa.utils.spc_adapter.adapt_spc_to_orchestrator"
+    "src.saaaaaa.utils.spc_adapter.adapt_spc_to_orchestrator",
+    "src.saaaaaa.utils.validation.architecture_validator.ArchitectureValidationResult.__init__",
+    "src.saaaaaa.utils.validation_engine.ValidationReport.__init__"
   ],
   "methods_removed": [
     "architecture_enforcement_audit.AnalysisReport.is_compliant",
@@ -681,6 +802,7 @@
     "src.saaaaaa.core.orchestrator.signals.HashResult.hexdigest",
     "src.saaaaaa.core.orchestrator.signals.blake3.blake3",
     "src.saaaaaa.core.ports.PortCPPAdapter.to_preprocessed",
+    "src.saaaaaa.flux.phases.run_ingest",
     "src.saaaaaa.processing.policy_processor.BayesianConfidenceCalculator.__init__",
     "src.saaaaaa.processing.policy_processor.BayesianConfidenceCalculator.calculate_posterior",
     "src.saaaaaa.processing.policy_processor.TemporalLogicVerifier.verify_temporal_consistency",
@@ -26096,31 +26218,6 @@
         "change": "added_in_v2"
       }
     ],
-    "src.saaaaaa.flux.phases.run_ingest": [
-      {
-        "name": "cfg",
-        "change": "defaults_enriched",
-        "default_value": null,
-        "default_type": null,
-        "default_source": null
-      },
-      {
-        "name": "input_uri",
-        "change": "added_in_v2"
-      },
-      {
-        "name": "policy_unit_id",
-        "change": "added_in_v2"
-      },
-      {
-        "name": "correlation_id",
-        "change": "added_in_v2"
-      },
-      {
-        "name": "envelope_metadata",
-        "change": "added_in_v2"
-      }
-    ],
     "src.saaaaaa.flux.phases.run_normalize": [
       {
         "name": "cfg",
@@ -28270,7 +28367,7 @@
         "change": "defaults_enriched",
         "default_value": 1.0,
         "default_type": "literal",
-        "default_source": "line 486"
+        "default_source": "line 497"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.BayesianNumericalAnalyzer._beta_binomial_posterior": [
@@ -28417,7 +28514,7 @@
         "change": "defaults_enriched",
         "default_value": 10000,
         "default_type": "literal",
-        "default_source": "line 500"
+        "default_source": "line 511"
       },
       {
         "name": "**kwargs",
@@ -28459,7 +28556,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 1610"
+        "default_source": "line 1621"
       },
       {
         "name": "model_tier",
@@ -28472,7 +28569,7 @@
         "change": "defaults_enriched",
         "default_value": "balanced",
         "default_type": "literal",
-        "default_source": "line 1611"
+        "default_source": "line 1622"
       },
       {
         "name": "retry_handler",
@@ -28485,7 +28582,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 1612"
+        "default_source": "line 1623"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.compare_policy_interventions": [
@@ -29006,7 +29103,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 1663"
+        "default_source": "line 1674"
       },
       {
         "name": "use_reranking",
@@ -29019,7 +29116,7 @@
         "change": "defaults_enriched",
         "default_value": true,
         "default_type": "literal",
-        "default_source": "line 1664"
+        "default_source": "line 1675"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.EmbeddingProtocol.encode": [
@@ -29048,7 +29145,7 @@
         "change": "defaults_enriched",
         "default_value": 32,
         "default_type": "literal",
-        "default_source": "line 127"
+        "default_source": "line 138"
       },
       {
         "name": "normalize",
@@ -29061,7 +29158,7 @@
         "change": "defaults_enriched",
         "default_value": true,
         "default_type": "literal",
-        "default_source": "line 127"
+        "default_source": "line 138"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder.__init__": [
@@ -29090,7 +29187,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 902"
+        "default_source": "line 913"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder._apply_mmr": [
@@ -29367,7 +29464,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 1014"
+        "default_source": "line 1025"
       },
       {
         "name": "use_reranking",
@@ -29380,7 +29477,7 @@
         "change": "defaults_enriched",
         "default_value": true,
         "default_type": "literal",
-        "default_source": "line 1015"
+        "default_source": "line 1026"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.PolicyCrossEncoderReranker.__init__": [
@@ -29402,7 +29499,7 @@
         "change": "defaults_enriched",
         "default_value": "DEFAULT_CROSS_ENCODER_MODEL",
         "default_type": "complex",
-        "default_source": "line 771"
+        "default_source": "line 782"
       },
       {
         "name": "max_length",
@@ -29415,7 +29512,7 @@
         "change": "defaults_enriched",
         "default_value": 512,
         "default_type": "literal",
-        "default_source": "line 772"
+        "default_source": "line 783"
       },
       {
         "name": "retry_handler",
@@ -29428,7 +29525,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 773"
+        "default_source": "line 784"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.PolicyCrossEncoderReranker.rerank": [
@@ -29464,7 +29561,7 @@
         "change": "defaults_enriched",
         "default_value": 10,
         "default_type": "literal",
-        "default_source": "line 826"
+        "default_source": "line 837"
       },
       {
         "name": "min_score",
@@ -29477,7 +29574,7 @@
         "change": "defaults_enriched",
         "default_value": 0.0,
         "default_type": "literal",
-        "default_source": "line 827"
+        "default_source": "line 838"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.create_policy_embedder": [
@@ -29492,7 +29589,7 @@
         "change": "defaults_enriched",
         "default_value": "balanced",
         "default_type": "literal",
-        "default_source": "line 1542"
+        "default_source": "line 1553"
       }
     ],
     "src.saaaaaa.processing.embedding_policy.ensure_content_schema": [
@@ -29737,7 +29834,7 @@
         "change": "defaults_enriched",
         "default_value": 0.5,
         "default_type": "literal",
-        "default_source": "line 415"
+        "default_source": "line 397"
       },
       {
         "name": "entropy_weight",
@@ -29750,7 +29847,7 @@
         "change": "defaults_enriched",
         "default_value": 0.3,
         "default_type": "literal",
-        "default_source": "line 416"
+        "default_source": "line 398"
       },
       {
         "name": "calibration",
@@ -29763,7 +29860,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 417"
+        "default_source": "line 399"
       }
     ],
     "src.saaaaaa.processing.policy_processor.BayesianEvidenceScorer._calculate_shannon_entropy": [
@@ -29814,7 +29911,7 @@
         "change": "defaults_enriched",
         "default_value": 1.0,
         "default_type": "literal",
-        "default_source": "line 562"
+        "default_source": "line 544"
       }
     ],
     "src.saaaaaa.processing.policy_processor.BayesianEvidenceScorer.compute_evidence_score": [
@@ -29850,7 +29947,7 @@
         "change": "defaults_enriched",
         "default_value": 0.8,
         "default_type": "literal",
-        "default_source": "line 473"
+        "default_source": "line 455"
       },
       {
         "name": "**kwargs",
@@ -29885,7 +29982,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 689"
+        "default_source": "line 674"
       },
       {
         "name": "questionnaire_path",
@@ -29898,7 +29995,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 690"
+        "default_source": "line 675"
       },
       {
         "name": "ontology",
@@ -29955,7 +30052,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 1189"
+        "default_source": "line 1185"
       }
     ],
     "src.saaaaaa.processing.policy_processor.IndustrialPolicyProcessor._build_point_patterns": [
@@ -30308,7 +30405,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 1498"
+        "default_source": "line 1509"
       }
     ],
     "src.saaaaaa.processing.policy_processor.PolicyAnalysisPipeline.analyze_text": [
@@ -30502,7 +30599,7 @@
         "change": "defaults_enriched",
         "default_value": true,
         "default_type": "literal",
-        "default_source": "line 1564"
+        "default_source": "line 1575"
       },
       {
         "name": "enable_semantic_tagging",
@@ -30515,7 +30612,7 @@
         "change": "defaults_enriched",
         "default_value": true,
         "default_type": "literal",
-        "default_source": "line 1565"
+        "default_source": "line 1576"
       },
       {
         "name": "confidence_threshold",
@@ -30528,7 +30625,7 @@
         "change": "defaults_enriched",
         "default_value": 0.65,
         "default_type": "literal",
-        "default_source": "line 1566"
+        "default_source": "line 1577"
       },
       {
         "name": "**kwargs",
@@ -30554,7 +30651,7 @@
         "change": "defaults_enriched",
         "default_value": 0.5,
         "default_type": "literal",
-        "default_source": "line 288"
+        "default_source": "line 300"
       }
     ],
     "src.saaaaaa.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._compute_reliability_weights": [
@@ -30670,7 +30767,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 444"
+        "default_source": "line 456"
       }
     ],
     "src.saaaaaa.processing.semantic_chunking_policy.PolicyDocumentAnalyzer._extract_key_excerpts": [
@@ -30740,7 +30837,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 573"
+        "default_source": "line 585"
       }
     ],
     "src.saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.analyze_document": [
@@ -30815,7 +30912,7 @@
         "change": "defaults_enriched",
         "default_value": true,
         "default_type": "literal",
-        "default_source": "line 587"
+        "default_source": "line 599"
       }
     ],
     "src.saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.embed_batch": [
@@ -31160,7 +31257,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 713"
+        "default_source": "line 725"
       },
       {
         "name": "top_k",
@@ -31173,7 +31270,7 @@
         "change": "defaults_enriched",
         "default_value": 5,
         "default_type": "literal",
-        "default_source": "line 714"
+        "default_source": "line 726"
       }
     ],
     "src.saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.set_config": [
@@ -31307,7 +31404,7 @@
         "change": "defaults_enriched",
         "default_value": true,
         "default_type": "literal",
-        "default_source": "line 158"
+        "default_source": "line 170"
       }
     ],
     "src.saaaaaa.processing.semantic_chunking_policy.SemanticProcessor.embed_single": [
@@ -31383,7 +31480,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 90"
+        "default_source": "line 156"
       },
       {
         "name": "title",
@@ -31396,7 +31493,7 @@
         "change": "defaults_enriched",
         "default_value": "None",
         "default_type": "literal",
-        "default_source": "line 91"
+        "default_source": "line 157"
       },
       {
         "name": "max_chunks",
@@ -31409,7 +31506,7 @@
         "change": "defaults_enriched",
         "default_value": 50,
         "default_type": "literal",
-        "default_source": "line 92"
+        "default_source": "line 158"
       }
     ],
     "src.saaaaaa.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_chunks": [
