@@ -325,7 +325,8 @@ class MethodCatalogueGenerator:
                 else:
                     sig_parts.append(param['name'])
             signature = f"{method_name}({', '.join(sig_parts)})"
-        except:
+        except Exception as e:
+            logger.error(f"Failed to generate signature for method '{method_name}' in file '{file_path}': {e}")
             signature = f"{method_name}(...)"
 
         # Configurable parameters
