@@ -71,13 +71,6 @@ from types import MappingProxyType
 from typing import Any
 
 from schemas.preprocessed_document import (
-    DocumentIndexesV1,
-    PreprocessedDocument,
-    SentenceMetadata,
-    StructuredSection,
-    StructuredTextV1,
-    TableAnnotation,
-)
 
 # Issue deprecation warning when module is imported
 warnings.warn(

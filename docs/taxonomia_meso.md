@@ -4,7 +4,8 @@
 
 **Version:** 2.0.0  
 **Status:** Immutable Taxonomy  
-**Last Updated:** 2025-10-22
+**Last Updated:** 2025-10-22  
+**Referencia funcional:** ver `docs/aggregation_phase_canonical.md` para contratos y algoritmos de agregación.
 
 ---
 

@@ -409,6 +409,8 @@ class ClusterScore:
     areas: list[str]
     score: float
     coherence: float  # Coherence metric for the scores within this cluster
+    variance: float
+    weakest_area: str | None
     area_scores: list[AreaScore]
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
@@ -1586,6 +1588,8 @@ class ClusterAggregator:
                 areas=[],
                 score=0.0,
                 coherence=0.0,
+                variance=0.0,
+                weakest_area=None,
                 area_scores=[],
                 validation_passed=False,
                 validation_details={"error": "Definition not found", "type": "config"},
@@ -1615,6 +1619,8 @@ class ClusterAggregator:
                 areas=expected_areas,
                 score=0.0,
                 coherence=0.0,
+                variance=0.0,
+                weakest_area=None,
                 area_scores=[],
                 validation_passed=False,
                 validation_details={"error": str(e), "type": "hermeticity"}
@@ -1628,6 +1634,8 @@ class ClusterAggregator:
                 areas=expected_areas,
                 score=0.0,
                 coherence=0.0,
+                variance=0.0,
+                weakest_area=None,
                 area_scores=[],
                 validation_passed=False,
                 validation_details={"error": "No areas", "type": "empty"}
@@ -1650,17 +1658,30 @@ class ClusterAggregator:
                 areas=expected_areas,
                 score=0.0,
                 coherence=0.0,
+                variance=0.0,
+                weakest_area=None,
                 area_scores=cluster_area_scores,
                 validation_passed=False,
                 validation_details={"error": str(e), "type": "weights"}
             )
 
-        # Analyze coherence
+        # Analyze coherence and variance metrics
         coherence = self.analyze_coherence(cluster_area_scores)
+        scores_array = [a.score for a in cluster_area_scores]
+        if scores_array:
+            mean_score = sum(scores_array) / len(scores_array)
+            variance = sum((score - mean_score) ** 2 for score in scores_array) / len(scores_array)
+        else:
+            variance = 0.0
+        weakest_area = min(cluster_area_scores, key=lambda a: a.score, default=None)
+
         validation_details["coherence"] = {
             "value": coherence,
             "interpretation": "high" if coherence > 0.8 else "medium" if coherence > 0.6 else "low"
         }
+        validation_details["variance"] = variance
+        if weakest_area:
+            validation_details["weakest_area"] = weakest_area.area_id
 
         logger.info(
             f"✓ Cluster {cluster_id} ({cluster_name}): "
@@ -1673,6 +1694,8 @@ class ClusterAggregator:
             areas=expected_areas,
             score=weighted_score,
             coherence=coherence,
+            variance=variance,
+            weakest_area=weakest_area.area_id if weakest_area else None,
             area_scores=cluster_area_scores,
             validation_passed=True,
             validation_details=validation_details

@@ -258,6 +258,10 @@ class MacroScoreDict(TypedDict):
     macro_score: MacroScore
     macro_score_normalized: float
     cluster_scores: list[ClusterScore]
+    cross_cutting_coherence: float
+    systemic_gaps: list[str]
+    strategic_alignment: float
+    quality_band: str
 
 
 @dataclass
@@ -2714,6 +2718,10 @@ class Orchestrator:
                 "macro_score": macro_score,
                 "macro_score_normalized": 0.0,
                 "cluster_scores": cluster_scores,
+                "cross_cutting_coherence": macro_score.cross_cutting_coherence,
+                "systemic_gaps": macro_score.systemic_gaps,
+                "strategic_alignment": macro_score.strategic_alignment,
+                "quality_band": macro_score.quality_level,
             }
             return result
 
@@ -2783,6 +2791,10 @@ class Orchestrator:
             "macro_score": macro_score,
             "macro_score_normalized": macro_score_normalized,
             "cluster_scores": cluster_scores,
+            "cross_cutting_coherence": macro_score.cross_cutting_coherence,
+            "systemic_gaps": macro_score.systemic_gaps,
+            "strategic_alignment": macro_score.strategic_alignment,
+            "quality_band": macro_score.quality_level,
         }
         return result
 

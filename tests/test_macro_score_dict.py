@@ -30,6 +30,8 @@ def test_macro_score_dict_structure():
             areas=["area1"],
             score=0.8,
             coherence=0.85,
+            variance=0.01,
+            weakest_area="area1",
             area_scores=[],
             validation_passed=True,
             validation_details={}
@@ -40,7 +42,11 @@ def test_macro_score_dict_structure():
     result: MacroScoreDict = {
         "macro_score": macro_score,
         "macro_score_normalized": 0.75,
-        "cluster_scores": cluster_scores
+        "cluster_scores": cluster_scores,
+        "cross_cutting_coherence": macro_score.cross_cutting_coherence,
+        "systemic_gaps": macro_score.systemic_gaps,
+        "strategic_alignment": macro_score.strategic_alignment,
+        "quality_band": macro_score.quality_level,
     }
     
     # Check types
@@ -66,7 +72,11 @@ def test_macro_score_dict_all_keys_present():
     result: MacroScoreDict = {
         "macro_score": macro_score,
         "macro_score_normalized": 0.65,
-        "cluster_scores": []
+        "cluster_scores": [],
+        "cross_cutting_coherence": macro_score.cross_cutting_coherence,
+        "systemic_gaps": macro_score.systemic_gaps,
+        "strategic_alignment": macro_score.strategic_alignment,
+        "quality_band": macro_score.quality_level,
     }
     
     # Check that all keys are present
@@ -92,7 +102,11 @@ def test_macro_score_normalized_is_float():
     result: MacroScoreDict = {
         "macro_score": macro_score,
         "macro_score_normalized": float(macro_score.score),
-        "cluster_scores": []
+        "cluster_scores": [],
+        "cross_cutting_coherence": macro_score.cross_cutting_coherence,
+        "systemic_gaps": macro_score.systemic_gaps,
+        "strategic_alignment": macro_score.strategic_alignment,
+        "quality_band": macro_score.quality_level,
     }
     
     assert isinstance(result["macro_score_normalized"], float)

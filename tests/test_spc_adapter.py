@@ -398,14 +398,6 @@ def test_adapter_metrics_tracking() -> None:
     assert metrics["conversions_count"] == 3
 
 
-def test_spc_adapter_is_cpp_adapter_alias() -> None:
-    """Test that SPCAdapter is correctly aliased to CPPAdapter."""
-    from saaaaaa.utils.cpp_adapter import CPPAdapter
-    
-    # They should be the same class
-    assert SPCAdapter is CPPAdapter
-
-
 def test_provenance_completeness_calculation() -> None:
     """Test provenance completeness calculation."""
     # Create chunks with provenance

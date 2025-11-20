@@ -1,5 +1,8 @@
 # Justificación del Diseño del Sistema de Agregación
 
+**DEPRECATED (2025-11-17)** – Sustituido por `docs/aggregation_phase_canonical.md`.
+Mantener solo como referencia histórica; no refleja el contrato actual.
+
 **Fecha:** 2025-11-17
 
 ## 1. Introducción

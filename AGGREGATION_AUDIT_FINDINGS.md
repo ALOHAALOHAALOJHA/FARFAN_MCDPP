@@ -1,5 +1,8 @@
 # Informe de Auditoría de Agregación: Verificación y Análisis
 
+**DEPRECATED (2025-11-17)** – Este documento se conserva únicamente como historial.
+La referencia vigente para la Fase de Agregación es `docs/aggregation_phase_canonical.md`.
+
 **Fecha:** 2025-11-17
 
 ## Resumen Ejecutivo

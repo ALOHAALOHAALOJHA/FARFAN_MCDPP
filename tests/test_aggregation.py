@@ -318,7 +318,16 @@ class TestMacroAggregator:
         """Test successful macro evaluation."""
         aggregator = MacroAggregator(minimal_monolith, abort_on_insufficient=False)
         cluster_scores = [
-            ClusterScore(cluster_id="CL01", cluster_name="C1", areas=[], score=2.5, coherence=0.8, area_scores=[])
+            ClusterScore(
+                cluster_id="CL01",
+                cluster_name="C1",
+                areas=[],
+                score=2.5,
+                coherence=0.8,
+                variance=0.0,
+                weakest_area=None,
+                area_scores=[],
+            )
         ]
         area_scores = [
             AreaScore(area_id="P1", area_name="A1", score=2.5, quality_level="BUENO", dimension_scores=[])
@@ -466,6 +475,8 @@ def test_macro_aggregation_uses_macro_cluster_weights():
             areas=["PA01"],
             score=1.0,
             coherence=1.0,
+            variance=0.0,
+            weakest_area="PA01",
             area_scores=[],
         ),
         ClusterScore(
@@ -474,6 +485,8 @@ def test_macro_aggregation_uses_macro_cluster_weights():
             areas=["PA02"],
             score=3.0,
             coherence=1.0,
+            variance=0.0,
+            weakest_area="PA02",
             area_scores=[],
         ),
     ]
