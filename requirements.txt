@@ -26,6 +26,8 @@ transformers==4.53.0
 tokenizers==0.21.0
 safetensors==0.5.2
 huggingface-hub==0.30.0
+tiktoken==0.7.0
+sentencepiece==0.2.0
 
 # Web & API - Tightly pinned versions to resolve conflicts
 fastapi==0.118.0

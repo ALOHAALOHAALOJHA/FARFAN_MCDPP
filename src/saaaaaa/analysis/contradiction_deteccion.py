@@ -31,7 +31,7 @@ from scipy.stats import beta
 from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from transformers import pipeline
+from transformers import AutoModelForSequenceClassification, DebertaV2Tokenizer, pipeline
 
 # Check dependency lockdown
 from saaaaaa.core.dependency_lockdown import get_dependency_lockdown
@@ -334,10 +334,15 @@ class PolicyContradictionDetector:
         self.semantic_model = SentenceTransformer(model_name, device=device)
 
         # Modelo de clasificación de contradicciones
+        model_name = "microsoft/deberta-v3-base"
+        tokenizer = DebertaV2Tokenizer.from_pretrained(model_name)
+        model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
         self.contradiction_classifier = pipeline(
             "text-classification",
-            model="microsoft/deberta-v3-base",
-            device=0 if device == "cuda" else -1
+            model=model,
+            tokenizer=tokenizer,
+            device=0 if device == "cuda" else -1,
         )
 
         # Procesamiento de lenguaje natural

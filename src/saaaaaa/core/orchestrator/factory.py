@@ -226,16 +226,73 @@ def save_results(results: dict[str, Any], output_path: Path) -> None:
 # CONTRACT CONSTRUCTORS
 # ============================================================================
 
-# These functions remain as they are, constructing contracts from DocumentData
-# and other parameters. They are not affected by the questionnaire refactoring.
-construct_semantic_analyzer_input = construct_semantic_analyzer_input
-construct_cdaf_input = construct_cdaf_input
-construct_pdet_input = construct_pdet_input
-construct_teoria_cambio_input = construct_teoria_cambio_input
-construct_contradiction_detector_input = construct_contradiction_detector_input
-construct_embedding_policy_input = construct_embedding_policy_input
-construct_semantic_chunking_input = construct_semantic_chunking_input
-construct_policy_processor_input = construct_policy_processor_input
+
+def construct_semantic_analyzer_input(document: DocumentData, **kwargs) -> SemanticAnalyzerInputContract:
+    """Constructs the input for the SemanticAnalyzer."""
+    return SemanticAnalyzerInputContract(
+        text=document['raw_text'],
+        segments=document['sentences'],
+        ontology_params=kwargs.get('ontology_params', {})
+    )
+
+def construct_cdaf_input(document: DocumentData, **kwargs) -> CDAFFrameworkInputContract:
+    """Constructs the input for the CDAFFramework."""
+    return CDAFFrameworkInputContract(
+        document_text=document['raw_text'],
+        plan_metadata=document['metadata'],
+        config=kwargs.get('config', {})
+    )
+
+def construct_pdet_input(document: DocumentData, **kwargs) -> PDETAnalyzerInputContract:
+    """Constructs the input for the PDETAnalyzer."""
+    return PDETAnalyzerInputContract(
+        document_content=document['raw_text'],
+        extract_tables=kwargs.get('extract_tables', True),
+        config=kwargs.get('config', {})
+    )
+
+def construct_teoria_cambio_input(document: DocumentData, **kwargs) -> TeoriaCambioInputContract:
+    """Constructs the input for the TeoriaCambio."""
+    return TeoriaCambioInputContract(
+        document_text=document['raw_text'],
+        strategic_goals=kwargs.get('strategic_goals', []),
+        config=kwargs.get('config', {})
+    )
+
+def construct_contradiction_detector_input(document: DocumentData, **kwargs) -> ContradictionDetectorInputContract:
+    """Constructs the input for the ContradictionDetector."""
+    return ContradictionDetectorInputContract(
+        text=document['raw_text'],
+        plan_name=document['metadata'].get('file_name', 'Unknown'),
+        dimension=kwargs.get('dimension'),
+        config=kwargs.get('config', {})
+    )
+
+def construct_embedding_policy_input(document: DocumentData, **kwargs) -> EmbeddingPolicyInputContract:
+    """Constructs the input for the EmbeddingPolicy."""
+    return EmbeddingPolicyInputContract(
+        text=document['raw_text'],
+        dimensions=kwargs.get('dimensions', []),
+        model_config=kwargs.get('model_config', {})
+    )
+
+def construct_semantic_chunking_input(document: DocumentData, **kwargs) -> SemanticChunkingInputContract:
+    """Constructs the input for the SemanticChunking."""
+    return SemanticChunkingInputContract(
+        text=document['raw_text'],
+        preserve_structure=kwargs.get('preserve_structure', True),
+        config=kwargs.get('config', {})
+    )
+
+def construct_policy_processor_input(document: DocumentData, **kwargs) -> PolicyProcessorInputContract:
+    """Constructs the input for the PolicyProcessor."""
+    return PolicyProcessorInputContract(
+        data={},
+        text=document['raw_text'],
+        sentences=document['sentences'],
+        tables=document['tables'],
+        config=kwargs.get('config', {})
+    )
 
 # ============================================================================
 # FACTORY FUNCTIONS
