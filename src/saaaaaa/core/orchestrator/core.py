@@ -96,6 +96,7 @@ def resolve_workspace_path(
 EXPECTED_QUESTION_COUNT = int(os.getenv("EXPECTED_QUESTION_COUNT", "305"))
 EXPECTED_METHOD_COUNT = int(os.getenv("EXPECTED_METHOD_COUNT", "416"))
 PHASE_TIMEOUT_DEFAULT = int(os.getenv("PHASE_TIMEOUT_SECONDS", "300"))
+P01_EXPECTED_CHUNK_COUNT = 60
 
 
 class PhaseTimeoutError(RuntimeError):
@@ -2042,27 +2043,38 @@ class Orchestrator:
         start = time.perf_counter()
 
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
-        override_payload = self._context.get("preprocessed_override")
-        if override_payload is not None:
-            try:
-                preprocessed = PreprocessedDocument.ensure(
-                    override_payload, document_id=document_id, use_spc_ingestion=True
-                )
-            except TypeError as exc:
-                instrumentation.record_error(
-                    "ingestion", "Documento preprocesado incompatible", reason=str(exc)
-                )
-                raise
-        else:
-            error_msg = (
-                "No preprocessed document provided. Ingestion must be performed externally. "
-                f"Use process_development_plan_async(pdf_path='{pdf_path}', preprocessed_document=<doc>) "
-                "where <doc> is a PreprocessedDocument from SPC ingestion pipeline."
+
+        # Initialize and run the canonical SPC ingestion pipeline
+        try:
+            from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
+            from pathlib import Path
+
+            pipeline = CPPIngestionPipeline()
+            # Note: The process method in the pipeline is async
+            canon_package = asyncio.run(pipeline.process(
+                document_path=Path(pdf_path),
+                document_id=document_id
+            ))
+        except ImportError as e:
+            error_msg = f"Failed to import CPPIngestionPipeline: {e}"
+            instrumentation.record_error("ingestion", "Import Error", reason=error_msg)
+            raise RuntimeError(error_msg) from e
+        except Exception as e:
+            error_msg = f"SPC Ingestion pipeline failed: {e}"
+            instrumentation.record_error("ingestion", "Pipeline Failure", reason=error_msg)
+            raise RuntimeError(error_msg) from e
+
+        # Adapt the output CanonPolicyPackage to the PreprocessedDocument format
+        try:
+            preprocessed = PreprocessedDocument.ensure(
+                canon_package, document_id=document_id, use_spc_ingestion=True
             )
+        except (TypeError, ValueError) as exc:
+            error_msg = f"Failed to adapt CanonPolicyPackage to PreprocessedDocument: {exc}"
             instrumentation.record_error(
-                "ingestion", "Missing preprocessed document", reason=error_msg
+                "ingestion", "Adapter Error", reason=error_msg
             )
-            raise ValueError(error_msg)
+            raise TypeError(error_msg) from exc
 
         # Validate that the document is not empty
         if not preprocessed.raw_text or not preprocessed.raw_text.strip():
@@ -2072,14 +2084,35 @@ class Orchestrator:
             )
             raise ValueError(error_msg)
 
-        # Log ingestion metrics and validate chunk count
-        chunk_count = preprocessed.metadata.get("chunk_count", 0)
-        if chunk_count == 0:
-            error_msg = "No chunks extracted from document - chunk_count is 0"
-            instrumentation.record_error(
-                "ingestion", "No chunks", reason=error_msg
+        # === P01-ES v1.0 VALIDATION GATES ===
+        # 1. Enforce strict chunk count of 60
+        actual_chunk_count = preprocessed.metadata.get("chunk_count", 0)
+        if actual_chunk_count != P01_EXPECTED_CHUNK_COUNT:
+            error_msg = (
+                f"P01 Validation Failed: Expected exactly {P01_EXPECTED_CHUNK_COUNT} chunks, "
+                f"but found {actual_chunk_count}."
             )
+            instrumentation.record_error("ingestion", "Chunk Count Mismatch", reason=error_msg)
             raise ValueError(error_msg)
+
+        # 2. Enforce presence of policy_area_id and dimension_id in all chunks
+        if not preprocessed.chunks:
+            error_msg = "P01 Validation Failed: No chunks found in PreprocessedDocument."
+            instrumentation.record_error("ingestion", "Empty Chunk List", reason=error_msg)
+            raise ValueError(error_msg)
+
+        for i, chunk in enumerate(preprocessed.chunks):
+            # The chunk object from the adapter is a dataclass, so we use getattr
+            if not getattr(chunk, 'policy_area_id', None):
+                error_msg = f"P01 Validation Failed: Chunk {i} is missing 'policy_area_id'."
+                instrumentation.record_error("ingestion", "Missing Metadata", reason=error_msg)
+                raise ValueError(error_msg)
+            if not getattr(chunk, 'dimension_id', None):
+                error_msg = f"P01 Validation Failed: Chunk {i} is missing 'dimension_id'."
+                instrumentation.record_error("ingestion", "Missing Metadata", reason=error_msg)
+                raise ValueError(error_msg)
+
+        logger.info(f"✅ P01-ES v1.0 validation gates passed for {actual_chunk_count} chunks.")
 
         text_length = len(preprocessed.raw_text)
         sentence_count = len(preprocessed.sentences) if preprocessed.sentences else 0
