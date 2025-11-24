@@ -2,7 +2,7 @@
 Phase 0 Configuration Validator
 
 This module provides a dedicated validator to enforce the C0-CONFIG-V1.0 contract,
-as specified in docs/phases/phase_0/P00-ES_v1.0.md. It is executed at the very
+as specified in docs/contracts/C0-CONFIG-V1.0.md. It is executed at the very
 beginning of the wiring bootstrap process to ensure the system starts in a
 known, valid state.
 """
