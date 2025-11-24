@@ -870,63 +870,35 @@ class MethodExecutor:
 
     def __init__(
         self,
-        dispatcher: Any | None = None,
+        dispatcher: Any | None = None, # dispatcher is deprecated
         signal_registry: Any | None = None,
+        method_registry: Any | None = None, # MethodRegistry instance
     ) -> None:
-        # Build the class registry
         self.degraded_mode = False
         self.degraded_reasons: list[str] = []
         self.signal_registry = signal_registry
+        self.method_registry = method_registry
 
+        if self.method_registry is None:
+            raise ValueError("MethodExecutor requires a MethodRegistry instance.")
+
+        # The new design no longer pre-instantiates all classes.
+        # Instead, it will create them on-the-fly via the registry.
+        # We only need to handle shared instances that might be injected as dependencies.
+        self.shared_instances: dict[str, Any] = {}
+        
         try:
+            # We still need the class registry to find the classes for shared instances
             registry = build_class_registry()
+            OntologyClass = registry.get("MunicipalOntology")
+            if OntologyClass:
+                self.shared_instances["MunicipalOntology"] = OntologyClass()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
-            reason = f"Class registry incomplete: {exc}"
+            reason = f"Could not build class registry or instantiate shared services: {exc}"
             self.degraded_reasons.append(reason)
             logger.warning("DEGRADED MODE: %s", reason)
-            registry = {}
 
-        # Instantiate all classes
-        self.instances: dict[str, Any] = {}
-        ontology_instance = None
-
-        for class_name, cls in registry.items():
-            try:
-                # Special handling for MunicipalOntology - shared instance
-                if class_name == "MunicipalOntology":
-                    ontology_instance = cls()
-                    self.instances[class_name] = ontology_instance
-                # Classes that need ontology
-                elif class_name in ("SemanticAnalyzer", "PerformanceAnalyzer", "TextMiningEngine"):
-                    if ontology_instance is not None:
-                        self.instances[class_name] = cls(ontology_instance)
-                    else:
-                        logger.warning(
-                            "Cannot instantiate %s: MunicipalOntology not available", class_name
-                        )
-                # PolicyTextProcessor needs ProcessorConfig
-                elif class_name == "PolicyTextProcessor":
-                    try:
-                        from policy_processor import ProcessorConfig
-                        self.instances[class_name] = cls(ProcessorConfig())
-                    except ImportError:
-                        logger.warning("Cannot instantiate PolicyTextProcessor: ProcessorConfig unavailable")
-                else:
-                    # Standard instantiation
-                    self.instances[class_name] = cls()
-            except Exception as exc:
-                logger.error("Failed to instantiate %s: %s", class_name, exc)
-
-        # Create ExtendedArgRouter with the registry for enhanced validation and metrics
-        self._router = ExtendedArgRouter(registry)
-
-        # Check for critical degradation
-        if len(self.instances) == 0 and len(registry) > 0:
-            self.degraded_mode = True
-            reason = "All class instantiations failed"
-            self.degraded_reasons.append(reason)
-            logger.error("CRITICAL DEGRADATION: %s", reason)
 
     @staticmethod
     def _supports_parameter(callable_obj: Any, parameter_name: str) -> bool:
@@ -937,41 +909,62 @@ class MethodExecutor:
         return parameter_name in signature.parameters
 
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
-        """Execute a method from the catalog.
+        """
+        Execute a method by dynamically loading it via the MethodRegistry.
+
+        This method determines and injects dependencies like 'MunicipalOntology'
+        at instantiation time.
 
         Args:
-            class_name: Name of the class
-            method_name: Name of the method to execute
-            **kwargs: Keyword arguments to pass to the method
+            class_name: Name of the class.
+            method_name: Name of the method to execute.
+            **kwargs: Keyword arguments to pass to the method call itself.
 
         Returns:
-            The method's return value
+            The method's return value.
 
         Raises:
-            ArgRouterError: If routing fails
-            AttributeError: If method doesn't exist
-            RuntimeError: If calibration is missing or placeholder
+            RuntimeError: If the method registry is not configured.
+            MethodNotInSourceError: If the method is not in the source truth map.
+            MethodExtractionError: If the method cannot be loaded or instantiated.
         """
-        instance = self.instances.get(class_name)
-        if not instance:
-            logger.warning("No instance available for class %s", class_name)
-            return None
+        if self.method_registry is None:
+            raise RuntimeError("MethodRegistry is not configured on this MethodExecutor.")
 
+        # Determine __init__ kwargs for dependency injection
+        init_kwargs = {}
+        if class_name in ("SemanticAnalyzer", "PerformanceAnalyzer", "TextMiningEngine"):
+            ontology_instance = self.shared_instances.get("MunicipalOntology")
+            if ontology_instance:
+                init_kwargs['ontology'] = ontology_instance
+            else:
+                logger.warning(
+                    "Cannot provide MunicipalOntology to %s: shared instance not available", class_name
+                )
+        elif class_name == "PolicyTextProcessor":
+            try:
+                # This is a bit of a hack, but it preserves the original logic.
+                from policy_processor import ProcessorConfig
+                init_kwargs['config'] = ProcessorConfig()
+            except ImportError:
+                logger.warning("Cannot provide ProcessorConfig to PolicyTextProcessor: ProcessorConfig unavailable")
+        
         try:
-            method = getattr(instance, method_name)
-        except AttributeError:
-            logger.error("Class %s has no method %s", class_name, method_name)
-            raise
+            # 1. Get the bound method from a fresh instance, with dependencies injected.
+            method = self.method_registry.get_method(
+                class_name, 
+                method_name, 
+                init_kwargs=init_kwargs
+            )
+            
+            # 2. Execute the method with the provided runtime arguments.
+            # The argument routing/validation is now simpler, but could be expanded here.
+            # For now, we pass all kwargs directly.
+            return method(**kwargs)
 
-        try:
-            args, routed_kwargs = self._router.route(class_name, method_name, dict(kwargs))
-            return method(*args, **routed_kwargs)
-        except (ArgRouterError, ArgumentValidationError):
-            logger.exception("Argument routing failed for %s.%s", class_name, method_name)
-            raise
-        except Exception:
+        except Exception as e:
             logger.exception("Method execution failed for %s.%s", class_name, method_name)
-            raise
+            raise e
 
     def get_routing_metrics(self) -> dict[str, Any]:
         """Get routing metrics from ExtendedArgRouter.
