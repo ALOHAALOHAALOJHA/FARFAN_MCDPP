@@ -69,7 +69,13 @@ class Phase0Validator:
             raise Phase0ValidationError("Invalid file paths in configuration.", invalid_paths=invalid_paths)
 
         # Check monolith permissions (must be read-only)
-        if not os.access(monolith_path, os.R_OK) or os.access(monolith_path, os.W_OK):
+        if not os.access(monolith_path, os.R_OK):
+            invalid_paths["monolith_path"] = f"File at {monolith_path} is not readable."
+            raise Phase0ValidationError(
+                "Invalid file permissions in configuration.",
+                invalid_paths=invalid_paths
+            )
+        elif os.access(monolith_path, os.W_OK):
             invalid_paths["monolith_path"] = f"File at {monolith_path} must be read-only."
             raise Phase0ValidationError(
                 "Invalid file permissions in configuration.",

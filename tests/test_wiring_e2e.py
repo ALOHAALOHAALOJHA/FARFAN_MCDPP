@@ -35,6 +35,7 @@ def bootstrap_args(tmp_path):
 
     executor_path = tmp_path / "executor.json"
     executor_path.write_text('{}')
+    executor_path.chmod(0o444)  # Read-only, consistent with monolith_path
     return {
         "questionnaire_path": monolith_path,
         "questionnaire_hash": "dummy_hash",
