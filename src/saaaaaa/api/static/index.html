@@ -2141,7 +2141,12 @@
                 grid.removeChild(grid.lastChild);
             }
 
-            chip.textContent = `Concepto integral: ${tribunalThesis.headline}`;
+            const maxHeadlineLength = 50;
+            let displayHeadline = tribunalThesis.headline;
+            if (displayHeadline.length > maxHeadlineLength) {
+                displayHeadline = displayHeadline.slice(0, maxHeadlineLength - 1) + '…';
+            }
+            chip.textContent = `Concepto integral: ${displayHeadline}`;
             const strongEl = narrative.querySelector('strong');
             if (strongEl) {
                 strongEl.textContent = tribunalThesis.title;
