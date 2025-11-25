@@ -2142,7 +2142,10 @@
             }
 
             chip.textContent = `Concepto integral: ${tribunalThesis.headline}`;
-            narrative.querySelector('strong').textContent = tribunalThesis.title;
+            const strongEl = narrative.querySelector('strong');
+            if (strongEl) {
+                strongEl.textContent = tribunalThesis.title;
+            }
             conceptText.textContent = tribunalThesis.detail;
 
             // Efficiently update tags
