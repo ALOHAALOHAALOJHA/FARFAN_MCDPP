@@ -22,7 +22,7 @@ import structlog
 from saaaaaa.core.orchestrator.arg_router import ExtendedArgRouter
 from saaaaaa.core.orchestrator.class_registry import build_class_registry
 from saaaaaa.core.orchestrator.executor_config import ExecutorConfig
-from saaaaaa.core.orchestrator.factory import CoreModuleFactory
+from saaaaaa.core.orchestrator.bayesian_module_factory import BayesianModuleFactory as CoreModuleFactory
 from saaaaaa.core.orchestrator.questionnaire_resource_provider import (
     QuestionnaireResourceProvider,
 )
@@ -140,8 +140,7 @@ class WiringBootstrap:
             validator = WiringValidator()
 
             # Phase 8: Seed signals (if memory mode)
-            if signal_client._transport == "memory":
-                self._seed_signals(signal_client._memory_source, signal_registry, provider)
+            signal_client.seed_from_provider(provider, signal_registry)
 
             # Compute initialization hashes
             init_hashes = self._compute_init_hashes(
@@ -421,50 +420,6 @@ class WiringBootstrap:
                 reason=str(e),
             ) from e
 
-    def _seed_signals(
-        self,
-        memory_source: InMemorySignalSource,
-        registry: SignalRegistry,
-        provider: QuestionnaireResourceProvider,
-    ) -> None:
-        """Seed initial signals in memory mode.
-
-        Args:
-            memory_source: InMemorySignalSource to seed
-            registry: SignalRegistry to populate
-            provider: QuestionnaireResourceProvider for patterns
-        """
-        logger.info("wiring_init_phase", phase="seed_signals")
-
-        # Create default signal packs for common policy areas
-        policy_areas = ["fiscal", "salud", "ambiente", "energía", "transporte"]
-
-        for area in policy_areas:
-            # Extract patterns from provider for this area
-            patterns = provider.get_patterns_for_area(area) if hasattr(provider, 'get_patterns_for_area') else []
-
-            pack = SignalPack(
-                version="1.0.0",
-                policy_area=area,  # type: ignore[arg-type]
-                patterns=patterns[:10] if patterns else [],  # Limit to 10 patterns
-                indicators=[],
-                regex=[],
-                verbs=[],
-                entities=[],
-                thresholds={},
-                ttl_s=3600,
-            )
-
-            # Register in memory source
-            memory_source.register(area, pack)
-
-            # Also put in registry for immediate availability
-            registry.put(area, pack)
-
-            logger.debug("signal_seeded", policy_area=area, patterns=len(pack.patterns))
-
-        logger.info("signals_seeded", areas=len(policy_areas))
-
     def _compute_init_hashes(
         self,
         provider: QuestionnaireResourceProvider,
@@ -495,8 +450,13 @@ class WiringBootstrap:
 
         # Registry hash (based on metrics)
         registry_metrics = registry.get_metrics()
+        # Exclude non-deterministic metrics for hashing
+        deterministic_metrics = {
+            k: v for k, v in registry_metrics.items()
+            if k not in ["staleness_avg_s", "staleness_max_s"]
+        }
         hashes["registry"] = blake3.blake3(
-            json.dumps(registry_metrics, sort_keys=True).encode('utf-8')
+            json.dumps(deterministic_metrics, sort_keys=True).encode('utf-8')
         ).hexdigest()
 
         # Router hash (based on special routes count)

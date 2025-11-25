@@ -21,6 +21,13 @@ from pathlib import Path
 from typing import Any
 
 # Add src to path for imports
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root / "src"))
+
 
 from saaaaaa.core.wiring.bootstrap import WiringBootstrap
 from saaaaaa.core.wiring.feature_flags import WiringFeatureFlags
@@ -159,11 +166,10 @@ def validate_signals_hit_rate() -> bool:
         
         # In memory mode with seeded signals, hit rate should be high
         # Note: First fetch may miss, so lower threshold slightly
-        if hit_rate >= 0.0:  # Relaxed for initial implementation
-            print_success(f"Signal hit rate: {hit_rate:.2%} (≥0% for now)")
-            print_warning("Note: Hit rate threshold will be increased to 95% in production")
+        if hit_rate >= 0.95:
+            print_success(f"Signal hit rate: {hit_rate:.2%} (≥95% required)")
         else:
-            print_error(f"Signal hit rate: {hit_rate:.2%}")
+            print_error(f"Signal hit rate: {hit_rate:.2%} (<95% required)")
             return False
         
         print_success(f"Registry size: {metrics['size']} signals")

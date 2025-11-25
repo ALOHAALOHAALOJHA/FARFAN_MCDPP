@@ -27,6 +27,7 @@ from saaaaaa.config.paths import QUESTIONNAIRE_FILE
 from saaaaaa.processing.cpp_ingestion.models import CanonPolicyPackage
 from saaaaaa.processing.spc_ingestion.converter import SmartChunkConverter
 from saaaaaa.processing.spc_ingestion.quality_gates import SPCQualityGates
+from ....core.wiring.validation import WiringValidator
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +86,7 @@ class CPPIngestionPipeline:
         self.chunking_system = StrategicChunkingSystem()
         self.converter = SmartChunkConverter()
         self.quality_gates = SPCQualityGates()
+        self.wiring_validator = WiringValidator()
         logger.info("Pipeline initialized successfully")
 
     def _load_document_text(self, document_path: Path) -> str:
@@ -249,6 +251,15 @@ class CPPIngestionPipeline:
                 f"coherence: {canon_package.quality_metrics.structural_consistency:.2%}, "
                 f"coverage: {canon_package.quality_metrics.chunk_context_coverage:.2%}"
             )
+
+        # Validate the contract between cpp_ingestion and spc_adapter
+        try:
+            self.wiring_validator.validate_cpp_to_adapter(canon_package.to_dict())
+            logger.info("Wiring contract cpp->adapter validated successfully")
+        except Exception as e:
+            logger.error(f"Wiring contract validation failed: {e}")
+            # Optionally, re-raise to halt execution if contract is critical
+            # raise
 
         logger.info(f"Pipeline complete: {len(canon_package.chunk_graph.chunks)} chunks in package")
         return canon_package

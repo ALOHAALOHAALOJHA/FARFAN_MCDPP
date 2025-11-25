@@ -896,6 +896,37 @@ class SignalClient:
 
         self._memory_source.register(policy_area, signal_pack)
 
+    def seed_from_provider(self, provider: Any, registry: SignalRegistry) -> None:
+        """
+        Seed initial signals in memory mode from a provider.
+
+        Args:
+            provider: A provider object with a `get_patterns_for_area` method.
+            registry: SignalRegistry to populate for immediate availability.
+        """
+        if self._transport != "memory" or self._memory_source is None:
+            logger.warning("Signal seeding is only available in memory:// mode.")
+            return
+
+        logger.info("Seeding signals from provider into memory source.")
+        policy_areas = ["fiscal", "salud", "ambiente", "energía", "transporte"]
+
+        for area in policy_areas:
+            patterns = provider.get_patterns_for_area(area) if hasattr(provider, 'get_patterns_for_area') else []
+
+            pack = SignalPack(
+                version="1.0.0",
+                policy_area=area,
+                patterns=patterns[:10] if patterns else [],
+                ttl_s=3600,
+            )
+
+            self._memory_source.register(area, pack)
+            registry.put(area, pack)
+            logger.debug("Signal seeded", policy_area=area, patterns=len(pack.patterns))
+
+        logger.info("Signals seeded", areas=len(policy_areas))
+
 
 @dataclass
 class SignalUsageMetadata:

@@ -50,6 +50,7 @@ from .arg_router import ArgRouterError, ArgumentValidationError, ExtendedArgRout
 from .calibration_registry import resolve_calibration
 from .class_registry import ClassRegistryError, build_class_registry
 from .versions import CALIBRATION_VERSION
+from ..wiring.validation import WiringValidator
 
 logger = logging.getLogger(__name__)
 
@@ -293,6 +294,10 @@ class PreprocessedDocument:
                 "PreprocessedDocument cannot have empty raw_text. "
                 "Use PreprocessedDocument.ensure() to create from SPC pipeline."
             )
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert the dataclass to a dictionary."""
+        return asdict(self)
 
     @staticmethod
     def _dataclass_to_dict(value: Any) -> Any:
@@ -1414,6 +1419,8 @@ class Orchestrator:
             logger.warning(f"Failed to initialize RecommendationEngine: {e}")
             self.recommendation_engine = None
 
+        self.wiring_validator = WiringValidator()
+
 
     def execute_sophisticated_engineering_operation(self, policy_area_id: str) -> dict[str, Any]:
         """
@@ -1561,7 +1568,10 @@ class Orchestrator:
         )
 
     async def process_development_plan_async(
-            self, pdf_path: str, preprocessed_document: Any | None = None
+            self,
+            pdf_path: str,
+            preprocessed_document: Any | None = None,
+            progress_callback: Callable[[int, str, str], None] | None = None,
     ) -> list[PhaseResult]:
         self.reset_abort()
         self.phase_results = []
@@ -1644,10 +1654,17 @@ class Orchestrator:
                 self._phase_status[phase_id] = "completed"
             elif aborted:
                 self._phase_status[phase_id] = "aborted"
+                if progress_callback:
+                    progress_callback(phase_id, phase_label, "aborted")
                 break
             else:
                 self._phase_status[phase_id] = "failed"
+                if progress_callback:
+                    progress_callback(phase_id, phase_label, "failed")
                 break
+
+            if progress_callback:
+                progress_callback(phase_id, phase_label, self._phase_status[phase_id])
 
         return self.phase_results
 
@@ -2069,6 +2086,16 @@ class Orchestrator:
         # Store in context for manifest generation
         if hasattr(self, "_context"):
             self._context["ingestion_info"] = ingestion_info
+
+        # Validate the contract between adapter and orchestrator
+        try:
+            self.wiring_validator.validate_adapter_to_orchestrator(preprocessed.to_dict())
+            logger.info("Wiring contract adapter->orchestrator validated successfully")
+        except Exception as e:
+            instrumentation.record_error("wiring_contract", f"Contract validation failed: {e}")
+            logger.error(f"Wiring contract validation failed: {e}")
+            # Optionally, re-raise to halt execution if contract is critical
+            # raise
 
         logger.info(
             f"Document ingested successfully: document_id={document_id}, "
