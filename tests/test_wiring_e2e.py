@@ -122,37 +122,37 @@ class TestWiringBootstrap:
 class TestWiringValidation:
     """Test contract validation between links."""
     
-    def test_cpp_to_adapter_valid(self):
-        """Test valid CPP → Adapter contract."""
+    def test_spc_to_adapter_valid(self):
+        """Test valid SPC → Adapter contract."""
         validator = WiringValidator()
-        
-        cpp_data = {
+
+        spc_data = {
             "chunk_graph": {"chunks": {"chunk1": {}}},
             "policy_manifest": {"version": "1.0.0"},
             "provenance_completeness": 1.0,
             "schema_version": "2.0.0",
         }
-        
+
         # Should not raise
-        validator.validate_cpp_to_adapter(cpp_data)
-    
-    def test_cpp_to_adapter_missing_provenance(self):
-        """Test CPP → Adapter with incomplete provenance."""
+        validator.validate_spc_to_adapter(spc_data)
+
+    def test_spc_to_adapter_missing_provenance(self):
+        """Test SPC → Adapter with incomplete provenance."""
         validator = WiringValidator()
-        
-        cpp_data = {
+
+        spc_data = {
             "chunk_graph": {"chunks": {"chunk1": {}}},
             "policy_manifest": {"version": "1.0.0"},
             "provenance_completeness": 0.5,  # Not 1.0!
             "schema_version": "2.0.0",
         }
-        
+
         with pytest.raises(WiringContractError) as exc_info:
-            validator.validate_cpp_to_adapter(cpp_data)
-        
+            validator.validate_spc_to_adapter(spc_data)
+
         error = exc_info.value
         assert "provenance_completeness" in str(error).lower()
-        assert error.details["link"] == "cpp->adapter"
+        assert error.details["link"] == "spc->adapter"
     
     def test_adapter_to_orchestrator_valid(self):
         """Test valid Adapter → Orchestrator contract."""
@@ -249,21 +249,21 @@ class TestWiringValidation:
         validator = WiringValidator()
         
         # Perform some validations
-        cpp_data = {
+        spc_data = {
             "chunk_graph": {"chunks": {}},
             "policy_manifest": {},
             "provenance_completeness": 1.0,
             "schema_version": "2.0.0",
         }
-        
-        validator.validate_cpp_to_adapter(cpp_data)
-        validator.validate_cpp_to_adapter(cpp_data)
-        
+
+        validator.validate_spc_to_adapter(spc_data)
+        validator.validate_spc_to_adapter(spc_data)
+
         metrics = validator.get_all_metrics()
-        
-        assert "cpp->adapter" in metrics
-        assert metrics["cpp->adapter"]["validation_count"] == 2
-        assert metrics["cpp->adapter"]["failure_count"] == 0
+
+        assert "spc->adapter" in metrics
+        assert metrics["spc->adapter"]["validation_count"] == 2
+        assert metrics["spc->adapter"]["failure_count"] == 0
 
 
 class TestWiringDeterminism:
@@ -405,23 +405,23 @@ class TestWiringErrorHandling:
     def test_contract_error_has_fix(self):
         """Test that contract errors include fix instructions."""
         validator = WiringValidator()
-        
-        bad_cpp_data = {
+
+        bad_spc_data = {
             "chunk_graph": {},  # Missing required fields
         }
-        
+
         try:
-            validator.validate_cpp_to_adapter(bad_cpp_data)
+            validator.validate_spc_to_adapter(bad_spc_data)
             pytest.fail("Should have raised WiringContractError")
         except WiringContractError as e:
             # Check error has details
             assert e.details is not None
             assert "link" in e.details
-            assert e.details["link"] == "cpp->adapter"
-            
+            assert e.details["link"] == "spc->adapter"
+
             # Check error message is prescriptive
             error_msg = str(e)
-            assert "cpp->adapter" in error_msg.lower()
+            assert "spc->adapter" in error_msg.lower()
     
     def test_initialization_error_prescriptive(self):
         """Test that initialization errors are prescriptive."""

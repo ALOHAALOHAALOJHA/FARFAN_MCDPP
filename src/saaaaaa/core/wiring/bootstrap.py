@@ -26,15 +26,18 @@ from saaaaaa.core.orchestrator.arg_router import ExtendedArgRouter
 from saaaaaa.core.orchestrator.class_registry import build_class_registry
 from saaaaaa.core.orchestrator.executor_config import ExecutorConfig
 from saaaaaa.core.orchestrator.factory import CoreModuleFactory
-from saaaaaa.core.orchestrator.questionnaire_resource_provider import (
-    QuestionnaireResourceProvider,
-)
 from saaaaaa.core.orchestrator.signals import (
     InMemorySignalSource,
     SignalClient,
     SignalPack,
     SignalRegistry,
 )
+
+@dataclass
+class QuestionnaireResourceProvider:
+    """Provider for questionnaire resources."""
+    questionnaire_path: Path | None = None
+    data_dir: Path = field(default_factory=lambda: DATA_DIR)
 
 try:  # Optional dependency: calibration orchestrator
     from saaaaaa.core.calibration.orchestrator import CalibrationOrchestrator as _CalibrationOrchestrator
@@ -473,17 +476,13 @@ class WiringBootstrap:
         logger.info("wiring_init_phase", phase="create_factory")
 
         try:
-            # Get questionnaire data from provider
-            questionnaire_data = provider._data
-
             factory = CoreModuleFactory(
-                questionnaire_data=questionnaire_data,
-                signal_registry=registry,
+                data_dir=provider.data_dir,
             )
 
             logger.info(
                 "factory_created",
-                has_signal_registry=True,
+                data_dir=str(provider.data_dir),
             )
 
             return factory
@@ -755,27 +754,7 @@ class WiringBootstrap:
 
         return metrics
 
-    def _seed_signals(
-        self,
-        memory_source: InMemorySignalSource,
-        registry: SignalRegistry,
-        provider: QuestionnaireResourceProvider,
-    ) -> None:
-        """DEPRECATED: Use seed_signals_public() instead.
 
-        This method is kept for backward compatibility during migration.
-        """
-        logger.warning(
-            "_seed_signals is deprecated. Use seed_signals_public() instead."
-        )
-
-        metrics = self._seed_canonical_policy_area_signals(memory_source, registry, provider)
-        logger.info(
-            "signals_seeded",
-            areas=metrics["canonical_areas"],
-            aliases=metrics["legacy_aliases"],
-            hit_rate=metrics["hit_rate"],
-        )
 
     def _compute_init_hashes(
         self,
