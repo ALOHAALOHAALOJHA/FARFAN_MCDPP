@@ -929,53 +929,37 @@ class MethodExecutor:
         self.degraded_mode = False
         self.degraded_reasons: list[str] = []
         self.signal_registry = signal_registry
-        self.method_registry = method_registry
-
-        if self.method_registry is None:
-            raise ValueError("MethodExecutor requires a MethodRegistry instance.")
-
-        # The new design no longer pre-instantiates all classes.
-        # Instead, it will create them on-the-fly via the registry.
-        # We only need to handle shared instances that might be injected as dependencies.
-        self.shared_instances: dict[str, Any] = {}
-        
-        try:
-            # We still need the class registry to find the classes for shared instances
 
         # Initialize method registry with lazy loading
-        try:
-            self._method_registry = MethodRegistry()
-            setup_default_instantiation_rules(self._method_registry)
-            logger.info("method_registry_initialized_lazy_mode")
-        except Exception as exc:
-            self.degraded_mode = True
-            reason = f"Method registry initialization failed: {exc}"
-            self.degraded_reasons.append(reason)
-            logger.error("DEGRADED MODE: %s", reason)
-            # Create empty registry for graceful degradation
-            self._method_registry = MethodRegistry(class_paths={})
+        if method_registry is not None:
+            self._method_registry = method_registry
+        else:
+            try:
+                self._method_registry = MethodRegistry()
+                setup_default_instantiation_rules(self._method_registry)
+                logger.info("method_registry_initialized_lazy_mode")
+            except Exception as exc:
+                self.degraded_mode = True
+                reason = f"Method registry initialization failed: {exc}"
+                self.degraded_reasons.append(reason)
+                logger.error("DEGRADED MODE: %s", reason)
+                # Create empty registry for graceful degradation
+                self._method_registry = MethodRegistry(class_paths={})
 
         # Build minimal class type registry for ArgRouter compatibility
         # Note: This doesn't instantiate classes, just loads types
         try:
             from .class_registry import build_class_registry
             registry = build_class_registry()
-            OntologyClass = registry.get("MunicipalOntology")
-            if OntologyClass:
-                self.shared_instances["MunicipalOntology"] = OntologyClass()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
-            reason = f"Could not build class registry or instantiate shared services: {exc}"
+            reason = f"Could not build class registry: {exc}"
             self.degraded_reasons.append(reason)
             logger.warning("DEGRADED MODE: %s", reason)
             registry = {}
 
         # Create ExtendedArgRouter with the registry for enhanced validation and metrics
         self._router = ExtendedArgRouter(registry)
-
-        # Legacy compatibility - provide instances dict (now lazily populated)
-        # This maintains backward compatibility with code that checks self.instances
-        self.instances = _LazyInstanceDict(self._method_registry)
 
     @staticmethod
     def _supports_parameter(callable_obj: Any, parameter_name: str) -> bool:
@@ -986,64 +970,19 @@ class MethodExecutor:
         return parameter_name in signature.parameters
 
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
-        """
-        Execute a method by dynamically loading it via the MethodRegistry.
-
-        This method determines and injects dependencies like 'MunicipalOntology'
-        at instantiation time.
         """Execute a method using lazy instantiation.
 
         Args:
             class_name: Name of the class.
             method_name: Name of the method to execute.
-            **kwargs: Keyword arguments to pass to the method call itself.
+            **kwargs: Keyword arguments to pass to the method call.
 
         Returns:
             The method's return value.
 
         Raises:
-            RuntimeError: If the method registry is not configured.
-            MethodNotInSourceError: If the method is not in the source truth map.
-            MethodExtractionError: If the method cannot be loaded or instantiated.
-        """
-        if self.method_registry is None:
-            raise RuntimeError("MethodRegistry is not configured on this MethodExecutor.")
-
-        # Determine __init__ kwargs for dependency injection
-        init_kwargs = {}
-        if class_name in ("SemanticAnalyzer", "PerformanceAnalyzer", "TextMiningEngine"):
-            ontology_instance = self.shared_instances.get("MunicipalOntology")
-            if ontology_instance:
-                init_kwargs['ontology'] = ontology_instance
-            else:
-                logger.warning(
-                    "Cannot provide MunicipalOntology to %s: shared instance not available", class_name
-                )
-        elif class_name == "PolicyTextProcessor":
-            try:
-                # This is a bit of a hack, but it preserves the original logic.
-                from policy_processor import ProcessorConfig
-                init_kwargs['config'] = ProcessorConfig()
-            except ImportError:
-                logger.warning("Cannot provide ProcessorConfig to PolicyTextProcessor: ProcessorConfig unavailable")
-        
-        try:
-            # 1. Get the bound method from a fresh instance, with dependencies injected.
-            method = self.method_registry.get_method(
-                class_name, 
-                method_name, 
-                init_kwargs=init_kwargs
-            )
-            
-            # 2. Execute the method with the provided runtime arguments.
-            # The argument routing/validation is now simpler, but could be expanded here.
-            # For now, we pass all kwargs directly.
-            return method(**kwargs)
-
-        except Exception as e:
             ArgRouterError: If routing fails
             AttributeError: If method doesn't exist
-            RuntimeError: If calibration is missing or placeholder
             MethodRegistryError: If method cannot be retrieved
         """
         from .method_registry import MethodRegistryError
