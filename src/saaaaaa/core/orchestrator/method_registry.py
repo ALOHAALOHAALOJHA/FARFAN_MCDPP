@@ -1,214 +1,373 @@
-import ast
-import json
-import importlib.util
-from typing import Callable, Dict, Any, Tuple
-import types
-import os
-import sys
+"""Method Registry with lazy instantiation and injection pattern.
 
-class MethodNotInSourceError(Exception):
-    pass
+This module implements a method injection factory that:
+1. Loads only the methods needed (not full classes)
+2. Instantiates classes lazily (only when first method is called)
+3. Caches instances for reuse
+4. Isolates errors per method (failures don't cascade)
+5. Allows direct function injection (bypassing classes)
 
-class MethodExtractionError(Exception):
-    pass
+Architecture:
+    MethodRegistry
+        ├─ _class_paths: mapping of class names to import paths
+        ├─ _instance_cache: lazily instantiated class instances
+        ├─ _direct_methods: directly injected functions
+        └─ get_method(): returns callable for (class_name, method_name)
+
+Benefits:
+- No upfront class loading (lightweight imports)
+- Failed classes don't block working methods
+- Direct function injection for custom implementations
+- Instance reuse through caching
+"""
+from __future__ import annotations
+
+import logging
+import threading
+from importlib import import_module
+from typing import Any, Callable
+
+logger = logging.getLogger(__name__)
+
+
+class MethodRegistryError(RuntimeError):
+    """Raised when a method cannot be retrieved."""
+
 
 class MethodRegistry:
-    """
-    A registry that dynamically loads methods from Python source files without
-    using traditional imports. It embraces the complexity of creating valid
-    class instances to ensure methods have their full context.
-    """
-    def __init__(self, source_truth_path: str = "method_source_truth.json", source_truth: Dict[str, Any] | None = None):
-        if source_truth:
-            self._source_truth = source_truth
-        else:
-            try:
-                with open(source_truth_path, "r") as f:
-                    self._source_truth = json.load(f)
-            except FileNotFoundError:
-                raise MethodExtractionError(f"Source truth file not found at '{source_truth_path}' and no source_truth dictionary was provided. Please run the validator first.")
-            
-        self._module_cache: Dict[str, types.ModuleType] = {}
-        self._lazy_registry: set = set()
+    """Registry for lazy method injection without full class instantiation."""
 
-    def register_lazy(self, method_fqn: str):
-        """Pre-registers a method as being available for lazy loading."""
-        self._lazy_registry.add(method_fqn)
-
-    def _load_module_from_file(self, file_path: str) -> types.ModuleType:
-        """
-        Loads a Python source file as a module in an isolated namespace.
-        Caches the result to avoid reprocessing the same file.
-        This method temporarily adds the 'src' directory to sys.path
-        to ensure that intra-package imports within the loaded file resolve correctly.
-        """
-        if file_path in self._module_cache:
-            return self._module_cache[file_path]
-
-        # The project has a src layout, so we need to add 'src' to the path
-        # for imports like 'from saaaaaa.core...' to work.
-        src_path = os.path.abspath("src")
-        original_sys_path = sys.path[:]
-        if src_path not in sys.path:
-            sys.path.insert(0, src_path)
-
-        try:
-            # Create a unique module name to avoid conflicts.
-            # The name should correspond to its path from the src root.
-            module_name = os.path.splitext(os.path.relpath(file_path, src_path))[0].replace(os.sep, '.')
-
-            spec = importlib.util.spec_from_file_location(module_name, file_path)
-            if spec is None or spec.loader is None:
-                raise MethodExtractionError(f"Could not create spec for dynamic module from file {file_path}")
-
-            module = importlib.util.module_from_spec(spec)
-
-            # Add the module to sys.modules BEFORE exec_module. This is crucial
-            # for allowing the module to import other modules within itself.
-            sys.modules[module_name] = module
-
-            spec.loader.exec_module(module)
-
-            self._module_cache[file_path] = module
-            return module
-        except Exception as e:
-            raise MethodExtractionError(f"Failed to dynamically load module from '{file_path}': {e}")
-        finally:
-            # Restore the original sys.path
-            sys.path[:] = original_sys_path
-            # Clean up the loaded module from sys.modules if it was added
-            if 'module_name' in locals() and module_name in sys.modules:
-                del sys.modules[module_name]
-
-
-    def get_method(
-        self, 
-        class_name: str, 
-        method_name: str, 
-        init_args: Tuple = (), 
-        init_kwargs: Dict[str, Any] = {}
-    ) -> Callable:
-        """
-        Retrieves a method by dynamically loading its source file, instantiating
-        its class, and returning the bound method.
+    def __init__(self, class_paths: dict[str, str] | None = None) -> None:
+        """Initialize the method registry.
 
         Args:
-            class_name: The name of the class containing the method.
-            method_name: The name of the method to retrieve.
-            init_args: Positional arguments for the class's __init__.
-            init_kwargs: Keyword arguments for the class's __init__.
+            class_paths: Optional mapping of class names to import paths.
+                        If None, uses default paths from class_registry.
+        """
+        # Import class paths from existing registry
+        if class_paths is None:
+            from .class_registry import get_class_paths
+            class_paths = dict(get_class_paths())
+
+        self._class_paths = class_paths
+        self._instance_cache: dict[str, Any] = {}
+        self._direct_methods: dict[tuple[str, str], Callable[..., Any]] = {}
+        self._failed_classes: set[str] = set()
+        self._lock = threading.Lock()
+
+        # Special instantiation rules (from original MethodExecutor)
+        self._special_instantiation: dict[str, Callable[[type], Any]] = {}
+
+    def inject_method(
+        self,
+        class_name: str,
+        method_name: str,
+        method: Callable[..., Any],
+    ) -> None:
+        """Directly inject a method without needing a class.
+
+        This allows bypassing class instantiation entirely.
+
+        Args:
+            class_name: Virtual class name for routing
+            method_name: Method name
+            method: Callable to inject
+        """
+        key = (class_name, method_name)
+        self._direct_methods[key] = method
+        logger.info(
+            "method_injected_directly",
+            class_name=class_name,
+            method_name=method_name,
+        )
+
+    def register_instantiation_rule(
+        self,
+        class_name: str,
+        instantiator: Callable[[type], Any],
+    ) -> None:
+        """Register special instantiation logic for a class.
+
+        Args:
+            class_name: Class name requiring special instantiation
+            instantiator: Function that takes class type and returns instance
+        """
+        self._special_instantiation[class_name] = instantiator
+        logger.debug(
+            "instantiation_rule_registered",
+            class_name=class_name,
+        )
+
+    def _load_class(self, class_name: str) -> type:
+        """Load a class type from import path.
+
+        Args:
+            class_name: Name of class to load
 
         Returns:
-            A callable, bound method from a fresh instance of the class.
+            Class type
+
+        Raises:
+            MethodRegistryError: If class cannot be loaded
         """
-        fqn = f"{class_name}.{method_name}"
-
-        if fqn not in self._source_truth:
-            raise MethodNotInSourceError(f"{fqn} does NOT exist in any Python file according to the source truth map.")
-        
-        # In a strict system, we might enforce pre-registration.
-        # if fqn not in self._lazy_registry:
-        #     raise MethodExtractionError(f"{fqn} was not pre-registered for lazy loading.")
-
-        source_info = self._source_truth[fqn]
-        file_path = source_info['file']
-        
-        # 1. Get the module, loading it from source if necessary.
-        module = self._load_module_from_file(file_path)
-        
-        # 2. Get the class from the dynamically loaded module.
-        TargetClass = getattr(module, class_name, None)
-        if not TargetClass:
-            raise MethodExtractionError(f"Class '{class_name}' not found in dynamically loaded module '{file_path}'.")
-            
-        # 3. Instantiate the class with the provided arguments.
-        # This is the crucial step that handles __init__ complexity.
-        try:
-            instance = TargetClass(*init_args, **init_kwargs)
-        except Exception as e:
-            raise MethodExtractionError(
-                f"Failed to instantiate class '{class_name}' with the provided arguments. "
-                f"Error: {e}. Ensure you are passing the correct arguments for its __init__ method."
+        if class_name not in self._class_paths:
+            raise MethodRegistryError(
+                f"Class '{class_name}' not found in registry paths"
             )
-            
-        # 4. Get the method from the instance.
-        method = getattr(instance, method_name, None)
-        if not method or not callable(method):
-            raise MethodExtractionError(f"Attribute '{method_name}' on class '{class_name}' is not a callable method.")
-            
-        return method
+
+        path = self._class_paths[class_name]
+        module_name, _, attr_name = path.rpartition(".")
+
+        if not module_name:
+            raise MethodRegistryError(
+                f"Invalid path for '{class_name}': {path}"
+            )
+
+        try:
+            module = import_module(module_name)
+            cls = getattr(module, attr_name)
+
+            if not isinstance(cls, type):
+                raise MethodRegistryError(
+                    f"'{class_name}' is not a class: {type(cls).__name__}"
+                )
+
+            return cls
+
+        except ImportError as exc:
+            raise MethodRegistryError(
+                f"Cannot import class '{class_name}' from {path}: {exc}"
+            ) from exc
+        except AttributeError as exc:
+            raise MethodRegistryError(
+                f"Class '{attr_name}' not found in module {module_name}: {exc}"
+            ) from exc
+
+    def _instantiate_class(self, class_name: str, cls: type) -> Any:
+        """Instantiate a class using special rules or default constructor.
+
+        Args:
+            class_name: Name of class (for special rule lookup)
+            cls: Class type to instantiate
+
+        Returns:
+            Instance of the class
+
+        Raises:
+            MethodRegistryError: If instantiation fails
+        """
+        # Use special instantiation rule if registered
+        if class_name in self._special_instantiation:
+            try:
+                instantiator = self._special_instantiation[class_name]
+                instance = instantiator(cls)
+                logger.debug(
+                    "class_instantiated_with_special_rule",
+                    class_name=class_name,
+                )
+                return instance
+            except Exception as exc:
+                raise MethodRegistryError(
+                    f"Special instantiation failed for '{class_name}': {exc}"
+                ) from exc
+
+        # Default instantiation (no-args constructor)
+        try:
+            instance = cls()
+            logger.debug(
+                "class_instantiated_default",
+                class_name=class_name,
+            )
+            return instance
+        except Exception as exc:
+            raise MethodRegistryError(
+                f"Default instantiation failed for '{class_name}': {exc}"
+            ) from exc
+
+    def _get_instance(self, class_name: str) -> Any:
+        """Get or create instance of a class (lazy + cached).
+
+        Args:
+            class_name: Name of class to instantiate
+
+        Returns:
+            Instance of the class
+
+        Raises:
+            MethodRegistryError: If class cannot be instantiated
+        """
+        # Check if already failed
+        if class_name in self._failed_classes:
+            raise MethodRegistryError(
+                f"Class '{class_name}' previously failed to instantiate"
+            )
+
+        # Use a lock to ensure thread-safe instantiation
+        with self._lock:
+            # Double-check if another thread instantiated it while waiting for the lock
+            if class_name in self._instance_cache:
+                return self._instance_cache[class_name]
+
+            # Load and instantiate class
+            try:
+                cls = self._load_class(class_name)
+                instance = self._instantiate_class(class_name, cls)
+                self._instance_cache[class_name] = instance
+                logger.info(
+                    "class_instantiated_lazy",
+                    class_name=class_name,
+                )
+                return instance
+
+            except MethodRegistryError:
+                # Mark as failed to avoid repeated attempts
+                self._failed_classes.add(class_name)
+                raise
+
+    def get_method(
+        self,
+        class_name: str,
+        method_name: str,
+    ) -> Callable[..., Any]:
+        """Get method callable with lazy instantiation.
+
+        This is the main entry point for retrieving methods.
+
+        Args:
+            class_name: Name of class containing the method
+            method_name: Name of method to retrieve
+
+        Returns:
+            Callable method (bound or injected)
+
+        Raises:
+            MethodRegistryError: If method cannot be retrieved
+        """
+        # Check for directly injected method first
+        key = (class_name, method_name)
+        if key in self._direct_methods:
+            logger.debug(
+                "method_retrieved_direct",
+                class_name=class_name,
+                method_name=method_name,
+            )
+            return self._direct_methods[key]
+
+        # Get instance (lazy) and retrieve method
+        try:
+            instance = self._get_instance(class_name)
+            method = getattr(instance, method_name)
+
+            if not callable(method):
+                raise MethodRegistryError(
+                    f"'{class_name}.{method_name}' is not callable"
+                )
+
+            logger.debug(
+                "method_retrieved_from_instance",
+                class_name=class_name,
+                method_name=method_name,
+            )
+            return method
+
+        except AttributeError as exc:
+            raise MethodRegistryError(
+                f"Method '{method_name}' not found on class '{class_name}'"
+            ) from exc
+
+    def has_method(self, class_name: str, method_name: str) -> bool:
+        """Check if a method is available (without instantiating).
+
+        Args:
+            class_name: Name of class
+            method_name: Name of method
+
+        Returns:
+            True if method exists (or is directly injected)
+        """
+        # Check direct injection
+        key = (class_name, method_name)
+        if key in self._direct_methods:
+            return True
+
+        # Check if class is known and not failed
+        if class_name in self._failed_classes:
+            return False
+
+        if class_name not in self._class_paths:
+            return False
+
+        # If instance exists, check method
+        if class_name in self._instance_cache:
+            instance = self._instance_cache[class_name]
+            return hasattr(instance, method_name)
+
+        # Otherwise, assume it exists (lazy check)
+        # Full validation happens on first get_method() call
+        return True
+
+    def get_stats(self) -> dict[str, Any]:
+        """Get registry statistics.
+
+        Returns:
+            Dictionary with registry stats
+        """
+        return {
+            "total_classes_registered": len(self._class_paths),
+            "instantiated_classes": len(self._instance_cache),
+            "failed_classes": len(self._failed_classes),
+            "direct_methods_injected": len(self._direct_methods),
+            "instantiated_class_names": list(self._instance_cache.keys()),
+            "failed_class_names": list(self._failed_classes),
+        }
 
 
-if __name__ == '__main__':
-    # This test assumes a specific structure and will need to be adapted
-    # to the actual project files. It demonstrates the principle.
-    
-    print("Running a test of the new, robust MethodRegistry...")
-    
-    # We need a method from a class with a simple __init__ for this test to pass.
-    # Let's assume 'BayesianNumericalAnalyzer' has a no-arg __init__.
-    # The previous error indicates this might not be the case.
-    
-    # Let's try to load 'BayesianNumericalAnalyzer.compare_policies' again.
-    # This time, we are prepared for __init__ failures.
-    
-    TEST_CLASS = "BayesianNumericalAnalyzer"
-    TEST_METHOD = "compare_policies"
-    
-    try:
-        registry = MethodRegistry()
-        registry.register_lazy(f"{TEST_CLASS}.{TEST_METHOD}")
-        
-        print(f"Attempting to load '{TEST_CLASS}.{TEST_METHOD}' with no init_args...")
-        
-        # Let's assume a no-arg init for the test. If it fails, the error will be informative.
-        method_to_test = registry.get_method(TEST_CLASS, TEST_METHOD)
-        
-        print(f"Successfully loaded method: {method_to_test}")
-        # To prove it works, let's inspect it.
-        # A bound method has __self__ pointing to the instance.
-        if hasattr(method_to_test, '__self__'):
-            print(f"Method is bound to instance: {method_to_test.__self__}")
-            print("MethodRegistry test passed for a known method.")
-        else:
-            print("Test failed: Method does not appear to be bound.")
+def setup_default_instantiation_rules(registry: MethodRegistry) -> None:
+    """Setup default special instantiation rules.
 
-    except (MethodNotInSourceError, MethodExtractionError) as e:
-        print(f"Test failed with an expected error: {e}")
-    except Exception as e:
-        print(f"An unexpected error occurred during testing: {e}")
+    These rules replicate the logic from the original MethodExecutor
+    for classes that need non-default instantiation.
 
-    print("\n---")
-    print("Testing a method from a class that requires __init__ arguments (hypothetical)...")
-    
-    # Let's pretend a class 'ClassWithInit' needs an argument.
-    # We would need to update the source truth map for this test.
-    # For now, we just demonstrate the failure mode.
-    try:
-        # Create a dummy source truth for this test
-        if not os.path.exists("dummy_source_truth.json"):
-            with open("dummy_source_truth.json", "w") as f:
-                json.dump({
-                    "ClassWithInit.some_method": {"file": "dummy_file.py"}
-                }, f)
-        if not os.path.exists("dummy_file.py"):
-            with open("dummy_file.py", "w") as f:
-                f.write("class ClassWithInit:\n")
-                f.write("  def __init__(self, required_arg):\n")
-                f.write("    self.arg = required_arg\n")
-                f.write("  def some_method(self):\n")
-                f.write("    return self.arg\n")
+    Args:
+        registry: MethodRegistry to configure
+    """
+    # MunicipalOntology - shared instance pattern
+    ontology_instance = None
 
-        registry = MethodRegistry(source_truth_path="dummy_source_truth.json")
-        print("Attempting to get method from ClassWithInit without providing required arg...")
-        registry.get_method("ClassWithInit", "some_method")
+    def instantiate_ontology(cls: type) -> Any:
+        nonlocal ontology_instance
+        if ontology_instance is None:
+            ontology_instance = cls()
+        return ontology_instance
 
-    except MethodExtractionError as e:
-        print(f"Successfully caught expected error for missing __init__ args: {e}")
-        print("Test for complex __init__ passed.")
-    finally:
-        # Clean up dummy files
-        if os.path.exists("dummy_source_truth.json"):
-            os.remove("dummy_source_truth.json")
-        if os.path.exists("dummy_file.py"):
-            os.remove("dummy_file.py")
+    registry.register_instantiation_rule("MunicipalOntology", instantiate_ontology)
+
+    # SemanticAnalyzer, PerformanceAnalyzer, TextMiningEngine - need ontology
+    def instantiate_with_ontology(cls: type) -> Any:
+        if ontology_instance is None:
+            raise MethodRegistryError(
+                f"Cannot instantiate {cls.__name__}: MunicipalOntology not available"
+            )
+        return cls(ontology_instance)
+
+    for class_name in ["SemanticAnalyzer", "PerformanceAnalyzer", "TextMiningEngine"]:
+        registry.register_instantiation_rule(class_name, instantiate_with_ontology)
+
+    # PolicyTextProcessor - needs ProcessorConfig
+    def instantiate_policy_processor(cls: type) -> Any:
+        try:
+            from policy_processor import ProcessorConfig
+            return cls(ProcessorConfig())
+        except ImportError as exc:
+            raise MethodRegistryError(
+                "Cannot instantiate PolicyTextProcessor: ProcessorConfig unavailable"
+            ) from exc
+
+    registry.register_instantiation_rule("PolicyTextProcessor", instantiate_policy_processor)
+
+
+__all__ = [
+    "MethodRegistry",
+    "MethodRegistryError",
+    "setup_default_instantiation_rules",
+]
