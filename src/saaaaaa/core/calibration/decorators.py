@@ -4,6 +4,7 @@ This module provides decorators to enforce the central calibration system.
 """
 
 from functools import wraps
+from dataclasses import dataclass
 from typing import Any, Dict, Optional
 import logging
 
