@@ -31,6 +31,7 @@ import hashlib
 import json
 import logging
 import os
+import sys
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 from pathlib import Path
@@ -43,9 +44,12 @@ from flask_socketio import SocketIO, emit
 from werkzeug.exceptions import HTTPException
 
 # Import orchestrator components
+import asyncio
 from saaaaaa.analysis.recommendation_engine import load_recommendation_engine
 from saaaaaa import get_parameter_loader
 from saaaaaa.core.calibration.decorators import calibrated_method
+from saaaaaa.core.orchestrator.factory import create_orchestrator
+from saaaaaa.core.orchestrator.core import PreprocessedDocument
 
 # Configure logging
 logging.basicConfig(
@@ -225,7 +229,7 @@ class DataService:
 
     def __init__(self) -> None:
         """Initialize data service with orchestrator"""
-        self.orchestrator = None
+        self.orchestrator = create_orchestrator()
         self.data_cache = {}
         self.data_dir = APIConfig.DATA_DIRECTORY
         self.baseline_data = {}
@@ -431,8 +435,34 @@ class DataService:
                 'indicators': {'alignment': get_parameter_loader().get("saaaaaa.api.api_server.DataService.get_pdet_regions").get("auto_param_L430_44", 0.64), 'implementation': get_parameter_loader().get("saaaaaa.api.api_server.DataService.get_pdet_regions").get("auto_param_L430_68", 0.61), 'impact': get_parameter_loader().get("saaaaaa.api.api_server.DataService.get_pdet_regions").get("auto_param_L430_84", 0.65)}
             }
         ]
-
         return regions
+
+    def get_constellation_map_data(self) -> dict[str, Any]:
+        """
+        Get data for the constellation map visualization.
+
+        This method will eventually generate a graph of policy areas,
+        clusters, and their connections. For now, it returns a static
+        sample.
+        """
+        # Placeholder data for the constellation map
+        return {
+            "nodes": [
+                {"id": "PA1", "name": "Policy Area 1", "type": "policy_area", "group": 1},
+                {"id": "PA2", "name": "Policy Area 2", "type": "policy_area", "group": 1},
+                {"id": "C1", "name": "Cluster 1", "type": "cluster", "group": 2},
+                {"id": "C2", "name": "Cluster 2", "type": "cluster", "group": 2},
+                {"id": "M1", "name": "Micro-indicator 1.1", "type": "indicator", "group": 3},
+                {"id": "M2", "name": "Micro-indicator 1.2", "type": "indicator", "group": 3},
+            ],
+            "links": [
+                {"source": "PA1", "target": "C1", "value": 0.8},
+                {"source": "PA2", "target": "C1", "value": 0.6},
+                {"source": "C1", "target": "C2", "value": 0.9},
+                {"source": "C2", "target": "M1", "value": 0.4},
+                {"source": "C2", "target": "M2", "value": 0.7},
+            ]
+        }
 
     @calibrated_method("saaaaaa.api.api_server.DataService.get_region_detail")
     def get_region_detail(self, region_id: str) -> dict[str, Any] | None:
@@ -593,6 +623,30 @@ def get_auth_token():
         'token_type': 'Bearer',
         'expires_in': APIConfig.JWT_EXPIRATION_HOURS * 3600
     })
+
+@app.route('/api/v1/constellation_map', methods=['GET'])
+@rate_limit
+@cached(ttl=300)
+def get_constellation_map():
+    """
+    Get data for the constellation map visualization
+
+    Returns:
+        JSON object with nodes and links for the constellation map
+    """
+    try:
+        constellation_data = data_service.get_constellation_map_data()
+
+        return jsonify({
+            'status': 'success',
+            'data': constellation_data,
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to get constellation map data: {e}")
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/v1/pdet/regions', methods=['GET'])
 @rate_limit
