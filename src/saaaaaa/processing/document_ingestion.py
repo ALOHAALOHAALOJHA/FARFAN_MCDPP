@@ -73,6 +73,7 @@ from typing import Any
 from saaaaaa.core.orchestrator.core import PreprocessedDocument
 from dataclasses import dataclass, field
 from typing import Any, List, Dict, Optional
+from saaaaaa.core.calibration.decorators import calibrated_method
 
 # Local definitions for missing schema classes (Legacy Support)
 @dataclass
@@ -262,6 +263,7 @@ class DocumentLoader:
     def __init__(self) -> None:
         self.logger = logger
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.DocumentLoader.load_pdf")
     def load_pdf(self, *, pdf_path: str) -> RawDocument:
         """
         MÉTODO 1: Carga un PDF desde disco (keyword-only params).
@@ -334,6 +336,7 @@ class DocumentLoader:
 
         return raw_doc
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.DocumentLoader.validate_pdf")
     def validate_pdf(self, *, raw_doc: RawDocument) -> bool:
         """
         MÉTODO 2: Valida que el PDF sea procesable.
@@ -366,12 +369,14 @@ class DocumentLoader:
 
         return True
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.DocumentLoader.validate_pdf_reader")
     def validate_pdf_reader(self, reader: PdfReader) -> bool:
         """Valida un PdfReader de PyPDF2."""
         if reader.is_encrypted:
             return False
         return len(reader.pages) != 0
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.DocumentLoader.extract_metadata")
     def extract_metadata(self, reader: PdfReader) -> dict[str, Any]:
         """
         MÉTODO 3: Extrae metadata del PDF.
@@ -406,6 +411,7 @@ class DocumentLoader:
 
         return metadata
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.DocumentLoader._calculate_file_hash")
     def _calculate_file_hash(self, file_path: Path) -> str:
         """Calcula hash SHA-256 del archivo para trazabilidad."""
         # Delegate to factory for I/O operation
@@ -425,6 +431,7 @@ class TextExtractor:
     def __init__(self) -> None:
         self.logger = logger
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.TextExtractor.extract_full_text")
     def extract_full_text(self, *, raw_doc: RawDocument) -> str:
         """
         MÉTODO 4: Extrae todo el texto del PDF (keyword-only params).
@@ -457,6 +464,7 @@ class TextExtractor:
             self.logger.error(f"Error abriendo PDF con pdfplumber: {e}")
             raise
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.TextExtractor.extract_by_page")
     def extract_by_page(self, *, raw_doc: RawDocument, page: int) -> str:
         """
         MÉTODO 5: Extrae texto de una página específica.
@@ -482,6 +490,7 @@ class TextExtractor:
             self.logger.error(f"Error extrayendo página {page}: {e}")
             return ""
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.TextExtractor.preserve_structure")
     def preserve_structure(self, *, text: str) -> StructuredTextV1:
         """
         MÉTODO 6: Preserva estructura del documento.
@@ -579,6 +588,7 @@ class PreprocessingEngine:
             self.table_analyzer = None
             self.logger.warning("PDETMunicipalPlanAnalyzer no disponible")
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.PreprocessingEngine.preprocess_document")
     def preprocess_document(self, *, raw_doc: RawDocument) -> PreprocessedDocument:
         """
         MÉTODO 7: Pipeline completo de preprocesamiento (keyword-only params).
@@ -688,6 +698,7 @@ class PreprocessingEngine:
 
         return preprocessed_doc
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.PreprocessingEngine.normalize_encoding")
     def normalize_encoding(self, *, text: str) -> str:
         """
         MÉTODO 8: Normaliza encoding del texto.
@@ -707,6 +718,7 @@ class PreprocessingEngine:
             import unicodedata
             return unicodedata.normalize('NFC', text)
 
+    @calibrated_method("saaaaaa.processing.document_ingestion.PreprocessingEngine.detect_language")
     def detect_language(self, *, text: str) -> str:
         """
         MÉTODO 9: Detecta el idioma del documento.

@@ -5,11 +5,13 @@ Segments documents into policy-aware units.
 """
 
 from typing import Any
+from saaaaaa.core.calibration.decorators import calibrated_method
 
 
 class StructuralNormalizer:
     """Policy-aware structural normalizer."""
 
+    @calibrated_method("saaaaaa.processing.spc_ingestion.structural.StructuralNormalizer.normalize")
     def normalize(self, raw_objects: dict[str, Any]) -> dict[str, Any]:
         """
         Normalize document structure with policy awareness.
@@ -59,6 +61,7 @@ class StructuralNormalizer:
 
         return policy_graph
 
+    @calibrated_method("saaaaaa.processing.spc_ingestion.structural.StructuralNormalizer._detect_policy_units")
     def _detect_policy_units(self, text: str) -> list[dict[str, Any]]:
         """Detect policy units in text."""
         units = []
@@ -82,6 +85,7 @@ class StructuralNormalizer:
 
         return units
 
+    @calibrated_method("saaaaaa.processing.spc_ingestion.structural.StructuralNormalizer._extract_title")
     def _extract_title(self, text: str) -> str:
         """Extract title from text."""
         # Simple: first line or first N characters

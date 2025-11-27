@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import warnings
 from saaaaaa.utils.cpp_adapter import (
+from saaaaaa.core.calibration.decorators import calibrated_method
     CPPAdapter as SPCAdapter,
     CPPAdapterError as SPCAdapterError,
     adapt_cpp_to_orchestrator as adapt_spc_to_orchestrator

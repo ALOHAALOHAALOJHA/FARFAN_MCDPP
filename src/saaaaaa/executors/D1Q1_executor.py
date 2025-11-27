@@ -3,6 +3,7 @@
 Demonstrates usage of the centralized calibration system.
 """
 
+from saaaaaa import get_parameter_loader
 from saaaaaa.core.calibration.decorators import calibrated_method
 
 class D1Q1_Executor:
@@ -26,5 +27,5 @@ class D1Q1_Executor:
         # We also do NOT hardcode thresholds. They are passed in.
         
         # Simulate calculation
-        score = 0.85
+        score = get_parameter_loader().get("saaaaaa.executors.D1Q1_executor.D1Q1_Executor.execute").get("score", 0.85) # Refactored
         return score
