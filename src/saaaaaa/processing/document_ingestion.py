@@ -70,7 +70,7 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any
 
-from schemas.preprocessed_document import (
+
 
 # Issue deprecation warning when module is imported
 warnings.warn(

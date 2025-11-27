@@ -31,6 +31,7 @@ import hashlib
 import json
 import logging
 import os
+import sys
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 from pathlib import Path
@@ -43,7 +44,10 @@ from flask_socketio import SocketIO, emit
 from werkzeug.exceptions import HTTPException
 
 # Import orchestrator components
+import asyncio
 from saaaaaa.analysis.recommendation_engine import load_recommendation_engine
+from saaaaaa.core.orchestrator.factory import create_orchestrator
+from saaaaaa.core.orchestrator.core import PreprocessedDocument
 
 # Configure logging
 logging.basicConfig(
@@ -223,7 +227,7 @@ class DataService:
 
     def __init__(self) -> None:
         """Initialize data service with orchestrator"""
-        self.orchestrator = None
+        self.orchestrator = create_orchestrator()
         self.data_cache = {}
         self.data_dir = APIConfig.DATA_DIRECTORY
         self.baseline_data = {}
@@ -251,184 +255,81 @@ class DataService:
         Returns data in format expected by AtroZ dashboard
         """
         # PDET regions from Colombian government definition
-        regions = [
-            {
-                'id': 'alto-patia',
-                'name': 'ALTO PATÍA Y NORTE DEL CAUCA',
-                'coordinates': {'x': 25, 'y': 20},
-                'metadata': {
-                    'municipalities': 24,
-                    'population': 450000,
-                    'area': 12500
-                },
-                'scores': {
-                    'overall': 72,
-                    'governance': 68,
-                    'social': 74,
-                    'economic': 70,
-                    'environmental': 75,
-                    'lastUpdated': datetime.now().isoformat()
-                },
-                'connections': ['pacifico-medio', 'sur-tolima'],
-                'indicators': {
-                    'alignment': 0.72,
-                    'implementation': 0.68,
-                    'impact': 0.75
-                }
-            },
-            {
-                'id': 'arauca',
-                'name': 'ARAUCA',
-                'coordinates': {'x': 75, 'y': 15},
-                'metadata': {
-                    'municipalities': 4,
-                    'population': 95000,
-                    'area': 23818
-                },
-                'scores': {
-                    'overall': 68,
-                    'governance': 65,
-                    'social': 70,
-                    'economic': 67,
-                    'environmental': 71,
-                    'lastUpdated': datetime.now().isoformat()
-                },
-                'connections': ['catatumbo'],
-                'indicators': {
-                    'alignment': 0.68,
-                    'implementation': 0.65,
-                    'impact': 0.70
-                }
-            },
-            {
-                'id': 'bajo-cauca',
-                'name': 'BAJO CAUCA Y NORDESTE ANTIOQUEÑO',
-                'coordinates': {'x': 45, 'y': 25},
-                'metadata': {'municipalities': 13, 'population': 280000, 'area': 8485},
-                'scores': {'overall': 65, 'governance': 62, 'social': 66, 'economic': 64, 'environmental': 68, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['sur-cordoba', 'sur-bolivar'],
-                'indicators': {'alignment': 0.65, 'implementation': 0.62, 'impact': 0.67}
-            },
-            {
-                'id': 'catatumbo',
-                'name': 'CATATUMBO',
-                'coordinates': {'x': 65, 'y': 20},
-                'metadata': {'municipalities': 11, 'population': 220000, 'area': 11700},
-                'scores': {'overall': 61, 'governance': 58, 'social': 62, 'economic': 60, 'environmental': 64, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['arauca'],
-                'indicators': {'alignment': 0.61, 'implementation': 0.58, 'impact': 0.63}
-            },
-            {
-                'id': 'choco',
-                'name': 'CHOCÓ',
-                'coordinates': {'x': 15, 'y': 35},
-                'metadata': {'municipalities': 14, 'population': 180000, 'area': 43000},
-                'scores': {'overall': 58, 'governance': 55, 'social': 59, 'economic': 57, 'environmental': 61, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['uraba', 'pacifico-medio'],
-                'indicators': {'alignment': 0.58, 'implementation': 0.55, 'impact': 0.60}
-            },
-            {
-                'id': 'caguan',
-                'name': 'CUENCA DEL CAGUÁN Y PIEDEMONTE CAQUETEÑO',
-                'coordinates': {'x': 55, 'y': 40},
-                'metadata': {'municipalities': 17, 'population': 350000, 'area': 39000},
-                'scores': {'overall': 70, 'governance': 67, 'social': 71, 'economic': 69, 'environmental': 72, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['macarena', 'putumayo'],
-                'indicators': {'alignment': 0.70, 'implementation': 0.67, 'impact': 0.71}
-            },
-            {
-                'id': 'macarena',
-                'name': 'MACARENA-GUAVIARE',
-                'coordinates': {'x': 60, 'y': 55},
-                'metadata': {'municipalities': 10, 'population': 140000, 'area': 32000},
-                'scores': {'overall': 66, 'governance': 63, 'social': 67, 'economic': 65, 'environmental': 68, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['caguan'],
-                'indicators': {'alignment': 0.66, 'implementation': 0.63, 'impact': 0.67}
-            },
-            {
-                'id': 'montes-maria',
-                'name': 'MONTES DE MARÍA',
-                'coordinates': {'x': 40, 'y': 10},
-                'metadata': {'municipalities': 15, 'population': 330000, 'area': 6500},
-                'scores': {'overall': 74, 'governance': 71, 'social': 75, 'economic': 73, 'environmental': 76, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['sur-bolivar'],
-                'indicators': {'alignment': 0.74, 'implementation': 0.71, 'impact': 0.75}
-            },
-            {
-                'id': 'pacifico-medio',
-                'name': 'PACÍFICO MEDIO',
-                'coordinates': {'x': 10, 'y': 50},
-                'metadata': {'municipalities': 4, 'population': 120000, 'area': 10000},
-                'scores': {'overall': 62, 'governance': 59, 'social': 63, 'economic': 61, 'environmental': 64, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['choco', 'alto-patia'],
-                'indicators': {'alignment': 0.62, 'implementation': 0.59, 'impact': 0.63}
-            },
-            {
-                'id': 'pacifico-narinense',
-                'name': 'PACÍFICO Y FRONTERA NARIÑENSE',
-                'coordinates': {'x': 5, 'y': 65},
-                'metadata': {'municipalities': 11, 'population': 190000, 'area': 14000},
-                'scores': {'overall': 59, 'governance': 56, 'social': 60, 'economic': 58, 'environmental': 61, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['putumayo'],
-                'indicators': {'alignment': 0.59, 'implementation': 0.56, 'impact': 0.60}
-            },
-            {
-                'id': 'putumayo',
-                'name': 'PUTUMAYO',
-                'coordinates': {'x': 35, 'y': 70},
-                'metadata': {'municipalities': 11, 'population': 270000, 'area': 25000},
-                'scores': {'overall': 67, 'governance': 64, 'social': 68, 'economic': 66, 'environmental': 69, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['caguan', 'pacifico-narinense'],
-                'indicators': {'alignment': 0.67, 'implementation': 0.64, 'impact': 0.68}
-            },
-            {
-                'id': 'sierra-nevada',
-                'name': 'SIERRA NEVADA - PERIJÁ - ZONA BANANERA',
-                'coordinates': {'x': 70, 'y': 5},
-                'metadata': {'municipalities': 10, 'population': 380000, 'area': 15000},
-                'scores': {'overall': 63, 'governance': 60, 'social': 64, 'economic': 62, 'environmental': 65, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['catatumbo'],
-                'indicators': {'alignment': 0.63, 'implementation': 0.60, 'impact': 0.64}
-            },
-            {
-                'id': 'sur-bolivar',
-                'name': 'SUR DE BOLÍVAR',
-                'coordinates': {'x': 50, 'y': 15},
-                'metadata': {'municipalities': 7, 'population': 150000, 'area': 7000},
-                'scores': {'overall': 60, 'governance': 57, 'social': 61, 'economic': 59, 'environmental': 62, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['bajo-cauca', 'montes-maria'],
-                'indicators': {'alignment': 0.60, 'implementation': 0.57, 'impact': 0.61}
-            },
-            {
-                'id': 'sur-cordoba',
-                'name': 'SUR DE CÓRDOBA',
-                'coordinates': {'x': 35, 'y': 15},
-                'metadata': {'municipalities': 5, 'population': 180000, 'area': 4500},
-                'scores': {'overall': 69, 'governance': 66, 'social': 70, 'economic': 68, 'environmental': 71, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['bajo-cauca', 'uraba'],
-                'indicators': {'alignment': 0.69, 'implementation': 0.66, 'impact': 0.70}
-            },
-            {
-                'id': 'sur-tolima',
-                'name': 'SUR DEL TOLIMA',
-                'coordinates': {'x': 45, 'y': 45},
-                'metadata': {'municipalities': 4, 'population': 110000, 'area': 3500},
-                'scores': {'overall': 71, 'governance': 68, 'social': 72, 'economic': 70, 'environmental': 73, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['alto-patia', 'caguan'],
-                'indicators': {'alignment': 0.71, 'implementation': 0.68, 'impact': 0.72}
-            },
-            {
-                'id': 'uraba',
-                'name': 'URABÁ ANTIOQUEÑO',
-                'coordinates': {'x': 20, 'y': 10},
-                'metadata': {'municipalities': 10, 'population': 420000, 'area': 11600},
-                'scores': {'overall': 64, 'governance': 61, 'social': 65, 'economic': 63, 'environmental': 66, 'lastUpdated': datetime.now().isoformat()},
-                'connections': ['choco', 'sur-cordoba'],
-                'indicators': {'alignment': 0.64, 'implementation': 0.61, 'impact': 0.65}
-            }
-        ]
 
+        # This is a sample document for now. In a real scenario, this would
+        # come from a database or a file upload.
+        sample_doc = PreprocessedDocument(
+            document_id="sample_pdet_doc",
+            raw_text="Este es un documento de prueba para el análisis de PDET.",
+            sentences=[],
+            tables=[],
+            metadata={},
+        )
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(self.orchestrator.run(sample_doc))
+        loop.close()
+
+        regions = []
+        if results and results.get("meso_analysis"):
+            for cluster_score in results["meso_analysis"]:
+                for area_score in cluster_score.area_scores:
+                    regions.append(
+                        {
+                            "id": area_score.area_id,
+                            "name": area_score.area_name,
+                            "coordinates": {"x": 25, "y": 20}, # Placeholder
+                            "metadata": {
+                                "municipalities": 0, # Placeholder
+                                "population": 0, # Placeholder
+                                "area": 0 # Placeholder
+                            },
+                            "scores": {
+                                "overall": area_score.score * 100,
+                                "governance": 0, # Placeholder
+                                "social": 0, # Placeholder
+                                "economic": 0, # Placeholder
+                                "environmental": 0, # Placeholder
+                                "lastUpdated": datetime.now().isoformat(),
+                            },
+                            "connections": [], # Placeholder
+                            "indicators": {
+                                "alignment": area_score.score,
+                                "implementation": 0, # Placeholder
+                                "impact": 0 # Placeholder
+                            },
+                        }
+                    )
         return regions
+
+    def get_constellation_map_data(self) -> dict[str, Any]:
+        """
+        Get data for the constellation map visualization.
+
+        This method will eventually generate a graph of policy areas,
+        clusters, and their connections. For now, it returns a static
+        sample.
+        """
+        # Placeholder data for the constellation map
+        return {
+            "nodes": [
+                {"id": "PA1", "name": "Policy Area 1", "type": "policy_area", "group": 1},
+                {"id": "PA2", "name": "Policy Area 2", "type": "policy_area", "group": 1},
+                {"id": "C1", "name": "Cluster 1", "type": "cluster", "group": 2},
+                {"id": "C2", "name": "Cluster 2", "type": "cluster", "group": 2},
+                {"id": "M1", "name": "Micro-indicator 1.1", "type": "indicator", "group": 3},
+                {"id": "M2", "name": "Micro-indicator 1.2", "type": "indicator", "group": 3},
+            ],
+            "links": [
+                {"source": "PA1", "target": "C1", "value": 0.8},
+                {"source": "PA2", "target": "C1", "value": 0.6},
+                {"source": "C1", "target": "C2", "value": 0.9},
+                {"source": "C2", "target": "M1", "value": 0.4},
+                {"source": "C2", "target": "M2", "value": 0.7},
+            ]
+        }
+
 
     def get_region_detail(self, region_id: str) -> dict[str, Any] | None:
         """Get detailed information for a specific region"""
@@ -583,6 +484,30 @@ def get_auth_token():
         'token_type': 'Bearer',
         'expires_in': APIConfig.JWT_EXPIRATION_HOURS * 3600
     })
+
+@app.route('/api/v1/constellation_map', methods=['GET'])
+@rate_limit
+@cached(ttl=300)
+def get_constellation_map():
+    """
+    Get data for the constellation map visualization
+
+    Returns:
+        JSON object with nodes and links for the constellation map
+    """
+    try:
+        constellation_data = data_service.get_constellation_map_data()
+
+        return jsonify({
+            'status': 'success',
+            'data': constellation_data,
+            'timestamp': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to get constellation map data: {e}")
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/v1/pdet/regions', methods=['GET'])
 @rate_limit
