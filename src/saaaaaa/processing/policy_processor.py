@@ -999,7 +999,7 @@ class IndustrialPolicyProcessor:
         domain_weights = {
             CausalDimension.D1_INSUMOS: 1.1,
             CausalDimension.D2_ACTIVIDADES: get_parameter_loader().get("saaaaaa.processing.policy_processor.IndustrialPolicyProcessor.process").get("auto_param_L1000_44", 1.0),
-            CausalDimension.D3_PRODUCTOS: get_parameter_loader().get("saaaaaa.processing.policy_processor.IndustrialPolicyProcessor.process").get("auto_param_L1001_42", 1.0),
+            CausalDimension.D3_PRODUCTOS: get_parameter_loader().get("saaaaaa.processing.policy_processor.IndustrialPolicyProcessor.process").get("auto_param_L1001_42", 1.0)5,
             CausalDimension.D4_RESULTADOS: 1.1,
             CausalDimension.D5_IMPACTOS: 1.15,
             CausalDimension.D6_CAUSALIDAD: 1.2,

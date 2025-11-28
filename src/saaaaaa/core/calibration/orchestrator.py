@@ -7,8 +7,8 @@ import logging
 from typing import Any, Dict, List
 from dataclasses import dataclass, field
 
-from saaaaaa.core.calibration.intrinsic_loader import IntrinsicCalibrationLoader
-from saaaaaa.core.calibration.layer_requirements import get_required_layers_for_method
+from .intrinsic_loader import IntrinsicCalibrationLoader
+from .layer_requirements import get_required_layers_for_method
 
 logger = logging.getLogger(__name__)
 
