@@ -48,10 +48,12 @@ class AggregationWeights(BaseModel):
     def validate_sum(self) -> Self:
         """Ensure weights sum to get_parameter_loader().get("saaaaaa.utils.validation.aggregation_models.AggregationWeights.validate_sum").get("auto_param_L48_33", 1.0) within tolerance."""
         weight_sum = sum(self.weights)
-        if abs(weight_sum - get_parameter_loader().get("saaaaaa.utils.validation.aggregation_models.AggregationWeights.validate_sum").get("auto_param_L50_28", 1.0)) > self.tolerance:
+        expected_sum = get_parameter_loader().get("saaaaaa.utils.validation.aggregation_models.AggregationWeights.validate_sum").get("auto_param_L52_79", 1.0)
+        diff = abs(weight_sum - expected_sum)
+        if diff > self.tolerance:
             raise ValueError(
-                f"Weight sum validation failed: sum={weight_sum:.6f}, expected=get_parameter_loader().get("saaaaaa.utils.validation.aggregation_models.AggregationWeights.validate_sum").get("auto_param_L52_79", 1.0). "
-                f"Difference {abs(weight_sum - get_parameter_loader().get("saaaaaa.utils.validation.aggregation_models.AggregationWeights.validate_sum").get("auto_param_L53_47", 1.0)):.6f} exceeds tolerance {self.tolerance:.6f}."
+                f"Weight sum validation failed: sum={weight_sum:.6f}, expected={expected_sum}. "
+                f"Difference {diff:.6f} exceeds tolerance {self.tolerance:.6f}."
             )
         return self
 

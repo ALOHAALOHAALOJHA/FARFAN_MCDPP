@@ -1,4 +1,11 @@
 {
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._load_schema": {
+    "intrinsic_score": 0.5,
+    "layer": "utils",
+    "calibration_status": "computed",
+    "b_theory": 0.5,
+    "b_impl": 0.8
+  },
   "module.Class.example_method": {
     "intrinsic_score": 0.652,
     "layer": "processor",
@@ -3638,3 +3645,4 @@
     "generated_by": "populate_script"
   },
   "saaaaaa.api.api_server.DataService.get_evidence_stream": {}
+}

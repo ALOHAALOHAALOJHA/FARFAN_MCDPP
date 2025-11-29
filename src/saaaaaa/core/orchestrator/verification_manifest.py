@@ -218,6 +218,17 @@ class VerificationManifest:
         self.manifest_data["ingestion"] = ingestion_data
         return self
 
+    def set_spc_utilization(self, spc_utilization: dict[str, Any]):
+        """
+        Set SPC utilization metrics (Phase 2).
+
+        Args:
+            spc_utilization: Dictionary containing SPC metrics
+        """
+        if spc_utilization:
+            self.manifest_data["spc_utilization"] = spc_utilization
+        return self
+
     def set_parametrization(self, parametrization: dict[str, Any]):
         """Record executor/config parameterization data."""
         if parametrization:

@@ -322,15 +322,13 @@ class PreprocessedDocument:
 
     This is the normalized document format used internally by the orchestrator.
     It can be constructed from ingestion payloads or created directly.
-
-    New in SPC exploitation: Preserves chunk structure when processing_mode='chunked',
-    enabling chunk-aware executor routing and reducing redundant processing.
     """
     document_id: str
     raw_text: str
     sentences: list[Any]
     tables: list[Any]
     metadata: dict[str, Any]
+    source_path: Path | None = None
     sentence_metadata: list[Any] = field(default_factory=list)
     indexes: dict[str, Any] | None = None
     structured_text: dict[str, Any] | None = None
@@ -516,10 +514,13 @@ class AbortSignal:
 
     def reset(self) -> None:
         """Clear the abort signal."""
-        with self._lock:
+        self._lock.acquire()
+        try:
             self._event.clear()
             self._reason = None
             self._timestamp = None
+        finally:
+            self._lock.release()
 
 class ResourceLimits:
     """Runtime resource guard with adaptive worker prediction."""
@@ -2226,8 +2227,20 @@ class Orchestrator:
                 error_msg = f"P01 Validation Failed: Chunk {i} is missing 'dimension_id'."
                 instrumentation.record_error("ingestion", "Missing Metadata", reason=error_msg)
                 raise ValueError(error_msg)
+            if not getattr(chunk, 'source_path', None):
+                error_msg = f"P01 Validation Failed: Chunk {i} is missing 'source_path'."
+                instrumentation.record_error("ingestion", "Missing Metadata", reason=error_msg)
+                raise ValueError(error_msg)
 
         logger.info(f"✅ P01-ES v1.0 validation gates passed for {actual_chunk_count} chunks.")
+
+        # Ensure processing_mode is 'chunked' for SPC pipeline
+        if preprocessed.processing_mode != "chunked":
+            logger.warning(
+                "PreprocessedDocument.processing_mode was %r, forcing 'chunked' for SPC pipeline",
+                preprocessed.processing_mode,
+            )
+            preprocessed.processing_mode = "chunked"
 
         text_length = len(preprocessed.raw_text)
         sentence_count = len(preprocessed.sentences) if preprocessed.sentences else 0
@@ -2236,7 +2249,7 @@ class Orchestrator:
         # Store ingestion information for verification manifest
         ingestion_info = {
             "method": "SPC",  # Only SPC is supported
-            "chunk_count": chunk_count,
+            "chunk_count": actual_chunk_count,
             "text_length": text_length,
             "sentence_count": sentence_count,
             "adapter_source": adapter_source,
@@ -2251,7 +2264,7 @@ class Orchestrator:
 
         logger.info(
             f"Document ingested successfully: document_id={document_id}, "
-            f"method=SPC, text_length={text_length}, chunk_count={chunk_count}, "
+            f"method=SPC, text_length={text_length}, chunk_count={actual_chunk_count}, "
             f"sentence_count={sentence_count}"
         )
 
@@ -2378,23 +2391,52 @@ class Orchestrator:
                 else:
                     try:
                         executor_instance = executor_class(
-                            self.executor,
+                            method_executor=self.executor,
                             signal_registry=self.executor.signal_registry,
                             config=self.executor_config,
                             questionnaire_provider=self.questionnaire_provider,
-                            calibration_orchestrator=self.calibration_orchestrator
+                            calibration_orchestrator=self.calibration_orchestrator,
+                            document_id=document.document_id
                         )
 
                         # STRICT FILTERING: Pass ONLY chunks matching the question's PA and DIM
                         target_pa = question.get("policy_area_id")
                         target_dim = question.get("dimension_id")
                         
-                        filtered_chunks = [
+                        # 1. Identify candidate chunks based on metadata (PA/DIM)
+                        candidate_chunks = [
                             c for c in document.chunks
                             if c.policy_area_id == target_pa and c.dimension_id == target_dim
                         ]
                         
-                        # Create scoped document with ONLY relevant chunks
+                        filtered_chunks = candidate_chunks
+
+                        # 2. Apply Chunk Routing optimization if available
+                        if chunk_routes:
+                            routed_chunks = []
+                            for chunk in candidate_chunks:
+                                route = chunk_routes.get(chunk.id)
+                                if route:
+                                    # Normalize route key: "D1Q1" -> "D1-Q1"
+                                    route_key = route.executor_class
+                                    if len(route_key) == 4 and route_key[0] == "D":
+                                        route_key = f"{route_key[:2]}-{route_key[2:]}"
+                                    
+                                    if route_key == base_slot:
+                                        routed_chunks.append(chunk)
+                            
+                            # Use routed chunks (subset of candidates)
+                            filtered_chunks = routed_chunks
+
+                        
+                        # Update execution metrics based on whether we have chunk-level execution
+                        if filtered_chunks:
+                            execution_metrics["chunk_executions"] += 1
+                            execution_metrics["total_chunks_processed"] += len(filtered_chunks)
+                        else:
+                            execution_metrics["full_doc_executions"] += 1
+                        
+                        # Create scoped document with ONLY relevant chunks (may be empty for full-doc fallback)
                         scoped_document = replace(document, chunks=filtered_chunks)
 
                         # Execute question with SCOPED document
@@ -2478,6 +2520,9 @@ class Orchestrator:
                 'total_possible_executions': total_possible,
                 'actual_executions': actual_executed,
                 'savings_percent': savings_pct,
+                'total_chunks_processed': execution_metrics['total_chunks_processed'],
+                # Include routing table version if available
+                'routing_table_version': getattr(router, 'ROUTING_TABLE_VERSION', 'v1'),
             }
 
         return results

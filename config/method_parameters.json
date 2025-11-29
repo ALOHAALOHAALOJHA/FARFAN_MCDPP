@@ -1,4 +1,44 @@
 {
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._load_schema": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Basic file I/O operations."
+  },
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_structure": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Structural validation."
+  },
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_schema_version": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Version check."
+  },
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_question_counts": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Count validation."
+  },
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_against_schema": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Schema validation."
+  },
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_field_coverage": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Coverage validation."
+  },
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_semantic_consistency": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Semantic check."
+  },
+  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._calculate_schema_hash": {
+    "validation_threshold": 0.5,
+    "_scientific_domain": "utility",
+    "_domain_description": "Utility: Hashing."
+  },
   "saaaaaa.scripts.run_policy_pipeline_verified.VerifiedPipelineRunner.generate_verification_manifest": {
     "provenance_coverage_threshold": 1.0,
     "validation_threshold": 1.0,

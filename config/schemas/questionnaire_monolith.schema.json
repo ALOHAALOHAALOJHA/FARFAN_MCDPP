@@ -265,7 +265,10 @@
           "type": "string",
           "enum": [
             "REGEX",
-            "LITERAL"
+            "LITERAL",
+            "NER_OR_REGEX",
+            "TABLE_EXTRACTION",
+            "NUMERIC"
           ]
         },
         "confidence_weight": {
@@ -282,7 +285,8 @@
             "TEMPORAL",
             "TERRITORIAL",
             "FUENTE_OFICIAL",
-            "UNIDAD_MEDIDA"
+            "UNIDAD_MEDIDA",
+            "CAUSAL"
           ]
         },
         "flags": {
@@ -291,7 +295,8 @@
           "description": "Regex flags (i=case insensitive, m=multiline, s=dotall, x=verbose)"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true,
+      "description": "Pattern object with core properties and flexible metadata for context, validation, and semantic expansion"
     },
     "expected_element": {
       "type": "object",
@@ -313,12 +318,12 @@
           "description": "Minimum count required"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "method_set": {
       "type": "object",
+      "$comment": "Schema updated to match canonical monolith: module_enum removed (not present in data), class pattern relaxed from fictional 'Dimension\\d+...' to actual PascalCase class names like TextMiningEngine",
       "required": [
-        "module_enum",
         "class",
         "function",
         "method_type",
@@ -329,12 +334,12 @@
         "module_enum": {
           "type": "string",
           "pattern": "^DIM\\d{2}_(METHODS|VALIDATION)$",
-          "description": "Module enumeration identifier"
+          "description": "Module enumeration identifier (DEPRECATED: not used in current monolith)"
         },
         "class": {
           "type": "string",
-          "pattern": "^Dimension\\d+[A-Za-z]+$",
-          "description": "Class name for the method"
+          "pattern": "^[A-Z][A-Za-z0-9_]*$",
+          "description": "Class name in PascalCase (e.g., TextMiningEngine, DocumentProcessor)"
         },
         "function": {
           "type": "string",
@@ -358,6 +363,38 @@
         "description": {
           "type": "string",
           "minLength": 5
+        },
+        "depends_on_patterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of pattern IDs this method depends on"
+        },
+        "produces_elements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of element types this method produces"
+        },
+        "output_validates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of validation types for this method's output"
+        },
+        "pattern_dependencies": {
+          "type": [
+            "array",
+            "object"
+          ],
+          "description": "Pattern dependencies for this method"
+        },
+        "failure_mode": {
+          "type": "string",
+          "description": "How this method should behave on failure"
         }
       },
       "additionalProperties": false
@@ -453,8 +490,8 @@
         },
         "cluster_id": {
           "type": "string",
-          "pattern": "^CL0[1-4]$",
-          "description": "Cluster ID (CL01 to CL04)"
+          "pattern": "^(CL0[1-4]|CLUSTER_[1-4])$",
+          "description": "Cluster ID (CL01-CL04 or CLUSTER_1-CLUSTER_4)"
         },
         "dimension_id": {
           "type": "string",
@@ -560,8 +597,8 @@
         },
         "cluster_id": {
           "type": "string",
-          "pattern": "^CLUSTER_[1-4]$",
-          "description": "Cluster identifier"
+          "pattern": "^(CL0[1-4]|CLUSTER_[1-4])$",
+          "description": "Cluster identifier (CL0X or CLUSTER_X format)"
         },
         "text": {
           "type": "string",
@@ -660,7 +697,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^CLUSTER_[1-4]$"
+            "pattern": "^(CL0[1-4]|CLUSTER_[1-4])$"
           },
           "minItems": 4,
           "maxItems": 4,
@@ -725,7 +762,7 @@
             "properties": {
               "cluster_id": {
                 "type": "string",
-                "pattern": "^CL0[1-4]$"
+                "pattern": "^(CL0[1-4]|CLUSTER_[1-4])$"
               },
               "i18n": {
                 "$ref": "#/$defs/i18n_label"
@@ -814,7 +851,7 @@
               },
               "cluster_id": {
                 "type": "string",
-                "pattern": "^CL0[1-4]$"
+                "pattern": "^(CL0[1-4]|CLUSTER_[1-4])$"
               },
               "dimension_ids": {
                 "type": "array",

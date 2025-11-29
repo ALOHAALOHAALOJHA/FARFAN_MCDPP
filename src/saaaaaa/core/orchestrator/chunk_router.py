@@ -5,6 +5,9 @@ Routes semantic chunks to appropriate executors based on chunk type,
 enabling targeted execution and reducing redundant processing.
 """
 
+# Routing table version identifier
+ROUTING_TABLE_VERSION = "v1"
+
 from __future__ import annotations
 
 from dataclasses import dataclass

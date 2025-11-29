@@ -121,6 +121,7 @@ class VerifiedPipelineRunner:
         self.correlation_id = self.execution_id
         self.versions = get_all_versions()
         self.phase2_report: dict[str, Any] | None = None
+        self.phase2_metrics: dict[str, Any] | None = None
         self._last_manifest_success: bool = False
         self._bootstrap_failed: bool = False
 
@@ -617,6 +618,10 @@ def cli() -> None:
                 pdf_path=str(self.plan_pdf_path),
                 preprocessed_document=preprocessed_doc
             )
+
+            # Capture Phase 2 metrics directly from orchestrator
+            if hasattr(processor.orchestrator, '_execution_metrics'):
+                self.phase2_metrics = processor.orchestrator._execution_metrics.get('phase_2')
             
             if not results:
                 raise RuntimeError("Orchestrator returned no results.")
@@ -815,13 +820,14 @@ def cli() -> None:
             )
             return {}
 
-    def _calculate_chunk_metrics(self, preprocessed_doc: Any, results: Any) -> Dict[str, Any]:
+    def _calculate_chunk_metrics(self, preprocessed_doc: Any, results: Any, phase2_metrics: Dict[str, Any] | None = None) -> Dict[str, Any]:
         """
         Calculate SPC utilization metrics for verification manifest.
         
         Args:
             preprocessed_doc: PreprocessedDocument with chunk information
             results: Orchestrator execution results
+            phase2_metrics: Optional metrics dictionary from orchestrator
             
         Returns:
             Dictionary with chunk metrics
@@ -915,14 +921,15 @@ def cli() -> None:
         
         # Calculate execution savings
         # Use actual metrics from orchestrator if available
-        if results and hasattr(results, '_execution_metrics') and isinstance(results._execution_metrics, dict) and 'phase_2' in results._execution_metrics:
-            metrics = results._execution_metrics['phase_2']
+        if phase2_metrics:
+            metrics = phase2_metrics
             chunk_metrics["execution_savings"] = {
-                "chunk_executions": metrics['chunk_executions'],
-                "full_doc_executions": metrics['full_doc_executions'],
-                "total_possible_executions": metrics['total_possible_executions'],
-                "actual_executions": metrics['actual_executions'],
-                "savings_percent": round(metrics['savings_percent'], 2),
+                "chunk_executions": metrics.get('chunk_executions', 0),
+                "full_doc_executions": metrics.get('full_doc_executions', 0),
+                "total_possible_executions": metrics.get('total_possible_executions', 0),
+                "actual_executions": metrics.get('actual_executions', 0),
+                "savings_percent": round(metrics.get('savings_percent', 0.0), 2),
+                "routing_table_version": metrics.get('routing_table_version', 'unknown'),
                 "note": "Actual execution counts from orchestrator Phase 2"
             }
         elif results:
@@ -1016,7 +1023,7 @@ def cli() -> None:
         end_time = datetime.utcnow().isoformat()
 
         # Calculate chunk utilization metrics
-        chunk_metrics = self._calculate_chunk_metrics(preprocessed_doc, results)
+        chunk_metrics = self._calculate_chunk_metrics(preprocessed_doc, results, getattr(self, 'phase2_metrics', None))
 
         # HOSTILE AUDIT: Validate critical invariants before declaring success
         hostile_failures: list[str] = []
@@ -1199,7 +1206,7 @@ def cli() -> None:
             )
 
         if chunk_metrics:
-            builder.manifest_data["spc_utilization"] = chunk_metrics
+            builder.set_spc_utilization(chunk_metrics)
 
         signal_metrics = self._calculate_signal_metrics(results)
         if signal_metrics:

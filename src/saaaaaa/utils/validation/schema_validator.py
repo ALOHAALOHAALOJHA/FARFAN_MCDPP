@@ -66,8 +66,12 @@ class MonolithSchemaValidator:
             self._load_schema()
 
     @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._load_schema")
-    def _load_schema(self) -> None:
-        """Load JSON schema from file."""
+    def _load_schema(self, **kwargs: Any) -> None:
+        """
+        Load JSON schema from file.
+        
+        Handles file existence checks and JSON decoding errors with specific warnings.
+        """
         if not self.schema_path:
             return
 
@@ -77,10 +81,12 @@ class MonolithSchemaValidator:
             return
 
         try:
-            with open(schema_file, encoding='utf-8') as f:
+            with open(schema_file, mode='r', encoding='utf-8') as f:
                 self.schema = json.load(f)
+        except json.JSONDecodeError as e:
+             self.warnings.append(f"Invalid JSON in schema file {self.schema_path}: {e}")
         except Exception as e:
-            self.warnings.append(f"Failed to load schema: {e}")
+            self.warnings.append(f"Unexpected error loading schema {self.schema_path}: {e}")
 
     def validate_monolith(
         self,
@@ -104,23 +110,29 @@ class MonolithSchemaValidator:
         self.warnings = []
 
         # 1. Validate structure
-        self._validate_structure(monolith)
+        self._validate_structure(monolith).value
 
         # 2. Validate schema version
-        schema_version = self._validate_schema_version(monolith)
+        schema_version = self._validate_schema_version(monolith).value
 
         # 3. Validate question counts
-        question_counts = self._validate_question_counts(monolith)
+        question_counts = self._validate_question_counts(monolith).value
 
         # 4. Validate referential integrity
         referential_integrity = self._validate_referential_integrity(monolith)
 
         # 5. Validate against JSON schema if available
         if self.schema:
-            self._validate_against_schema(monolith)
+            self._validate_against_schema(monolith).value
 
-        # 6. Calculate schema hash
-        schema_hash = self._calculate_schema_hash(monolith)
+        # 6. Validate field coverage
+        field_coverage = self._validate_field_coverage(monolith).value
+
+        # 7. Validate semantic consistency
+        semantic_consistency = self._validate_semantic_consistency(monolith).value
+
+        # 8. Calculate schema hash
+        schema_hash = self._calculate_schema_hash(monolith).value
 
         # Build report
         validation_passed = len(self.errors) == 0
@@ -145,7 +157,7 @@ class MonolithSchemaValidator:
         return report
 
     @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_structure")
-    def _validate_structure(self, monolith: dict[str, Any]) -> None:
+    def _validate_structure(self, monolith: dict[str, Any], **kwargs: Any) -> None:
         """Validate top-level structure."""
         required_keys = ['schema_version', 'version', 'blocks', 'integrity']
 
@@ -168,7 +180,7 @@ class MonolithSchemaValidator:
                     self.errors.append(f"Missing required block: {block}")
 
     @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_schema_version")
-    def _validate_schema_version(self, monolith: dict[str, Any]) -> str:
+    def _validate_schema_version(self, monolith: dict[str, Any], **kwargs: Any) -> str:
         """Validate schema version."""
         schema_version = monolith.get('schema_version', '')
 
@@ -186,7 +198,7 @@ class MonolithSchemaValidator:
         return schema_version
 
     @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_question_counts")
-    def _validate_question_counts(self, monolith: dict[str, Any]) -> dict[str, int]:
+    def _validate_question_counts(self, monolith: dict[str, Any], **kwargs: Any) -> dict[str, int]:
         """Validate question counts."""
         blocks = monolith.get('blocks', {})
 
@@ -305,7 +317,7 @@ class MonolithSchemaValidator:
         return results
 
     @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_against_schema")
-    def _validate_against_schema(self, monolith: dict[str, Any]) -> None:
+    def _validate_against_schema(self, monolith: dict[str, Any], **kwargs: Any) -> None:
         """Validate monolith against JSON schema."""
         if not self.schema:
             return
@@ -317,8 +329,133 @@ class MonolithSchemaValidator:
         except Exception as e:
             self.warnings.append(f"Schema validation failed: {e}")
 
+    @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_field_coverage")
+    def _validate_field_coverage(self, monolith: dict[str, Any], **kwargs: Any) -> dict[str, float]:
+        """
+        Validate field coverage for micro-questions.
+        
+        Enforces >= 99% coverage for critical fields.
+        """
+        blocks = monolith.get('blocks', {})
+        micro_questions = blocks.get('micro_questions', [])
+        total_micro = len(micro_questions)
+        
+        if total_micro == 0:
+            return {}
+
+        critical_fields = [
+            "question_id",
+            "question_global",
+            "base_slot",
+            "dimension_id",
+            "policy_area_id",
+            "cluster_id",
+            "scoring_modality",
+            "scoring_definition_ref",
+            "expected_elements",
+            "method_sets",
+            "failure_contract",
+            "validations"
+        ]
+
+        coverage_stats = {}
+
+        for field in critical_fields:
+            present_count = 0
+            for q in micro_questions:
+                val = q.get(field)
+                # Check for presence and non-emptiness (for lists/strings)
+                if val is not None:
+                    if isinstance(val, (list, dict, str)) and len(val) == 0:
+                        pass # Empty container/string counts as missing for critical fields
+                    else:
+                        present_count += 1
+            
+            coverage = present_count / total_micro
+            coverage_stats[field] = coverage
+
+            if coverage < 0.99:
+                self.errors.append(
+                    f"Field coverage violation: '{field}' has {coverage:.2%} coverage, required >= 99%"
+                )
+            elif coverage < 1.0:
+                self.warnings.append(
+                    f"Field coverage warning: '{field}' has {coverage:.2%} coverage (should be 100%)"
+                )
+
+        return coverage_stats
+
+    @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._validate_semantic_consistency")
+    def _validate_semantic_consistency(self, monolith: dict[str, Any], **kwargs: Any) -> bool:
+        """
+        Validate semantic consistency of micro-questions.
+        
+        Checks:
+        - question_global uniqueness and range (1-300)
+        - base_slot format (D[1-6]-Q[1-5])
+        - dimension_id format (DIM0[1-6])
+        - policy_area_id format (PA0[1-9]|PA10)
+        - cluster_id format (CL0[1-4])
+        """
+        blocks = monolith.get('blocks', {})
+        micro_questions = blocks.get('micro_questions', [])
+        
+        seen_globals = set()
+        all_valid = True
+
+        import re
+        base_slot_pattern = re.compile(r"^D[1-6]-Q[1-5]$")
+        dim_pattern = re.compile(r"^DIM0[1-6]$")
+        pa_pattern = re.compile(r"^PA(0[1-9]|10)$")
+        cluster_pattern = re.compile(r"^CL0[1-4]$")
+
+        for q in micro_questions:
+            q_id = q.get("question_id", "UNKNOWN")
+            q_global = q.get("question_global")
+
+            # Check question_global
+            if not isinstance(q_global, int) or not (1 <= q_global <= 300):
+                self.errors.append(f"Question {q_id}: Invalid question_global {q_global} (must be 1-300)")
+                all_valid = False
+            elif q_global in seen_globals:
+                self.errors.append(f"Question {q_id}: Duplicate question_global {q_global}")
+                all_valid = False
+            else:
+                seen_globals.add(q_global)
+
+            # Check patterns
+            base_slot = q.get("base_slot")
+            if not base_slot or not base_slot_pattern.match(base_slot):
+                self.errors.append(f"Question {q_id}: Invalid base_slot '{base_slot}'")
+                all_valid = False
+
+            dim_id = q.get("dimension_id")
+            if not dim_id or not dim_pattern.match(dim_id):
+                self.errors.append(f"Question {q_id}: Invalid dimension_id '{dim_id}'")
+                all_valid = False
+
+            pa_id = q.get("policy_area_id")
+            if not pa_id or not pa_pattern.match(pa_id):
+                self.errors.append(f"Question {q_id}: Invalid policy_area_id '{pa_id}'")
+                all_valid = False
+
+            cluster_id = q.get("cluster_id")
+            if not cluster_id or not cluster_pattern.match(cluster_id):
+                self.errors.append(f"Question {q_id}: Invalid cluster_id '{cluster_id}'")
+                all_valid = False
+
+        # Check for gaps in question_global
+        if len(seen_globals) == 300:
+             expected_set = set(range(1, 301))
+             if seen_globals != expected_set:
+                 missing = expected_set - seen_globals
+                 self.errors.append(f"Missing question_global values: {missing}")
+                 all_valid = False
+        
+        return all_valid
+
     @calibrated_method("saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator._calculate_schema_hash")
-    def _calculate_schema_hash(self, monolith: dict[str, Any]) -> str:
+    def _calculate_schema_hash(self, monolith: dict[str, Any], **kwargs: Any) -> str:
         """Calculate deterministic hash of monolith schema."""
         # Create canonical JSON representation
         canonical = json.dumps(monolith, sort_keys=True, ensure_ascii=True)
