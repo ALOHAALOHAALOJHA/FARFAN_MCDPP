@@ -110,7 +110,7 @@ else
 fi
 
 # Check if static files exist
-STATIC_DIR="$PROJECT_ROOT/src/saaaaaa/api/static"
+STATIC_DIR="$PROJECT_ROOT/src/farfan_core/api/static"
 if [ ! -f "$STATIC_DIR/index.html" ]; then
     echo -e "${RED}Error: Static files not found at $STATIC_DIR${NC}"
     echo -e "${YELLOW}Please ensure the dashboard files are in place${NC}"
@@ -147,4 +147,4 @@ echo ""
 cd "$PROJECT_ROOT"
 
 # Start the server
-python3 -m saaaaaa.api.api_server
+python3 -m farfan_core.api.api_server

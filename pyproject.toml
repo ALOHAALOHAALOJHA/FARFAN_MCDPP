@@ -7,7 +7,7 @@ name = "farfan_core"
 version = "0.1.0"
 description = "F.A.R.F.A.N: Framework for Advanced Retrieval of Administrativa Narratives - A mechanistic policy pipeline for Colombian development plan analysis"
 readme = "README.md"
-requires-python = "~=3.12.0"
+requires-python = ">=3.10"
 authors = [
     {name = "F.A.R.F.A.N Development Team"}
 ]
@@ -104,7 +104,7 @@ Repository = "https://github.com/kkkkknhh/SAAAAAA"
 Issues = "https://github.com/kkkkknhh/SAAAAAA/issues"
 
 [project.scripts]
-farfan_core = "farfan_core.core.orchestrator.ORCHESTRATOR_MONILITH:main"
+farfan_core = "farfan_core.entrypoint.main:cli"
 farfan_core-api = "farfan_core.api.api_server:main"
 # Note: Operational scripts in scripts/ are run directly, not as entry points
 
