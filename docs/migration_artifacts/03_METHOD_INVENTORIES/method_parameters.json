@@ -16,7 +16,9 @@
       "code_defaults": 143,
       "none_values": 0,
       "application_specific": 0
-    }
+    },
+    "status": "migration",
+    "superseded_by": "config/method_parameters.json"
   },
   "methods": {
     "src.farfan_core.audit.audit_system.AuditSystem.add_finding": {
@@ -17971,5 +17973,6 @@
       "parameter_count": 1,
       "calibration_status": "unknown"
     }
-  }
+  },
+  "_live": false
 }
