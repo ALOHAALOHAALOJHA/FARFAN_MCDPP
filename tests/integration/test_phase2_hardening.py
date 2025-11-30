@@ -9,8 +9,8 @@ Verifies that CPPAdapter strictly enforces:
 
 import pytest
 from unittest.mock import MagicMock
-from saaaaaa.utils.cpp_adapter import CPPAdapter, CPPAdapterError
-from saaaaaa.core.orchestrator.core import ChunkData
+from farfan_core.utils.cpp_adapter import CPPAdapter, CPPAdapterError
+from farfan_core.core.orchestrator.core import ChunkData
 
 class MockChunk:
     def __init__(self, id, text="test", start=0, end=10, pa="PA01", dim="DIM01"):

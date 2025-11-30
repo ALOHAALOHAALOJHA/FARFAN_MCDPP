@@ -6,7 +6,7 @@
     "spec_compliance": "SUPERPROMPT Three-Pillar Calibration System",
     "purpose": "Defines computation rules for @chain, @u, @q, @d, @p, @C, @m layers",
     "role": "SPECIFICATION",
-    "note": "This file documents the INTENDED parameter values. Operational values are defined in src/saaaaaa/core/calibration/config.py",
+    "note": "This file documents the INTENDED parameter values. Operational values are defined in src/farfan_core/core/calibration/config.py",
     "authority": "config.py is SINGLE SOURCE OF TRUTH for runtime values",
     "validation": "Run scripts/validate_config_consistency.py to verify consistency",
     "last_harmonized": "2025-11-14",

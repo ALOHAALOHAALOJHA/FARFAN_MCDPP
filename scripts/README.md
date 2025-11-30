@@ -197,7 +197,7 @@ All equipment scripts enforce quality gates:
 pip install -e .
 
 # Verify imports
-python3 -c "from saaaaaa.core.orchestrator import Orchestrator; print('OK')"
+python3 -c "from farfan_core.core.orchestrator import Orchestrator; print('OK')"
 ```
 
 ### Failed Preflight

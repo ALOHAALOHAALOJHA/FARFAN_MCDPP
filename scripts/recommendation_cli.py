@@ -28,7 +28,7 @@ import logging
 import sys
 from typing import Any
 
-from saaaaaa.analysis.recommendation_engine import load_recommendation_engine
+from farfan_core.analysis.recommendation_engine import load_recommendation_engine
 
 # Configure logging
 logging.basicConfig(

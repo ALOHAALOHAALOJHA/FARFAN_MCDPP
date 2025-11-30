@@ -1,6 +1,6 @@
 
 import pytest
-from saaaaaa.core.wiring.phase_0_validator import Phase0Validator, Phase0ValidationError
+from farfan_core.core.wiring.phase_0_validator import Phase0Validator, Phase0ValidationError
 
 @pytest.fixture
 def valid_config(tmp_path):

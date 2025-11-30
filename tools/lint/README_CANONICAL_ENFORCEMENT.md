@@ -32,7 +32,7 @@ The hook runs automatically on `git commit` and will:
 python tools/lint/check_canonical_notation.py
 
 # Check specific files
-python tools/lint/check_canonical_notation.py src/saaaaaa/analysis/*.py
+python tools/lint/check_canonical_notation.py src/farfan_core/analysis/*.py
 
 # Via Makefile
 make validate-canonical
@@ -77,7 +77,7 @@ Instead of hardcoded strings, use:
 
 ```python
 # Option 1: Use canonical_notation module
-from saaaaaa.core.canonical_notation import get_dimension_info, get_policy_area_info
+from farfan_core.core.canonical_notation import get_dimension_info, get_policy_area_info
 
 dim_info = get_dimension_info('D1')
 print(dim_info.label)  # "Diagnóstico y Recursos"
@@ -86,7 +86,7 @@ area_info = get_policy_area_info('PA01')
 print(area_info.name)  # "Derechos de las mujeres e igualdad de género"
 
 # Option 2: Use factory
-from saaaaaa.core.orchestrator.factory import get_canonical_dimensions
+from farfan_core.core.orchestrator.factory import get_canonical_dimensions
 
 dims = get_canonical_dimensions()
 print(dims['D1']['label'])  # "Diagnóstico y Recursos"

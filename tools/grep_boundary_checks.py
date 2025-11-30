@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 try:
-    from saaaaaa.config.paths import PROJECT_ROOT
+    from farfan_core.config.paths import PROJECT_ROOT
 except Exception:  # pragma: no cover - bootstrap fallback
     PROJECT_ROOT = Path(__file__).resolve().parents[1]
 

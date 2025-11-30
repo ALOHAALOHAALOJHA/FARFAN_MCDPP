@@ -220,7 +220,7 @@
       "quality_validation": "pytest tests/test_questionnaire_validation.py tests/test_schema_validation.py tests/test_boundaries.py tests/test_structure_verification.py tests/test_questionnaire_resource_provider.py tests/test_defensive_signatures.py tests/test_signature_validation.py tests/test_statistics_guards.py -v"
     },
     "smoke": "pytest tests/test_smoke_imports.py tests/test_import_consistency.py -v",
-    "with_coverage": "pytest -m 'updated and not outdated' --cov=src/saaaaaa --cov-report=html --cov-report=term-missing",
+    "with_coverage": "pytest -m 'updated and not outdated' --cov=src/farfan_core --cov-report=html --cov-report=term-missing",
     "parallel": "pytest -m 'updated and not outdated' -n auto"
   },
   "pytest_markers": {

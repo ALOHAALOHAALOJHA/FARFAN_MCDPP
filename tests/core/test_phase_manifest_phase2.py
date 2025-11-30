@@ -15,9 +15,9 @@ from unittest.mock import patch, MagicMock, AsyncMock
 from pathlib import Path
 
 # Types to be tested
-from saaaaaa.core.phases.phase_orchestrator import PhaseOrchestrator
-from saaaaaa.core.orchestrator.core import PhaseResult as CorePhaseResult
-from saaaaaa.core.phases.phase2_types import Phase2Result
+from farfan_core.core.phases.phase_orchestrator import PhaseOrchestrator
+from farfan_core.core.orchestrator.core import PhaseResult as CorePhaseResult
+from farfan_core.core.phases.phase2_types import Phase2Result
 
 # Dummy data for successful Phase 2 output
 SUCCESSFUL_PHASE2_DATA: Phase2Result = {
@@ -33,7 +33,7 @@ SUCCESSFUL_PHASE2_DATA: Phase2Result = {
 @pytest.fixture
 def mock_build_processor():
     """Mocks the `build_processor` call to inject a controlled orchestrator."""
-    with patch('saaaaaa.core.phases.phase_orchestrator.build_processor') as mock_build:
+    with patch('farfan_core.core.phases.phase_orchestrator.build_processor') as mock_build:
         mock_processor = MagicMock()
         mock_core_orchestrator = MagicMock()
         mock_processor.orchestrator = mock_core_orchestrator

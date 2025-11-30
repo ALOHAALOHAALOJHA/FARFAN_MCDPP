@@ -10,9 +10,9 @@ End-to-end tests verifying the complete GAP 0 integration:
 """
 import pytest
 from pathlib import Path
-from src.saaaaaa.core.calibration.orchestrator import CalibrationOrchestrator
-from src.saaaaaa.core.calibration.data_structures import ContextTuple, LayerID
-from src.saaaaaa.core.calibration.pdt_structure import PDTStructure
+from src.farfan_core.core.calibration.orchestrator import CalibrationOrchestrator
+from src.farfan_core.core.calibration.data_structures import ContextTuple, LayerID
+from src.farfan_core.core.calibration.pdt_structure import PDTStructure
 
 
 @pytest.fixture
@@ -325,7 +325,7 @@ class TestGAP0Completeness:
 
     def test_orchestrator_imports_correct_modules(self):
         """Verify orchestrator imports the new modules."""
-        orchestrator_file = Path("src/saaaaaa/core/calibration/orchestrator.py")
+        orchestrator_file = Path("src/farfan_core/core/calibration/orchestrator.py")
 
         if not orchestrator_file.exists():
             pytest.skip("Orchestrator file not found")
@@ -337,7 +337,7 @@ class TestGAP0Completeness:
 
     def test_no_hardcoded_base_score_in_orchestrator(self):
         """Verify no hardcoded base_score = 0.9 remains in orchestrator."""
-        orchestrator_file = Path("src/saaaaaa/core/calibration/orchestrator.py")
+        orchestrator_file = Path("src/farfan_core/core/calibration/orchestrator.py")
 
         if not orchestrator_file.exists():
             pytest.skip("Orchestrator file not found")

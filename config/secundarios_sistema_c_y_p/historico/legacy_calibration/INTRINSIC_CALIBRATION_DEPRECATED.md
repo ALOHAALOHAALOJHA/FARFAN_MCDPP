@@ -2,7 +2,7 @@
 
 **Date**: 2025-11-18
 **Status**: DEPRECATED - DO NOT USE
-**Replacement**: Layer-based calibration system in `src/saaaaaa/core/calibration/`
+**Replacement**: Layer-based calibration system in `src/farfan_core/core/calibration/`
 
 ---
 
@@ -28,9 +28,9 @@ The `config/intrinsic_calibration.json` file represents an **INCORRECT** calibra
    - Violates "NO CALIBRATION IN SCRIPTS" directive
 
 4. **Wrong Module Usage**:
-   - Used by `src/saaaaaa/core/orchestrator/calibration_registry.py`
+   - Used by `src/farfan_core/core/orchestrator/calibration_registry.py`
    - `calibration_registry.py` also uses WRONG `MethodCalibration` dataclass
-   - Should use `CalibrationOrchestrator` from `src/saaaaaa/core/calibration/`
+   - Should use `CalibrationOrchestrator` from `src/farfan_core/core/calibration/`
 
 ---
 
@@ -39,7 +39,7 @@ The `config/intrinsic_calibration.json` file represents an **INCORRECT** calibra
 ### Location
 
 ```
-src/saaaaaa/core/calibration/
+src/farfan_core/core/calibration/
 ├── __init__.py                  # Main exports
 ├── orchestrator.py              # CalibrationOrchestrator (MAIN ENTRY POINT)
 ├── choquet_aggregator.py        # 2-additive Choquet fusion
@@ -63,7 +63,7 @@ config/canonical_method_catalog.json  # Method metadata and roles
 ### Usage Example
 
 ```python
-from saaaaaa.core.calibration import CalibrationOrchestrator, CalibrationSubject
+from farfan_core.core.calibration import CalibrationOrchestrator, CalibrationSubject
 
 # Initialize orchestrator
 orchestrator = CalibrationOrchestrator(
@@ -122,7 +122,7 @@ print(f"Layer Scores: {result.layer_scores}")
 
 ```python
 # WRONG - DEPRECATED
-from saaaaaa.core.orchestrator.calibration_registry import resolve_calibration
+from farfan_core.core.orchestrator.calibration_registry import resolve_calibration
 
 cal = resolve_calibration("ClassName", "method_name")
 # Returns MethodCalibration (wrong structure)
@@ -132,7 +132,7 @@ cal = resolve_calibration("ClassName", "method_name")
 
 ```python
 # CORRECT - Layer-based system
-from saaaaaa.core.calibration import CalibrationOrchestrator
+from farfan_core.core.calibration import CalibrationOrchestrator
 
 orchestrator = CalibrationOrchestrator()
 result = orchestrator.calibrate(subject)

@@ -20,14 +20,14 @@ Executed systematic runtime discovery by attempting to run the actual F.A.R.F.A.
 ### WORKFRONT: DEPENDENCIES
 
 #### ERROR #1: Missing Module `jsonschema`
-- **Location:** `src/saaaaaa/analysis/recommendation_engine.py:29`
+- **Location:** `src/farfan_core/analysis/recommendation_engine.py:29`
 - **Error:** `ModuleNotFoundError: No module named 'jsonschema'`
 - **Classification:** STRUCTURAL
 - **Fix:** `pip install jsonschema==4.25.1`
 - **Status:** ✅ FIXED
 
 #### ERROR #2: Missing Module `structlog`
-- **Location:** `src/saaaaaa/core/orchestrator/arg_router.py:35`
+- **Location:** `src/farfan_core/core/orchestrator/arg_router.py:35`
 - **Error:** `ModuleNotFoundError: No module named 'structlog'`
 - **Classification:** STRUCTURAL
 - **Fix:** `pip install structlog==25.5.0`
@@ -48,7 +48,7 @@ Executed systematic runtime discovery by attempting to run the actual F.A.R.F.A.
 - **Status:** ✅ FIXED
 
 #### ERROR #7: Missing Module `sentence_transformers`
-- **Location:** `src/saaaaaa/processing/embedding_policy.py:28`
+- **Location:** `src/farfan_core/processing/embedding_policy.py:28`
 - **Error:** `ModuleNotFoundError: No module named 'sentence_transformers'`
 - **Classification:** STRUCTURAL
 - **Fix:** `pip install sentence-transformers`
@@ -79,7 +79,7 @@ Executed systematic runtime discovery by attempting to run the actual F.A.R.F.A.
 
 #### ERROR #3: Missing Export `VerificationManifestBuilder`
 - **Location:** `scripts/run_policy_pipeline_verified.py:46`
-- **Error:** `ImportError: cannot import name 'VerificationManifestBuilder' from 'saaaaaa.core.orchestrator.verification_manifest'`
+- **Error:** `ImportError: cannot import name 'VerificationManifestBuilder' from 'farfan_core.core.orchestrator.verification_manifest'`
 - **Classification:** STRUCTURAL - API mismatch
 - **Root Cause:** Script expects class that doesn't exist in module
 - **Fix:** Use updated API or mark script as DEPRECATED
@@ -87,18 +87,18 @@ Executed systematic runtime discovery by attempting to run the actual F.A.R.F.A.
 
 #### ERROR #4: Missing Export `CPPIngestionPipeline` from cpp_ingestion
 - **Location:** `scripts/run_complete_analysis_plan1.py:27`
-- **Error:** `ImportError: cannot import name 'CPPIngestionPipeline' from 'saaaaaa.processing.cpp_ingestion'`
+- **Error:** `ImportError: cannot import name 'CPPIngestionPipeline' from 'farfan_core.processing.cpp_ingestion'`
 - **Classification:** STRUCTURAL - Architecture refactoring
 - **Root Cause:** CPP package deprecated, functionality moved to `spc_ingestion`
-- **Correct Import:** `from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline`
+- **Correct Import:** `from farfan_core.processing.spc_ingestion import CPPIngestionPipeline`
 - **Status:** ⚠️ ARCHITECTURE MISMATCH - Scripts outdated
 
 #### ERROR #7B: Incorrect Import Path
 - **Location:** `scripts/smart_policy_chunks_canonic_phase_one.py:46`
 - **Error:** `ModuleNotFoundError: No module named 'src'`
-- **Code:** `from src.saaaaaa.processing.embedding_policy import EmbeddingPolicyProducer`
+- **Code:** `from src.farfan_core.processing.embedding_policy import EmbeddingPolicyProducer`
 - **Classification:** STRUCTURAL - Code error
-- **Fix:** Should be `from saaaaaa.processing.embedding_policy` (no `src.` prefix)
+- **Fix:** Should be `from farfan_core.processing.embedding_policy` (no `src.` prefix)
 - **Status:** ⚠️ NEEDS CODE FIX
 
 ---
@@ -125,8 +125,8 @@ FASE 10 - Format and export
 
 **Entry Point:**
 ```python
-from saaaaaa.core.orchestrator import Orchestrator
-from saaaaaa.core.orchestrator.questionnaire import load_questionnaire
+from farfan_core.core.orchestrator import Orchestrator
+from farfan_core.core.orchestrator.questionnaire import load_questionnaire
 
 questionnaire = load_questionnaire()
 orchestrator = Orchestrator(questionnaire=questionnaire)

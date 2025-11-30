@@ -12,16 +12,16 @@ import json
 from dataclasses import replace
 from pathlib import Path
 
-from saaaaaa.core.calibration import CalibrationOrchestrator
-from saaaaaa.core.calibration.data_structures import ContextTuple
-from saaaaaa.core.calibration.pdt_structure import PDTStructure
-from saaaaaa.core.calibration import (
+from farfan_core.core.calibration import CalibrationOrchestrator
+from farfan_core.core.calibration.data_structures import ContextTuple
+from farfan_core.core.calibration.pdt_structure import PDTStructure
+from farfan_core.core.calibration import (
     UnitLayerEvaluator,
     CongruenceLayerEvaluator,
     ChainLayerEvaluator,
     MetaLayerEvaluator
 )
-from saaaaaa.core.calibration.config import (
+from farfan_core.core.calibration.config import (
     UnitLayerConfig,
     MetaLayerConfig
 )
@@ -245,7 +245,7 @@ class TestConfigStability:
 
     def test_config_hash_changes_with_values(self):
         """Config hash should change when values change."""
-        from saaaaaa.core.calibration.config import DEFAULT_CALIBRATION_CONFIG, UnitLayerConfig
+        from farfan_core.core.calibration.config import DEFAULT_CALIBRATION_CONFIG, UnitLayerConfig
 
         hash1 = DEFAULT_CALIBRATION_CONFIG.compute_system_hash()
 

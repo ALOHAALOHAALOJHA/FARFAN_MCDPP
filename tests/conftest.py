@@ -9,17 +9,17 @@ from pathlib import Path
 
 import pytest
 
-from saaaaaa.config.paths import PROJECT_ROOT as CONFIG_PROJECT_ROOT
+from farfan_core.config.paths import PROJECT_ROOT as CONFIG_PROJECT_ROOT
 
 PROJECT_ROOT = CONFIG_PROJECT_ROOT
 SRC_DIR = PROJECT_ROOT / "src"
 
 # Verify package is properly installed (not via sys.path hacks)
 try:
-    import saaaaaa  # noqa: F401
+    import farfan_core  # noqa: F401
 except ImportError:
     pytest.exit(
-        "ERROR: Package 'saaaaaa' not installed. "
+        "ERROR: Package 'farfan_core' not installed. "
         "Run 'pip install -e .' before running tests. "
         "SIN_CARRETA compliance: No sys.path manipulation allowed.",
         returncode=1

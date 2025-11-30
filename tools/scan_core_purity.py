@@ -14,13 +14,13 @@ from pathlib import Path
 from typing import List, Tuple
 
 try:
-    from saaaaaa.config.paths import PROJECT_ROOT
+    from farfan_core.config.paths import PROJECT_ROOT
 except Exception:  # pragma: no cover - bootstrap fallback
     PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # Directories that must maintain purity
 CORE_PATHS = [
-    "src/saaaaaa/core",
+    "src/farfan_core/core",
 ]
 
 # Forbidden operations (allowing open for config loading, but not print/input)

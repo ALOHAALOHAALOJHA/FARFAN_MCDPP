@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from saaaaaa.utils.validation.schema_validator import MonolithSchemaValidator
+from farfan_core.utils.validation.schema_validator import MonolithSchemaValidator
 
 def _write_payload(path: Path, payload: dict) -> None:
     payload["content_hash"] = MonolithSchemaValidator._canonical_hash(payload)

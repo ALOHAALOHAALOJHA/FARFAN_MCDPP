@@ -11,8 +11,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
 
-from saaaaaa.core.orchestrator.core import ChunkData, PreprocessedDocument
-from saaaaaa.core.orchestrator.chunk_router import ChunkRouter
+from farfan_core.core.orchestrator.core import ChunkData, PreprocessedDocument
+from farfan_core.core.orchestrator.chunk_router import ChunkRouter
 
 
 def demonstrate_chunk_routing():

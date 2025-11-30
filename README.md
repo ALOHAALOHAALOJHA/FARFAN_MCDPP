@@ -327,7 +327,7 @@ grep "PIPELINE_VERIFIED=1" artifacts/plan1/verification_manifest.json
 # Verify HMAC integrity
 python3 -c "
 import json
-from saaaaaa.core.orchestrator.verification_manifest import verify_manifest_integrity
+from farfan_core.core.orchestrator.verification_manifest import verify_manifest_integrity
 
 with open('artifacts/plan1/verification_manifest.json') as f:
     manifest = json.load(f)
@@ -350,10 +350,10 @@ python scripts/run_complete_analysis_plan1.py
 ```python
 import asyncio
 from pathlib import Path
-from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
-from saaaaaa.utils.spc_adapter import SPCAdapter
-from saaaaaa.core.orchestrator import Orchestrator
-from saaaaaa.core.orchestrator.factory import build_processor
+from farfan_core.processing.spc_ingestion import CPPIngestionPipeline
+from farfan_core.utils.spc_adapter import SPCAdapter
+from farfan_core.core.orchestrator import Orchestrator
+from farfan_core.core.orchestrator.factory import build_processor
 
 async def custom_pipeline():
     # Step 1: SPC Ingestion
@@ -460,7 +460,7 @@ F.A.R.F.A.N follows a **Phase 0 + 9-phase deterministic pipeline** with strict q
 
 #### 1. SPC Ingestion Pipeline
 
-**Entry Point**: `CPPIngestionPipeline` in `src/saaaaaa/processing/spc_ingestion/__init__.py`
+**Entry Point**: `CPPIngestionPipeline` in `src/farfan_core/processing/spc_ingestion/__init__.py`
 
 **Guarantees**:
 - Provenance Completeness = 1.0 (CRITICAL gate)
@@ -481,7 +481,7 @@ The Phase 1 SPC Ingestion has been refactored with a **strict execution contract
 - **No Recovery**: Any deviation from invariants causes `Phase1FatalError` with no degradation
 
 ```python
-from saaaaaa.core.phases.phase1_spc_ingestion_full import execute_phase_1_with_full_contract
+from farfan_core.core.phases.phase1_spc_ingestion_full import execute_phase_1_with_full_contract
 
 # Execute with strict contract
 cpp = execute_phase_1_with_full_contract(canonical_input)
@@ -592,7 +592,7 @@ Final Report (MICRO/MESO/MACRO)
 
 ```bash
 # Full test suite
-python -m pytest tests/ -v --cov=src/saaaaaa --cov-report=term-missing
+python -m pytest tests/ -v --cov=src/farfan_core --cov-report=term-missing
 
 # Specific test categories
 python -m pytest tests/test_contracts.py -v
@@ -633,8 +633,8 @@ The calibration system manages scoring parameters across all 300 questions.
 Cross-cut signal system propagates patterns from questionnaire to all executors.
 
 **Key Files**:
-- `src/saaaaaa/core/orchestrator/signals.py` - Signal client/registry
-- `src/saaaaaa/core/orchestrator/signal_loader.py` - Pattern extraction
+- `src/farfan_core/core/orchestrator/signals.py` - Signal client/registry
+- `src/farfan_core/core/orchestrator/signal_loader.py` - Pattern extraction
 
 **Documentation**: [docs/SIGNAL_IRRIGATION_README.md](docs/SIGNAL_IRRIGATION_README.md)
 
@@ -683,13 +683,13 @@ source farfan-env/bin/activate
 pip install -r requirements-dev.txt
 
 # Verify installation
-python -m saaaaaa.devtools.ensure_install
+python -m farfan_core.devtools.ensure_install
 ```
 
 ### Code Structure
 
 ```
-src/saaaaaa/
+src/farfan_core/
 ├── core/
 │   ├── orchestrator/          # Main orchestration engine (30+ modules)
 │   │   ├── core.py            # Orchestrator
@@ -707,8 +707,8 @@ src/saaaaaa/
 
 ### Adding New Analyzers
 
-1. Create analyzer class in `src/saaaaaa/analysis/`
-2. Register in `src/saaaaaa/core/orchestrator/class_registry.py`
+1. Create analyzer class in `src/farfan_core/analysis/`
+2. Register in `src/farfan_core/core/orchestrator/class_registry.py`
 3. Add method signature to canonical method catalog
 4. Create executor contract in `config/executor_contracts/`
 5. Add tests in `tests/`
@@ -774,7 +774,7 @@ git checkout data/questionnaire_monolith.json
 
 # Verify integrity
 python3 -c "
-from saaaaaa.core.orchestrator.questionnaire import load_questionnaire
+from farfan_core.core.orchestrator.questionnaire import load_questionnaire
 q = load_questionnaire()
 print(f'✓ Hash verified: {q.sha256[:16]}...')
 "

@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import pytest
 
-from saaaaaa.utils.paths import (
+from farfan_core.utils.paths import (
     PathTraversalError,
     PathNotFoundError,
     PathOutsideWorkspaceError,
@@ -51,7 +51,7 @@ class TestProjectRoots:
         assert isinstance(src, Path)
         assert src.exists()
         assert src.is_dir()
-        assert (src / "saaaaaa").exists()
+        assert (src / "farfan_core").exists()
     
     def test_constants_match_functions(self):
         """Global constants should match function results."""
@@ -111,7 +111,7 @@ class TestIsWithin:
     def test_nested_child(self):
         """Deeply nested child should be within parent."""
         parent = proj_root()
-        child = parent / "src" / "saaaaaa" / "core" / "file.py"
+        child = parent / "src" / "farfan_core" / "core" / "file.py"
         assert is_within(parent, child)
     
     def test_sibling_not_within(self):

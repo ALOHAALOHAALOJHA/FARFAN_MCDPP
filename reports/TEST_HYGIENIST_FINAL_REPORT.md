@@ -35,24 +35,24 @@ The test hygienist operation has been completed successfully. A comprehensive an
 The following tests had incorrect import paths that have been **corrected**:
 
 1. **`test_signature_validation.py`**
-   - **Issue:** Importing from `saaaaaa.validation.signature_validator` (non-existent)
-   - **Fix Applied:** Changed to `saaaaaa.utils.signature_validator`
+   - **Issue:** Importing from `farfan_core.validation.signature_validator` (non-existent)
+   - **Fix Applied:** Changed to `farfan_core.utils.signature_validator`
    - **Status:** ✅ FIXED
 
 2. **`test_imports.py`**
-   - **Issue:** Importing from `saaaaaa.validation.signature_validator` (non-existent)
-   - **Fix Applied:** Changed to `saaaaaa.utils.signature_validator`
+   - **Issue:** Importing from `farfan_core.validation.signature_validator` (non-existent)
+   - **Fix Applied:** Changed to `farfan_core.utils.signature_validator`
    - **Status:** ✅ FIXED
    - **Note:** This test is already marked as outdated and skipped
 
 3. **`test_strategic_wiring.py`**
-   - **Issue:** Importing from `saaaaaa.validation.validation_engine` (non-existent)
-   - **Fix Applied:** Changed to `saaaaaa.utils.validation_engine` (3 occurrences)
+   - **Issue:** Importing from `farfan_core.validation.validation_engine` (non-existent)
+   - **Fix Applied:** Changed to `farfan_core.utils.validation_engine` (3 occurrences)
    - **Status:** ✅ FIXED
 
 4. **`tests/data/test_questionnaire_and_rubric.py`**
-   - **Issue:** Importing from `saaaaaa.validation.schema_validator` (non-existent)
-   - **Fix Applied:** Changed to `saaaaaa.utils.validation.schema_validator`
+   - **Issue:** Importing from `farfan_core.validation.schema_validator` (non-existent)
+   - **Fix Applied:** Changed to `farfan_core.utils.validation.schema_validator`
    - **Status:** ✅ FIXED
 
 #### High-Value Tests Needing Refactoring (34)

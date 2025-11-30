@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import pytest
 
-from saaaaaa.utils.paths import (
+from farfan_core.utils.paths import (
     PathTraversalError,
     PathOutsideWorkspaceError,
     proj_root,
@@ -27,7 +27,7 @@ class TestTraversalProtection:
     
     def test_blocks_nested_traversal(self):
         """Should block nested traversal attempts."""
-        base = proj_root() / "src" / "saaaaaa"
+        base = proj_root() / "src" / "farfan_core"
         
         with pytest.raises(PathTraversalError):
             safe_join(base, "core", "..", "..", "..", "..", "tmp", "malicious")
@@ -37,7 +37,7 @@ class TestTraversalProtection:
         base = proj_root()
         
         # This is safe - stays within workspace
-        result = safe_join(base, "src", "saaaaaa", "core")
+        result = safe_join(base, "src", "farfan_core", "core")
         assert is_within(base, result)
     
     def test_allows_internal_parent_ref(self):
@@ -135,17 +135,17 @@ class TestEdgeCases:
         """Should handle . (current directory) correctly."""
         base = proj_root()
         
-        result = safe_join(base, ".", "src", ".", "saaaaaa")
+        result = safe_join(base, ".", "src", ".", "farfan_core")
         assert is_within(base, result)
         # Should normalize to same as direct path
-        assert result == base / "src" / "saaaaaa"
+        assert result == base / "src" / "farfan_core"
     
     def test_multiple_slashes(self):
         """Should handle multiple slashes correctly."""
         base = proj_root()
         
         # pathlib should normalize these
-        result = safe_join(base, "src", "saaaaaa")
+        result = safe_join(base, "src", "farfan_core")
         assert is_within(base, result)
     
     def test_unicode_in_paths(self):

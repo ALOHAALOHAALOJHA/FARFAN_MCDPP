@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-11-29T15:47:31.960473+00:00",
+  "schema_version": "2.0.0",
+  "validation_passed": true,
+  "errors": [],
+  "warnings": [],
+  "schema_hash": "252d20098ad42311536de85c8bf5a720bbfe6e32bf3bf3586f58937f67ef69fe",
+  "question_counts": {
+    "micro": 300,
+    "meso": 4,
+    "macro": 1,
+    "total": 305
+  },
+  "referential_integrity": {
+    "policy_areas": true,
+    "dimensions": true,
+    "clusters": true,
+    "micro_questions": true
+  }
+}

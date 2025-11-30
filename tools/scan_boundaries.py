@@ -376,7 +376,7 @@ def main() -> int:
         epilog="""
 Examples:
   # Basic scan
-  python tools/scan_boundaries.py --root src/saaaaaa/core
+  python tools/scan_boundaries.py --root src/farfan_core/core
 
   # Fail on specific violations only
   python tools/scan_boundaries.py --root src --fail-on io,main
@@ -386,7 +386,7 @@ Examples:
                                    --allow-path src/examples src/cli
 
   # Generate SARIF and JSON reports
-  python tools/scan_boundaries.py --root src/saaaaaa/core \\
+  python tools/scan_boundaries.py --root src/farfan_core/core \\
                                    --sarif out/boundaries.sarif \\
                                    --json out/violations.json
         """

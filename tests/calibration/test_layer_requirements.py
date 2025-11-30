@@ -11,9 +11,9 @@ import pytest
 import tempfile
 import json
 from pathlib import Path
-from src.saaaaaa.core.calibration.intrinsic_loader import IntrinsicScoreLoader
-from src.saaaaaa.core.calibration.layer_requirements import LayerRequirementsResolver
-from src.saaaaaa.core.calibration.data_structures import LayerID
+from src.farfan_core.core.calibration.intrinsic_loader import IntrinsicScoreLoader
+from src.farfan_core.core.calibration.layer_requirements import LayerRequirementsResolver
+from src.farfan_core.core.calibration.data_structures import LayerID
 
 
 @pytest.fixture

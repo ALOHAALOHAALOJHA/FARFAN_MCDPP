@@ -14,11 +14,11 @@ from pathlib import Path
 import json
 
 # The script's runner class
-from saaaaaa.scripts.run_policy_pipeline_verified import VerifiedPipelineRunner
+from farfan_core.scripts.run_policy_pipeline_verified import VerifiedPipelineRunner
 
 # Types for mocking
-from saaaaaa.core.orchestrator.core import PhaseResult as CorePhaseResult
-from saaaaaa.core.phases.phase2_types import Phase2Result
+from farfan_core.core.orchestrator.core import PhaseResult as CorePhaseResult
+from farfan_core.core.phases.phase2_types import Phase2Result
 
 # Dummy data for successful Phase 2 output
 SUCCESSFUL_PHASE2_DATA: Phase2Result = {
@@ -38,7 +38,7 @@ def mock_core_orchestrator():
     VerifiedPipelineRunner.
     """
     # This path is where the runner will look for the method
-    with patch('saaaaaa.core.orchestrator.factory.build_processor') as mock_build:
+    with patch('farfan_core.core.orchestrator.factory.build_processor') as mock_build:
         mock_processor = MagicMock()
         mock_core_orchestrator = MagicMock()
         mock_processor.orchestrator = mock_core_orchestrator

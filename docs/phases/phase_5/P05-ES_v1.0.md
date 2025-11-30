@@ -102,4 +102,4 @@ flowchart TD
 
 ## Gestión de Cambios
 - Cambios en pesos o rúbricas requieren incrementar la versión (`P05-ES_vX.Y`).
-- Cualquier ajuste de hermeticidad debe reflejarse simultáneamente en los contratos de `src/saaaaaa/utils/validation/aggregation_models.py` y en ambos idiomas.
+- Cualquier ajuste de hermeticidad debe reflejarse simultáneamente en los contratos de `src/farfan_core/utils/validation/aggregation_models.py` y en ambos idiomas.

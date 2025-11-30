@@ -30,7 +30,7 @@ The canonical implementation for **Phase 2 (Micro Questions)** has been **VERIFI
 
 ### 1. Strict Execution Flow (The "Canonical Path")
 
-**File:** `src/saaaaaa/core/orchestrator/core.py`
+**File:** `src/farfan_core/core/orchestrator/core.py`
 **Method:** `_execute_micro_questions_async`
 
 **Verification Points:**
@@ -49,7 +49,7 @@ The canonical implementation for **Phase 2 (Micro Questions)** has been **VERIFI
 
 ### 2. Data Integrity & Metadata
 
-**File:** `src/saaaaaa/utils/cpp_adapter.py`
+**File:** `src/farfan_core/utils/cpp_adapter.py`
 **Class:** `CPPAdapter`
 
 **Verification Points:**
@@ -59,8 +59,8 @@ The canonical implementation for **Phase 2 (Micro Questions)** has been **VERIFI
 
 ### 3. Signal Irrigation
 
-**File:** `src/saaaaaa/core/orchestrator/signal_registry.py`
-**File:** `src/saaaaaa/executors/D1Q1_executor.py` (Reference)
+**File:** `src/farfan_core/core/orchestrator/signal_registry.py`
+**File:** `src/farfan_core/executors/D1Q1_executor.py` (Reference)
 
 **Verification Points:**
 1.  **Injection:** `SignalRegistry` is passed to Executor `__init__`.

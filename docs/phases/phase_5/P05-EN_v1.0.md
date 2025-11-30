@@ -102,4 +102,4 @@ flowchart TD
 
 ## Change Management
 - Weight schema or rubric modifications require version bump `(P05-EN_vX.Y)`.
-- Any change affecting hermeticity constraints must update both EN/ES docs and the contract definitions in `src/saaaaaa/utils/validation/aggregation_models.py`.
+- Any change affecting hermeticity constraints must update both EN/ES docs and the contract definitions in `src/farfan_core/utils/validation/aggregation_models.py`.

@@ -74,7 +74,7 @@ class PipelineSuccessAuditor:
         # Check both standard and alternate source paths
         src_paths = [
             self. project_root / "src",
-            self.project_root / "src" / "saaaaaa",  # Your specific path
+            self.project_root / "src" / "farfan_core",  # Your specific path
         ]
         
         for src_path in src_paths:

@@ -7,7 +7,7 @@ are properly integrated and consistent with each other.
 import pytest
 from pathlib import Path
 
-from src.saaaaaa.core.calibration import (
+from src.farfan_core.core.calibration import (
     BaseLayerEvaluator,
     UnitLayerEvaluator,
     CalibrationOrchestrator,
@@ -180,7 +180,7 @@ class TestDataStructureImmutability:
 
     def test_context_tuple_validates_canonical_notation(self):
         """Verify ContextTuple enforces canonical notation"""
-        from src.saaaaaa.core.calibration import ContextTuple
+        from src.farfan_core.core.calibration import ContextTuple
 
         # Valid canonical notation should work
         ctx = ContextTuple(

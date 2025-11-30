@@ -313,7 +313,7 @@ Test: test_signature_validation
   Test Functions: 5
   Cyclomatic Complexity: 6
   Days Since Modified: 1
-  Missing Imports: saaaaaa.validation.signature_validator, saaaaaa.validation.signature_validator
+  Missing Imports: farfan_core.validation.signature_validator, farfan_core.validation.signature_validator
   Justification: High value (75.0/100) justifies refactoring despite high complexity (42.0/100). Important test to preserve. Issues: 2 missing imports.
 
 Test: test_imports
@@ -324,7 +324,7 @@ Test: test_imports
   Test Functions: 6
   Cyclomatic Complexity: 11
   Days Since Modified: 1
-  Missing Imports: saaaaaa.validation.signature_validator
+  Missing Imports: farfan_core.validation.signature_validator
   Justification: High value (75.0/100) justifies refactoring despite high complexity (47.0/100). Important test to preserve. Issues: 1 missing imports.
 
 Test: test_strategic_wiring
@@ -335,7 +335,7 @@ Test: test_strategic_wiring
   Test Functions: 18
   Cyclomatic Complexity: 14
   Days Since Modified: 1
-  Missing Imports: saaaaaa.validation.validation_engine, saaaaaa.validation.validation_engine, saaaaaa.validation.validation_engine
+  Missing Imports: farfan_core.validation.validation_engine, farfan_core.validation.validation_engine, farfan_core.validation.validation_engine
   Justification: High value (65.0/100) justifies refactoring despite high complexity (70.0/100). Important test to preserve. Issues: 3 missing imports.
 
 Test: test_gold_canario_macro_reporting
@@ -396,7 +396,7 @@ Test: test_questionnaire_and_rubric
   Test Functions: 6
   Cyclomatic Complexity: 1
   Days Since Modified: 1
-  Missing Imports: saaaaaa.validation.schema_validator
+  Missing Imports: farfan_core.validation.schema_validator
   Justification: Moderate value (55.0/100) with reasonable complexity (22.0/100). Worth updating. Issues: 1 missing imports.
 
 ================================================================================

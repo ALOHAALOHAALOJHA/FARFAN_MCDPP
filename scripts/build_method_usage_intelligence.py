@@ -103,7 +103,7 @@ class MethodUsageScanner:
         
     def _load_calibration_registry(self):
         """Load methods from calibration_registry.py"""
-        registry_path = self.repo_root / "src" / "saaaaaa" / "core" / "orchestrator" / "calibration_registry.py"
+        registry_path = self.repo_root / "src" / "farfan_core" / "core" / "orchestrator" / "calibration_registry.py"
         
         if not registry_path.exists():
             print(f"WARNING: calibration_registry.py not found at {registry_path}")

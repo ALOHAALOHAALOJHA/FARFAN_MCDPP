@@ -327,7 +327,7 @@ grep "PIPELINE_VERIFIED=1" artifacts/plan1/verification_manifest.json
 # Verificar integridad HMAC
 python3 -c "
 import json
-from saaaaaa.core.orchestrator.verification_manifest import verify_manifest_integrity
+from farfan_core.core.orchestrator.verification_manifest import verify_manifest_integrity
 
 with open('artifacts/plan1/verification_manifest.json') as f:
     manifest = json.load(f)
@@ -350,10 +350,10 @@ python scripts/run_complete_analysis_plan1.py
 ```python
 import asyncio
 from pathlib import Path
-from saaaaaa.processing.spc_ingestion import CPPIngestionPipeline
-from saaaaaa.utils.spc_adapter import SPCAdapter
-from saaaaaa.core.orchestrator import Orchestrator
-from saaaaaa.core.orchestrator.factory import build_processor
+from farfan_core.processing.spc_ingestion import CPPIngestionPipeline
+from farfan_core.utils.spc_adapter import SPCAdapter
+from farfan_core.core.orchestrator import Orchestrator
+from farfan_core.core.orchestrator.factory import build_processor
 
 async def pipeline_personalizado():
     # Paso 1: Ingesta SPC
@@ -460,7 +460,7 @@ F.A.R.F.A.N sigue un **pipeline determinístico de Fase 0 + 9 fases** con puerta
 
 #### 1. Pipeline de Ingesta SPC
 
-**Punto de Entrada**: `CPPIngestionPipeline` en `src/saaaaaa/processing/spc_ingestion/__init__.py`
+**Punto de Entrada**: `CPPIngestionPipeline` en `src/farfan_core/processing/spc_ingestion/__init__.py`
 
 **Garantías**:
 - Completitud de Proveniencia = 1.0 (puerta CRÍTICA)
@@ -572,7 +572,7 @@ Reporte Final (MICRO/MESO/MACRO)
 
 ```bash
 # Suite completa de pruebas
-python -m pytest tests/ -v --cov=src/saaaaaa --cov-report=term-missing
+python -m pytest tests/ -v --cov=src/farfan_core --cov-report=term-missing
 
 # Categorías específicas de pruebas
 python -m pytest tests/test_contracts.py -v
@@ -613,8 +613,8 @@ El sistema de calibración gestiona parámetros de puntuación en las 300 pregun
 Sistema de señales transversales que propaga patrones del cuestionario a todos los ejecutores.
 
 **Archivos Clave**:
-- `src/saaaaaa/core/orchestrator/signals.py` - Cliente/registro de señales
-- `src/saaaaaa/core/orchestrator/signal_loader.py` - Extracción de patrones
+- `src/farfan_core/core/orchestrator/signals.py` - Cliente/registro de señales
+- `src/farfan_core/core/orchestrator/signal_loader.py` - Extracción de patrones
 
 **Documentación**: [docs/SIGNAL_IRRIGATION_README.md](docs/SIGNAL_IRRIGATION_README.md)
 
@@ -663,13 +663,13 @@ source farfan-env/bin/activate
 pip install -r requirements-dev.txt
 
 # Verificar instalación
-python -m saaaaaa.devtools.ensure_install
+python -m farfan_core.devtools.ensure_install
 ```
 
 ### Estructura del Código
 
 ```
-src/saaaaaa/
+src/farfan_core/
 ├── core/
 │   ├── orchestrator/          # Motor principal de orquestación (30+ módulos)
 │   │   ├── core.py            # Orchestrator
@@ -687,8 +687,8 @@ src/saaaaaa/
 
 ### Agregar Nuevos Analizadores
 
-1. Crear clase analizadora en `src/saaaaaa/analysis/`
-2. Registrar en `src/saaaaaa/core/orchestrator/class_registry.py`
+1. Crear clase analizadora en `src/farfan_core/analysis/`
+2. Registrar en `src/farfan_core/core/orchestrator/class_registry.py`
 3. Agregar firma de método al catálogo canónico de métodos
 4. Crear contrato de ejecutor en `config/executor_contracts/`
 5. Agregar pruebas en `tests/`
@@ -754,7 +754,7 @@ git checkout data/questionnaire_monolith.json
 
 # Verificar integridad
 python3 -c "
-from saaaaaa.core.orchestrator.questionnaire import load_questionnaire
+from farfan_core.core.orchestrator.questionnaire import load_questionnaire
 q = load_questionnaire()
 print(f'✓ Hash verificado: {q.sha256[:16]}...')
 "

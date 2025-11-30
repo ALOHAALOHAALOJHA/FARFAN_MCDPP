@@ -28,10 +28,10 @@ Traceback:
 /root/.local/share/uv/tools/pytest/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
     exec(co, module.__dict__)
 tests/data/test_questionnaire_and_rubric.py:6: in <module>
-    from saaaaaa.utils.validation.schema_validator import SchemaValidator
-src/saaaaaa/utils/validation/__init__.py:3: in <module>
+    from farfan_core.utils.validation.schema_validator import SchemaValidator
+src/farfan_core/utils/validation/__init__.py:3: in <module>
     from .aggregation_models import (
-src/saaaaaa/utils/validation/aggregation_models.py:8: in <module>
+src/farfan_core/utils/validation/aggregation_models.py:8: in <module>
     from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 E   ModuleNotFoundError: No module named 'pydantic'
 ___________ ERROR collecting tests/integration/test_30_executors.py ____________
@@ -90,12 +90,12 @@ Traceback:
 /root/.local/share/uv/tools/pytest/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
     exec(co, module.__dict__)
 tests/test_arg_router.py:6: in <module>
-    from saaaaaa.core.orchestrator.arg_router import ArgRouter, ArgumentValidationError
-src/saaaaaa/core/orchestrator/__init__.py:141: in <module>
+    from farfan_core.core.orchestrator.arg_router import ArgRouter, ArgumentValidationError
+src/farfan_core/core/orchestrator/__init__.py:141: in <module>
     from .core import (
-src/saaaaaa/core/orchestrator/core.py:31: in <module>
+src/farfan_core/core/orchestrator/core.py:31: in <module>
     from ...analysis.recommendation_engine import RecommendationEngine
-src/saaaaaa/analysis/recommendation_engine.py:29: in <module>
+src/farfan_core/analysis/recommendation_engine.py:29: in <module>
     import jsonschema
 E   ModuleNotFoundError: No module named 'jsonschema'
 _________ ERROR collecting tests/test_arg_router_expected_type_name.py _________
@@ -120,12 +120,12 @@ Traceback:
 /root/.local/share/uv/tools/pytest/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
     exec(co, module.__dict__)
 tests/test_arg_router_expected_type_name.py:8: in <module>
-    from saaaaaa.core.orchestrator.arg_router import PayloadDriftMonitor
-src/saaaaaa/core/orchestrator/__init__.py:141: in <module>
+    from farfan_core.core.orchestrator.arg_router import PayloadDriftMonitor
+src/farfan_core/core/orchestrator/__init__.py:141: in <module>
     from .core import (
-src/saaaaaa/core/orchestrator/core.py:31: in <module>
+src/farfan_core/core/orchestrator/core.py:31: in <module>
     from ...analysis.recommendation_engine import RecommendationEngine
-src/saaaaaa/analysis/recommendation_engine.py:29: in <module>
+src/farfan_core/analysis/recommendation_engine.py:29: in <module>
     import jsonschema
 E   ModuleNotFoundError: No module named 'jsonschema'
 ______________ ERROR collecting tests/test_arg_router_extended.py ______________
@@ -150,12 +150,12 @@ Traceback:
 /root/.local/share/uv/tools/pytest/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
     exec(co, module.__dict__)
 tests/test_arg_router_extended.py:12: in <module>
-    from saaaaaa.core.orchestrator.arg_router import (
-src/saaaaaa/core/orchestrator/__init__.py:141: in <module>
+    from farfan_core.core.orchestrator.arg_router import (
+src/farfan_core/core/orchestrator/__init__.py:141: in <module>
     from .core import (
-src/saaaaaa/core/orchestrator/core.py:31: in <module>
+src/farfan_core/core/orchestrator/core.py:31: in <module>
     from ...analysis.recommendation_engine import RecommendationEngine
-src/saaaaaa/analysis/recommendation_engine.py:29: in <module>
+src/farfan_core/analysis/recommendation_engine.py:29: in <module>
     import jsonschema
 E   ModuleNotFoundError: No module named 'jsonschema'
 _________________ ERROR collecting tests/test_async_timeout.py _________________
@@ -180,12 +180,12 @@ Traceback:
 /root/.local/share/uv/tools/pytest/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
     exec(co, module.__dict__)
 tests/test_async_timeout.py:10: in <module>
-    from saaaaaa.core.orchestrator.core import (
-src/saaaaaa/core/orchestrator/__init__.py:141: in <module>
+    from farfan_core.core.orchestrator.core import (
+src/farfan_core/core/orchestrator/__init__.py:141: in <module>
     from .core import (
-src/saaaaaa/core/orchestrator/core.py:31: in <module>
+src/farfan_core/core/orchestrator/core.py:31: in <module>
     from ...analysis.recommendation_engine import RecommendationEngine
-src/saaaaaa/analysis/recommendation_engine.py:29: in <module>
+src/farfan_core/analysis/recommendation_engine.py:29: in <module>
     import jsonschema
 E   ModuleNotFoundError: No module named 'jsonschema'
 ___________ ERROR collecting tests/test_calibration_completeness.py ____________
@@ -210,12 +210,12 @@ Traceback:
 /root/.local/share/uv/tools/pytest/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
     exec(co, module.__dict__)
 tests/test_calibration_completeness.py:13: in <module>
-    from saaaaaa.core.orchestrator.calibration_registry import (
-src/saaaaaa/core/orchestrator/__init__.py:141: in <module>
+    from farfan_core.core.orchestrator.calibration_registry import (
+src/farfan_core/core/orchestrator/__init__.py:141: in <module>
     from .core import (
-src/saaaaaa/core/orchestrator/core.py:31: in <module>
+src/farfan_core/core/orchestrator/core.py:31: in <module>
     from ...analysis.recommendation_engine import RecommendationEngine
-src/saaaaaa/analysis/recommendation_engine.py:29: in <module>
+src/farfan_core/analysis/recommendation_engine.py:29: in <module>
     import jsonschema
 E   ModuleNotFoundError: No module named 'jsonschema'
 ______________ ERROR collecting tests/test_calibration_context.py ______________
@@ -240,12 +240,12 @@ Traceback:
 /root/.local/share/uv/tools/pytest/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
     exec(co, module.__dict__)
 tests/test_calibration_context.py:5: in <module>
-    from src.saaaaaa.core.orchestrator.calibration_registry import (
-src/saaaaaa/core/orchestrator/__init__.py:141: in <module>
+    from src.farfan_core.core.orchestrator.calibration_registry import (
+src/farfan_core/core/orchestrator/__init__.py:141: in <module>
     from .core import (
-src/saaaaaa/core/orchestrator/core.py:31: in <module>
+src/farfan_core/core/orchestrator/core.py:31: in <module>
     from ...analysis.recommendation_engine import RecommendationEngine
-src/saaaaaa/analysis/recommendation_engine.py:29: in <module>
+src/farfan_core/analysis/recommendation_engine.py:29: in <module>
     import jsonschema
 E   ModuleNotFoundError: No module named 'jsonschema'
 =========================== short test summary info ============================

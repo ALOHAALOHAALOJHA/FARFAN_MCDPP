@@ -1,7 +1,7 @@
 {
   "_metadata": {
-    "method_id": "src.saaaaaa.core.orchestrator.advanced_module_config.AdvancedModuleConfig.model_post_init",
-    "canonical_name": "src.saaaaaa.core.orchestrator.advanced_module_config.AdvancedModuleConfig.model_post_init",
+    "method_id": "src.farfan_core.core.orchestrator.advanced_module_config.AdvancedModuleConfig.model_post_init",
+    "canonical_name": "src.farfan_core.core.orchestrator.advanced_module_config.AdvancedModuleConfig.model_post_init",
     "unique_id": "44fdceaa7d92804d",
     "calibration_date": "2025-11-18",
     "calibrated_by": "layer_based_calibration_system",

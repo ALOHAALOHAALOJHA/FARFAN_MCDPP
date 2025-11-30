@@ -11,7 +11,7 @@
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
-    "executor_module": "saaaaaa.core.orchestrator.executors"
+    "executor_module": "farfan_core.core.orchestrator.executors"
   },
   "method_binding": {
     "orchestration_mode": "multi_method_pipeline",
@@ -156,7 +156,7 @@
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
-    "module": "saaaaaa.core.orchestrator.evidence_assembler",
+    "module": "farfan_core.core.orchestrator.evidence_assembler",
     "class_name": "EvidenceAssembler",
     "method_name": "assemble",
     "output_schema": {
@@ -326,9 +326,9 @@
       "additionalProperties": false
     },
     "consumer_modules": [
-      "src.saaaaaa.core.phases.phase2_types.validate_phase2_result",
-      "src.saaaaaa.core.orchestrator.core.Orchestrator._score_micro_results_async",
-      "src.saaaaaa.analysis.scoring.MicroQuestionScorer"
+      "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
+      "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
+      "src.farfan_core.analysis.scoring.MicroQuestionScorer"
     ],
     "human_readable_output": {
       "format": "markdown",
@@ -832,7 +832,7 @@
   "traceability": {
     "source_file": "data/questionnaire_monolith.json",
     "json_path": "blocks.micro_questions[295]",
-    "method_source": "src/saaaaaa/core/orchestrator/executors.py:D6_Q1_Executor",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D6_Q1_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
     "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
@@ -877,7 +877,7 @@
   },
   "calibration": {
     "status": "placeholder",
-    "note": "Contract does not embed calibration scores. Actual calibration managed via src/saaaaaa/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
+    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
     "source": {
       "intrinsic_calibration": "config/intrinsic_calibration.json",
       "fusion_specification": "config/fusion_specification.json",

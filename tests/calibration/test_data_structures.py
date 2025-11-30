@@ -9,7 +9,7 @@ Validates:
 """
 import pytest
 
-from src.saaaaaa.core.calibration import (
+from src.farfan_core.core.calibration import (
     LayerID,
     LayerScore,
     ContextTuple,

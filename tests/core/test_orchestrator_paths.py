@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from saaaaaa.core.orchestrator.core import resolve_workspace_path
+from farfan_core.core.orchestrator.core import resolve_workspace_path
 
 
 def test_resolve_workspace_path_prefers_project_root(tmp_path: Path) -> None:
     project_root = tmp_path / "workspace"
     rules_dir = project_root / "config" / "rules"
-    module_dir = project_root / "src" / "saaaaaa" / "core" / "orchestrator"
+    module_dir = project_root / "src" / "farfan_core" / "core" / "orchestrator"
 
     target_dir = project_root / "resources"
     target_dir.mkdir(parents=True)
@@ -32,7 +32,7 @@ def test_resolve_workspace_path_falls_back_to_rules_metodos(tmp_path: Path) -> N
     project_root = tmp_path / "workspace"
     rules_dir = project_root / "config" / "rules"
     metodos_dir = rules_dir / "METODOS"
-    module_dir = project_root / "src" / "saaaaaa" / "core" / "orchestrator"
+    module_dir = project_root / "src" / "farfan_core" / "core" / "orchestrator"
 
     metodos_dir.mkdir(parents=True)
     module_dir.mkdir(parents=True)

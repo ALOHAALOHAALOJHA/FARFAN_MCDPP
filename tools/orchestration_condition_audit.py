@@ -19,10 +19,10 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from saaaaaa.config.paths import PROJECT_ROOT
+    from farfan_core.config.paths import PROJECT_ROOT
 except ImportError as exc:  # pragma: no cover - configuration error
     raise SystemExit(
-        "Unable to import 'saaaaaa'. Install the package with 'pip install -e .' before running this audit."
+        "Unable to import 'farfan_core'. Install the package with 'pip install -e .' before running this audit."
     ) from exc
 
 REPO_ROOT = PROJECT_ROOT
@@ -56,15 +56,15 @@ def check_python_version() -> dict[str, Any]:
 
 def check_critical_files() -> dict[str, Any]:
     critical_paths = [
-        "src/saaaaaa/core/orchestrator/core.py",
-        "src/saaaaaa/core/orchestrator/arg_router.py",
-        "src/saaaaaa/core/orchestrator/class_registry.py",
-        "src/saaaaaa/core/orchestrator/executors.py",
-        "src/saaaaaa/core/orchestrator/factory.py",
-        "src/saaaaaa/core/orchestrator/questionnaire_resource_provider.py",
-        "src/saaaaaa/core/orchestrator/questionnaire.py",
-        "src/saaaaaa/processing/cpp_ingestion/__init__.py",
-        "src/saaaaaa/processing/cpp_ingestion/models.py",
+        "src/farfan_core/core/orchestrator/core.py",
+        "src/farfan_core/core/orchestrator/arg_router.py",
+        "src/farfan_core/core/orchestrator/class_registry.py",
+        "src/farfan_core/core/orchestrator/executors.py",
+        "src/farfan_core/core/orchestrator/factory.py",
+        "src/farfan_core/core/orchestrator/questionnaire_resource_provider.py",
+        "src/farfan_core/core/orchestrator/questionnaire.py",
+        "src/farfan_core/processing/cpp_ingestion/__init__.py",
+        "src/farfan_core/processing/cpp_ingestion/models.py",
     ]
     missing = [p for p in critical_paths if not (REPO_ROOT / p).exists()]
     return _record(
@@ -77,7 +77,7 @@ def check_critical_files() -> dict[str, Any]:
 
 def check_phase_definitions() -> dict[str, Any]:
     try:
-        from saaaaaa.core.orchestrator.core import Orchestrator
+        from farfan_core.core.orchestrator.core import Orchestrator
     except Exception as exc:  # pragma: no cover - defensive
         return _record(
             "orchestrator_phase_integrity",
@@ -122,7 +122,7 @@ def check_phase_definitions() -> dict[str, Any]:
 
 def check_class_registry() -> dict[str, Any]:
     try:
-        from saaaaaa.core.orchestrator.class_registry import build_class_registry
+        from farfan_core.core.orchestrator.class_registry import build_class_registry
     except Exception as exc:  # pragma: no cover - defensive
         return _record(
             "class_registry_build",
@@ -153,8 +153,8 @@ def check_class_registry() -> dict[str, Any]:
 
 def check_extended_router() -> dict[str, Any]:
     try:
-        from saaaaaa.core.orchestrator.arg_router import ExtendedArgRouter
-        from saaaaaa.core.orchestrator.class_registry import build_class_registry
+        from farfan_core.core.orchestrator.arg_router import ExtendedArgRouter
+        from farfan_core.core.orchestrator.class_registry import build_class_registry
     except Exception as exc:  # pragma: no cover - defensive
         return _record(
             "extended_router_integrity",
@@ -190,7 +190,7 @@ def check_extended_router() -> dict[str, Any]:
 
 def check_questionnaire_provider() -> dict[str, Any]:
     try:
-        from saaaaaa.core.orchestrator.questionnaire_resource_provider import QuestionnaireResourceProvider
+        from farfan_core.core.orchestrator.questionnaire_resource_provider import QuestionnaireResourceProvider
     except Exception as exc:  # pragma: no cover - defensive
         return _record(
             "questionnaire_provider_extracts",
@@ -227,7 +227,7 @@ def check_questionnaire_provider() -> dict[str, Any]:
 
 def check_executor_registry() -> dict[str, Any]:
     try:
-        from saaaaaa.core.orchestrator.core import Orchestrator
+        from farfan_core.core.orchestrator.core import Orchestrator
     except Exception as exc:  # pragma: no cover - defensive
         return _record(
             "executor_registry_coverage",

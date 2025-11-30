@@ -13,7 +13,7 @@
     "b_theory": 0.9,
     "b_impl": 0.8
   },
-  "saaaaaa.executors.D1Q1_executor.D1Q1_Executor.execute": {
+  "farfan_core.executors.D1Q1_executor.D1Q1_Executor.execute": {
     "intrinsic_score": 0.85,
     "layer": "executor",
     "calibration_status": "initialized",
@@ -21,7 +21,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.DocumentLoader.load_pdf": {
+  "farfan_core.processing.document_ingestion.DocumentLoader.load_pdf": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -29,7 +29,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.DocumentLoader.validate_pdf": {
+  "farfan_core.processing.document_ingestion.DocumentLoader.validate_pdf": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -37,7 +37,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.DocumentLoader.validate_pdf_reader": {
+  "farfan_core.processing.document_ingestion.DocumentLoader.validate_pdf_reader": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -45,7 +45,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.DocumentLoader.extract_metadata": {
+  "farfan_core.processing.document_ingestion.DocumentLoader.extract_metadata": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -53,7 +53,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.TextExtractor.extract_full_text": {
+  "farfan_core.processing.document_ingestion.TextExtractor.extract_full_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -61,7 +61,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.TextExtractor.extract_by_page": {
+  "farfan_core.processing.document_ingestion.TextExtractor.extract_by_page": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -69,7 +69,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.TextExtractor.preserve_structure": {
+  "farfan_core.processing.document_ingestion.TextExtractor.preserve_structure": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -77,7 +77,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.PreprocessingEngine.preprocess_document": {
+  "farfan_core.processing.document_ingestion.PreprocessingEngine.preprocess_document": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -85,7 +85,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.PreprocessingEngine.normalize_encoding": {
+  "farfan_core.processing.document_ingestion.PreprocessingEngine.normalize_encoding": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -93,7 +93,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.document_ingestion.PreprocessingEngine.detect_language": {
+  "farfan_core.processing.document_ingestion.PreprocessingEngine.detect_language": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -101,7 +101,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.AggregationSettings.from_monolith": {
+  "farfan_core.processing.aggregation.AggregationSettings.from_monolith": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -109,7 +109,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.validate_dimension_id": {
+  "farfan_core.processing.aggregation.DimensionAggregator.validate_dimension_id": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -117,7 +117,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.validate_policy_area_id": {
+  "farfan_core.processing.aggregation.DimensionAggregator.validate_policy_area_id": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -125,7 +125,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.validate_weights": {
+  "farfan_core.processing.aggregation.DimensionAggregator.validate_weights": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -133,7 +133,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.validate_coverage": {
+  "farfan_core.processing.aggregation.DimensionAggregator.validate_coverage": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -141,7 +141,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.calculate_weighted_average": {
+  "farfan_core.processing.aggregation.DimensionAggregator.calculate_weighted_average": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -149,7 +149,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.apply_rubric_thresholds": {
+  "farfan_core.processing.aggregation.DimensionAggregator.apply_rubric_thresholds": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -157,7 +157,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.aggregate_dimension": {
+  "farfan_core.processing.aggregation.DimensionAggregator.aggregate_dimension": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -165,7 +165,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.DimensionAggregator.run": {
+  "farfan_core.processing.aggregation.DimensionAggregator.run": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -173,7 +173,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.AreaPolicyAggregator.validate_hermeticity": {
+  "farfan_core.processing.aggregation.AreaPolicyAggregator.validate_hermeticity": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -181,7 +181,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.AreaPolicyAggregator.normalize_scores": {
+  "farfan_core.processing.aggregation.AreaPolicyAggregator.normalize_scores": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -189,7 +189,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.AreaPolicyAggregator.apply_rubric_thresholds": {
+  "farfan_core.processing.aggregation.AreaPolicyAggregator.apply_rubric_thresholds": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -197,7 +197,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.AreaPolicyAggregator.aggregate_area": {
+  "farfan_core.processing.aggregation.AreaPolicyAggregator.aggregate_area": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -205,7 +205,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.AreaPolicyAggregator.run": {
+  "farfan_core.processing.aggregation.AreaPolicyAggregator.run": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -213,7 +213,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.ClusterAggregator.validate_cluster_hermeticity": {
+  "farfan_core.processing.aggregation.ClusterAggregator.validate_cluster_hermeticity": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -221,7 +221,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.ClusterAggregator.apply_cluster_weights": {
+  "farfan_core.processing.aggregation.ClusterAggregator.apply_cluster_weights": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -229,7 +229,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.ClusterAggregator.analyze_coherence": {
+  "farfan_core.processing.aggregation.ClusterAggregator.analyze_coherence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -237,7 +237,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.ClusterAggregator.aggregate_cluster": {
+  "farfan_core.processing.aggregation.ClusterAggregator.aggregate_cluster": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -245,7 +245,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.ClusterAggregator.run": {
+  "farfan_core.processing.aggregation.ClusterAggregator.run": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -253,7 +253,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.MacroAggregator.calculate_cross_cutting_coherence": {
+  "farfan_core.processing.aggregation.MacroAggregator.calculate_cross_cutting_coherence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -261,7 +261,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.MacroAggregator.identify_systemic_gaps": {
+  "farfan_core.processing.aggregation.MacroAggregator.identify_systemic_gaps": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -269,7 +269,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.MacroAggregator.assess_strategic_alignment": {
+  "farfan_core.processing.aggregation.MacroAggregator.assess_strategic_alignment": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -277,7 +277,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.MacroAggregator.apply_rubric_thresholds": {
+  "farfan_core.processing.aggregation.MacroAggregator.apply_rubric_thresholds": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -285,7 +285,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.aggregation.MacroAggregator.evaluate_macro": {
+  "farfan_core.processing.aggregation.MacroAggregator.evaluate_macro": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -293,7 +293,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticProcessor.chunk_text": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticProcessor.chunk_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -301,7 +301,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticProcessor.embed_single": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticProcessor.embed_single": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -309,7 +309,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.integrate_evidence": {
+  "farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.integrate_evidence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -317,7 +317,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.causal_strength": {
+  "farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.causal_strength": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -325,7 +325,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.PolicyDocumentAnalyzer.analyze": {
+  "farfan_core.processing.semantic_chunking_policy.PolicyDocumentAnalyzer.analyze": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -333,7 +333,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.chunk_document": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.chunk_document": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -341,7 +341,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_count": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_count": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -349,7 +349,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_text": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -357,7 +357,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_embedding": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_embedding": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -365,7 +365,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_metadata": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_metadata": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -373,7 +373,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.embed_text": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.embed_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -381,7 +381,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.embed_batch": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.embed_batch": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -389,7 +389,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.analyze_document": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.analyze_document": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -397,7 +397,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_analysis": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_analysis": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -405,7 +405,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_score": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_score": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -413,7 +413,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_confidence": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_confidence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -421,7 +421,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_excerpts": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_excerpts": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -429,7 +429,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.integrate_evidence": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.integrate_evidence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -437,7 +437,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.calculate_causal_strength": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.calculate_causal_strength": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -445,7 +445,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_mean": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_mean": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -453,7 +453,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_std": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_std": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -461,7 +461,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_information_gain": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_information_gain": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -469,7 +469,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_confidence": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_confidence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -477,7 +477,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.semantic_search": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.semantic_search": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -485,7 +485,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.list_dimensions": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.list_dimensions": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -493,7 +493,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_description": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_description": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -501,7 +501,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.get_config": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_config": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -509,7 +509,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.semantic_chunking_policy.SemanticChunkingProducer.set_config": {
+  "farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.set_config": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -517,7 +517,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingProtocol.encode": {
+  "farfan_core.processing.embedding_policy.EmbeddingProtocol.encode": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -525,7 +525,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.AdvancedSemanticChunker.chunk_document": {
+  "farfan_core.processing.embedding_policy.AdvancedSemanticChunker.chunk_document": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -533,7 +533,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.BayesianNumericalAnalyzer.evaluate_policy_metric": {
+  "farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.evaluate_policy_metric": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -541,7 +541,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.BayesianNumericalAnalyzer.serialize_posterior_samples": {
+  "farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.serialize_posterior_samples": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -549,7 +549,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.BayesianNumericalAnalyzer.compare_policies": {
+  "farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.compare_policies": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -557,7 +557,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.PolicyCrossEncoderReranker.rerank": {
+  "farfan_core.processing.embedding_policy.PolicyCrossEncoderReranker.rerank": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -565,7 +565,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder.process_document": {
+  "farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.process_document": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -573,7 +573,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder.semantic_search": {
+  "farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.semantic_search": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -581,7 +581,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency": {
+  "farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -589,7 +589,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder.compare_policy_interventions": {
+  "farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.compare_policy_interventions": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -597,7 +597,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder.generate_pdq_report": {
+  "farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.generate_pdq_report": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -605,7 +605,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.PolicyAnalysisEmbedder.get_diagnostics": {
+  "farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.get_diagnostics": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -613,7 +613,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.process_document": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.process_document": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -621,7 +621,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_count": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_count": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -629,7 +629,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_text": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -637,7 +637,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_embedding": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_embedding": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -645,7 +645,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_metadata": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_metadata": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -653,7 +653,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_pdq_context": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_pdq_context": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -661,7 +661,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.semantic_search": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.semantic_search": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -669,7 +669,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_search_result_chunk": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_search_result_chunk": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -677,7 +677,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_search_result_score": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_search_result_score": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -685,7 +685,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.generate_pdq_report": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.generate_pdq_report": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -693,7 +693,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_evidence_count": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_evidence_count": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -701,7 +701,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_numerical_evaluation": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_numerical_evaluation": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -709,7 +709,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_evidence_passages": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_evidence_passages": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -717,7 +717,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_confidence": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_confidence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -725,7 +725,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.evaluate_numerical_consistency": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.evaluate_numerical_consistency": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -733,7 +733,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_point_estimate": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_point_estimate": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -741,7 +741,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_credible_interval": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_credible_interval": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -749,7 +749,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_evidence_strength": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_evidence_strength": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -757,7 +757,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_numerical_coherence": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_numerical_coherence": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -765,7 +765,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.compare_policy_interventions": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.compare_policy_interventions": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -773,7 +773,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_probability": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_probability": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -781,7 +781,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_bayes_factor": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_bayes_factor": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -789,7 +789,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_difference_mean": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_difference_mean": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -797,7 +797,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_diagnostics": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_diagnostics": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -805,7 +805,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_config": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_config": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -813,7 +813,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.list_policy_domains": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.list_policy_domains": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -821,7 +821,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.list_analytical_dimensions": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.list_analytical_dimensions": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -829,7 +829,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_policy_domain_description": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_policy_domain_description": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -837,7 +837,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.get_analytical_dimension_description": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_analytical_dimension_description": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -845,7 +845,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.embedding_policy.EmbeddingPolicyProducer.create_pdq_identifier": {
+  "farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.create_pdq_identifier": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -853,7 +853,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.ProcessorConfig.from_legacy": {
+  "farfan_core.processing.policy_processor.ProcessorConfig.from_legacy": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -861,7 +861,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.ProcessorConfig.validate": {
+  "farfan_core.processing.policy_processor.ProcessorConfig.validate": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -869,7 +869,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.BayesianEvidenceScorer.compute_evidence_score": {
+  "farfan_core.processing.policy_processor.BayesianEvidenceScorer.compute_evidence_score": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -877,7 +877,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.PolicyTextProcessor.normalize_unicode": {
+  "farfan_core.processing.policy_processor.PolicyTextProcessor.normalize_unicode": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -885,7 +885,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.PolicyTextProcessor.segment_into_sentences": {
+  "farfan_core.processing.policy_processor.PolicyTextProcessor.segment_into_sentences": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -893,7 +893,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.PolicyTextProcessor.extract_contextual_window": {
+  "farfan_core.processing.policy_processor.PolicyTextProcessor.extract_contextual_window": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -901,7 +901,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.PolicyTextProcessor.compile_pattern": {
+  "farfan_core.processing.policy_processor.PolicyTextProcessor.compile_pattern": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -909,7 +909,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.EvidenceBundle.to_dict": {
+  "farfan_core.processing.policy_processor.EvidenceBundle.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -917,7 +917,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.IndustrialPolicyProcessor.process": {
+  "farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -925,7 +925,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.IndustrialPolicyProcessor.export_results": {
+  "farfan_core.processing.policy_processor.IndustrialPolicyProcessor.export_results": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -933,7 +933,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.AdvancedTextSanitizer.sanitize": {
+  "farfan_core.processing.policy_processor.AdvancedTextSanitizer.sanitize": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -941,7 +941,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.ResilientFileHandler.read_text": {
+  "farfan_core.processing.policy_processor.ResilientFileHandler.read_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -949,7 +949,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.ResilientFileHandler.write_text": {
+  "farfan_core.processing.policy_processor.ResilientFileHandler.write_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -957,7 +957,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.PolicyAnalysisPipeline.analyze_file": {
+  "farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_file": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -965,7 +965,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.PolicyAnalysisPipeline.analyze_text": {
+  "farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -973,7 +973,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.BayesianConfidenceCalculator.calculate_posterior": {
+  "farfan_core.processing.policy_processor.BayesianConfidenceCalculator.calculate_posterior": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -981,7 +981,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor.TemporalLogicVerifier.verify_temporal_consistency": {
+  "farfan_core.processing.policy_processor.TemporalLogicVerifier.verify_temporal_consistency": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -989,7 +989,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.policy_processor._FallbackContradictionDetector.detect": {
+  "farfan_core.processing.policy_processor._FallbackContradictionDetector.detect": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -997,7 +997,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.cpp_ingestion.models.ChunkGraph.add_chunk": {
+  "farfan_core.processing.cpp_ingestion.models.ChunkGraph.add_chunk": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1005,7 +1005,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.cpp_ingestion.models.ChunkGraph.add_edge": {
+  "farfan_core.processing.cpp_ingestion.models.ChunkGraph.add_edge": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1013,7 +1013,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.spc_ingestion.structural.StructuralNormalizer.normalize": {
+  "farfan_core.processing.spc_ingestion.structural.StructuralNormalizer.normalize": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1021,7 +1021,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.spc_ingestion.converter.SmartChunkConverter.convert_to_canon_package": {
+  "farfan_core.processing.spc_ingestion.converter.SmartChunkConverter.convert_to_canon_package": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1029,7 +1029,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_input": {
+  "farfan_core.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_input": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1037,7 +1037,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_chunks": {
+  "farfan_core.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_chunks": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1045,7 +1045,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_output_compatibility": {
+  "farfan_core.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_output_compatibility": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1053,7 +1053,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_quality_metrics": {
+  "farfan_core.processing.spc_ingestion.quality_gates.SPCQualityGates.validate_quality_metrics": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1061,7 +1061,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.SemanticAnalyzer.extract_semantic_cube": {
+  "farfan_core.analysis.Analyzer_one.SemanticAnalyzer.extract_semantic_cube": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1069,7 +1069,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.PerformanceAnalyzer.analyze_performance": {
+  "farfan_core.analysis.Analyzer_one.PerformanceAnalyzer.analyze_performance": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1077,7 +1077,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.TextMiningEngine.diagnose_critical_links": {
+  "farfan_core.analysis.Analyzer_one.TextMiningEngine.diagnose_critical_links": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1085,7 +1085,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.MunicipalAnalyzer.analyze_document": {
+  "farfan_core.analysis.Analyzer_one.MunicipalAnalyzer.analyze_document": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1093,7 +1093,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.CanonicalQuestionSegmenter.segment_plan": {
+  "farfan_core.analysis.Analyzer_one.CanonicalQuestionSegmenter.segment_plan": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1101,7 +1101,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.DocumentProcessor.load_pdf": {
+  "farfan_core.analysis.Analyzer_one.DocumentProcessor.load_pdf": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1109,7 +1109,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.DocumentProcessor.load_docx": {
+  "farfan_core.analysis.Analyzer_one.DocumentProcessor.load_docx": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1117,7 +1117,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.DocumentProcessor.segment_text": {
+  "farfan_core.analysis.Analyzer_one.DocumentProcessor.segment_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1125,7 +1125,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.DocumentProcessor.load_canonical_question_contracts": {
+  "farfan_core.analysis.Analyzer_one.DocumentProcessor.load_canonical_question_contracts": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1133,7 +1133,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.DocumentProcessor.segment_by_canonical_questionnaire": {
+  "farfan_core.analysis.Analyzer_one.DocumentProcessor.segment_by_canonical_questionnaire": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1141,7 +1141,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.ResultsExporter.export_to_json": {
+  "farfan_core.analysis.Analyzer_one.ResultsExporter.export_to_json": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1149,7 +1149,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.ResultsExporter.export_to_excel": {
+  "farfan_core.analysis.Analyzer_one.ResultsExporter.export_to_excel": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1157,7 +1157,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.ResultsExporter.export_summary_report": {
+  "farfan_core.analysis.Analyzer_one.ResultsExporter.export_summary_report": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1165,7 +1165,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.ConfigurationManager.load_config": {
+  "farfan_core.analysis.Analyzer_one.ConfigurationManager.load_config": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1173,7 +1173,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.ConfigurationManager.save_config": {
+  "farfan_core.analysis.Analyzer_one.ConfigurationManager.save_config": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1181,7 +1181,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.BatchProcessor.process_directory": {
+  "farfan_core.analysis.Analyzer_one.BatchProcessor.process_directory": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1189,7 +1189,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.Analyzer_one.BatchProcessor.export_batch_results": {
+  "farfan_core.analysis.Analyzer_one.BatchProcessor.export_batch_results": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1197,7 +1197,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.ProvenanceDAG.get_root_nodes": {
+  "farfan_core.analysis.micro_prompts.ProvenanceDAG.get_root_nodes": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1205,7 +1205,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.ProvenanceDAG.get_orphan_nodes": {
+  "farfan_core.analysis.micro_prompts.ProvenanceDAG.get_orphan_nodes": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1213,7 +1213,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.ProvenanceAuditor.audit": {
+  "farfan_core.analysis.micro_prompts.ProvenanceAuditor.audit": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1221,7 +1221,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.ProvenanceAuditor.to_json": {
+  "farfan_core.analysis.micro_prompts.ProvenanceAuditor.to_json": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1229,7 +1229,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.BayesianPosteriorExplainer.explain": {
+  "farfan_core.analysis.micro_prompts.BayesianPosteriorExplainer.explain": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1237,7 +1237,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.BayesianPosteriorExplainer.to_json": {
+  "farfan_core.analysis.micro_prompts.BayesianPosteriorExplainer.to_json": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1245,7 +1245,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.CausalChain.length": {
+  "farfan_core.analysis.micro_prompts.CausalChain.length": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1253,7 +1253,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.AntiMilagroStressTester.stress_test": {
+  "farfan_core.analysis.micro_prompts.AntiMilagroStressTester.stress_test": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1261,7 +1261,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.micro_prompts.AntiMilagroStressTester.to_json": {
+  "farfan_core.analysis.micro_prompts.AntiMilagroStressTester.to_json": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1269,7 +1269,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.analyze_financial_feasibility": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.analyze_financial_feasibility": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1277,7 +1277,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.identify_responsible_entities": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.identify_responsible_entities": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1285,7 +1285,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.construct_causal_dag": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.construct_causal_dag": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1293,7 +1293,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.estimate_causal_effects": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.estimate_causal_effects": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1301,7 +1301,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.generate_counterfactuals": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.generate_counterfactuals": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1309,7 +1309,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.sensitivity_analysis": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.sensitivity_analysis": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1317,7 +1317,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.calculate_quality_score": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.calculate_quality_score": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1325,7 +1325,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.export_causal_network": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.export_causal_network": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1333,7 +1333,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.generate_executive_report": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.generate_executive_report": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1341,7 +1341,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.analyze_municipal_plan_sync": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.analyze_municipal_plan_sync": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1349,7 +1349,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.generate_recommendations": {
+  "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer.generate_recommendations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1357,7 +1357,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_range": {
+  "farfan_core.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_range": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1365,7 +1365,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_unit": {
+  "farfan_core.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_unit": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1373,7 +1373,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_period": {
+  "farfan_core.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_period": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1381,7 +1381,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_entity": {
+  "farfan_core.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_entity": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1389,7 +1389,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_data": {
+  "farfan_core.analysis.bayesian_multilevel_system.ReconciliationValidator.validate_data": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1397,7 +1397,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ReconciliationValidator.calculate_total_penalty": {
+  "farfan_core.analysis.bayesian_multilevel_system.ReconciliationValidator.calculate_total_penalty": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1405,7 +1405,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio": {
+  "farfan_core.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1413,7 +1413,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianUpdater.update": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianUpdater.update": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1421,7 +1421,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianUpdater.sequential_update": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianUpdater.sequential_update": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1429,7 +1429,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianUpdater.export_to_csv": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianUpdater.export_to_csv": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1437,7 +1437,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.DispersionEngine.calculate_cv": {
+  "farfan_core.analysis.bayesian_multilevel_system.DispersionEngine.calculate_cv": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1445,7 +1445,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.DispersionEngine.calculate_max_gap": {
+  "farfan_core.analysis.bayesian_multilevel_system.DispersionEngine.calculate_max_gap": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1453,7 +1453,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.DispersionEngine.calculate_gini": {
+  "farfan_core.analysis.bayesian_multilevel_system.DispersionEngine.calculate_gini": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1461,7 +1461,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.DispersionEngine.calculate_dispersion_penalty": {
+  "farfan_core.analysis.bayesian_multilevel_system.DispersionEngine.calculate_dispersion_penalty": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1469,7 +1469,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.PeerCalibrator.compare_to_peers": {
+  "farfan_core.analysis.bayesian_multilevel_system.PeerCalibrator.compare_to_peers": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1477,7 +1477,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianRollUp.aggregate_micro_to_meso": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.aggregate_micro_to_meso": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1485,7 +1485,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianRollUp.export_to_csv": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.export_to_csv": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1493,7 +1493,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ContradictionScanner.scan_micro_meso": {
+  "farfan_core.analysis.bayesian_multilevel_system.ContradictionScanner.scan_micro_meso": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1501,7 +1501,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ContradictionScanner.scan_meso_macro": {
+  "farfan_core.analysis.bayesian_multilevel_system.ContradictionScanner.scan_meso_macro": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1509,7 +1509,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.ContradictionScanner.calculate_contradiction_penalty": {
+  "farfan_core.analysis.bayesian_multilevel_system.ContradictionScanner.calculate_contradiction_penalty": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1517,7 +1517,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianPortfolioComposer.calculate_coverage": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianPortfolioComposer.calculate_coverage": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1525,7 +1525,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianPortfolioComposer.compose_macro_portfolio": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianPortfolioComposer.compose_macro_portfolio": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1533,7 +1533,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.BayesianPortfolioComposer.export_to_csv": {
+  "farfan_core.analysis.bayesian_multilevel_system.BayesianPortfolioComposer.export_to_csv": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1541,7 +1541,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.bayesian_multilevel_system.MultiLevelBayesianOrchestrator.run_complete_analysis": {
+  "farfan_core.analysis.bayesian_multilevel_system.MultiLevelBayesianOrchestrator.run_complete_analysis": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1549,7 +1549,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.Recommendation.to_dict": {
+  "farfan_core.analysis.recommendation_engine.Recommendation.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1557,7 +1557,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationSet.to_dict": {
+  "farfan_core.analysis.recommendation_engine.RecommendationSet.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1565,7 +1565,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationEngine.reload_rules": {
+  "farfan_core.analysis.recommendation_engine.RecommendationEngine.reload_rules": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1573,7 +1573,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith": {
+  "farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1581,7 +1581,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationEngine.generate_micro_recommendations": {
+  "farfan_core.analysis.recommendation_engine.RecommendationEngine.generate_micro_recommendations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1589,7 +1589,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationEngine.generate_meso_recommendations": {
+  "farfan_core.analysis.recommendation_engine.RecommendationEngine.generate_meso_recommendations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1597,7 +1597,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationEngine.generate_macro_recommendations": {
+  "farfan_core.analysis.recommendation_engine.RecommendationEngine.generate_macro_recommendations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1605,7 +1605,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationEngine.generate_all_recommendations": {
+  "farfan_core.analysis.recommendation_engine.RecommendationEngine.generate_all_recommendations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1613,7 +1613,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.recommendation_engine.RecommendationEngine.export_recommendations": {
+  "farfan_core.analysis.recommendation_engine.RecommendationEngine.export_recommendations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1621,7 +1621,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.meso_cluster_analysis.MetricViolation.to_flag_dict": {
+  "farfan_core.analysis.meso_cluster_analysis.MetricViolation.to_flag_dict": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1629,7 +1629,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.macro_prompts.CoverageGapStressor.evaluate": {
+  "farfan_core.analysis.macro_prompts.CoverageGapStressor.evaluate": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1637,7 +1637,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.macro_prompts.ContradictionScanner.scan": {
+  "farfan_core.analysis.macro_prompts.ContradictionScanner.scan": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1645,7 +1645,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.macro_prompts.BayesianPortfolioComposer.compose": {
+  "farfan_core.analysis.macro_prompts.BayesianPortfolioComposer.compose": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1653,7 +1653,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.macro_prompts.RoadmapOptimizer.optimize": {
+  "farfan_core.analysis.macro_prompts.RoadmapOptimizer.optimize": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1661,7 +1661,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.macro_prompts.PeerNormalizer.normalize": {
+  "farfan_core.analysis.macro_prompts.PeerNormalizer.normalize": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1669,7 +1669,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.macro_prompts.MacroPromptsOrchestrator.execute_all": {
+  "farfan_core.analysis.macro_prompts.MacroPromptsOrchestrator.execute_all": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1677,7 +1677,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.score_type_a": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.score_type_a": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1685,7 +1685,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.score_type_b": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.score_type_b": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1693,7 +1693,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.score_type_c": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.score_type_c": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1701,7 +1701,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.score_type_d": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.score_type_d": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1709,7 +1709,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.score_type_e": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.score_type_e": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1717,7 +1717,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.score_type_f": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.score_type_f": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1725,7 +1725,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.apply_scoring_modality": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.apply_scoring_modality": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1733,7 +1733,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.MicroQuestionScorer.determine_quality_level": {
+  "farfan_core.analysis.scoring.MicroQuestionScorer.determine_quality_level": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1741,7 +1741,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.contradiction_deteccion.BayesianConfidenceCalculator.calculate_posterior": {
+  "farfan_core.analysis.contradiction_deteccion.BayesianConfidenceCalculator.calculate_posterior": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1749,7 +1749,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.contradiction_deteccion.TemporalLogicVerifier.verify_temporal_consistency": {
+  "farfan_core.analysis.contradiction_deteccion.TemporalLogicVerifier.verify_temporal_consistency": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1757,7 +1757,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.contradiction_deteccion.PolicyContradictionDetector.detect": {
+  "farfan_core.analysis.contradiction_deteccion.PolicyContradictionDetector.detect": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1765,7 +1765,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.AdvancedGraphNode.to_serializable_dict": {
+  "farfan_core.analysis.teoria_cambio.AdvancedGraphNode.to_serializable_dict": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1773,7 +1773,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.TeoriaCambio.construir_grafo_causal": {
+  "farfan_core.analysis.teoria_cambio.TeoriaCambio.construir_grafo_causal": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1781,7 +1781,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.TeoriaCambio.construir_grafo_from_spc": {
+  "farfan_core.analysis.teoria_cambio.TeoriaCambio.construir_grafo_from_spc": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1789,7 +1789,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.TeoriaCambio.validacion_completa": {
+  "farfan_core.analysis.teoria_cambio.TeoriaCambio.validacion_completa": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1797,7 +1797,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.AdvancedDAGValidator.add_node": {
+  "farfan_core.analysis.teoria_cambio.AdvancedDAGValidator.add_node": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1805,7 +1805,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.AdvancedDAGValidator.add_edge": {
+  "farfan_core.analysis.teoria_cambio.AdvancedDAGValidator.add_edge": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1813,7 +1813,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.AdvancedDAGValidator.calculate_acyclicity_pvalue": {
+  "farfan_core.analysis.teoria_cambio.AdvancedDAGValidator.calculate_acyclicity_pvalue": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1821,7 +1821,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.AdvancedDAGValidator.last_serialized_nodes": {
+  "farfan_core.analysis.teoria_cambio.AdvancedDAGValidator.last_serialized_nodes": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1829,7 +1829,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.AdvancedDAGValidator.export_nodes": {
+  "farfan_core.analysis.teoria_cambio.AdvancedDAGValidator.export_nodes": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1837,7 +1837,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.AdvancedDAGValidator.get_graph_stats": {
+  "farfan_core.analysis.teoria_cambio.AdvancedDAGValidator.get_graph_stats": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1845,7 +1845,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.IndustrialGradeValidator.execute_suite": {
+  "farfan_core.analysis.teoria_cambio.IndustrialGradeValidator.execute_suite": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1853,7 +1853,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.IndustrialGradeValidator.validate_engine_readiness": {
+  "farfan_core.analysis.teoria_cambio.IndustrialGradeValidator.validate_engine_readiness": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1861,7 +1861,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.IndustrialGradeValidator.validate_causal_categories": {
+  "farfan_core.analysis.teoria_cambio.IndustrialGradeValidator.validate_causal_categories": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1869,7 +1869,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.IndustrialGradeValidator.validate_connection_matrix": {
+  "farfan_core.analysis.teoria_cambio.IndustrialGradeValidator.validate_connection_matrix": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1877,7 +1877,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.teoria_cambio.IndustrialGradeValidator.run_performance_benchmarks": {
+  "farfan_core.analysis.teoria_cambio.IndustrialGradeValidator.run_performance_benchmarks": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1885,7 +1885,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.report_assembly.AnalysisReport.to_dict": {
+  "farfan_core.analysis.report_assembly.AnalysisReport.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1893,7 +1893,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.report_assembly.ReportAssembler.assemble_report": {
+  "farfan_core.analysis.report_assembly.ReportAssembler.assemble_report": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1901,7 +1901,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.report_assembly.ReportAssembler.export_report": {
+  "farfan_core.analysis.report_assembly.ReportAssembler.export_report": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1909,7 +1909,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BeachEvidentialTest.classify_test": {
+  "farfan_core.analysis.derek_beach.BeachEvidentialTest.classify_test": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1917,7 +1917,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BeachEvidentialTest.apply_test_logic": {
+  "farfan_core.analysis.derek_beach.BeachEvidentialTest.apply_test_logic": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1925,7 +1925,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.CDAFException.to_dict": {
+  "farfan_core.analysis.derek_beach.CDAFException.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1933,7 +1933,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.MechanismTypeConfig.check_sum_to_one": {
+  "farfan_core.analysis.derek_beach.MechanismTypeConfig.check_sum_to_one": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1941,7 +1941,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ConfigLoader.get": {
+  "farfan_core.analysis.derek_beach.ConfigLoader.get": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1949,7 +1949,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ConfigLoader.get_bayesian_threshold": {
+  "farfan_core.analysis.derek_beach.ConfigLoader.get_bayesian_threshold": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1957,7 +1957,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ConfigLoader.get_mechanism_prior": {
+  "farfan_core.analysis.derek_beach.ConfigLoader.get_mechanism_prior": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1965,7 +1965,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ConfigLoader.get_performance_setting": {
+  "farfan_core.analysis.derek_beach.ConfigLoader.get_performance_setting": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1973,7 +1973,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ConfigLoader.update_priors_from_feedback": {
+  "farfan_core.analysis.derek_beach.ConfigLoader.update_priors_from_feedback": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1981,7 +1981,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ConfigLoader.check_uncertainty_reduction_criterion": {
+  "farfan_core.analysis.derek_beach.ConfigLoader.check_uncertainty_reduction_criterion": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -1989,7 +1989,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.PDFProcessor.load_document": {
+  "farfan_core.analysis.derek_beach.PDFProcessor.load_document": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -1997,7 +1997,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.PDFProcessor.extract_text": {
+  "farfan_core.analysis.derek_beach.PDFProcessor.extract_text": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -2005,7 +2005,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.PDFProcessor.extract_tables": {
+  "farfan_core.analysis.derek_beach.PDFProcessor.extract_tables": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -2013,7 +2013,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.PDFProcessor.extract_sections": {
+  "farfan_core.analysis.derek_beach.PDFProcessor.extract_sections": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -2021,7 +2021,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.CausalExtractor.extract_causal_hierarchy": {
+  "farfan_core.analysis.derek_beach.CausalExtractor.extract_causal_hierarchy": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2029,7 +2029,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.MechanismPartExtractor.extract_entity_activity": {
+  "farfan_core.analysis.derek_beach.MechanismPartExtractor.extract_entity_activity": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2037,7 +2037,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.FinancialAuditor.trace_financial_allocation": {
+  "farfan_core.analysis.derek_beach.FinancialAuditor.trace_financial_allocation": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2045,7 +2045,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.OperationalizationAuditor.audit_evidence_traceability": {
+  "farfan_core.analysis.derek_beach.OperationalizationAuditor.audit_evidence_traceability": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2053,7 +2053,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.OperationalizationAuditor.audit_sequence_logic": {
+  "farfan_core.analysis.derek_beach.OperationalizationAuditor.audit_sequence_logic": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2061,7 +2061,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.OperationalizationAuditor.bayesian_counterfactual_audit": {
+  "farfan_core.analysis.derek_beach.OperationalizationAuditor.bayesian_counterfactual_audit": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2069,7 +2069,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BayesianMechanismInference.infer_mechanisms": {
+  "farfan_core.analysis.derek_beach.BayesianMechanismInference.infer_mechanisms": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2077,7 +2077,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.CausalInferenceSetup.classify_goal_dynamics": {
+  "farfan_core.analysis.derek_beach.CausalInferenceSetup.classify_goal_dynamics": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2085,7 +2085,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.CausalInferenceSetup.assign_probative_value": {
+  "farfan_core.analysis.derek_beach.CausalInferenceSetup.assign_probative_value": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2093,7 +2093,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.CausalInferenceSetup.identify_failure_points": {
+  "farfan_core.analysis.derek_beach.CausalInferenceSetup.identify_failure_points": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2101,7 +2101,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ReportingEngine.generate_causal_diagram": {
+  "farfan_core.analysis.derek_beach.ReportingEngine.generate_causal_diagram": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2109,7 +2109,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ReportingEngine.generate_accountability_matrix": {
+  "farfan_core.analysis.derek_beach.ReportingEngine.generate_accountability_matrix": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2117,7 +2117,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ReportingEngine.generate_confidence_report": {
+  "farfan_core.analysis.derek_beach.ReportingEngine.generate_confidence_report": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2125,7 +2125,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.ReportingEngine.generate_causal_model_json": {
+  "farfan_core.analysis.derek_beach.ReportingEngine.generate_causal_model_json": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2133,7 +2133,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.CDAFFramework.process_document": {
+  "farfan_core.analysis.derek_beach.CDAFFramework.process_document": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2141,7 +2141,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BayesFactorTable.get_bayes_factor": {
+  "farfan_core.analysis.derek_beach.BayesFactorTable.get_bayes_factor": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2149,7 +2149,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BayesFactorTable.get_version": {
+  "farfan_core.analysis.derek_beach.BayesFactorTable.get_version": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2157,7 +2157,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.AdaptivePriorCalculator.calculate_likelihood_adaptativo": {
+  "farfan_core.analysis.derek_beach.AdaptivePriorCalculator.calculate_likelihood_adaptativo": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2165,7 +2165,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.AdaptivePriorCalculator.sensitivity_analysis": {
+  "farfan_core.analysis.derek_beach.AdaptivePriorCalculator.sensitivity_analysis": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2173,7 +2173,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.AdaptivePriorCalculator.generate_traceability_record": {
+  "farfan_core.analysis.derek_beach.AdaptivePriorCalculator.generate_traceability_record": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2181,7 +2181,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.AdaptivePriorCalculator.validate_quality_criteria": {
+  "farfan_core.analysis.derek_beach.AdaptivePriorCalculator.validate_quality_criteria": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2189,7 +2189,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.HierarchicalGenerativeModel.infer_mechanism_posterior": {
+  "farfan_core.analysis.derek_beach.HierarchicalGenerativeModel.infer_mechanism_posterior": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2197,7 +2197,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.HierarchicalGenerativeModel.posterior_predictive_check": {
+  "farfan_core.analysis.derek_beach.HierarchicalGenerativeModel.posterior_predictive_check": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2205,7 +2205,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.HierarchicalGenerativeModel.verify_conditional_independence": {
+  "farfan_core.analysis.derek_beach.HierarchicalGenerativeModel.verify_conditional_independence": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2213,7 +2213,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BayesianCounterfactualAuditor.construct_scm": {
+  "farfan_core.analysis.derek_beach.BayesianCounterfactualAuditor.construct_scm": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2221,7 +2221,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BayesianCounterfactualAuditor.counterfactual_query": {
+  "farfan_core.analysis.derek_beach.BayesianCounterfactualAuditor.counterfactual_query": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2229,7 +2229,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BayesianCounterfactualAuditor.aggregate_risk_and_prioritize": {
+  "farfan_core.analysis.derek_beach.BayesianCounterfactualAuditor.aggregate_risk_and_prioritize": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2237,7 +2237,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.BayesianCounterfactualAuditor.refutation_and_sanity_checks": {
+  "farfan_core.analysis.derek_beach.BayesianCounterfactualAuditor.refutation_and_sanity_checks": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2245,7 +2245,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.classify_test_type": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.classify_test_type": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2253,7 +2253,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.apply_test_logic": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.apply_test_logic": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2261,7 +2261,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_hoop_test": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_hoop_test": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2269,7 +2269,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_smoking_gun": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_smoking_gun": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2277,7 +2277,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_doubly_decisive": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_doubly_decisive": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2285,7 +2285,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_straw_in_wind": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_straw_in_wind": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2293,7 +2293,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.create_hierarchical_model": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.create_hierarchical_model": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2301,7 +2301,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.infer_mechanism_posterior": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.infer_mechanism_posterior": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2309,7 +2309,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_type_posterior": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_type_posterior": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2317,7 +2317,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_sequence_mode": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_sequence_mode": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2325,7 +2325,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_coherence_score": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_coherence_score": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2333,7 +2333,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_r_hat": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_r_hat": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2341,7 +2341,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_ess": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_ess": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2349,7 +2349,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_inference_uncertain": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_inference_uncertain": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2357,7 +2357,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.posterior_predictive_check": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.posterior_predictive_check": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2365,7 +2365,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_ppd_p_value": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_ppd_p_value": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2373,7 +2373,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_ablation_curve": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_ablation_curve": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2381,7 +2381,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_ppc_recommendation": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_ppc_recommendation": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2389,7 +2389,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.verify_conditional_independence": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.verify_conditional_independence": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2397,7 +2397,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_independence_tests": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_independence_tests": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2405,7 +2405,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_delta_waic": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_delta_waic": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2413,7 +2413,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_model_preference": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_model_preference": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2421,7 +2421,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.create_auditor": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.create_auditor": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2429,7 +2429,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.construct_scm": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.construct_scm": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2437,7 +2437,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.counterfactual_query": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.counterfactual_query": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2445,7 +2445,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_causal_effect": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_causal_effect": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2453,7 +2453,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_sufficient": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_sufficient": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2461,7 +2461,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_necessary": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_necessary": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2469,7 +2469,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.is_effect_stable": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.is_effect_stable": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2477,7 +2477,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.aggregate_risk": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.aggregate_risk": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2485,7 +2485,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_risk_score": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_risk_score": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2493,7 +2493,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_success_probability": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_success_probability": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2501,7 +2501,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_priority": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_priority": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2509,7 +2509,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_recommendations": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_recommendations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2517,7 +2517,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.refutation_checks": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.refutation_checks": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2525,7 +2525,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_negative_controls": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_negative_controls": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2533,7 +2533,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_placebo_effect": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_placebo_effect": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2541,7 +2541,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_sanity_violations": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_sanity_violations": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2549,7 +2549,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.all_checks_passed": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.all_checks_passed": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2557,7 +2557,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.derek_beach.DerekBeachProducer.get_refutation_recommendation": {
+  "farfan_core.analysis.derek_beach.DerekBeachProducer.get_refutation_recommendation": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2565,7 +2565,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.spc_causal_bridge.SPCCausalBridge.build_causal_graph_from_spc": {
+  "farfan_core.analysis.spc_causal_bridge.SPCCausalBridge.build_causal_graph_from_spc": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2573,7 +2573,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.spc_causal_bridge.SPCCausalBridge.enhance_graph_with_content": {
+  "farfan_core.analysis.spc_causal_bridge.SPCCausalBridge.enhance_graph_with_content": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2581,7 +2581,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.scoring.ScoredResult.to_dict": {
+  "farfan_core.analysis.scoring.scoring.ScoredResult.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2589,7 +2589,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.scoring.ScoredResult.compute_evidence_hash": {
+  "farfan_core.analysis.scoring.scoring.ScoredResult.compute_evidence_hash": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2597,7 +2597,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.scoring.ModalityConfig.validate_evidence": {
+  "farfan_core.analysis.scoring.scoring.ModalityConfig.validate_evidence": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2605,7 +2605,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.scoring.ScoringValidator.validate": {
+  "farfan_core.analysis.scoring.scoring.ScoringValidator.validate": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2613,7 +2613,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.analysis.scoring.scoring.ScoringValidator.get_config": {
+  "farfan_core.analysis.scoring.scoring.ScoringValidator.get_config": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -2621,7 +2621,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.ExecutorMetrics.reward": {
+  "farfan_core.optimization.rl_strategy.ExecutorMetrics.reward": {
     "intrinsic_score": 0.85,
     "layer": "executor",
     "calibration_status": "initialized",
@@ -2629,7 +2629,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.mean_reward": {
+  "farfan_core.optimization.rl_strategy.BanditArm.mean_reward": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2637,7 +2637,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.success_rate": {
+  "farfan_core.optimization.rl_strategy.BanditArm.success_rate": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2645,7 +2645,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.mean_duration_ms": {
+  "farfan_core.optimization.rl_strategy.BanditArm.mean_duration_ms": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2653,7 +2653,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.mean_cost_usd": {
+  "farfan_core.optimization.rl_strategy.BanditArm.mean_cost_usd": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2661,7 +2661,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.update": {
+  "farfan_core.optimization.rl_strategy.BanditArm.update": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2669,7 +2669,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.sample_thompson": {
+  "farfan_core.optimization.rl_strategy.BanditArm.sample_thompson": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2677,7 +2677,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.ucb_score": {
+  "farfan_core.optimization.rl_strategy.BanditArm.ucb_score": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2685,7 +2685,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditArm.to_dict": {
+  "farfan_core.optimization.rl_strategy.BanditArm.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2693,7 +2693,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.BanditAlgorithm.select_arm": {
+  "farfan_core.optimization.rl_strategy.BanditAlgorithm.select_arm": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2701,7 +2701,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.ThompsonSamplingAlgorithm.select_arm": {
+  "farfan_core.optimization.rl_strategy.ThompsonSamplingAlgorithm.select_arm": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2709,7 +2709,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.UCB1Algorithm.select_arm": {
+  "farfan_core.optimization.rl_strategy.UCB1Algorithm.select_arm": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2717,7 +2717,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.EpsilonGreedyAlgorithm.select_arm": {
+  "farfan_core.optimization.rl_strategy.EpsilonGreedyAlgorithm.select_arm": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2725,7 +2725,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.add_arm": {
+  "farfan_core.optimization.rl_strategy.RLStrategyOptimizer.add_arm": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2733,7 +2733,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.select_arm": {
+  "farfan_core.optimization.rl_strategy.RLStrategyOptimizer.select_arm": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2741,7 +2741,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.update": {
+  "farfan_core.optimization.rl_strategy.RLStrategyOptimizer.update": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2749,7 +2749,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.get_statistics": {
+  "farfan_core.optimization.rl_strategy.RLStrategyOptimizer.get_statistics": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2757,7 +2757,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.save": {
+  "farfan_core.optimization.rl_strategy.RLStrategyOptimizer.save": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2765,7 +2765,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.load": {
+  "farfan_core.optimization.rl_strategy.RLStrategyOptimizer.load": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2773,7 +2773,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.optimization.rl_strategy.RLStrategyOptimizer.print_summary": {
+  "farfan_core.optimization.rl_strategy.RLStrategyOptimizer.print_summary": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2781,7 +2781,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.enhanced_contracts.BaseContract.validate_timestamp": {
+  "farfan_core.utils.enhanced_contracts.BaseContract.validate_timestamp": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2789,7 +2789,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.enhanced_contracts.ProcessedTextV2.validate_input_digest": {
+  "farfan_core.utils.enhanced_contracts.ProcessedTextV2.validate_input_digest": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2797,7 +2797,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.enhanced_contracts.AnalysisInputV2.create_from_text": {
+  "farfan_core.utils.enhanced_contracts.AnalysisInputV2.create_from_text": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2805,7 +2805,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.enhanced_contracts.AnalysisOutputV2.validate_confidence_numerical_stability": {
+  "farfan_core.utils.enhanced_contracts.AnalysisOutputV2.validate_confidence_numerical_stability": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2813,7 +2813,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.enhanced_contracts.StructuredLogger.log_contract_validation": {
+  "farfan_core.utils.enhanced_contracts.StructuredLogger.log_contract_validation": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2821,7 +2821,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.enhanced_contracts.StructuredLogger.log_execution": {
+  "farfan_core.utils.enhanced_contracts.StructuredLogger.log_execution": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2829,7 +2829,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.metadata_loader.MetadataLoader.load_and_validate_metadata": {
+  "farfan_core.utils.metadata_loader.MetadataLoader.load_and_validate_metadata": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2837,7 +2837,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.schema_monitor.SchemaDriftDetector.should_sample": {
+  "farfan_core.utils.schema_monitor.SchemaDriftDetector.should_sample": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2845,7 +2845,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.schema_monitor.SchemaDriftDetector.record_payload": {
+  "farfan_core.utils.schema_monitor.SchemaDriftDetector.record_payload": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2853,7 +2853,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.schema_monitor.SchemaDriftDetector.get_alerts": {
+  "farfan_core.utils.schema_monitor.SchemaDriftDetector.get_alerts": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2861,7 +2861,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.schema_monitor.SchemaDriftDetector.save_baseline": {
+  "farfan_core.utils.schema_monitor.SchemaDriftDetector.save_baseline": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2869,7 +2869,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.schema_monitor.SchemaDriftDetector.get_metrics": {
+  "farfan_core.utils.schema_monitor.SchemaDriftDetector.get_metrics": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2877,7 +2877,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.schema_monitor.PayloadValidator.validate": {
+  "farfan_core.utils.schema_monitor.PayloadValidator.validate": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2885,7 +2885,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.deterministic_execution.DeterministicSeedManager.get_derived_seed": {
+  "farfan_core.utils.deterministic_execution.DeterministicSeedManager.get_derived_seed": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2893,7 +2893,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.deterministic_execution.DeterministicSeedManager.scoped_seed": {
+  "farfan_core.utils.deterministic_execution.DeterministicSeedManager.scoped_seed": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2901,7 +2901,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.deterministic_execution.DeterministicSeedManager.get_event_id": {
+  "farfan_core.utils.deterministic_execution.DeterministicSeedManager.get_event_id": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2909,7 +2909,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.deterministic_execution.DeterministicExecutor.deterministic": {
+  "farfan_core.utils.deterministic_execution.DeterministicExecutor.deterministic": {
     "intrinsic_score": 0.85,
     "layer": "executor",
     "calibration_status": "initialized",
@@ -2917,7 +2917,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.seed_factory.SeedFactory.create_deterministic_seed": {
+  "farfan_core.utils.seed_factory.SeedFactory.create_deterministic_seed": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2925,7 +2925,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.seed_factory.SeedFactory.configure_global_random_state": {
+  "farfan_core.utils.seed_factory.SeedFactory.configure_global_random_state": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2933,7 +2933,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.evidence_registry.EvidenceRecord.create": {
+  "farfan_core.utils.evidence_registry.EvidenceRecord.create": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2941,7 +2941,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.evidence_registry.EvidenceRegistry.records": {
+  "farfan_core.utils.evidence_registry.EvidenceRegistry.records": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2949,7 +2949,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.evidence_registry.EvidenceRegistry.append": {
+  "farfan_core.utils.evidence_registry.EvidenceRegistry.append": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2957,7 +2957,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.evidence_registry.EvidenceRegistry.save": {
+  "farfan_core.utils.evidence_registry.EvidenceRegistry.save": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2965,7 +2965,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.evidence_registry.EvidenceRegistry.verify": {
+  "farfan_core.utils.evidence_registry.EvidenceRegistry.verify": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2973,7 +2973,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.contract_io.ContractEnvelope.wrap": {
+  "farfan_core.utils.contract_io.ContractEnvelope.wrap": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2981,7 +2981,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.qmcm_hooks.QMCMRecorder.record_call": {
+  "farfan_core.utils.qmcm_hooks.QMCMRecorder.record_call": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2989,7 +2989,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.qmcm_hooks.QMCMRecorder.get_statistics": {
+  "farfan_core.utils.qmcm_hooks.QMCMRecorder.get_statistics": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -2997,7 +2997,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.qmcm_hooks.QMCMRecorder.save_recording": {
+  "farfan_core.utils.qmcm_hooks.QMCMRecorder.save_recording": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3005,7 +3005,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.qmcm_hooks.QMCMRecorder.load_recording": {
+  "farfan_core.utils.qmcm_hooks.QMCMRecorder.load_recording": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3013,7 +3013,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.qmcm_hooks.QMCMRecorder.clear_recording": {
+  "farfan_core.utils.qmcm_hooks.QMCMRecorder.clear_recording": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3021,7 +3021,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.qmcm_hooks.QMCMRecorder.enable": {
+  "farfan_core.utils.qmcm_hooks.QMCMRecorder.enable": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3029,7 +3029,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.qmcm_hooks.QMCMRecorder.disable": {
+  "farfan_core.utils.qmcm_hooks.QMCMRecorder.disable": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3037,7 +3037,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.cpp_adapter.CPPAdapter.to_preprocessed_document": {
+  "farfan_core.utils.cpp_adapter.CPPAdapter.to_preprocessed_document": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3045,7 +3045,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.FunctionSignature.to_dict": {
+  "farfan_core.utils.signature_validator.FunctionSignature.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3053,7 +3053,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureRegistry.compute_signature_hash": {
+  "farfan_core.utils.signature_validator.SignatureRegistry.compute_signature_hash": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3061,7 +3061,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureRegistry.register_function": {
+  "farfan_core.utils.signature_validator.SignatureRegistry.register_function": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3069,7 +3069,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureRegistry.get_signature": {
+  "farfan_core.utils.signature_validator.SignatureRegistry.get_signature": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3077,7 +3077,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureRegistry.has_signature_changed": {
+  "farfan_core.utils.signature_validator.SignatureRegistry.has_signature_changed": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3085,7 +3085,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureRegistry.save": {
+  "farfan_core.utils.signature_validator.SignatureRegistry.save": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3093,7 +3093,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureRegistry.load": {
+  "farfan_core.utils.signature_validator.SignatureRegistry.load": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3101,7 +3101,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureAuditor.audit_module": {
+  "farfan_core.utils.signature_validator.SignatureAuditor.audit_module": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3109,7 +3109,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.signature_validator.SignatureAuditor.export_report": {
+  "farfan_core.utils.signature_validator.SignatureAuditor.export_report": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3117,7 +3117,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.json_contract_loader.ContractLoadReport.is_successful": {
+  "farfan_core.utils.json_contract_loader.ContractLoadReport.is_successful": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3125,7 +3125,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.json_contract_loader.ContractLoadReport.summary": {
+  "farfan_core.utils.json_contract_loader.ContractLoadReport.summary": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3133,7 +3133,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.json_contract_loader.JSONContractLoader.load": {
+  "farfan_core.utils.json_contract_loader.JSONContractLoader.load": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3141,7 +3141,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.json_contract_loader.JSONContractLoader.load_directory": {
+  "farfan_core.utils.json_contract_loader.JSONContractLoader.load_directory": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3149,7 +3149,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationReport.add_result": {
+  "farfan_core.utils.validation_engine.ValidationReport.add_result": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3157,7 +3157,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationReport.has_errors": {
+  "farfan_core.utils.validation_engine.ValidationReport.has_errors": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3165,7 +3165,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationReport.summary": {
+  "farfan_core.utils.validation_engine.ValidationReport.summary": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3173,7 +3173,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationEngine.validate_scoring_preconditions": {
+  "farfan_core.utils.validation_engine.ValidationEngine.validate_scoring_preconditions": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3181,7 +3181,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationEngine.validate_expected_elements": {
+  "farfan_core.utils.validation_engine.ValidationEngine.validate_expected_elements": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3189,7 +3189,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationEngine.validate_execution_context": {
+  "farfan_core.utils.validation_engine.ValidationEngine.validate_execution_context": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3197,7 +3197,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationEngine.validate_producer_availability": {
+  "farfan_core.utils.validation_engine.ValidationEngine.validate_producer_availability": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3205,7 +3205,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationEngine.validate_all_preconditions": {
+  "farfan_core.utils.validation_engine.ValidationEngine.validate_all_preconditions": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3213,7 +3213,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation_engine.ValidationEngine.create_validation_report": {
+  "farfan_core.utils.validation_engine.ValidationEngine.create_validation_report": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3221,15 +3221,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.contracts.TextProcessorProtocol.normalize_unicode": {
-    "intrinsic_score": 0.85,
-    "layer": "processor",
-    "calibration_status": "initialized",
-    "b_theory": 0.8,
-    "b_impl": 0.9,
-    "generated_by": "populate_script"
-  },
-  "saaaaaa.utils.contracts.TextProcessorProtocol.segment_into_sentences": {
+  "farfan_core.utils.contracts.TextProcessorProtocol.normalize_unicode": {
     "intrinsic_score": 0.85,
     "layer": "processor",
     "calibration_status": "initialized",
@@ -3237,7 +3229,15 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.contracts.DocumentLoaderProtocol.load_pdf": {
+  "farfan_core.utils.contracts.TextProcessorProtocol.segment_into_sentences": {
+    "intrinsic_score": 0.85,
+    "layer": "processor",
+    "calibration_status": "initialized",
+    "b_theory": 0.8,
+    "b_impl": 0.9,
+    "generated_by": "populate_script"
+  },
+  "farfan_core.utils.contracts.DocumentLoaderProtocol.load_pdf": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3245,7 +3245,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.contracts.DocumentLoaderProtocol.validate_pdf": {
+  "farfan_core.utils.contracts.DocumentLoaderProtocol.validate_pdf": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3253,7 +3253,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.contracts.AnalyzerProtocol.analyze": {
+  "farfan_core.utils.contracts.AnalyzerProtocol.analyze": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -3261,7 +3261,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.method_config_loader.MethodConfigLoader.validate_spec_schema": {
+  "farfan_core.utils.method_config_loader.MethodConfigLoader.validate_spec_schema": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3269,7 +3269,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.method_config_loader.MethodConfigLoader.get_method_parameter": {
+  "farfan_core.utils.method_config_loader.MethodConfigLoader.get_method_parameter": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3277,7 +3277,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.method_config_loader.MethodConfigLoader.get_method_description": {
+  "farfan_core.utils.method_config_loader.MethodConfigLoader.get_method_description": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3285,7 +3285,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.method_config_loader.MethodConfigLoader.get_parameter_spec": {
+  "farfan_core.utils.method_config_loader.MethodConfigLoader.get_parameter_spec": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3293,7 +3293,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.method_config_loader.MethodConfigLoader.validate_parameter_value": {
+  "farfan_core.utils.method_config_loader.MethodConfigLoader.validate_parameter_value": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3301,7 +3301,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.contracts_runtime.SemanticAnalyzerInputModel.text_not_empty": {
+  "farfan_core.utils.contracts_runtime.SemanticAnalyzerInputModel.text_not_empty": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -3309,7 +3309,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.contracts_runtime.SemanticAnalyzerOutputModel.validate_probabilities": {
+  "farfan_core.utils.contracts_runtime.SemanticAnalyzerOutputModel.validate_probabilities": {
     "intrinsic_score": 0.85,
     "layer": "analyzer",
     "calibration_status": "initialized",
@@ -3317,7 +3317,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.json_logger.JsonFormatter.format": {
+  "farfan_core.utils.json_logger.JsonFormatter.format": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3325,7 +3325,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.determinism.seeds.SeedFactory.derive_seed": {
+  "farfan_core.utils.determinism.seeds.SeedFactory.derive_seed": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3333,7 +3333,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.determinism.seeds.SeedFactory.derive_run_seed": {
+  "farfan_core.utils.determinism.seeds.SeedFactory.derive_run_seed": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3341,7 +3341,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.determinism.seeds.SeedFactory.configure_environment": {
+  "farfan_core.utils.determinism.seeds.SeedFactory.configure_environment": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3349,7 +3349,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.determinism.seeds.DeterministicContext.apply": {
+  "farfan_core.utils.determinism.seeds.DeterministicContext.apply": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3357,7 +3357,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.determinism.seeds.DeterministicContext.from_factory": {
+  "farfan_core.utils.determinism.seeds.DeterministicContext.from_factory": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3365,7 +3365,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.aggregation_models.AggregationWeights.validate_non_negative": {
+  "farfan_core.utils.validation.aggregation_models.AggregationWeights.validate_non_negative": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3373,7 +3373,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.aggregation_models.AggregationWeights.validate_sum": {
+  "farfan_core.utils.validation.aggregation_models.AggregationWeights.validate_sum": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3381,7 +3381,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.aggregation_models.ClusterAggregationConfig.validate_policy_areas": {
+  "farfan_core.utils.validation.aggregation_models.ClusterAggregationConfig.validate_policy_areas": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3389,7 +3389,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.aggregation_models.MacroAggregationConfig.validate_clusters": {
+  "farfan_core.utils.validation.aggregation_models.MacroAggregationConfig.validate_clusters": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3397,7 +3397,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.golden_rule.GoldenRuleValidator.assert_immutable_metadata": {
+  "farfan_core.utils.validation.golden_rule.GoldenRuleValidator.assert_immutable_metadata": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3405,7 +3405,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.golden_rule.GoldenRuleValidator.reset_atomic_state": {
+  "farfan_core.utils.validation.golden_rule.GoldenRuleValidator.reset_atomic_state": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3413,7 +3413,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.golden_rule.GoldenRuleValidator.assert_atomic_context": {
+  "farfan_core.utils.validation.golden_rule.GoldenRuleValidator.assert_atomic_context": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3421,7 +3421,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.golden_rule.GoldenRuleValidator.assert_deterministic_dag": {
+  "farfan_core.utils.validation.golden_rule.GoldenRuleValidator.assert_deterministic_dag": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3429,7 +3429,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.golden_rule.GoldenRuleValidator.assert_homogeneous_treatment": {
+  "farfan_core.utils.validation.golden_rule.GoldenRuleValidator.assert_homogeneous_treatment": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3437,7 +3437,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.golden_rule.GoldenRuleValidator.baseline_step_catalog": {
+  "farfan_core.utils.validation.golden_rule.GoldenRuleValidator.baseline_step_catalog": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3445,7 +3445,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.contract_logger.ContractErrorLogger.log_contract_mismatch": {
+  "farfan_core.utils.validation.contract_logger.ContractErrorLogger.log_contract_mismatch": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3453,7 +3453,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.contract_logger.ContractErrorLogger.log_type_violation": {
+  "farfan_core.utils.validation.contract_logger.ContractErrorLogger.log_type_violation": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3461,7 +3461,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.contract_logger.ContractErrorLogger.log_invalid_modality": {
+  "farfan_core.utils.validation.contract_logger.ContractErrorLogger.log_invalid_modality": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3469,7 +3469,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.contract_logger.ContractErrorLogger.log_determinism_violation": {
+  "farfan_core.utils.validation.contract_logger.ContractErrorLogger.log_determinism_violation": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3477,7 +3477,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.architecture_validator.ArchitectureValidationResult.to_dict": {
+  "farfan_core.utils.validation.architecture_validator.ArchitectureValidationResult.to_dict": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3485,7 +3485,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator.validate_monolith": {
+  "farfan_core.utils.validation.schema_validator.MonolithSchemaValidator.validate_monolith": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3493,7 +3493,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.schema_validator.MonolithSchemaValidator.generate_validation_report": {
+  "farfan_core.utils.validation.schema_validator.MonolithSchemaValidator.generate_validation_report": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3501,7 +3501,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.predicates.ValidationPredicates.verify_scoring_preconditions": {
+  "farfan_core.utils.validation.predicates.ValidationPredicates.verify_scoring_preconditions": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3509,7 +3509,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.predicates.ValidationPredicates.verify_expected_elements": {
+  "farfan_core.utils.validation.predicates.ValidationPredicates.verify_expected_elements": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3517,7 +3517,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.predicates.ValidationPredicates.verify_execution_context": {
+  "farfan_core.utils.validation.predicates.ValidationPredicates.verify_execution_context": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3525,7 +3525,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.utils.validation.predicates.ValidationPredicates.verify_producer_availability": {
+  "farfan_core.utils.validation.predicates.ValidationPredicates.verify_producer_availability": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3533,7 +3533,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.pipeline_connector.PipelineConnector.get_job_status": {
+  "farfan_core.api.pipeline_connector.PipelineConnector.get_job_status": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3541,7 +3541,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.pipeline_connector.PipelineConnector.get_result": {
+  "farfan_core.api.pipeline_connector.PipelineConnector.get_result": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3549,7 +3549,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminSession.is_expired": {
+  "farfan_core.api.auth_admin.AdminSession.is_expired": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3557,7 +3557,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminSession.update_activity": {
+  "farfan_core.api.auth_admin.AdminSession.update_activity": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3565,7 +3565,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminAuthenticator.authenticate": {
+  "farfan_core.api.auth_admin.AdminAuthenticator.authenticate": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3573,7 +3573,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminAuthenticator.validate_session": {
+  "farfan_core.api.auth_admin.AdminAuthenticator.validate_session": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3581,7 +3581,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminAuthenticator.get_session": {
+  "farfan_core.api.auth_admin.AdminAuthenticator.get_session": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3589,7 +3589,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminAuthenticator.logout": {
+  "farfan_core.api.auth_admin.AdminAuthenticator.logout": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3597,7 +3597,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminAuthenticator.cleanup_expired_sessions": {
+  "farfan_core.api.auth_admin.AdminAuthenticator.cleanup_expired_sessions": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3605,7 +3605,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminAuthenticator.add_user": {
+  "farfan_core.api.auth_admin.AdminAuthenticator.add_user": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3613,7 +3613,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.auth_admin.AdminAuthenticator.change_password": {
+  "farfan_core.api.auth_admin.AdminAuthenticator.change_password": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3621,7 +3621,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.api_server.DataService.get_pdet_regions": {
+  "farfan_core.api.api_server.DataService.get_pdet_regions": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3629,7 +3629,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.api_server.DataService.get_region_detail": {
+  "farfan_core.api.api_server.DataService.get_region_detail": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",
@@ -3637,7 +3637,7 @@
     "b_impl": 0.9,
     "generated_by": "populate_script"
   },
-  "saaaaaa.api.api_server.DataService.get_evidence_stream": {
+  "farfan_core.api.api_server.DataService.get_evidence_stream": {
     "intrinsic_score": 0.85,
     "layer": "utility",
     "calibration_status": "initialized",

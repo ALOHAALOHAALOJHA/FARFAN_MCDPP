@@ -20,20 +20,20 @@ def verify_singletons():
     print("\n🔍 Verifying Singletons...")
     try:
         # Dynamically import to avoid early failures
-        spec = importlib.util.spec_from_file_location("saaaaaa", REPO_ROOT / "src/saaaaaa/__init__.py")
-        saaaaaa = importlib.util.module_from_spec(spec)
-        sys.modules["saaaaaa"] = saaaaaa
-        spec.loader.exec_module(saaaaaa)
+        spec = importlib.util.spec_from_file_location("farfan_core", REPO_ROOT / "src/farfan_core/__init__.py")
+        farfan_core = importlib.util.module_from_spec(spec)
+        sys.modules["farfan_core"] = farfan_core
+        spec.loader.exec_module(farfan_core)
         
-        orch1 = saaaaaa.get_calibration_orchestrator()
-        orch2 = saaaaaa.get_calibration_orchestrator()
+        orch1 = farfan_core.get_calibration_orchestrator()
+        orch2 = farfan_core.get_calibration_orchestrator()
         
         if orch1 is not orch2:
             print("❌ CalibrationOrchestrator is NOT singleton")
             return False
             
-        loader1 = saaaaaa.get_parameter_loader()
-        loader2 = saaaaaa.get_parameter_loader()
+        loader1 = farfan_core.get_parameter_loader()
+        loader2 = farfan_core.get_parameter_loader()
         
         if loader1 is not loader2:
             print("❌ ParameterLoader is NOT singleton")
@@ -63,7 +63,7 @@ def main():
         "config/intrinsic_calibration.json",
         "config/method_parameters.json",
         "config/calibration_config.py",
-        "src/saaaaaa/core/calibration/layer_requirements.py"
+        "src/farfan_core/core/calibration/layer_requirements.py"
     ]
     
     all_configs = True
@@ -78,8 +78,8 @@ def main():
     results["Singletons"] = verify_singletons()
     
     # 3. Verify Decorator Existence
-    dec_exists = check_file_exists("src/saaaaaa/core/calibration/decorators.py")
-    print(f"\n🎁 Checking Decorator: {'✅' if dec_exists else '❌'} src/saaaaaa/core/calibration/decorators.py")
+    dec_exists = check_file_exists("src/farfan_core/core/calibration/decorators.py")
+    print(f"\n🎁 Checking Decorator: {'✅' if dec_exists else '❌'} src/farfan_core/core/calibration/decorators.py")
     results["Decorators"] = dec_exists
     
     # 4. Run Verification Scripts

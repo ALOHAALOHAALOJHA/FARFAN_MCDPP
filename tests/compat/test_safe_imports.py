@@ -16,7 +16,7 @@ from unittest.mock import patch
 
 import pytest
 
-from saaaaaa.compat.safe_imports import (
+from farfan_core.compat.safe_imports import (
     ImportErrorDetailed,
     check_import_available,
     get_import_version,
@@ -228,7 +228,7 @@ class TestRealWorldScenarios:
 
 def test_module_exports():
     """Test that safe_imports module exports expected names."""
-    from saaaaaa.compat import safe_imports
+    from farfan_core.compat import safe_imports
     
     expected_exports = [
         "ImportErrorDetailed",

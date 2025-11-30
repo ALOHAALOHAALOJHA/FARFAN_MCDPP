@@ -9,7 +9,7 @@
     "superseded_by": "config/layer_calibrations/SCORE_Q/d5q4_execute.json"
   },
   "role": "SCORE_Q",
-  "canonical_name": "src.saaaaaa.core.orchestrator.executors.D5Q4_Executor.execute",
+  "canonical_name": "src.farfan_core.core.orchestrator.executors.D5Q4_Executor.execute",
   "required_layers": [
     "@b",
     "@u",
