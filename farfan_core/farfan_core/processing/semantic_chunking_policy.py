@@ -314,9 +314,7 @@ class BayesianEvidenceIntegrator:
         """
         if prior_concentration <= 0:
             raise ValueError(
-                "Invalid prior_concentration: Dirichlet concentration parameter (α) must be strictly positive. "
-                "Typical values are in the range get_parameter_loader().get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__").get("auto_param_L318_49", 0.1)–get_parameter_loader().get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__").get("auto_param_L318_53", 1.0) for conservative priors. "
-                "Lower values (e.g., get_parameter_loader().get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__").get("auto_param_L319_37", 0.1)) indicate greater prior uncertainty; higher values (e.g., get_parameter_loader().get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__").get("auto_param_L319_99", 1.0)) indicate stronger prior beliefs. "
+                f"Invalid prior_concentration: Dirichlet concentration parameter must be strictly positive. "
                 f"Received: {prior_concentration}"
             )
         self.prior_alpha = float(prior_concentration)

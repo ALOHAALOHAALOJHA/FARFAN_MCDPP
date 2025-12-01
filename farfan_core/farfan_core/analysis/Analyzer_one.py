@@ -25,7 +25,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import (
-from farfan_core import get_parameter_loader
+# from farfan_core import get_parameter_loader  # CALIBRATION DISABLED
 from farfan_core.core.calibration.decorators import calibrated_method
     TYPE_CHECKING,
     Any,

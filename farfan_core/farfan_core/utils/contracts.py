@@ -40,7 +40,6 @@ if TYPE_CHECKING:
 # Import V2 contracts from enhanced_contracts module
 # Use these for new code; V1 contracts maintained for backward compatibility
 from .enhanced_contracts import (
-from farfan_core.core.calibration.decorators import calibrated_method
     # Pydantic Models
     AnalysisInputV2,
     AnalysisOutputV2,

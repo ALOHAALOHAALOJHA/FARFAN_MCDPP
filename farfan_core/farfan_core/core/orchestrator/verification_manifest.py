@@ -228,6 +228,21 @@ class VerificationManifest:
         if spc_utilization:
             self.manifest_data["spc_utilization"] = spc_utilization
         return self
+    
+    def set_path_import_verification(self, report):
+        """
+        Set path and import verification results.
+        
+        Args:
+            report: PolicyReport object from observability.path_import_policy
+            
+        Returns:
+            self for chaining
+        """
+        # Use PolicyReport.to_dict() as canonical serialization
+        self.manifest_data["path_import_verification"] = report.to_dict()
+        return self
+
 
     def set_parametrization(self, parametrization: dict[str, Any]):
         """Record executor/config parameterization data."""

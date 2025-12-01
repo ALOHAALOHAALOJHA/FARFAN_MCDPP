@@ -29,7 +29,7 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 from farfan_core.processing.cpp_ingestion.models import (
-from farfan_core import get_parameter_loader
+# from farfan_core import get_parameter_loader  # CALIBRATION DISABLED
 from farfan_core.core.calibration.decorators import calibrated_method
     KPI,
     Budget,

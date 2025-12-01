@@ -143,6 +143,22 @@ class VerifiedPipelineRunner:
         )
         self.manifest_builder = VerificationManifestBuilder(hmac_secret=manifest_secret)
         self.manifest_builder.manifest_data["versions"] = dict(self.versions)
+        
+        # Initialize path and import policies
+        try:
+            from farfan_core.observability.policy_builder import (
+                compute_repo_root, build_import_policy, build_path_policy
+            )
+            self.repo_root = compute_repo_root()
+            self.import_policy = build_import_policy(self.repo_root)
+            self.path_policy = build_path_policy(self.repo_root)
+            self.path_import_report = None
+        except Exception as e:
+            self.log_claim("error", "policy_init", f"Failed to initialize policies: {e}")
+            self.errors.append(f"Failed to initialize policies: {e}")
+            self._bootstrap_failed = True
+            self.path_import_report = None
+
 
         # Ensure artifacts directory exists
         try:
@@ -425,23 +441,86 @@ class VerifiedPipelineRunner:
              self.generate_verification_manifest([], {})
              return False
         
-        # Step 2: Run SPC ingestion (canonical phase-one)
-        cpp = await self.run_spc_ingestion()
-        if cpp is None:
+        # Step 1.75: Run path and import verification
+        self.log_claim("start", "path_import_verification", "Running path and import verification")
+        
+        try:
+            from farfan_core.observability.import_scanner import validate_imports
+            from farfan_core.observability.path_guard import guard_paths_and_imports
+            from farfan_core.observability.path_import_policy import PolicyReport, merge_policy_reports
+            
+            # Static import analysis
+            static_report = validate_imports(
+                roots=[
+                    self.repo_root / "farfan_core" / "farfan_core" / "core",
+                    self.repo_root / "farfan_core" / "farfan_core" / "entrypoint",
+                    self.repo_root / "farfan_core" / "farfan_core" / "processing",
+                ],
+                import_policy=self.import_policy,
+                repo_root=self.repo_root
+            )
+            
+            self.log_claim(
+                "complete", "static_import_verification",
+                f"Static import analysis complete: {len(static_report.static_import_violations)} violations",
+                {"violation_count": len(static_report.static_import_violations)}
+            )
+            
+            # Dynamic runtime verification (wraps rest of pipeline)
+            dynamic_report = PolicyReport()
+        
+        except Exception as e:
+            error_msg = f"Path/import verification setup failed: {e}"
+            self.log_claim("error", "path_import_verification", error_msg)
+            self.errors.append(error_msg)
             self.generate_verification_manifest([], {})
             return False
         
-        # Step 3: Run CPP adapter
-        preprocessed_doc = await self.run_cpp_adapter(cpp)
-        if preprocessed_doc is None:
+        # Wrap pipeline execution in path guard
+        try:
+            with guard_paths_and_imports(self.path_policy, self.import_policy, dynamic_report):
+                # Step 2: Run SPC ingestion (canonical phase-one)
+                cpp = await self.run_spc_ingestion()
+                if cpp is None:
+                    self.path_import_report = merge_policy_reports([static_report, dynamic_report])
+                    self.generate_verification_manifest([], {})
+                    return False
+                
+                # Step 3: Run CPP adapter
+                preprocessed_doc = await self.run_cpp_adapter(cpp)
+                if preprocessed_doc is None:
+                    self.path_import_report = merge_policy_reports([static_report, dynamic_report])
+                    self.generate_verification_manifest([], {})
+                    return False
+                
+                # Step 4: Run orchestrator
+                results = await self.run_orchestrator(preprocessed_doc)
+                if results is None:
+                    self.path_import_report = merge_policy_reports([static_report, dynamic_report])
+                    self.generate_verification_manifest([], {})
+                    return False
+        
+        except Exception as e:
+            error_msg = f"Pipeline execution failed under path guard: {e}"
+            self.log_claim("error", "guarded_pipeline", error_msg)
+            self.errors.append(error_msg)
+            self.path_import_report = merge_policy_reports([static_report, dynamic_report])
             self.generate_verification_manifest([], {})
             return False
         
-        # Step 4: Run orchestrator
-        results = await self.run_orchestrator(preprocessed_doc)
-        if results is None:
-            self.generate_verification_manifest([], {})
-            return False
+        # Merge static and dynamic reports
+        self.path_import_report = merge_policy_reports([static_report, dynamic_report])
+        
+        self.log_claim(
+            "complete", "path_import_verification",
+            f"Path/import verification complete: {self.path_import_report.violation_count()} total violations",
+            {
+                "static_violations": len(static_report.static_import_violations),
+                "dynamic_violations": len(dynamic_report.dynamic_import_violations) + len(dynamic_report.path_violations),
+                "success": self.path_import_report.ok()
+            }
+        )
+
         
         # Step 5: Save artifacts
         artifacts, artifact_hashes = self.save_artifacts(cpp, preprocessed_doc, results)
@@ -1043,12 +1122,12 @@ def cli() -> None:
 
             # Enforce Provenance Coverage using Calibrated Threshold
             # SOTA: No hardcoded values. Use centralized calibration.
-            from farfan_core import get_parameter_loader
-            param_loader = get_parameter_loader()
+#             from farfan_core import get_parameter_loader  # CALIBRATION DISABLED
+#             param_loader = get_parameter_loader()  # CALIBRATION DISABLED
             
             # Fetch threshold for this specific method
             method_key = "farfan_core.scripts.run_policy_pipeline_verified.VerifiedPipelineRunner.generate_verification_manifest"
-            calibrated_params = param_loader.get(method_key)
+#             calibrated_params = param_loader.get(method_key)  # CALIBRATION DISABLED
             
             # Default to 1.0 (strict) if not found, but log warning if falling back
             required_coverage = calibrated_params.get("provenance_coverage_threshold", 1.0)
@@ -1085,6 +1164,8 @@ def cli() -> None:
             success = False
         if not phase2_entry["success"]:
             success = False
+        if self.path_import_report and not self.path_import_report.ok():
+            success = False
 
         if hostile_failures:
             self.log_claim(
@@ -1115,6 +1196,10 @@ def cli() -> None:
             success = False
             
         builder.set_pipeline_hash(pipeline_hash)
+
+        # Set path/import verification results
+        if self.path_import_report:
+            builder.set_path_import_verification(self.path_import_report)
 
         # Update success status in builder and self
         self._last_manifest_success = success

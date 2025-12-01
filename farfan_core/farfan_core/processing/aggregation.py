@@ -27,7 +27,7 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, TypeVar
-from farfan_core import get_parameter_loader
+# from farfan_core import get_parameter_loader  # CALIBRATION DISABLED
 from farfan_core.core.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:

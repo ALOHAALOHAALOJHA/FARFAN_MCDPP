@@ -90,7 +90,7 @@ class MissingDependencyError(WiringError):
         )
 
 
-class ArgumentValidationError(WiringError):
+class WiringArgumentValidationError(WiringError):
     """Raised when argument routing validation fails.
 
     Attributes:
@@ -138,7 +138,7 @@ class ArgumentValidationError(WiringError):
         )
 
 
-class SignalUnavailableError(WiringError):
+class WiringSignalUnavailableError(WiringError):
     """Raised when required signals are unavailable.
 
     Attributes:
@@ -170,7 +170,7 @@ class SignalUnavailableError(WiringError):
         )
 
 
-class SignalSchemaError(WiringError):
+class WiringSignalSchemaError(WiringError):
     """Raised when signal pack schema is invalid.
 
     Attributes:
@@ -238,8 +238,8 @@ __all__ = [
     'WiringError',
     'WiringContractError',
     'MissingDependencyError',
-    'ArgumentValidationError',
-    'SignalUnavailableError',
-    'SignalSchemaError',
+    'WiringArgumentValidationError',
+    'WiringSignalUnavailableError',
+    'WiringSignalSchemaError',
     'WiringInitializationError',
 ]

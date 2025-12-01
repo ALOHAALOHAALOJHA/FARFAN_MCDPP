@@ -10,7 +10,7 @@ MAXIMUM STANDARD: No tolerance for data quality degradation.
 import logging
 from pathlib import Path
 from typing import Any
-from farfan_core import get_parameter_loader
+# from farfan_core import get_parameter_loader  # CALIBRATION DISABLED
 from farfan_core.core.calibration.decorators import calibrated_method
 
 logger = logging.getLogger(__name__)
