@@ -328,7 +328,7 @@ class CPPAdapter:
                 )
 
             # Create ChunkData object
-            chunk_type_value = getattr(chunk, "chunk_type", "diagnostic")
+            chunk_type_value = chunk.chunk_type
             if chunk_type_value not in ["diagnostic", "activity", "indicator", "resource", "temporal", "entity"]:
                 raise CPPAdapterError(f"Invalid chunk_type '{chunk_type_value}' in chunk {chunk.id}")
 
