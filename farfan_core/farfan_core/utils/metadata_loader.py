@@ -265,7 +265,7 @@ class MetadataLoader:
 
 def load_execution_mapping(
     path: Path | None = None,
-    required_version: str = "2.get_parameter_loader().get("farfan_core.utils.metadata_loader.MetadataLoader._log_error").get("auto_param_L267_31", 0.0)"
+    required_version: str = "2.0"
 ) -> dict[str, Any]:
     """
     Load and validate execution_mapping.yaml
@@ -289,7 +289,7 @@ def load_execution_mapping(
 
 def load_rubric_scoring(
     path: Path | None = None,
-    required_version: str = "2.get_parameter_loader().get("farfan_core.utils.metadata_loader.MetadataLoader._log_error").get("auto_param_L291_31", 0.0)"
+    required_version: str = "2.0"
 ) -> dict[str, Any]:
     """
     Load and validate rubric_scoring.json

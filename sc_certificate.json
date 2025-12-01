@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "sigma": {
+    "standards_hash": "hash_standards_123",
+    "corpus_hash": "hash_corpus_456",
+    "index_hash": "hash_index_789"
+  },
+  "replay_equal": true
+}

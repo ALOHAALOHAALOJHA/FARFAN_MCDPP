@@ -1,0 +1,8 @@
+{
+  "pass": true,
+  "topk_hash": "9c19c68c5669c58e6094e4fa9f13c05229c2d6a22f0e353a12927e83efca8cf4ff395955a37d70971c6e7c955a3ef76b0b2c22241a9bfd8fd1bb3d525aae0977",
+  "index_hash": "abc123hash",
+  "queries": [
+    "fiscal sustainability"
+  ]
+}

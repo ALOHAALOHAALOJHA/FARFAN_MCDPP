@@ -117,3 +117,28 @@ class ChunkRouter:
             List of executor base slots
         """
         return self.ROUTING_TABLE.get(chunk_type, [])
+
+    def generate_execution_map(self, chunks: list[ChunkData]) -> dict[int, ChunkRoute]:
+        """
+        Generate a deterministic execution map for a list of chunks.
+
+        This map serves as the binding contract for the Orchestrator,
+        dictating exactly which executor processes which chunk.
+
+        Args:
+            chunks: List of ChunkData objects
+
+        Returns:
+            Dictionary mapping chunk_id to ChunkRoute
+        """
+        execution_map = {}
+        # Sort chunks by ID to ensure deterministic processing order if relevant,
+        # though the output dict key order is insertion-ordered in modern Python.
+        # We process them in order to be safe.
+        sorted_chunks = sorted(chunks, key=lambda c: c.id)
+
+        for chunk in sorted_chunks:
+            route = self.route_chunk(chunk)
+            execution_map[chunk.id] = route
+
+        return execution_map

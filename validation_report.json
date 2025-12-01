@@ -1,0 +1,153 @@
+{
+  "results": [
+    {
+      "jobfront": "JF02-Questionnaire",
+      "check": "File exists",
+      "status": "PASS",
+      "details": "system/config/questionnaire/questionnaire_monolith.json"
+    },
+    {
+      "jobfront": "JF02-Questionnaire",
+      "check": "JSON parse",
+      "status": "PASS",
+      "details": "Valid JSON"
+    },
+    {
+      "jobfront": "JF02-Questionnaire",
+      "check": "300 micro_questions",
+      "status": "PASS",
+      "details": "Found 300"
+    },
+    {
+      "jobfront": "JF02-Questionnaire",
+      "check": "4 meso_questions",
+      "status": "PASS",
+      "details": "Found 4"
+    },
+    {
+      "jobfront": "JF02-Questionnaire",
+      "check": "1 macro_question",
+      "status": "PASS",
+      "details": "Found"
+    },
+    {
+      "jobfront": "JF02-Questionnaire",
+      "check": "Micro fields complete",
+      "status": "PASS",
+      "details": "All 9 required fields present"
+    },
+    {
+      "jobfront": "JF02-Questionnaire",
+      "check": "question_global unique",
+      "status": "PASS",
+      "details": "All 300 are unique"
+    },
+    {
+      "jobfront": "JF03-ChunkRouter",
+      "check": "File exists",
+      "status": "PASS",
+      "details": "farfan_core/farfan_core/core/orchestrator/chunk_router.py"
+    },
+    {
+      "jobfront": "JF03-ChunkRouter",
+      "check": "ChunkRouter class",
+      "status": "PASS",
+      "details": "Found"
+    },
+    {
+      "jobfront": "JF03-ChunkRouter",
+      "check": "ROUTING_TABLE",
+      "status": "PASS",
+      "details": "Found"
+    },
+    {
+      "jobfront": "JF03-ChunkRouter",
+      "check": "ROUTING_TABLE_VERSION",
+      "status": "PASS",
+      "details": "Immutable version defined"
+    },
+    {
+      "jobfront": "JF04-Executors",
+      "check": "File exists",
+      "status": "PASS",
+      "details": "farfan_core/farfan_core/core/orchestrator/executors.py"
+    },
+    {
+      "jobfront": "JF04-Executors",
+      "check": "EXECUTOR_REGISTRY",
+      "status": "PASS",
+      "details": "Found"
+    },
+    {
+      "jobfront": "JF04-Executors",
+      "check": "30 executors registered",
+      "status": "PASS",
+      "details": "All 30 base_slots found"
+    },
+    {
+      "jobfront": "JF05-MethodRegistry",
+      "check": "File exists",
+      "status": "PASS",
+      "details": "farfan_core/farfan_core/core/orchestrator/method_registry.py"
+    },
+    {
+      "jobfront": "JF05-MethodRegistry",
+      "check": "MethodRegistry class",
+      "status": "PASS",
+      "details": "Found"
+    },
+    {
+      "jobfront": "JF05-MethodRegistry",
+      "check": "Lazy instantiation",
+      "status": "PASS",
+      "details": "get_method + cache found"
+    },
+    {
+      "jobfront": "JF06-SignalRegistry",
+      "check": "signal_registry.py exists",
+      "status": "PASS",
+      "details": "farfan_core/farfan_core/core/orchestrator/signal_registry.py"
+    },
+    {
+      "jobfront": "JF06-SignalRegistry",
+      "check": "signal_aliasing.py exists",
+      "status": "PASS",
+      "details": "farfan_core/farfan_core/core/orchestrator/signal_aliasing.py"
+    },
+    {
+      "jobfront": "JF06-SignalRegistry",
+      "check": "signal_cache_invalidation.py exists",
+      "status": "PASS",
+      "details": "farfan_core/farfan_core/core/orchestrator/signal_cache_invalidation.py"
+    },
+    {
+      "jobfront": "JF09-Evidence",
+      "check": "EvidenceAssembler",
+      "status": "PASS",
+      "details": "Found in evidence_assembler.py"
+    },
+    {
+      "jobfront": "JF09-Evidence",
+      "check": "EvidenceValidator",
+      "status": "PASS",
+      "details": "Found in evidence_validator.py"
+    },
+    {
+      "jobfront": "JF09-Evidence",
+      "check": "EvidenceRegistry",
+      "status": "PASS",
+      "details": "Found in evidence_registry.py"
+    },
+    {
+      "jobfront": "JF11-SeedRegistry",
+      "check": "seed_registry.py exists",
+      "status": "PASS",
+      "details": "farfan_core/farfan_core/core/orchestrator/seed_registry.py"
+    }
+  ],
+  "summary": {
+    "total": 24,
+    "passed": 24,
+    "failed": 0
+  }
+}

@@ -68,7 +68,7 @@ def _load_third_party_from_lockdown(repo_root: Path) -> FrozenSet[str]:
     """
     try:
         # Module is expected to live under farfan_core/farfan_core/config/dependency_lockdown.py
-        from farfan_core.farfan_core.config.dependency_lockdown import ALLOWED_THIRD_PARTY_MODULES  # type: ignore[attr-defined]
+        from farfan_core.config.dependency_lockdown import ALLOWED_THIRD_PARTY_MODULES  # type: ignore[attr-defined]
 
         allowed = frozenset(ALLOWED_THIRD_PARTY_MODULES)
         if not allowed:
@@ -134,7 +134,7 @@ def build_import_policy(repo_root: Path) -> ImportPolicy:
     # Dynamic imports: default empty, but can be extended in lockdown config
     allowed_dynamic: Set[str] = set()
     try:
-        from farfan_core.farfan_core.config.dependency_lockdown import ALLOWED_DYNAMIC_IMPORTS  # type: ignore[attr-defined]
+        from farfan_core.config.dependency_lockdown import ALLOWED_DYNAMIC_IMPORTS  # type: ignore[attr-defined]
 
         allowed_dynamic.update(ALLOWED_DYNAMIC_IMPORTS)
     except Exception:

@@ -89,7 +89,7 @@ class ExecutorMetrics:
 
         # Efficiency reward (faster is better, normalized to 0-1)
         # Assume typical execution is 1000ms, scale accordingly
-        typical_duration = 100get_parameter_loader().get("farfan_core.optimization.rl_strategy.ExecutorMetrics.reward").get("auto_param_L92_30", 0.0)
+        typical_duration = 1000.0
         efficiency_reward = max(0, 1 - (self.duration_ms / (2 * typical_duration)))
 
         # Cost efficiency reward (cheaper is better, normalized to 0-1)

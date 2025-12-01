@@ -11,11 +11,11 @@ from __future__ import annotations
 
 import warnings
 from farfan_core.utils.cpp_adapter import (
-from farfan_core.core.calibration.decorators import calibrated_method
     CPPAdapter as SPCAdapter,
     CPPAdapterError as SPCAdapterError,
     adapt_cpp_to_orchestrator as adapt_spc_to_orchestrator
 )
+from farfan_core.core.calibration.decorators import calibrated_method
 
 # Issue deprecation warning when module is imported
 warnings.warn(

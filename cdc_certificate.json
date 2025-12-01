@@ -1,0 +1,8 @@
+{
+  "pass": true,
+  "worker_configs": [
+    1,
+    4
+  ],
+  "stable_outputs": true
+}
