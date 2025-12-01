@@ -601,7 +601,8 @@ class DimensionAggregator:
         tolerance = 1e-6
 
         if abs(weight_sum - get_parameter_loader().get("farfan_core.processing.aggregation.DimensionAggregator.validate_weights").get("auto_param_L603_28", 1.0)) > tolerance:
-            msg = f"Weight sum validation failed: sum={weight_sum:.6f}, expected=get_parameter_loader().get("farfan_core.processing.aggregation.DimensionAggregator.validate_weights").get("auto_param_L604_81", 1.0)"
+            expected_weight = get_parameter_loader().get("farfan_core.processing.aggregation.DimensionAggregator.validate_weights").get("auto_param_L604_81", 1.0)
+            msg = f"Weight sum validation failed: sum={weight_sum:.6f}, expected={expected_weight}"
             logger.error(msg)
             if self.abort_on_insufficient:
                 raise WeightValidationError(msg)

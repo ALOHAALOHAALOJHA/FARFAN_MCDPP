@@ -109,7 +109,9 @@ farfan_core-api = "farfan_core.api.api_server:main"
 # Note: Operational scripts in scripts/ are run directly, not as entry points
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["farfan_core"]
+include = ["farfan_core*"]
+exclude = []
 
 [tool.pyright]
 # Strict type checking configuration
