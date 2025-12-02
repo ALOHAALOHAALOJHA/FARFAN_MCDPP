@@ -1,0 +1,224 @@
+{
+  "certificate_type": "Import Linter Compliance Report",
+  "project": "F.A.R.F.A.N Pipeline",
+  "namespace": "farfan_pipeline",
+  "timestamp": "2024-12-02T17:30:00Z",
+  "tool_version": "import-linter 2.2",
+  "configuration_files": [
+    ".importlinter",
+    "pyproject.toml [tool.importlinter]"
+  ],
+  "namespace_migration": {
+    "from": "farfan_core",
+    "to": "farfan_pipeline",
+    "status": "COMPLETED",
+    "files_updated": [
+      ".importlinter"
+    ]
+  },
+  "summary": {
+    "total_contracts": 8,
+    "contracts_kept": 3,
+    "contracts_broken": 5,
+    "compliance_rate": "37.5%",
+    "files_analyzed": 202,
+    "dependencies_analyzed": 273,
+    "status": "NON_COMPLIANT"
+  },
+  "contracts": {
+    "passing": [
+      {
+        "id": 1,
+        "name": "Processing layer cannot import orchestrator",
+        "type": "forbidden",
+        "status": "KEPT",
+        "description": "Ensures processing layer stays independent of orchestration logic",
+        "validation_time": "0s"
+      },
+      {
+        "id": 2,
+        "name": "Analysis depends on core but not infrastructure",
+        "type": "forbidden",
+        "status": "KEPT",
+        "description": "Analysis layer correctly depends on core abstractions only",
+        "validation_time": "0s"
+      },
+      {
+        "id": 3,
+        "name": "Infrastructure must not pull orchestrator",
+        "type": "forbidden",
+        "status": "KEPT",
+        "description": "Infrastructure layer maintains proper dependency direction",
+        "validation_time": "0s"
+      }
+    ],
+    "failing": [
+      {
+        "id": 4,
+        "name": "Core (excluding orchestrator) must not import analysis",
+        "type": "forbidden",
+        "status": "BROKEN",
+        "violation_count": 2,
+        "primary_issue": "core.wiring transitively imports analysis through orchestrator.factory -> processing.policy_processor",
+        "affected_modules": [
+          "farfan_pipeline.core.wiring"
+        ],
+        "import_chains": [
+          "core.wiring.bootstrap -> core.orchestrator.factory -> core.orchestrator.method_registry -> processing.policy_processor -> analysis.Analyzer_one",
+          "core.wiring.bootstrap -> core.orchestrator.factory -> core.orchestrator.core -> processing.aggregation"
+        ],
+        "validation_time": "0s"
+      },
+      {
+        "id": 5,
+        "name": "Core orchestrator must not import analysis",
+        "type": "forbidden",
+        "status": "BROKEN",
+        "violation_count": 3,
+        "primary_issue": "orchestrator imports analysis transitively through processing.policy_processor",
+        "affected_modules": [
+          "farfan_pipeline.core.orchestrator.core",
+          "farfan_pipeline.core.orchestrator.executors",
+          "farfan_pipeline.core.orchestrator.method_registry"
+        ],
+        "import_chains": [
+          "core.orchestrator.core -> processing.spc_ingestion -> processing.policy_processor -> analysis.contradiction_deteccion",
+          "core.orchestrator.executors -> processing.policy_processor -> analysis.financiero_viabilidad_tablas",
+          "core.orchestrator.method_registry -> processing.policy_processor -> analysis.Analyzer_one"
+        ],
+        "validation_time": "0s"
+      },
+      {
+        "id": 6,
+        "name": "Analysis layer cannot import orchestrator",
+        "type": "forbidden",
+        "status": "BROKEN",
+        "violation_count": 1,
+        "primary_issue": "analysis.report_assembly directly imports orchestrator.factory._compute_hash",
+        "affected_modules": [
+          "farfan_pipeline.analysis.report_assembly"
+        ],
+        "import_chains": [
+          "analysis.report_assembly -> core.orchestrator.factory (line 575)"
+        ],
+        "validation_time": "0s"
+      },
+      {
+        "id": 7,
+        "name": "API layer only calls orchestrator entry points",
+        "type": "forbidden",
+        "status": "BROKEN",
+        "violation_count": 15,
+        "primary_issue": "API directly imports analysis.recommendation_engine and transitively imports processing/utils",
+        "affected_modules": [
+          "farfan_pipeline.api.api_server",
+          "farfan_pipeline.api.pipeline_connector"
+        ],
+        "import_chains": [
+          "api.api_server -> analysis.recommendation_engine (line 48)",
+          "api.pipeline_connector -> processing.spc_ingestion (line 286)",
+          "api.pipeline_connector -> utils.spc_adapter (line 287)"
+        ],
+        "forbidden_layer_violations": {
+          "analysis": 4,
+          "processing": 5,
+          "utils": 6
+        },
+        "validation_time": "0s"
+      },
+      {
+        "id": 8,
+        "name": "Utils stay leaf modules",
+        "type": "forbidden",
+        "status": "BROKEN",
+        "violation_count": 3,
+        "primary_issue": "utils.cpp_adapter imports orchestrator.core, violating leaf module principle",
+        "affected_modules": [
+          "farfan_pipeline.utils.cpp_adapter"
+        ],
+        "import_chains": [
+          "utils.cpp_adapter -> core.orchestrator.core (line 25)"
+        ],
+        "validation_time": "0s"
+      }
+    ]
+  },
+  "root_causes": [
+    {
+      "issue": "processing.policy_processor imports multiple analysis modules",
+      "modules": [
+        "farfan_pipeline.analysis.Analyzer_one",
+        "farfan_pipeline.analysis.financiero_viabilidad_tablas",
+        "farfan_pipeline.analysis.contradiction_deteccion"
+      ],
+      "impact": "Creates transitive violations in core.orchestrator and api layers",
+      "severity": "HIGH"
+    },
+    {
+      "issue": "api.api_server directly imports analysis.recommendation_engine",
+      "location": "src/farfan_pipeline/api/api_server.py:48",
+      "impact": "Bypasses orchestrator abstraction",
+      "severity": "HIGH"
+    },
+    {
+      "issue": "analysis.report_assembly imports orchestrator.factory",
+      "location": "src/farfan_pipeline/analysis/report_assembly.py:575",
+      "reason": "Uses _compute_hash utility function",
+      "impact": "Creates circular dependency between analysis and orchestrator",
+      "severity": "MEDIUM"
+    },
+    {
+      "issue": "utils.cpp_adapter imports orchestrator.core",
+      "location": "src/farfan_pipeline/utils/cpp_adapter.py:25",
+      "impact": "Utils module becomes non-leaf, violates utility module principle",
+      "severity": "MEDIUM"
+    }
+  ],
+  "remediation_plan": [
+    {
+      "priority": 1,
+      "action": "Invert processing -> analysis dependency",
+      "details": "Move analysis module imports out of processing.policy_processor. Either make analysis depend on processing abstractions, or create a higher-level composition module.",
+      "affected_contracts": [4, 5, 7],
+      "estimated_effort": "HIGH"
+    },
+    {
+      "priority": 2,
+      "action": "Remove direct analysis import from API",
+      "details": "Route api.api_server -> analysis.recommendation_engine through orchestrator entry points",
+      "affected_contracts": [7],
+      "estimated_effort": "MEDIUM"
+    },
+    {
+      "priority": 3,
+      "action": "Extract hash computation utility",
+      "details": "Move _compute_hash from orchestrator.factory to a shared utility module that both orchestrator and analysis can import",
+      "affected_contracts": [6],
+      "estimated_effort": "LOW"
+    },
+    {
+      "priority": 4,
+      "action": "Refactor cpp_adapter",
+      "details": "Remove orchestrator dependency from utils.cpp_adapter. Extract needed types/interfaces to make it truly a leaf module",
+      "affected_contracts": [8],
+      "estimated_effort": "MEDIUM"
+    }
+  ],
+  "architectural_notes": [
+    "The primary violation pattern is processing.policy_processor importing from analysis layer, which should be reversed",
+    "This creates a transitive violation chain affecting core.orchestrator and API layers",
+    "Three contracts (37.5%) are passing, indicating good architectural separation in some areas",
+    "The namespace migration from farfan_core to farfan_pipeline is complete and functioning correctly"
+  ],
+  "verification_commands": {
+    "run_linter": "lint-imports",
+    "verbose_mode": "lint-imports --verbose",
+    "config_file": "lint-imports --config .importlinter"
+  },
+  "next_steps": [
+    "Fix highest priority violation: processing -> analysis dependency inversion",
+    "Re-run import-linter after each fix to measure progress",
+    "Update this certificate when all 8 contracts pass",
+    "Consider adding CI/CD gate to enforce import contracts"
+  ]
+}

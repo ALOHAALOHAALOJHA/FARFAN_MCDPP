@@ -1,0 +1,215 @@
+=============
+Import Linter
+=============
+
+Verbose mode.
+Building import graph (cache directory is .import_linter_cache)...
+Used cache meta file .import_linter_cache/farfan_pipeline.meta.json.
+Used cache data file .import_linter_cache/bd40b84c89d4ddd5ee1e35621ae3deb663685d71.data.json.
+Wrote data cache file .import_linter_cache/bd40b84c89d4ddd5ee1e35621ae3deb663685d71.data.json.
+Wrote meta cache file .import_linter_cache/farfan_pipeline.meta.json.
+Built graph in 0s.
+Checking Core (excluding orchestrator) must not import analysis...
+Searching for import chains from farfan_pipeline.core.calibration to farfan_pipeline.analysis...
+Found 0 illegal chains in 0s.
+Searching for import chains from farfan_pipeline.core.calibration to farfan_pipeline.api...
+Found 0 illegal chains in 0s.
+Searching for import chains from farfan_pipeline.core.calibration to farfan_pipeline.processing...
+Found 0 illegal chains in 0s.
+Searching for import chains from farfan_pipeline.core.wiring to farfan_pipeline.analysis...
+Found 1 illegal chain in 0s.
+Searching for import chains from farfan_pipeline.core.wiring to farfan_pipeline.api...
+Found 0 illegal chains in 0s.
+Searching for import chains from farfan_pipeline.core.wiring to farfan_pipeline.processing...
+Found 1 illegal chain in 0s.
+Core (excluding orchestrator) must not import analysis BROKEN [0s]
+Checking Core orchestrator must not import analysis...
+Searching for import chains from farfan_pipeline.core.orchestrator to farfan_pipeline.analysis...
+Found 3 illegal chains in 0s.
+Core orchestrator must not import analysis BROKEN [0s]
+Checking Processing layer cannot import orchestrator...
+Searching for import chains from farfan_pipeline.processing to farfan_pipeline.core.orchestrator...
+Found 0 illegal chains in 0s.
+Processing layer cannot import orchestrator KEPT [0s]
+Checking Analysis layer cannot import orchestrator...
+Searching for import chains from farfan_pipeline.analysis to farfan_pipeline.core.orchestrator...
+Found 1 illegal chain in 0s.
+Analysis layer cannot import orchestrator BROKEN [0s]
+Checking Analysis depends on core but not infrastructure...
+Searching for import chains from farfan_pipeline.analysis to farfan_pipeline.infrastructure...
+Found 0 illegal chains in 0s.
+Analysis depends on core but not infrastructure KEPT [0s]
+Checking Infrastructure must not pull orchestrator...
+Searching for import chains from farfan_pipeline.infrastructure to farfan_pipeline.core.orchestrator...
+Found 0 illegal chains in 0s.
+Infrastructure must not pull orchestrator KEPT [0s]
+Checking API layer only calls orchestrator entry points...
+Searching for import chains from farfan_pipeline.api to farfan_pipeline.analysis...
+Found 4 illegal chains in 0s.
+Searching for import chains from farfan_pipeline.api to farfan_pipeline.processing...
+Found 5 illegal chains in 0s.
+Searching for import chains from farfan_pipeline.api to farfan_pipeline.utils...
+Found 6 illegal chains in 0s.
+API layer only calls orchestrator entry points BROKEN [0s]
+Checking Utils stay leaf modules...
+Searching for import chains from farfan_pipeline.utils to farfan_pipeline.analysis...
+Found 1 illegal chain in 0s.
+Searching for import chains from farfan_pipeline.utils to farfan_pipeline.core.orchestrator...
+Found 1 illegal chain in 0s.
+Searching for import chains from farfan_pipeline.utils to farfan_pipeline.processing...
+Found 1 illegal chain in 0s.
+Utils stay leaf modules BROKEN [0s]
+
+---------
+Contracts
+---------
+
+Analyzed 202 files, 273 dependencies.
+-------------------------------------
+
+Core (excluding orchestrator) must not import analysis BROKEN
+Core orchestrator must not import analysis BROKEN
+Processing layer cannot import orchestrator KEPT
+Analysis layer cannot import orchestrator BROKEN
+Analysis depends on core but not infrastructure KEPT
+Infrastructure must not pull orchestrator KEPT
+API layer only calls orchestrator entry points BROKEN
+Utils stay leaf modules BROKEN
+
+Contracts: 3 kept, 5 broken.
+
+
+----------------
+Broken contracts
+----------------
+
+Core (excluding orchestrator) must not import analysis
+------------------------------------------------------
+
+farfan_pipeline.core.wiring is not allowed to import farfan_pipeline.analysis:
+
+-   farfan_pipeline.core.wiring.bootstrap -> farfan_pipeline.core.orchestrator.factory (l.28)
+    farfan_pipeline.core.orchestrator.factory -> farfan_pipeline.core.orchestrator.method_registry (l.48)
+    farfan_pipeline.core.orchestrator.method_registry -> farfan_pipeline.processing.policy_processor (l.359)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.Analyzer_one (l.113)
+
+
+farfan_pipeline.core.wiring is not allowed to import farfan_pipeline.processing:
+
+-   farfan_pipeline.core.wiring.bootstrap -> farfan_pipeline.core.orchestrator.factory (l.28)
+    farfan_pipeline.core.orchestrator.factory -> farfan_pipeline.core.orchestrator.method_registry (l.48)
+    farfan_pipeline.core.orchestrator.method_registry -> farfan_pipeline.processing.policy_processor (l.359)
+
+
+Core orchestrator must not import analysis
+------------------------------------------
+
+farfan_pipeline.core.orchestrator is not allowed to import farfan_pipeline.analysis:
+
+-   farfan_pipeline.core.orchestrator.core -> farfan_pipeline.processing.spc_ingestion (l.1588, l.2166)
+    farfan_pipeline.processing.spc_ingestion -> farfan_pipeline.processing.policy_processor (l.45)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.contradiction_deteccion (l.37, l.42)
+
+-   farfan_pipeline.core.orchestrator.executors -> farfan_pipeline.processing.policy_processor (l.30)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.financiero_viabilidad_tablas (l.120)
+
+-   farfan_pipeline.core.orchestrator.method_registry -> farfan_pipeline.processing.policy_processor (l.359)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.Analyzer_one (l.113)
+
+
+Analysis layer cannot import orchestrator
+-----------------------------------------
+
+farfan_pipeline.analysis is not allowed to import farfan_pipeline.core.orchestrator:
+
+-   farfan_pipeline.analysis.report_assembly -> farfan_pipeline.core.orchestrator.factory (l.575)
+
+
+API layer only calls orchestrator entry points
+----------------------------------------------
+
+farfan_pipeline.api is not allowed to import farfan_pipeline.analysis:
+
+-   farfan_pipeline.api.api_server -> farfan_pipeline.analysis.recommendation_engine (l.48)
+
+-   farfan_pipeline.api.api_server -> farfan_pipeline.core.orchestrator.core (l.52)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.core.orchestrator.executors (l.1607)
+    farfan_pipeline.core.orchestrator.executors -> farfan_pipeline.processing.policy_processor (l.30)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.contradiction_deteccion (l.37, l.42)
+
+-   farfan_pipeline.api.api_server -> farfan_pipeline.core.orchestrator.factory (l.51)
+    farfan_pipeline.core.orchestrator.factory -> farfan_pipeline.core.orchestrator.method_registry (l.48)
+    farfan_pipeline.core.orchestrator.method_registry -> farfan_pipeline.processing.policy_processor (l.359)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.financiero_viabilidad_tablas (l.120)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.processing.spc_ingestion (l.286)
+    farfan_pipeline.processing.spc_ingestion -> farfan_pipeline.processing.policy_processor (l.45)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.Analyzer_one (l.113)
+
+
+farfan_pipeline.api is not allowed to import farfan_pipeline.processing:
+
+-   farfan_pipeline.api.api_server -> farfan_pipeline.core.orchestrator.core (l.52)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.processing.spc_ingestion (l.1588, l.2166)
+
+-   farfan_pipeline.api.api_server -> farfan_pipeline.core.orchestrator.factory (l.51)
+    farfan_pipeline.core.orchestrator.factory -> farfan_pipeline.core.orchestrator.method_registry (l.48)
+    farfan_pipeline.core.orchestrator.method_registry -> farfan_pipeline.processing.policy_processor (l.359)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.core.orchestrator.core (l.16)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.processing.aggregation (l.40)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.core.orchestrator.factory (l.17)
+    farfan_pipeline.core.orchestrator.factory -> farfan_pipeline.core.orchestrator.core (l.46)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.core.orchestrator.executors (l.1607)
+    farfan_pipeline.core.orchestrator.executors -> farfan_pipeline.processing.policy_processor (l.30)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.processing.spc_ingestion (l.286)
+
+
+farfan_pipeline.api is not allowed to import farfan_pipeline.utils:
+
+-   farfan_pipeline.api.api_server -> farfan_pipeline.core.orchestrator.core (l.52)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.utils.paths (l.60)
+
+-   farfan_pipeline.api.api_server -> farfan_pipeline.core.orchestrator.factory (l.51)
+    farfan_pipeline.core.orchestrator.factory -> farfan_pipeline.utils.core_contracts (l.35)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.core.orchestrator.core (l.16)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.utils.spc_adapter (l.422)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.core.orchestrator.factory (l.17)
+    farfan_pipeline.core.orchestrator.factory -> farfan_pipeline.core.orchestrator.method_registry (l.48)
+    farfan_pipeline.core.orchestrator.method_registry -> farfan_pipeline.processing.policy_processor (l.359)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.Analyzer_one (l.113)
+    farfan_pipeline.analysis.Analyzer_one -> farfan_pipeline.utils.method_config_loader (l.36)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.processing.spc_ingestion (l.286)
+    farfan_pipeline.processing.spc_ingestion -> farfan_pipeline.processing.policy_processor (l.45)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.utils.runtime_error_fixes (l.34)
+
+-   farfan_pipeline.api.pipeline_connector -> farfan_pipeline.utils.spc_adapter (l.287)
+
+
+Utils stay leaf modules
+-----------------------
+
+farfan_pipeline.utils is not allowed to import farfan_pipeline.analysis:
+
+-   farfan_pipeline.utils.cpp_adapter -> farfan_pipeline.core.orchestrator.core (l.25)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.core.orchestrator.method_registry (l.940, l.1002)
+    farfan_pipeline.core.orchestrator.method_registry -> farfan_pipeline.processing.policy_processor (l.359)
+    farfan_pipeline.processing.policy_processor -> farfan_pipeline.analysis.Analyzer_one (l.113)
+
+
+farfan_pipeline.utils is not allowed to import farfan_pipeline.core.orchestrator:
+
+-   farfan_pipeline.utils.cpp_adapter -> farfan_pipeline.core.orchestrator.core (l.25)
+
+
+farfan_pipeline.utils is not allowed to import farfan_pipeline.processing:
+
+-   farfan_pipeline.utils.cpp_adapter -> farfan_pipeline.core.orchestrator.core (l.25)
+    farfan_pipeline.core.orchestrator.core -> farfan_pipeline.processing.spc_ingestion (l.1588, l.2166)
+
+

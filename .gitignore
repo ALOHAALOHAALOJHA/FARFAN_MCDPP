@@ -108,3 +108,7 @@ test_ast.py
 
 # Import analysis reports (generated)
 IMPORT_HEALTH_REPORT.md
+
+# Import linter cache
+.import_linter_cache/
+import_linter_detailed_report.txt
