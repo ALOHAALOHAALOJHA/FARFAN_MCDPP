@@ -105,3 +105,6 @@ LAYER_VIOLATION_REPORT.md
 validator_output.txt
 test_validator.py
 test_ast.py
+
+# Import analysis reports (generated)
+IMPORT_HEALTH_REPORT.md
