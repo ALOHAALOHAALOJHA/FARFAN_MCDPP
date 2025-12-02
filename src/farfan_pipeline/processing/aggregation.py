@@ -1376,7 +1376,8 @@ class ClusterAggregator:
     - Validate cluster hermeticity
     """
 
-    PENALTY_WEIGHT = get_parameter_loader().get("farfan_core.processing.aggregation.AreaPolicyAggregator.normalize_scores").get("PENALTY_WEIGHT", 0.3) # Refactored
+    # PENALTY_WEIGHT = get_parameter_loader().get("farfan_core.processing.aggregation.AreaPolicyAggregator.normalize_scores").get("PENALTY_WEIGHT", 0.3) # Refactored
+    PENALTY_WEIGHT = 0.3  # Default value (parameter loader temporarily disabled)
     MAX_SCORE = 3.0
 
     def __init__(

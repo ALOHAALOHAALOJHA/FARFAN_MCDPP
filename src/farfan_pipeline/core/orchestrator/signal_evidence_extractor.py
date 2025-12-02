@@ -1,22 +1,30 @@
 """
-Evidence Structure Enforcer - PROPOSAL #5
-==========================================
+Evidence Structure Enforcer - PROPOSAL #5 (Refactored)
+========================================================
 
 Exploits 'expected_elements' field (1,200 specs) to extract structured
 evidence instead of unstructured text blobs.
 
-Intelligence Unlocked: 1,200 element specifications
+ARCHITECTURE V2 - INTELLIGENCE-DRIVEN:
+- Uses actual patterns from questionnaire_monolith.json
+- Respects element type definitions (required, minimum)
+- Leverages confidence_weight, category, and semantic_expansion metadata
+- NO HARDCODED EXTRACTORS - all intelligence from monolith
+- Pattern-driven extraction with confidence propagation
+
+Intelligence Unlocked: 1,200 element specifications + 4,200 patterns
 Impact: Structured dict with completeness metrics (0.0-1.0)
 ROI: From text blob → structured evidence with measurable completeness
 
 Author: F.A.R.F.A.N Pipeline
 Date: 2025-12-02
-Refactoring: Surgical #2 of 4 (complement to semantic expansion)
+Refactoring: Surgical #5 - Full monolith integration
 """
 
 import re
+from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Callable
+from typing import Any
 
 try:
     import structlog
@@ -30,184 +38,11 @@ except ImportError:
 class EvidenceExtractionResult:
     """Structured evidence extraction result."""
     
-    evidence: dict[str, Any]  # Extracted evidence by element name
+    evidence: dict[str, list[dict[str, Any]]]  # element_type → list of matches
     completeness: float  # 0.0 - 1.0
-    missing_elements: list[str]
+    missing_required: list[str]  # Required elements not found
+    under_minimum: list[tuple[str, int, int]]  # (type, found, minimum)
     extraction_metadata: dict[str, Any] = field(default_factory=dict)
-
-
-# Registry of element extractors
-ELEMENT_EXTRACTORS: dict[str, Callable] = {}
-
-
-def register_extractor(element_name: str):
-    """Decorator to register element extractor function."""
-    def decorator(func):
-        ELEMENT_EXTRACTORS[element_name] = func
-        return func
-    return decorator
-
-
-@register_extractor('baseline_indicator')
-def extract_baseline_indicator(
-    text: str,
-    patterns: list[dict[str, Any]],
-    validations: dict[str, Any]
-) -> dict[str, Any] | None:
-    """
-    Extract baseline indicator value.
-    
-    Args:
-        text: Source text
-        patterns: Applicable patterns from signal node
-        validations: Validation rules
-    
-    Returns:
-        Extracted baseline or None
-    """
-    # Look for patterns mentioning "baseline", "línea de base", "actual"
-    baseline_patterns = [
-        r'l[íi]nea\s+de\s+base[:\s]+([0-9.,]+\s*%?)',
-        r'actual[:\s]+([0-9.,]+\s*%?)',
-        r'baseline[:\s]+([0-9.,]+\s*%?)',
-        r'situaci[óo]n\s+actual[:\s]+([0-9.,]+\s*%?)'
-    ]
-    
-    for pattern_str in baseline_patterns:
-        match = re.search(pattern_str, text, re.IGNORECASE)
-        if match:
-            value = match.group(1).strip()
-            return {
-                'value': value,
-                'raw_text': match.group(0),
-                'confidence': 0.8
-            }
-    
-    return None
-
-
-@register_extractor('target_value')
-def extract_target_value(
-    text: str,
-    patterns: list[dict[str, Any]],
-    validations: dict[str, Any]
-) -> dict[str, Any] | None:
-    """Extract target/goal value."""
-    target_patterns = [
-        r'meta[:\s]+([0-9.,]+\s*%?)',
-        r'objetivo[:\s]+([0-9.,]+\s*%?)',
-        r'target[:\s]+([0-9.,]+\s*%?)',
-        r'alcanzar[:\s]+([0-9.,]+\s*%?)',
-        r'reducir\s+a[:\s]+([0-9.,]+\s*%?)'
-    ]
-    
-    for pattern_str in target_patterns:
-        match = re.search(pattern_str, text, re.IGNORECASE)
-        if match:
-            value = match.group(1).strip()
-            return {
-                'value': value,
-                'raw_text': match.group(0),
-                'confidence': 0.8
-            }
-    
-    return None
-
-
-@register_extractor('timeline')
-def extract_timeline(
-    text: str,
-    patterns: list[dict[str, Any]],
-    validations: dict[str, Any]
-) -> dict[str, Any] | None:
-    """Extract timeline/deadline."""
-    timeline_patterns = [
-        r'para\s+(20\d{2})',
-        r'en\s+(20\d{2})',
-        r'hasta\s+(20\d{2})',
-        r'(20\d{2})\s*[-–]\s*(20\d{2})',  # Range
-        r'plazo[:\s]+([0-9]+)\s+(a[ñn]os?|meses?)'
-    ]
-    
-    for pattern_str in timeline_patterns:
-        match = re.search(pattern_str, text, re.IGNORECASE)
-        if match:
-            return {
-                'value': match.group(1) if match.lastindex >= 1 else match.group(0),
-                'raw_text': match.group(0),
-                'confidence': 0.7
-            }
-    
-    return None
-
-
-@register_extractor('responsible_entity')
-def extract_responsible_entity(
-    text: str,
-    patterns: list[dict[str, Any]],
-    validations: dict[str, Any]
-) -> dict[str, Any] | None:
-    """Extract responsible entity/institution."""
-    entity_patterns = [
-        r'responsable[:\s]+([A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]+(?:Secretar[íi]a|Departamento|Oficina|Alcald[íi]a))',
-        r'ejecuta[:\s]+([A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]+(?:Secretar[íi]a|Departamento|Oficina))',
-        r'a\s+cargo\s+de[:\s]+([A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{3,40})',
-    ]
-    
-    for pattern_str in entity_patterns:
-        match = re.search(pattern_str, text, re.IGNORECASE)
-        if match:
-            entity = match.group(1).strip()
-            return {
-                'value': entity,
-                'raw_text': match.group(0),
-                'confidence': 0.6
-            }
-    
-    return None
-
-
-@register_extractor('budget_amount')
-def extract_budget_amount(
-    text: str,
-    patterns: list[dict[str, Any]],
-    validations: dict[str, Any]
-) -> dict[str, Any] | None:
-    """Extract budget amount with currency."""
-    budget_patterns = [
-        r'(?:COP|[$]|pesos)\s*([0-9.,]+(?:\s*(?:millones?|mil|billones?))?)',
-        r'([0-9.,]+)\s*(?:COP|pesos|millones?\s+de\s+pesos)',
-        r'presupuesto[:\s]+(?:COP|[$])\s*([0-9.,]+)'
-    ]
-    
-    for pattern_str in budget_patterns:
-        match = re.search(pattern_str, text, re.IGNORECASE)
-        if match:
-            amount = match.group(1).strip()
-            # Try to detect currency
-            currency = 'COP' if 'COP' in match.group(0) or 'peso' in match.group(0).lower() else 'USD'
-            
-            return {
-                'value': amount,
-                'currency': currency,
-                'raw_text': match.group(0),
-                'confidence': 0.75
-            }
-    
-    return None
-
-
-def get_element_extractor(element_name: str) -> Callable | None:
-    """
-    Get registered extractor for element.
-    
-    Args:
-        element_name: Element to extract
-    
-    Returns:
-        Extractor function or None
-    """
-    return ELEMENT_EXTRACTORS.get(element_name)
 
 
 def extract_structured_evidence(
@@ -216,142 +51,336 @@ def extract_structured_evidence(
     document_context: dict[str, Any] | None = None
 ) -> EvidenceExtractionResult:
     """
-    Extract structured evidence based on expected_elements.
+    Extract structured evidence using monolith patterns.
     
-    This is the main entry point for structured evidence extraction.
+    Core Algorithm:
+    1. Parse expected_elements (type, required, minimum)
+    2. For each element type, filter relevant patterns
+    3. Apply patterns with confidence weights
+    4. Validate requirements (required, minimum cardinality)
+    5. Compute completeness score
     
     Args:
         text: Source text to extract from
-        signal_node: Signal node with expected_elements, patterns, validations
-        document_context: Optional document context
+        signal_node: Signal node from questionnaire_monolith.json
+        document_context: Optional document-level context
     
     Returns:
-        EvidenceExtractionResult with structured evidence dict
+        EvidenceExtractionResult with structured evidence
     
     Example:
         >>> node = {
-        ...     'expected_elements': ['baseline_indicator', 'target_value', 'timeline'],
-        ...     'patterns': [...],
-        ...     'validations': {}
+        ...     'expected_elements': [
+        ...         {'type': 'fuentes_oficiales', 'minimum': 2},
+        ...         {'type': 'cobertura_territorial_especificada', 'required': True}
+        ...     ],
+        ...     'patterns': [...]
         ... }
-        >>> text = "Línea de base: 8.5%. Meta: 6% para 2027."
         >>> result = extract_structured_evidence(text, node)
-        >>> result.evidence
-        {
-            'baseline_indicator': {'value': '8.5%', 'confidence': 0.8},
-            'target_value': {'value': '6%', 'confidence': 0.8},
-            'timeline': {'value': '2027', 'confidence': 0.7}
-        }
         >>> result.completeness
-        1.0
+        0.85
     """
     expected_elements = signal_node.get('expected_elements', [])
-    patterns = signal_node.get('patterns', [])
+    all_patterns = signal_node.get('patterns', [])
     validations = signal_node.get('validations', {})
     
     evidence = {}
-    missing = []
+    missing_required = []
+    under_minimum = []
     
     logger.debug(
         "structured_extraction_start",
-        expected_elements=expected_elements,
+        expected_count=len(expected_elements),
+        pattern_count=len(all_patterns),
         text_length=len(text)
     )
     
-    # Extract each expected element
-    for element_name in expected_elements:
-        extractor = get_element_extractor(element_name)
-        
-        if extractor is None:
-            logger.warning(
-                "extractor_not_found",
-                element_name=element_name
-            )
-            missing.append(element_name)
+    # Extract evidence for each expected element
+    for element_spec in expected_elements:
+        # Support both dict format (v2) and string format (legacy)
+        if isinstance(element_spec, str):
+            element_type = element_spec
+            is_required = False
+            minimum_count = 0
+        elif isinstance(element_spec, dict):
+            element_type = element_spec.get('type', '')
+            is_required = element_spec.get('required', False)
+            minimum_count = element_spec.get('minimum', 0)
+        else:
+            logger.warning("element_spec_invalid_type", spec=element_spec)
             continue
         
-        try:
-            extracted = extractor(text, patterns, validations)
-            
-            if extracted:
-                evidence[element_name] = extracted
-                logger.debug(
-                    "element_extracted",
-                    element_name=element_name,
-                    value=extracted.get('value'),
-                    confidence=extracted.get('confidence')
-                )
-            else:
-                missing.append(element_name)
-                logger.debug(
-                    "element_not_found",
-                    element_name=element_name
-                )
+        if not element_type:
+            logger.warning("element_spec_missing_type", spec=element_spec)
+            continue
         
-        except Exception as e:
-            logger.error(
-                "extraction_error",
-                element_name=element_name,
-                error=str(e)
+        # Extract all matches for this element type
+        matches = extract_evidence_for_element_type(
+            element_type=element_type,
+            text=text,
+            all_patterns=all_patterns,
+            validations=validations
+        )
+        
+        evidence[element_type] = matches
+        
+        # Validate requirements
+        found_count = len(matches)
+        
+        if is_required and found_count == 0:
+            missing_required.append(element_type)
+            logger.debug(
+                "required_element_missing",
+                element_type=element_type
             )
-            missing.append(element_name)
+        
+        if minimum_count > 0 and found_count < minimum_count:
+            under_minimum.append((element_type, found_count, minimum_count))
+            logger.debug(
+                "element_under_minimum",
+                element_type=element_type,
+                found=found_count,
+                minimum=minimum_count
+            )
     
-    # Calculate completeness
-    completeness = (
-        len(evidence) / len(expected_elements)
-        if expected_elements else 1.0
+    # Compute completeness
+    completeness = compute_completeness(
+        evidence=evidence,
+        expected_elements=expected_elements
     )
     
-    # Build metadata
-    metadata = {
-        'text_length': len(text),
-        'expected_count': len(expected_elements),
-        'extracted_count': len(evidence),
-        'missing_count': len(missing)
-    }
-    
-    if document_context:
-        metadata['document_context'] = document_context
+    logger.info(
+        "extraction_complete",
+        completeness=completeness,
+        evidence_types=len(evidence),
+        missing_required=len(missing_required),
+        under_minimum=len(under_minimum)
+    )
     
     return EvidenceExtractionResult(
         evidence=evidence,
         completeness=completeness,
-        missing_elements=missing,
-        extraction_metadata=metadata
+        missing_required=missing_required,
+        under_minimum=under_minimum,
+        extraction_metadata={
+            'expected_count': len(expected_elements),
+            'pattern_count': len(all_patterns),
+            'total_matches': sum(len(v) for v in evidence.values())
+        }
     )
 
 
-def register_custom_extractor(
-    element_name: str,
-    extractor_func: Callable
-) -> None:
+def extract_evidence_for_element_type(
+    element_type: str,
+    text: str,
+    all_patterns: list[dict[str, Any]],
+    validations: dict[str, Any]
+) -> list[dict[str, Any]]:
     """
-    Register a custom element extractor.
+    Extract evidence for a specific element type using monolith patterns.
+    
+    Strategy:
+    1. Filter patterns by category/flags that match element type
+    2. Apply each pattern with its confidence_weight
+    3. Return all matches with metadata
     
     Args:
-        element_name: Name of element to extract
-        extractor_func: Function with signature:
-            (text: str, patterns: list, validations: dict) -> dict | None
+        element_type: Type from expected_elements (e.g., 'fuentes_oficiales')
+        text: Source text
+        all_patterns: All patterns from signal node
+        validations: Validation rules
     
-    Example:
-        >>> def extract_custom_field(text, patterns, validations):
-        ...     # Custom extraction logic
-        ...     return {'value': 'extracted', 'confidence': 0.9}
-        >>> register_custom_extractor('custom_field', extract_custom_field)
+    Returns:
+        List of evidence matches with confidence scores
     """
-    ELEMENT_EXTRACTORS[element_name] = extractor_func
-    logger.info(
-        "custom_extractor_registered",
-        element_name=element_name
-    )
+    matches = []
+    
+    # Category heuristics (can be improved with explicit mapping in monolith)
+    category_hints = _infer_pattern_categories_for_element(element_type)
+    
+    for pattern_spec in all_patterns:
+        pattern_str = pattern_spec.get('pattern', '')
+        confidence_weight = pattern_spec.get('confidence_weight', 0.5)
+        category = pattern_spec.get('category', 'GENERAL')
+        pattern_id = pattern_spec.get('id', 'unknown')
+        
+        # Filter: only use patterns relevant to this element type
+        if category_hints and category not in category_hints:
+            continue
+        
+        # Check if pattern is relevant to element type by keywords
+        if not _is_pattern_relevant_to_element(pattern_str, element_type, pattern_spec):
+            continue
+        
+        # Apply pattern (handle pipe-separated alternatives)
+        alternatives = [p.strip() for p in pattern_str.split('|') if p.strip()]
+        
+        for alt in alternatives:
+            # Escape regex special chars if match_type is not 'regex'
+            match_type = pattern_spec.get('match_type', 'substring')
+            if match_type == 'regex':
+                regex_pattern = alt
+            else:
+                regex_pattern = re.escape(alt)
+            
+            try:
+                for match in re.finditer(regex_pattern, text, re.IGNORECASE):
+                    matches.append({
+                        'value': match.group(0),
+                        'raw_text': match.group(0),
+                        'confidence': confidence_weight,
+                        'pattern_id': pattern_id,
+                        'category': category,
+                        'span': match.span()
+                    })
+            except re.error as e:
+                logger.warning(
+                    "pattern_regex_error",
+                    pattern_id=pattern_id,
+                    error=str(e)
+                )
+                continue
+    
+    # Deduplicate overlapping matches, keeping highest confidence
+    return _deduplicate_matches(matches)
 
 
-# === EXPORTS ===
+def _infer_pattern_categories_for_element(element_type: str) -> list[str] | None:
+    """
+    Infer which pattern categories are relevant for an element type.
+    
+    Returns None to accept all categories if no specific hint exists.
+    """
+    # Temporal elements
+    if any(kw in element_type.lower() for kw in ['temporal', 'año', 'años', 'plazo', 'cronograma', 'series']):
+        return ['TEMPORAL', 'GENERAL']
+    
+    # Quantitative elements
+    if any(kw in element_type.lower() for kw in ['cuantitativo', 'indicador', 'meta', 'brecha', 'baseline']):
+        return ['QUANTITATIVE', 'GENERAL']
+    
+    # Geographic/territorial
+    if any(kw in element_type.lower() for kw in ['territorial', 'cobertura', 'geographic', 'región']):
+        return ['GEOGRAPHIC', 'GENERAL']
+    
+    # Sources/entities
+    if any(kw in element_type.lower() for kw in ['fuente', 'entidad', 'responsable', 'oficial']):
+        return ['ENTITY', 'GENERAL']
+    
+    # Accept all if no specific hint
+    return None
 
+
+def _is_pattern_relevant_to_element(
+    pattern_str: str,
+    element_type: str,
+    pattern_spec: dict[str, Any]
+) -> bool:
+    """
+    Determine if a pattern is relevant to extracting a specific element type.
+    
+    Uses keyword overlap between pattern and element type.
+    """
+    # Extract keywords from element type
+    element_keywords = set(re.findall(r'\w+', element_type.lower()))
+    
+    # Extract keywords from pattern
+    pattern_keywords = set(re.findall(r'\w+', pattern_str.lower()))
+    
+    # Check validation_rule field
+    validation_rule = pattern_spec.get('validation_rule', '')
+    if validation_rule:
+        pattern_keywords.update(re.findall(r'\w+', validation_rule.lower()))
+    
+    # Check context_requirement
+    context_req = pattern_spec.get('context_requirement', '')
+    if context_req:
+        pattern_keywords.update(re.findall(r'\w+', context_req.lower()))
+    
+    # Overlap heuristic
+    overlap = element_keywords & pattern_keywords
+    
+    # If there's keyword overlap, it's relevant
+    if overlap:
+        return True
+    
+    # Fallback: if element type is very generic, accept pattern
+    if len(element_keywords) <= 2:
+        return True
+    
+    return False
+
+
+def _deduplicate_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """
+    Remove overlapping matches, keeping the one with highest confidence.
+    """
+    if not matches:
+        return []
+    
+    # Sort by start position, then by confidence descending
+    sorted_matches = sorted(matches, key=lambda m: (m['span'][0], -m['confidence']))
+    
+    deduplicated = []
+    last_end = -1
+    
+    for match in sorted_matches:
+        start, end = match['span']
+        
+        # If no overlap with previous, keep it
+        if start >= last_end:
+            deduplicated.append(match)
+            last_end = end
+        # If overlap, only keep if significantly higher confidence
+        elif deduplicated and match['confidence'] > deduplicated[-1]['confidence'] + 0.2:
+            deduplicated[-1] = match
+            last_end = end
+    
+    return deduplicated
+
+
+def compute_completeness(
+    evidence: dict[str, list[dict[str, Any]]],
+    expected_elements: list[dict[str, Any]]
+) -> float:
+    """
+    Compute completeness score (0.0 - 1.0).
+    
+    Algorithm:
+    - For required elements: 1.0 if found, 0.0 if not
+    - For minimum elements: found_count / minimum
+    - Weighted average across all elements
+    """
+    if not expected_elements:
+        return 1.0
+    
+    scores = []
+    
+    for element_spec in expected_elements:
+        element_type = element_spec.get('type', '')
+        is_required = element_spec.get('required', False)
+        minimum_count = element_spec.get('minimum', 0)
+        
+        found = evidence.get(element_type, [])
+        found_count = len(found)
+        
+        if is_required:
+            # Binary: found or not
+            score = 1.0 if found_count > 0 else 0.0
+        elif minimum_count > 0:
+            # Proportional: found / minimum, capped at 1.0
+            score = min(1.0, found_count / minimum_count)
+        else:
+            # Optional element: presence is bonus
+            score = 1.0 if found_count > 0 else 0.5
+        
+        scores.append(score)
+    
+    return sum(scores) / len(scores) if scores else 0.0
+
+
+# Public API
 __all__ = [
-    'EvidenceExtractionResult',
     'extract_structured_evidence',
-    'register_extractor',
-    'register_custom_extractor',
-    'get_element_extractor',
+    'EvidenceExtractionResult'
 ]

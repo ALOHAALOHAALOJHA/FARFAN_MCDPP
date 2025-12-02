@@ -48,7 +48,6 @@ try:
     from fuzzywuzzy import fuzz, process
     from pydantic import BaseModel, Field, ValidationError, validator
     from pydot import Dot, Edge, Node
-    from scipy import stats
     from scipy.spatial.distance import cosine
     from scipy.special import rel_entr
 except ImportError as e:

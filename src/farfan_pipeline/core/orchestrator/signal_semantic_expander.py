@@ -93,7 +93,7 @@ def expand_pattern_semantically(
         ]
     """
     base_pattern = pattern_spec.get('pattern', '')
-    semantic_expansion = pattern_spec.get('semantic_expansion', '')
+    semantic_expansion = pattern_spec.get('semantic_expansion')
     
     # Always include original pattern
     variants = [{
@@ -116,8 +116,27 @@ def expand_pattern_semantically(
         )
         return variants
     
-    # Parse semantic expansions (pipe-separated)
-    synonyms = [s.strip() for s in semantic_expansion.split('|') if s.strip()]
+    # Parse semantic expansions (can be string or dict)
+    synonyms = []
+    
+    if isinstance(semantic_expansion, str):
+        # Pipe-separated string format
+        synonyms = [s.strip() for s in semantic_expansion.split('|') if s.strip()]
+    elif isinstance(semantic_expansion, dict):
+        # Dict format: key → list of expansions
+        # Extract all expansions from all keys
+        for key, expansions in semantic_expansion.items():
+            if isinstance(expansions, list):
+                synonyms.extend(expansions)
+            elif isinstance(expansions, str):
+                synonyms.append(expansions)
+    else:
+        logger.debug(
+            "semantic_expansion_skip",
+            pattern_id=pattern_spec.get('id'),
+            reason=f"unsupported_type_{type(semantic_expansion).__name__}"
+        )
+        return variants
     
     # Generate variants
     for idx, synonym in enumerate(synonyms, 1):
