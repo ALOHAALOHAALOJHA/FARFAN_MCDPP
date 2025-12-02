@@ -99,3 +99,9 @@ contract-badge.json
 .cleanup_backup/
 test_imports.py
 test_calibration_imports.py
+
+# Import contract validation
+LAYER_VIOLATION_REPORT.md
+validator_output.txt
+test_validator.py
+test_ast.py
