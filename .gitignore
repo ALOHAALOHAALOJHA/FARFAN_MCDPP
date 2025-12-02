@@ -48,6 +48,10 @@ Thumbs.db
 .coverage
 htmlcov/
 .hypothesis/
+test-results/
+*.junit.xml
+calibration_system_failure_report.md
+calibration_triage.log
 
 # Jupyter
 .ipynb_checkpoints/
