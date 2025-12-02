@@ -97,66 +97,91 @@ class CalibrationOrchestrator:
         logger.info("CalibrationOrchestrator initialized (singleton)")
 
     def _load_intrinsic_calibration(self) -> None:
-        """Load intrinsic calibration (@b scores) from JSON."""
-        config_path = Path("system/config/calibration/intrinsic_calibration.json")
-
+        """Load intrinsic calibration using IntrinsicCalibrationLoader."""
+        from .intrinsic_calibration_loader import get_intrinsic_calibration_loader
+        
+        loader = get_intrinsic_calibration_loader()
+        
+        # Get all methods from intrinsic calibration
+        # Load the JSON directly to get all method IDs
+        import json
+        from pathlib import Path
+        
+        config_path = Path("config/intrinsic_calibration.json")
         if not config_path.exists():
             logger.warning(f"Intrinsic calibration file not found: {config_path}")
             return
-
+        
         try:
             with open(config_path, encoding='utf-8') as f:
                 data = json.load(f)
-
-            for method_id, scores in data.items():
-                if isinstance(scores, dict):
-                    b_theory = scores.get('b_theory', 0.0)
-                    b_impl = scores.get('b_impl', 0.0)
-                    b_deploy = scores.get('b_deploy', 0.0)
-
+            
+            for method_id in data.keys():
+                if method_id == "_metadata":
+                    continue
+                
+                calibration = loader.get_calibration(method_id)
+                if calibration is not None:
                     self._intrinsic_scores[method_id] = IntrinsicScores(
-                        b_theory=b_theory,
-                        b_impl=b_impl,
-                        b_deploy=b_deploy
+                        b_theory=calibration.b_theory,
+                        b_impl=calibration.b_impl,
+                        b_deploy=calibration.b_deploy
                     )
-
-            logger.info(f"Loaded intrinsic calibration for {len(self._intrinsic_scores)} methods")
-
+            
+            logger.info(f"Loaded intrinsic scores for {len(self._intrinsic_scores)} methods")
+        
         except Exception as e:
             logger.error(f"Failed to load intrinsic calibration: {e}")
             raise
 
     def _load_layer_requirements(self) -> None:
-        """Load layer requirements from canonical inventory JSON."""
-        config_path = Path("config/canonic_inventorry_methods_layers.json")
-
-        if not config_path.exists():
-            logger.warning(f"Layer requirements file not found: {config_path}")
-            return
-
-        try:
-            with open(config_path, encoding='utf-8') as f:
-                data = json.load(f)
-
-            for method_id, requirements in data.items():
-                if isinstance(requirements, dict):
-                    required_layers = requirements.get('required_layers', [])
-                    weights = requirements.get('weights', {})
-                    aggregation_method = requirements.get('aggregation_method', 'weighted_sum')
-
-                    layer_req = LayerRequirements(
-                        required_layers=required_layers,
-                        weights=weights,
-                        aggregation_method=aggregation_method
-                    )
-                    layer_req.validate()
-                    self._layer_requirements[method_id] = layer_req
-
-            logger.info(f"Loaded layer requirements for {len(self._layer_requirements)} methods")
-
-        except Exception as e:
-            logger.error(f"Failed to load layer requirements: {e}")
-            raise
+        """Load layer requirements from layer_assignment module."""
+        from .layer_assignment import LAYER_REQUIREMENTS, CHOQUET_WEIGHTS
+        
+        # For each method in intrinsic calibration, assign layers
+        for method_id in self._intrinsic_scores.keys():
+            # Determine role from method_id or from intrinsic calibration
+            role = self._determine_role(method_id)
+            
+            if role in LAYER_REQUIREMENTS:
+                required_layers = LAYER_REQUIREMENTS[role]
+                
+                # Build weights dict
+                weights = {}
+                for layer in required_layers:
+                    if layer in CHOQUET_WEIGHTS:
+                        weights[layer] = CHOQUET_WEIGHTS[layer]
+                
+                # Normalize weights
+                total = sum(weights.values())
+                if total > 0:
+                    weights = {k: v/total for k, v in weights.items()}
+                
+                self._layer_requirements[method_id] = LayerRequirements(
+                    required_layers=required_layers,
+                    weights=weights,
+                    aggregation_method='weighted_sum'
+                )
+        
+        logger.info(f"Loaded layer requirements for {len(self._layer_requirements)} methods")
+    
+    def _determine_role(self, method_id: str) -> str:
+        """Determine role from method_id or intrinsic calibration."""
+        # If it's an executor (D1Q1, etc), it's 'executor'
+        if 'D' in method_id and 'Q' in method_id:
+            return 'executor'
+        
+        # Try to get from intrinsic calibration
+        from .intrinsic_calibration_loader import get_intrinsic_calibration_loader
+        loader = get_intrinsic_calibration_loader()
+        calibration = loader.get_calibration(method_id)
+        
+        from .layer_assignment import LAYER_REQUIREMENTS
+        if calibration and hasattr(calibration, 'layer') and calibration.layer in LAYER_REQUIREMENTS:
+            return calibration.layer
+        
+        # Default to analyzer (safest - uses all layers)
+        return 'analyzer'
 
     def evaluate_runtime_layers(
         self,
