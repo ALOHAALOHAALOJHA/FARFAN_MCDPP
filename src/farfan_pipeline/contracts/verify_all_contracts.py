@@ -14,15 +14,15 @@ TOOLS_DIR = os.path.join(CONTRACTS_DIR, "tools")
 TESTS_DIR = os.path.join(CONTRACTS_DIR, "tests")
 
 
-def run_command(cmd: str, description: str) -> bool:
+def run_command(cmd: str, description: str, set_pythonpath: bool = False) -> bool:
     print(f"Running {description}...")
     try:
         env = os.environ.copy()
-        cwd = os.getcwd()
-        src_path = os.path.join(cwd, "src")
-        env["PYTHONPATH"] = f"{src_path}:{env.get('PYTHONPATH', '')}"
-
-        subprocess.check_call(cmd, shell=True, env=env, cwd=cwd)
+        if set_pythonpath:
+            cwd = os.getcwd()
+            src_path = os.path.join(cwd, "src")
+            env["PYTHONPATH"] = f"{src_path}:{env.get('PYTHONPATH', '')}"
+        subprocess.check_call(cmd, shell=True, env=env)
         print(f"✅ {description} PASSED")
         return True
     except subprocess.CalledProcessError:
@@ -35,24 +35,46 @@ def main() -> None:
 
     # 1. Run Pytest Suite
     print("\n--- 1. RUNNING TESTS ---")
-    if not run_command(f"pytest {TESTS_DIR} -v", "All Contract Tests"):
+    if not run_command(
+        f"pytest {TESTS_DIR} -v", "All Contract Tests", set_pythonpath=True
+    ):
         sys.exit(1)
 
     # 2. Run CLI Tools to generate certificates
     print("\n--- 2. GENERATING CERTIFICATES ---")
     tools = glob.glob(os.path.join(TOOLS_DIR, "*.py"))
-    for tool in tools:
+    for tool in sorted(tools):
         tool_name = os.path.basename(tool)
-        if not run_command(f"python3 {tool}", f"Tool: {tool_name}"):
+        if not run_command(f"python {tool}", f"Tool: {tool_name}", set_pythonpath=True):
             sys.exit(1)
 
     # 3. Verify Certificates
     print("\n--- 3. VERIFYING CERTIFICATES ---")
-    certs = glob.glob("*.json")
-    cert_files = [c for c in certs if c.endswith("_certificate.json")]
+    expected_certs = [
+        "rc_certificate.json",
+        "sc_certificate.json",
+        "cic_certificate.json",
+        "pic_certificate.json",
+        "bmc_certificate.json",
+        "toc_certificate.json",
+        "rec_certificate.json",
+        "asc_certificate.json",
+        "idc_certificate.json",
+        "rcc_certificate.json",
+        "mcc_certificate.json",
+        "ffc_certificate.json",
+        "cdc_certificate.json",
+        "tc_certificate.json",
+        "refc_certificate.json",
+    ]
 
     all_passed = True
-    for cert_file in cert_files:
+    for cert_file in expected_certs:
+        if not os.path.exists(cert_file):
+            print(f"❌ {cert_file}: MISSING")
+            all_passed = False
+            continue
+
         try:
             with open(cert_file) as f:
                 data = json.load(f)
