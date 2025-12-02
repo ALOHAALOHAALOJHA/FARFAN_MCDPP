@@ -1,5 +1,5 @@
 import pytest
-from farfan_pipeline.farfan_pipeline.utils.cpp_adapter import CPPAdapter, CPPAdapterError
+from farfan_pipeline.utils.cpp_adapter import CPPAdapter, CPPAdapterError
 
 class MockProvenance:
     def __init__(self, page_number=None, section_header=None):

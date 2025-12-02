@@ -1,6 +1,6 @@
-from farfan_pipeline.farfan_pipeline.utils.cpp_adapter import CPPAdapter
-from farfan_pipeline.farfan_pipeline.core.phases.phase1_models import Chunk as CanonChunk
-from farfan_pipeline.farfan_pipeline.core.orchestrator.core import PreprocessedDocument
+from farfan_pipeline.utils.cpp_adapter import CPPAdapter
+from farfan_pipeline.core.phases.phase1_models import Chunk as CanonChunk
+from farfan_pipeline.core.orchestrator.core import PreprocessedDocument
 
 class MockProvenance:
     def __init__(self, page_number, section_header):

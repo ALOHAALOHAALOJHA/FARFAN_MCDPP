@@ -250,9 +250,9 @@ class ProbativeTest:
         elif self.test_type == ProbativeTestType.HOOP_TEST:
             return 1.2 if test_passed else get_parameter_loader().get("farfan_pipeline.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio").get("auto_param_L251_43", 0.1)
         elif self.test_type == ProbativeTestType.SMOKING_GUN:
-            return 1get_parameter_loader().get("farfan_pipeline.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio").get("auto_param_L253_20", 0.0) if test_passed else get_parameter_loader().get("farfan_pipeline.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio").get("auto_param_L253_44", 0.9)
+            return 10.0 if test_passed else 0.9  # Smoking Gun: strong evidence if passed
         elif self.test_type == ProbativeTestType.DOUBLY_DECISIVE:
-            return 2get_parameter_loader().get("farfan_pipeline.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio").get("auto_param_L255_20", 0.0) if test_passed else get_parameter_loader().get("farfan_pipeline.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio").get("auto_param_L255_44", 0.05)
+            return 20.0 if test_passed else 0.05  # Doubly Decisive: very strong evidence
         else:
             return get_parameter_loader().get("farfan_pipeline.analysis.bayesian_multilevel_system.ProbativeTest.calculate_likelihood_ratio").get("auto_param_L257_19", 1.0)
 

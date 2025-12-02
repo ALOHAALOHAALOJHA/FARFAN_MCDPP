@@ -922,7 +922,7 @@ class IndustrialGradeValidator:
             f"  - Tasa de Éxito de Métricas: {success_rate:.1f}%% ({passed}/{len(self.metrics)})"
         )
 
-        meets_standards = all(results) and success_rate >= 9get_parameter_loader().get("farfan_pipeline.analysis.teoria_cambio.IndustrialGradeValidator.execute_suite").get("auto_param_L925_60", 0.0)
+        meets_standards = all(results) and success_rate >= 0.9  # 90% success rate required for certification
         self.logger.info(
             f"  🏆 VEREDICTO: {'CERTIFICACIÓN OTORGADA' if meets_standards else 'SE REQUIEREN MEJORAS'}"
         )

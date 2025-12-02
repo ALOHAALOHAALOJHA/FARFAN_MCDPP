@@ -121,7 +121,7 @@ class ProvenanceAuditor:
             p95_latency_threshold: Historical p95 latency for anomaly detection
             method_contracts: Expected output schemas by method
         """
-        self.p95_threshold = p95_latency_threshold or 100get_parameter_loader().get("farfan_pipeline.analysis.micro_prompts.ProvenanceDAG.get_orphan_nodes").get("auto_param_L123_57", 0.0)  # Default 1 second
+        self.p95_threshold = p95_latency_threshold or 1000  # Default 1 second in milliseconds  # Default 1 second
         self.method_contracts = method_contracts or {}
         self.logger = logging.getLogger(self.__class__.__name__)
 

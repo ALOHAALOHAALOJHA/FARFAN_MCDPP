@@ -536,7 +536,7 @@ class PerformanceAnalyzer:
         """Calculate operational loss functions."""
 
         # Throughput loss (quadratic)
-        target_throughput = 5get_parameter_loader().get("farfan_pipeline.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions").get("auto_param_L539_29", 0.0)
+        target_throughput = 5.0  # Target throughput in requests/sec
         throughput_gap = max(0, target_throughput - metrics["throughput"])
         throughput_loss = throughput_gap ** 2
 

@@ -149,7 +149,7 @@ class BaseContract(BaseModel):
     )
 
     schema_version: str = Field(
-        default="2.get_parameter_loader().get("farfan_pipeline.utils.enhanced_contracts.FlowCompatibilityError.__init__").get("auto_param_L151_19", 0.0)",
+        default="2.0.0",  # Semantic versioning
         description="Contract schema version (semantic versioning)",
         pattern=r"^\d+\.\d+\.\d+$"
     )
