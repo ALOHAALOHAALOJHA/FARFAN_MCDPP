@@ -1,0 +1,320 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://farfan-pipeline.org/schemas/questionnaire-monolith/v2.0.0.json",
+  "title": "F.A.R.F.A.N Questionnaire Monolith Schema",
+  "description": "JSON Schema for Colombian Development Plan Evaluation Questionnaire (67,261 lines, 300 micro-questions)",
+  "version": "2.0.0",
+  "type": "object",
+  "required": [
+    "canonical_notation",
+    "blocks",
+    "schema_version",
+    "integrity",
+    "generated_at"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Reference to this schema file"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "const": "2.0.0",
+      "description": "Semantic version of the schema"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Version of the monolith data itself"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of generation"
+    },
+    "canonical_notation": {
+      "type": "object",
+      "required": ["type", "specification"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of canonical notation system"
+        },
+        "specification": {
+          "type": "string",
+          "description": "Specification details of the notation"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Formal notation system for questionnaire structure"
+    },
+    "blocks": {
+      "type": "object",
+      "required": [
+        "macro_question",
+        "meso_questions",
+        "micro_questions",
+        "niveles_abstraccion",
+        "scoring",
+        "semantic_layers"
+      ],
+      "properties": {
+        "macro_question": {
+          "$ref": "#/definitions/MacroQuestion",
+          "description": "Single holistic policy coherence question"
+        },
+        "meso_questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MesoQuestion"
+          },
+          "minItems": 1,
+          "description": "Thematic cluster questions (typically 4)"
+        },
+        "micro_questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MicroQuestion"
+          },
+          "minItems": 1,
+          "description": "Granular evaluation questions (300+)"
+        },
+        "niveles_abstraccion": {
+          "$ref": "#/definitions/AbstractionLevels",
+          "description": "Hierarchical abstraction levels"
+        },
+        "scoring": {
+          "$ref": "#/definitions/ScoringSystem",
+          "description": "Scoring rubrics and modalities"
+        },
+        "semantic_layers": {
+          "$ref": "#/definitions/SemanticLayers",
+          "description": "NLP and semantic processing configuration"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Main content blocks of the questionnaire"
+    },
+    "integrity": {
+      "type": "object",
+      "required": ["hash", "verified"],
+      "properties": {
+        "hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "SHA-256 hash of the monolith for integrity verification"
+        },
+        "block_hashes": {
+          "type": "object",
+          "description": "Individual hashes for each block"
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "Whether integrity has been verified"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Cryptographic integrity verification"
+    },
+    "observability": {
+      "type": "object",
+      "properties": {
+        "trace_id": {
+          "type": "string",
+          "description": "Unique trace identifier for this generation"
+        }
+      },
+      "description": "Observability and tracing metadata"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "MacroQuestion": {
+      "type": "object",
+      "required": ["question_global", "aggregation_method"],
+      "properties": {
+        "question_global": {
+          "type": "string",
+          "description": "Global macro-level question text"
+        },
+        "aggregation_method": {
+          "type": "string",
+          "enum": ["holistic_assessment", "weighted_average", "hierarchical"],
+          "description": "How to aggregate lower-level scores"
+        },
+        "clusters": {
+          "type": "array",
+          "description": "Cluster identifiers linked to this macro question"
+        },
+        "patterns": {
+          "type": "array",
+          "description": "Detection patterns for macro-level analysis"
+        },
+        "fallback": {
+          "type": "object",
+          "description": "Fallback strategy if assessment fails"
+        }
+      }
+    },
+    "MesoQuestion": {
+      "type": "object",
+      "required": ["question_id", "cluster_id", "text", "type"],
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^MESO_[A-Z0-9_]+$",
+          "description": "Unique identifier for meso question"
+        },
+        "cluster_id": {
+          "type": "string",
+          "description": "Cluster this question belongs to"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Question text"
+        },
+        "type": {
+          "type": "string",
+          "description": "Question type"
+        },
+        "question_global": {
+          "type": "string",
+          "description": "Global context flag"
+        },
+        "aggregation_method": {
+          "type": "string",
+          "description": "How to aggregate micro questions"
+        },
+        "scoring_modality": {
+          "type": "string",
+          "description": "Scoring modality reference"
+        },
+        "policy_areas": {
+          "type": "array",
+          "description": "Policy areas covered"
+        },
+        "patterns": {
+          "type": "array",
+          "description": "Detection patterns"
+        }
+      }
+    },
+    "MicroQuestion": {
+      "type": "object",
+      "required": ["question_id", "text", "cluster_id", "dimension_id"],
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^MICRO_[A-Z0-9_]+$",
+          "description": "Unique identifier for micro question"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Question text"
+        },
+        "cluster_id": {
+          "type": "string",
+          "description": "Parent cluster (links to MESO)"
+        },
+        "dimension_id": {
+          "type": "string",
+          "description": "Analytical dimension"
+        },
+        "policy_area_id": {
+          "type": "string",
+          "description": "Policy area identifier"
+        },
+        "base_slot": {
+          "type": "string",
+          "description": "Semantic slot for NLP"
+        },
+        "question_global": {
+          "type": "string",
+          "description": "Global context flag"
+        },
+        "scoring_modality": {
+          "type": "string",
+          "description": "Scoring modality to use"
+        },
+        "scoring_definition_ref": {
+          "type": "string",
+          "description": "Reference to scoring definition"
+        },
+        "expected_elements": {
+          "type": "array",
+          "description": "Elements expected in valid answer"
+        },
+        "failure_contract": {
+          "type": "object",
+          "description": "Conditions that invalidate the answer"
+        },
+        "method_sets": {
+          "type": "array",
+          "description": "Analysis methods to apply"
+        },
+        "patterns": {
+          "type": "array",
+          "description": "Detection patterns"
+        },
+        "validations": {
+          "type": "array",
+          "description": "Validation rules"
+        }
+      }
+    },
+    "AbstractionLevels": {
+      "type": "object",
+      "required": ["clusters", "dimensions", "policy_areas"],
+      "properties": {
+        "clusters": {
+          "type": "object",
+          "description": "Cluster definitions"
+        },
+        "dimensions": {
+          "type": "object",
+          "description": "Dimension definitions"
+        },
+        "policy_areas": {
+          "type": "object",
+          "description": "Policy area definitions"
+        }
+      }
+    },
+    "ScoringSystem": {
+      "type": "object",
+      "required": ["micro_levels", "modalities", "modality_definitions"],
+      "properties": {
+        "micro_levels": {
+          "type": "object",
+          "description": "Micro-level scoring definitions"
+        },
+        "modalities": {
+          "type": "object",
+          "description": "Scoring modality types"
+        },
+        "modality_definitions": {
+          "type": "object",
+          "description": "Detailed modality definitions"
+        }
+      }
+    },
+    "SemanticLayers": {
+      "type": "object",
+      "required": ["disambiguation", "embedding_strategy"],
+      "properties": {
+        "disambiguation": {
+          "type": "object",
+          "description": "Disambiguation rules for NLP"
+        },
+        "embedding_strategy": {
+          "type": "object",
+          "description": "Embedding strategy configuration"
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 {
+  "$schema": "./questionnaire_schema.json",
   "canonical_notation": {
     "dimensions": {
       "D1": {
