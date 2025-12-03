@@ -6,6 +6,9 @@ classifies by role, applies epistemological rubric, and generates methods_invent
 
 FAILURE CONDITION: Aborts with 'insufficient coverage' if <200 entries or if any
 pipeline method definition cannot be located.
+
+Integration: Output schema is compatible with src/farfan_pipeline/core/method_inventory_types.py
+See METHODS_INVENTORY_README.md for type mapping and conversion patterns.
 """
 
 import ast
@@ -13,6 +16,9 @@ import json
 import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
+
+# Configuration constants
+MINIMUM_METHOD_COUNT = 200
 
 # Extended LAYER_REQUIREMENTS table
 LAYER_REQUIREMENTS = {
@@ -38,11 +44,24 @@ LAYER_REQUIREMENTS = {
     },
     "utility": {
         "description": "Helper and utility functions",
-        "typical_patterns": ["_format", "_helper", "_validate", "_check", "_get", "_set"],
+        "typical_patterns": [
+            "_format",
+            "_helper",
+            "_validate",
+            "_check",
+            "_get",
+            "_set",
+        ],
     },
     "orchestrator": {
         "description": "Workflow orchestration and coordination",
-        "typical_patterns": ["orchestrate", "coordinate", "run", "execute_suite", "build"],
+        "typical_patterns": [
+            "orchestrate",
+            "coordinate",
+            "run",
+            "execute_suite",
+            "build",
+        ],
     },
     "core": {
         "description": "Core framework methods",
@@ -58,6 +77,7 @@ LAYER_REQUIREMENTS = {
 @dataclass
 class MethodMetadata:
     """Metadata for a single method"""
+
     canonical_identifier: str
     module_path: str
     class_name: str | None
@@ -77,7 +97,7 @@ class MethodMetadata:
 class MethodScanner(ast.NodeVisitor):
     """AST visitor to extract all methods from Python source"""
 
-    def __init__(self, module_path: str, source_file: str):
+    def __init__(self, module_path: str, source_file: str) -> None:
         self.module_path = module_path
         self.source_file = source_file
         self.methods: list[MethodMetadata] = []
@@ -116,13 +136,19 @@ class MethodScanner(ast.NodeVisitor):
             canonical_id = f"{self.module_path}.{method_name}"
             class_name = None
 
-        is_property = any(self._is_decorator(d, "property") for d in node.decorator_list)
-        is_classmethod = any(self._is_decorator(d, "classmethod") for d in node.decorator_list)
-        is_staticmethod = any(self._is_decorator(d, "staticmethod") for d in node.decorator_list)
+        is_property = any(
+            self._is_decorator(d, "property") for d in node.decorator_list
+        )
+        is_classmethod = any(
+            self._is_decorator(d, "classmethod") for d in node.decorator_list
+        )
+        is_staticmethod = any(
+            self._is_decorator(d, "staticmethod") for d in node.decorator_list
+        )
 
         role = self._classify_role(method_name, class_name)
-        requires_calibration, requires_parametrization, epi_tags = self._apply_epistemological_rubric(
-            method_name, class_name, role
+        requires_calibration, requires_parametrization, epi_tags = (
+            self._apply_epistemological_rubric(method_name, class_name, role)
         )
 
         metadata = MethodMetadata(
@@ -151,7 +177,9 @@ class MethodScanner(ast.NodeVisitor):
             return decorator.attr == name
         return False
 
-    def _classify_role(self, method_name: str, class_name: str | None) -> str:
+    def _classify_role(  # noqa: PLR0911
+        self, method_name: str, class_name: str | None
+    ) -> str:
         method_lower = method_name.lower()
         class_lower = class_name.lower() if class_name else ""
 
@@ -178,26 +206,52 @@ class MethodScanner(ast.NodeVisitor):
 
         return "core"
 
-    def _apply_epistemological_rubric(
+    def _apply_epistemological_rubric(  # noqa: PLR0912
         self, method_name: str, class_name: str | None, role: str
     ) -> tuple[bool, bool, list[str]]:
         method_lower = method_name.lower()
         class_lower = class_name.lower() if class_name else ""
         epi_tags = []
 
-        evaluative_keywords = ["score", "evaluate", "assess", "rank", "rate", "judge", "validate"]
+        evaluative_keywords = [
+            "score",
+            "evaluate",
+            "assess",
+            "rank",
+            "rate",
+            "judge",
+            "validate",
+        ]
         is_evaluative = any(kw in method_lower for kw in evaluative_keywords)
 
         transformation_keywords = [
-            "calculate", "compute", "infer", "estimate", "analyze",
-            "transform", "process", "aggregate", "bayesian"
+            "calculate",
+            "compute",
+            "infer",
+            "estimate",
+            "analyze",
+            "transform",
+            "process",
+            "aggregate",
+            "bayesian",
         ]
         is_transformation = any(kw in method_lower for kw in transformation_keywords)
 
-        statistical_keywords = ["probability", "likelihood", "confidence", "threshold", "statistical"]
+        statistical_keywords = [
+            "probability",
+            "likelihood",
+            "confidence",
+            "threshold",
+            "statistical",
+        ]
         is_statistical = any(kw in method_lower for kw in statistical_keywords)
 
-        is_direct_impact = role in ["analyzer", "processor", "score", "executor"] and not method_name.startswith("_")
+        is_direct_impact = role in [
+            "analyzer",
+            "processor",
+            "score",
+            "executor",
+        ] and not method_name.startswith("_")
 
         if is_evaluative:
             epi_tags.append("evaluative_judgment")
@@ -215,15 +269,29 @@ class MethodScanner(ast.NodeVisitor):
             epi_tags.append("structural")
         if role == "extractor":
             epi_tags.append("semantic")
-        if "build" in method_lower or "create" in method_lower or "generate" in method_lower:
+        if (
+            "build" in method_lower
+            or "create" in method_lower
+            or "generate" in method_lower
+        ):
             epi_tags.append("constructive")
-        if "check" in method_lower or "verify" in method_lower or "assert" in method_lower:
+        if (
+            "check" in method_lower
+            or "verify" in method_lower
+            or "assert" in method_lower
+        ):
             epi_tags.append("consistency")
-        if "format" in method_lower or "render" in method_lower or "export" in method_lower:
+        if (
+            "format" in method_lower
+            or "render" in method_lower
+            or "export" in method_lower
+        ):
             epi_tags.append("descriptive")
 
         requires_calibration = is_evaluative or (is_statistical and is_direct_impact)
-        requires_parametrization = is_transformation or is_statistical or (role == "analyzer")
+        requires_parametrization = (
+            is_transformation or is_statistical or (role == "analyzer")
+        )
 
         if role == "utility" and not is_statistical:
             requires_calibration = False
@@ -298,8 +366,6 @@ def deduplicate_canonical_ids(methods: list[MethodMetadata]) -> list[MethodMetad
 
 
 def verify_critical_methods(methods: list[MethodMetadata]) -> tuple[bool, list[str]]:
-    canonical_ids = {m.canonical_identifier for m in methods}
-
     critical_files = [
         "derek_beach.py",
         "aggregation.py",
@@ -350,16 +416,22 @@ def generate_inventory(methods: list[MethodMetadata], output_file: str) -> None:
             "by_role": {},
             "by_file": {},
             "requiring_calibration": sum(1 for m in methods if m.requiere_calibracion),
-            "requiring_parametrization": sum(1 for m in methods if m.requiere_parametrizacion),
+            "requiring_parametrization": sum(
+                1 for m in methods if m.requiere_parametrizacion
+            ),
         },
     }
 
     for method in methods:
         role = method.role
-        inventory["statistics"]["by_role"][role] = inventory["statistics"]["by_role"].get(role, 0) + 1
+        inventory["statistics"]["by_role"][role] = (
+            inventory["statistics"]["by_role"].get(role, 0) + 1
+        )
 
         file_name = Path(method.source_file).name
-        inventory["statistics"]["by_file"][file_name] = inventory["statistics"]["by_file"].get(file_name, 0) + 1
+        inventory["statistics"]["by_file"][file_name] = (
+            inventory["statistics"]["by_file"].get(file_name, 0) + 1
+        )
 
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(inventory, f, indent=2, ensure_ascii=False)
@@ -368,10 +440,12 @@ def generate_inventory(methods: list[MethodMetadata], output_file: str) -> None:
     print(f"Total methods: {len(methods)}")
     print(f"By role: {inventory['statistics']['by_role']}")
     print(f"Requiring calibration: {inventory['statistics']['requiring_calibration']}")
-    print(f"Requiring parametrization: {inventory['statistics']['requiring_parametrization']}")
+    print(
+        f"Requiring parametrization: {inventory['statistics']['requiring_parametrization']}"
+    )
 
 
-def main():
+def main() -> None:
     pipeline_dir = Path("src/farfan_pipeline")
 
     if not pipeline_dir.exists():
@@ -385,8 +459,11 @@ def main():
     print(f"SCAN COMPLETE: Found {len(methods)} methods")
     print(f"{'='*60}")
 
-    if len(methods) < 200:
-        print(f"\nERROR: Insufficient coverage - found only {len(methods)} methods (minimum: 200)", file=sys.stderr)
+    if len(methods) < MINIMUM_METHOD_COUNT:
+        print(
+            f"\nERROR: Insufficient coverage - found only {len(methods)} methods (minimum: {MINIMUM_METHOD_COUNT})",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     verification_passed, missing = verify_critical_methods(methods)

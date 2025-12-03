@@ -4,9 +4,10 @@
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 
-def load_inventory():
+def load_inventory() -> dict[str, Any] | None:
     """Load the inventory JSON file"""
     inventory_path = Path("methods_inventory_raw.json")
 
@@ -18,15 +19,18 @@ def load_inventory():
         return json.load(f)
 
 
-def test_minimum_method_count(inventory):
+MINIMUM_METHOD_COUNT = 200
+
+
+def test_minimum_method_count(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify at least 200 methods in inventory"""
     total = inventory["metadata"]["total_methods"]
-    if total < 200:
-        return False, f"Insufficient methods: {total} < 200"
-    return True, f"✓ Method count: {total} >= 200"
+    if total < MINIMUM_METHOD_COUNT:
+        return False, f"Insufficient methods: {total} < {MINIMUM_METHOD_COUNT}"
+    return True, f"✓ Method count: {total} >= {MINIMUM_METHOD_COUNT}"
 
 
-def test_critical_files_present(inventory):
+def test_critical_files_present(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify methods from critical files are present"""
     methods = inventory["methods"]
     source_files = {m["source_file"] for m in methods}
@@ -49,7 +53,7 @@ def test_critical_files_present(inventory):
     return True, f"✓ All {len(critical_files)} critical files present"
 
 
-def test_critical_method_patterns(inventory):
+def test_critical_method_patterns(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify critical method patterns are present"""
     methods = inventory["methods"]
     canonical_ids = {m["canonical_identifier"] for m in methods}
@@ -71,13 +75,20 @@ def test_critical_method_patterns(inventory):
     return True, f"✓ All {len(patterns_to_check)} critical patterns found"
 
 
-def test_all_roles_present(inventory):
+def test_all_roles_present(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify all expected roles are present"""
     stats = inventory["statistics"]["by_role"]
 
     expected_roles = [
-        "ingest", "processor", "analyzer", "extractor",
-        "score", "utility", "orchestrator", "core", "executor"
+        "ingest",
+        "processor",
+        "analyzer",
+        "extractor",
+        "score",
+        "utility",
+        "orchestrator",
+        "core",
+        "executor",
     ]
 
     errors = []
@@ -90,7 +101,7 @@ def test_all_roles_present(inventory):
     return True, f"✓ All {len(expected_roles)} roles present"
 
 
-def test_calibration_flags_set(inventory):
+def test_calibration_flags_set(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify calibration flags are properly set"""
     methods = inventory["methods"]
 
@@ -102,10 +113,17 @@ def test_calibration_flags_set(inventory):
     if parametrization_count == 0:
         return False, "No methods flagged for parametrization"
 
-    return True, f"✓ Calibration: {calibration_count}, Parametrization: {parametrization_count}"
+    return (
+        True,
+        f"✓ Calibration: {calibration_count}, Parametrization: {parametrization_count}",
+    )
 
 
-def test_canonical_identifier_format(inventory):
+MIN_CANONICAL_ID_PARTS = 2
+MAX_FORMAT_ERRORS = 5
+
+
+def test_canonical_identifier_format(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify canonical identifiers follow module.Class.method format"""
     methods = inventory["methods"]
     errors = []
@@ -114,9 +132,9 @@ def test_canonical_identifier_format(inventory):
         cid = method["canonical_identifier"]
         parts = cid.split(".")
 
-        if len(parts) < 2:
+        if len(parts) < MIN_CANONICAL_ID_PARTS:
             errors.append(f"Invalid canonical ID format: {cid}")
-            if len(errors) >= 5:
+            if len(errors) >= MAX_FORMAT_ERRORS:
                 break
 
     if errors:
@@ -124,7 +142,10 @@ def test_canonical_identifier_format(inventory):
     return True, "✓ All canonical identifiers properly formatted"
 
 
-def test_epistemology_tags_present(inventory):
+MIN_TAG_RATIO = 0.3
+
+
+def test_epistemology_tags_present(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify epistemology tags are assigned"""
     methods = inventory["methods"]
 
@@ -135,18 +156,21 @@ def test_epistemology_tags_present(inventory):
         return False, "No methods have epistemology tags"
 
     tag_ratio = tagged_count / total
-    if tag_ratio < 0.3:
+    if tag_ratio < MIN_TAG_RATIO:
         return False, f"Too few methods tagged: {tag_ratio:.2%}"
 
     return True, f"✓ Epistemology tags: {tagged_count}/{total} ({tag_ratio:.2%})"
 
 
-def test_derek_beach_methods_complete(inventory):
+MIN_DEREK_BEACH_METHODS = 10
+
+
+def test_derek_beach_methods_complete(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify derek_beach.py methods are complete"""
     methods = inventory["methods"]
     derek_methods = [m for m in methods if "derek_beach" in m["source_file"]]
 
-    if len(derek_methods) < 10:
+    if len(derek_methods) < MIN_DEREK_BEACH_METHODS:
         return False, f"Too few derek_beach methods: {len(derek_methods)}"
 
     required_patterns = ["_format_message", "to_dict", "_load_config", "classify_test"]
@@ -159,18 +183,27 @@ def test_derek_beach_methods_complete(inventory):
 
     if errors:
         return False, "\n  ".join(errors)
-    return True, f"✓ derek_beach.py: {len(derek_methods)} methods, all required patterns found"
+    return (
+        True,
+        f"✓ derek_beach.py: {len(derek_methods)} methods, all required patterns found",
+    )
 
 
-def test_aggregation_classes_present(inventory):
+def test_aggregation_classes_present(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify aggregation classes are present"""
     methods = inventory["methods"]
-    aggregation_methods = [m for m in methods if "aggregation" in m["source_file"].lower()]
+    aggregation_methods = [
+        m for m in methods if "aggregation" in m["source_file"].lower()
+    ]
 
     if len(aggregation_methods) == 0:
         return False, "No aggregation methods found"
 
-    required_classes = ["AreaPolicyAggregator", "ClusterAggregator", "DimensionAggregator"]
+    required_classes = [
+        "AreaPolicyAggregator",
+        "ClusterAggregator",
+        "DimensionAggregator",
+    ]
 
     found_classes = {m["class_name"] for m in aggregation_methods if m["class_name"]}
     errors = []
@@ -181,21 +214,27 @@ def test_aggregation_classes_present(inventory):
 
     if errors:
         return False, "\n  ".join(errors)
-    return True, f"✓ aggregation.py: {len(aggregation_methods)} methods, all classes found"
+    return (
+        True,
+        f"✓ aggregation.py: {len(aggregation_methods)} methods, all classes found",
+    )
 
 
-def test_executor_methods_present(inventory):
+MIN_EXECUTOR_METHODS = 5
+
+
+def test_executor_methods_present(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify executor methods are present"""
     methods = inventory["methods"]
     executor_methods = [m for m in methods if "executor" in m["source_file"].lower()]
 
-    if len(executor_methods) < 5:
+    if len(executor_methods) < MIN_EXECUTOR_METHODS:
         return False, f"Too few executor methods: {len(executor_methods)}"
 
     return True, f"✓ executor files: {len(executor_methods)} methods"
 
 
-def test_no_duplicate_canonical_ids(inventory):
+def test_no_duplicate_canonical_ids(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify no duplicate canonical identifiers"""
     methods = inventory["methods"]
     canonical_ids = [m["canonical_identifier"] for m in methods]
@@ -209,13 +248,20 @@ def test_no_duplicate_canonical_ids(inventory):
     return True, "✓ No duplicate canonical identifiers"
 
 
-def test_layer_requirements_complete(inventory):
+def test_layer_requirements_complete(inventory: dict[str, Any]) -> tuple[bool, str]:
     """Verify LAYER_REQUIREMENTS table is complete"""
     layer_requirements = inventory["layer_requirements"]
 
     expected_layers = [
-        "ingest", "processor", "analyzer", "extractor",
-        "score", "utility", "orchestrator", "core", "executor"
+        "ingest",
+        "processor",
+        "analyzer",
+        "extractor",
+        "score",
+        "utility",
+        "orchestrator",
+        "core",
+        "executor",
     ]
 
     errors = []
@@ -232,7 +278,7 @@ def test_layer_requirements_complete(inventory):
     return True, f"✓ LAYER_REQUIREMENTS complete: {len(expected_layers)} layers"
 
 
-def main():
+def main() -> None:
     print("=" * 70)
     print("INVENTORY COMPLETENESS VERIFICATION")
     print("=" * 70)

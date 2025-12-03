@@ -106,6 +106,8 @@ Issues = "https://github.com/kkkkknhh/SAAAAAA/issues"
 [project.scripts]
 farfan-pipeline = "farfan_pipeline.entrypoint.main:cli"
 farfan-api = "farfan_pipeline.api.api_server:main"
+farfan-scan-inventory = "scan_methods_inventory:main"
+farfan-verify-inventory = "verify_inventory:main"
 # Note: Operational scripts in scripts/ are run directly, not as entry points
 
 [tool.setuptools.packages.find]
