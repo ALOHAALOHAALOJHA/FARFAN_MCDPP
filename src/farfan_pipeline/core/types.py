@@ -12,6 +12,7 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import Any, Literal
+import re
 
 __all__ = [
     "CategoriaCausal",
@@ -57,6 +58,7 @@ class ChunkData:
     """
 
     id: int
+    chunk_id: str | None = None
     text: str
     chunk_type: Literal[
         "diagnostic", "activity", "indicator", "resource", "temporal", "entity"
@@ -71,6 +73,41 @@ class ChunkData:
     policy_area_id: str | None = None
     dimension_id: str | None = None
     provenance: Provenance | None = None
+
+    _CHUNK_ID_PATTERN = re.compile(r"^PA(0[1-9]|10)-DIM(0[1-6])$")
+
+    def __post_init__(self) -> None:
+        """Validate chunk_id presence and format (PA{01-10}-DIM{01-06})."""
+        chunk_id = self.chunk_id
+        if chunk_id is None:
+            if self.policy_area_id and self.dimension_id:
+                chunk_id = f"{self.policy_area_id}-{self.dimension_id}"
+                object.__setattr__(self, "chunk_id", chunk_id)
+            else:
+                raise ValueError(
+                    "chunk_id is required and must follow format PA{01-10}-DIM{01-06}. "
+                    "Provide chunk_id explicitly or set both policy_area_id and dimension_id "
+                    "to derive it."
+                )
+
+        if not self._CHUNK_ID_PATTERN.match(chunk_id):
+            raise ValueError(
+                f"Invalid chunk_id '{chunk_id}'. Expected format PA{{01-10}}-DIM{{01-06}}."
+            )
+
+        # Ensure consistency between chunk_id and policy/dimension identifiers if present
+        match = self._CHUNK_ID_PATTERN.match(chunk_id)
+        if match:
+            pa_code = f"PA{match.group(1)}"
+            dim_code = f"DIM{match.group(2)}"
+            if self.policy_area_id and self.policy_area_id != pa_code:
+                raise ValueError(
+                    f"chunk_id {chunk_id} mismatches policy_area_id {self.policy_area_id}"
+                )
+            if self.dimension_id and self.dimension_id != dim_code:
+                raise ValueError(
+                    f"chunk_id {chunk_id} mismatches dimension_id {self.dimension_id}"
+                )
 
 
 @dataclass

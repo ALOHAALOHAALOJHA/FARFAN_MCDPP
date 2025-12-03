@@ -36,16 +36,9 @@
     },
     "canonical_notation": {
       "type": "object",
-      "required": ["type", "specification"],
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "Type of canonical notation system"
-        },
-        "specification": {
-          "type": "string",
-          "description": "Specification details of the notation"
-        }
+        "dimensions": { "type": "object" },
+        "policy_areas": { "type": "object" }
       },
       "additionalProperties": false,
       "description": "Formal notation system for questionnaire structure"
@@ -99,24 +92,32 @@
     },
     "integrity": {
       "type": "object",
-      "required": ["hash", "verified"],
+      "required": ["monolith_hash", "question_count", "ruleset_hash"],
       "properties": {
-        "hash": {
+        "monolith_hash": {
           "type": "string",
-          "pattern": "^sha256:[a-f0-9]{64}$",
-          "description": "SHA-256 hash of the monolith for integrity verification"
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 hash of the monolith"
         },
-        "block_hashes": {
+        "question_count": {
           "type": "object",
-          "description": "Individual hashes for each block"
+          "required": ["macro", "meso", "micro", "total"],
+          "properties": {
+            "macro": { "type": "integer" },
+            "meso": { "type": "integer" },
+            "micro": { "type": "integer" },
+            "total": { "type": "integer" }
+          },
+          "additionalProperties": false
         },
-        "verified": {
-          "type": "boolean",
-          "description": "Whether integrity has been verified"
+        "ruleset_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 hash of the ruleset"
         }
       },
       "additionalProperties": false,
-      "description": "Cryptographic integrity verification"
+      "description": "Integrity metadata for the monolith"
     },
     "observability": {
       "type": "object",
@@ -136,8 +137,8 @@
       "required": ["question_global", "aggregation_method"],
       "properties": {
         "question_global": {
-          "type": "string",
-          "description": "Global macro-level question text"
+          "type": ["integer", "number"],
+          "description": "Global macro-level question identifier"
         },
         "aggregation_method": {
           "type": "string",
@@ -150,7 +151,7 @@
         },
         "patterns": {
           "type": "array",
-          "items": { "$ref": "#/definitions/PatternItem" },
+          "items": { "$ref": "#/definitions/MacroPattern" },
           "description": "Detection patterns for macro-level analysis"
         },
         "fallback": {
@@ -182,7 +183,7 @@
           "description": "Question type"
         },
         "question_global": {
-          "type": "string",
+          "type": ["integer", "number"],
           "description": "Global context flag"
         },
         "aggregation_method": {
@@ -199,7 +200,7 @@
         },
         "patterns": {
           "type": "array",
-          "items": { "$ref": "#/definitions/PatternItem" },
+          "items": { "$ref": "#/definitions/MesoPattern" },
           "description": "Detection patterns"
         }
       }
@@ -210,7 +211,7 @@
       "properties": {
         "question_id": {
           "type": "string",
-          "pattern": "^MICRO_[A-Z0-9_]+$",
+          "pattern": "^Q\\d{3}$",
           "description": "Unique identifier for micro question"
         },
         "text": {
@@ -235,8 +236,8 @@
           "description": "Semantic slot for NLP"
         },
         "question_global": {
-          "type": "string",
-          "description": "Global context flag"
+          "type": ["integer", "number"],
+          "description": "Global question index"
         },
         "scoring_modality": {
           "type": "string",
@@ -265,8 +266,8 @@
           "description": "Detection patterns"
         },
         "validations": {
-          "type": "array",
-          "description": "Validation rules"
+          "type": ["object", "null"],
+          "description": "Validation rules as a keyed map"
         }
       }
     },
@@ -275,25 +276,78 @@
       "required": ["clusters", "dimensions", "policy_areas"],
       "properties": {
         "clusters": {
-          "type": "object",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["cluster_id", "policy_area_ids"],
+            "properties": {
+              "cluster_id": { "type": "string" },
+              "policy_area_ids": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^PA\\d{2}$" }
+              },
+              "legacy_policy_area_ids": { "type": "array", "items": { "type": "string" } },
+              "rationale": { "type": "string" },
+              "i18n": { "type": "object" }
+            },
+            "additionalProperties": false
+          },
           "description": "Cluster definitions"
         },
         "dimensions": {
-          "type": "object",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["dimension_id"],
+            "properties": {
+              "dimension_id": { "type": "string", "pattern": "^DIM\\d{2}$" },
+              "description": { "type": "string" },
+              "legacy_id": { "type": "string" },
+              "i18n": { "type": "object" }
+            },
+            "additionalProperties": false
+          },
           "description": "Dimension definitions"
         },
         "policy_areas": {
-          "type": "object",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["policy_area_id", "cluster_id"],
+            "properties": {
+              "policy_area_id": { "type": "string", "pattern": "^PA\\d{2}$" },
+              "cluster_id": { "type": "string" },
+              "dimension_ids": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^DIM\\d{2}$" }
+              },
+              "legacy_ids": { "type": "array", "items": { "type": "string" } },
+              "required_evidence_keys": { "type": "array", "items": { "type": "string" } },
+              "i18n": { "type": "object" }
+            },
+            "additionalProperties": false
+          },
           "description": "Policy area definitions"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "ScoringSystem": {
       "type": "object",
       "required": ["micro_levels", "modalities", "modality_definitions"],
       "properties": {
         "micro_levels": {
-          "type": "object",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["level", "min_score"],
+            "properties": {
+              "level": { "type": "string" },
+              "min_score": { "type": "number" },
+              "color": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
           "description": "Micro-level scoring definitions"
         },
         "modalities": {
@@ -321,47 +375,120 @@
       }
     },
     "PatternItem": {
-      "type": "object",
-      "required": ["id", "pattern", "match_type", "category"],
-      "properties": {
-        "id": { "type": "string" },
-        "pattern": { "type": "string" },
-        "match_type": { "type": "string", "enum": ["REGEX", "LITERAL"] },
-        "category": { "type": "string" },
-        "context_requirement": { "type": ["string", "null"] },
-        "context_scope": {
-          "type": "string",
-          "enum": ["PARAGRAPH", "SECTION", "DOCUMENT"]
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["id", "pattern", "match_type", "category"],
+          "properties": {
+            "id": { "type": "string" },
+            "pattern": { "type": "string" },
+            "match_type": { "type": "string", "enum": ["REGEX", "LITERAL", "NER_OR_REGEX"] },
+            "category": { "type": "string" },
+            "context_requirement": { "type": ["string", "null"] },
+            "context_scope": {
+              "type": "string",
+              "enum": ["PARAGRAPH", "SECTION", "DOCUMENT", "SENTENCE"]
+            },
+            "semantic_expansion": { "type": ["string", "null", "object", "array"] },
+            "specificity": {
+              "type": "string",
+              "enum": ["HIGH", "MEDIUM", "LOW"]
+            },
+            "validation_rule": { "type": ["string", "null"] },
+            "entity_type": { "type": ["string", "null"] },
+            "glossary_metadata": { "type": ["object", "null"] },
+            "synonym_clusters": {
+              "type": ["array", "null"],
+              "items": { "type": "string" }
+            },
+            "confidence_weight": { "type": ["number", "integer", "null"] },
+            "disambiguation_rules": { "type": ["array", "object", "string", "null"] },
+            "dynamic_update": { "type": ["boolean", "object", "string", "null"] },
+            "element_tags": {
+              "type": ["array", "null"],
+              "items": { "type": "string" }
+            },
+            "evidence_modality": { "type": ["string", "null"] },
+            "flags": { "type": ["array", "object", "string", "null"] },
+            "negative_filter": { "type": ["boolean", "object", "null"] },
+            "numeric_parsing": { "type": ["boolean", "object", "null"] },
+            "semantic_analysis": { "type": ["string", "object", "array", "null"] },
+            "table_structure_parsing": { "type": ["boolean", "object", "null"] },
+            "variants": {
+              "type": ["array", "null"],
+              "items": { "type": "string" }
+            }
+          },
+          "additionalProperties": false
         },
-        "semantic_expansion": { "type": ["string", "null", "object", "array"] },
-        "specificity": {
-          "type": "string",
-          "enum": ["HIGH", "MEDIUM", "LOW"]
-        },
-        "validation_rule": { "type": ["string", "null"] },
-        "entity_type": { "type": ["string", "null"] },
-        "glossary_metadata": { "type": ["object", "null"] },
-        "synonym_clusters": {
-          "type": ["array", "null"],
-          "items": { "type": "string" }
-        },
-        "confidence_weight": { "type": ["number", "integer", "null"] },
-        "disambiguation_rules": { "type": ["array", "object", "string", "null"] },
-        "dynamic_update": { "type": ["boolean", "object", "string", "null"] },
-        "element_tags": {
-          "type": ["array", "null"],
-          "items": { "type": "string" }
-        },
-        "evidence_modality": { "type": ["string", "null"] },
-        "flags": { "type": ["array", "object", "string", "null"] },
-        "negative_filter": { "type": ["boolean", "null"] },
-        "numeric_parsing": { "type": ["boolean", "object", "null"] },
-        "semantic_analysis": { "type": ["string", "object", "array", "null"] },
-        "table_structure_parsing": { "type": ["boolean", "object", "null"] },
-        "variants": {
-          "type": ["array", "null"],
-          "items": { "type": "string" }
+        {
+          "type": "object",
+          "required": ["pattern_ref", "category"],
+          "properties": {
+            "pattern_ref": { "type": "string", "pattern": "^PAT-\\d{4}$" },
+            "id": { "type": "string" },
+            "match_type": { "type": "string", "enum": ["REGEX", "LITERAL", "NER_OR_REGEX"] },
+            "category": { "type": "string" },
+            "context_requirement": { "type": ["string", "null"] },
+            "context_scope": {
+              "type": "string",
+              "enum": ["PARAGRAPH", "SECTION", "DOCUMENT", "SENTENCE"]
+            },
+            "semantic_expansion": { "type": ["string", "null", "object", "array"] },
+            "specificity": {
+              "type": "string",
+              "enum": ["HIGH", "MEDIUM", "LOW"]
+            },
+            "validation_rule": { "type": ["string", "null"] },
+            "entity_type": { "type": ["string", "null"] },
+            "glossary_metadata": { "type": ["object", "null"] },
+            "synonym_clusters": {
+              "type": ["array", "null"],
+              "items": { "type": "string" }
+            },
+            "confidence_weight": { "type": ["number", "integer", "null"] },
+            "disambiguation_rules": { "type": ["array", "object", "string", "null"] },
+            "dynamic_update": { "type": ["boolean", "object", "string", "null"] },
+            "element_tags": {
+              "type": ["array", "null"],
+              "items": { "type": "string" }
+            },
+            "evidence_modality": { "type": ["string", "null"] },
+            "flags": { "type": ["array", "object", "string", "null"] },
+            "negative_filter": { "type": ["boolean", "object", "null"] },
+            "numeric_parsing": { "type": ["boolean", "object", "null"] },
+            "semantic_analysis": { "type": ["string", "object", "array", "null"] },
+            "table_structure_parsing": { "type": ["boolean", "object", "null"] },
+            "variants": {
+              "type": ["array", "null"],
+              "items": { "type": "string" }
+            }
+          },
+          "additionalProperties": false,
+          "anyOf": [
+            { "required": ["match_type"] },
+            { "required": ["pattern_ref"] }
+          ]
         }
+      ]
+    },
+    "MacroPattern": {
+      "type": "object",
+      "required": ["description", "type"],
+      "properties": {
+        "description": { "type": "string" },
+        "type": { "type": "string" },
+        "priority": { "type": ["integer", "number"] }
+      },
+      "additionalProperties": false
+    },
+    "MesoPattern": {
+      "type": "object",
+      "required": ["description", "type"],
+      "properties": {
+        "description": { "type": "string" },
+        "type": { "type": "string" },
+        "priority": { "type": ["integer", "number"] }
       },
       "additionalProperties": false
     },
@@ -369,10 +496,10 @@
       "type": "object",
       "required": ["class", "function", "method_type"],
       "properties": {
-        "class": { "type": "string" },
-        "function": { "type": "string" },
-        "method_type": { "type": "string" },
-        "priority": { "type": ["integer", "number"] },
+        "class": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "function": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "method_type": { "type": "string", "enum": ["analysis", "aggregation", "routing", "validation", "extraction", "scoring"] },
+        "priority": { "type": ["integer", "number"], "minimum": 0 },
         "description": { "type": "string" },
         "depends_on_patterns": {
           "type": "array",

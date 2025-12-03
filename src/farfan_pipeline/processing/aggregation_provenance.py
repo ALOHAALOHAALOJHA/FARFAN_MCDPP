@@ -351,7 +351,20 @@ class AggregationDAG:
         Args:
             path: Output file path (e.g., "aggregation_dag.graphml")
         """
-        nx.write_graphml(self.graph, path)
+        # Create a copy with serialized dict attributes (GraphML doesn't support dicts)
+        g_copy = self.graph.copy()
+        for node, data in g_copy.nodes(data=True):
+            if "metadata" in data and isinstance(data["metadata"], dict):
+                data["metadata_json"] = json.dumps(data["metadata"])
+                del data["metadata"]
+        for u, v, data in g_copy.edges(data=True):
+            if "metadata" in data and isinstance(data["metadata"], dict):
+                data["metadata_json"] = json.dumps(data["metadata"])
+                del data["metadata"]
+            if "weights" in data and isinstance(data["weights"], list):
+                data["weights_json"] = json.dumps(data["weights"])
+                del data["weights"]
+        nx.write_graphml(g_copy, path)
         logger.info(
             f"Exported DAG to {path}: "
             f"{self.graph.number_of_nodes()} nodes, "
