@@ -32,6 +32,7 @@ DEFAULT_MONOLITH = ROOT / "system" / "config" / "questionnaire" / "questionnaire
 DEFAULT_SCHEMA = ROOT / "system" / "config" / "questionnaire" / "questionnaire_schema.json"
 DEFAULT_REGISTRY = ROOT / "system" / "config" / "questionnaire" / "pattern_registry.json"
 DEFAULT_REPORT = ROOT / "validation_report.json"
+DEFAULT_DEPRECATION = ROOT / "system" / "config" / "questionnaire" / "pattern_deprecation.json"
 
 
 def load_json(path: Path) -> Any:
@@ -84,8 +85,10 @@ def semantic_checks(monolith: dict[str, Any]) -> list[dict[str, Any]]:
     return errors
 
 
-def validate_pattern_refs(monolith: dict[str, Any], registry_path: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Validate that all pattern_ref entries resolve to the registry and find unused patterns."""
+def validate_pattern_refs(
+    monolith: dict[str, Any], registry_path: Path, deprecation_path: Path
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Validate that all pattern_ref entries resolve to the registry and find unused/deprecated patterns."""
     errors: list[dict[str, Any]] = []
     warnings: list[dict[str, Any]] = []
 
@@ -99,6 +102,10 @@ def validate_pattern_refs(monolith: dict[str, Any], registry_path: Path) -> tupl
         return errors, warnings
 
     registry = load_json(registry_path)
+    deprecated: set[str] = set()
+    if deprecation_path.exists():
+        dep = load_json(deprecation_path)
+        deprecated = set(dep.get("deprecated_patterns", []))
     registry_index = {entry.get("pattern_id"): entry for entry in registry}
     used: set[str] = set()
 
@@ -127,10 +134,22 @@ def validate_pattern_refs(monolith: dict[str, Any], registry_path: Path) -> tupl
             }
         )
 
+    deprecated_in_use = sorted(ref for ref in used if ref in deprecated)
+    if deprecated_in_use:
+        warnings.append(
+            {
+                "type": "registry",
+                "message": f"Deprecated patterns referenced: {len(deprecated_in_use)}",
+                "details": deprecated_in_use,
+            }
+        )
+
     return errors, warnings
 
 
-def validate(monolith_path: Path, schema_path: Path, registry_path: Path) -> dict[str, Any]:
+def validate(
+    monolith_path: Path, schema_path: Path, registry_path: Path, deprecation_path: Path
+) -> dict[str, Any]:
     monolith = load_json(monolith_path)
     schema = load_json(schema_path)
 
@@ -149,7 +168,9 @@ def validate(monolith_path: Path, schema_path: Path, registry_path: Path) -> dic
         )
 
     errors.extend(semantic_checks(monolith))
-    registry_errors, registry_warnings = validate_pattern_refs(monolith, registry_path)
+    registry_errors, registry_warnings = validate_pattern_refs(
+        monolith, registry_path, deprecation_path
+    )
     errors.extend(registry_errors)
 
     validation_passed = len(errors) == 0
@@ -183,6 +204,12 @@ def main() -> int:
         help=f"Path to pattern registry (default: {DEFAULT_REGISTRY})",
     )
     parser.add_argument(
+        "--deprecation",
+        type=Path,
+        default=DEFAULT_DEPRECATION,
+        help=f"Path to deprecated patterns list (default: {DEFAULT_DEPRECATION})",
+    )
+    parser.add_argument(
         "--report",
         type=Path,
         default=DEFAULT_REPORT,
@@ -190,7 +217,7 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    report = validate(args.monolith, args.schema, args.registry)
+    report = validate(args.monolith, args.schema, args.registry, args.deprecation)
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
     if report["validation_passed"]:
