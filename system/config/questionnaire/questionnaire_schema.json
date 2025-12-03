@@ -150,6 +150,7 @@
         },
         "patterns": {
           "type": "array",
+          "items": { "$ref": "#/definitions/PatternItem" },
           "description": "Detection patterns for macro-level analysis"
         },
         "fallback": {
@@ -198,6 +199,7 @@
         },
         "patterns": {
           "type": "array",
+          "items": { "$ref": "#/definitions/PatternItem" },
           "description": "Detection patterns"
         }
       }
@@ -254,10 +256,12 @@
         },
         "method_sets": {
           "type": "array",
+          "items": { "$ref": "#/definitions/MethodSet" },
           "description": "Analysis methods to apply"
         },
         "patterns": {
           "type": "array",
+          "items": { "$ref": "#/definitions/PatternItem" },
           "description": "Detection patterns"
         },
         "validations": {
@@ -315,6 +319,80 @@
           "description": "Embedding strategy configuration"
         }
       }
+    },
+    "PatternItem": {
+      "type": "object",
+      "required": ["id", "pattern", "match_type", "category"],
+      "properties": {
+        "id": { "type": "string" },
+        "pattern": { "type": "string" },
+        "match_type": { "type": "string", "enum": ["REGEX", "LITERAL"] },
+        "category": { "type": "string" },
+        "context_requirement": { "type": ["string", "null"] },
+        "context_scope": {
+          "type": "string",
+          "enum": ["PARAGRAPH", "SECTION", "DOCUMENT"]
+        },
+        "semantic_expansion": { "type": ["string", "null", "object", "array"] },
+        "specificity": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"]
+        },
+        "validation_rule": { "type": ["string", "null"] },
+        "entity_type": { "type": ["string", "null"] },
+        "glossary_metadata": { "type": ["object", "null"] },
+        "synonym_clusters": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "confidence_weight": { "type": ["number", "integer", "null"] },
+        "disambiguation_rules": { "type": ["array", "object", "string", "null"] },
+        "dynamic_update": { "type": ["boolean", "object", "string", "null"] },
+        "element_tags": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "evidence_modality": { "type": ["string", "null"] },
+        "flags": { "type": ["array", "object", "string", "null"] },
+        "negative_filter": { "type": ["boolean", "null"] },
+        "numeric_parsing": { "type": ["boolean", "object", "null"] },
+        "semantic_analysis": { "type": ["string", "object", "array", "null"] },
+        "table_structure_parsing": { "type": ["boolean", "object", "null"] },
+        "variants": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "MethodSet": {
+      "type": "object",
+      "required": ["class", "function", "method_type"],
+      "properties": {
+        "class": { "type": "string" },
+        "function": { "type": "string" },
+        "method_type": { "type": "string" },
+        "priority": { "type": ["integer", "number"] },
+        "description": { "type": "string" },
+        "depends_on_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "pattern_dependencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "produces_elements": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "output_validates": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "failure_mode": { "type": "string" }
+      },
+      "additionalProperties": false
     }
   }
 }
