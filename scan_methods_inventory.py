@@ -6,19 +6,14 @@ classifies by role, applies epistemological rubric, and generates methods_invent
 
 FAILURE CONDITION: Aborts with 'insufficient coverage' if <200 entries or if any
 pipeline method definition cannot be located.
-
-Integration: Output schema is compatible with src/farfan_pipeline/core/method_inventory_types.py
-See METHODS_INVENTORY_README.md for type mapping and conversion patterns.
 """
 
 import ast
 import json
+import re
 import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
-
-# Configuration constants
-MINIMUM_METHOD_COUNT = 200
 
 # Extended LAYER_REQUIREMENTS table
 LAYER_REQUIREMENTS = {
@@ -92,6 +87,7 @@ class MethodMetadata:
     line_number: int
     source_file: str
     epistemology_tags: list[str]
+    is_executor: bool = False
 
 
 class MethodScanner(ast.NodeVisitor):
@@ -126,7 +122,9 @@ class MethodScanner(ast.NodeVisitor):
         self.generic_visit(node)
         self.function_depth -= 1
 
-    def _process_function(self, node: ast.FunctionDef, is_async: bool) -> None:
+    def _process_function(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef, is_async: bool
+    ) -> None:
         method_name = node.name
 
         if self.current_class:
@@ -146,7 +144,9 @@ class MethodScanner(ast.NodeVisitor):
             self._is_decorator(d, "staticmethod") for d in node.decorator_list
         )
 
-        role = self._classify_role(method_name, class_name)
+        role, is_executor = self._classify_role(
+            method_name, class_name, canonical_id, self.source_file
+        )
         requires_calibration, requires_parametrization, epi_tags = (
             self._apply_epistemological_rubric(method_name, class_name, role)
         )
@@ -166,6 +166,7 @@ class MethodScanner(ast.NodeVisitor):
             line_number=node.lineno,
             source_file=self.source_file,
             epistemology_tags=epi_tags,
+            is_executor=is_executor,
         )
 
         self.methods.append(metadata)
@@ -177,36 +178,92 @@ class MethodScanner(ast.NodeVisitor):
             return decorator.attr == name
         return False
 
-    def _classify_role(  # noqa: PLR0911
-        self, method_name: str, class_name: str | None
-    ) -> str:
+    def _classify_role(
+        self,
+        method_name: str,
+        class_name: str | None,
+        canonical_name: str,
+        source_file: str,
+    ) -> tuple[str, bool]:
         method_lower = method_name.lower()
         class_lower = class_name.lower() if class_name else ""
 
-        for role, config in LAYER_REQUIREMENTS.items():
-            for pattern in config["typical_patterns"]:
-                if pattern.lower() in method_lower:
-                    return role
+        executor_pattern = re.compile(r"D[1-6]_?Q[1-5]", re.IGNORECASE)
+        is_executor = bool(
+            executor_pattern.search(canonical_name)
+            or (class_name and executor_pattern.search(class_name))
+        )
+
+        if any(
+            kw in method_lower
+            for kw in ["parse", "load", "ingest", "read_doc", "extract_raw"]
+        ):
+            return "ingest", is_executor
+
+        if any(
+            kw in method_lower
+            for kw in ["process", "transform", "clean", "normalize", "aggregate"]
+        ):
+            return "processor", is_executor
+
+        if any(
+            kw in method_lower
+            for kw in ["analyze", "infer", "calculate", "compute", "assess"]
+        ):
+            return "analyzer", is_executor
+
+        if any(
+            kw in method_lower
+            for kw in ["extract", "identify", "detect", "find", "locate"]
+        ):
+            return "extractor", is_executor
+
+        if any(
+            kw in method_lower
+            for kw in ["score", "grading", "evaluate", "rate", "rank", "measure"]
+        ):
+            return "score", is_executor
+
+        if any(
+            kw in method_lower
+            for kw in [
+                "orchestrate",
+                "pipeline",
+                "run_all",
+                "coordinate",
+                "execute_suite",
+            ]
+        ):
+            return "orchestrator", is_executor
+
+        if (is_executor or "execute" in method_lower) and (
+            executor_pattern.search(canonical_name)
+            or (class_name and executor_pattern.search(class_name))
+        ):
+            return "executor", True
+
+        if "/core/" in source_file.replace("\\", "/") or "core" in method_lower:
+            return "core", is_executor
 
         if "executor" in class_lower:
-            return "executor"
+            return "executor", True
         elif "aggregator" in class_lower or "processor" in class_lower:
-            return "processor"
+            return "processor", is_executor
         elif "analyzer" in class_lower:
-            return "analyzer"
+            return "analyzer", is_executor
         elif "extractor" in class_lower:
-            return "extractor"
+            return "extractor", is_executor
         elif "scorer" in class_lower:
-            return "score"
+            return "score", is_executor
         elif "orchestrator" in class_lower:
-            return "orchestrator"
+            return "orchestrator", is_executor
 
         if method_name.startswith("_"):
-            return "utility"
+            return "utility", is_executor
 
-        return "core"
+        return "utility", is_executor
 
-    def _apply_epistemological_rubric(  # noqa: PLR0912
+    def _apply_epistemological_rubric(
         self, method_name: str, class_name: str | None, role: str
     ) -> tuple[bool, bool, list[str]]:
         method_lower = method_name.lower()
@@ -346,12 +403,12 @@ def scan_directory(directory: Path) -> list[MethodMetadata]:
 
 def deduplicate_canonical_ids(methods: list[MethodMetadata]) -> list[MethodMetadata]:
     """Deduplicate canonical IDs by appending line numbers to duplicates"""
-    id_counts = {}
+    id_counts: dict[str, int] = {}
     for method in methods:
         cid = method.canonical_identifier
         id_counts[cid] = id_counts.get(cid, 0) + 1
 
-    id_counters = {}
+    id_counters: dict[str, int] = {}
     deduplicated = []
 
     for method in methods:
@@ -404,6 +461,16 @@ def verify_critical_methods(methods: list[MethodMetadata]) -> tuple[bool, list[s
 
 
 def generate_inventory(methods: list[MethodMetadata], output_file: str) -> None:
+    by_role: dict[str, int] = {}
+    by_file: dict[str, int] = {}
+
+    for method in methods:
+        role = method.role
+        by_role[role] = by_role.get(role, 0) + 1
+
+        file_name = Path(method.source_file).name
+        by_file[file_name] = by_file.get(file_name, 0) + 1
+
     inventory = {
         "metadata": {
             "total_methods": len(methods),
@@ -413,36 +480,27 @@ def generate_inventory(methods: list[MethodMetadata], output_file: str) -> None:
         "layer_requirements": LAYER_REQUIREMENTS,
         "methods": [asdict(m) for m in methods],
         "statistics": {
-            "by_role": {},
-            "by_file": {},
+            "by_role": by_role,
+            "by_file": by_file,
             "requiring_calibration": sum(1 for m in methods if m.requiere_calibracion),
             "requiring_parametrization": sum(
                 1 for m in methods if m.requiere_parametrizacion
             ),
+            "executor_count": sum(1 for m in methods if m.is_executor),
         },
     }
-
-    for method in methods:
-        role = method.role
-        inventory["statistics"]["by_role"][role] = (
-            inventory["statistics"]["by_role"].get(role, 0) + 1
-        )
-
-        file_name = Path(method.source_file).name
-        inventory["statistics"]["by_file"][file_name] = (
-            inventory["statistics"]["by_file"].get(file_name, 0) + 1
-        )
 
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(inventory, f, indent=2, ensure_ascii=False)
 
     print(f"\nInventory written to {output_file}")
     print(f"Total methods: {len(methods)}")
-    print(f"By role: {inventory['statistics']['by_role']}")
-    print(f"Requiring calibration: {inventory['statistics']['requiring_calibration']}")
+    print(f"By role: {by_role}")
+    print(f"Requiring calibration: {sum(1 for m in methods if m.requiere_calibracion)}")
     print(
-        f"Requiring parametrization: {inventory['statistics']['requiring_parametrization']}"
+        f"Requiring parametrization: {sum(1 for m in methods if m.requiere_parametrizacion)}"
     )
+    print(f"D1Q1-D6Q5 executors detected: {sum(1 for m in methods if m.is_executor)}")
 
 
 def main() -> None:
@@ -459,9 +517,9 @@ def main() -> None:
     print(f"SCAN COMPLETE: Found {len(methods)} methods")
     print(f"{'='*60}")
 
-    if len(methods) < MINIMUM_METHOD_COUNT:
+    if len(methods) < 200:
         print(
-            f"\nERROR: Insufficient coverage - found only {len(methods)} methods (minimum: {MINIMUM_METHOD_COUNT})",
+            f"\nERROR: Insufficient coverage - found only {len(methods)} methods (minimum: 200)",
             file=sys.stderr,
         )
         sys.exit(1)
