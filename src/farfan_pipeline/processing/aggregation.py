@@ -31,6 +31,21 @@ from farfan_pipeline.core.calibration.parameter_loader import get_parameter_load
 from farfan_pipeline.core.calibration.decorators import calibrated_method
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 
+# SOTA imports
+from farfan_pipeline.processing.aggregation_provenance import (
+    AggregationDAG,
+    ProvenanceNode,
+)
+from farfan_pipeline.processing.uncertainty_quantification import (
+    BootstrapAggregator,
+    UncertaintyMetrics,
+    aggregate_with_uncertainty,
+)
+from farfan_pipeline.processing.choquet_adapter import (
+    ChoquetProcessingAdapter,
+    create_default_choquet_adapter,
+)
+
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
 
@@ -383,7 +398,14 @@ class ScoredResult:
 
 @dataclass
 class DimensionScore:
-    """Represents the aggregated score for a single dimension within a policy area."""
+    """
+    Aggregated score for a single dimension within a policy area.
+    
+    SOTA Extensions:
+    - Uncertainty quantification (mean, std, CI)
+    - Provenance tracking (DAG node ID)
+    - Aggregation method recording
+    """
     dimension_id: str
     area_id: str
     score: float
@@ -391,10 +413,26 @@ class DimensionScore:
     contributing_questions: list[int]
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
+    
+    # SOTA: Uncertainty quantification
+    score_std: float = 0.0
+    confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
+    epistemic_uncertainty: float = 0.0
+    aleatoric_uncertainty: float = 0.0
+    
+    # SOTA: Provenance tracking
+    provenance_node_id: str = ""
+    aggregation_method: str = "weighted_average"
 
 @dataclass
 class AreaScore:
-    """Represents the aggregated score for a policy area, based on its constituent dimensions."""
+    """
+    Aggregated score for a policy area, based on its constituent dimensions.
+    
+    SOTA Extensions:
+    - Uncertainty quantification
+    - Provenance tracking
+    """
     area_id: str
     area_name: str
     score: float
@@ -402,21 +440,43 @@ class AreaScore:
     dimension_scores: list[DimensionScore]
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
-    cluster_id: str | None = None  # Used for grouping into clusters
+    cluster_id: str | None = None
+    
+    # SOTA: Uncertainty quantification
+    score_std: float = 0.0
+    confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
+    
+    # SOTA: Provenance tracking
+    provenance_node_id: str = ""
+    aggregation_method: str = "weighted_average"
 
 @dataclass
 class ClusterScore:
-    """Represents the aggregated score for a MESO cluster, based on its policy areas."""
+    """
+    Aggregated score for a MESO cluster, based on its policy areas.
+    
+    SOTA Extensions:
+    - Uncertainty quantification
+    - Provenance tracking
+    """
     cluster_id: str
     cluster_name: str
     areas: list[str]
     score: float
-    coherence: float  # Coherence metric for the scores within this cluster
+    coherence: float
     variance: float
     weakest_area: str | None
     area_scores: list[AreaScore]
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
+    
+    # SOTA: Uncertainty quantification
+    score_std: float = 0.0
+    confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
+    
+    # SOTA: Provenance tracking
+    provenance_node_id: str = ""
+    aggregation_method: str = "weighted_average"
 
 @dataclass
 class MacroScore:
