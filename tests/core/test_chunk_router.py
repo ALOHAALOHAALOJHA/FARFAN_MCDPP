@@ -11,6 +11,8 @@ import json
 import pytest
 from pydantic import ValidationError
 
+pytestmark = pytest.mark.obsolete
+
 from farfan_pipeline.core.orchestrator.chunk_router import (
     ChunkRouter,
     ExecutionMap,

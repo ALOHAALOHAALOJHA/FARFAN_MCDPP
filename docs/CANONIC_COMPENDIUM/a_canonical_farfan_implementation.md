@@ -32,6 +32,28 @@ El presente compendio ofrece una descripción exhaustiva y autocontenida de la a
 
 *Se generará dinámicamente al finalizar la redacción de todas las secciones.*
 
+## 1.4. Cómo usar este compendio con el código real del repositorio
+
+Este documento ahora está alineado con la topología real del código en `src/farfan_pipeline/`. Las rutas
+referenciadas a continuación existen en el repositorio y son el camino canónico de ejecución:
+
+-   **Entrypoint verificado**: `src/farfan_pipeline/entrypoint/main.py` (usa el orquestador central y valida
+    Phase 2 con `validate_phase2_result`).
+-   **Orquestación de fases**: `src/farfan_pipeline/core/phases/phase_orchestrator.py` (Fase 0 → Fase 1 →
+    Adapter → Fase 2, con contratos en `phase0_input_validation.py`, `phase1_spc_ingestion.py`,
+    `phase1_to_phase2_adapter/`).
+-   **Orquestador core (11 fases)**: `src/farfan_pipeline/core/orchestrator/core.py` (integra ejecutores,
+    agregadores y verificación de contratos).
+-   **Ejecución batch**: `src/farfan_pipeline/core/orchestrator/batch_executor.py` (clases `BatchExecutor`,
+    `BatchExecutorConfig` y tests en `tests/test_batch_executor.py`).
+-   **Calibración**: `src/farfan_pipeline/core/calibration/orchestrator.py` (carga `config/intrinsic_calibration.json`
+    y runtime layers de `system/config/calibration/runtime_layers.json`).
+-   **Ingesta SPC**: `src/farfan_pipeline/processing/spc_ingestion.py` y adaptador
+    `src/farfan_pipeline/utils/spc_adapter.py`.
+-   **Agregación**: `src/farfan_pipeline/processing/aggregation.py` (Dimension, Area, Cluster, Macro).
+-   **Configuración y CLI**: `system/config/config_manager.py`, `system/config/config_cli.py` y ejemplos en
+    `system/config/example_usage.py`.
+
 ---
 
 # SECCIÓN 2: VISIÓN GENERAL DEL SISTEMA F.A.R.F.A.N.
@@ -47,14 +69,21 @@ El propósito de este documento es, por tanto, servir como el "código fuente" c
 
 ## 2.2. Componentes Principales del Ecosistema
 
-El ecosistema F.A.R.F.A.N. no es un único programa monolítico, sino un conjunto de componentes interconectados, cada uno con una responsabilidad claramente definida. A alto nivel, estos componentes son:
+El ecosistema F.A.R.F.A.N. es un conjunto de componentes con responsabilidades explícitas y rutas reales en este
+repositorio:
 
--   **El Repositorio de Código (`saaaaaa`):** Contiene la implementación en Python de toda la lógica del sistema, incluyendo el motor de simulación, los algoritmos de análisis, los scripts de orquestación y las interfaces de datos.
--   **La Especificación Canónica (Este Compendio):** El documento que está leyendo. Sirve como la guía autorizada sobre la arquitectura, el modelo y los procedimientos.
--   **El Conjunto de Datos Canónico (`./data`):** Un conjunto versionado de datos de entrada, configuraciones y `schemas` que definen la estructura de todos los artefactos de datos. El más importante de estos es el `questionnaire_monolith.json`, que actúa como la especificación central de la lógica del cuestionario y el scoring.
--   **El Pipeline de Ejecución (`Makefile`, `atroz_quickstart.sh`):** Un conjunto de scripts y herramientas que orquestan la ejecución de las diferentes fases del modelo, desde la configuración del entorno hasta la generación de resultados y visualizaciones.
+-   **Código fuente (`src/farfan_pipeline/`):** Implementa la lógica del pipeline (orquestación, ejecutores,
+    análisis, SPC, agregación) y el runner verificado en `entrypoint/main.py`.
+-   **Calibración y configuración:** JSON en `config/` y `system/config/` (runtime layers, transforms) gestionados
+    por `system/config/config_manager.py` y CLI en `system/config/config_cli.py`.
+-   **Especificación canónica (este compendio):** Fuente de verdad sobre arquitectura y contratos, enlazado a rutas
+    reales del código.
+-   **Datos y schemas (`data/`, `config/canonical_ontologies/`, `rules/`):** Esquemas y monolitos validados por
+    los cargadores de `core/orchestrator/questionnaire.py` y los contratos de fases.
+-   **Pipeline de ejecución:** `python -m farfan_pipeline.entrypoint.main` (o scripts en `scripts/`) que invocan
+    al `PhaseOrchestrator` y al `Orchestrator` core; no existe `Makefile` en este repo.
 
-La interacción entre estos componentes se rige por un principio de "contratos estrictos": cada componente espera y produce artefactos de datos que se adhieren a un `schema` bien definido, garantizando la interoperabilidad y previniendo errores de integración.
+Las interacciones siguen contratos estrictos (TypedDict y validaciones Pydantic) en límites de fase y orquestación.
 
 ## 2.3. Flujo de Procesamiento a Alto Nivel
 
@@ -87,7 +116,7 @@ A continuación, se describe cada una de las capas, desde la más externa (inter
 
 *Nota: La siguiente es una descripción textual del gráfico canónico de la arquitectura. El script para generar la imagen `.png` correspondiente se encuentra en la Sección 9. El gráfico debe mostrar cinco cajas horizontales apiladas, etiquetadas de "Capa 0" a "Capa 4", con flechas que indican las dependencias permitidas, apuntando siempre hacia abajo.*
 
-**[GRÁFICO-ARQUITECTURA-01: Arquitectura de Capas de F.A.R.F.A.N. - Placeholder]**
+![Arquitectura de capas](../phases/phase_1/images/canonical_architecture.png)
 
 ## 3.3. Detalle de las Capas
 
@@ -95,53 +124,55 @@ A continuación, se describe cada una de las capas, desde la más externa (inter
 
 -   **Propósito:** Es la capa más externa del sistema. Su única responsabilidad es iniciar, configurar y monitorizar la ejecución del pipeline completo. No contiene ninguna lógica de negocio.
 -   **Componentes Clave:**
-    -   `Makefile`: Define comandos de alto nivel para tareas comunes (`make setup`, `make verify`, `make run-pipeline`).
-    -   `atroz_quickstart.sh`: Script de inicio rápido que configura el entorno y lanza los procesos principales, como el servidor API.
-    -   `scripts/`: Directorio que contiene los scripts de ejecución principal que invocan al orquestador. Por ejemplo, `scripts/run_canonical_pipeline.py`.
-    -   `src/saaaaaa/core/orchestrator/core.py`: El corazón de la orquestación. La clase `Orchestrator` en este módulo define la secuencia de 11 fases y gestiona el flujo de datos entre ellas.
--   **Dependencias:** Depende directamente de la **Capa 1 (Lógica de Negocio)** para invocar los `Executors` y de la **Capa 3 (Abstracción de Datos)** para inicializar los recursos (como la carga del `questionnaire_monolith.json`).
+    -   `src/farfan_pipeline/entrypoint/main.py`: Runner verificado con `VerificationManifest` y validación de Phase 2.
+    -   `src/farfan_pipeline/scripts/`: Scripts auxiliares (p.ej. `run_complete_analysis_plan1.py`) que invocan al runner.
+    -   `src/farfan_pipeline/core/phases/phase_orchestrator.py`: Secuencia constitucional de fases (0 → 1 → Adapter → 2).
+-   **Dependencias:** Invoca directamente la **Capa 1 (Orquestador core)** y consume configuraciones desde **Capa 5**.
 
 ### 3.3.2. Capa 1: Lógica de Negocio y Análisis (Business Logic & Analysis Layer)
 
 -   **Propósito:** Contiene la implementación de todos los algoritmos, reglas y modelos que constituyen el "cerebro" de F.A.R.F.A.N. Esta capa es la que ejecuta los análisis específicos definidos en el monolito.
 -   **Componentes Clave:**
-    -   `src/saaaaaa/core/orchestrator/executors.py`: Contiene las clases `Executor` (ej. `D1Q1_Executor`). Cada clase implementa la lógica para una micro-pregunta específica, definiendo una `METHOD_SEQUENCE` que invoca a los métodos de análisis.
-    -   `src/saaaaaa/analysis/scoring.py`: Implementa la clase `MicroQuestionScorer`, que contiene la lógica de puntuación para los diferentes tipos de preguntas (TYPE_A, TYPE_B, etc.).
-    -   `src/saaaaaa/analysis/meso_cluster_analysis.py`: Contiene funciones para análisis secundarios que se realizan sobre los datos ya agregados (ej. cálculo de dispersión).
--   **Dependencias:** Depende de la **Capa 2 (Procesamiento y Agregación)** para obtener los datos en el formato que necesita y de la **Capa 4 (Utilidades)** para funciones de soporte. Es agnóstica a cómo se inician los procesos (Capa 0) o cómo se cargan los datos crudos (Capa 3).
+    -   `src/farfan_pipeline/core/orchestrator/core.py`: Orquestador de 11 fases con rutas de argumentos y validación.
+    -   `src/farfan_pipeline/core/orchestrator/executors.py`: Ejecutores de micro-pregunta y configuración (`METHOD_SEQUENCE`).
+    -   `src/farfan_pipeline/analysis/scoring.py` y `analysis/meso_cluster_analysis.py`: Lógica de scoring y análisis secundarios.
+    -   `src/farfan_pipeline/core/orchestrator/batch_executor.py`: Infraestructura de ejecución batch y streaming.
+-   **Dependencias:** Consume datos procesados (SPC + agregación) de la **Capa 2** y utilidades/configuración de **Capa 5**.
 
 ### 3.3.3. Capa 2: Procesamiento y Agregación de Datos (Data Processing & Aggregation Layer)
 
 -   **Propósito:** Su responsabilidad es la manipulación, transformación y agregación de los datos. Convierte los resultados micro en macro-indicadores.
 -   **Componentes Clave:**
-    -   `src/saaaaaa/processing/aggregation.py`: Contiene las clases `DimensionAggregator`, `AreaPolicyAggregator` y `ClusterAggregator`. Estas clases implementan la lógica jerárquica para agrupar los `ScoredResult` individuales en estructuras de datos de nivel superior.
-    -   `scripts/smart_policy_chunks_canonic_phase_one.py`: Aunque es un script, su lógica principal (`_generate_60_structured_segments`) pertenece a esta capa, ya que se encarga de la transformación inicial de datos brutos en las unidades de análisis (SPCs).
--   **Dependencias:** Depende de la **Capa 4 (Utilidades)**, especialmente de los modelos de validación Pydantic (`validation/aggregation_models.py`) para definir las estructuras de datos que produce.
+    -   `src/farfan_pipeline/processing/spc_ingestion.py`: Pipeline SPC canónico (fase 1) que produce `CanonPolicyPackage`.
+    -   `src/farfan_pipeline/utils/spc_adapter.py`: Adaptador SPC → `PreprocessedDocument` usado por el orquestador.
+    -   `src/farfan_pipeline/processing/aggregation.py`: `DimensionAggregator`, `AreaPolicyAggregator`, `ClusterAggregator`, `MacroAggregator`.
+-   **Dependencias:** Usa modelos/contratos de **Capa 5** (`core/types.py`, validaciones en `core/phases/phase2_types.py`).
 
 ### 3.3.4. Capa 3: Abstracción de Datos y Servicios (Data Abstraction & Services Layer)
 
 -   **Propósito:** Actúa como un intermediario entre la lógica de negocio y las fuentes de datos físicas. Proporciona una API limpia y estable para acceder a recursos clave, ocultando los detalles de implementación (ej. si un archivo se lee del disco o de una base de datos).
 -   **Componentes Clave:**
-    -   `src/saaaaaa/core/wiring/bootstrap.py`: Implementa el `bootstrap` del sistema, utilizando un mecanismo de inyección de dependencias para proveer recursos a las capas superiores de forma controlada.
-    -   `src/saaaaaa/core/orchestrator/questionnaire.py`: Contiene la función `load_questionnaire()`, que es el único punto de acceso permitido al `questionnaire_monolith.json`. Esta función no solo carga el archivo, sino que también realiza una verificación de integridad mediante un hash SHA-256, garantizando que se utiliza la versión canónica.
--   **Dependencias:** Depende de la **Capa 5 (Datos y Configuración)** para conocer la ubicación de los archivos físicos.
+    -   `src/farfan_pipeline/core/orchestrator/questionnaire.py`: Carga y valida el monolito (SHA-256).
+    -   `src/farfan_pipeline/core/orchestrator/factory.py`: Construye el `processor` con orquestador y ejecutores.
+    -   `src/farfan_pipeline/core/calibration/orchestrator.py`: Evalúa calibración usando configuraciones en `config/` y `system/config/`.
+-   **Dependencias:** Depende de la **Capa 5 (Datos y Configuración)** para rutas y parámetros.
 
 ### 3.3.5. Capa 4: Utilidades y Soporte (Utilities & Support Layer)
 
 -   **Propósito:** Es la capa más fundamental. Proporciona herramientas, funciones y definiciones transversales que son utilizadas por todas las demás capas del sistema. No contiene ninguna lógica de negocio.
 -   **Componentes Clave:**
-    -   `src/saaaaaa/utils/`: Directorio que contiene módulos de utilidad general.
-    -   `src/saaaaaa/utils/validation/`: Subdirectorio con todos los modelos Pydantic que definen las estructuras de datos del sistema (ej. `ScoredResult`, `DimensionScore`). Estos modelos actúan como "contratos de datos" entre las capas.
-    -   `src/saaaaaa/utils/logging.py`: Configuración del sistema de logging.
--   **Dependencias:** No tiene dependencias con ninguna otra capa de la arquitectura F.A.R.F.A.N. (solo con librerías externas).
+    -   `src/farfan_pipeline/utils/`: Utilidades generales, adaptadores y funciones de determinismo.
+    -   `src/farfan_pipeline/utils/validation/`: Modelos Pydantic y contratos.
+    -   `src/farfan_pipeline/core/types.py`: Tipos compartidos (`PreprocessedDocument`, `ChunkData`).
+-   **Dependencias:** Solo depende de librerías externas; provee soporte transversal a capas superiores.
 
 ### 3.3.6. Capa 5: Datos y Configuración (Data & Configuration Layer)
 
 -   **Propósito:** No es una capa de código, sino la representación de los datos en reposo. Contiene todos los archivos de configuración, datos de entrada y especificaciones que el sistema necesita para funcionar.
 -   **Componentes Clave:**
-    -   `data/questionnaire_monolith.json`: El archivo más crítico del sistema. Define la estructura de las preguntas, los `executors`, los métodos de análisis y las reglas de scoring.
-    -   `data/schemas/`: Contiene los JSON Schemas que validan la estructura de los artefactos de datos de entrada y salida.
-    -   `config/`: Configuraciones de componentes específicos (aunque en el estado actual, muchas de estas son secundarias frente al monolito).
+    -   `data/questionnaire_monolith.json`: Especifica preguntas, ejecutores y scoring.
+    -   `config/`: Monolitos y parámetros (intrinsic calibration, catálogos canónicos, rutas).
+    -   `system/config/`: Configs gestionables en runtime (p.ej. `calibration/runtime_layers.json`, `unit_transforms.json`).
 -   **Dependencias:** Es la base sobre la que operan todas las demás capas. No depende de ninguna otra capa.
 
 ---
@@ -152,13 +183,13 @@ A continuación, se describe cada una de las capas, desde la más externa (inter
 
 El corazón operativo de F.A.R.F.A.N. es un pipeline secuencial y determinista compuesto por 11 fases. Cada fase es una etapa de procesamiento discreta que toma los artefactos de la fase anterior, realiza una transformación o análisis específico, y entrega sus resultados a la fase siguiente. Esta estructura garantiza un flujo de datos unidireccional, trazable y robusto.
 
-La ejecución del pipeline es gestionada por la clase `Orchestrator` (ubicada en `src/saaaaaa/core/orchestrator/core.py`), que actúa como el director de orquesta, asegurando que cada fase se ejecute en el orden correcto, con los `inputs` requeridos y bajo las restricciones de recursos definidas.
+La ejecución del pipeline es gestionada por la clase `Orchestrator` (ubicada en `src/farfan_pipeline/core/orchestrator/core.py`), que actúa como el director de orquesta, asegurando que cada fase se ejecute en el orden correcto, con los `inputs` requeridos y bajo las restricciones de recursos definidas.
 
 ## 4.2. Visualización del Pipeline
 
-*Nota: La siguiente es una descripción textual del gráfico canónico del pipeline. El script para generar la imagen `.png` correspondiente se encuentra en la Sección 9. El gráfico debe mostrar una secuencia de 11 cajas conectadas por flechas, desde la "FASE 0" hasta la "FASE 10", indicando el flujo de datos y el artefacto principal que se produce en cada etapa.*
+*Nota: El gráfico canónico del pipeline ya está generado en `docs/phases/phase_1/images/canonical_pipeline.png`.*
 
-**[GRÁFICO-PIPELINE-01: Pipeline de 11 Fases de F.A.R.F.A.N. - Placeholder]**
+![Pipeline de 11 fases](../phases/phase_1/images/canonical_pipeline.png)
 
 ## 4.3. Detalle de las Fases
 

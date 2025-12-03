@@ -15,7 +15,7 @@ logic to block commits containing hardcoded calibration patterns.
 import re
 import pytest
 from pathlib import Path
-from typing import List, Dict, Tuple, Set, Any
+from typing import Any, List, Dict, Tuple, Set
 
 
 class TestNoHardcodedCalibrations:

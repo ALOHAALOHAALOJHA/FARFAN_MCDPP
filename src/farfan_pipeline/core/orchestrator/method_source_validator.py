@@ -5,7 +5,7 @@ import json
 from typing import Dict, List, Any
 
 class MethodSourceValidator:
-    def __init__(self, base_path: str = "src/farfan_core"):
+    def __init__(self, base_path: str = "src/farfan_pipeline"):
         self.base_path = base_path
         self.source_map = self._build_source_map()
 
@@ -40,7 +40,7 @@ class MethodSourceValidator:
                             print(f"Error parsing {file_path}: {e}")
         return class_map
 
-    def validate_executor_methods(self, executor_methods_path: str = "src/farfan_core/core/orchestrator/executors_methods.json") -> Dict[str, List[str]]:
+    def validate_executor_methods(self, executor_methods_path: str = "src/farfan_pipeline/core/orchestrator/executors_methods.json") -> Dict[str, List[str]]:
         with open(executor_methods_path, "r") as f:
             executor_data = json.load(f)
 
