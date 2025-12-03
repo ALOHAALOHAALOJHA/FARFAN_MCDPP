@@ -27,6 +27,31 @@ from farfan_pipeline.core.orchestrator.evidence_registry import (
     ProvenanceNode,
     get_global_registry,
 )
+from .resource_manager import (
+    AdaptiveResourceManager,
+    CircuitBreaker,
+    CircuitState,
+    DegradationStrategy,
+    ExecutorPriority,
+    ResourceAllocationPolicy,
+    ResourcePressureLevel,
+)
+from .resource_aware_executor import (
+    ResourceAwareExecutor,
+    ResourceConstraints,
+)
+from .resource_alerts import (
+    AlertChannel,
+    AlertSeverity,
+    ResourceAlert,
+    ResourceAlertManager,
+)
+from .resource_integration import (
+    create_resource_manager,
+    integrate_with_orchestrator,
+    get_resource_status,
+    reset_circuit_breakers,
+)
 
 __all__ = [
     "EvidenceRecord",
@@ -47,4 +72,21 @@ __all__ = [
     "PhaseResult",
     "MicroQuestionRun",
     "ScoredMicroQuestion",
+    "AdaptiveResourceManager",
+    "CircuitBreaker",
+    "CircuitState",
+    "DegradationStrategy",
+    "ExecutorPriority",
+    "ResourceAllocationPolicy",
+    "ResourcePressureLevel",
+    "ResourceAwareExecutor",
+    "ResourceConstraints",
+    "AlertChannel",
+    "AlertSeverity",
+    "ResourceAlert",
+    "ResourceAlertManager",
+    "create_resource_manager",
+    "integrate_with_orchestrator",
+    "get_resource_status",
+    "reset_circuit_breakers",
 ]
