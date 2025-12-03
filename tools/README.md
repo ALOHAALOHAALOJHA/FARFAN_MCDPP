@@ -9,10 +9,135 @@ tools/
 ├── validation/           # Contract validation tools
 │   ├── validate_scoring_parity.py
 │   └── validate_error_logs.py
-└── testing/             # Operational testing tools
-    ├── generate_synthetic_traffic.py
-    └── boot_check.py
+├── testing/             # Operational testing tools
+│   ├── generate_synthetic_traffic.py
+│   └── boot_check.py
+└── chunk_semantic_auditor.py  # Offline semantic integrity verification
 ```
+
+## Semantic Integrity Tools
+
+### Chunk Semantic Auditor
+
+**Purpose**: Offline verification of semantic integrity for processed policy chunks. Acts as an independent verifier to ensure chunk content aligns with assigned metadata (policy_area_id, dimension_id).
+
+**Key Features**:
+- Uses sentence-transformers for semantic similarity computation
+- Compares chunk text against canonical descriptions of policy areas and dimensions
+- Configurable coherence threshold (default: 0.7)
+- Generates detailed JSON audit reports
+- Detects potential SPC model degradation or routing errors
+
+**Usage**:
+
+```bash
+# Basic audit with default settings
+python tools/chunk_semantic_auditor.py --artifacts-dir artifacts/plan1/
+
+# Custom coherence threshold
+python tools/chunk_semantic_auditor.py \
+    --artifacts-dir artifacts/plan1/ \
+    --threshold 0.65
+
+# Use a different sentence transformer model
+python tools/chunk_semantic_auditor.py \
+    --artifacts-dir artifacts/plan1/ \
+    --model-name sentence-transformers/all-mpnet-base-v2
+
+# Verbose output for debugging
+python tools/chunk_semantic_auditor.py \
+    --artifacts-dir artifacts/plan1/ \
+    --verbose
+```
+
+**Output**:
+
+The tool generates:
+1. **Console Summary**: Pass/fail statistics, average scores, and specific failures
+2. **JSON Report**: `semantic_audit_report.json` in the artifacts directory
+
+Sample report structure:
+```json
+{
+  "metadata": {
+    "artifacts_dir": "artifacts/plan1/",
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "threshold": 0.7,
+    "total_chunks_audited": 450
+  },
+  "summary": {
+    "passed": 442,
+    "failed": 8,
+    "pass_rate": 0.982,
+    "average_coherence_score": 0.784,
+    "min_coherence_score": 0.612,
+    "max_coherence_score": 0.921
+  },
+  "failures": [
+    {
+      "chunk_id": "chunk_042",
+      "file_path": "phase1/chunks.json",
+      "policy_area_id": "PA03",
+      "dimension_id": "DIM02",
+      "coherence_score": 0.612,
+      "threshold": 0.7
+    }
+  ]
+}
+```
+
+**Interpretation**:
+
+- **Coherence Score ≥ threshold**: Chunk content semantically aligns with metadata
+- **Coherence Score < threshold**: Potential misclassification or routing error
+- **Low average scores**: May indicate SPC model degradation
+- **High failure rate**: Critical issue requiring pipeline investigation
+
+**Exit Codes**:
+- 0: All chunks pass semantic integrity checks
+- 1: One or more chunks fail (failures listed in report)
+- 2: Configuration error or runtime failure
+
+**Canonical Descriptions**:
+
+The tool uses canonical descriptions for 6 dimensions (DIM01-DIM06) and 10 policy areas (PA01-PA10):
+
+- **DIM01**: Inputs (financial resources, human capital, infrastructure)
+- **DIM02**: Activities (actions, programs, interventions)
+- **DIM03**: Products (deliverables, outputs, services)
+- **DIM04**: Results (outcomes, behavioral changes, effects)
+- **DIM05**: Impacts (long-term effects, structural changes)
+- **DIM06**: Causality (logical chains, causal relationships, theory of change)
+
+- **PA01**: Economic development, business competitiveness
+- **PA02**: Social welfare, health, education
+- **PA03**: Urban planning, infrastructure
+- **PA04**: Environmental protection, sustainability
+- **PA05**: Public security, justice
+- **PA06**: Cultural development, heritage
+- **PA07**: Institutional capacity, governance
+- **PA08**: Rural development, agriculture
+- **PA09**: Digital transformation, technology
+- **PA10**: Cross-sectoral integration
+
+**When to Run**:
+
+- After Phase 1 (SPC processing) completes
+- Before Phase 2 (micro question analysis)
+- During pipeline debugging/optimization
+- As part of quality assurance workflow
+- When investigating accuracy degradation
+
+**Performance**:
+
+- **Speed**: ~5-10 chunks/second (depends on model and hardware)
+- **Memory**: ~500MB-2GB (depends on model size)
+- **Models**: Supports any sentence-transformers model
+  - Fast: `all-MiniLM-L6-v2` (default, 80MB)
+  - Balanced: `all-mpnet-base-v2` (420MB)
+  - Accurate: `all-mpnet-base-v2` or multilingual variants
+
+---
 
 ## Validation Tools
 
