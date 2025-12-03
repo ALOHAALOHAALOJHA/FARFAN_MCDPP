@@ -531,6 +531,7 @@ class DimensionAggregator:
         monolith: dict[str, Any] | None = None,
         abort_on_insufficient: bool = True,
         aggregation_settings: AggregationSettings | None = None,
+        enable_sota_features: bool = True,
     ) -> None:
         """
         Initialize dimension aggregator.
@@ -538,6 +539,8 @@ class DimensionAggregator:
         Args:
             monolith: Questionnaire monolith configuration (optional, required for run())
             abort_on_insufficient: Whether to abort on insufficient coverage
+            aggregation_settings: Resolved aggregation settings
+            enable_sota_features: Enable SOTA features (Choquet, UQ, provenance)
 
         Raises:
             ValueError: If monolith is None and required for operations
@@ -548,6 +551,7 @@ class DimensionAggregator:
         self.dimension_group_by_keys = (
             self.aggregation_settings.dimension_group_by_keys or ["policy_area", "dimension"]
         )
+        self.enable_sota_features = enable_sota_features
 
         # Extract configuration if monolith provided
         if monolith is not None:
@@ -557,7 +561,15 @@ class DimensionAggregator:
             self.scoring_config = None
             self.niveles = None
 
-        logger.info("DimensionAggregator initialized")
+        # SOTA: Initialize provenance DAG
+        if self.enable_sota_features:
+            self.provenance_dag = AggregationDAG()
+            self.bootstrap_aggregator = BootstrapAggregator(n_samples=1000, random_seed=42)
+            logger.info("DimensionAggregator initialized with SOTA features enabled")
+        else:
+            self.provenance_dag = None
+            self.bootstrap_aggregator = None
+            logger.info("DimensionAggregator initialized (legacy mode)")
 
         # Validate canonical notation if available
         if HAS_CANONICAL_NOTATION:
@@ -756,6 +768,62 @@ class DimensionAggregator:
 
         return weighted_sum
 
+    def aggregate_with_sota(
+        self,
+        scores: list[float],
+        weights: list[float] | None = None,
+        method: str = "choquet",
+        compute_uncertainty: bool = True,
+    ) -> tuple[float, UncertaintyMetrics | None]:
+        """
+        SOTA aggregation with Choquet integral and uncertainty quantification.
+        
+        This method provides:
+        1. Non-linear aggregation via Choquet integral (captures synergies)
+        2. Bayesian uncertainty quantification via bootstrap
+        3. Full reproducibility with fixed random seed
+        
+        Args:
+            scores: Input scores to aggregate
+            weights: Optional weights (default: uniform)
+            method: Aggregation method ("choquet" or "weighted_average")
+            compute_uncertainty: Whether to compute uncertainty metrics
+        
+        Returns:
+            Tuple of (aggregated_score, uncertainty_metrics)
+            If compute_uncertainty=False, uncertainty_metrics is None
+        
+        Raises:
+            ValueError: If scores is empty or method invalid
+        """
+        if not scores:
+            raise ValueError("Cannot aggregate empty score list")
+        
+        if method == "choquet":
+            # Use Choquet integral for non-linear aggregation
+            choquet_adapter = create_default_choquet_adapter(len(scores))
+            score = choquet_adapter.aggregate(scores, weights)
+            logger.info(f"Choquet aggregation: {len(scores)} inputs → {score:.4f}")
+        elif method == "weighted_average":
+            # Fall back to standard weighted average
+            score = self.calculate_weighted_average(scores, weights)
+        else:
+            raise ValueError(f"Unknown aggregation method: {method}")
+        
+        # Compute uncertainty if requested
+        uncertainty = None
+        if compute_uncertainty and self.bootstrap_aggregator:
+            _, uncertainty = aggregate_with_uncertainty(
+                scores, weights, n_bootstrap=1000, random_seed=42
+            )
+            logger.debug(
+                f"Uncertainty: mean={uncertainty.mean:.4f}, "
+                f"std={uncertainty.std:.4f}, "
+                f"CI95={uncertainty.confidence_interval_95}"
+            )
+        
+        return score, uncertainty
+
     def apply_rubric_thresholds(
         self,
         score: float,
@@ -875,27 +943,40 @@ class DimensionAggregator:
 
         # Extract scores
         scores = [r.score for r in dim_results]
+        question_ids = [r.question_global for r in dim_results]
 
-        # Calculate weighted average
+        # Calculate weighted average with SOTA features
         resolved_weights = weights or self._resolve_dimension_weights(dimension_id, dim_results)
-        try:
+        
+        # SOTA: Use Choquet + uncertainty if enabled
+        if self.enable_sota_features and len(scores) >= 3:
+            try:
+                avg_score, uncertainty = self.aggregate_with_sota(
+                    scores,
+                    resolved_weights,
+                    method="choquet",
+                    compute_uncertainty=True,
+                )
+                validation_details["aggregation"] = {
+                    "method": "choquet",
+                    "uncertainty": uncertainty.to_dict() if uncertainty else None,
+                }
+            except Exception as e:
+                logger.warning(f"SOTA aggregation failed, falling back to standard: {e}")
+                avg_score = self.calculate_weighted_average(scores, resolved_weights)
+                uncertainty = None
+                validation_details["aggregation"] = {"method": "weighted_average", "fallback": True}
+        else:
+            # Standard aggregation
             avg_score = self.calculate_weighted_average(scores, resolved_weights)
-            validation_details["weights"] = {
-                "valid": True,
-                "weights": resolved_weights if resolved_weights else "equal",
-                "score": avg_score
-            }
-        except WeightValidationError as e:
-            logger.error(f"Weight validation failed for {dimension_id}/{area_id}: {e}")
-            return DimensionScore(
-                dimension_id=dimension_id,
-                area_id=area_id,
-                score=ParameterLoaderV2.get("farfan_core.processing.aggregation.DimensionAggregator.validate_weights", "auto_param_L831_22", 0.0),
-                quality_level="INSUFICIENTE",
-                contributing_questions=[r.question_global for r in dim_results],
-                validation_passed=False,
-                validation_details={"error": str(e), "type": "weights"}
-            )
+            uncertainty = None
+            validation_details["aggregation"] = {"method": "weighted_average"}
+        
+        validation_details["weights"] = {
+            "valid": True,
+            "weights": resolved_weights if resolved_weights else "equal",
+            "score": avg_score
+        }
 
         # Apply rubric thresholds
         quality_level = self.apply_rubric_thresholds(avg_score)
@@ -903,12 +984,53 @@ class DimensionAggregator:
             "score": avg_score,
             "quality_level": quality_level
         }
-        # Add score_max for downstream normalization
         validation_details["score_max"] = 3.0
+
+        # SOTA: Add provenance tracking
+        provenance_node_id = f"DIM_{dimension_id}_{area_id}"
+        if self.enable_sota_features and self.provenance_dag:
+            # Add dimension node
+            dim_node = ProvenanceNode(
+                node_id=provenance_node_id,
+                level="dimension",
+                score=avg_score,
+                quality_level=quality_level,
+                metadata={
+                    "dimension_id": dimension_id,
+                    "area_id": area_id,
+                    "n_questions": len(question_ids),
+                },
+            )
+            self.provenance_dag.add_node(dim_node)
+            
+            # Add aggregation edges from questions to dimension
+            question_node_ids = [f"Q{qid:03d}" for qid in question_ids]
+            for qid_str, qid in zip(question_node_ids, question_ids):
+                # Add question node if not exists
+                if qid_str not in self.provenance_dag.nodes:
+                    q_node = ProvenanceNode(
+                        node_id=qid_str,
+                        level="micro",
+                        score=scores[question_ids.index(qid)],
+                        quality_level="UNKNOWN",
+                    )
+                    self.provenance_dag.add_node(q_node)
+            
+            # Record aggregation operation
+            self.provenance_dag.add_aggregation_edge(
+                source_ids=question_node_ids,
+                target_id=provenance_node_id,
+                operation="choquet" if self.enable_sota_features else "weighted_average",
+                weights=resolved_weights or [1.0 / len(question_ids)] * len(question_ids),
+                metadata={"dimension": dimension_id, "area": area_id},
+            )
+            
+            logger.debug(f"Provenance recorded: {len(question_node_ids)} questions → {provenance_node_id}")
 
         logger.info(
             f"✓ Dimension {dimension_id}/{area_id}: "
             f"score={avg_score:.4f}, quality={quality_level}"
+            + (f", std={uncertainty.std:.4f}" if uncertainty else "")
         )
 
         return DimensionScore(
@@ -916,9 +1038,16 @@ class DimensionAggregator:
             area_id=area_id,
             score=avg_score,
             quality_level=quality_level,
-            contributing_questions=[r.question_global for r in dim_results],
+            contributing_questions=question_ids,
             validation_passed=True,
-            validation_details=validation_details
+            validation_details=validation_details,
+            # SOTA fields
+            score_std=uncertainty.std if uncertainty else 0.0,
+            confidence_interval_95=uncertainty.confidence_interval_95 if uncertainty else (0.0, 0.0),
+            epistemic_uncertainty=uncertainty.epistemic_uncertainty if uncertainty else 0.0,
+            aleatoric_uncertainty=uncertainty.aleatoric_uncertainty if uncertainty else 0.0,
+            provenance_node_id=provenance_node_id if self.enable_sota_features else "",
+            aggregation_method="choquet" if (self.enable_sota_features and len(scores) >= 3) else "weighted_average",
         )
 
     def run(
