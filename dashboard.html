@@ -1385,7 +1385,9 @@
             opacity: 0.7;
         }
     </style>
+    <!-- Socket.IO disabled for standalone operation - uncomment for live server mode
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    -->
 </head>
 
 <body>
@@ -1503,7 +1505,16 @@
 
         <div class="evidence-stream">
             <div class="evidence-ticker" id="evidenceTicker">
-                <!-- Will be populated by live data -->
+                <div class="evidence-item"><span class="evidence-dot"></span>PDT Sección 3.2 · Página 45 ·
+                    "Implementación de estrategias municipales"</div>
+                <div class="evidence-item"><span class="evidence-dot"></span>PDT Capítulo 4 · Página 67 · "Articulación
+                    con Decálogo DDHH"</div>
+                <div class="evidence-item"><span class="evidence-dot"></span>Anexo Técnico · Página 112 · "Indicadores
+                    de cumplimiento territorial"</div>
+                <div class="evidence-item"><span class="evidence-dot"></span>PDT Sección 5.1 · Página 89 · "Proyección
+                    territorial 2030"</div>
+                <div class="evidence-item"><span class="evidence-dot"></span>PATR Capítulo 2 · Página 34 · "Cadenas de
+                    valor agropecuarias"</div>
             </div>
         </div>
     </div>
@@ -1602,8 +1613,25 @@
     </div>
 
     <script>
-        // Live data will populate this array from API
-        window.pdetRegions = [];
+        // PDET data embedded for standalone operation (no server needed)
+        window.pdetRegions = [
+            { id: 'arauca', name: 'Arauca', score: 85, x: 15, y: 20, municipalities: 7 },
+            { id: 'catatumbo', name: 'Catatumbo', score: 72, x: 25, y: 15, municipalities: 8 },
+            { id: 'montes_maria', name: 'Montes de María', score: 91, x: 35, y: 10, municipalities: 15 },
+            { id: 'pacifico_medio', name: 'Pacífico Medio', score: 64, x: 10, y: 40, municipalities: 4 },
+            { id: 'putumayo', name: 'Putumayo', score: 78, x: 20, y: 80, municipalities: 9 },
+            { id: 'sierra_nevada', name: 'Sierra Nevada', score: 88, x: 40, y: 5, municipalities: 8 },
+            { id: 'uraba', name: 'Urabá Antioqueño', score: 69, x: 20, y: 25, municipalities: 8 },
+            { id: 'choco', name: 'Chocó', score: 55, x: 8, y: 30, municipalities: 12 },
+            { id: 'macarena', name: 'Macarena-Guaviare', score: 82, x: 45, y: 50, municipalities: 12 },
+            { id: 'pacifico_narinense', name: 'Pacífico Nariñense', score: 60, x: 5, y: 70, municipalities: 11 },
+            { id: 'cuenca_caguan', name: 'Cuenca del Caguán', score: 75, x: 30, y: 60, municipalities: 6 },
+            { id: 'sur_tolima', name: 'Sur del Tolima', score: 89, x: 25, y: 45, municipalities: 4 },
+            { id: 'sur_bolivar', name: 'Sur de Bolívar', score: 67, x: 30, y: 20, municipalities: 7 },
+            { id: 'bajo_cauca', name: 'Bajo Cauca', score: 71, x: 28, y: 22, municipalities: 13 },
+            { id: 'sur_cordoba', name: 'Sur de Córdoba', score: 63, x: 22, y: 18, municipalities: 5 },
+            { id: 'alto_patia', name: 'Alto Patía', score: 80, x: 15, y: 65, municipalities: 24 }
+        ];
 
         const dashboardState = {
             currentView: 'constellation',
@@ -2126,40 +2154,48 @@
             showNotification('Filtros aplicados');
         }
 
-        // --- LIVE BACKEND INTEGRATION ---
-
-        const socket = io('http://localhost:5000');
+        // --- LIVE BACKEND INTEGRATION (optional - works without server) ---
+        let socket = null;
         let adminActive = false;
 
-        // Socket Events
-        socket.on('connect', () => {
-            logAdmin('Conectado al servidor visceral [OK]', 'success');
-            showNotification('SISTEMA ONLINE');
-        });
+        try {
+            if (typeof io !== 'undefined') {
+                socket = io('http://localhost:5000');
+            }
+        } catch (e) {
+            console.log('Server not available, running in standalone mode');
+        }
 
-        socket.on('disconnect', () => {
-            logAdmin('Desconectado del servidor [ERR]', 'error');
-            showNotification('CONEXIÓN PERDIDA');
-        });
+        // Socket Events (only if server is available)
+        if (socket) {
+            socket.on('connect', () => {
+                logAdmin('Conectado al servidor visceral [OK]', 'success');
+                showNotification('SISTEMA ONLINE');
+            });
 
-        socket.on('job_created', (data) => {
-            logAdmin(`Nuevo trabajo iniciado: ${data.filename} [${data.job_id}]`, 'info');
-            addJobToQueue(data);
-        });
+            socket.on('disconnect', () => {
+                logAdmin('Desconectado del servidor [ERR]', 'error');
+                showNotification('CONEXIÓN PERDIDA');
+            });
 
-        socket.on('pipeline_progress', (data) => {
-            updateJobProgress(data);
-            if (adminActive) updateMetrics();
-        });
+            socket.on('job_created', (data) => {
+                logAdmin(`Nuevo trabajo iniciado: ${data.filename} [${data.job_id}]`, 'info');
+                addJobToQueue(data);
+            });
 
-        socket.on('pipeline_completed', (data) => {
-            logAdmin(`Análisis completado: ${data.job_id}`, 'success');
-            showNotification('ANÁLISIS FINALIZADO');
-            // Refresh data
-            loadPDETData();
-        });
+            socket.on('pipeline_progress', (data) => {
+                updateJobProgress(data);
+                if (adminActive) updateMetrics();
+            });
 
-        // Admin Layer Logic
+            socket.on('pipeline_completed', (data) => {
+                logAdmin(`Análisis completado: ${data.job_id}`, 'success');
+                showNotification('ANÁLISIS FINALIZADO');
+                loadPDETData();
+            });
+        } // End of if(socket)
+
+        // Admin Layer Logic (works without server)
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.shiftKey && e.key === 'A') {
                 toggleAdmin();
