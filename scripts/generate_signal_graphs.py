@@ -27,7 +27,7 @@ def create_visualization_1_anatomy():
     bg_gradient.add_stop_color(0, '#04101A', opacity=0.9)
     bg_gradient.add_stop_color(1, '#0A0A0A', opacity=0)
     dwg.add(dwg.rect(size=('100%', '100%'), fill=bg_gradient.get_paint_server()))
-    decay_pattern = dwg.defs.add(dwg.pattern(size=(10, 10), patternUnits="userSpaceOnUse"))
+    decay_pattern = dwg.defs.add(dwg.pattern(size=(10, 10), patternUnits="userSpaceOnUse", id="decay1"))
     decay_pattern.add(dwg.rect(size=('100%', '100%'), fill=colors['elim_fill']))
     decay_pattern.add(dwg.line((0, 10), (10, 0), stroke='#000', stroke_width=1))
     decay_pattern.add(dwg.line((0, 5), (10, 5), stroke=colors['elim_stroke'], stroke_width=0.5, opacity=0.5))
@@ -36,15 +36,9 @@ def create_visualization_1_anatomy():
             'files': ["signals.py", "signal_registry.py", "signal_loader.py", "signal_consumption.py"],
             'positions': [(700, 450), (900, 450), (700, 650), (900, 650)]
         },
-        'integrate': {
-            'files': ["signal_intelligence_layer.py", "signal_semantic_expander.py", "signal_contract_validator.py", "signal_evidence_extractor.py", "signal_context_scoper.py"],
-        },
-        'consider': {
-            'files': ["signal_calibration_gate.py", "signal_quality_metrics.py"]
-        },
-        'eliminate': {
-            'files': ["signal_aliasing.py", "signal_cache_invalidation.py", "signal_fallback_fusion.py", "signal_evidence_extractor_v1_legacy.py", "signal_evidence_extractor.py.bak"]
-        }
+        'integrate': {'files': ["signal_intelligence_layer.py", "signal_semantic_expander.py", "signal_contract_validator.py", "signal_evidence_extractor.py", "signal_context_scoper.py"]},
+        'consider': {'files': ["signal_calibration_gate.py", "signal_quality_metrics.py"]},
+        'eliminate': {'files': ["signal_aliasing.py", "signal_cache_invalidation.py", "signal_fallback_fusion.py", "signal_evidence_extractor_v1_legacy.py", "signal_evidence_extractor.py.bak"]}
     }
     core_pos = modules['core']['positions']
     for i in range(len(core_pos)):
@@ -54,7 +48,6 @@ def create_visualization_1_anatomy():
         x, y = core_pos[i]
         is_deprecated = file == "signal_loader.py"
         stroke_color = '#C41E3A' if is_deprecated else colors['core_stroke']
-
         hexagon = dwg.polygon(get_hexagon_points(x, y), fill=colors['core_fill'], stroke=stroke_color, stroke_width=3)
         dwg.add(hexagon)
         dwg.add(dwg.text(file, insert=(x, y + 5), text_anchor="middle", fill=colors['text_color'], font_family=font_family, font_size="11px"))
@@ -99,19 +92,14 @@ def create_visualization_2_core():
     bg_gradient.add_stop_color(0, '#102F56', opacity=0.8)
     bg_gradient.add_stop_color(1, '#0A0A0A', opacity=0.1)
     dwg.add(dwg.rect(size=('100%', '100%'), fill=bg_gradient.get_paint_server()))
-    data_flow_animation = dwg.defs.add(svgwrite.animate.Animate('stroke-dashoffset', dur='3s', repeatCount='indefinite', from_='20', to='0'))
+    data_flow_animation = svgwrite.animate.Animate('stroke-dashoffset', dur='3s', repeatCount='indefinite', from_='20', to='0')
     core_modules = {
         "signals.py": {'pos': (400, 600), 'desc': "Defines base types: SignalPack, SignalClient.", 'size': 120},
         "signal_registry.py": {'pos': (800, 300), 'desc': "Modern, Phase-2 registry for specialized signal packs.", 'size': 120},
         "signal_consumption.py": {'pos': (800, 900), 'desc': "Cryptographic tracking of signal usage via Merkle Trees.", 'size': 120},
         "signal_loader.py": {'pos': (1200, 600), 'desc': "LEGACY: Phase-1 loader, superficial data extraction.", 'size': 120}
     }
-    connections = [
-        ("signals.py", "signal_registry.py"),
-        ("signals.py", "signal_consumption.py"),
-        ("signal_registry.py", "signal_loader.py"),
-        ("signal_consumption.py", "signal_loader.py")
-    ]
+    connections = [("signals.py", "signal_registry.py"), ("signals.py", "signal_consumption.py"), ("signal_registry.py", "signal_loader.py"), ("signal_consumption.py", "signal_loader.py")]
     for start_mod, end_mod in connections:
         start_pos = core_modules[start_mod]['pos']
         end_pos = core_modules[end_mod]['pos']
@@ -151,7 +139,7 @@ def create_visualization_3_pathology():
     bg_gradient.add_stop_color(0, '#3A0E0E', opacity=0.5)
     bg_gradient.add_stop_color(1, '#0A0A0A', opacity=0.1)
     dwg.add(dwg.rect(size=('100%', '100%'), fill=bg_gradient.get_paint_server()))
-    decay_pattern = dwg.defs.add(dwg.pattern(size=(8, 8), patternUnits="userSpaceOnUse", id="decay"))
+    decay_pattern = dwg.defs.add(dwg.pattern(size=(8, 8), patternUnits="userSpaceOnUse", id="decay3"))
     decay_pattern.add(dwg.rect(size=('100%', '100%'), fill=colors['elim_fill']))
     decay_pattern.add(dwg.line((0, 8), (8, 0), stroke='#000', stroke_width=0.5))
     spark_animation = dwg.defs.add(svgwrite.animate.Animate('r', dur='0.1s', repeatCount='indefinite', values=['1', '3', '1']))
@@ -186,7 +174,7 @@ def create_visualization_3_pathology():
             dwg.add(spark)
     draw_group(modules['integrate'], 200, 600, colors['intel_fill'], colors['intel_stroke'], "INTEGRATE")
     draw_group(modules['consider'], 700, 600, colors['consider_fill'], colors['consider_stroke'], "CONSIDER")
-    draw_group(modules['eliminate'], 1100, 500, 'url(#decay)', colors['elim_stroke'], "ELIMINATE")
+    draw_group(modules['eliminate'], 1100, 500, 'url(#decay3)', colors['elim_stroke'], "ELIMINATE")
     dwg.add(dwg.text("THE INTELLIGENCE LAYER: A GHOST IN THE MACHINE", insert=(800, 50), text_anchor="middle", fill=colors['text_color'], font_family=font_family, font_size="24px", style="letter-spacing: 8px; text-transform: uppercase;"))
     dwg.add(dwg.text("Pathology report of non-integrated modules", insert=(800, 80), text_anchor="middle", fill=colors['intel_stroke'], font_family=font_family, font_size="14px", style="letter-spacing: 4px;"))
     dwg.save()
