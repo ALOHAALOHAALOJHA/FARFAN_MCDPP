@@ -25,11 +25,21 @@ import logging
 import time
 import uuid
 from dataclasses import dataclass
-from typing import Any, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
+
+if TYPE_CHECKING:
+    from farfan_pipeline.core.orchestrator.signals import SignalRegistry
 
 from farfan_pipeline.core.orchestrator.task_planner import ExecutableTask
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
 from farfan_pipeline.synchronization import ChunkMatrix
+
+try:
+    from farfan_pipeline.core.orchestrator.signals import (
+        SignalRegistry as _SignalRegistry,
+    )
+except ImportError:
+    _SignalRegistry = None  # type: ignore
 
 try:
     import blake3
@@ -205,6 +215,7 @@ class IrrigationSynchronizer:
         questionnaire: dict[str, Any],
         preprocessed_document: PreprocessedDocument | None = None,
         document_chunks: list[dict[str, Any]] | None = None,
+        signal_registry: SignalRegistry | None = None,
     ) -> None:
         """Initialize synchronizer with questionnaire and chunks.
 
@@ -212,6 +223,7 @@ class IrrigationSynchronizer:
             questionnaire: Loaded questionnaire_monolith.json data
             preprocessed_document: PreprocessedDocument containing validated chunks
             document_chunks: Legacy list of document chunks (deprecated)
+            signal_registry: SignalRegistry for Phase 5 signal resolution (initialized if None)
 
         Raises:
             ValueError: If chunk matrix validation fails or no chunks provided
@@ -221,6 +233,11 @@ class IrrigationSynchronizer:
         self.question_count = self._count_questions()
         self.chunk_matrix: ChunkMatrix | None = None
         self.document_chunks: list[dict[str, Any]] | None = None
+
+        if signal_registry is None and _SignalRegistry is not None:
+            self.signal_registry: SignalRegistry | None = _SignalRegistry()
+        else:
+            self.signal_registry = signal_registry
 
         if preprocessed_document is not None:
             try:
@@ -291,6 +308,101 @@ class IrrigationSynchronizer:
                     count += 1
 
         return count
+
+    def _resolve_signals_for_question(
+        self,
+        question: dict[str, Any],
+        target_chunk: ChunkData,
+        signal_registry: SignalRegistry | None,
+    ) -> tuple[Any, ...]:
+        """Phase 5: Resolve signals for question and chunk.
+
+        Queries the signal registry for all signals required by the question,
+        validates that all required signals are present, and returns an
+        immutable tuple of Signal objects.
+
+        Args:
+            question: Question dict with signal_requirements
+            target_chunk: Target chunk from Phase 3 routing
+            signal_registry: Registry for signal resolution
+
+        Returns:
+            Immutable tuple of Signal objects
+
+        Raises:
+            ValueError: When signal_registry is None or required signals are missing
+        """
+        if signal_registry is None:
+            raise ValueError("SignalRegistry is required for Phase 5 signal resolution")
+
+        question_id = question.get("question_id", "UNKNOWN")
+        signal_requirements = question.get("signal_requirements", {})
+
+        if not isinstance(signal_requirements, dict):
+            signal_requirements = {}
+
+        required_types = (
+            set(signal_requirements.keys()) if signal_requirements else set()
+        )
+
+        if not required_types:
+            logger.debug(
+                json.dumps(
+                    {
+                        "event": "signal_resolution_skipped",
+                        "question_id": question_id,
+                        "reason": "no_signal_requirements",
+                        "correlation_id": self.correlation_id,
+                    }
+                )
+            )
+            return ()
+
+        try:
+            from farfan_pipeline.core.orchestrator.signal_resolution import (
+                Chunk,
+                _resolve_signals,
+            )
+            from farfan_pipeline.core.orchestrator.signal_resolution import (
+                Question as SignalQuestion,
+            )
+
+            chunk_for_resolution = Chunk(
+                chunk_id=target_chunk.chunk_id
+                or f"{target_chunk.policy_area_id}-{target_chunk.dimension_id}",
+                text=target_chunk.text,
+            )
+
+            question_for_resolution = SignalQuestion(
+                question_id=question_id,
+                signal_requirements=required_types,
+            )
+
+            resolved_signals = _resolve_signals(
+                chunk=chunk_for_resolution,
+                question=question_for_resolution,
+                signal_registry=signal_registry,
+            )
+
+            logger.debug(
+                json.dumps(
+                    {
+                        "event": "signal_resolution_success",
+                        "question_id": question_id,
+                        "chunk_id": chunk_for_resolution.chunk_id,
+                        "required_count": len(required_types),
+                        "resolved_count": len(resolved_signals),
+                        "correlation_id": self.correlation_id,
+                    }
+                )
+            )
+
+            return resolved_signals
+
+        except ImportError as e:
+            raise ValueError(
+                f"Signal resolution dependencies not available: {e}"
+            ) from e
 
     def validate_chunk_routing(self, question: dict[str, Any]) -> ChunkRoutingResult:
         """Phase 3: Validate chunk routing and extract metadata.
@@ -508,6 +620,7 @@ class IrrigationSynchronizer:
         question: dict[str, Any],
         routing_result: ChunkRoutingResult,
         applicable_patterns: tuple[dict[str, Any], ...],
+        resolved_signals: tuple[Any, ...],
     ) -> ExecutableTask:
         """Construct ExecutableTask from question and routing result.
 
@@ -517,6 +630,7 @@ class IrrigationSynchronizer:
             question: Question dict from questionnaire
             routing_result: Validated routing result from Phase 3
             applicable_patterns: Filtered tuple of patterns applicable to the routed policy area
+            resolved_signals: Resolved signals tuple from Phase 5
 
         Returns:
             ExecutableTask ready for execution
@@ -549,6 +663,7 @@ class IrrigationSynchronizer:
                 "document_position": document_position,
                 "text_length": len(routing_result.text_content),
                 "correlation_id": self.correlation_id,
+                "resolved_signals": resolved_signals,
             },
         )
 
@@ -561,6 +676,7 @@ class IrrigationSynchronizer:
                     "chunk_id": chunk_id,
                     "has_expected_elements": len(expected_elements) > 0,
                     "has_document_position": document_position is not None,
+                    "resolved_signals_count": len(resolved_signals),
                     "correlation_id": self.correlation_id,
                 }
             )
@@ -660,18 +776,28 @@ class IrrigationSynchronizer:
 
             for idx, question in enumerate(questions, start=1):
                 question_id = question.get("question_id", f"UNKNOWN_{idx}")
+                policy_area_id = question.get("policy_area_id", "UNKNOWN")
+                dimension_id = question.get("dimension_id", "UNKNOWN")
+                chunk_id = "UNKNOWN"
 
                 try:
                     routing_result = self.validate_chunk_routing(question)
                     routing_successes += 1
+                    chunk_id = routing_result.chunk_id
 
                     patterns_raw = question.get("patterns", [])
                     applicable_patterns = self._filter_patterns(
                         patterns_raw, routing_result.policy_area_id
                     )
 
+                    resolved_signals = self._resolve_signals_for_question(
+                        question,
+                        routing_result.target_chunk,
+                        self.signal_registry,
+                    )
+
                     task = self._construct_task(
-                        question, routing_result, applicable_patterns
+                        question, routing_result, applicable_patterns, resolved_signals
                     )
                     tasks.append(task)
 
@@ -693,24 +819,23 @@ class IrrigationSynchronizer:
                 except ValueError as e:
                     routing_failures += 1
 
-                    policy_area_id = question.get("policy_area_id", "UNKNOWN")
-                    dimension_id = question.get("dimension_id", "UNKNOWN")
-
                     logger.error(
                         json.dumps(
                             {
                                 "event": "task_construction_failure",
-                                "error_event": "routing_failure",
+                                "error_event": "routing_or_signal_failure",
                                 "question_id": question_id,
                                 "question_index": idx,
                                 "policy_area_id": policy_area_id,
                                 "dimension_id": dimension_id,
+                                "chunk_id": chunk_id,
                                 "error_type": type(e).__name__,
                                 "error_message": str(e),
                                 "correlation_id": self.correlation_id,
                                 "timestamp": time.time(),
                             }
-                        )
+                        ),
+                        exc_info=True,
                     )
 
                     raise
