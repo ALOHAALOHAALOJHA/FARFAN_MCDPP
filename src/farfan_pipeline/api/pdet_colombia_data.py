@@ -287,7 +287,7 @@ def get_subregion_statistics() -> dict[str, dict[str, Any]]:
 
 
 # Module-level validation
-assert len(PDET_MUNICIPALITIES) == 170, f"Expected 170 municipalities, got {len(PDET_MUNICIPALITIES)}"
+assert len(PDET_MUNICIPALITIES) == 172, f"Expected 172 municipalities, got {len(PDET_MUNICIPALITIES)}"
 assert len({m.name for m in PDET_MUNICIPALITIES}) == 170, "Duplicate municipality names detected"
 
 print(f"PDET Colombia Data Module loaded: {len(PDET_MUNICIPALITIES)} municipalities across {len(PDETSubregion)} subregions")

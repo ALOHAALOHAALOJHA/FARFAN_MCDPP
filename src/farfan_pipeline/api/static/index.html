@@ -1777,7 +1777,7 @@
         </div>
 
         <div class="evidence-stream">
-            <div class="evidence-ticker">
+            <div class="evidence-ticker" id="evidenceTicker">
                 <div class="evidence-item">
                     <span class="evidence-dot"></span>
                     PDT Sección 3.2 · Página 45 · "Implementación de estrategias municipales"
@@ -1794,6 +1794,29 @@
                     <span class="evidence-dot"></span>
                     PDT Sección 5.1 · Página 89 · "Proyección territorial 2030"
                 </div>
+            </div>
+        </div>
+        
+        <div style="position: fixed; bottom: 10px; right: 20px; display: flex; gap: 15px; font-size: 9px; opacity: 0.6; z-index: 1000; font-family: 'JetBrains Mono', monospace;">
+            <div style="display: flex; gap: 8px;">
+                <span style="color: var(--atroz-green-toxic);">●</span>
+                <span>DOCS: <span id="metricDocs">--</span></span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <span style="color: var(--atroz-blue-electric);">●</span>
+                <span>Q: <span id="metricQuestions">--</span></span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <span style="color: var(--atroz-copper-oxide);">●</span>
+                <span>EV: <span id="metricEvidence">--</span></span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <span style="color: var(--atroz-red-500);">●</span>
+                <span>REC: <span id="metricRecs">--</span></span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <span style="color: var(--ink);">●</span>
+                <span>AVG: <span id="metricAvgScore">--</span></span>
             </div>
         </div>
     </div>
@@ -2940,6 +2963,46 @@
             });
         });
 
+        let metricsRefreshTimer = null;
+        
+        async function refreshSystemMetrics() {
+            try {
+                const dataService = new AtrozDataService(window.location.origin);
+                const metrics = await dataService.fetchSystemMetrics();
+                
+                document.getElementById('metricDocs').textContent = metrics.documents_processed || 0;
+                document.getElementById('metricQuestions').textContent = metrics.total_questions || 0;
+                document.getElementById('metricEvidence').textContent = metrics.total_evidence || 0;
+                document.getElementById('metricRecs').textContent = metrics.total_recommendations || 0;
+                document.getElementById('metricAvgScore').textContent = metrics.avg_macro_score ? metrics.avg_macro_score.toFixed(1) : '--';
+            } catch (error) {
+                console.warn('[AtroZ] Failed to refresh metrics:', error);
+            }
+        }
+        
+        async function refreshEvidenceTicker() {
+            try {
+                const dataService = new AtrozDataService(window.location.origin);
+                const evidence = await dataService.fetchEvidenceStream();
+                
+                const ticker = document.getElementById('evidenceTicker');
+                if (!ticker || !evidence || evidence.length === 0) return;
+                
+                ticker.innerHTML = '';
+                evidence.slice(0, 12).forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'evidence-item';
+                    div.innerHTML = `
+                        <span class="evidence-dot"></span>
+                        ${item.source} · Página ${item.page} · "${item.text}"
+                    `;
+                    ticker.appendChild(div);
+                });
+            } catch (error) {
+                console.warn('[AtroZ] Failed to refresh evidence ticker:', error);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             initParticles();
             initConstellation();
@@ -2952,11 +3015,22 @@
             renderMetricStack();
             drawSparkline('latencySpark', telemetryState.history.latency);
             updateTelemetry();
+            
+            refreshSystemMetrics();
+            refreshEvidenceTicker();
 
             if (telemetryTimer) {
                 clearInterval(telemetryTimer);
             }
             telemetryTimer = setInterval(updateTelemetry, 5200);
+            
+            if (metricsRefreshTimer) {
+                clearInterval(metricsRefreshTimer);
+            }
+            metricsRefreshTimer = setInterval(() => {
+                refreshSystemMetrics();
+                refreshEvidenceTicker();
+            }, 10000);
 
             document.addEventListener('contextmenu', (e) => {
                 e.preventDefault();

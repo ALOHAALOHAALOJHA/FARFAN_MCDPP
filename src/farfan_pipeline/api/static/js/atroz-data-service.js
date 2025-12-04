@@ -269,6 +269,28 @@ class AtrozDataService {
     }
     
     // ========================================================================
+    // API METHODS - ADMIN & METRICS
+    // ========================================================================
+    
+    /**
+     * Fetch comprehensive system metrics
+     * @returns {Promise<Object>} System metrics
+     */
+    async fetchSystemMetrics() {
+        const response = await this.request('/api/admin/metrics');
+        return response;
+    }
+    
+    /**
+     * Fetch system health (CPU, memory, cache, latency)
+     * @returns {Promise<Object>} System health
+     */
+    async fetchSystemHealth() {
+        const response = await this.request('/api/admin/health');
+        return response;
+    }
+    
+    // ========================================================================
     // API METHODS - EXPORT
     // ========================================================================
     
