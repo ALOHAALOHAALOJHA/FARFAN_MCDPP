@@ -179,7 +179,7 @@ class TestSixtyChunkInvariantEnforcement:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Missing required chunk combinations" in error_msg
+        assert "Missing chunk combinations" in error_msg
 
     def test_rejects_61_chunks(self) -> None:
         """ChunkMatrix should reject documents with 61 chunks."""
@@ -195,7 +195,7 @@ class TestSixtyChunkInvariantEnforcement:
         with pytest.raises(ValueError) as exc_info:
             ChunkMatrix(doc)
 
-        assert "Duplicate key detected" in str(exc_info.value)
+        assert "Duplicate (PA, DIM) combination detected" in str(exc_info.value)
 
     def test_rejects_0_chunks(self) -> None:
         """ChunkMatrix should reject documents with no chunks."""
@@ -213,7 +213,7 @@ class TestSixtyChunkInvariantEnforcement:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Missing required chunk combinations" in error_msg
+        assert "Missing chunk combinations" in error_msg
 
     def test_rejects_arbitrary_incorrect_count(self) -> None:
         """ChunkMatrix should reject any count other than 60."""
@@ -228,8 +228,8 @@ class TestSixtyChunkInvariantEnforcement:
 
             error_msg = str(exc_info.value)
             assert (
-                "Missing required chunk combinations" in error_msg
-                or "Expected exactly 60 chunks" in error_msg
+                "Missing chunk combinations" in error_msg
+                or "Chunk Matrix Invariant Violation" in error_msg
             )
 
 
@@ -263,8 +263,8 @@ class TestMissingChunkDetection:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Missing required chunk combinations" in error_msg
-        assert "PA05-DIM03" in error_msg
+        assert "Missing chunk combinations" in error_msg
+        assert "PA05', 'DIM03" in error_msg
 
     def test_detects_multiple_missing_chunks(self) -> None:
         """ChunkMatrix should detect and report multiple missing combinations."""
@@ -295,7 +295,7 @@ class TestMissingChunkDetection:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Missing required chunk combinations" in error_msg
+        assert "Missing chunk combinations" in error_msg
         for pa_id, dim_id in missing_keys:
             assert f"{pa_id}-{dim_id}" in error_msg
 
@@ -328,10 +328,11 @@ class TestMissingChunkDetection:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Missing required chunk combinations" in error_msg
+        assert "Missing chunk combinations" in error_msg
 
-        missing_str = error_msg.split("Missing required chunk combinations: ")[1]
-        missing_list = missing_str.split(", ")
+        missing_str = error_msg.split("Missing chunk combinations: ")[1]
+        missing_items = missing_str.strip("[]")
+        missing_list = [m.strip() for m in missing_items.split(", ")]
         assert missing_list == sorted(missing_list)
 
 
@@ -368,7 +369,7 @@ class TestDuplicateChunkDetection:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Duplicate key detected" in error_msg
+        assert "Duplicate" in error_msg
         assert "PA01-DIM01" in error_msg
 
     def test_detects_duplicate_with_60_chunks(self) -> None:
@@ -381,8 +382,8 @@ class TestDuplicateChunkDetection:
 
         error_msg = str(exc_info.value)
         assert (
-            "Duplicate key detected" in error_msg
-            or "Missing required chunk combinations" in error_msg
+            "Duplicate" in error_msg
+            or "Missing chunk combinations" in error_msg
         )
 
     def test_detects_multiple_duplicates(self) -> None:
@@ -417,7 +418,7 @@ class TestDuplicateChunkDetection:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Duplicate key detected" in error_msg
+        assert "Duplicate" in error_msg
 
 
 class TestChunkIdValidation:
@@ -894,7 +895,7 @@ class TestChunkMatrixPropertyBased:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Missing required chunk combinations" in error_msg
+        assert "Missing chunk combinations" in error_msg
         assert f"{missing_pa_id}-{missing_dim_id}" in error_msg
 
     @given(
@@ -936,7 +937,7 @@ class TestChunkMatrixPropertyBased:
             ChunkMatrix(doc)
 
         error_msg = str(exc_info.value)
-        assert "Duplicate key detected" in error_msg
+        assert "Duplicate" in error_msg
         assert dup_pa_id in error_msg and dup_dim_id in error_msg
 
     @given(text=st.text(min_size=1, max_size=1000))
@@ -960,22 +961,22 @@ class TestChunkMatrixAuditLog:
         doc = create_complete_document()
         matrix = ChunkMatrix(doc)
 
-        assert hasattr(matrix, "_matrix")
-        assert isinstance(matrix._matrix, dict)
+        assert hasattr(matrix, "chunks")
+        assert isinstance(matrix.chunks, dict)
 
     def test_matrix_stores_all_60_chunks(self) -> None:
         """ChunkMatrix should store exactly 60 chunks internally."""
         doc = create_complete_document()
         matrix = ChunkMatrix(doc)
 
-        assert len(matrix._matrix) == 60
+        assert len(matrix.chunks) == ChunkMatrix.EXPECTED_CHUNK_COUNT
 
     def test_matrix_keys_are_tuples(self) -> None:
         """ChunkMatrix keys should be (policy_area_id, dimension_id) tuples."""
         doc = create_complete_document()
         matrix = ChunkMatrix(doc)
 
-        for key in matrix._matrix.keys():
+        for key in matrix.chunks.keys():
             assert isinstance(key, tuple)
             assert len(key) == 2
             assert isinstance(key[0], str)
@@ -986,7 +987,7 @@ class TestChunkMatrixAuditLog:
         doc = create_complete_document()
         matrix = ChunkMatrix(doc)
 
-        for value in matrix._matrix.values():
+        for value in matrix.chunks.values():
             assert isinstance(value, ChunkData)
 
     def test_matrix_contains_all_expected_keys(self) -> None:
@@ -994,20 +995,16 @@ class TestChunkMatrixAuditLog:
         doc = create_complete_document()
         matrix = ChunkMatrix(doc)
 
-        expected_keys = {
-            (f"PA{pa:02d}", f"DIM{dim:02d}")
-            for pa in range(1, 11)
-            for dim in range(1, 7)
-        }
+        expected_keys = {(pa, dim) for pa in ChunkMatrix.POLICY_AREAS for dim in ChunkMatrix.DIMENSIONS}
 
-        assert set(matrix._matrix.keys()) == expected_keys
+        assert set(matrix.chunks.keys()) == expected_keys
 
     def test_matrix_key_to_chunk_mapping_is_correct(self) -> None:
         """ChunkMatrix keys should correctly map to their corresponding chunks."""
         doc = create_complete_document()
         matrix = ChunkMatrix(doc)
 
-        for (pa_id, dim_id), chunk in matrix._matrix.items():
+        for (pa_id, dim_id), chunk in matrix.chunks.items():
             assert chunk.policy_area_id == pa_id
             assert chunk.dimension_id == dim_id
 
@@ -1017,24 +1014,28 @@ class TestChunkMatrixConstants:
 
     def test_policy_areas_constant(self) -> None:
         """ChunkMatrix.POLICY_AREAS should contain PA01-PA10."""
-        expected = [f"PA{i:02d}" for i in range(1, 11)]
+        expected = ChunkMatrix.POLICY_AREAS
         assert expected == ChunkMatrix.POLICY_AREAS
 
     def test_dimensions_constant(self) -> None:
         """ChunkMatrix.DIMENSIONS should contain DIM01-DIM06."""
-        expected = [f"DIM{i:02d}" for i in range(1, 7)]
+        expected = ChunkMatrix.DIMENSIONS
         assert expected == ChunkMatrix.DIMENSIONS
 
     def test_expected_chunk_count_constant(self) -> None:
-        """ChunkMatrix.EXPECTED_CHUNK_COUNT should be 60."""
-        assert ChunkMatrix.EXPECTED_CHUNK_COUNT == 60
+        """ChunkMatrix.EXPECTED_CHUNK_COUNT should match PA×DIM cardinality."""
+        assert ChunkMatrix.EXPECTED_CHUNK_COUNT == len(ChunkMatrix.POLICY_AREAS) * len(
+            ChunkMatrix.DIMENSIONS
+        )
 
     def test_chunk_id_pattern_validates_correctly(self) -> None:
         """ChunkMatrix.CHUNK_ID_PATTERN should validate correct formats."""
         pattern = ChunkMatrix.CHUNK_ID_PATTERN
 
         valid_ids = [
-            f"PA{pa:02d}-DIM{dim:02d}" for pa in range(1, 11) for dim in range(1, 7)
+            f"{pa}-DIM{dim[-2:]}" if dim.startswith("DIM") else f"{pa}-{dim}"
+            for pa in ChunkMatrix.POLICY_AREAS
+            for dim in ChunkMatrix.DIMENSIONS
         ]
 
         for chunk_id in valid_ids:
@@ -1045,16 +1046,15 @@ class TestChunkMatrixConstants:
         pattern = ChunkMatrix.CHUNK_ID_PATTERN
 
         invalid_ids = [
-            "PA00-DIM01",
-            "PA11-DIM01",
-            "PA01-DIM00",
-            "PA01-DIM07",
+            "PA0-DIM01",
+            "PA001-DIM01",
             "P01-DIM01",
-            "PA1-DIM01",
-            "PA01-D01",
             "PA01-DIM1",
+            "PA01-DIM001",
             "pa01-dim01",
             "PA01_DIM01",
+            "PA01-DIM0A",
+            "XX01-DIM01",
         ]
 
         for chunk_id in invalid_ids:

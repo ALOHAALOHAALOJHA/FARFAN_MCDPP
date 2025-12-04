@@ -67,6 +67,12 @@ else:
     class DummyMetric:
         def time(self):
             class DummyContextManager:
+                def __call__(self, func):
+                    def wrapper(*args, **kwargs):
+                        return func(*args, **kwargs)
+
+                    return wrapper
+
                 def __enter__(self):
                     return self
 

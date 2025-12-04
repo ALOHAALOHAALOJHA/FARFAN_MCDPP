@@ -67,7 +67,7 @@ def test_chunk_matrix_rejects_59_chunks() -> None:
         ChunkMatrix(doc)
 
     error_msg = str(exc_info.value)
-    assert "Missing required chunk combinations" in error_msg
+    assert "Missing chunk combinations" in error_msg
 
 
 def test_chunk_matrix_rejects_61_chunks() -> None:
@@ -87,7 +87,7 @@ def test_chunk_matrix_rejects_61_chunks() -> None:
         ChunkMatrix(doc)
 
     error_msg = str(exc_info.value)
-    assert "Duplicate key detected" in error_msg
+    assert "Duplicate (PA, DIM) combination detected" in error_msg
 
 
 def test_chunk_matrix_rejects_duplicate_keys() -> None:
@@ -116,7 +116,9 @@ def test_chunk_matrix_rejects_duplicate_keys() -> None:
         ingested_at=datetime.now(),
     )
 
-    with pytest.raises(ValueError, match=r"Duplicate key detected: PA01-DIM01"):
+    with pytest.raises(
+        ValueError, match=r"Duplicate .*PA01-DIM01"
+    ):
         ChunkMatrix(doc)
 
 
@@ -147,8 +149,8 @@ def test_chunk_matrix_detects_missing_combinations() -> None:
         ChunkMatrix(doc)
 
     error_msg = str(exc_info.value)
-    assert "Missing required chunk combinations" in error_msg
-    assert "PA05-DIM03" in error_msg
+    assert "Missing chunk combinations" in error_msg
+    assert "PA05', 'DIM03" in error_msg
 
 
 def test_chunk_matrix_detects_missing_combinations_with_exact_error() -> None:
@@ -166,7 +168,7 @@ def test_chunk_matrix_detects_missing_combinations_with_exact_error() -> None:
         ChunkMatrix(doc)
 
     error_msg = str(exc_info.value)
-    assert "Duplicate key detected" in error_msg
+    assert "Duplicate" in error_msg
     assert f"{original_chunk.policy_area_id}-{original_chunk.dimension_id}" in error_msg
 
 

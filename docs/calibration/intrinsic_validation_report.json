@@ -1,0 +1,34 @@
+{
+  "validated_at": "2025-12-03T23:58:19.755722+00:00",
+  "calibration_file": "/Users/recovered/Applications/F.A.R.F.A.N -MECHANISTIC-PIPELINE/config/intrinsic_calibration.json",
+  "rubric_file": "/Users/recovered/Applications/F.A.R.F.A.N -MECHANISTIC-PIPELINE/src/farfan_pipeline/core/calibration/intrinsic_calibration_rubric.json",
+  "checks": {
+    "schema_validation": {
+      "passed": true,
+      "errors": []
+    },
+    "purity_check": {
+      "passed": true,
+      "violations": []
+    },
+    "coverage_analysis": {
+      "total_methods": 2163,
+      "computed_methods": 1032,
+      "excluded_methods": 1131,
+      "coverage_percent": 47.71,
+      "threshold_percent": 25.0,
+      "passed": true,
+      "status_breakdown": {
+        "computed": 1032,
+        "pending": 0,
+        "excluded": 1131,
+        "none": 0
+      }
+    },
+    "weight_verification": {
+      "passed": true,
+      "errors": []
+    }
+  },
+  "overall_result": "PASSED"
+}

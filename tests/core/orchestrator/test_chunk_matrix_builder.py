@@ -105,7 +105,7 @@ def test_build_chunk_matrix_rejects_59_chunks():
         chunks=chunks,
     )
     
-    with pytest.raises(ValueError, match="Missing.*PA10-DIM06"):
+    with pytest.raises(ValueError, match=r"Missing chunk combinations: .*PA10', 'DIM06'.*"):
         build_chunk_matrix(doc)
 
 
@@ -207,8 +207,12 @@ def test_build_chunk_matrix_reports_specific_missing_key():
         chunks=chunks,
     )
     
-    with pytest.raises(ValueError, match="Missing 2 required PA×DIM combinations.*PA05-DIM03"):
+    with pytest.raises(ValueError) as exc_info:
         build_chunk_matrix(doc)
+    assert (
+        "Missing chunk combinations: [('PA05', 'DIM03'), ('PA07', 'DIM02')]"
+        in str(exc_info.value)
+    )
 
 
 def test_build_chunk_matrix_rejects_null_policy_area():
