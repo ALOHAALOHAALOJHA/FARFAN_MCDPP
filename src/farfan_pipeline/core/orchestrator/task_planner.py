@@ -12,6 +12,7 @@ class ChunkRoutingResult:
     policy_area_id: str
     chunk_id: str
     expected_elements: list[Any]
+    document_position: int = 0
 
 
 EXPECTED_TASKS_PER_CHUNK = 5
@@ -273,6 +274,19 @@ def _construct_task(
     creation_timestamp = datetime.now(timezone.utc).isoformat()
     expected_elements = routing_result.expected_elements
 
+    patterns_tuple = (
+        tuple(applicable_patterns)
+        if not isinstance(applicable_patterns, tuple)
+        else applicable_patterns
+    )
+    signals_dict = dict(
+        zip(
+            (f"signal_{i}" for i in range(len(resolved_signals))),
+            resolved_signals,
+            strict=False,
+        )
+    )
+
     context = MicroQuestionContext(
         task_id=task_id,
         question_id=question.get("question_id", ""),
@@ -289,6 +303,25 @@ def _construct_task(
         creation_timestamp=creation_timestamp,
     )
 
+    expected_elements_tuple = (
+        tuple(expected_elements)
+        if isinstance(expected_elements, list)
+        else expected_elements
+    )
+
+    metadata_dict = {
+        "document_position": routing_result.document_position,
+        "synchronizer_version": "2.0.0",
+        "correlation_id": correlation_id,
+        "original_pattern_count": len(question.get("patterns", [])),
+        "original_signal_count": len(question.get("signal_requirements", [])),
+        "filtered_pattern_count": len(patterns_tuple),
+        "resolved_signal_count": len(signals_dict),
+        "schema_element_count": len(expected_elements_tuple),
+        "base_slot": question.get("base_slot", ""),
+        "cluster_id": question.get("cluster_id", ""),
+    }
+
     assembled_fields = {
         "task_id": task_id,
         "question_id": question.get("question_id", ""),
@@ -300,13 +333,7 @@ def _construct_task(
         "signals": MappingProxyType(signals),
         "creation_timestamp": creation_timestamp,
         "expected_elements": tuple(expected_elements),
-        "metadata": MappingProxyType(
-            {
-                "base_slot": question.get("base_slot", ""),
-                "cluster_id": question.get("cluster_id", ""),
-                "correlation_id": correlation_id,
-            }
-        ),
+        "metadata": MappingProxyType(metadata_dict),
         "context": context,
     }
 
@@ -495,3 +522,35 @@ def _validate_cross_task(plan: list[ExecutableTask]) -> None:
                 f"Policy area usage deviation: {policy_area_id} used {count} times "
                 f"(expected {EXPECTED_TASKS_PER_POLICY_AREA})"
             )
+
+
+def build_task_plan(
+    questions: list[dict[str, Any]],
+    routing_results: list[ChunkRoutingResult],
+    pattern_matcher: Any,
+    signal_resolver: Any,
+    correlation_id: str,
+) -> list[ExecutableTask]:
+    task_plan: list[ExecutableTask] = []
+    generated_task_ids: set[str] = set()
+
+    for question in questions:
+        for routing_result in routing_results:
+            if question.get("policy_area_id") == routing_result.policy_area_id:
+                applicable_patterns = pattern_matcher.match(question, routing_result)
+                resolved_signals = signal_resolver.resolve(question, routing_result)
+
+                task = _construct_task(
+                    question=question,
+                    routing_result=routing_result,
+                    applicable_patterns=applicable_patterns,
+                    resolved_signals=resolved_signals,
+                    generated_task_ids=generated_task_ids,
+                    correlation_id=correlation_id,
+                )
+
+                task_plan.append(task)
+
+    _validate_cross_task(task_plan)
+
+    return task_plan
