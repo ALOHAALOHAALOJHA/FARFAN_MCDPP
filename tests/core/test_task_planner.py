@@ -60,6 +60,87 @@ class TestValidateSchema:
         assert "Question schema:" in str(exc_info.value)
         assert "Chunk schema:" in str(exc_info.value)
 
+    def test_validate_schema_required_field_implication_passes_when_both_required(self):
+        question = {
+            "question_id": "Q001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "required": True, "minimum": 2},
+                {"type": "indicadores_cuantitativos", "required": True, "minimum": 3},
+            ],
+        }
+        chunk = {
+            "id": "chunk_001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "required": True, "minimum": 2},
+                {"type": "indicadores_cuantitativos", "required": True, "minimum": 3},
+            ],
+        }
+
+        _validate_schema(question, chunk)
+
+    def test_validate_schema_required_field_implication_passes_when_question_not_required(
+        self,
+    ):
+        question = {
+            "question_id": "Q001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "required": False, "minimum": 2},
+                {"type": "indicadores_cuantitativos", "minimum": 3},
+            ],
+        }
+        chunk = {
+            "id": "chunk_001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "required": True, "minimum": 2},
+                {"type": "indicadores_cuantitativos", "required": False, "minimum": 3},
+            ],
+        }
+
+        _validate_schema(question, chunk)
+
+    def test_validate_schema_required_field_implication_fails_when_question_required_but_chunk_not(
+        self,
+    ):
+        question = {
+            "question_id": "Q001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "required": True, "minimum": 2},
+                {"type": "indicadores_cuantitativos", "required": False, "minimum": 3},
+            ],
+        }
+        chunk = {
+            "id": "chunk_001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "required": False, "minimum": 2},
+                {"type": "indicadores_cuantitativos", "required": False, "minimum": 3},
+            ],
+        }
+
+        with pytest.raises(ValueError) as exc_info:
+            _validate_schema(question, chunk)
+
+        assert "Required-field implication violation" in str(exc_info.value)
+        assert "Q001" in str(exc_info.value)
+        assert "fuentes_oficiales" in str(exc_info.value)
+
+    def test_validate_schema_required_field_uses_false_as_default(self):
+        question = {
+            "question_id": "Q001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "minimum": 2},
+                {"type": "indicadores_cuantitativos", "minimum": 3},
+            ],
+        }
+        chunk = {
+            "id": "chunk_001",
+            "expected_elements": [
+                {"type": "fuentes_oficiales", "minimum": 2},
+                {"type": "indicadores_cuantitativos", "minimum": 3},
+            ],
+        }
+
+        _validate_schema(question, chunk)
+
 
 class TestConstructTask:
     def test_construct_task_generates_correct_id(self):

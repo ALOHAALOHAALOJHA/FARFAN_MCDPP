@@ -163,6 +163,26 @@ def _validate_schema(question: dict[str, Any], chunk: dict[str, Any]) -> None:
             f"Chunk schema: {c_elements}"
         )
 
+    if not isinstance(q_elements, list) or not isinstance(c_elements, list):
+        return
+
+    if len(q_elements) != len(c_elements):
+        return
+
+    for q_elem, c_elem in zip(q_elements, c_elements, strict=True):
+        if not isinstance(q_elem, dict) or not isinstance(c_elem, dict):
+            continue
+
+        q_required = q_elem.get("required", False)
+        c_required = c_elem.get("required", False)
+
+        if not ((not q_required) or c_required):
+            element_type = q_elem.get("type", "UNKNOWN")
+            raise ValueError(
+                f"Required-field implication violation for question {question.get('question_id', 'UNKNOWN')}: "
+                f"element type '{element_type}' is required in question but not in chunk"
+            )
+
 
 def _construct_task(
     question: dict[str, Any],
