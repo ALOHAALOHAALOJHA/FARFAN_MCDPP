@@ -25,10 +25,21 @@ import logging
 import time
 import uuid
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any, Protocol
 
-from farfan_pipeline.core.types import PreprocessedDocument
+if TYPE_CHECKING:
+    from farfan_pipeline.core.orchestrator.signals import SignalRegistry
+
+from farfan_pipeline.core.orchestrator.task_planner import ExecutableTask
+from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
 from farfan_pipeline.synchronization import ChunkMatrix
+
+try:
+    from farfan_pipeline.core.orchestrator.signals import (
+        SignalRegistry as _SignalRegistry,
+    )
+except ImportError:
+    _SignalRegistry = None  # type: ignore
 
 try:
     import blake3
@@ -46,6 +57,29 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+
+class SignalRegistry(Protocol):
+    """Protocol for signal registry implementations.
+
+    Defines the interface that signal registries must implement for
+    use with IrrigationSynchronizer signal resolution.
+    """
+
+    def get_signals_for_chunk(
+        self, chunk: ChunkData, requirements: list[str]
+    ) -> list[Any]:
+        """Get signals for a chunk matching the given requirements.
+
+        Args:
+            chunk: Target chunk to get signals for
+            requirements: List of required signal types
+
+        Returns:
+            List of signals, each with signal_id, signal_type, and content fields
+        """
+        ...
+
+
 if PROMETHEUS_AVAILABLE:
     synchronization_duration = Histogram(
         "synchronization_duration_seconds",
@@ -61,6 +95,11 @@ if PROMETHEUS_AVAILABLE:
         "synchronization_failures_total",
         "Total synchronization failures",
         ["error_type"],
+    )
+    synchronization_chunk_matches = Counter(
+        "synchronization_chunk_matches_total",
+        "Total chunk routing matches during synchronization",
+        ["dimension", "policy_area", "status"],
     )
 else:
 
@@ -90,6 +129,23 @@ else:
     synchronization_duration = DummyMetric()
     tasks_constructed = DummyMetric()
     synchronization_failures = DummyMetric()
+    synchronization_chunk_matches = DummyMetric()
+
+
+@dataclass(frozen=True)
+class ChunkRoutingResult:
+    """Result of Phase 3 chunk routing verification.
+
+    Contains validated chunk reference and extracted metadata for task construction.
+    """
+
+    target_chunk: ChunkData
+    chunk_id: str
+    policy_area_id: str
+    dimension_id: str
+    text_content: str
+    expected_elements: list[dict[str, Any]]
+    document_position: tuple[int, int] | None
 
 
 @dataclass(frozen=True)
@@ -159,6 +215,7 @@ class IrrigationSynchronizer:
         questionnaire: dict[str, Any],
         preprocessed_document: PreprocessedDocument | None = None,
         document_chunks: list[dict[str, Any]] | None = None,
+        signal_registry: SignalRegistry | None = None,
     ) -> None:
         """Initialize synchronizer with questionnaire and chunks.
 
@@ -166,6 +223,7 @@ class IrrigationSynchronizer:
             questionnaire: Loaded questionnaire_monolith.json data
             preprocessed_document: PreprocessedDocument containing validated chunks
             document_chunks: Legacy list of document chunks (deprecated)
+            signal_registry: SignalRegistry for Phase 5 signal resolution (initialized if None)
 
         Raises:
             ValueError: If chunk matrix validation fails or no chunks provided
@@ -175,6 +233,11 @@ class IrrigationSynchronizer:
         self.question_count = self._count_questions()
         self.chunk_matrix: ChunkMatrix | None = None
         self.document_chunks: list[dict[str, Any]] | None = None
+
+        if signal_registry is None and _SignalRegistry is not None:
+            self.signal_registry: SignalRegistry | None = _SignalRegistry()
+        else:
+            self.signal_registry = signal_registry
 
         if preprocessed_document is not None:
             try:
@@ -246,6 +309,217 @@ class IrrigationSynchronizer:
 
         return count
 
+    def _resolve_signals_for_question(
+        self,
+        question: dict[str, Any],
+        target_chunk: ChunkData,
+        signal_registry: SignalRegistry | None,
+    ) -> tuple[Any, ...]:
+        """Phase 5: Resolve signals for question and chunk.
+
+        Queries the signal registry for all signals required by the question,
+        validates that all required signals are present, and returns an
+        immutable tuple of Signal objects.
+
+        Args:
+            question: Question dict with signal_requirements
+            target_chunk: Target chunk from Phase 3 routing
+            signal_registry: Registry for signal resolution
+
+        Returns:
+            Immutable tuple of Signal objects
+
+        Raises:
+            ValueError: When signal_registry is None or required signals are missing
+        """
+        if signal_registry is None:
+            raise ValueError("SignalRegistry is required for Phase 5 signal resolution")
+
+        question_id = question.get("question_id", "UNKNOWN")
+        signal_requirements = question.get("signal_requirements", {})
+
+        if not isinstance(signal_requirements, dict):
+            signal_requirements = {}
+
+        required_types = (
+            set(signal_requirements.keys()) if signal_requirements else set()
+        )
+
+        if not required_types:
+            logger.debug(
+                json.dumps(
+                    {
+                        "event": "signal_resolution_skipped",
+                        "question_id": question_id,
+                        "reason": "no_signal_requirements",
+                        "correlation_id": self.correlation_id,
+                    }
+                )
+            )
+            return ()
+
+        try:
+            from farfan_pipeline.core.orchestrator.signal_resolution import (
+                Chunk,
+                _resolve_signals,
+            )
+            from farfan_pipeline.core.orchestrator.signal_resolution import (
+                Question as SignalQuestion,
+            )
+
+            chunk_for_resolution = Chunk(
+                chunk_id=target_chunk.chunk_id
+                or f"{target_chunk.policy_area_id}-{target_chunk.dimension_id}",
+                text=target_chunk.text,
+            )
+
+            question_for_resolution = SignalQuestion(
+                question_id=question_id,
+                signal_requirements=required_types,
+            )
+
+            resolved_signals = _resolve_signals(
+                chunk=chunk_for_resolution,
+                question=question_for_resolution,
+                signal_registry=signal_registry,
+            )
+
+            logger.debug(
+                json.dumps(
+                    {
+                        "event": "signal_resolution_success",
+                        "question_id": question_id,
+                        "chunk_id": chunk_for_resolution.chunk_id,
+                        "required_count": len(required_types),
+                        "resolved_count": len(resolved_signals),
+                        "correlation_id": self.correlation_id,
+                    }
+                )
+            )
+
+            return resolved_signals
+
+        except ImportError as e:
+            raise ValueError(
+                f"Signal resolution dependencies not available: {e}"
+            ) from e
+
+    def validate_chunk_routing(self, question: dict[str, Any]) -> ChunkRoutingResult:
+        """Phase 3: Validate chunk routing and extract metadata.
+
+        Verifies that a chunk exists in the matrix for the question's routing keys,
+        validates chunk consistency, and extracts metadata for task construction.
+
+        Args:
+            question: Question dict with routing keys (policy_area_id, dimension_id)
+
+        Returns:
+            ChunkRoutingResult with validated chunk and extracted metadata
+
+        Raises:
+            ValueError: If chunk not found or validation fails
+        """
+        question_id = question.get("question_id", "UNKNOWN")
+        policy_area_id = question.get("policy_area_id")
+        dimension_id = question.get("dimension_id")
+
+        if not policy_area_id:
+            raise ValueError(
+                f"Question {question_id} missing required field: policy_area_id"
+            )
+
+        if not dimension_id:
+            raise ValueError(
+                f"Question {question_id} missing required field: dimension_id"
+            )
+
+        try:
+            target_chunk = self.chunk_matrix.get_chunk(policy_area_id, dimension_id)
+
+            chunk_id = target_chunk.chunk_id or f"{policy_area_id}-{dimension_id}"
+
+            if not target_chunk.text or not target_chunk.text.strip():
+                raise ValueError(
+                    f"Chunk {chunk_id} has empty text content for question {question_id}"
+                )
+
+            if (
+                target_chunk.policy_area_id
+                and target_chunk.policy_area_id != policy_area_id
+            ):
+                raise ValueError(
+                    f"Chunk routing key mismatch for {question_id}: "
+                    f"question policy_area={policy_area_id} but chunk has {target_chunk.policy_area_id}"
+                )
+
+            if target_chunk.dimension_id and target_chunk.dimension_id != dimension_id:
+                raise ValueError(
+                    f"Chunk routing key mismatch for {question_id}: "
+                    f"question dimension={dimension_id} but chunk has {target_chunk.dimension_id}"
+                )
+
+            expected_elements = question.get("expected_elements", [])
+
+            document_position = None
+            if target_chunk.start_pos is not None and target_chunk.end_pos is not None:
+                document_position = (target_chunk.start_pos, target_chunk.end_pos)
+
+            synchronization_chunk_matches.labels(
+                dimension=dimension_id, policy_area=policy_area_id, status="success"
+            ).inc()
+
+            logger.debug(
+                json.dumps(
+                    {
+                        "event": "chunk_routing_success",
+                        "question_id": question_id,
+                        "chunk_id": chunk_id,
+                        "policy_area_id": policy_area_id,
+                        "dimension_id": dimension_id,
+                        "text_length": len(target_chunk.text),
+                        "has_expected_elements": len(expected_elements) > 0,
+                        "has_document_position": document_position is not None,
+                        "correlation_id": self.correlation_id,
+                    }
+                )
+            )
+
+            return ChunkRoutingResult(
+                target_chunk=target_chunk,
+                chunk_id=chunk_id,
+                policy_area_id=policy_area_id,
+                dimension_id=dimension_id,
+                text_content=target_chunk.text,
+                expected_elements=expected_elements,
+                document_position=document_position,
+            )
+
+        except KeyError as e:
+            synchronization_chunk_matches.labels(
+                dimension=dimension_id, policy_area=policy_area_id, status="failure"
+            ).inc()
+
+            error_msg = (
+                f"Synchronization Failure for MQC {question_id}: "
+                f"PA={policy_area_id}, DIM={dimension_id}. "
+                f"No corresponding chunk found in matrix."
+            )
+
+            logger.error(
+                json.dumps(
+                    {
+                        "event": "chunk_routing_failure",
+                        "question_id": question_id,
+                        "policy_area_id": policy_area_id,
+                        "dimension_id": dimension_id,
+                        "error": error_msg,
+                        "correlation_id": self.correlation_id,
+                    }
+                )
+            )
+
+            raise ValueError(error_msg) from e
+
     def _extract_questions(self) -> list[dict[str, Any]]:
         """Extract all questions from questionnaire in deterministic order."""
         questions = []
@@ -253,6 +527,7 @@ class IrrigationSynchronizer:
 
         for dimension in range(1, 7):
             dim_key = f"D{dimension}"
+            dimension_id = f"DIM{dimension:02d}"
 
             for q_num in range(1, 51):
                 question_key = f"{dim_key}_Q{q_num:02d}"
@@ -264,12 +539,206 @@ class IrrigationSynchronizer:
                             "dimension": dim_key,
                             "question_id": question_key,
                             "question_num": q_num,
+                            "question_global": block.get("question_global", 0),
                             "question_text": block.get("question", ""),
+                            "policy_area_id": block.get("policy_area_id"),
+                            "dimension_id": dimension_id,
                             "patterns": block.get("patterns", []),
+                            "expected_elements": block.get("expected_elements", []),
+                            "signal_requirements": block.get("signal_requirements", {}),
                         }
                     )
 
+        questions.sort(key=lambda q: (q["dimension_id"], q["question_id"]))
+
         return questions
+
+    def _filter_patterns(
+        self,
+        patterns: list[dict[str, Any]] | tuple[dict[str, Any], ...],
+        policy_area_id: str,
+    ) -> tuple[dict[str, Any], ...]:
+        """Filter patterns by policy_area_id using strict equality.
+
+        Filters patterns to include only those where pattern.policy_area_id == policy_area_id
+        (strict equality). Patterns lacking a policy_area_id attribute are excluded.
+
+        Args:
+            patterns: Iterable of pattern objects (typically dicts with optional policy_area_id)
+            policy_area_id: Policy area ID string (e.g., "PA01") to filter by
+
+        Returns:
+            Immutable tuple of filtered pattern dicts. Returns empty tuple if no patterns match.
+
+        Filtering Rules:
+            - Strict equality: pattern.policy_area_id == policy_area_id
+            - Exclude patterns without policy_area_id attribute
+            - Result is immutable (tuple)
+        """
+        included = []
+        excluded = []
+        included_ids = []
+        excluded_ids = []
+
+        for pattern in patterns:
+            pattern_id = (
+                pattern.get("id", "UNKNOWN") if isinstance(pattern, dict) else "UNKNOWN"
+            )
+
+            if isinstance(pattern, dict) and "policy_area_id" in pattern:
+                if pattern["policy_area_id"] == policy_area_id:
+                    included.append(pattern)
+                    included_ids.append(pattern_id)
+                else:
+                    excluded.append(pattern)
+                    excluded_ids.append(pattern_id)
+            else:
+                excluded.append(pattern)
+                excluded_ids.append(pattern_id)
+
+        total_count = len(included) + len(excluded)
+
+        logger.info(
+            json.dumps(
+                {
+                    "event": "IrrigationSynchronizer._filter_patterns",
+                    "total": total_count,
+                    "included": len(included),
+                    "excluded": len(excluded),
+                    "included_ids": included_ids,
+                    "excluded_ids": excluded_ids,
+                    "policy_area_id": policy_area_id,
+                    "correlation_id": self.correlation_id,
+                }
+            )
+        )
+
+        return tuple(included)
+
+    def _validate_schema_compatibility(
+        self,
+        question: dict[str, Any],
+        routing_result: ChunkRoutingResult,
+        correlation_id: str,  # noqa: ARG002
+    ) -> tuple[
+        str,
+        Any | None,
+        Any | None,
+        tuple[str, str],
+    ]:
+        """Phase 6.1: Extract input data and classify schema types.
+
+        Extracts expected_elements from both question and chunk routing result,
+        classifies their types (None, list, dict, or invalid), and prepares
+        data for subsequent validation phases. This is a pure extraction phase
+        with no validation logic beyond type classification.
+
+        Args:
+            question: Question dictionary from questionnaire
+            routing_result: ChunkRoutingResult from Phase 3
+            correlation_id: Correlation ID for tracking
+
+        Returns:
+            Tuple of (provisional_task_id, question_schema, chunk_schema, (question_type, chunk_type))
+
+        Raises:
+            KeyError: If question["question_global"] is missing (allowed to propagate)
+        """
+        provisional_task_id = (
+            f'MQC-{question["question_global"]:03d}_{routing_result.policy_area_id}'
+        )
+
+        question_schema = question.get("expected_elements")
+        chunk_schema = routing_result.expected_elements
+
+        def _classify_type(value: Any) -> str:  # noqa: ANN401
+            if value is None:
+                return "none"
+            elif isinstance(value, list):
+                return "list"
+            elif isinstance(value, dict):
+                return "dict"
+            else:
+                return "invalid"
+
+        question_type = _classify_type(question_schema)
+        chunk_type = _classify_type(chunk_schema)
+
+        return (
+            provisional_task_id,
+            question_schema,
+            chunk_schema,
+            (question_type, chunk_type),
+        )
+
+    def _construct_task(
+        self,
+        question: dict[str, Any],
+        routing_result: ChunkRoutingResult,
+        applicable_patterns: tuple[dict[str, Any], ...],
+        resolved_signals: tuple[Any, ...],
+    ) -> ExecutableTask:
+        """Construct ExecutableTask from question and routing result.
+
+        Phase 7 responsibility (partial implementation for Objective 3).
+
+        Args:
+            question: Question dict from questionnaire
+            routing_result: Validated routing result from Phase 3
+            applicable_patterns: Filtered tuple of patterns applicable to the routed policy area
+            resolved_signals: Resolved signals tuple from Phase 5
+
+        Returns:
+            ExecutableTask ready for execution
+        """
+        question_id = question["question_id"]
+        question_global = question.get("question_global", 0)
+
+        task_id = f"MQC-{question_global:03d}_{routing_result.policy_area_id}"
+
+        chunk_id = routing_result.chunk_id
+        policy_area_id = routing_result.policy_area_id
+        dimension_id = routing_result.dimension_id
+        expected_elements = routing_result.expected_elements
+        document_position = routing_result.document_position
+
+        signals = {}
+
+        task = ExecutableTask(
+            task_id=task_id,
+            question_id=question_id,
+            question_global=question_global,
+            policy_area_id=policy_area_id,
+            dimension_id=dimension_id,
+            chunk_id=chunk_id,
+            patterns=list(applicable_patterns),
+            signals=signals,
+            creation_timestamp=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            expected_elements=expected_elements,
+            metadata={
+                "document_position": document_position,
+                "text_length": len(routing_result.text_content),
+                "correlation_id": self.correlation_id,
+                "resolved_signals": resolved_signals,
+            },
+        )
+
+        logger.debug(
+            json.dumps(
+                {
+                    "event": "task_constructed",
+                    "task_id": task_id,
+                    "question_id": question_id,
+                    "chunk_id": chunk_id,
+                    "has_expected_elements": len(expected_elements) > 0,
+                    "has_document_position": document_position is not None,
+                    "resolved_signals_count": len(resolved_signals),
+                    "correlation_id": self.correlation_id,
+                }
+            )
+        )
+
+        return task
 
     def _compute_integrity_hash(self, tasks: list[Task]) -> str:
         """Compute Blake3 or SHA256 integrity hash of execution plan."""
@@ -311,16 +780,32 @@ class IrrigationSynchronizer:
             return self._build_with_legacy_chunks()
 
     def _build_with_chunk_matrix(self) -> ExecutionPlan:
-        """Build execution plan using validated chunk matrix."""
+        """Build execution plan using validated chunk matrix.
+
+        Orchestrates Phases 2-7 of irrigation synchronization:
+        - Phase 2: Question extraction
+        - Phase 3: Chunk routing (OBJECTIVE 3 INTEGRATION)
+        - Phase 4: Pattern filtering (policy_area_id-based filtering)
+        - Phase 5: Signal resolution (future)
+        - Phase 6: Schema validation (future)
+        - Phase 7: Task construction
+
+        Returns:
+            ExecutionPlan with validated tasks
+
+        Raises:
+            ValueError: On routing failures, validation errors
+        """
         logger.info(
             json.dumps(
                 {
-                    "event": "build_execution_plan_start",
+                    "event": "task_construction_start",
                     "correlation_id": self.correlation_id,
                     "question_count": self.question_count,
                     "chunk_count": self.chunk_count,
                     "mode": "chunk_matrix",
-                    "phase": "synchronization_phase_0",
+                    "phase": "synchronization_phase_2",
+                    "timestamp": time.time(),
                 }
             )
         )
@@ -328,66 +813,134 @@ class IrrigationSynchronizer:
         try:
             if self.question_count == 0:
                 synchronization_failures.labels(error_type="empty_questions").inc()
-                raise ValueError("No questions found in questionnaire")
+                raise ValueError(
+                    "No questions extracted from questionnaire. "
+                    "Cannot build tasks with empty question set."
+                )
 
             questions = self._extract_questions()
-            policy_areas = ChunkMatrix.POLICY_AREAS
-            dimensions = ChunkMatrix.DIMENSIONS
 
-            tasks: list[Task] = []
+            if not questions:
+                raise ValueError(
+                    "No questions extracted from questionnaire. "
+                    "Cannot build tasks with empty question set."
+                )
 
-            for question in questions:
-                dimension_id = f"DIM{question['dimension'][1:].zfill(2)}"
+            tasks: list[ExecutableTask] = []
+            routing_successes = 0
+            routing_failures = 0
 
-                if dimension_id not in dimensions:
-                    synchronization_failures.labels(
-                        error_type="invalid_dimension"
-                    ).inc()
-                    raise ValueError(
-                        f"Invalid dimension '{dimension_id}' for question "
-                        f"'{question['question_id']}': must be one of {dimensions}"
+            for idx, question in enumerate(questions, start=1):
+                question_id = question.get("question_id", f"UNKNOWN_{idx}")
+                policy_area_id = question.get("policy_area_id", "UNKNOWN")
+                dimension_id = question.get("dimension_id", "UNKNOWN")
+                chunk_id = "UNKNOWN"
+
+                try:
+                    routing_result = self.validate_chunk_routing(question)
+                    routing_successes += 1
+                    chunk_id = routing_result.chunk_id
+
+                    patterns_raw = question.get("patterns", [])
+                    applicable_patterns = self._filter_patterns(
+                        patterns_raw, routing_result.policy_area_id
                     )
 
-                for policy_area in policy_areas:
-                    try:
-                        chunk = self.chunk_matrix.get_chunk(policy_area, dimension_id)
+                    resolved_signals = self._resolve_signals_for_question(
+                        question,
+                        routing_result.target_chunk,
+                        self.signal_registry,
+                    )
 
-                        chunk_id = f"{chunk.policy_area_id}-{chunk.dimension_id}"
+                    task = self._construct_task(
+                        question, routing_result, applicable_patterns, resolved_signals
+                    )
+                    tasks.append(task)
 
-                        task_id = f"{question['question_id']}_{policy_area}_{chunk_id}"
-
-                        task = Task(
-                            task_id=task_id,
-                            dimension=question["dimension"],
-                            question_id=question["question_id"],
-                            policy_area=policy_area,
-                            chunk_id=chunk_id,
-                            chunk_index=chunk.id,
-                            question_text=question["question_text"],
+                    if idx % 50 == 0:
+                        logger.info(
+                            json.dumps(
+                                {
+                                    "event": "task_construction_progress",
+                                    "tasks_completed": idx,
+                                    "total_questions": len(questions),
+                                    "progress_pct": round(
+                                        100 * idx / len(questions), 2
+                                    ),
+                                    "correlation_id": self.correlation_id,
+                                }
+                            )
                         )
 
-                        tasks.append(task)
+                except ValueError as e:
+                    routing_failures += 1
 
-                        tasks_constructed.labels(
-                            dimension=question["dimension"], policy_area=policy_area
-                        ).inc()
+                    logger.error(
+                        json.dumps(
+                            {
+                                "event": "task_construction_failure",
+                                "error_event": "routing_or_signal_failure",
+                                "question_id": question_id,
+                                "question_index": idx,
+                                "policy_area_id": policy_area_id,
+                                "dimension_id": dimension_id,
+                                "chunk_id": chunk_id,
+                                "error_type": type(e).__name__,
+                                "error_message": str(e),
+                                "correlation_id": self.correlation_id,
+                                "timestamp": time.time(),
+                            }
+                        ),
+                        exc_info=True,
+                    )
 
-                    except KeyError as e:
-                        synchronization_failures.labels(
-                            error_type="chunk_lookup_failure"
-                        ).inc()
-                        raise ValueError(
-                            f"Failed to retrieve chunk for policy_area='{policy_area}', "
-                            f"dimension='{dimension_id}', question='{question['question_id']}': {e}"
-                        ) from e
+                    raise
 
-            integrity_hash = self._compute_integrity_hash(tasks)
+            expected_task_count = len(questions)
+            actual_task_count = len(tasks)
 
+            if actual_task_count != expected_task_count:
+                raise ValueError(
+                    f"Task count mismatch: Expected {expected_task_count} tasks "
+                    f"but constructed {actual_task_count}. "
+                    f"Routing successes: {routing_successes}, failures: {routing_failures}"
+                )
+
+            logger.info(
+                json.dumps(
+                    {
+                        "event": "task_construction_complete",
+                        "total_tasks": actual_task_count,
+                        "routing_successes": routing_successes,
+                        "routing_failures": routing_failures,
+                        "success_rate": round(
+                            100 * routing_successes / max(expected_task_count, 1), 2
+                        ),
+                        "correlation_id": self.correlation_id,
+                        "timestamp": time.time(),
+                    }
+                )
+            )
+
+            legacy_tasks = []
+            for task in tasks:
+                legacy_task = Task(
+                    task_id=task.task_id,
+                    dimension=task.dimension_id,
+                    question_id=task.question_id,
+                    policy_area=task.policy_area_id,
+                    chunk_id=task.chunk_id,
+                    chunk_index=0,
+                    question_text="",
+                )
+                legacy_tasks.append(legacy_task)
+
+            integrity_hash = self._compute_integrity_hash(legacy_tasks)
             plan_id = f"plan_{integrity_hash[:16]}"
 
             plan = ExecutionPlan(
                 plan_id=plan_id,
-                tasks=tuple(tasks),
+                tasks=tuple(legacy_tasks),
                 chunk_count=self.chunk_count,
                 question_count=len(questions),
                 integrity_hash=integrity_hash,
@@ -401,7 +954,7 @@ class IrrigationSynchronizer:
                         "event": "build_execution_plan_complete",
                         "correlation_id": self.correlation_id,
                         "plan_id": plan_id,
-                        "task_count": len(tasks),
+                        "task_count": len(legacy_tasks),
                         "chunk_count": self.chunk_count,
                         "question_count": len(questions),
                         "integrity_hash": integrity_hash,
@@ -539,9 +1092,180 @@ class IrrigationSynchronizer:
             )
             raise
 
+    def _resolve_signals_for_question(
+        self,
+        question: dict[str, Any],
+        target_chunk: ChunkData,
+        signal_registry: SignalRegistry,
+    ) -> tuple[Any, ...]:
+        """Resolve signals for a question from registry.
+
+        Performs signal resolution with comprehensive validation:
+        - Normalizes signal_requirements to empty list if missing/None
+        - Calls signal_registry.get_signals_for_chunk with requirements
+        - Validates return type is list (raises TypeError if None)
+        - Validates each signal has required fields (signal_id, signal_type, content)
+        - Detects missing required signals (HARD STOP with ValueError)
+        - Detects and warns about duplicate signal types
+        - Returns immutable tuple of resolved signals
+
+        Args:
+            question: Question dict with signal_requirements field
+            target_chunk: Target ChunkData for signal resolution
+            signal_registry: Registry implementing get_signals_for_chunk(chunk, requirements)
+
+        Returns:
+            Immutable tuple of resolved signals
+
+        Raises:
+            TypeError: If signal_registry returns non-list type
+            ValueError: If signal missing required field or required signals not found
+        """
+        question_id = question.get("question_id", "UNKNOWN")
+        chunk_id = getattr(target_chunk, "chunk_id", "UNKNOWN")
+
+        # Normalize signal_requirements to empty list if missing or None
+        signal_requirements = question.get("signal_requirements")
+        if signal_requirements is None:
+            signal_requirements = []
+        elif not isinstance(signal_requirements, list):
+            # If it's a dict or other type, extract as list if possible
+            if isinstance(signal_requirements, dict):
+                signal_requirements = list(signal_requirements.keys())
+            else:
+                signal_requirements = []
+
+        # Call signal_registry.get_signals_for_chunk
+        resolved_signals = signal_registry.get_signals_for_chunk(
+            target_chunk, signal_requirements
+        )
+
+        # Validate return is list type (raise TypeError if None)
+        if resolved_signals is None:
+            raise TypeError(
+                f"SignalRegistry returned {type(None).__name__} for question {question_id} "
+                f"chunk {chunk_id}, expected list"
+            )
+
+        if not isinstance(resolved_signals, list):
+            raise TypeError(
+                f"SignalRegistry returned {type(resolved_signals).__name__} for question {question_id} "
+                f"chunk {chunk_id}, expected list"
+            )
+
+        # Validate each signal has required fields
+        required_fields = ["signal_id", "signal_type", "content"]
+        for i, signal in enumerate(resolved_signals):
+            for field in required_fields:
+                # Try both attribute and dict access
+                has_field = False
+                try:
+                    if hasattr(signal, field):
+                        getattr(signal, field)
+                        has_field = True
+                except (AttributeError, KeyError):
+                    pass
+
+                if not has_field:
+                    try:
+                        if isinstance(signal, dict) and field in signal:
+                            has_field = True
+                    except (TypeError, KeyError):
+                        pass
+
+                if not has_field:
+                    raise ValueError(
+                        f"Signal at index {i} missing field {field} for question {question_id}"
+                    )
+
+        # Extract signal_types into set
+        signal_types = set()
+        for signal in resolved_signals:
+            # Try attribute access first, then dict access
+            signal_type = None
+            try:
+                if hasattr(signal, "signal_type"):
+                    signal_type = signal.signal_type
+            except AttributeError:
+                pass
+
+            if signal_type is None:
+                try:
+                    if isinstance(signal, dict):
+                        signal_type = signal["signal_type"]
+                except (KeyError, TypeError):
+                    pass
+
+            if signal_type is not None:
+                signal_types.add(signal_type)
+
+        # Compute missing signals
+        requirements_set = set(signal_requirements) if signal_requirements else set()
+        missing_signals = requirements_set - signal_types
+
+        # Raise ValueError if non-empty (HARD STOP)
+        if missing_signals:
+            missing_sorted = sorted(missing_signals)
+            raise ValueError(
+                f"Synchronization Failure for MQC {question_id}: "
+                f"Missing required signals {missing_sorted} for chunk {chunk_id}"
+            )
+
+        # Detect duplicates
+        if len(resolved_signals) > len(signal_types):
+            # Find duplicate types for logging
+            type_counts: dict[Any, int] = {}
+            for signal in resolved_signals:
+                signal_type = None
+                try:
+                    if hasattr(signal, "signal_type"):
+                        signal_type = signal.signal_type
+                except AttributeError:
+                    pass
+
+                if signal_type is None:
+                    try:
+                        if isinstance(signal, dict):
+                            signal_type = signal["signal_type"]
+                    except (KeyError, TypeError):
+                        pass
+
+                if signal_type is not None:
+                    type_counts[signal_type] = type_counts.get(signal_type, 0) + 1
+
+            duplicate_types = [t for t, count in type_counts.items() if count > 1]
+
+            logger.warning(
+                "signal_resolution_duplicates",
+                extra={
+                    "question_id": question_id,
+                    "chunk_id": chunk_id,
+                    "correlation_id": self.correlation_id,
+                    "duplicate_types": duplicate_types,
+                },
+            )
+
+        # Emit success log
+        logger.debug(
+            "signal_resolution_success",
+            extra={
+                "question_id": question_id,
+                "chunk_id": chunk_id,
+                "correlation_id": self.correlation_id,
+                "resolved_count": len(resolved_signals),
+                "required_count": len(signal_requirements),
+                "signal_types": list(signal_types),
+            },
+        )
+
+        # Return tuple for immutability
+        return tuple(resolved_signals)
+
 
 __all__ = [
     "IrrigationSynchronizer",
     "ExecutionPlan",
     "Task",
+    "ChunkRoutingResult",
+    "SignalRegistry",
 ]

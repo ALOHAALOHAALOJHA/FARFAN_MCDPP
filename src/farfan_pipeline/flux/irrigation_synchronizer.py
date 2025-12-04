@@ -89,6 +89,70 @@ class IrrigationSynchronizer:
         """Initialize the IrrigationSynchronizer."""
         pass
 
+    def prepare_executor_contexts(self, question_contexts: list[Any]) -> list[Any]:
+        """
+        Prepare Phase 2 executor contexts from sorted question contexts.
+
+        Initializes empty executable tasks list, loops through sorted question contexts,
+        extracts routing keys (pa_id, dim_id, question_global, question_id) and execution
+        metadata (expected_elements, signal_requirements, patterns), logs question
+        processing start with structured logging, and returns prepared ExecutableTask
+        objects for downstream execution.
+
+        Args:
+            question_contexts: List of sorted question context objects (MicroQuestionContext)
+
+        Returns:
+            List of ExecutableTask objects prepared for Phase 2 execution
+        """
+        from datetime import datetime, timezone
+
+        from farfan_pipeline.core.orchestrator.task_planner import ExecutableTask
+
+        executable_tasks: list[ExecutableTask] = []
+
+        for question_ctx in question_contexts:
+            pa_id = getattr(question_ctx, "policy_area_id", "")
+            dim_id = getattr(question_ctx, "dimension_id", "")
+            question_global = getattr(question_ctx, "question_global", 0)
+            question_id = getattr(question_ctx, "question_id", "")
+
+            patterns = list(getattr(question_ctx, "patterns", ()))
+            expected_elements = []
+            signal_requirements = {}
+
+            logger.info(
+                "question_processing_start",
+                extra={
+                    "question_id": question_id,
+                    "pa_id": pa_id,
+                    "dim_id": dim_id,
+                    "question_global": question_global,
+                    "phase": "phase_2_executor_preparation",
+                },
+            )
+
+            task = ExecutableTask(
+                task_id=f"MQC-{question_global:03d}_{pa_id}",
+                question_id=question_id,
+                question_global=question_global,
+                policy_area_id=pa_id,
+                dimension_id=dim_id,
+                chunk_id=f"{pa_id}-{dim_id}",
+                patterns=patterns,
+                signals=signal_requirements,
+                creation_timestamp=datetime.now(timezone.utc).isoformat(),
+                expected_elements=expected_elements,
+                metadata={
+                    "base_slot": getattr(question_ctx, "base_slot", ""),
+                    "cluster_id": getattr(question_ctx, "cluster_id", ""),
+                },
+            )
+
+            executable_tasks.append(task)
+
+        return executable_tasks
+
     def _match_chunk(self, question: Question, chunk_matrix: ChunkMatrix) -> Any:
         """
         Match question to chunk via O(1) lookup.
@@ -123,8 +187,8 @@ class IrrigationSynchronizer:
         """
         Filter patterns to only those matching target policy area.
 
-        Checks if the question's policy area matches the target. If so, returns
-        all patterns for the question. Otherwise, returns an empty tuple.
+        Validates that all patterns have a 'policy_area_id' field, then filters
+        to return only patterns matching the target policy area ID.
 
         Args:
             question: Question containing patterns to filter
@@ -132,13 +196,29 @@ class IrrigationSynchronizer:
 
         Returns:
             Immutable tuple of patterns matching target_pa_id
-        """
-        if question.policy_area_id == target_pa_id:
-            return tuple(question.patterns)
 
-        logger.warning(
-            f"Question with id '{question.question_id}' has policy area "
-            f"'{question.policy_area_id}' which does not match target "
-            f"'{target_pa_id}'. Returning no patterns."
-        )
-        return tuple()
+        Raises:
+            ValueError: If any pattern is missing the 'policy_area_id' field
+        """
+        for idx, pattern in enumerate(question.patterns):
+            if "policy_area_id" not in pattern:
+                raise ValueError(
+                    f"Pattern at index {idx} in question '{question.question_id}' "
+                    f"is missing required 'policy_area_id' field"
+                )
+
+        filtered = [
+            pattern
+            for pattern in question.patterns
+            if pattern.get("policy_area_id") == target_pa_id
+        ]
+
+        if not filtered:
+            logger.warning(
+                f"Zero patterns matched for question '{question.question_id}' "
+                f"with target policy area '{target_pa_id}'. "
+                f"Question has policy_area_id='{question.policy_area_id}' "
+                f"with {len(question.patterns)} total patterns."
+            )
+
+        return tuple(filtered)

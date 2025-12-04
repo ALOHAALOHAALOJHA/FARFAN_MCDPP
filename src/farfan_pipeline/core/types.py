@@ -73,11 +73,23 @@ class ChunkData:
     policy_area_id: str | None = None
     dimension_id: str | None = None
     provenance: Provenance | None = None
+    expected_elements: list[dict[str, Any]] = field(default_factory=list)
+    document_position: tuple[int, int] | None = None
 
     _CHUNK_ID_PATTERN = re.compile(r"^PA(0[1-9]|10)-DIM(0[1-6])$")
 
     def __post_init__(self) -> None:
-        """Validate chunk_id presence and format (PA{01-10}-DIM{01-06})."""
+        """Validate chunk_id presence and format (PA{01-10}-DIM{01-06}) and new fields."""
+        import logging
+
+        logger = logging.getLogger(__name__)
+
+        if not self.text or not self.text.strip():
+            raise ValueError("ChunkData text cannot be empty or whitespace-only")
+
+        self._validate_expected_elements()
+        self._validate_document_position(logger)
+
         chunk_id = self.chunk_id
         if chunk_id is None:
             if self.policy_area_id and self.dimension_id:
@@ -95,7 +107,6 @@ class ChunkData:
                 f"Invalid chunk_id '{chunk_id}'. Expected format PA{{01-10}}-DIM{{01-06}}."
             )
 
-        # Ensure consistency between chunk_id and policy/dimension identifiers if present
         match = self._CHUNK_ID_PATTERN.match(chunk_id)
         if match:
             pa_code = f"PA{match.group(1)}"
@@ -108,6 +119,91 @@ class ChunkData:
                 raise ValueError(
                     f"chunk_id {chunk_id} mismatches dimension_id {self.dimension_id}"
                 )
+
+    def _validate_expected_elements(self) -> None:
+        """Validate expected_elements field structure."""
+        if not isinstance(self.expected_elements, list):
+            raise ValueError(
+                f"expected_elements must be a list, got {type(self.expected_elements).__name__}"
+            )
+
+        for idx, element in enumerate(self.expected_elements):
+            if not isinstance(element, dict):
+                raise ValueError(
+                    f"expected_elements[{idx}] must be a dict, got {type(element).__name__}"
+                )
+
+            if "type" not in element:
+                raise ValueError(
+                    f"expected_elements[{idx}] missing required 'type' key"
+                )
+
+            if not isinstance(element["type"], str):
+                raise ValueError(
+                    f"expected_elements[{idx}]['type'] must be a string, "
+                    f"got {type(element['type']).__name__}"
+                )
+
+            if "required" in element:
+                if not isinstance(element["required"], bool):
+                    raise ValueError(
+                        f"expected_elements[{idx}]['required'] must be a boolean, "
+                        f"got {type(element['required']).__name__}"
+                    )
+
+            if "minimum" in element:
+                if not isinstance(element["minimum"], int):
+                    raise ValueError(
+                        f"expected_elements[{idx}]['minimum'] must be an integer, "
+                        f"got {type(element['minimum']).__name__}"
+                    )
+                if element["minimum"] < 0:
+                    raise ValueError(
+                        f"expected_elements[{idx}]['minimum'] must be non-negative, "
+                        f"got {element['minimum']}"
+                    )
+
+    def _validate_document_position(self, logger: Any) -> None:
+        """Validate document_position field structure."""
+        if self.document_position is None:
+            return
+
+        if not isinstance(self.document_position, tuple):
+            raise ValueError(
+                f"document_position must be a tuple, got {type(self.document_position).__name__}"
+            )
+
+        if len(self.document_position) != 2:
+            raise ValueError(
+                f"document_position must have exactly 2 elements, got {len(self.document_position)}"
+            )
+
+        start, end = self.document_position
+
+        if not isinstance(start, int):
+            raise ValueError(
+                f"document_position[0] (start) must be an integer, got {type(start).__name__}"
+            )
+
+        if not isinstance(end, int):
+            raise ValueError(
+                f"document_position[1] (end) must be an integer, got {type(end).__name__}"
+            )
+
+        if start < 0:
+            raise ValueError(
+                f"document_position start offset must be non-negative, got {start}"
+            )
+
+        if end < start:
+            raise ValueError(
+                f"document_position end offset ({end}) must be >= start offset ({start})"
+            )
+
+        if start == end:
+            logger.warning(
+                f"ChunkData {self.id} has zero-length document_position [{start}, {end})"
+            )
 
 
 @dataclass

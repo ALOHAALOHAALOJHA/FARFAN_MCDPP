@@ -1,9 +1,18 @@
-"""Unit tests for ChunkMatrix validation."""
+"""Unit tests for ChunkMatrix validation and chunk routing."""
 
+import sys
 from datetime import datetime
+from pathlib import Path
 
 import pytest
 
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root / "src"))
+
+from farfan_pipeline.core.orchestrator.irrigation_synchronizer import (
+    ChunkRoutingResult,
+    IrrigationSynchronizer,
+)
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
 from farfan_pipeline.synchronization.irrigation_synchronizer import ChunkMatrix
 
@@ -116,9 +125,7 @@ def test_chunk_matrix_rejects_duplicate_keys() -> None:
         ingested_at=datetime.now(),
     )
 
-    with pytest.raises(
-        ValueError, match=r"Duplicate .*PA01-DIM01"
-    ):
+    with pytest.raises(ValueError, match=r"Duplicate .*PA01-DIM01"):
         ChunkMatrix(doc)
 
 
@@ -336,3 +343,299 @@ def test_chunk_matrix_preserves_chunk_content() -> None:
     assert chunk.chunk_type == "activity"
     assert chunk.sentences == [1, 2, 3]
     assert chunk.confidence == 0.87
+
+
+def test_validate_chunk_routing_success() -> None:
+    """validate_chunk_routing should successfully route valid question to chunk."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {
+        "question_id": "D1-Q01",
+        "policy_area_id": "PA05",
+        "dimension_id": "DIM03",
+        "question_text": "Test question",
+    }
+
+    result = synchronizer.validate_chunk_routing(question)
+
+    assert isinstance(result, ChunkRoutingResult)
+    assert result.chunk_id == "PA05-DIM03"
+    assert result.policy_area_id == "PA05"
+    assert result.dimension_id == "DIM03"
+    assert result.text_content == "test content"
+    assert result.target_chunk.policy_area_id == "PA05"
+    assert result.target_chunk.dimension_id == "DIM03"
+
+
+def test_validate_chunk_routing_missing_question_id() -> None:
+    """validate_chunk_routing should raise ValueError if question_id missing."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {"policy_area_id": "PA05", "dimension_id": "DIM03"}
+
+    with pytest.raises(ValueError, match="missing required 'question_id' field"):
+        synchronizer.validate_chunk_routing(question)
+
+
+def test_validate_chunk_routing_missing_policy_area_id() -> None:
+    """validate_chunk_routing should raise ValueError if policy_area_id missing."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {"question_id": "D1-Q01", "dimension_id": "DIM03"}
+
+    with pytest.raises(ValueError, match="missing required 'policy_area_id' field"):
+        synchronizer.validate_chunk_routing(question)
+
+
+def test_validate_chunk_routing_missing_dimension_id() -> None:
+    """validate_chunk_routing should raise ValueError if dimension_id missing."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {"question_id": "D1-Q01", "policy_area_id": "PA05"}
+
+    with pytest.raises(ValueError, match="missing required 'dimension_id' field"):
+        synchronizer.validate_chunk_routing(question)
+
+
+def test_validate_chunk_routing_chunk_not_found() -> None:
+    """validate_chunk_routing should raise ValueError if chunk not in matrix."""
+    doc = create_complete_document()
+    doc.chunks = [
+        chunk
+        for chunk in doc.chunks
+        if not (chunk.policy_area_id == "PA05" and chunk.dimension_id == "DIM03")
+    ]
+
+    questionnaire = {"blocks": {}}
+
+    with pytest.raises(
+        ValueError,
+        match="Chunk matrix validation failed during synchronizer initialization",
+    ):
+        IrrigationSynchronizer(questionnaire=questionnaire, preprocessed_document=doc)
+
+
+def test_validate_chunk_routing_empty_text() -> None:
+    """validate_chunk_routing should raise ValueError if chunk text is empty."""
+    doc = create_complete_document()
+    for chunk in doc.chunks:
+        if chunk.policy_area_id == "PA05" and chunk.dimension_id == "DIM03":
+            idx = doc.chunks.index(chunk)
+            doc.chunks[idx] = ChunkData(
+                id=chunk.id,
+                text="",
+                chunk_type=chunk.chunk_type,
+                sentences=chunk.sentences,
+                tables=chunk.tables,
+                start_pos=chunk.start_pos,
+                end_pos=chunk.end_pos,
+                confidence=chunk.confidence,
+                policy_area_id=chunk.policy_area_id,
+                dimension_id=chunk.dimension_id,
+            )
+            break
+
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {
+        "question_id": "D1-Q01",
+        "policy_area_id": "PA05",
+        "dimension_id": "DIM03",
+    }
+
+    with pytest.raises(ValueError, match="empty or whitespace-only text"):
+        synchronizer.validate_chunk_routing(question)
+
+
+def test_validate_chunk_routing_whitespace_only_text() -> None:
+    """validate_chunk_routing should raise ValueError if chunk text is whitespace."""
+    doc = create_complete_document()
+    for chunk in doc.chunks:
+        if chunk.policy_area_id == "PA05" and chunk.dimension_id == "DIM03":
+            idx = doc.chunks.index(chunk)
+            doc.chunks[idx] = ChunkData(
+                id=chunk.id,
+                text="   \n\t  ",
+                chunk_type=chunk.chunk_type,
+                sentences=chunk.sentences,
+                tables=chunk.tables,
+                start_pos=chunk.start_pos,
+                end_pos=chunk.end_pos,
+                confidence=chunk.confidence,
+                policy_area_id=chunk.policy_area_id,
+                dimension_id=chunk.dimension_id,
+            )
+            break
+
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {
+        "question_id": "D1-Q01",
+        "policy_area_id": "PA05",
+        "dimension_id": "DIM03",
+    }
+
+    with pytest.raises(ValueError, match="empty or whitespace-only text"):
+        synchronizer.validate_chunk_routing(question)
+
+
+def test_validate_chunk_routing_expected_elements_default() -> None:
+    """validate_chunk_routing should handle missing expected_elements gracefully."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {
+        "question_id": "D1-Q01",
+        "policy_area_id": "PA05",
+        "dimension_id": "DIM03",
+    }
+
+    result = synchronizer.validate_chunk_routing(question)
+
+    assert result.expected_elements == []
+
+
+def test_validate_chunk_routing_immutability() -> None:
+    """ChunkRoutingResult should be immutable."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    question = {
+        "question_id": "D1-Q01",
+        "policy_area_id": "PA05",
+        "dimension_id": "DIM03",
+    }
+
+    result = synchronizer.validate_chunk_routing(question)
+
+    with pytest.raises(Exception):
+        result.chunk_id = "different_id"
+
+
+def test_filter_patterns_with_matching_policy_area() -> None:
+    """_filter_patterns should include only patterns with matching policy_area_id."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    patterns = [
+        {"id": "PAT-001", "policy_area_id": "PA01", "pattern": "test1"},
+        {"id": "PAT-002", "policy_area_id": "PA02", "pattern": "test2"},
+        {"id": "PAT-003", "policy_area_id": "PA01", "pattern": "test3"},
+        {"id": "PAT-004", "pattern": "test4"},
+    ]
+
+    result = synchronizer._filter_patterns(patterns, "PA01")
+
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    assert result[0]["id"] == "PAT-001"
+    assert result[1]["id"] == "PAT-003"
+
+
+def test_filter_patterns_excludes_without_policy_area_id() -> None:
+    """_filter_patterns should exclude patterns without policy_area_id attribute."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    patterns = [
+        {"id": "PAT-001", "pattern": "test1"},
+        {"id": "PAT-002", "pattern": "test2"},
+    ]
+
+    result = synchronizer._filter_patterns(patterns, "PA01")
+
+    assert isinstance(result, tuple)
+    assert len(result) == 0
+
+
+def test_filter_patterns_returns_empty_tuple_when_no_matches() -> None:
+    """_filter_patterns should return empty tuple when no patterns match."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    patterns = [
+        {"id": "PAT-001", "policy_area_id": "PA02", "pattern": "test1"},
+        {"id": "PAT-002", "policy_area_id": "PA03", "pattern": "test2"},
+    ]
+
+    result = synchronizer._filter_patterns(patterns, "PA01")
+
+    assert isinstance(result, tuple)
+    assert len(result) == 0
+
+
+def test_filter_patterns_immutability() -> None:
+    """_filter_patterns should return an immutable tuple."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    patterns = [
+        {"id": "PAT-001", "policy_area_id": "PA01", "pattern": "test1"},
+    ]
+
+    result = synchronizer._filter_patterns(patterns, "PA01")
+
+    assert isinstance(result, tuple)
+    with pytest.raises(AttributeError):
+        result.append({"id": "PAT-002", "pattern": "test2"})
+
+
+def test_filter_patterns_strict_equality() -> None:
+    """_filter_patterns should use strict equality for policy_area_id matching."""
+    doc = create_complete_document()
+    questionnaire = {"blocks": {}}
+    synchronizer = IrrigationSynchronizer(
+        questionnaire=questionnaire, preprocessed_document=doc
+    )
+
+    patterns = [
+        {"id": "PAT-001", "policy_area_id": "PA01", "pattern": "test1"},
+        {"id": "PAT-002", "policy_area_id": "PA010", "pattern": "test2"},
+        {"id": "PAT-003", "policy_area_id": "PA1", "pattern": "test3"},
+    ]
+
+    result = synchronizer._filter_patterns(patterns, "PA01")
+
+    assert isinstance(result, tuple)
+    assert len(result) == 1
+    assert result[0]["id"] == "PAT-001"
