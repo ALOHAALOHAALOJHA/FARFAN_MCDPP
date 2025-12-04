@@ -826,27 +826,18 @@ class IrrigationSynchronizer:
             ExecutableTask ready for execution
 
         Raises:
-            ValueError: If duplicate task_id is detected or mandatory field validation fails
+            ValueError: If duplicate task_id is detected or required fields are missing/invalid
         """
-        question_id = question.get("question_id")
+        # Phase 7.1: Validate and extract question_global
         question_global = question.get("question_global")
-
-        if question_id is None:
-            raise ValueError(
-                "Task construction failure: question_id field missing or None"
-            )
-
         if question_global is None:
-            raise ValueError(
-                f"Task construction failure for {question_id}: question_global field missing or None"
-            )
-
+            raise ValueError("question_global field is required but missing")
         if not isinstance(question_global, int):
             raise ValueError(
-                f"Task construction failure for {question_id}: "
                 f"question_global must be an integer, got {type(question_global).__name__}"
             )
 
+        # Phase 7.1: Construct task_id from validated question_global
         task_id = f"MQC-{question_global:03d}_{routing_result.policy_area_id}"
 
         if task_id in generated_task_ids:
@@ -854,9 +845,19 @@ class IrrigationSynchronizer:
 
         generated_task_ids.add(task_id)
 
-        chunk_id = routing_result.chunk_id
+        # Field extraction in declaration order for validation priority
+        # Extract question_id with bracket notation and KeyError conversion
+        try:
+            question_id = question["question_id"]
+        except KeyError as e:
+            raise ValueError("question_id field is required but missing") from e
+
+        # Assign question_global (already validated above)
+        # Extract routing fields via attribute access (guaranteed by ChunkRoutingResult schema)
         policy_area_id = routing_result.policy_area_id
         dimension_id = routing_result.dimension_id
+        chunk_id = routing_result.chunk_id
+
         expected_elements_list = list(routing_result.expected_elements)
         document_position = routing_result.document_position
 
