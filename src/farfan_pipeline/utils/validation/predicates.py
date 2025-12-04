@@ -193,60 +193,79 @@ class ValidationPredicates:
 
     @staticmethod
     def _validate_element_compatibility(
-        question_schema: str, chunk_schema: str, question_id: str
-    ) -> ValidationResult:
+        question_elements: list[dict[str, Any]],
+        chunk_elements: list[dict[str, Any]],
+        question_id: str,
+    ) -> int:
         """
-        Validate compatibility between question_schema and chunk_schema types.
+        Validate compatibility between question elements and chunk elements.
+
+        Validates type, required, and minimum fields for all element pairs.
 
         Args:
-            question_schema: Classified type of question_schema ("None", "list", "dict", "invalid")
-            chunk_schema: Classified type of chunk_schema ("None", "list", "dict", "invalid")
+            question_elements: List of element dictionaries from question schema
+            chunk_elements: List of element dictionaries from chunk schema
             question_id: Question identifier for error context
 
         Returns:
-            ValidationResult indicating if schemas are compatible
+            Count of successfully validated element pairs
+
+        Raises:
+            ValueError: If element validation fails (type mismatch, required field missing,
+                       or minimum threshold not met)
         """
-        warnings = []
+        if not question_elements and not chunk_elements:
+            return 0
 
-        if question_schema == "None" and chunk_schema != "None":
-            warnings.append("question_schema is None but chunk_schema is not")
-
-        if question_schema != "None" and chunk_schema == "None":
-            warnings.append("chunk_schema is None but question_schema is not")
-
-        if question_schema == "list" and chunk_schema == "dict":
-            warnings.append(
-                "question_schema is list but chunk_schema is dict (potential structure mismatch)"
+        if len(question_elements) != len(chunk_elements):
+            raise ValueError(
+                f"Question {question_id}: element count mismatch - "
+                f"question has {len(question_elements)} elements, "
+                f"chunk has {len(chunk_elements)} elements"
             )
 
-        if question_schema == "dict" and chunk_schema == "list":
-            warnings.append(
-                "question_schema is dict but chunk_schema is list (potential structure mismatch)"
-            )
+        validated_count = 0
 
-        if warnings:
-            return ValidationResult(
-                is_valid=True,
-                severity="WARNING",
-                message=f"Question {question_id} has schema compatibility warnings: {'; '.join(warnings)}",
-                context={
-                    "question_id": question_id,
-                    "question_schema_type": question_schema,
-                    "chunk_schema_type": chunk_schema,
-                    "warnings": warnings,
-                },
-            )
+        for idx, (q_elem, c_elem) in enumerate(
+            zip(question_elements, chunk_elements, strict=True)
+        ):
+            if not isinstance(q_elem, dict) or not isinstance(c_elem, dict):
+                raise ValueError(
+                    f"Question {question_id}: element at index {idx} must be a dictionary"
+                )
 
-        return ValidationResult(
-            is_valid=True,
-            severity="INFO",
-            message=f"Question {question_id} schemas are compatible",
-            context={
-                "question_id": question_id,
-                "question_schema_type": question_schema,
-                "chunk_schema_type": chunk_schema,
-            },
-        )
+            # Type validation
+            q_type = q_elem.get("type")
+            c_type = c_elem.get("type")
+            if q_type and c_type and q_type != c_type:
+                raise ValueError(
+                    f"Question {question_id}: element type mismatch at index {idx} - "
+                    f"question expects type '{q_type}', chunk has type '{c_type}'"
+                )
+
+            # Required field validation
+            q_required = q_elem.get("required", False)
+            c_required = c_elem.get("required", False)
+            if q_required and not c_required:
+                raise ValueError(
+                    f"Question {question_id}: required field mismatch at index {idx} - "
+                    f"question requires element but chunk does not"
+                )
+
+            # Minimum field validation
+            q_minimum = q_elem.get("minimum", 0)
+            c_minimum = c_elem.get("minimum", 0)
+            if c_minimum < q_minimum:
+                element_type = q_elem.get("type", "unknown")
+                raise ValueError(
+                    f"Question {question_id}: minimum threshold not met at index {idx} - "
+                    f"element type '{element_type}' requires minimum {q_minimum}, "
+                    f"but chunk has minimum {c_minimum}"
+                )
+
+            validated_count += 1
+
+        return validated_count
 
     @staticmethod
     def verify_expected_elements(
@@ -292,10 +311,6 @@ class ValidationPredicates:
             question_schema_raw, chunk_schema_raw, question_id
         )
 
-        compatibility_validation = ValidationPredicates._validate_element_compatibility(
-            schema_types[0], schema_types[1], question_id
-        )
-
         if question_type == "None":
             return ValidationResult(
                 is_valid=False,
@@ -316,6 +331,35 @@ class ValidationPredicates:
                 context={"question_id": question_id, "schema_types": schema_types},
             )
 
+        # Validate element compatibility if both schemas are lists of dicts
+        validated_element_count = 0
+        if (
+            question_type == "list"
+            and chunk_type == "list"
+            and expected_elements
+            and all(isinstance(e, dict) for e in expected_elements)
+        ):
+            chunk_elements = (
+                chunk_schema_raw if isinstance(chunk_schema_raw, list) else []
+            )
+            if chunk_elements and all(isinstance(e, dict) for e in chunk_elements):
+                try:
+                    validated_element_count = (
+                        ValidationPredicates._validate_element_compatibility(
+                            expected_elements, chunk_elements, question_id
+                        )
+                    )
+                except ValueError as e:
+                    return ValidationResult(
+                        is_valid=False,
+                        severity="ERROR",
+                        message=str(e),
+                        context={
+                            "question_id": question_id,
+                            "schema_types": schema_types,
+                        },
+                    )
+
         element_count = None
         if question_type == "list" and expected_elements is not None:
             element_count = len(expected_elements)
@@ -329,7 +373,7 @@ class ValidationPredicates:
                 "expected_elements": expected_elements,
                 "count": element_count,
                 "schema_types": schema_types,
-                "compatibility_check": compatibility_validation.context,
+                "validated_element_count": validated_element_count,
             },
         )
 
