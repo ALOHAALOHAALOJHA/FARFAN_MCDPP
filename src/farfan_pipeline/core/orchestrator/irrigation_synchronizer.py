@@ -615,6 +615,62 @@ class IrrigationSynchronizer:
 
         return tuple(included)
 
+    def _validate_schema_compatibility(
+        self,
+        question: dict[str, Any],
+        routing_result: ChunkRoutingResult,
+        correlation_id: str,  # noqa: ARG002
+    ) -> tuple[
+        str,
+        Any | None,
+        Any | None,
+        tuple[str, str],
+    ]:
+        """Phase 6.1: Extract input data and classify schema types.
+
+        Extracts expected_elements from both question and chunk routing result,
+        classifies their types (None, list, dict, or invalid), and prepares
+        data for subsequent validation phases. This is a pure extraction phase
+        with no validation logic beyond type classification.
+
+        Args:
+            question: Question dictionary from questionnaire
+            routing_result: ChunkRoutingResult from Phase 3
+            correlation_id: Correlation ID for tracking
+
+        Returns:
+            Tuple of (provisional_task_id, question_schema, chunk_schema, (question_type, chunk_type))
+
+        Raises:
+            KeyError: If question["question_global"] is missing (allowed to propagate)
+        """
+        provisional_task_id = (
+            f'MQC-{question["question_global"]:03d}_{routing_result.policy_area_id}'
+        )
+
+        question_schema = question.get("expected_elements")
+        chunk_schema = routing_result.expected_elements
+
+        def _classify_type(value: Any) -> str:  # noqa: ANN401
+            if value is None:
+                return "none"
+            elif isinstance(value, list):
+                return "list"
+            elif isinstance(value, dict):
+                return "dict"
+            else:
+                return "invalid"
+
+        question_type = _classify_type(question_schema)
+        chunk_type = _classify_type(chunk_schema)
+
+        return (
+            provisional_task_id,
+            question_schema,
+            chunk_schema,
+            (question_type, chunk_type),
+        )
+
     def _construct_task(
         self,
         question: dict[str, Any],
