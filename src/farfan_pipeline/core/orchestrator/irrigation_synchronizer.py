@@ -615,7 +615,7 @@ class IrrigationSynchronizer:
 
         return tuple(included)
 
-    def _validate_schema_compatibility(
+    def _extract_schema_data(
         self,
         question: dict[str, Any],
         routing_result: ChunkRoutingResult,
@@ -764,6 +764,136 @@ class IrrigationSynchronizer:
                     f"Schema validation failure for question {question_id}: "
                     f"expected_elements dict key mismatch ({', '.join(details)})"
                 )
+
+    def _validate_element_compatibility(
+        self,
+        question_type: str,
+        chunk_type: str,
+        question_schema: Any,  # noqa: ANN401
+        question_id: str,
+    ) -> dict[str, Any]:
+        """Validate semantic compatibility between question and chunk schema types.
+
+        Args:
+            question_type: Classified type of question schema ("none", "list", "dict")
+            chunk_type: Classified type of chunk schema ("none", "list", "dict")
+            question_schema: Original question schema for element count
+            question_id: Question identifier for logging
+
+        Returns:
+            Dictionary with validated_element_count
+
+        Raises:
+            ValueError: If schemas are semantically incompatible
+        """
+        if question_type == "none" or chunk_type == "none":
+            if question_type != chunk_type:
+                raise ValueError(
+                    f"Schema validation failure for question {question_id}: "
+                    f"semantic incompatibility (one schema is None, other is {question_type if chunk_type == 'none' else chunk_type})"
+                )
+            return {"validated_element_count": 0}
+
+        if question_type != chunk_type:
+            raise ValueError(
+                f"Schema validation failure for question {question_id}: "
+                f"semantic incompatibility (question type={question_type}, chunk type={chunk_type})"
+            )
+
+        validated_count = 0
+        if question_type in ("list", "dict") and question_schema is not None:
+            validated_count = len(question_schema)
+
+        return {"validated_element_count": validated_count}
+
+    def _validate_schema_compatibility(
+        self,
+        question_schema: Any,  # noqa: ANN401
+        chunk_schema: Any,  # noqa: ANN401
+        question_id: str,
+        chunk_id: str,
+    ) -> None:
+        """Orchestrate schema validation with structural and semantic checks.
+
+        Sequentially invokes structural validation followed by semantic validation,
+        allowing TypeError and ValueError to propagate directly to the caller.
+        Emits debug-level structured log entry on successful validation.
+
+        Args:
+            question_schema: expected_elements from question
+            chunk_schema: expected_elements from chunk
+            question_id: Question identifier
+            chunk_id: Chunk identifier
+
+        Raises:
+            TypeError: If structural validation detects invalid schema types
+            ValueError: If structural or semantic validation detects incompatibility
+        """
+
+        def _classify_type(value: Any) -> str:  # noqa: ANN401
+            if value is None:
+                return "none"
+            elif isinstance(value, list):
+                return "list"
+            elif isinstance(value, dict):
+                return "dict"
+            else:
+                return "invalid"
+
+        self._validate_expected_elements_types(
+            provisional_task_id=f"MQC-{question_id}_{chunk_id}",
+            question_schema=question_schema,
+            chunk_schema=chunk_schema,
+            question_id=question_id,
+            chunk_id=chunk_id,
+        )
+
+        question_type = _classify_type(question_schema)
+        chunk_type = _classify_type(chunk_schema)
+
+        if question_type == "none" and chunk_type == "none":
+            common_type = "none"
+        elif question_type == chunk_type:
+            common_type = question_type
+        else:
+            common_type = "none"
+
+        semantic_result = self._validate_element_compatibility(
+            question_type=common_type,
+            chunk_type=common_type,
+            question_schema=question_schema,
+            question_id=question_id,
+        )
+
+        validated_element_count = semantic_result["validated_element_count"]
+
+        has_required_fields = False
+        if isinstance(question_schema, list):
+            has_required_fields = any(
+                isinstance(elem, dict) and elem.get("required", False)
+                for elem in question_schema
+            )
+
+        has_minimum_thresholds = False
+        if isinstance(question_schema, list):
+            has_minimum_thresholds = any(
+                isinstance(elem, dict) and elem.get("minimum", 0) > 0
+                for elem in question_schema
+            )
+
+        logger.debug(
+            json.dumps(
+                {
+                    "event": "schema_validation_success",
+                    "question_id": question_id,
+                    "chunk_id": chunk_id,
+                    "validated_element_count": validated_element_count,
+                    "has_required_fields": has_required_fields,
+                    "has_minimum_thresholds": has_minimum_thresholds,
+                    "correlation_id": self.correlation_id,
+                }
+            )
+        )
 
     def _construct_task(
         self,
@@ -944,6 +1074,13 @@ class IrrigationSynchronizer:
                         question,
                         routing_result.target_chunk,
                         self.signal_registry,
+                    )
+
+                    self._validate_schema_compatibility(
+                        question_schema=routing_result.expected_elements,
+                        chunk_schema=routing_result.target_chunk.expected_elements,
+                        question_id=question_id,
+                        chunk_id=chunk_id,
                     )
 
                     task = self._construct_task(
