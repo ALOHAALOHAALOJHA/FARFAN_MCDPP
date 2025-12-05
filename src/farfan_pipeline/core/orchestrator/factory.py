@@ -42,7 +42,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
-from farfan_pipeline.core.orchestrator.core import Orchestrator, MethodExecutor
+from farfan_pipeline.core.orchestrator.core import MethodExecutor
 from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
 from farfan_pipeline.core.orchestrator.method_registry import (
     MethodRegistry,
