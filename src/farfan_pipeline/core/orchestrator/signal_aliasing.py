@@ -38,6 +38,23 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 
+
+def canonicalize_signal_fingerprint(signal_pack: 'SignalPack') -> str:
+    """
+    Compute canonical fingerprint for a signal pack.
+
+    This delegates to the signal pack's internal hash computation
+    to ensure consistency.
+
+    Args:
+        signal_pack: SignalPack to fingerprint
+
+    Returns:
+        Canonical fingerprint string
+    """
+    return signal_pack.compute_hash()
+
+
 def resolve_fingerprint_alias(fingerprint: str, legacy_aliases: dict[str, str]) -> str:
     """
     Resolve legacy fingerprint to canonical policy area using a provided alias map.
