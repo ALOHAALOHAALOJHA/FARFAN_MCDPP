@@ -204,6 +204,39 @@ class ExecutionPlan:
             "correlation_id": self.correlation_id,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> ExecutionPlan:
+        """Reconstruct ExecutionPlan from dictionary.
+
+        Args:
+            data: Dictionary representation of ExecutionPlan
+
+        Returns:
+            ExecutionPlan instance reconstructed from dictionary
+        """
+        tasks = tuple(
+            Task(
+                task_id=t["task_id"],
+                dimension=t["dimension"],
+                question_id=t["question_id"],
+                policy_area=t["policy_area"],
+                chunk_id=t["chunk_id"],
+                chunk_index=t["chunk_index"],
+                question_text=t["question_text"],
+            )
+            for t in data["tasks"]
+        )
+
+        return cls(
+            plan_id=data["plan_id"],
+            tasks=tasks,
+            chunk_count=data["chunk_count"],
+            question_count=data["question_count"],
+            integrity_hash=data["integrity_hash"],
+            created_at=data["created_at"],
+            correlation_id=data["correlation_id"],
+        )
+
 
 class IrrigationSynchronizer:
     """Synchronizes questionnaire questions with document chunks.
@@ -1599,6 +1632,45 @@ class IrrigationSynchronizer:
 
         # Return tuple for immutability
         return tuple(resolved_signals)
+
+    def _serialize_and_verify_plan(self, plan: ExecutionPlan) -> str:
+        """Serialize ExecutionPlan and verify round-trip integrity.
+
+        Serializes the execution plan to JSON, deserializes it back, reconstructs
+        an ExecutionPlan instance, and validates that plan_id and task count match
+        the original to ensure serialization is lossless.
+
+        Args:
+            plan: ExecutionPlan instance to serialize and verify
+
+        Returns:
+            Validated serialized JSON string ready for persistent storage
+
+        Raises:
+            ValueError: If plan_id mismatch or task count mismatch detected
+        """
+        plan_dict = plan.to_dict()
+        serialized_json = json.dumps(plan_dict, sort_keys=True, separators=(",", ":"))
+
+        deserialized_dict = json.loads(serialized_json)
+        reconstructed_plan = ExecutionPlan.from_dict(deserialized_dict)
+
+        if reconstructed_plan.plan_id != plan.plan_id:
+            raise ValueError(
+                f"Serialization verification failed: plan_id mismatch "
+                f"(original={plan.plan_id}, reconstructed={reconstructed_plan.plan_id})"
+            )
+
+        original_task_count = len(plan.tasks)
+        reconstructed_task_count = len(reconstructed_plan.tasks)
+
+        if reconstructed_task_count != original_task_count:
+            raise ValueError(
+                f"Serialization verification failed: task count mismatch "
+                f"(original={original_task_count}, reconstructed={reconstructed_task_count})"
+            )
+
+        return serialized_json
 
 
 __all__ = [
