@@ -279,10 +279,13 @@ def _construct_task(
         "base_slot": question.get("base_slot", ""),
         "cluster_id": question.get("cluster_id", ""),
         "document_position": document_position,
-        "synchronizer_version": "1.0.0",
+        "synchronizer_version": "2.0.0",
         "correlation_id": correlation_id,
         "original_pattern_count": len(applicable_patterns),
         "original_signal_count": len(resolved_signals),
+        "filtered_pattern_count": len(patterns_list),
+        "resolved_signal_count": len(signals_dict),
+        "schema_element_count": len(expected_elements_list),
     }
 
     creation_timestamp = datetime.now(timezone.utc).isoformat()
@@ -378,10 +381,13 @@ def _construct_task_legacy(
         "base_slot": question.get("base_slot", ""),
         "cluster_id": question.get("cluster_id", ""),
         "document_position": None,
-        "synchronizer_version": "1.0.0",
+        "synchronizer_version": "2.0.0",
         "correlation_id": "",
         "original_pattern_count": len(patterns_list),
         "original_signal_count": len(signals_dict),
+        "filtered_pattern_count": len(patterns_list),
+        "resolved_signal_count": len(signals_dict),
+        "schema_element_count": len(expected_elements_list),
     }
 
     try:

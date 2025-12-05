@@ -116,15 +116,19 @@ class IrrigationSynchronizer:
             dim_id = getattr(question_ctx, "dimension_id", "")
             question_global = getattr(question_ctx, "question_global", 0)
             question_id = getattr(question_ctx, "question_id", "")
-            
+
             if question_global is None:
                 raise ValueError("question_global is required")
-            
+
             if not isinstance(question_global, int):
-                raise ValueError(f"question_global must be an integer, got {type(question_global).__name__}")
-            
+                raise ValueError(
+                    f"question_global must be an integer, got {type(question_global).__name__}"
+                )
+
             if not (0 <= question_global <= 999):
-                raise ValueError(f"question_global must be between 0 and 999 inclusive, got {question_global}")
+                raise ValueError(
+                    f"question_global must be between 0 and 999 inclusive, got {question_global}"
+                )
 
             patterns = list(getattr(question_ctx, "patterns", ()))
             expected_elements = []
@@ -145,10 +149,13 @@ class IrrigationSynchronizer:
                 "base_slot": getattr(question_ctx, "base_slot", ""),
                 "cluster_id": getattr(question_ctx, "cluster_id", ""),
                 "document_position": None,
-                "synchronizer_version": "1.0.0",
+                "synchronizer_version": "2.0.0",
                 "correlation_id": "",
                 "original_pattern_count": len(patterns),
                 "original_signal_count": len(signal_requirements),
+                "filtered_pattern_count": len(patterns),
+                "resolved_signal_count": len(signal_requirements),
+                "schema_element_count": len(expected_elements),
             }
 
             task = ExecutableTask(

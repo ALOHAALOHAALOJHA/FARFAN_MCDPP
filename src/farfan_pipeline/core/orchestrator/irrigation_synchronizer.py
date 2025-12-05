@@ -876,10 +876,13 @@ class IrrigationSynchronizer:
 
         metadata = {
             "document_position": document_position,
-            "synchronizer_version": "1.0.0",
+            "synchronizer_version": "2.0.0",
             "correlation_id": self.correlation_id,
             "original_pattern_count": len(applicable_patterns),
             "original_signal_count": len(resolved_signals),
+            "filtered_pattern_count": len(patterns_list),
+            "resolved_signal_count": len(signals_dict),
+            "schema_element_count": len(expected_elements_list),
         }
 
         if task_id is None or not task_id:
