@@ -214,9 +214,17 @@ def build_processor_bundle(
         questionnaire = _load_and_validate_questionnaire(questionnaire_path, strict_validation)
         canonical_hash = _compute_questionnaire_hash(questionnaire)
         
+        if not isinstance(questionnaire, CanonicalQuestionnaire):
+            logger.error("Loaded questionnaire is not a CanonicalQuestionnaire instance: type=%s", type(questionnaire))
+            num_questions = 0
+        elif not hasattr(questionnaire, 'questions') or not isinstance(questionnaire.questions, (list, tuple)):
+            logger.error("CanonicalQuestionnaire missing 'questions' attribute or it is not a list/tuple: %s", repr(questionnaire))
+            num_questions = 0
+        else:
+            num_questions = len(questionnaire.questions)
         logger.info(
             "questionnaire_loaded questions=%d hash=%s",
-            len(questionnaire.questions) if hasattr(questionnaire, 'questions') else 0,
+            num_questions,
             canonical_hash[:16],
         )
         
