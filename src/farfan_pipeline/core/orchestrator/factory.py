@@ -231,9 +231,12 @@ def build_processor_bundle(
         # Step 2: Build signal registry v2.0
         signal_registry = _build_signal_registry(questionnaire, strict_validation)
         
+        if not hasattr(signal_registry, 'get_all_policy_areas') or not callable(getattr(signal_registry, 'get_all_policy_areas', None)):
+            logger.error("signal_registry does not implement required method 'get_all_policy_areas'")
+            raise AttributeError("signal_registry does not implement required method 'get_all_policy_areas'")
         logger.info(
             "signal_registry_built version=2.0 policy_areas=%d",
-            len(signal_registry.get_all_policy_areas()) if hasattr(signal_registry, 'get_all_policy_areas') else 0,
+            len(signal_registry.get_all_policy_areas()),
         )
         
         # Step 3: Build enriched signal packs (intelligence layer)
