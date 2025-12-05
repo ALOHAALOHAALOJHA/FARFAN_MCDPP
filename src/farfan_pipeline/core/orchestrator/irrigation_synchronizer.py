@@ -57,6 +57,8 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+SHA256_HEX_DIGEST_LENGTH = 64
+
 
 class SignalRegistry(Protocol):
     """Protocol for signal registry implementations.
@@ -309,6 +311,7 @@ class IrrigationSynchronizer:
 
         return count
 
+    def validate_chunk_routing(self, question: dict[str, Any]) -> ChunkRoutingResult:
         """Phase 3: Validate chunk routing and extract metadata.
 
         Verifies that a chunk exists in the matrix for the question's routing keys,
@@ -837,17 +840,21 @@ class IrrigationSynchronizer:
         executable_tasks: list[ExecutableTask],
         questions: list[dict[str, Any]],
         correlation_id: str,  # noqa: ARG002
-    ) -> list[ExecutableTask]:
+    ) -> tuple[list[ExecutableTask], str]:
         """Phase 8: Assemble execution plan with validation and deterministic ordering.
 
-        Performs three-phase assembly process:
+        Performs four-phase assembly process:
         - Phase 8.1: Pre-assembly validation (duplicate detection, count validation)
         - Phase 8.2: Deterministic task ordering (lexicographic by task_id)
-        - Phase 8.3: JSON serialization preparation (delegated to caller)
+        - Phase 8.3: Plan identifier computation (SHA256 of deterministic JSON)
+        - Phase 8.4: Plan identifier validation (format and length checks)
 
         Validates that task count matches question count and that no duplicate
         task identifiers exist. Then sorts tasks lexicographically by task_id to ensure
-        deterministic plan identifier generation across runs.
+        deterministic plan identifier generation across runs. Computes plan_id by
+        encoding deterministic JSON serialization (sort_keys=True, compact separators)
+        to UTF-8 bytes, computing SHA256 hash, and validating result matches expected
+        64-character lowercase hexadecimal format.
 
         Args:
             executable_tasks: List of constructed ExecutableTask objects
@@ -855,12 +862,15 @@ class IrrigationSynchronizer:
             correlation_id: Correlation ID for tracing
 
         Returns:
-            Sorted list of ExecutableTask objects in deterministic order
+            Tuple of (sorted list of ExecutableTask objects, plan_id string)
 
         Raises:
-            ValueError: If task count doesn't match question count or duplicates exist
+            ValueError: If task count doesn't match question count, duplicates exist,
+                       or plan_id validation fails
             RuntimeError: When sorting operation corrupts task list length
         """
+        from collections import Counter
+
         question_count = len(questions)
         task_count = len(executable_tasks)
 
@@ -891,7 +901,38 @@ class IrrigationSynchronizer:
                 f"does not match input task count {len(executable_tasks)}"
             )
 
-        return sorted_tasks
+        task_serialization = [
+            {
+                "task_id": t.task_id,
+                "question_id": t.question_id,
+                "question_global": t.question_global,
+                "policy_area_id": t.policy_area_id,
+                "dimension_id": t.dimension_id,
+                "chunk_id": t.chunk_id,
+            }
+            for t in sorted_tasks
+        ]
+
+        json_bytes = json.dumps(
+            task_serialization, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+
+        plan_id = hashlib.sha256(json_bytes).hexdigest()
+
+        if len(plan_id) != SHA256_HEX_DIGEST_LENGTH:
+            raise ValueError(
+                f"Plan identifier validation failure: expected length {SHA256_HEX_DIGEST_LENGTH} but got {len(plan_id)}; "
+                "SHA256 implementation may be compromised or monkey-patched"
+            )
+
+        if not all(c in "0123456789abcdef" for c in plan_id):
+            raise ValueError(
+                "Plan identifier validation failure: expected lowercase hexadecimal but got "
+                "characters outside '0123456789abcdef' set; SHA256 implementation may be "
+                "compromised or monkey-patched"
+            )
+
+        return sorted_tasks, plan_id
 
     def _compute_integrity_hash(self, tasks: list[Task]) -> str:
         """Compute Blake3 or SHA256 integrity hash of execution plan."""
@@ -1000,12 +1041,12 @@ class IrrigationSynchronizer:
                         patterns_raw, routing_result.policy_area_id
                     )
 
-                        # Phase 5 validation: Ensure signal_registry initialized
-                        if self.signal_registry is None:
-                            raise ValueError(
-                                f"SignalRegistry required for Phase 5 signal resolution "
-                                f"but not initialized for question {question_id}"
-                            )
+                    # Phase 5 validation: Ensure signal_registry initialized
+                    if self.signal_registry is None:
+                        raise ValueError(
+                            f"SignalRegistry required for Phase 5 signal resolution "
+                            f"but not initialized for question {question_id}"
+                        )
 
                     resolved_signals = self._resolve_signals_for_question(
                         question,
@@ -1075,7 +1116,9 @@ class IrrigationSynchronizer:
                     f"Routing successes: {routing_successes}, failures: {routing_failures}"
                 )
 
-            tasks = self._assemble_execution_plan(tasks, questions, self.correlation_id)
+            tasks, plan_id = self._assemble_execution_plan(
+                tasks, questions, self.correlation_id
+            )
 
             logger.info(
                 json.dumps(
@@ -1107,7 +1150,6 @@ class IrrigationSynchronizer:
                 legacy_tasks.append(legacy_task)
 
             integrity_hash = self._compute_integrity_hash(legacy_tasks)
-            plan_id = f"plan_{integrity_hash[:16]}"
 
             plan = ExecutionPlan(
                 plan_id=plan_id,
@@ -1217,13 +1259,49 @@ class IrrigationSynchronizer:
                             dimension=question["dimension"], policy_area=policy_area
                         ).inc()
 
-            integrity_hash = self._compute_integrity_hash(tasks)
+            sorted_tasks = sorted(tasks, key=lambda t: t.task_id)
 
-            plan_id = f"plan_{integrity_hash[:16]}"
+            if len(sorted_tasks) != len(tasks):
+                raise RuntimeError(
+                    f"Task ordering corruption detected: sorted task count {len(sorted_tasks)} "
+                    f"does not match input task count {len(tasks)}"
+                )
+
+            task_serialization = [
+                {
+                    "task_id": t.task_id,
+                    "question_id": t.question_id,
+                    "dimension": t.dimension,
+                    "policy_area": t.policy_area,
+                    "chunk_id": t.chunk_id,
+                }
+                for t in sorted_tasks
+            ]
+
+            json_bytes = json.dumps(
+                task_serialization, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+
+            plan_id = hashlib.sha256(json_bytes).hexdigest()
+
+            if len(plan_id) != SHA256_HEX_DIGEST_LENGTH:
+                raise ValueError(
+                    f"Plan identifier validation failure: expected length {SHA256_HEX_DIGEST_LENGTH} but got {len(plan_id)}; "
+                    "SHA256 implementation may be compromised or monkey-patched"
+                )
+
+            if not all(c in "0123456789abcdef" for c in plan_id):
+                raise ValueError(
+                    "Plan identifier validation failure: expected lowercase hexadecimal but got "
+                    "characters outside '0123456789abcdef' set; SHA256 implementation may be "
+                    "compromised or monkey-patched"
+                )
+
+            integrity_hash = self._compute_integrity_hash(sorted_tasks)
 
             plan = ExecutionPlan(
                 plan_id=plan_id,
-                tasks=tuple(tasks),
+                tasks=tuple(sorted_tasks),
                 chunk_count=self.chunk_count,
                 question_count=len(questions),
                 integrity_hash=integrity_hash,
