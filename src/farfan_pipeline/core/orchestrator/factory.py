@@ -499,12 +499,19 @@ def build_processor(
     questionnaire_path: Optional[str] = None,
     seed: Optional[int] = None,
 ) -> ProcessorBundle:
-    """Simplified factory function with sensible defaults.
-    
+    """
+    Convenience wrapper for `build_processor_bundle` with sensible defaults.
+
+    This function is intended for typical use cases where you want a fully configured
+    processor with the intelligence layer enabled, strict validation, and optional
+    reproducibility via a seed. It sets recommended defaults for most users.
+
+    Use `build_processor_bundle` directly if you need advanced customization, such as
+    disabling the intelligence layer, changing validation strictness, or other options.
+
     Args:
         questionnaire_path: Optional path to questionnaire JSON.
         seed: Optional seed for reproducibility.
-        
     Returns:
         ProcessorBundle ready for use.
     """
