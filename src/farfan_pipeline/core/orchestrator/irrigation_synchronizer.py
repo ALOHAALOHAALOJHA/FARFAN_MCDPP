@@ -22,8 +22,10 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import statistics
 import time
 import uuid
+from collections import Counter
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Protocol
 
@@ -59,6 +61,7 @@ logger = logging.getLogger(__name__)
 
 SHA256_HEX_DIGEST_LENGTH = 64
 
+SKEW_THRESHOLD_CV = 0.3
 
 class SignalRegistry(Protocol):
     """Protocol for signal registry implementations.
@@ -739,6 +742,170 @@ class IrrigationSynchronizer:
                     }
                 )
             )
+
+    def _validate_cross_task_cardinality(
+        self,
+        tasks: list[ExecutableTask],
+        questions: list[dict[str, Any]],
+    ) -> None:
+        """Validate task distribution across chunks, policy areas, and dimensions.
+
+        Computes chunk usage statistics by collecting reference counts into a list,
+        calculates mean/median/min/max using the statistics module, and emits these
+        metrics in a structured log entry. Validates policy area coverage by counting
+        tasks per policy area, comparing against expected counts, computing coefficient
+        of variation to detect skewed distributions, and emitting warnings for policy
+        areas with zero tasks or high skew. Implements identical dimension coverage
+        validation, then emits a single consolidated info-level log entry containing
+        all metrics for complete observability.
+
+        Args:
+            tasks: List of ExecutableTask objects to validate
+            questions: List of question dictionaries for expected count validation
+
+        Raises:
+            No exceptions raised; emits warnings via logger for validation issues
+        """
+        chunk_usage_counter = Counter(task.chunk_id for task in tasks)
+        chunk_reference_counts = list(chunk_usage_counter.values())
+
+        chunk_usage_stats = {}
+        if chunk_reference_counts:
+            chunk_usage_stats["mean"] = statistics.mean(chunk_reference_counts)
+            chunk_usage_stats["median"] = statistics.median(chunk_reference_counts)
+            chunk_usage_stats["min"] = min(chunk_reference_counts)
+            chunk_usage_stats["max"] = max(chunk_reference_counts)
+        else:
+            chunk_usage_stats["mean"] = 0.0
+            chunk_usage_stats["median"] = 0.0
+            chunk_usage_stats["min"] = 0
+            chunk_usage_stats["max"] = 0
+
+        tasks_per_policy_area = {
+            pa_id: sum(1 for task in tasks if task.policy_area_id == pa_id)
+            for pa_id in {task.policy_area_id for task in tasks}
+        }
+
+        expected_tasks_per_policy_area = {
+            pa_id: sum(1 for q in questions if q.get("policy_area_id") == pa_id)
+            for pa_id in {
+                q.get("policy_area_id") for q in questions if q.get("policy_area_id")
+            }
+        }
+
+        for pa_id, actual_count in tasks_per_policy_area.items():
+            expected_count = expected_tasks_per_policy_area.get(pa_id, 0)
+
+            if actual_count == 0:
+                logger.warning(
+                    "cross_task_cardinality_validation_warning",
+                    extra={
+                        "event": "zero_tasks_for_policy_area",
+                        "policy_area_id": pa_id,
+                        "actual_count": actual_count,
+                        "expected_count": expected_count,
+                        "correlation_id": self.correlation_id,
+                    },
+                )
+
+            if actual_count != expected_count:
+                logger.warning(
+                    "cross_task_cardinality_validation_warning",
+                    extra={
+                        "event": "policy_area_count_mismatch",
+                        "policy_area_id": pa_id,
+                        "actual_count": actual_count,
+                        "expected_count": expected_count,
+                        "correlation_id": self.correlation_id,
+                    },
+                )
+
+        pa_counts_list = list(tasks_per_policy_area.values())
+        if pa_counts_list and len(pa_counts_list) > 1:
+            pa_mean = statistics.mean(pa_counts_list)
+            if pa_mean > 0:
+                pa_stdev = statistics.stdev(pa_counts_list)
+                pa_cv = pa_stdev / pa_mean
+
+                if pa_cv > SKEW_THRESHOLD_CV:
+                    logger.warning(
+                        "cross_task_cardinality_validation_warning",
+                        extra={
+                            "event": "high_skew_policy_area_distribution",
+                            "coefficient_of_variation": pa_cv,
+                            "threshold": SKEW_THRESHOLD_CV,
+                            "tasks_per_policy_area": tasks_per_policy_area,
+                            "correlation_id": self.correlation_id,
+                        },
+                    )
+
+        tasks_per_dimension = {
+            dim_id: sum(1 for task in tasks if task.dimension_id == dim_id)
+            for dim_id in {task.dimension_id for task in tasks}
+        }
+
+        expected_tasks_per_dimension = {
+            dim_id: sum(1 for q in questions if q.get("dimension_id") == dim_id)
+            for dim_id in {
+                q.get("dimension_id") for q in questions if q.get("dimension_id")
+            }
+        }
+
+        for dim_id, actual_count in tasks_per_dimension.items():
+            expected_count = expected_tasks_per_dimension.get(dim_id, 0)
+
+            if actual_count == 0:
+                logger.warning(
+                    "cross_task_cardinality_validation_warning",
+                    extra={
+                        "event": "zero_tasks_for_dimension",
+                        "dimension_id": dim_id,
+                        "actual_count": actual_count,
+                        "expected_count": expected_count,
+                        "correlation_id": self.correlation_id,
+                    },
+                )
+
+            if actual_count != expected_count:
+                logger.warning(
+                    "cross_task_cardinality_validation_warning",
+                    extra={
+                        "event": "dimension_count_mismatch",
+                        "dimension_id": dim_id,
+                        "actual_count": actual_count,
+                        "expected_count": expected_count,
+                        "correlation_id": self.correlation_id,
+                    },
+                )
+
+        dim_counts_list = list(tasks_per_dimension.values())
+        if dim_counts_list and len(dim_counts_list) > 1:
+            dim_mean = statistics.mean(dim_counts_list)
+            if dim_mean > 0:
+                dim_stdev = statistics.stdev(dim_counts_list)
+                dim_cv = dim_stdev / dim_mean
+
+                if dim_cv > SKEW_THRESHOLD_CV:
+                    logger.warning(
+                        "cross_task_cardinality_validation_warning",
+                        extra={
+                            "event": "high_skew_dimension_distribution",
+                            "coefficient_of_variation": dim_cv,
+                            "threshold": SKEW_THRESHOLD_CV,
+                            "tasks_per_dimension": tasks_per_dimension,
+                            "correlation_id": self.correlation_id,
+                        },
+                    )
+
+        logger.info(
+            "cross_task_cardinality_validation_complete",
+            extra={
+                "tasks_per_policy_area": tasks_per_policy_area,
+                "tasks_per_dimension": tasks_per_dimension,
+                "chunk_usage_stats": chunk_usage_stats,
+                "correlation_id": self.correlation_id,
+            },
+        )
 
     def _construct_task(
         self,
