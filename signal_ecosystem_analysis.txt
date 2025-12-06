@@ -1,0 +1,107 @@
+================================================================================
+SIGNAL ECOSYSTEM ANALYSIS - COMPLETE GRAPH TRAVERSAL
+================================================================================
+
+🌳 ROOT NODES (imported by main orchestrator code)
+--------------------------------------------------------------------------------
+  signal_intelligence_layer.py
+    → Used by: base_executor_with_contract.py, factory.py
+  signal_loader.py
+    → Used by: core.py
+  signal_registry.py
+    → Used by: factory.py
+  signal_resolution.py
+    → Used by: signals.py
+
+🔗 TRANSITIVE DEPENDENCIES (signal → signal chain)
+--------------------------------------------------------------------------------
+  signal_consumption.py
+    → Used by signals: signal_loader.py
+  signal_context_scoper.py
+    → Used by signals: signal_intelligence_layer.py
+  signal_contract_validator.py
+    → Used by signals: signal_intelligence_layer.py
+  signal_evidence_extractor.py
+    → Used by signals: signal_intelligence_layer.py
+  signal_semantic_expander.py
+    → Used by signals: signal_intelligence_layer.py
+  signals.py
+    → Used by signals: signal_aliasing.py, signal_cache_invalidation.py, signal_fallback_fusion.py, signal_loader.py, signal_quality_metrics.py, signal_resolution.py
+
+💀 DEAD CODE (not reachable from any main file)
+--------------------------------------------------------------------------------
+  signal_aliasing.py
+  signal_cache_invalidation.py
+  signal_fallback_fusion.py
+  signal_quality_metrics.py
+
+📊 STATISTICS
+--------------------------------------------------------------------------------
+Total signal modules analyzed: 14
+Root nodes (directly used): 4
+Transitive dependencies: 6
+Dead code modules: 4
+Dead code percentage: 28.6%
+
+✅ RECOMMENDATIONS
+--------------------------------------------------------------------------------
+1. KEEP ALL: Root nodes + transitive dependencies
+2. REVIEW: Dead code modules - verify with git blame/history
+3. MOVE: Experimental/proposed code to /experiments or /proposals
+4. DELETE: Confirmed abandoned code after team review
+
+📈 LONGEST DEPENDENCY CHAINS
+--------------------------------------------------------------------------------
+1. signal_loader → signals → signal_resolution → signals
+2. signal_resolution → signals → signal_resolution
+3. signal_intelligence_layer → signal_context_scoper
+4. signal_intelligence_layer → signal_semantic_expander
+5. signal_intelligence_layer → signal_contract_validator
+
+
+DEPENDENCY GRAPH
+--------------------------------------------------------------------------------
+
+signal_consumption
+  ↑ used by: signal_loader.py
+
+signal_context_scoper
+  ↑ used by: signal_intelligence_layer.py
+
+signal_contract_validator
+  ↑ used by: signal_intelligence_layer.py
+
+signal_evidence_extractor
+  ↑ used by: signal_intelligence_layer.py
+
+signal_intelligence_layer
+  └── depends on: signal_context_scoper
+  └── depends on: signal_contract_validator
+  └── depends on: signal_evidence_extractor
+  └── depends on: signal_semantic_expander
+  ↑ used by: base_executor_with_contract.py
+  ↑ used by: factory.py
+
+signal_loader
+  └── depends on: signal_consumption
+  └── depends on: signals
+  ↑ used by: core.py
+
+signal_registry
+  ↑ used by: factory.py
+
+signal_resolution
+  └── depends on: signals
+  ↑ used by: signals.py
+
+signal_semantic_expander
+  ↑ used by: signal_intelligence_layer.py
+
+signals
+  └── depends on: signal_resolution
+  ↑ used by: signal_aliasing.py
+  ↑ used by: signal_cache_invalidation.py
+  ↑ used by: signal_fallback_fusion.py
+  ↑ used by: signal_loader.py
+  ↑ used by: signal_quality_metrics.py
+  ↑ used by: signal_resolution.py

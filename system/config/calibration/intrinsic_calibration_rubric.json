@@ -1,0 +1,75 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Canonical Intrinsic Calibration Rubric based on CALIBRATION_CANONICAL_COHERENCE_ANALYSIS.md",
+    "last_updated": "2025-11-18T00:00:00Z",
+    "authority": "Doctrina SIN_CARRETA"
+  },
+  "layers": {
+    "@b": {
+      "name": "Base Layer",
+      "description": "Intrinsic quality of the method code",
+      "weights": {
+        "b_theory": 0.40,
+        "b_impl": 0.35,
+        "b_deploy": 0.25
+      },
+      "components": {
+        "b_theory": {
+          "description": "Conceptual and methodological soundness",
+          "subcomponents": {
+            "grounded_in_valid_statistics": { "weight": 0.40, "criteria": "Method uses valid statistical principles" },
+            "logical_consistency": { "weight": 0.30, "criteria": "Internal logic is consistent and contradiction-free" },
+            "appropriate_assumptions": { "weight": 0.30, "criteria": "Assumptions are stated and appropriate for the context" }
+          }
+        },
+        "b_impl": {
+          "description": "Code implementation quality",
+          "subcomponents": {
+            "test_coverage": { 
+              "weight": 0.35, 
+              "criteria": "Percentage of code covered by tests",
+              "thresholds": { "1.0": 80.0, "0.8": 60.0, "0.5": 40.0, "0.0": 0.0 }
+            },
+            "type_annotations": { "weight": 0.25, "criteria": "Completeness of type hints" },
+            "error_handling": { "weight": 0.25, "criteria": "Robustness of error management" },
+            "documentation": { "weight": 0.15, "criteria": "Clarity and completeness of docstrings" }
+          }
+        },
+        "b_deploy": {
+          "description": "Operational stability and reliability",
+          "subcomponents": {
+            "validation_runs": { 
+              "weight": 0.40, 
+              "criteria": "Number of successful validation projects",
+              "thresholds": { "1.0": 20, "0.8": 10, "0.5": 5, "0.0": 0 }
+            },
+            "stability_coefficient": { 
+              "weight": 0.35, 
+              "criteria": "Coefficient of Variation (CV)",
+              "thresholds": { "1.0": 0.1, "0.8": 0.2, "0.5": 0.5, "0.0": 1.0 },
+              "direction": "lower_is_better"
+            },
+            "failure_rate": { 
+              "weight": 0.25, 
+              "criteria": "Rate of execution failure",
+              "thresholds": { "1.0": 1.0, "0.8": 5.0, "0.5": 10.0, "0.0": 100.0 },
+              "direction": "lower_is_better",
+              "unit": "percent"
+            }
+          }
+        }
+      }
+    }
+  },
+  "roles": {
+    "SCORE_Q": { "required_layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"] },
+    "INGEST_PDM": { "required_layers": ["@b", "@chain", "@u", "@m"] },
+    "STRUCTURE": { "required_layers": ["@b", "@chain", "@u", "@m"] },
+    "EXTRACT": { "required_layers": ["@b", "@chain", "@u", "@m"] },
+    "AGGREGATE": { "required_layers": ["@b", "@chain", "@u", "@m"] },
+    "REPORT": { "required_layers": ["@b", "@chain", "@u", "@m"] },
+    "META_TOOL": { "required_layers": ["@b", "@chain", "@u", "@m"] },
+    "TRANSFORM": { "required_layers": ["@b", "@chain", "@u", "@m"] }
+  }
+}

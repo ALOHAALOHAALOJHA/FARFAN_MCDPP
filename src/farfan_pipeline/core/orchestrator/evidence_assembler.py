@@ -44,9 +44,28 @@ class EvidenceAssembler:
     }
 
     @staticmethod
-    def assemble(method_outputs: dict[str, Any], assembly_rules: list[dict[str, Any]]) -> dict[str, Any]:
+    def assemble(
+        method_outputs: dict[str, Any],
+        assembly_rules: list[dict[str, Any]],
+        signal_pack: Any | None = None,  # NEW: Optional signal pack for provenance
+    ) -> dict[str, Any]:
         evidence: dict[str, Any] = {}
         trace: dict[str, Any] = {}
+
+        # NEW: Track signal pack provenance if provided
+        if signal_pack is not None:
+            trace["signal_provenance"] = {
+                "signal_pack_id": getattr(signal_pack, "id", None) or getattr(signal_pack, "pack_id", "unknown"),
+                "policy_area": getattr(signal_pack, "policy_area", None) or getattr(signal_pack, "policy_area_id", None),
+                "version": getattr(signal_pack, "version", "unknown"),
+                "patterns_available": len(getattr(signal_pack, "patterns", [])),
+                "source_hash": getattr(signal_pack, "source_hash", None),
+            }
+            logger.info(
+                "signal_pack_attached",
+                signal_pack_id=trace["signal_provenance"]["signal_pack_id"],
+                policy_area=trace["signal_provenance"]["policy_area"],
+            )
 
         if "_signal_usage" in method_outputs:
             logger.info("signal_consumption_trace", signals_used=method_outputs["_signal_usage"])
