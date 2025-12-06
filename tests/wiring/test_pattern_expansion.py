@@ -15,6 +15,7 @@ from farfan_pipeline.core.orchestrator.signal_semantic_expander import (
     expand_pattern_semantically,
     expand_all_patterns,
     adjust_spanish_agreement,
+    validate_expansion_result,
 )
 
 
@@ -361,6 +362,97 @@ class TestEdgeCases:
 
         # Should generate variants
         assert len(variants) >= 1
+
+
+class TestExpansionValidation:
+    """Test expansion validation function."""
+
+    def test_validate_expansion_success(self):
+        """Test validation with successful 5x expansion."""
+        original = [
+            {'pattern': 'presupuesto', 'id': 'P1'},
+            {'pattern': 'indicador', 'id': 'P2'}
+        ]
+        
+        expanded = original + [
+            {'pattern': 'recursos', 'id': 'P1-V1', 'is_variant': True, 'variant_of': 'P1'},
+            {'pattern': 'fondos', 'id': 'P1-V2', 'is_variant': True, 'variant_of': 'P1'},
+            {'pattern': 'financiamiento', 'id': 'P1-V3', 'is_variant': True, 'variant_of': 'P1'},
+            {'pattern': 'métrica', 'id': 'P2-V1', 'is_variant': True, 'variant_of': 'P2'},
+            {'pattern': 'medida', 'id': 'P2-V2', 'is_variant': True, 'variant_of': 'P2'},
+            {'pattern': 'parámetro', 'id': 'P2-V3', 'is_variant': True, 'variant_of': 'P2'},
+        ]
+        
+        result = validate_expansion_result(original, expanded)
+        
+        assert result['valid'] is True
+        assert result['multiplier'] == 4.0
+        assert result['meets_minimum'] is True
+        assert result['original_count'] == 2
+        assert result['expanded_count'] == 8
+        assert result['variant_count'] == 6
+        assert len(result['issues']) == 0
+
+    def test_validate_expansion_low_multiplier(self):
+        """Test validation with low multiplier."""
+        original = [
+            {'pattern': 'presupuesto', 'id': 'P1'},
+            {'pattern': 'indicador', 'id': 'P2'}
+        ]
+        
+        expanded = original + [
+            {'pattern': 'recursos', 'id': 'P1-V1', 'is_variant': True}
+        ]
+        
+        result = validate_expansion_result(original, expanded)
+        
+        assert result['valid'] is False
+        assert result['multiplier'] == 1.5
+        assert result['meets_minimum'] is False
+        assert len(result['issues']) > 0
+        assert any('below minimum' in issue.lower() for issue in result['issues'])
+
+    def test_validate_expansion_meets_target(self):
+        """Test validation when target multiplier is met."""
+        original = [{'pattern': 'presupuesto', 'id': 'P1'}]
+        
+        expanded = original + [
+            {'pattern': f'variant{i}', 'id': f'P1-V{i}', 'is_variant': True}
+            for i in range(1, 5)
+        ]
+        
+        result = validate_expansion_result(original, expanded)
+        
+        assert result['valid'] is True
+        assert result['multiplier'] == 5.0
+        assert result['meets_target'] is True
+
+    def test_validate_expansion_empty_original(self):
+        """Test validation with empty original patterns."""
+        result = validate_expansion_result([], [])
+        
+        assert result['valid'] is False
+        assert result['multiplier'] == 0.0
+        assert 'No original patterns' in result['issues'][0]
+
+    def test_validate_expansion_custom_thresholds(self):
+        """Test validation with custom min and target multipliers."""
+        original = [{'pattern': 'presupuesto', 'id': 'P1'}]
+        expanded = original + [
+            {'pattern': 'recursos', 'id': 'P1-V1', 'is_variant': True},
+            {'pattern': 'fondos', 'id': 'P1-V2', 'is_variant': True}
+        ]
+        
+        result = validate_expansion_result(
+            original, expanded,
+            min_multiplier=2.0,
+            target_multiplier=3.0
+        )
+        
+        assert result['valid'] is True
+        assert result['multiplier'] == 3.0
+        assert result['meets_minimum'] is True
+        assert result['meets_target'] is True
 
 
 if __name__ == "__main__":
