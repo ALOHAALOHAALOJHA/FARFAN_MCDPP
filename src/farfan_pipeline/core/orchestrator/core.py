@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import inspect
 import json
 import logging
 import os
@@ -18,9 +19,46 @@ from collections import deque
 from dataclasses import dataclass, field, asdict, is_dataclass, replace
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable, TypeVar, ParamSpec
+from types import MappingProxyType
+from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
+
+if TYPE_CHECKING:
+    from farfan_pipeline.core.orchestrator.factory import CanonicalQuestionnaire
+
+from farfan_pipeline.core.analysis_port import RecommendationEnginePort
+from farfan_pipeline.config.paths import PROJECT_ROOT, RULES_DIR, CONFIG_DIR
+from farfan_pipeline.processing.aggregation import (
+    AggregationSettings,
+    AreaPolicyAggregator,
+    AreaScore,
+    ClusterAggregator,
+    ClusterScore,
+    DimensionAggregator,
+    DimensionScore,
+    MacroAggregator,
+    MacroScore,
+    ValidationError,
+    group_by,
+    validate_scored_results,
+)
+from farfan_pipeline.utils.paths import safe_join
+from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
+from farfan_pipeline.core.types import PreprocessedDocument
+from farfan_pipeline.core.orchestrator import executors_contract as executors
+from farfan_pipeline.core.orchestrator.arg_router import (
+    ArgRouterError,
+    ArgumentValidationError,
+    ExtendedArgRouter,
+)
+from farfan_pipeline.core.orchestrator.class_registry import ClassRegistryError
+from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
+from farfan_pipeline.core.orchestrator.irrigation_synchronizer import (
+    IrrigationSynchronizer,
+    ExecutionPlan,
+)
 
 logger = logging.getLogger(__name__)
+_CORE_MODULE_DIR = Path(__file__).resolve().parent
 
 # Configuración de ambiente
 EXPECTED_QUESTION_COUNT = int(os.getenv("EXPECTED_QUESTION_COUNT", "305"))
@@ -34,12 +72,102 @@ T = TypeVar("T")
 
 
 # ============================================================================
-# MODELOS DE DATOS
+# UTILIDADES DE PATH
 # ============================================================================
+
+def resolve_workspace_path(
+    path: str | Path,
+    *,
+    project_root: Path = PROJECT_ROOT,
+    rules_dir: Path = RULES_DIR,
+    module_dir: Path = _CORE_MODULE_DIR,
+) -> Path:
+    """Resolve repository-relative paths deterministically."""
+    path_obj = Path(path)
+    
+    if path_obj.is_absolute():
+        return path_obj
+    
+    sanitized = safe_join(project_root, *path_obj.parts)
+    candidates = [
+        sanitized,
+        safe_join(module_dir, *path_obj.parts),
+        safe_join(rules_dir, *path_obj.parts),
+    ]
+    
+    if not path_obj.parts or path_obj.parts[0] != "rules":
+        candidates.append(safe_join(rules_dir, "METODOS", *path_obj.parts))
+    
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    
+    return sanitized
+
+
+def _normalize_monolith_for_hash(monolith: dict | MappingProxyType) -> dict:
+    """Normalize monolith for hash computation and JSON serialization.
+    
+    Converts MappingProxyType to dict recursively to ensure:
+    1. JSON serialization doesn't fail
+    2. Hash computation is consistent
+    """
+    if isinstance(monolith, MappingProxyType):
+        monolith = dict(monolith)
+    
+    def _convert(obj: Any) -> Any:
+        if isinstance(obj, MappingProxyType):
+            obj = dict(obj)
+        if isinstance(obj, dict):
+            return {k: _convert(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_convert(v) for v in obj]
+        return obj
+    
+    normalized = _convert(monolith)
+    
+    try:
+        json.dumps(normalized, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    except (TypeError, ValueError) as exc:
+        raise RuntimeError(f"Monolith normalization failed: {exc}") from exc
+    
+    return normalized
+
+
+# ============================================================================
+# TYPED DICTS Y DATACLASSES
+# ============================================================================
+
+class MacroScoreDict(TypedDict):
+    """Typed container for macro score evaluation results."""
+    macro_score: MacroScore
+    macro_score_normalized: float
+    cluster_scores: list[ClusterScore]
+    cross_cutting_coherence: float
+    systemic_gaps: list[str]
+    strategic_alignment: float
+    quality_band: str
+
+
+@dataclass
+class ClusterScoreData:
+    """Type-safe cluster score data for macro evaluation."""
+    id: str
+    score: float
+    normalized_score: float
+
+
+@dataclass
+class MacroEvaluation:
+    """Type-safe macro evaluation result."""
+    macro_score: float
+    macro_score_normalized: float
+    clusters: list[ClusterScoreData]
+
 
 @dataclass
 class Evidence:
-    """Contenedor de evidencia para resultados de ejecución."""
+    """Evidence container for orchestrator results."""
     modality: str
     elements: list[Any] = field(default_factory=list)
     raw_results: dict[str, Any] = field(default_factory=dict)
@@ -47,7 +175,7 @@ class Evidence:
 
 @dataclass
 class PhaseResult:
-    """Resultado de una fase de orquestación."""
+    """Result of a single orchestration phase."""
     success: bool
     phase_id: str
     data: Any
@@ -59,7 +187,7 @@ class PhaseResult:
 
 @dataclass
 class MicroQuestionRun:
-    """Resultado de ejecutar una micro-pregunta."""
+    """Result of executing a single micro-question."""
     question_id: str
     question_global: int
     base_slot: str
@@ -72,7 +200,7 @@ class MicroQuestionRun:
 
 @dataclass
 class ScoredMicroQuestion:
-    """Micro-pregunta con score asignado."""
+    """Scored micro-question result."""
     question_id: str
     question_global: int
     base_slot: str
@@ -90,12 +218,12 @@ class ScoredMicroQuestion:
 # ============================================================================
 
 class AbortRequested(RuntimeError):
-    """Excepción lanzada cuando se activa un abort."""
+    """Raised when an abort signal is triggered during orchestration."""
     pass
 
 
 class AbortSignal:
-    """Señal de abort thread-safe compartida entre fases."""
+    """Thread-safe abort signal shared across orchestration phases."""
     
     def __init__(self) -> None:
         self._event = threading.Event()
@@ -104,7 +232,7 @@ class AbortSignal:
         self._timestamp: datetime | None = None
     
     def abort(self, reason: str) -> None:
-        """Activar abort con razón y timestamp."""
+        """Trigger an abort with a reason and timestamp."""
         if not reason:
             reason = "Abort requested"
         with self._lock:
@@ -112,28 +240,30 @@ class AbortSignal:
                 self._event.set()
                 self._reason = reason
                 self._timestamp = datetime.utcnow()
-                logger.warning(f"Abort activado: {reason}")
     
     def is_aborted(self) -> bool:
-        """Verificar si está abortado."""
+        """Check whether abort has been triggered."""
         return self._event.is_set()
     
     def get_reason(self) -> str | None:
-        """Obtener razón del abort."""
+        """Return the abort reason if set."""
         with self._lock:
             return self._reason
     
     def get_timestamp(self) -> datetime | None:
-        """Obtener timestamp del abort."""
+        """Return the abort timestamp if set."""
         with self._lock:
             return self._timestamp
     
     def reset(self) -> None:
-        """Limpiar la señal de abort."""
-        with self._lock:
+        """Clear the abort signal."""
+        self._lock.acquire()
+        try:
             self._event.clear()
             self._reason = None
             self._timestamp = None
+        finally:
+            self._lock.release()
 
 
 # ============================================================================
@@ -141,7 +271,7 @@ class AbortSignal:
 # ============================================================================
 
 class ResourceLimits:
-    """Guardián de recursos con predicción adaptativa de workers."""
+    """Runtime resource guard with adaptive worker prediction."""
     
     def __init__(
         self,
@@ -161,10 +291,9 @@ class ResourceLimits:
         self._semaphore: asyncio.Semaphore | None = None
         self._semaphore_limit = self._max_workers
         self._async_lock: asyncio.Lock | None = None
-        
-        # Intentar cargar psutil
         self._psutil = None
         self._psutil_process = None
+        
         try:
             import psutil
             self._psutil = psutil
@@ -174,16 +303,16 @@ class ResourceLimits:
     
     @property
     def max_workers(self) -> int:
-        """Retornar el presupuesto actual de workers."""
+        """Return the current worker budget."""
         return self._max_workers
     
     def attach_semaphore(self, semaphore: asyncio.Semaphore) -> None:
-        """Adjuntar un semáforo asyncio para control de presupuesto."""
+        """Attach an asyncio semaphore for budget control."""
         self._semaphore = semaphore
         self._semaphore_limit = self._max_workers
     
     async def apply_worker_budget(self) -> int:
-        """Aplicar el presupuesto actual de workers al semáforo."""
+        """Apply the current worker budget to the semaphore."""
         if self._semaphore is None:
             return self._max_workers
         
@@ -195,11 +324,9 @@ class ResourceLimits:
             current = self._semaphore_limit
             
             if desired > current:
-                # Liberar tokens
                 for _ in range(desired - current):
                     self._semaphore.release()
             elif desired < current:
-                # Adquirir tokens
                 reduction = current - desired
                 for _ in range(reduction):
                     await self._semaphore.acquire()
@@ -208,12 +335,12 @@ class ResourceLimits:
             return self._max_workers
     
     def _record_usage(self, usage: dict[str, float]) -> None:
-        """Registrar uso de recursos y predecir presupuesto de workers."""
+        """Record resource usage and predict worker budget."""
         self._usage_history.append(usage)
         self._predict_worker_budget()
     
     def _predict_worker_budget(self) -> None:
-        """Ajustar presupuesto de workers basado en uso reciente."""
+        """Adjust worker budget based on recent resource usage."""
         if len(self._usage_history) < 5:
             return
         
@@ -225,18 +352,16 @@ class ResourceLimits:
         
         new_budget = self._max_workers
         
-        # Reducir si recursos altos
         if (self.max_cpu_percent and avg_cpu > self.max_cpu_percent * 0.95) or \
            (self.max_memory_mb and avg_mem > 90.0):
             new_budget = max(self.min_workers, self._max_workers - 1)
-        # Aumentar si recursos bajos
         elif avg_cpu < self.max_cpu_percent * 0.6 and avg_mem < 70.0:
             new_budget = min(self.hard_max_workers, self._max_workers + 1)
         
         self._max_workers = max(self.min_workers, min(new_budget, self.hard_max_workers))
     
     def get_resource_usage(self) -> dict[str, float]:
-        """Capturar métricas actuales de uso de recursos."""
+        """Capture current resource usage metrics."""
         timestamp = datetime.utcnow().isoformat()
         cpu_percent = 0.0
         memory_percent = 0.0
@@ -252,7 +377,6 @@ class ResourceLimits:
             except Exception:
                 cpu_percent = 0.0
         else:
-            # Fallback sin psutil
             try:
                 load1, _, _ = os.getloadavg()
                 cpu_percent = float(min(100.0, load1 * 100))
@@ -278,7 +402,7 @@ class ResourceLimits:
         return usage
     
     def check_memory_exceeded(self, usage: dict[str, float] | None = None) -> tuple[bool, dict[str, float]]:
-        """Verificar si se excedió el límite de memoria."""
+        """Check if memory limit has been exceeded."""
         usage = usage or self.get_resource_usage()
         exceeded = False
         if self.max_memory_mb is not None:
@@ -286,7 +410,7 @@ class ResourceLimits:
         return exceeded, usage
     
     def check_cpu_exceeded(self, usage: dict[str, float] | None = None) -> tuple[bool, dict[str, float]]:
-        """Verificar si se excedió el límite de CPU."""
+        """Check if CPU limit has been exceeded."""
         usage = usage or self.get_resource_usage()
         exceeded = False
         if self.max_cpu_percent:
@@ -294,7 +418,7 @@ class ResourceLimits:
         return exceeded, usage
     
     def get_usage_history(self) -> list[dict[str, float]]:
-        """Retornar el historial de uso registrado."""
+        """Return the recorded usage history."""
         return list(self._usage_history)
 
 
@@ -303,7 +427,7 @@ class ResourceLimits:
 # ============================================================================
 
 class PhaseInstrumentation:
-    """Recolecta telemetría granular para cada fase de orquestación."""
+    """Collects granular telemetry for each orchestration phase."""
     
     def __init__(
         self,
@@ -328,13 +452,13 @@ class PhaseInstrumentation:
         self.anomalies: list[dict[str, Any]] = []
     
     def start(self, items_total: int | None = None) -> None:
-        """Marcar inicio de ejecución de fase."""
+        """Mark the start of phase execution."""
         if items_total is not None:
             self.items_total = items_total
         self.start_time = time.perf_counter()
     
     def increment(self, count: int = 1, latency: float | None = None) -> None:
-        """Incrementar contador y opcionalmente registrar latencia."""
+        """Increment processed item count and optionally record latency."""
         self.items_processed += count
         if latency is not None:
             self.latencies.append(latency)
@@ -343,13 +467,13 @@ class PhaseInstrumentation:
             self.capture_resource_snapshot()
     
     def should_snapshot(self) -> bool:
-        """Determinar si se debe capturar un snapshot de recursos."""
+        """Determine if a resource snapshot should be captured."""
         if self.items_total == 0 or self.items_processed == 0:
             return False
         return self.items_processed % self.snapshot_interval == 0
     
     def capture_resource_snapshot(self) -> None:
-        """Capturar un snapshot de uso de recursos."""
+        """Capture a resource usage snapshot."""
         if not self.resource_limits:
             return
         snapshot = self.resource_limits.get_resource_usage()
@@ -357,7 +481,7 @@ class PhaseInstrumentation:
         self.resource_snapshots.append(snapshot)
     
     def record_warning(self, category: str, message: str, **extra: Any) -> None:
-        """Registrar una advertencia durante ejecución de fase."""
+        """Record a warning during phase execution."""
         entry = {
             "category": category,
             "message": message,
@@ -367,7 +491,7 @@ class PhaseInstrumentation:
         self.warnings.append(entry)
     
     def record_error(self, category: str, message: str, **extra: Any) -> None:
-        """Registrar un error durante ejecución de fase."""
+        """Record an error during phase execution."""
         entry = {
             "category": category,
             "message": message,
@@ -377,7 +501,7 @@ class PhaseInstrumentation:
         self.errors.append(entry)
     
     def _detect_latency_anomaly(self, latency: float) -> None:
-        """Detectar anomalías de latencia usando umbrales estadísticos."""
+        """Detect latency anomalies using statistical thresholds."""
         if len(self.latencies) < 5:
             return
         
@@ -395,23 +519,23 @@ class PhaseInstrumentation:
             })
     
     def complete(self) -> None:
-        """Marcar fin de ejecución de fase."""
+        """Mark the end of phase execution."""
         self.end_time = time.perf_counter()
     
     def duration_ms(self) -> float | None:
-        """Retornar duración de fase en milisegundos."""
+        """Return the phase duration in milliseconds."""
         if self.start_time is None or self.end_time is None:
             return None
         return (self.end_time - self.start_time) * 1000.0
     
     def progress(self) -> float | None:
-        """Retornar fracción de progreso (0.0 a 1.0)."""
+        """Return the progress fraction (0.0 to 1.0)."""
         if not self.items_total:
             return None
         return min(1.0, self.items_processed / float(self.items_total))
     
     def throughput(self) -> float | None:
-        """Retornar items procesados por segundo."""
+        """Return items processed per second."""
         if self.start_time is None:
             return None
         elapsed = (time.perf_counter() - self.start_time) if self.end_time is None else (self.end_time - self.start_time)
@@ -420,7 +544,7 @@ class PhaseInstrumentation:
         return self.items_processed / elapsed
     
     def latency_histogram(self) -> dict[str, float | None]:
-        """Retornar percentiles de latencia."""
+        """Return latency percentiles."""
         if not self.latencies:
             return {"p50": None, "p95": None, "p99": None}
         
@@ -445,7 +569,7 @@ class PhaseInstrumentation:
         }
     
     def build_metrics(self) -> dict[str, Any]:
-        """Construir diccionario de resumen de métricas."""
+        """Build a metrics summary dictionary."""
         return {
             "phase_id": self.phase_id,
             "name": self.name,
@@ -467,7 +591,7 @@ class PhaseInstrumentation:
 # ============================================================================
 
 class PhaseTimeoutError(RuntimeError):
-    """Lanzada cuando una fase excede su timeout."""
+    """Raised when a phase exceeds its timeout."""
     
     def __init__(self, phase_id: int | str, phase_name: str, timeout_s: float) -> None:
         self.phase_id = phase_id
@@ -486,7 +610,7 @@ async def execute_phase_with_timeout(
     timeout_s: float = 300.0,
     **kwargs: P.kwargs,
 ) -> T:
-    """Ejecutar una fase async con timeout y logging comprensivo."""
+    """Execute an async phase with timeout and comprehensive logging."""
     target = coro or handler
     if target is None:
         raise ValueError("Either 'coro' or 'handler' must be provided")
@@ -519,13 +643,189 @@ async def execute_phase_with_timeout(
 
 
 # ============================================================================
+# METHOD EXECUTOR Y LAZY LOADING
+# ============================================================================
+
+class _LazyInstanceDict:
+    """Lazy instance dictionary for backward compatibility."""
+    
+    def __init__(self, method_registry: Any) -> None:
+        self._registry = method_registry
+    
+    def get(self, class_name: str, default: Any = None) -> Any:
+        """Get instance lazily."""
+        try:
+            return self._registry._get_instance(class_name)
+        except Exception:
+            return default
+    
+    def __getitem__(self, class_name: str) -> Any:
+        """Get instance lazily (dict access)."""
+        return self._registry._get_instance(class_name)
+    
+    def __contains__(self, class_name: str) -> bool:
+        """Check if class is available."""
+        return class_name in self._registry._class_paths
+    
+    def keys(self) -> list[str]:
+        """Get available class names."""
+        return list(self._registry._class_paths.keys())
+    
+    def values(self) -> list[Any]:
+        """Get instantiated instances (triggers lazy loading)."""
+        return [self.get(name) for name in self.keys()]
+    
+    def items(self) -> list[tuple[str, Any]]:
+        """Get (name, instance) pairs (triggers lazy loading)."""
+        return [(name, self.get(name)) for name in self.keys()]
+    
+    def __len__(self) -> int:
+        """Get number of available classes."""
+        return len(self._registry._class_paths)
+
+
+class MethodExecutor:
+    """Execute catalog methods using lazy method injection."""
+    
+    def __init__(
+        self,
+        dispatcher: Any | None = None,
+        signal_registry: Any | None = None,
+        method_registry: Any | None = None,
+    ) -> None:
+        from farfan_pipeline.core.orchestrator.method_registry import (
+            MethodRegistry,
+            setup_default_instantiation_rules,
+        )
+        
+        self.degraded_mode = False
+        self.degraded_reasons: list[str] = []
+        self.signal_registry = signal_registry
+        
+        if method_registry is not None:
+            self._method_registry = method_registry
+        else:
+            try:
+                self._method_registry = MethodRegistry()
+                setup_default_instantiation_rules(self._method_registry)
+                logger.info("method_registry_initialized_lazy_mode")
+            except Exception as exc:
+                self.degraded_mode = True
+                reason = f"Method registry initialization failed: {exc}"
+                self.degraded_reasons.append(reason)
+                logger.error("DEGRADED MODE: %s", reason)
+                self._method_registry = MethodRegistry(class_paths={})
+        
+        try:
+            from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
+            registry = build_class_registry()
+        except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
+            self.degraded_mode = True
+            reason = f"Could not build class registry: {exc}"
+            self.degraded_reasons.append(reason)
+            logger.warning("DEGRADED MODE: %s", reason)
+            registry = {}
+        
+        self._router = ExtendedArgRouter(registry)
+        self.instances = _LazyInstanceDict(self._method_registry)
+    
+    @staticmethod
+    def _supports_parameter(callable_obj: Any, parameter_name: str) -> bool:
+        try:
+            signature = inspect.signature(callable_obj)
+        except (TypeError, ValueError):
+            return False
+        return parameter_name in signature.parameters
+    
+    def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
+        """Execute a method using lazy instantiation."""
+        from farfan_pipeline.core.orchestrator.method_registry import MethodRegistryError
+        
+        try:
+            method = self._method_registry.get_method(class_name, method_name)
+        except MethodRegistryError as exc:
+            logger.error(f"method_retrieval_failed: {class_name}.{method_name}: {exc}")
+            if self.degraded_mode:
+                logger.warning("Returning None due to degraded mode")
+                return None
+            raise AttributeError(f"Cannot retrieve {class_name}.{method_name}: {exc}") from exc
+        
+        try:
+            args, routed_kwargs = self._router.route(class_name, method_name, dict(kwargs))
+            return method(*args, **routed_kwargs)
+        except (ArgRouterError, ArgumentValidationError):
+            logger.exception(f"Argument routing failed for {class_name}.{method_name}")
+            raise
+        except Exception:
+            logger.exception(f"Method execution failed for {class_name}.{method_name}")
+            raise
+    
+    def inject_method(self, class_name: str, method_name: str, method: Callable[..., Any]) -> None:
+        """Inject a method directly without requiring a class."""
+        self._method_registry.inject_method(class_name, method_name, method)
+        logger.info(f"method_injected_into_executor: {class_name}.{method_name}")
+    
+    def has_method(self, class_name: str, method_name: str) -> bool:
+        """Check if a method is available."""
+        return self._method_registry.has_method(class_name, method_name)
+    
+    def get_registry_stats(self) -> dict[str, Any]:
+        """Get statistics from the method registry."""
+        return self._method_registry.get_stats()
+    
+    def get_routing_metrics(self) -> dict[str, Any]:
+        """Get routing metrics from ExtendedArgRouter."""
+        if hasattr(self._router, "get_metrics"):
+            return self._router.get_metrics()
+        return {}
+
+
+# ============================================================================
+# VALIDACIÓN DE DEFINICIONES DE FASES
+# ============================================================================
+
+def validate_phase_definitions(
+    phase_list: list[tuple[int, str, str, str]], orchestrator_class: type
+) -> None:
+    """Validate phase definitions for structural coherence."""
+    if not phase_list:
+        raise RuntimeError("FASES cannot be empty - no phases defined for orchestration")
+    
+    phase_ids = [phase[0] for phase in phase_list]
+    
+    seen_ids = set()
+    for phase_id in phase_ids:
+        if phase_id in seen_ids:
+            raise RuntimeError(f"Duplicate phase ID {phase_id} in FASES definition")
+        seen_ids.add(phase_id)
+    
+    if phase_ids != sorted(phase_ids):
+        raise RuntimeError(f"Phase IDs must be sorted in ascending order. Got {phase_ids}")
+    if phase_ids[0] != 0:
+        raise RuntimeError(f"Phase IDs must start from 0. Got first ID: {phase_ids[0]}")
+    if phase_ids[-1] != len(phase_list) - 1:
+        raise RuntimeError(f"Phase IDs must be contiguous from 0 to {len(phase_list) - 1}. Got highest ID: {phase_ids[-1]}")
+    
+    valid_modes = {"sync", "async"}
+    for phase_id, mode, handler_name, label in phase_list:
+        if mode not in valid_modes:
+            raise RuntimeError(f"Phase {phase_id} ({label}): invalid mode '{mode}'. Mode must be one of {valid_modes}")
+        
+        if not hasattr(orchestrator_class, handler_name):
+            raise RuntimeError(f"Phase {phase_id} ({label}): handler method '{handler_name}' does not exist in {orchestrator_class.__name__}")
+        
+        handler = getattr(orchestrator_class, handler_name, None)
+        if not callable(handler):
+            raise RuntimeError(f"Phase {phase_id} ({label}): handler '{handler_name}' is not callable")
+
+
+# ============================================================================
 # ORQUESTADOR PRINCIPAL
 # ============================================================================
 
 class Orchestrator:
-    """Motor de orquestación robusto de 11 fases con soporte de abort y control de recursos."""
+    """Robust 11-phase orchestrator with abort support and resource control."""
     
-    # Definición de las 11 fases
     FASES: list[tuple[int, str, str, str]] = [
         (0, "sync", "_load_configuration", "FASE 0 - Validación de Configuración"),
         (1, "sync", "_ingest_document", "FASE 1 - Ingestión de Documento"),
@@ -540,13 +840,11 @@ class Orchestrator:
         (10, "async", "_format_and_export", "FASE 10 - Formateo y Exportación"),
     ]
     
-    # Targets de items por fase
     PHASE_ITEM_TARGETS: dict[int, int] = {
         0: 1, 1: 1, 2: 300, 3: 300, 4: 60,
         5: 10, 6: 4, 7: 1, 8: 1, 9: 1, 10: 1,
     }
     
-    # Claves de output por fase
     PHASE_OUTPUT_KEYS: dict[int, str] = {
         0: "config", 1: "document", 2: "micro_results",
         3: "scored_results", 4: "dimension_scores",
@@ -555,7 +853,6 @@ class Orchestrator:
         9: "report", 10: "export_payload",
     }
     
-    # Argumentos requeridos por fase
     PHASE_ARGUMENT_KEYS: dict[int, list[str]] = {
         1: ["pdf_path", "config"],
         2: ["document", "config"],
@@ -569,7 +866,6 @@ class Orchestrator:
         10: ["report", "config"],
     }
     
-    # Timeouts por fase (segundos)
     PHASE_TIMEOUTS: dict[int, float] = {
         0: 60, 1: 120, 2: 600, 3: 300, 4: 180,
         5: 120, 6: 60, 7: 60, 8: 120, 9: 60, 10: 120,
@@ -579,15 +875,34 @@ class Orchestrator:
     
     def __init__(
         self,
-        method_executor: Any,
-        questionnaire: Any,
-        executor_config: Any,
+        method_executor: MethodExecutor,
+        questionnaire: "CanonicalQuestionnaire",
+        executor_config: ExecutorConfig,
         calibration_orchestrator: Any | None = None,
         resource_limits: ResourceLimits | None = None,
         resource_snapshot_interval: int = 10,
-        recommendation_engine_port: Any | None = None,
+        recommendation_engine_port: RecommendationEnginePort | None = None,
+        processor_bundle: Any | None = None,
     ) -> None:
-        """Inicializar orquestador con todas las dependencias inyectadas."""
+        """Initialize the orchestrator with all dependencies injected.
+        
+        Args:
+            method_executor: Configured MethodExecutor instance
+            questionnaire: Loaded and validated CanonicalQuestionnaire
+            executor_config: Executor configuration object
+            calibration_orchestrator: Calibration orchestrator instance
+            resource_limits: Resource limit configuration
+            resource_snapshot_interval: Interval for resource snapshots
+            recommendation_engine_port: Optional recommendation engine port
+            processor_bundle: ProcessorBundle with enriched_signal_packs (WIRING REQUIRED)
+        """
+        from farfan_pipeline.core.orchestrator.factory import (
+            _validate_questionnaire_structure,
+            get_questionnaire_provider,
+        )
+        
+        validate_phase_definitions(self.FASES, self.__class__)
+        
         self.executor = method_executor
         self._canonical_questionnaire = questionnaire
         self._monolith_data = dict(questionnaire.data)
@@ -595,45 +910,116 @@ class Orchestrator:
         self.calibration_orchestrator = calibration_orchestrator
         self.resource_limits = resource_limits or ResourceLimits()
         self.resource_snapshot_interval = max(1, resource_snapshot_interval)
-        self.recommendation_engine = recommendation_engine_port
+        self.questionnaire_provider = get_questionnaire_provider()
         
-        # Inicializar señales y estado
+        # ========================================================================
+        # WIRING: ProcessorBundle → Orchestrator
+        # Store enriched_signal_packs for use in Phase 2
+        # ========================================================================
+        self._processor_bundle = processor_bundle
+        self._enriched_packs = None
+        if processor_bundle is not None:
+            if hasattr(processor_bundle, "enriched_signal_packs"):
+                self._enriched_packs = processor_bundle.enriched_signal_packs
+                logger.info(f"Orchestrator wired with {len(self._enriched_packs) if self._enriched_packs else 0} enriched signal packs")
+            else:
+                logger.warning("ProcessorBundle provided but missing enriched_signal_packs attribute")
+        else:
+            logger.warning("No ProcessorBundle provided - signal enrichment unavailable")
+        
+        # ========================================================================
+        # WIRING: MethodExecutor.signal_registry verification
+        # Ensure MethodExecutor has access to QuestionnaireSignalRegistry
+        # ========================================================================
+        if not hasattr(self.executor, "signal_registry") or self.executor.signal_registry is None:
+            logger.error("WIRING VIOLATION: MethodExecutor missing signal_registry")
+            raise RuntimeError(
+                "MethodExecutor must be configured with signal_registry. "
+                "Executors require indirect access to QuestionnaireSignalRegistry."
+            )
+        else:
+            logger.info("✓ MethodExecutor.signal_registry verified")
+        
+        try:
+            _validate_questionnaire_structure(self._monolith_data)
+        except (ValueError, TypeError) as e:
+            raise RuntimeError(f"Questionnaire structure validation failed: {e}") from e
+        
+        if not self.executor.instances:
+            raise RuntimeError("MethodExecutor.instances is empty - no executable methods registered")
+        
+        # Executor registry
+        self.executors = {
+            "D1-Q1": executors.D1Q1_Executor, "D1-Q2": executors.D1Q2_Executor,
+            "D1-Q3": executors.D1Q3_Executor, "D1-Q4": executors.D1Q4_Executor,
+            "D1-Q5": executors.D1Q5_Executor, "D2-Q1": executors.D2Q1_Executor,
+            "D2-Q2": executors.D2Q2_Executor, "D2-Q3": executors.D2Q3_Executor,
+            "D2-Q4": executors.D2Q4_Executor, "D2-Q5": executors.D2Q5_Executor,
+            "D3-Q1": executors.D3Q1_Executor, "D3-Q2": executors.D3Q2_Executor,
+            "D3-Q3": executors.D3Q3_Executor, "D3-Q4": executors.D3Q4_Executor,
+            "D3-Q5": executors.D3Q5_Executor, "D4-Q1": executors.D4Q1_Executor,
+            "D4-Q2": executors.D4Q2_Executor, "D4-Q3": executors.D4Q3_Executor,
+            "D4-Q4": executors.D4Q4_Executor, "D4-Q5": executors.D4Q5_Executor,
+            "D5-Q1": executors.D5Q1_Executor, "D5-Q2": executors.D5Q2_Executor,
+            "D5-Q3": executors.D5Q3_Executor, "D5-Q4": executors.D5Q4_Executor,
+            "D5-Q5": executors.D5Q5_Executor, "D6-Q1": executors.D6Q1_Executor,
+            "D6-Q2": executors.D6Q2_Executor, "D6-Q3": executors.D6Q3_Executor,
+            "D6-Q4": executors.D6Q4_Executor, "D6-Q5": executors.D6Q5_Executor,
+        }
+        
+        # State management
         self.abort_signal = AbortSignal()
         self.phase_results: list[PhaseResult] = []
         self._phase_instrumentation: dict[int, PhaseInstrumentation] = {}
-        self._phase_status: dict[int, str] = {
-            phase_id: "not_started" for phase_id, *_ in self.FASES
-        }
+        self._phase_status: dict[int, str] = {phase_id: "not_started" for phase_id, *_ in self.FASES}
         self._phase_outputs: dict[int, Any] = {}
         self._context: dict[str, Any] = {}
         self._start_time: float | None = None
+        self._execution_plan: ExecutionPlan | None = None
         
-        logger.info("Orchestrator inicializado con 11 fases")
+        # Additional attributes for phase 0 validations
+        self._method_map_data: dict[str, Any] | None = None
+        self._schema_data: dict[str, Any] | None = None
+        self.catalog: dict[str, Any] | None = None
+        
+        self.dependency_lockdown = get_dependency_lockdown()
+        logger.info(f"Orchestrator dependency mode: {self.dependency_lockdown.get_mode_description()}")
+        
+        self.recommendation_engine = recommendation_engine_port
+        if self.recommendation_engine is not None:
+            logger.info("RecommendationEngine port injected successfully")
+        else:
+            logger.warning("No RecommendationEngine port provided - recommendations unavailable")
     
     def _ensure_not_aborted(self) -> None:
-        """Verificar si la orquestación ha sido abortada y lanzar excepción si es así."""
+        """Check if orchestration has been aborted and raise exception if so."""
         if self.abort_signal.is_aborted():
             reason = self.abort_signal.get_reason() or "Unknown reason"
             raise AbortRequested(f"Orchestration aborted: {reason}")
     
     def request_abort(self, reason: str) -> None:
-        """Solicitar que la orquestación aborte con una razón específica."""
+        """Request orchestration to abort with a specific reason."""
         self.abort_signal.abort(reason)
     
     def reset_abort(self) -> None:
-        """Resetear la señal de abort para permitir nuevas ejecuciones."""
+        """Reset the abort signal to allow new orchestration runs."""
         self.abort_signal.reset()
     
     def _get_phase_timeout(self, phase_id: int) -> float:
-        """Obtener timeout para una fase específica."""
+        """Get timeout for a specific phase."""
         return self.PHASE_TIMEOUTS.get(phase_id, 300.0)
     
+    def _resolve_path(self, path: str | None) -> str | None:
+        """Resolve a relative or absolute path."""
+        if path is None:
+            return None
+        resolved = resolve_workspace_path(path)
+        return str(resolved)
+    
     async def process_development_plan_async(
-        self,
-        pdf_path: str,
-        preprocessed_document: Any | None = None
+        self, pdf_path: str, preprocessed_document: Any | None = None
     ) -> list[PhaseResult]:
-        """Ejecutar el pipeline completo de 11 fases de forma asíncrona."""
+        """Execute the complete 11-phase pipeline asynchronously."""
         self.reset_abort()
         self.phase_results = []
         self._phase_instrumentation = {}
@@ -646,7 +1032,6 @@ class Orchestrator:
         self._phase_status = {phase_id: "not_started" for phase_id, *_ in self.FASES}
         self._start_time = time.perf_counter()
         
-        # Ejecutar cada fase secuencialmente
         for phase_id, mode, handler_name, phase_label in self.FASES:
             self._ensure_not_aborted()
             
@@ -663,7 +1048,6 @@ class Orchestrator:
             self._phase_instrumentation[phase_id] = instrumentation
             self._phase_status[phase_id] = "running"
             
-            # Preparar argumentos
             args = [self._context[key] for key in self.PHASE_ARGUMENT_KEYS.get(phase_id, [])]
             
             success = False
@@ -726,6 +1110,27 @@ class Orchestrator:
                 if out_key:
                     self._context[out_key] = data
                 self._phase_status[phase_id] = "completed"
+                
+                # Build execution plan after Phase 1
+                if phase_id == 1:
+                    try:
+                        logger.info("Building execution plan after Phase 1 completion")
+                        document = self._context.get("document")
+                        chunks = getattr(document, "chunks", []) if document else []
+                        
+                        synchronizer = IrrigationSynchronizer(
+                            questionnaire=self._monolith_data, document_chunks=chunks
+                        )
+                        self._execution_plan = synchronizer.build_execution_plan()
+                        
+                        logger.info(
+                            f"Execution plan built: {len(self._execution_plan.tasks)} tasks, "
+                            f"plan_id={self._execution_plan.plan_id}"
+                        )
+                    except ValueError as e:
+                        logger.error(f"Failed to build execution plan: {e}")
+                        self.request_abort(f"Synchronization failed: {e}")
+                        raise
             elif aborted:
                 self._phase_status[phase_id] = "aborted"
                 break
@@ -735,8 +1140,36 @@ class Orchestrator:
         
         return self.phase_results
     
+    def process_development_plan(self, pdf_path: str, preprocessed_document: Any | None = None) -> list[PhaseResult]:
+        """Sync wrapper for process_development_plan_async."""
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+        
+        if loop and loop.is_running():
+            raise RuntimeError("process_development_plan() must be called outside an active asyncio loop")
+        
+        return asyncio.run(self.process_development_plan_async(pdf_path, preprocessed_document=preprocessed_document))
+    
+    async def process(self, preprocessed_document: Any) -> list[PhaseResult]:
+        """DEPRECATED ALIAS for process_development_plan_async()."""
+        import warnings
+        warnings.warn(
+            "Orchestrator.process() is deprecated. Use process_development_plan_async() instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        
+        pdf_path = getattr(preprocessed_document, "source_path", None)
+        if pdf_path is None:
+            metadata = getattr(preprocessed_document, "metadata", {})
+            pdf_path = metadata.get("source_path", "unknown.pdf")
+        
+        return await self.process_development_plan_async(pdf_path=str(pdf_path), preprocessed_document=preprocessed_document)
+    
     def get_processing_status(self) -> dict[str, Any]:
-        """Obtener estado actual del procesamiento."""
+        """Get current processing status."""
         if self._start_time is None:
             status = "not_started"
             elapsed = 0.0
@@ -773,14 +1206,27 @@ class Orchestrator:
         }
     
     def get_phase_metrics(self) -> dict[str, Any]:
-        """Obtener métricas de todas las fases."""
+        """Get metrics for all phases."""
         return {
             str(phase_id): instr.build_metrics()
             for phase_id, instr in self._phase_instrumentation.items()
         }
     
+    async def monitor_progress_async(self, poll_interval: float = 2.0):
+        """Monitor progress asynchronously."""
+        while True:
+            status = self.get_processing_status()
+            yield status
+            if status["status"] != "running":
+                break
+            await asyncio.sleep(poll_interval)
+    
+    def abort_handler(self, reason: str) -> None:
+        """Alias for request_abort."""
+        self.request_abort(reason)
+    
     def health_check(self) -> dict[str, Any]:
-        """Verificación de salud del sistema."""
+        """System health check."""
         usage = self.resource_limits.get_resource_usage()
         cpu_headroom = max(0.0, self.resource_limits.max_cpu_percent - usage.get("cpu_percent", 0.0))
         mem_headroom = max(0.0, (self.resource_limits.max_memory_mb or 0.0) - usage.get("rss_mb", 0.0))
@@ -801,8 +1247,71 @@ class Orchestrator:
             "abort": self.abort_signal.is_aborted(),
         }
     
+    def get_system_health(self) -> dict[str, Any]:
+        """Comprehensive system health check."""
+        health = {
+            "status": "healthy",
+            "timestamp": datetime.utcnow().isoformat(),
+            "components": {},
+        }
+        
+        try:
+            executor_health = {
+                "instances_loaded": len(self.executor.instances),
+                "status": "healthy",
+            }
+            health["components"]["method_executor"] = executor_health
+        except Exception as e:
+            health["status"] = "unhealthy"
+            health["components"]["method_executor"] = {"status": "unhealthy", "error": str(e)}
+        
+        try:
+            from farfan_pipeline.core.orchestrator import get_questionnaire_provider
+            provider = get_questionnaire_provider()
+            questionnaire_health = {
+                "has_data": provider.has_data(),
+                "status": "healthy" if provider.has_data() else "unhealthy",
+            }
+            health["components"]["questionnaire_provider"] = questionnaire_health
+            
+            if not provider.has_data():
+                health["status"] = "degraded"
+        except Exception as e:
+            health["status"] = "unhealthy"
+            health["components"]["questionnaire_provider"] = {"status": "unhealthy", "error": str(e)}
+        
+        try:
+            usage = self.resource_limits.get_resource_usage()
+            resource_health = {
+                "cpu_percent": usage.get("cpu_percent", 0),
+                "memory_mb": usage.get("rss_mb", 0),
+                "worker_budget": usage.get("worker_budget", 0),
+                "status": "healthy",
+            }
+            
+            if usage.get("cpu_percent", 0) > 80:
+                resource_health["status"] = "degraded"
+                resource_health["warning"] = "High CPU usage"
+                health["status"] = "degraded"
+            
+            if usage.get("rss_mb", 0) > 3500:
+                resource_health["status"] = "degraded"
+                resource_health["warning"] = "High memory usage"
+                health["status"] = "degraded"
+            
+            health["components"]["resources"] = resource_health
+        except Exception as e:
+            health["status"] = "unhealthy"
+            health["components"]["resources"] = {"status": "unhealthy", "error": str(e)}
+        
+        if self.abort_signal.is_aborted():
+            health["status"] = "unhealthy"
+            health["abort_reason"] = self.abort_signal.get_reason()
+        
+        return health
+    
     def export_metrics(self) -> dict[str, Any]:
-        """Exportar todas las métricas para monitoreo."""
+        """Export all metrics for monitoring."""
         abort_timestamp = self.abort_signal.get_timestamp()
         
         return {
@@ -816,829 +1325,3 @@ class Orchestrator:
             },
             "phase_status": dict(self._phase_status),
         }
-    
-    # ========================================================================
-    # IMPLEMENTACIÓN DE FASES
-    # ========================================================================
-    
-    def _load_configuration(self) -> dict[str, Any]:
-        """FASE 0: Validación de configuración."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[0]
-        start = time.perf_counter()
-        
-        # Normalizar monolito para hash
-        monolith = dict(self._monolith_data)
-        monolith_hash = hashlib.sha256(
-            json.dumps(monolith, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-        ).hexdigest()
-        
-        micro_questions = monolith["blocks"].get("micro_questions", [])
-        meso_questions = monolith["blocks"].get("meso_questions", [])
-        macro_question = monolith["blocks"].get("macro_question", {})
-        
-        question_total = len(micro_questions) + len(meso_questions) + (1 if macro_question else 0)
-        
-        if question_total != EXPECTED_QUESTION_COUNT:
-            logger.warning(f"Question count mismatch: expected {EXPECTED_QUESTION_COUNT}, got {question_total}")
-            instrumentation.record_warning("integrity", f"Conteo de preguntas inesperado: {question_total}")
-        
-        structure_report = self._validate_contract_structure(monolith, instrumentation)
-        
-        # Cargar aggregation settings
-        from farfan_pipeline.processing.aggregation import AggregationSettings
-        aggregation_settings = AggregationSettings.from_monolith(monolith)
-        
-        duration = time.perf_counter() - start
-        instrumentation.increment(latency=duration)
-        
-        config = {
-            "catalog": getattr(self, "catalog", {}),
-            "monolith": monolith,
-            "monolith_sha256": monolith_hash,
-            "micro_questions": micro_questions,
-            "meso_questions": meso_questions,
-            "macro_question": macro_question,
-            "structure_report": structure_report,
-            "_aggregation_settings": aggregation_settings,
-        }
-        
-        return config
-    
-    def _validate_contract_structure(self, monolith: dict[str, Any], instrumentation: PhaseInstrumentation) -> dict[str, Any]:
-        """Validar estructura del contrato del cuestionario."""
-        micro_questions = monolith["blocks"].get("micro_questions", [])
-        base_slots = {q.get("base_slot") for q in micro_questions}
-        modalities = {q.get("scoring_modality") for q in micro_questions}
-        
-        expected_modalities = {"TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E", "TYPE_F"}
-        
-        if len(base_slots) != 30:
-            instrumentation.record_error("structure", "Cantidad de slots base inválida", expected=30, found=len(base_slots))
-        
-        missing_modalities = expected_modalities - modalities
-        if missing_modalities:
-            instrumentation.record_error("structure", "Modalidades faltantes", missing=sorted(missing_modalities))
-        
-        slot_area_map: dict[str, str] = {}
-        area_cluster_map: dict[str, str] = {}
-        
-        for question in micro_questions:
-            slot = question.get("base_slot")
-            area = question.get("policy_area_id")
-            cluster = question.get("cluster_id")
-            
-            if slot and area:
-                previous = slot_area_map.setdefault(slot, area)
-                if previous != area:
-                    instrumentation.record_error("structure", "Asignación de área inconsistente", base_slot=slot)
-            
-            if area and cluster:
-                previous_cluster = area_cluster_map.setdefault(area, cluster)
-                if previous_cluster != cluster:
-                    instrumentation.record_error("structure", "Área asignada a múltiples clústeres", area=area)
-        
-        return {
-            "base_slots": sorted(base_slots),
-            "modalities": sorted(modalities),
-            "slot_area_map": slot_area_map,
-            "area_cluster_map": area_cluster_map,
-        }
-    
-    def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> Any:
-        """FASE 1: Ingestión de documento usando SPC pipeline."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[1]
-        start = time.perf_counter()
-        
-        document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
-        
-        # Usar pipeline SPC para ingestion
-        try:
-            from farfan_pipeline.processing.spc_ingestion import CPPIngestionPipeline
-            from farfan_pipeline.core.types import PreprocessedDocument
-            
-            pipeline = CPPIngestionPipeline()
-            canon_package = asyncio.run(pipeline.process(document_path=Path(pdf_path), document_id=document_id))
-            
-            preprocessed = PreprocessedDocument.ensure(canon_package, document_id=document_id, use_spc_ingestion=True)
-            
-            # Validar documento no vacío
-            if not preprocessed.raw_text or not preprocessed.raw_text.strip():
-                raise ValueError("Empty document after ingestion")
-            
-            # Validar P01-ES v1.0: exactamente 60 chunks
-            actual_chunk_count = preprocessed.metadata.get("chunk_count", 0)
-            if actual_chunk_count != P01_EXPECTED_CHUNK_COUNT:
-                raise ValueError(f"P01 Validation Failed: Expected {P01_EXPECTED_CHUNK_COUNT} chunks, got {actual_chunk_count}")
-            
-            # Validar metadata en chunks
-            for i, chunk in enumerate(preprocessed.chunks):
-                if not getattr(chunk, "policy_area_id", None):
-                    raise ValueError(f"Chunk {i} missing 'policy_area_id'")
-                if not getattr(chunk, "dimension_id", None):
-                    raise ValueError(f"Chunk {i} missing 'dimension_id'")
-            
-            logger.info(f"✅ P01-ES v1.0 validation passed: {actual_chunk_count} chunks")
-            
-        except Exception as e:
-            instrumentation.record_error("ingestion", str(e))
-            raise RuntimeError(f"Document ingestion failed: {e}") from e
-        
-        duration = time.perf_counter() - start
-        instrumentation.increment(latency=duration)
-        
-        return preprocessed
-    
-    async def _execute_micro_questions_async(self, document: Any, config: dict[str, Any]) -> list[MicroQuestionRun]:
-        """FASE 2: Ejecutar micro preguntas con chunk routing."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[2]
-        
-        micro_questions = config.get("micro_questions", [])
-        instrumentation.items_total = len(micro_questions)
-        
-        # Ordenar preguntas: Dimension -> Policy Area -> Question ID
-        ordered_questions = sorted(
-            micro_questions,
-            key=lambda q: (q.get("dimension_id", "DIM99"), q.get("policy_area_id", "PA99"), q.get("question_id", "Q999"))
-        )
-        
-        # Inicializar chunk router para ejecución chunk-aware
-        chunk_routes: dict[int, Any] = {}
-        if document.processing_mode == "chunked" and document.chunks:
-            try:
-                from farfan_pipeline.core.orchestrator.chunk_router import ChunkRouter
-                router = ChunkRouter()
-                
-                for chunk in document.chunks:
-                    route = router.route_chunk(chunk)
-                    if not route.skip_reason:
-                        chunk_routes[chunk.id] = route
-                
-                logger.info(f"Chunk routing: {len(chunk_routes)} chunks routed from {len(document.chunks)} total")
-            except ImportError:
-                logger.warning("ChunkRouter not available, using full document mode")
-        
-        semaphore = asyncio.Semaphore(self.resource_limits.max_workers)
-        self.resource_limits.attach_semaphore(semaphore)
-        
-        # Circuit breakers por base_slot
-        circuit_breakers: dict[str, dict[str, Any]] = {
-            slot: {"failures": 0, "open": False} for slot in getattr(self, "executors", {})
-        }
-        
-        results: list[MicroQuestionRun] = []
-        
-        async def process_question(question: dict[str, Any]) -> MicroQuestionRun:
-            await self.resource_limits.apply_worker_budget()
-            async with semaphore:
-                self._ensure_not_aborted()
-                
-                question_id = question.get("question_id", "")
-                question_global = int(question.get("question_global", 0))
-                base_slot = question.get("base_slot", "")
-                target_pa = question.get("policy_area_id")
-                target_dim = question.get("dimension_id")
-                
-                metadata = {k: question.get(k) for k in ["question_id", "question_global", "base_slot", "dimension_id", "policy_area_id", "cluster_id", "scoring_modality", "expected_elements"]}
-                
-                # Circuit breaker check
-                circuit = circuit_breakers.get(base_slot, {"failures": 0, "open": False})
-                if circuit.get("open"):
-                    instrumentation.record_warning("circuit_breaker", f"Circuit breaker open for {base_slot}")
-                    instrumentation.increment()
-                    return MicroQuestionRun(
-                        question_id=question_id,
-                        question_global=question_global,
-                        base_slot=base_slot,
-                        metadata=metadata,
-                        evidence=None,
-                        error="circuit_breaker_open",
-                        aborted=False,
-                    )
-                
-                # Resource checks
-                usage = self.resource_limits.get_resource_usage()
-                mem_exceeded, _ = self.resource_limits.check_memory_exceeded(usage)
-                cpu_exceeded, _ = self.resource_limits.check_cpu_exceeded(usage)
-                
-                if mem_exceeded:
-                    instrumentation.record_warning("resource", "Memory limit exceeded")
-                if cpu_exceeded:
-                    instrumentation.record_warning("resource", "CPU limit exceeded")
-                
-                start_time = time.perf_counter()
-                evidence: Evidence | None = None
-                error_message: str | None = None
-                
-                # Obtener executor class
-                executor_class = getattr(self, "executors", {}).get(base_slot)
-                
-                if not executor_class:
-                    error_message = f"Executor not defined for {base_slot}"
-                    instrumentation.record_error("executor", error_message)
-                else:
-                    try:
-                        # Instanciar executor
-                        executor_instance = executor_class(
-                            method_executor=self.executor,
-                            signal_registry=getattr(self.executor, "signal_registry", None),
-                            config=self.executor_config,
-                            questionnaire_provider=getattr(self, "questionnaire_provider", None),
-                            calibration_orchestrator=self.calibration_orchestrator,
-                            document_id=document.document_id,
-                        )
-                        
-                        # Filtrar chunks por PA y DIM
-                        candidate_chunks = [
-                            c for c in document.chunks
-                            if c.policy_area_id == target_pa and c.dimension_id == target_dim
-                        ]
-                        
-                        # Aplicar chunk routing si disponible
-                        if chunk_routes:
-                            routed_chunks = []
-                            for chunk in candidate_chunks:
-                                route = chunk_routes.get(chunk.id)
-                                if route:
-                                    route_key = route.executor_class
-                                    if len(route_key) == 4 and route_key[0] == "D":
-                                        route_key = f"{route_key[:2]}-{route_key[2:]}"
-                                    if route_key == base_slot:
-                                        routed_chunks.append(chunk)
-                            candidate_chunks = routed_chunks
-                        
-                        # Crear documento con scope reducido
-                        scoped_document = replace(document, chunks=candidate_chunks)
-                        
-                        # Ejecutar pregunta
-                        evidence = await asyncio.to_thread(
-                            executor_instance.execute,
-                            scoped_document,
-                            self.executor,
-                            question_context=question,
-                        )
-                        
-                        circuit["failures"] = 0
-                        
-                    except Exception as exc:
-                        circuit["failures"] += 1
-                        error_message = str(exc)
-                        instrumentation.record_error("micro_question", error_message, base_slot=base_slot)
-                        
-                        if circuit["failures"] >= 3:
-                            circuit["open"] = True
-                            instrumentation.record_warning("circuit_breaker", f"Circuit breaker activated for {base_slot}")
-                
-                duration = time.perf_counter() - start_time
-                instrumentation.increment(latency=duration)
-                
-                if instrumentation.items_processed % 10 == 0:
-                    logger.info(f"Progress: {instrumentation.items_processed}/{instrumentation.items_total}")
-                
-                return MicroQuestionRun(
-                    question_id=question_id,
-                    question_global=question_global,
-                    base_slot=base_slot,
-                    metadata=metadata,
-                    evidence=evidence,
-                    error=error_message,
-                    duration_ms=duration * 1000.0,
-                    aborted=self.abort_signal.is_aborted(),
-                )
-        
-        tasks = [asyncio.create_task(process_question(q)) for q in ordered_questions]
-        
-        try:
-            for task in asyncio.as_completed(tasks):
-                result = await task
-                results.append(result)
-                if self.abort_signal.is_aborted():
-                    raise AbortRequested(self.abort_signal.get_reason() or "Abort requested")
-        except AbortRequested:
-            for task in tasks:
-                task.cancel()
-            raise
-        
-        return results
-    
-    async def _score_micro_results_async(self, micro_results: list[MicroQuestionRun], config: dict[str, Any]) -> list[ScoredMicroQuestion]:
-        """FASE 3: Scoring de micro resultados usando MicroQuestionScorer."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[3]
-        instrumentation.items_total = len(micro_results)
-        
-        # Importar scorer desde análisis
-        from farfan_pipeline.analysis.scoring import MicroQuestionScorer, ScoringModality, Evidence as ScoringEvidence
-        
-        scorer = MicroQuestionScorer()
-        results: list[ScoredMicroQuestion] = []
-        
-        semaphore = asyncio.Semaphore(self.resource_limits.max_workers)
-        self.resource_limits.attach_semaphore(semaphore)
-        
-        async def score_item(item: MicroQuestionRun) -> ScoredMicroQuestion:
-            async with semaphore:
-                await self.resource_limits.apply_worker_budget()
-                self._ensure_not_aborted()
-                start = time.perf_counter()
-                
-                modality_value = item.metadata.get("scoring_modality", "TYPE_A")
-                try:
-                    modality = ScoringModality(modality_value)
-                except Exception:
-                    modality = ScoringModality.TYPE_A
-                
-                # Si no hay evidencia, retornar score nulo
-                if item.error or not item.evidence:
-                    instrumentation.record_warning("scoring", "Missing evidence", question_id=item.question_id)
-                    instrumentation.increment(latency=time.perf_counter() - start)
-                    return ScoredMicroQuestion(
-                        question_id=item.question_id,
-                        question_global=item.question_global,
-                        base_slot=item.base_slot,
-                        score=None,
-                        normalized_score=None,
-                        quality_level=None,
-                        evidence=item.evidence,
-                        metadata=item.metadata,
-                        error=item.error or "missing_evidence",
-                    )
-                
-                # Extraer elementos de evidencia
-                if isinstance(item.evidence, dict):
-                    elements_found = item.evidence.get("elements", [])
-                    raw_results = item.evidence.get("raw_results", {})
-                else:
-                    elements_found = getattr(item.evidence, "elements", [])
-                    raw_results = getattr(item.evidence, "raw_results", {})
-                
-                # Construir scoring evidence
-                scoring_evidence = ScoringEvidence(
-                    elements_found=elements_found,
-                    confidence_scores=raw_results.get("confidence_scores", []),
-                    semantic_similarity=raw_results.get("semantic_similarity"),
-                    pattern_matches=raw_results.get("pattern_matches", {}),
-                    metadata=raw_results,
-                )
-                
-                try:
-                    # Aplicar scoring
-                    scored = await asyncio.to_thread(
-                        scorer.apply_scoring_modality,
-                        item.question_id,
-                        item.question_global,
-                        modality,
-                        scoring_evidence,
-                    )
-                    
-                    duration = time.perf_counter() - start
-                    instrumentation.increment(latency=duration)
-                    
-                    return ScoredMicroQuestion(
-                        question_id=scored.question_id,
-                        question_global=scored.question_global,
-                        base_slot=item.base_slot,
-                        score=scored.raw_score,
-                        normalized_score=scored.normalized_score,
-                        quality_level=scored.quality_level.value,
-                        evidence=item.evidence,
-                        scoring_details=scored.scoring_details,
-                        metadata=item.metadata,
-                    )
-                    
-                except Exception as exc:
-                    instrumentation.record_error("scoring", str(exc), question_id=item.question_id)
-                    duration = time.perf_counter() - start
-                    instrumentation.increment(latency=duration)
-                    
-                    return ScoredMicroQuestion(
-                        question_id=item.question_id,
-                        question_global=item.question_global,
-                        base_slot=item.base_slot,
-                        score=None,
-                        normalized_score=None,
-                        quality_level=None,
-                        evidence=item.evidence,
-                        metadata=item.metadata,
-                        error=str(exc),
-                    )
-        
-        tasks = [asyncio.create_task(score_item(item)) for item in micro_results]
-        
-        for task in asyncio.as_completed(tasks):
-            result = await task
-            results.append(result)
-            if self.abort_signal.is_aborted():
-                raise AbortRequested(self.abort_signal.get_reason() or "Abort requested")
-        
-        return results
-    
-    async def _aggregate_dimensions_async(self, scored_results: list[ScoredMicroQuestion], config: dict[str, Any]) -> list[Any]:
-        """FASE 4: Agregación de dimensiones usando DimensionAggregator."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[4]
-        
-        from farfan_pipeline.processing.aggregation import DimensionAggregator, validate_scored_results, group_by
-        
-        monolith = config.get("monolith")
-        if not monolith:
-            logger.error("No monolith for dimension aggregation")
-            return []
-        
-        aggregation_settings = config.get("_aggregation_settings")
-        aggregator = DimensionAggregator(monolith, abort_on_insufficient=False, aggregation_settings=aggregation_settings)
-        
-        # Convertir scored results a payloads
-        scored_payloads = []
-        for item in scored_results:
-            if item.score is None:
-                continue
-            
-            metadata = item.metadata or {}
-            policy_area = metadata.get("policy_area_id") or metadata.get("policy_area") or ""
-            dimension = metadata.get("dimension_id") or metadata.get("dimension") or ""
-            
-            evidence_payload = asdict(item.evidence) if is_dataclass(item.evidence) else (item.evidence if isinstance(item.evidence, dict) else {})
-            raw_results = item.scoring_details if isinstance(item.scoring_details, dict) else {}
-            
-            scored_payloads.append({
-                "question_global": item.question_global,
-                "base_slot": item.base_slot,
-                "policy_area": str(policy_area),
-                "dimension": str(dimension),
-                "score": float(item.score),
-                "quality_level": str(item.quality_level or "INSUFICIENTE"),
-                "evidence": evidence_payload,
-                "raw_results": raw_results,
-            })
-        
-        if not scored_payloads:
-            instrumentation.items_total = 0
-            return []
-        
-        # Validar y agrupar
-        validated_results = validate_scored_results(scored_payloads)
-        group_by_keys = aggregator.dimension_group_by_keys
-        key_func = lambda result: tuple(getattr(result, key, None) for key in group_by_keys)
-        grouped_results = group_by(validated_results, key_func)
-        
-        instrumentation.items_total = len(grouped_results)
-        dimension_scores = []
-        
-        for group_key, items in grouped_results.items():
-            self._ensure_not_aborted()
-            await asyncio.sleep(0)
-            start = time.perf_counter()
-            
-            group_by_values = dict(zip(group_by_keys, group_key, strict=False))
-            
-            try:
-                dim_score = aggregator.aggregate_dimension(scored_results=items, group_by_values=group_by_values)
-                dimension_scores.append(dim_score)
-            except Exception as exc:
-                logger.error(f"Failed to aggregate dimension {group_by_values}: {exc}")
-            
-            instrumentation.increment(latency=time.perf_counter() - start)
-        
-        return dimension_scores
-    
-    async def _aggregate_policy_areas_async(self, dimension_scores: list[Any], config: dict[str, Any]) -> list[Any]:
-        """FASE 5: Agregación de policy areas usando AreaPolicyAggregator."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[5]
-        
-        from farfan_pipeline.processing.aggregation import AreaPolicyAggregator, group_by
-        
-        monolith = config.get("monolith")
-        if not monolith:
-            logger.error("No monolith for area aggregation")
-            return []
-        
-        aggregation_settings = config.get("_aggregation_settings")
-        aggregator = AreaPolicyAggregator(monolith, abort_on_insufficient=False, aggregation_settings=aggregation_settings)
-        
-        # Agrupar por policy area
-        group_by_keys = aggregator.area_group_by_keys
-        key_func = lambda score: tuple(getattr(score, key, None) for key in group_by_keys)
-        grouped_scores = group_by(dimension_scores, key_func)
-        
-        instrumentation.items_total = len(grouped_scores)
-        area_scores = []
-        
-        for group_key, scores in grouped_scores.items():
-            self._ensure_not_aborted()
-            await asyncio.sleep(0)
-            start = time.perf_counter()
-            
-            group_by_values = dict(zip(group_by_keys, group_key, strict=False))
-            
-            try:
-                area_score = aggregator.aggregate_area(dimension_scores=scores, group_by_values=group_by_values)
-                area_scores.append(area_score)
-            except Exception as exc:
-                logger.error(f"Failed to aggregate policy area {group_by_values}: {exc}")
-            
-            instrumentation.increment(latency=time.perf_counter() - start)
-        
-        return area_scores
-    
-    def _aggregate_clusters(self, policy_area_scores: list[Any], config: dict[str, Any]) -> list[Any]:
-        """FASE 6: Agregación de clusters usando ClusterAggregator."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[6]
-        
-        from farfan_pipeline.processing.aggregation import ClusterAggregator, group_by
-        
-        monolith = config.get("monolith")
-        if not monolith:
-            logger.error("No monolith for cluster aggregation")
-            return []
-        
-        aggregation_settings = config.get("_aggregation_settings")
-        aggregator = ClusterAggregator(monolith, abort_on_insufficient=False, aggregation_settings=aggregation_settings)
-        
-        # Mapear areas a clusters
-        clusters = monolith["blocks"]["niveles_abstraccion"]["clusters"]
-        area_to_cluster = {}
-        for cluster in clusters:
-            cluster_id = cluster.get("cluster_id")
-            for area_id in cluster.get("policy_area_ids", []):
-                if cluster_id and area_id:
-                    area_to_cluster[area_id] = cluster_id
-        
-        # Enriquecer scores con cluster_id
-        enriched_scores = []
-        for score in policy_area_scores:
-            cluster_id = area_to_cluster.get(score.area_id)
-            if not cluster_id:
-                logger.warning(f"Area {score.area_id} not mapped to cluster")
-                continue
-            score.cluster_id = cluster_id
-            enriched_scores.append(score)
-        
-        # Agrupar por cluster
-        group_by_keys = aggregator.cluster_group_by_keys
-        key_func = lambda area_score: tuple(getattr(area_score, key, None) for key in group_by_keys)
-        grouped_scores = group_by(enriched_scores, key_func)
-        
-        instrumentation.items_total = len(grouped_scores)
-        cluster_scores = []
-        
-        for group_key, scores in grouped_scores.items():
-            self._ensure_not_aborted()
-            start = time.perf_counter()
-            
-            group_by_values = dict(zip(group_by_keys, group_key, strict=False))
-            
-            try:
-                cluster_score = aggregator.aggregate_cluster(area_scores=scores, group_by_values=group_by_values)
-                cluster_scores.append(cluster_score)
-            except Exception as exc:
-                logger.error(f"Failed to aggregate cluster {group_by_values}: {exc}")
-            
-            instrumentation.increment(latency=time.perf_counter() - start)
-        
-        return cluster_scores
-    
-    def _evaluate_macro(self, cluster_scores: list[Any], config: dict[str, Any]) -> dict[str, Any]:
-        """FASE 7: Evaluación macro usando MacroAggregator."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[7]
-        start = time.perf_counter()
-        
-        from farfan_pipeline.processing.aggregation import MacroAggregator, MacroScore
-        
-        monolith = config.get("monolith")
-        if not monolith:
-            logger.error("No monolith for macro evaluation")
-            return {"macro_score": None, "macro_score_normalized": 0.0, "cluster_scores": cluster_scores}
-        
-        aggregation_settings = config.get("_aggregation_settings")
-        aggregator = MacroAggregator(monolith, abort_on_insufficient=False, aggregation_settings=aggregation_settings)
-        
-        # Extraer area_scores y dimension_scores
-        area_scores = []
-        dimension_scores = []
-        
-        for cluster in cluster_scores:
-            area_scores.extend(cluster.area_scores)
-            for area in cluster.area_scores:
-                dimension_scores.extend(area.dimension_scores)
-        
-        # Eliminar duplicados
-        seen_areas = set()
-        unique_areas = []
-        for area in area_scores:
-            if area.area_id not in seen_areas:
-                seen_areas.add(area.area_id)
-                unique_areas.append(area)
-        
-        seen_dims = set()
-        unique_dims = []
-        for dim in dimension_scores:
-            key = (dim.dimension_id, dim.area_id)
-            if key not in seen_dims:
-                seen_dims.add(key)
-                unique_dims.append(dim)
-        
-        # Evaluar macro
-        try:
-            macro_score = aggregator.evaluate_macro(
-                cluster_scores=cluster_scores,
-                area_scores=unique_areas,
-                dimension_scores=unique_dims,
-            )
-        except Exception as e:
-            logger.error(f"Macro evaluation failed: {e}")
-            macro_score = MacroScore(
-                score=0.0,
-                quality_level="INSUFICIENTE",
-                cross_cutting_coherence=0.0,
-                systemic_gaps=[],
-                strategic_alignment=0.0,
-                cluster_scores=cluster_scores,
-                validation_passed=False,
-                validation_details={"error": str(e), "type": "exception"},
-            )
-        
-        instrumentation.increment(latency=time.perf_counter() - start)
-        
-        macro_score_normalized = float(macro_score.score) if isinstance(macro_score, MacroScore) else float(macro_score)
-        
-        return {
-            "macro_score": macro_score,
-            "macro_score_normalized": macro_score_normalized,
-            "cluster_scores": cluster_scores,
-            "cross_cutting_coherence": macro_score.cross_cutting_coherence,
-            "systemic_gaps": macro_score.systemic_gaps,
-            "strategic_alignment": macro_score.strategic_alignment,
-            "quality_band": macro_score.quality_level,
-        }
-    
-    async def _generate_recommendations(self, macro_result: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
-        """FASE 8: Generación de recomendaciones en 3 niveles."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[8]
-        start = time.perf_counter()
-        
-        await asyncio.sleep(0)
-        
-        if self.recommendation_engine is None:
-            logger.warning("RecommendationEngine not available")
-            recommendations = {
-                "MICRO": {"level": "MICRO", "recommendations": [], "generated_at": datetime.utcnow().isoformat()},
-                "MESO": {"level": "MESO", "recommendations": [], "generated_at": datetime.utcnow().isoformat()},
-                "MACRO": {"level": "MACRO", "recommendations": [], "generated_at": datetime.utcnow().isoformat()},
-                "macro_score": macro_result.get("macro_score"),
-            }
-            instrumentation.increment(latency=time.perf_counter() - start)
-            return recommendations
-        
-        try:
-            # Extraer micro scores (PA-DIM)
-            micro_scores: dict[str, float] = {}
-            scored_results = self._context.get("scored_results", [])
-            
-            pa_dim_groups: dict[str, list[float]] = {}
-            for result in scored_results:
-                if hasattr(result, "metadata") and result.metadata:
-                    pa_id = result.metadata.get("policy_area_id")
-                    dim_id = result.metadata.get("dimension_id")
-                    score = result.normalized_score
-                    
-                    if pa_id and dim_id and score is not None:
-                        key = f"{pa_id}-{dim_id}"
-                        if key not in pa_dim_groups:
-                            pa_dim_groups[key] = []
-                        pa_dim_groups[key].append(score)
-            
-            for key, scores in pa_dim_groups.items():
-                if scores:
-                    micro_scores[key] = sum(scores) / len(scores)
-            
-            # Extraer cluster data
-            cluster_data: dict[str, Any] = {}
-            cluster_scores = self._context.get("cluster_scores", [])
-            
-            for cluster in cluster_scores:
-                cluster_id = cluster.get("cluster_id")
-                cluster_score = cluster.get("score")
-                areas = cluster.get("areas", [])
-                
-                if cluster_id and cluster_score is not None:
-                    valid_area_scores = [(area, area.get("score")) for area in areas if area.get("score") is not None]
-                    area_values = [score for _, score in valid_area_scores]
-                    variance = statistics.variance(area_values) if len(area_values) > 1 else 0.0
-                    
-                    weakest_area = min(valid_area_scores, key=lambda item: item[1]) if valid_area_scores else None
-                    weak_pa = weakest_area[0].get("area_id") if weakest_area else None
-                    
-                    cluster_data[cluster_id] = {
-                        "score": cluster_score * self.PERCENTAGE_SCALE,
-                        "variance": variance,
-                        "weak_pa": weak_pa,
-                    }
-            
-            # Extraer macro data
-            macro_score_normalized = macro_result.get("macro_score_normalized")
-            
-            macro_band = "INSUFICIENTE"
-            if macro_score_normalized is not None:
-                scaled = float(macro_score_normalized) * self.PERCENTAGE_SCALE
-                if scaled >= 75:
-                    macro_band = "SATISFACTORIO"
-                elif scaled >= 55:
-                    macro_band = "ACEPTABLE"
-                elif scaled >= 35:
-                    macro_band = "DEFICIENTE"
-            
-            clusters_below_target = []
-            for cluster in cluster_scores:
-                if cluster.get("score", 0) * self.PERCENTAGE_SCALE < 55:
-                    clusters_below_target.append(cluster.get("cluster_id"))
-            
-            cluster_score_values = [c.get("score") for c in cluster_scores if c.get("score") is not None]
-            overall_variance = statistics.variance(cluster_score_values) if len(cluster_score_values) > 1 else 0.0
-            
-            variance_alert = "BAJA"
-            if overall_variance >= 0.18:
-                variance_alert = "ALTA"
-            elif overall_variance >= 0.08:
-                variance_alert = "MODERADA"
-            
-            sorted_micro = sorted(micro_scores.items(), key=lambda x: x[1])
-            priority_micro_gaps = [k for k, v in sorted_micro[:5] if v < 0.55]
-            
-            macro_data = {
-                "macro_band": macro_band,
-                "clusters_below_target": clusters_below_target,
-                "variance_alert": variance_alert,
-                "priority_micro_gaps": priority_micro_gaps,
-                "macro_score_percentage": float(macro_score_normalized) * self.PERCENTAGE_SCALE if macro_score_normalized else None,
-            }
-            
-            # Generar recomendaciones
-            context = {
-                "generated_at": datetime.utcnow().isoformat(),
-                "macro_score": macro_result.get("macro_score"),
-            }
-            
-            recommendation_sets = self.recommendation_engine.generate_all_recommendations(
-                micro_scores=micro_scores,
-                cluster_data=cluster_data,
-                macro_data=macro_data,
-                context=context,
-            )
-            
-            recommendations = {level: rec_set.to_dict() for level, rec_set in recommendation_sets.items()}
-            recommendations["macro_score"] = macro_result.get("macro_score")
-            recommendations["macro_score_normalized"] = macro_score_normalized
-            
-            logger.info(f"Generated recommendations: MICRO={len(recommendation_sets['MICRO'].recommendations)}, MESO={len(recommendation_sets['MESO'].recommendations)}, MACRO={len(recommendation_sets['MACRO'].recommendations)}")
-            
-        except Exception as e:
-            logger.error(f"Error generating recommendations: {e}", exc_info=True)
-            recommendations = {
-                "MICRO": {"level": "MICRO", "recommendations": [], "generated_at": datetime.utcnow().isoformat()},
-                "MESO": {"level": "MESO", "recommendations": [], "generated_at": datetime.utcnow().isoformat()},
-                "MACRO": {"level": "MACRO", "recommendations": [], "generated_at": datetime.utcnow().isoformat()},
-                "macro_score": macro_result.get("macro_score"),
-                "error": str(e),
-            }
-        
-        instrumentation.increment(latency=time.perf_counter() - start)
-        return recommendations
-    
-    def _assemble_report(self, recommendations: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
-        """FASE 9: Ensamblado de reporte."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[9]
-        
-        report = {
-            "generated_at": datetime.utcnow().isoformat(),
-            "recommendations": recommendations,
-            "metadata": {
-                "monolith_sha256": config.get("monolith_sha256"),
-            },
-        }
-        
-        instrumentation.increment()
-        return report
-    
-    async def _format_and_export(self, report: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
-        """FASE 10: Formateo y exportación."""
-        self._ensure_not_aborted()
-        instrumentation = self._phase_instrumentation[10]
-        
-        await asyncio.sleep(0)
-        
-        export_payload = {
-            "report": report,
-            "phase_metrics": self.get_phase_metrics(),
-            "completed_at": datetime.utcnow().isoformat(),
-        }
-        
-        instrumentation.increment()
-        return export_payload
