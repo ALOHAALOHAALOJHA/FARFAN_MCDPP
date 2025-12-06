@@ -16,7 +16,7 @@ import statistics
 import threading
 import time
 from collections import deque
-from dataclasses import dataclass, field, asdict, is_dataclass, replace
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from types import MappingProxyType
@@ -26,24 +26,13 @@ if TYPE_CHECKING:
     from farfan_pipeline.core.orchestrator.factory import CanonicalQuestionnaire
 
 from farfan_pipeline.core.analysis_port import RecommendationEnginePort
-from farfan_pipeline.config.paths import PROJECT_ROOT, RULES_DIR, CONFIG_DIR
+from farfan_pipeline.config.paths import PROJECT_ROOT, RULES_DIR
 from farfan_pipeline.processing.aggregation import (
-    AggregationSettings,
-    AreaPolicyAggregator,
-    AreaScore,
-    ClusterAggregator,
     ClusterScore,
-    DimensionAggregator,
-    DimensionScore,
-    MacroAggregator,
     MacroScore,
-    ValidationError,
-    group_by,
-    validate_scored_results,
 )
 from farfan_pipeline.utils.paths import safe_join
 from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
-from farfan_pipeline.core.types import PreprocessedDocument
 from farfan_pipeline.core.orchestrator import executors_contract as executors
 from farfan_pipeline.core.orchestrator.arg_router import (
     ArgRouterError,
@@ -1071,8 +1060,8 @@ class Orchestrator:
             recommendation_engine_port: Optional recommendation engine port
             processor_bundle: ProcessorBundle with enriched_signal_packs (WIRING REQUIRED)
         """
-        from farfan_pipeline.core.orchestrator.factory import (
-            _validate_questionnaire_structure,
+        from farfan_pipeline.core.orchestrator.questionnaire import (
+            _validate_questionnaire_schema,
             get_questionnaire_provider,
         )
 
@@ -1125,7 +1114,7 @@ class Orchestrator:
             logger.info("✓ MethodExecutor.signal_registry verified")
 
         try:
-            _validate_questionnaire_structure(self._monolith_data)
+            _validate_questionnaire_schema(self._monolith_data)
         except (ValueError, TypeError) as e:
             raise RuntimeError(f"Questionnaire structure validation failed: {e}") from e
 
@@ -1514,8 +1503,7 @@ class Orchestrator:
             }
 
         try:
-            from farfan_pipeline.core.orchestrator import get_questionnaire_provider
-
+            from farfan_pipeline.core.orchestrator.questionnaire import get_questionnaire_provider
             provider = get_questionnaire_provider()
             questionnaire_health = {
                 "has_data": provider.has_data(),
