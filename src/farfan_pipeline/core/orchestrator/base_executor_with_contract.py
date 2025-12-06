@@ -41,6 +41,7 @@ class BaseExecutorWithContract(ABC):
         questionnaire_provider: Any,
         calibration_orchestrator: Any | None = None,
         enriched_packs: dict[str, Any] | None = None,
+        validation_orchestrator: Any | None = None,
     ) -> None:
         try:
             from farfan_pipeline.core.orchestrator.core import (
@@ -63,6 +64,9 @@ class BaseExecutorWithContract(ABC):
         # JOBFRONT 3: Support for enriched signal packs (intelligence layer)
         self.enriched_packs = enriched_packs or {}
         self._use_enriched_signals = len(self.enriched_packs) > 0
+        # VALIDATION ORCHESTRATOR: Comprehensive validation tracking
+        self.validation_orchestrator = validation_orchestrator
+        self._use_validation_orchestrator = validation_orchestrator is not None
 
     @classmethod
     @abstractmethod
@@ -257,7 +261,7 @@ class BaseExecutorWithContract(ABC):
 
     def _check_failure_contract(
         self, evidence: dict[str, Any], error_handling: dict[str, Any]
-    ):
+    ) -> None:
         failure_contract = error_handling.get("failure_contract", {})
         abort_conditions = failure_contract.get("abort_if", [])
         if not abort_conditions:
@@ -335,7 +339,9 @@ class BaseExecutorWithContract(ABC):
             signal_pack = enriched_pack.base_pack  # Maintain compatibility
 
             # Create document context from available metadata
-            from farfan_pipeline.core.orchestrator.signal_intelligence_layer import create_document_context
+            from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
+                create_document_context,
+            )
 
             doc_metadata = getattr(document, "metadata", {})
             document_context = create_document_context(
@@ -459,19 +465,29 @@ class BaseExecutorWithContract(ABC):
         validation_rules_object = {"rules": validation_rules, "na_policy": na_policy}
         validation = EvidenceValidator.validate(evidence, validation_rules_object)
 
+        error_handling = contract.get("error_handling", {})
+
         # JOBFRONT 3: Add contract validation if enriched pack available
+        contract_validation = None
         if enriched_pack is not None:
             # Build signal node for contract validation
             signal_node_for_validation = {
                 "id": question_id,
                 "failure_contract": error_handling.get("failure_contract", {}),
-                "validations": validation_rules
+                "validations": validation_rules,
+                "expected_elements": expected_elements
             }
 
             # Validate with contracts (REFACTORING #4: contract validation)
-            contract_validation = enriched_pack.validate_result(
+            from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+                validate_result_with_orchestrator,
+            )
+
+            contract_validation = validate_result_with_orchestrator(
                 result=evidence,
-                signal_node=signal_node_for_validation
+                signal_node=signal_node_for_validation,
+                orchestrator=self.validation_orchestrator if self._use_validation_orchestrator else None,
+                auto_register=self._use_validation_orchestrator
             )
 
             # Merge contract validation into standard validation
@@ -481,11 +497,43 @@ class BaseExecutorWithContract(ABC):
                 validation["errors"].append({
                     "error_code": contract_validation.error_code,
                     "condition_violated": contract_validation.condition_violated,
-                    "remediation": contract_validation.remediation
+                    "remediation": contract_validation.remediation,
+                    "failures_detailed": [
+                        {
+                            "type": f.failure_type,
+                            "field": f.field_name,
+                            "message": f.message,
+                            "severity": f.severity,
+                            "remediation": f.remediation
+                        }
+                        for f in contract_validation.failures_detailed[:5]
+                    ]
                 })
                 validation["contract_failed"] = True
+                validation["contract_validation_details"] = {
+                    "error_code": contract_validation.error_code,
+                    "diagnostics": contract_validation.diagnostics,
+                    "total_failures": len(contract_validation.failures_detailed)
+                }
+        elif self._use_validation_orchestrator:
+            # Even without enriched pack, use validation orchestrator with basic validation
+            from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+                validate_result_with_orchestrator,
+            )
 
-        error_handling = contract.get("error_handling", {})
+            signal_node_for_validation = {
+                "id": question_id,
+                "failure_contract": error_handling.get("failure_contract", {}),
+                "validations": {"rules": validation_rules},
+                "expected_elements": expected_elements
+            }
+
+            contract_validation = validate_result_with_orchestrator(
+                result=evidence,
+                signal_node=signal_node_for_validation,
+                orchestrator=self.validation_orchestrator,
+                auto_register=True
+            )
         if error_handling:
             evidence_with_validation = {**evidence, "validation": validation}
             self._check_failure_contract(evidence_with_validation, error_handling)
@@ -517,6 +565,14 @@ class BaseExecutorWithContract(ABC):
             "missing_elements": missing_elements,
             "patterns_used": patterns_used,
             "enriched_signals_enabled": enriched_pack is not None,
+            # VALIDATION ORCHESTRATOR: Add validation tracking metadata
+            "contract_validation": {
+                "enabled": contract_validation is not None,
+                "passed": contract_validation.passed if contract_validation else None,
+                "error_code": contract_validation.error_code if contract_validation else None,
+                "failure_count": len(contract_validation.failures_detailed) if contract_validation else 0,
+                "orchestrator_registered": self._use_validation_orchestrator
+            }
         }
 
         return result
@@ -719,6 +775,42 @@ class BaseExecutorWithContract(ABC):
         validation_rules_object = {"rules": validation_rules, "na_policy": na_policy}
         validation = EvidenceValidator.validate(evidence, validation_rules_object)
 
+        # CONTRACT VALIDATION with ValidationOrchestrator
+        contract_validation = None
+        if self._use_validation_orchestrator:
+            from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+                validate_result_with_orchestrator,
+            )
+
+            signal_node_for_validation = {
+                "id": question_id,
+                "failure_contract": error_handling.get("failure_contract", {}),
+                "validations": validation_rules_object,
+                "expected_elements": expected_elements
+            }
+
+            contract_validation = validate_result_with_orchestrator(
+                result=evidence,
+                signal_node=signal_node_for_validation,
+                orchestrator=self.validation_orchestrator,
+                auto_register=True
+            )
+
+            # Merge contract validation failures into standard validation
+            if not contract_validation.passed:
+                validation["contract_validation_failed"] = True
+                validation["contract_error_code"] = contract_validation.error_code
+                validation["contract_remediation"] = contract_validation.remediation
+                validation["contract_failures"] = [
+                    {
+                        "type": f.failure_type,
+                        "field": f.field_name,
+                        "message": f.message,
+                        "severity": f.severity
+                    }
+                    for f in contract_validation.failures_detailed[:10]
+                ]
+
         # Handle validation failures based on NA policy
         validation_passed = validation.get("passed", True)
         if not validation_passed:
@@ -752,6 +844,14 @@ class BaseExecutorWithContract(ABC):
             "evidence": evidence,
             "validation": validation,
             "trace": trace,
+            # CONTRACT VALIDATION METADATA
+            "contract_validation": {
+                "enabled": contract_validation is not None,
+                "passed": contract_validation.passed if contract_validation else None,
+                "error_code": contract_validation.error_code if contract_validation else None,
+                "failure_count": len(contract_validation.failures_detailed) if contract_validation else 0,
+                "orchestrator_registered": self._use_validation_orchestrator
+            }
         }
 
         # Record evidence in global registry for provenance tracking
@@ -1029,7 +1129,7 @@ class BaseExecutorWithContract(ABC):
                 # Format value appropriately
                 if isinstance(value, float):
                     return f"{value:.2f}"
-                elif isinstance(value, (list, dict)):
+                elif isinstance(value, list | dict):
                     return str(value)  # Simple representation
                 else:
                     return str(value)

@@ -24,19 +24,19 @@ Integration: 4 Surgical Refactorings
 
 from typing import Any
 
-from farfan_pipeline.core.orchestrator.signal_semantic_expander import expand_all_patterns
 from farfan_pipeline.core.orchestrator.signal_context_scoper import (
+    create_document_context,
     filter_patterns_by_context,
-    create_document_context
 )
 from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+    ValidationResult,
     validate_with_contract,
-    ValidationResult
 )
 from farfan_pipeline.core.orchestrator.signal_evidence_extractor import (
+    EvidenceExtractionResult,
     extract_structured_evidence,
-    EvidenceExtractionResult
 )
+from farfan_pipeline.core.orchestrator.signal_semantic_expander import expand_all_patterns
 
 try:
     import structlog
@@ -79,7 +79,7 @@ class EnrichedSignalPack:
                 expanded_count=len(self.patterns),
                 multiplier=len(self.patterns) / self._original_pattern_count
             )
-    
+
     def get_patterns_for_context(
         self,
         document_context: dict[str, Any]
@@ -94,14 +94,14 @@ class EnrichedSignalPack:
             List of patterns applicable in this context
         """
         filtered, stats = filter_patterns_by_context(self.patterns, document_context)
-        
+
         logger.debug(
             "context_filtering_applied",
             **stats
         )
-        
+
         return filtered
-    
+
     def extract_evidence(
         self,
         text: str,
@@ -120,11 +120,13 @@ class EnrichedSignalPack:
             Structured evidence extraction result
         """
         return extract_structured_evidence(text, signal_node, document_context)
-    
+
     def validate_result(
         self,
         result: dict[str, Any],
-        signal_node: dict[str, Any]
+        signal_node: dict[str, Any],
+        orchestrator: Any | None = None,
+        auto_register: bool = False
     ) -> ValidationResult:
         """
         Validate result using failure contracts and validations.
@@ -132,11 +134,22 @@ class EnrichedSignalPack:
         Args:
             result: Analysis result to validate
             signal_node: Signal node with failure_contract and validations
+            orchestrator: Optional ValidationOrchestrator for tracking
+            auto_register: If True and orchestrator provided, register result
 
         Returns:
             ValidationResult with validation status
         """
-        return validate_with_contract(result, signal_node)
+        from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+            validate_result_with_orchestrator,
+        )
+
+        return validate_result_with_orchestrator(
+            result=result,
+            signal_node=signal_node,
+            orchestrator=orchestrator,
+            auto_register=auto_register
+        )
 
     def expand_patterns(self, patterns: list[str]) -> list[str]:
         """
@@ -304,20 +317,20 @@ def analyze_with_intelligence_layer(
     """
     if document_context is None:
         document_context = {}
-    
+
     # Extract structured evidence
     evidence_result = extract_structured_evidence(text, signal_node, document_context)
-    
+
     # Prepare result for validation
     analysis_result = {
         'evidence': evidence_result.evidence,
         'completeness': evidence_result.completeness,
         'missing_elements': evidence_result.missing_elements
     }
-    
+
     # Validate with contracts
     validation = validate_with_contract(analysis_result, signal_node)
-    
+
     # Compile complete result
     complete_result = {
         'evidence': evidence_result.evidence,
@@ -342,14 +355,14 @@ def analyze_with_intelligence_layer(
             ]
         }
     }
-    
+
     logger.info(
         "intelligence_layer_analysis_complete",
         completeness=evidence_result.completeness,
         validation_status=validation.status,
         evidence_count=len(evidence_result.evidence)
     )
-    
+
     return complete_result
 
 
