@@ -720,7 +720,7 @@ class QuestionnaireSignalRegistry:
                     "assembly_signals_loaded",
                     level=level,
                     cluster_count=len(pack.cluster_policy_areas),
-                
+                )
                 
                 return pack
 

@@ -1,43 +1,11 @@
 {
-  "total_methods": 2774,
-  "total_executors": 192,
-  "by_role": {
-    "ingestor": 114,
-    "core": 1326,
-    "extractor": 157,
-    "analyzer": 271,
-    "processor": 82,
-    "executor": 208,
-    "scorer": 160,
-    "orchestrator": 110,
-    "utility": 346
+  "total": 2251,
+  "by_layer": {
+    "utility": 948,
+    "ingestion": 171,
+    "processor": 60,
+    "analyzer": 540,
+    "orchestrator": 532
   },
-  "by_module": {
-    "__init__": 1,
-    "analysis": 631,
-    "api": 74,
-    "audit": 13,
-    "compat": 22,
-    "concurrency": 13,
-    "config": 7,
-    "contracts": 84,
-    "core": 1078,
-    "devtools": 2,
-    "entrypoint": 13,
-    "flux": 31,
-    "infrastructure": 52,
-    "observability": 48,
-    "optimization": 24,
-    "patterns": 33,
-    "processing": 405,
-    "question_context": 2,
-    "utils": 241
-  },
-  "executor_distribution": {
-    "core": 185,
-    "observability": 2,
-    "optimization": 1,
-    "patterns": 2,
-    "utils": 2
-  }
+  "executors": 30
 }

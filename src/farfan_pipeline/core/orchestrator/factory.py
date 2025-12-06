@@ -108,6 +108,7 @@ import hashlib
 import json
 import logging
 import time
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Optional, Type
@@ -834,10 +835,20 @@ class AnalysisPipelineFactory:
         
         if VALIDATION_CONSTANTS_AVAILABLE:
             try:
-                constants = load_validation_constants() if callable(load_validation_constants) else PHASE1_VALIDATION_CONSTANTS
+                raw_constants = (
+                    load_validation_constants()
+                    if callable(load_validation_constants)
+                    else PHASE1_VALIDATION_CONSTANTS
+                )
+                if not isinstance(raw_constants, Mapping):
+                    raise TypeError(
+                        f"Validation constants must be a mapping, got {type(raw_constants)!r}"
+                    )
+
+                constants = dict(raw_constants)
                 logger.info("validation_constants_loaded_from_config count=%d", len(constants))
                 return constants
-            except Exception as e:
+            except Exception:
                 logger.error("validation_constants_load_failed using_defaults", exc_info=True)
         
         # Default validation constants

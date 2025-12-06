@@ -8,7 +8,11 @@ class EvidenceValidator:
     """Validate assembled evidence with configurable rules."""
 
     @staticmethod
-    def validate(evidence: dict[str, Any], rules_object: dict[str, Any]) -> dict[str, Any]:
+    def validate(
+        evidence: dict[str, Any],
+        rules_object: dict[str, Any],
+        failure_contract: dict[str, Any] | None = None,  # NEW: Signal-based failure contract
+    ) -> dict[str, Any]:
         """
         Validates evidence against a rules object from a V2 contract.
 
@@ -16,11 +20,14 @@ class EvidenceValidator:
             evidence: The assembled evidence dictionary.
             rules_object: The validation object from the contract, containing
                           'rules' (a list) and 'na_policy' (a string).
+            failure_contract: Optional failure contract from signal pack containing
+                              'abort_if' conditions and 'emit_code' for abort signal.
         """
         validation_rules = rules_object.get("rules", [])
         na_policy = rules_object.get("na_policy", "abort_on_critical")
         errors: list[str] = []
         warnings: list[str] = []
+        abort_code: str | None = None
 
         for rule in validation_rules:
             field = rule.get("field")
@@ -67,12 +74,42 @@ class EvidenceValidator:
             if rule.get("pattern") and isinstance(value, str) and not re.search(rule["pattern"], value):
                 errors.append(f"Field '{field}' does not match pattern")
 
+        # NEW: Process failure_contract from signal pack
+        if failure_contract and errors:
+            abort_conditions = failure_contract.get("abort_if", [])
+            emit_code = failure_contract.get("emit_code", "SIGNAL_ABORT")
+            severity = failure_contract.get("severity", "ERROR")
+            
+            for condition in abort_conditions:
+                condition_triggered = False
+                if condition == "missing_required_element":
+                    condition_triggered = any("missing required" in e.lower() for e in errors)
+                elif condition == "type_mismatch":
+                    condition_triggered = any("incorrect type" in e.lower() for e in errors)
+                elif condition == "pattern_mismatch":
+                    condition_triggered = any("does not match pattern" in e.lower() for e in errors)
+                elif condition == "any_error":
+                    condition_triggered = len(errors) > 0
+                
+                if condition_triggered:
+                    abort_code = emit_code
+                    if severity == "CRITICAL":
+                        raise ValueError(
+                            f"ABORT[{emit_code}]: Failure contract triggered by condition '{condition}'. Errors: {'; '.join(errors)}"
+                        )
+                    break
 
         valid = not errors
-        if errors and na_policy == "abort_on_critical":
+        if errors and na_policy == "abort_on_critical" and not abort_code:
             raise ValueError(f"Evidence validation failed with critical errors: {'; '.join(errors)}")
 
-        return {"valid": valid, "errors": errors, "warnings": warnings}
+        return {
+            "valid": valid,
+            "errors": errors,
+            "warnings": warnings,
+            "abort_code": abort_code,  # NEW: Track signal-based abort code
+            "failure_contract_triggered": abort_code is not None,
+        }
 
     @staticmethod
     def _resolve(path: str, evidence: dict[str, Any]) -> Any:
