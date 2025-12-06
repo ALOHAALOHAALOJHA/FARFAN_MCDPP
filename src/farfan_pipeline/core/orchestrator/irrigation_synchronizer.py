@@ -27,6 +27,7 @@ import time
 import uuid
 from collections import Counter
 from dataclasses import dataclass
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
@@ -1627,6 +1628,98 @@ class IrrigationSynchronizer:
             )
 
         return serialized_json
+
+    def _archive_to_storage(
+        self,
+        serialized_json: str,
+        execution_plan: ExecutionPlan,
+        base_dir: Path,
+    ) -> ExecutionPlan:
+        """Archive execution plan to storage with atomic index update and rollback.
+
+        Constructs storage path as base_dir / 'execution_plans' / f'{plan_id}.json',
+        writes serialized JSON with verification, and atomically updates index with
+        rollback logic for orphaned files.
+
+        Args:
+            serialized_json: Serialized JSON string of execution plan
+            execution_plan: ExecutionPlan instance to archive
+            base_dir: Base directory path for storage
+
+        Returns:
+            Original ExecutionPlan instance unchanged
+
+        Raises:
+            ValueError: If write fails (re-raised from IOError)
+            IOError: If write verification fails (content mismatch)
+        """
+        plan_id = execution_plan.plan_id
+        storage_path = base_dir / "execution_plans" / f"{plan_id}.json"
+
+        try:
+            storage_path.parent.mkdir(parents=True, exist_ok=True)
+        except IOError as e:
+            raise ValueError(
+                f"Failed to create parent directories for plan_id={plan_id}, "
+                f"storage_path={storage_path}: {e}"
+            ) from e
+
+        try:
+            storage_path.write_text(serialized_json, encoding="utf-8")
+        except IOError as e:
+            raise ValueError(
+                f"Failed to write execution plan for plan_id={plan_id}, "
+                f"storage_path={storage_path}: {e}"
+            ) from e
+
+        try:
+            read_content = storage_path.read_text(encoding="utf-8")
+            if read_content != serialized_json:
+                storage_path.unlink()
+                raise IOError(
+                    f"Write verification failed for plan_id={plan_id}, "
+                    f"storage_path={storage_path}: content mismatch after write"
+                )
+        except IOError as e:
+            if storage_path.exists():
+                storage_path.unlink()
+            raise
+
+        index_path = base_dir / "execution_plans" / "index.jsonl"
+        index_entry = {
+            "plan_id": plan_id,
+            "storage_path": str(storage_path),
+            "created_at": execution_plan.created_at,
+            "task_count": len(execution_plan.tasks),
+            "integrity_hash": execution_plan.integrity_hash,
+            "correlation_id": execution_plan.correlation_id,
+        }
+
+        try:
+            with open(index_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(index_entry) + "\n")
+        except IOError as e:
+            if storage_path.exists():
+                storage_path.unlink()
+            raise ValueError(
+                f"Failed to update index for plan_id={plan_id}, "
+                f"storage_path={storage_path}: {e}"
+            ) from e
+
+        logger.info(
+            "execution_plan_archived",
+            extra={
+                "event": "execution_plan_archived",
+                "plan_id": plan_id,
+                "storage_path": str(storage_path),
+                "task_count": len(execution_plan.tasks),
+                "integrity_hash": execution_plan.integrity_hash,
+                "correlation_id": execution_plan.correlation_id,
+                "created_at": execution_plan.created_at,
+            },
+        )
+
+        return execution_plan
 
 
 __all__ = [
