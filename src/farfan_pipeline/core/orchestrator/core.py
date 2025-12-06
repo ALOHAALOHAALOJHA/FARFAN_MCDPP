@@ -453,7 +453,7 @@ class ResourceLimits:
             self.min_workers, min(new_budget, self.hard_max_workers)
         )
 
-    def get_resource_usage(self) -> dict[str, float]:
+    def get_resource_usage(self) -> dict[str, Any]:
         """Capture current resource usage metrics."""
         timestamp = datetime.utcnow().isoformat()
         cpu_percent = 0.0
@@ -486,20 +486,20 @@ class ResourceLimits:
             except Exception:
                 rss_mb = 0.0
 
-        usage = {
-            "timestamp": timestamp,
+        usage_dict: dict[str, float] = {
             "cpu_percent": cpu_percent,
             "memory_percent": memory_percent,
             "rss_mb": rss_mb,
             "worker_budget": float(self._max_workers),
         }
+        usage: dict[str, Any] = {"timestamp": timestamp, **usage_dict}
 
         self._record_usage(usage)
         return usage
 
     def check_memory_exceeded(
-        self, usage: dict[str, float] | None = None
-    ) -> tuple[bool, dict[str, float]]:
+        self, usage: dict[str, Any] | None = None
+    ) -> tuple[bool, dict[str, Any]]:
         """Check if memory limit has been exceeded."""
         usage = usage or self.get_resource_usage()
         exceeded = False
@@ -508,8 +508,8 @@ class ResourceLimits:
         return exceeded, usage
 
     def check_cpu_exceeded(
-        self, usage: dict[str, float] | None = None
-    ) -> tuple[bool, dict[str, float]]:
+        self, usage: dict[str, Any] | None = None
+    ) -> tuple[bool, dict[str, Any]]:
         """Check if CPU limit has been exceeded."""
         usage = usage or self.get_resource_usage()
         exceeded = False
@@ -1483,21 +1483,22 @@ class Orchestrator:
 
     def get_system_health(self) -> dict[str, Any]:
         """Comprehensive system health check."""
-        health = {
+        health: dict[str, Any] = {
             "status": "healthy",
             "timestamp": datetime.utcnow().isoformat(),
             "components": {},
         }
+        components: dict[str, dict[str, Any]] = {}
 
         try:
-            executor_health = {
+            executor_health: dict[str, Any] = {
                 "instances_loaded": len(self.executor.instances),
                 "status": "healthy",
             }
-            health["components"]["method_executor"] = executor_health
+            components["method_executor"] = executor_health
         except Exception as e:
             health["status"] = "unhealthy"
-            health["components"]["method_executor"] = {
+            components["method_executor"] = {
                 "status": "unhealthy",
                 "error": str(e),
             }
@@ -1505,24 +1506,24 @@ class Orchestrator:
         try:
             from farfan_pipeline.core.orchestrator.questionnaire import get_questionnaire_provider
             provider = get_questionnaire_provider()
-            questionnaire_health = {
+            questionnaire_health: dict[str, Any] = {
                 "has_data": provider.has_data(),
                 "status": "healthy" if provider.has_data() else "unhealthy",
             }
-            health["components"]["questionnaire_provider"] = questionnaire_health
+            components["questionnaire_provider"] = questionnaire_health
 
             if not provider.has_data():
                 health["status"] = "degraded"
         except Exception as e:
             health["status"] = "unhealthy"
-            health["components"]["questionnaire_provider"] = {
+            components["questionnaire_provider"] = {
                 "status": "unhealthy",
                 "error": str(e),
             }
 
         try:
             usage = self.resource_limits.get_resource_usage()
-            resource_health = {
+            resource_health: dict[str, Any] = {
                 "cpu_percent": usage.get("cpu_percent", 0),
                 "memory_mb": usage.get("rss_mb", 0),
                 "worker_budget": usage.get("worker_budget", 0),
@@ -1539,15 +1540,16 @@ class Orchestrator:
                 resource_health["warning"] = "High memory usage"
                 health["status"] = "degraded"
 
-            health["components"]["resources"] = resource_health
+            components["resources"] = resource_health
         except Exception as e:
             health["status"] = "unhealthy"
-            health["components"]["resources"] = {"status": "unhealthy", "error": str(e)}
+            components["resources"] = {"status": "unhealthy", "error": str(e)}
 
         if self.abort_signal.is_aborted():
             health["status"] = "unhealthy"
             health["abort_reason"] = self.abort_signal.get_reason()
 
+        health["components"] = components
         return health
 
     def export_metrics(self) -> dict[str, Any]:
