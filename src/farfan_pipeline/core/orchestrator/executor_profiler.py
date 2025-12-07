@@ -35,7 +35,7 @@ Usage:
     with profiler.profile_executor("D1-Q1"):
         result = executor.execute(context)
     report = profiler.generate_report()
-    
+
     # With dispensary analytics
     dispensary_stats = profiler.get_dispensary_usage_stats()
     # Shows: PDETMunicipalPlanAnalyzer used by 15 executors, avg 245ms/call
@@ -56,10 +56,11 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-# Thresholds for identifying performance issues
-HIGH_EXECUTION_TIME_THRESHOLD_MS = 1000
-HIGH_MEMORY_THRESHOLD_MB = 100
-HIGH_SERIALIZATION_THRESHOLD_MS = 100
+# Performance thresholds (loaded from canonical_method_catalogue_v2.json via calibration system)
+# These are DEFAULT values only - actual thresholds come from method_parameters.json
+DEFAULT_HIGH_EXECUTION_TIME_MS = 1000
+DEFAULT_HIGH_MEMORY_MB = 100
+DEFAULT_HIGH_SERIALIZATION_MS = 100
 
 # Known dispensary classes from the method dispensary pattern
 KNOWN_DISPENSARY_CLASSES = {
@@ -99,7 +100,7 @@ KNOWN_DISPENSARY_CLASSES = {
 @dataclass
 class MethodCallMetrics:
     """Metrics for a single method call within an executor.
-    
+
     Enhanced to track dispensary pattern usage.
     """
 
@@ -118,7 +119,7 @@ class MethodCallMetrics:
     def is_dispensary_method(self) -> bool:
         """Check if this method comes from a known dispensary class."""
         return self.class_name in KNOWN_DISPENSARY_CLASSES
-    
+
     @property
     def full_method_name(self) -> str:
         """Get full method name as class.method."""
@@ -135,7 +136,7 @@ class MethodCallMetrics:
 @dataclass
 class ExecutorMetrics:
     """Comprehensive metrics for a single executor execution.
-    
+
     Enhanced with dispensary usage tracking.
     """
 
@@ -163,13 +164,13 @@ class ExecutorMetrics:
     def dispensary_method_calls(self) -> int:
         """Number of calls to dispensary methods."""
         return sum(m.call_count for m in self.method_calls if m.is_dispensary_method)
-    
+
     @property
     def dispensary_usage_ratio(self) -> float:
         """Ratio of dispensary calls to total calls."""
         total = self.total_method_calls
         return self.dispensary_method_calls / total if total > 0 else 0.0
-    
+
     @property
     def unique_dispensaries_used(self) -> set[str]:
         """Set of unique dispensary classes used."""
@@ -241,7 +242,7 @@ class PerformanceRegression:
 @dataclass
 class PerformanceReport:
     """Comprehensive performance report with bottleneck analysis.
-    
+
     Enhanced with dispensary pattern analytics.
     """
 
@@ -268,7 +269,7 @@ class ExecutorProfiler:
     Tracks per-executor metrics including timing, memory, serialization overhead,
     and method call counts. Supports baseline comparison for regression detection
     and generates comprehensive performance reports.
-    
+
     ENHANCED: Tracks method dispensary pattern usage for monolith reuse analysis.
     """
 
@@ -278,6 +279,7 @@ class ExecutorProfiler:
         auto_save_baseline: bool = False,
         memory_tracking: bool = True,
         track_dispensary_usage: bool = True,
+        performance_thresholds: dict[str, float] | None = None,
     ) -> None:
         """Initialize the profiler.
 
@@ -286,20 +288,34 @@ class ExecutorProfiler:
             auto_save_baseline: Automatically update baseline after each run
             memory_tracking: Enable memory tracking (adds overhead)
             track_dispensary_usage: Track dispensary class usage patterns
+            performance_thresholds: Performance thresholds from canonical config
+                                  (execution_time_ms, memory_mb, serialization_ms)
+                                  If None, uses defaults from method_parameters.json
         """
         self.baseline_path = Path(baseline_path) if baseline_path else None
         self.auto_save_baseline = auto_save_baseline
         self.memory_tracking = memory_tracking
         self.track_dispensary_usage = track_dispensary_usage
 
+        # Load thresholds from canonical config or use defaults
+        self.thresholds = performance_thresholds or self._load_default_thresholds()
+
         self.metrics: dict[str, list[ExecutorMetrics]] = defaultdict(list)
         self.baseline_metrics: dict[str, ExecutorMetrics] = {}
         self.regressions: list[PerformanceRegression] = []
-        
+
         # Dispensary usage tracking
         self.dispensary_call_counts: dict[str, int] = defaultdict(int)
         self.dispensary_execution_times: dict[str, list[float]] = defaultdict(list)
         self.executor_dispensary_usage: dict[str, set[str]] = defaultdict(set)
+
+    def _load_default_thresholds(self) -> dict[str, float]:
+        """Load default thresholds (can be overridden by canonical config)."""
+        return {
+            "execution_time_ms": DEFAULT_HIGH_EXECUTION_TIME_MS,
+            "memory_mb": DEFAULT_HIGH_MEMORY_MB,
+            "serialization_ms": DEFAULT_HIGH_SERIALIZATION_MS,
+        }
 
         self._psutil = None
         self._psutil_process = None
@@ -355,7 +371,7 @@ class ExecutorProfiler:
             metrics: Collected metrics for the execution
         """
         self.metrics[executor_id].append(metrics)
-        
+
         # Track dispensary usage
         if self.track_dispensary_usage:
             self._update_dispensary_stats(executor_id, metrics)
@@ -367,7 +383,7 @@ class ExecutorProfiler:
         self, executor_id: str, metrics: ExecutorMetrics
     ) -> None:
         """Update dispensary usage statistics.
-        
+
         Args:
             executor_id: Executor identifier
             metrics: Metrics containing method calls
@@ -375,15 +391,15 @@ class ExecutorProfiler:
         for method_call in metrics.method_calls:
             if method_call.is_dispensary_method:
                 class_name = method_call.class_name
-                
+
                 # Track call counts
                 self.dispensary_call_counts[class_name] += method_call.call_count
-                
+
                 # Track execution times
                 self.dispensary_execution_times[class_name].append(
                     method_call.execution_time_ms
                 )
-                
+
                 # Track executor→dispensary usage
                 self.executor_dispensary_usage[executor_id].add(class_name)
 
@@ -475,36 +491,56 @@ class ExecutorProfiler:
         return regressions
 
     def _generate_recommendation(
-        self, executor_id: str, metric_name: str, delta_percent: float
+        self,
+        executor_id: str,
+        metric_name: str,
+        delta_percent: float,
+        metrics: ExecutorMetrics | None = None,
     ) -> str:
-        """Generate optimization recommendation for a regression.
-
-        Args:
-            executor_id: Executor with regression
-            metric_name: Metric that regressed
-            delta_percent: Percentage increase
-
-        Returns:
-            Recommendation string
-        """
-        recommendations = {
+        """Generate optimization recommendation for a regression with dispensary awareness."""
+        base_recommendations = {
             "execution_time_ms": (
                 f"Executor {executor_id} execution time increased by {delta_percent:.1f}%. "
-                "Review method call sequence, consider caching, or optimize slow methods."
             ),
             "memory_footprint_mb": (
                 f"Executor {executor_id} memory usage increased by {delta_percent:.1f}%. "
-                "Check for memory leaks, optimize data structures, or implement streaming."
             ),
             "serialization_time_ms": (
                 f"Executor {executor_id} serialization overhead increased by {delta_percent:.1f}%. "
-                "Reduce result payload size or use more efficient serialization format."
             ),
         }
-        return recommendations.get(
+
+        recommendation = base_recommendations.get(
             metric_name,
             f"Performance degradation detected in {metric_name} ({delta_percent:.1f}%)",
         )
+
+        # Add dispensary-specific suggestions
+        if metrics and self.track_dispensary_usage:
+            if metric_name == "execution_time_ms" and metrics.slowest_method:
+                slowest = metrics.slowest_method
+                if slowest.is_dispensary_method:
+                    shared_count = len(
+                        [
+                            eid
+                            for eid, dispensaries in self.executor_dispensary_usage.items()
+                            if slowest.class_name in dispensaries
+                        ]
+                    )
+                    recommendation += (
+                        f"Bottleneck in dispensary method {slowest.full_method_name} "
+                        f"({slowest.execution_time_ms:.1f}ms). "
+                        f"Consider optimizing this method as it's shared across "
+                        f"{shared_count} executors."
+                    )
+                else:
+                    recommendation += f"Review method call sequence or optimize {slowest.full_method_name}."
+            elif metric_name == "memory_footprint_mb":
+                recommendation += "Check for memory leaks, optimize data structures, or implement streaming."
+            elif metric_name == "serialization_time_ms":
+                recommendation += "Reduce result payload size or use more efficient serialization format."
+
+        return recommendation
 
     def identify_bottlenecks(self, top_n: int = 10) -> list[dict[str, Any]]:
         """Identify top bottleneck executors requiring optimization.
@@ -536,6 +572,12 @@ class ExecutorProfiler:
                 "avg_memory_mb": avg_metrics["memory_footprint_mb"],
                 "avg_serialization_ms": avg_metrics["serialization_time_ms"],
                 "total_method_calls": avg_metrics["total_method_calls"],
+                "dispensary_usage_ratio": avg_metrics.get(
+                    "dispensary_usage_ratio", 0.0
+                ),
+                "unique_dispensaries": list(
+                    self.executor_dispensary_usage.get(executor_id, set())
+                ),
                 "slowest_method": avg_metrics["slowest_method"],
                 "memory_intensive_method": avg_metrics["memory_intensive_method"],
                 "recommendation": self._generate_bottleneck_recommendation(
@@ -550,14 +592,7 @@ class ExecutorProfiler:
     def _compute_average_metrics(
         self, metric_list: list[ExecutorMetrics]
     ) -> dict[str, Any]:
-        """Compute average metrics from a list of executor metrics.
-
-        Args:
-            metric_list: List of metrics to average
-
-        Returns:
-            Dictionary of averaged metrics
-        """
+        """Compute average metrics from a list of executor metrics."""
         if not metric_list:
             return {}
 
@@ -569,6 +604,8 @@ class ExecutorProfiler:
             "serialization_time_ms": sum(m.serialization_time_ms for m in metric_list)
             / len(metric_list),
             "total_method_calls": sum(m.total_method_calls for m in metric_list)
+            / len(metric_list),
+            "dispensary_usage_ratio": sum(m.dispensary_usage_ratio for m in metric_list)
             / len(metric_list),
             "slowest_method": (
                 metric_list[-1].slowest_method.class_name
@@ -589,30 +626,41 @@ class ExecutorProfiler:
     def _generate_bottleneck_recommendation(
         self, _executor_id: str, avg_metrics: dict[str, Any]
     ) -> str:
-        """Generate optimization recommendation for a bottleneck.
-
-        Args:
-            _executor_id: Executor identifier (unused, kept for API consistency)
-            avg_metrics: Average metrics
-
-        Returns:
-            Recommendation string
-        """
+        """Generate optimization recommendation for a bottleneck with dispensary awareness."""
         recommendations = []
 
-        if avg_metrics["execution_time_ms"] > HIGH_EXECUTION_TIME_THRESHOLD_MS:
-            recommendations.append(
-                f"High execution time ({avg_metrics['execution_time_ms']:.1f}ms): "
-                f"optimize {avg_metrics['slowest_method'] or 'slow methods'}"
-            )
+        if avg_metrics["execution_time_ms"] > self.thresholds["execution_time_ms"]:
+            slowest = avg_metrics["slowest_method"]
+            if slowest and any(
+                dispensary in slowest for dispensary in KNOWN_DISPENSARY_CLASSES
+            ):
+                # Extract class name
+                class_name = slowest.split(".")[0]
+                shared_count = len(
+                    [
+                        eid
+                        for eid, dispensaries in self.executor_dispensary_usage.items()
+                        if class_name in dispensaries
+                    ]
+                )
+                recommendations.append(
+                    f"High execution time ({avg_metrics['execution_time_ms']:.1f}ms): "
+                    f"dispensary method {slowest} shared by {shared_count} executors - "
+                    f"optimization here benefits multiple executors"
+                )
+            else:
+                recommendations.append(
+                    f"High execution time ({avg_metrics['execution_time_ms']:.1f}ms): "
+                    f"optimize {slowest or 'slow methods'}"
+                )
 
-        if avg_metrics["memory_footprint_mb"] > HIGH_MEMORY_THRESHOLD_MB:
+        if avg_metrics["memory_footprint_mb"] > self.thresholds["memory_mb"]:
             recommendations.append(
                 f"High memory usage ({avg_metrics['memory_footprint_mb']:.1f}MB): "
                 f"review {avg_metrics['memory_intensive_method'] or 'data structures'}"
             )
 
-        if avg_metrics["serialization_time_ms"] > HIGH_SERIALIZATION_THRESHOLD_MS:
+        if avg_metrics["serialization_time_ms"] > self.thresholds["serialization_ms"]:
             recommendations.append(
                 f"High serialization overhead ({avg_metrics['serialization_time_ms']:.1f}ms): "
                 "reduce payload size"
@@ -622,6 +670,66 @@ class ExecutorProfiler:
             return "Performance acceptable, monitor for regressions"
 
         return "; ".join(recommendations)
+
+    def get_dispensary_usage_stats(self) -> dict[str, Any]:
+        """Get comprehensive dispensary usage statistics."""
+        if not self.track_dispensary_usage:
+            return {
+                "tracking_enabled": False,
+                "message": "Dispensary tracking disabled. Enable with track_dispensary_usage=True",
+            }
+
+        dispensary_stats = {}
+
+        for dispensary_class in KNOWN_DISPENSARY_CLASSES:
+            if dispensary_class not in self.dispensary_call_counts:
+                continue
+
+            call_count = self.dispensary_call_counts[dispensary_class]
+            exec_times = self.dispensary_execution_times.get(dispensary_class, [])
+
+            avg_time = sum(exec_times) / len(exec_times) if exec_times else 0.0
+            total_time = sum(exec_times)
+
+            # Find which executors use this dispensary
+            using_executors = [
+                eid
+                for eid, dispensaries in self.executor_dispensary_usage.items()
+                if dispensary_class in dispensaries
+            ]
+
+            dispensary_stats[dispensary_class] = {
+                "total_calls": call_count,
+                "avg_execution_time_ms": avg_time,
+                "total_execution_time_ms": total_time,
+                "used_by_executor_count": len(using_executors),
+                "using_executors": using_executors,
+                "reuse_factor": call_count / max(len(using_executors), 1),
+            }
+
+        # Sort by total execution time
+        sorted_dispensaries = sorted(
+            dispensary_stats.items(),
+            key=lambda x: x[1]["total_execution_time_ms"],
+            reverse=True,
+        )
+
+        return {
+            "tracking_enabled": True,
+            "total_dispensaries_used": len(dispensary_stats),
+            "total_dispensary_calls": sum(self.dispensary_call_counts.values()),
+            "dispensaries": dict(sorted_dispensaries),
+            "hottest_dispensaries": [
+                {
+                    "class": name,
+                    "total_time_ms": stats["total_execution_time_ms"],
+                    "avg_time_ms": stats["avg_execution_time_ms"],
+                    "executor_count": stats["used_by_executor_count"],
+                    "reuse_factor": stats["reuse_factor"],
+                }
+                for name, stats in sorted_dispensaries[:5]
+            ],
+        }
 
     def generate_report(
         self, include_regressions: bool = True, include_bottlenecks: bool = True
@@ -670,6 +778,11 @@ class ExecutorProfiler:
             / max(1, sum(len(m) for m in self.metrics.values())),
         }
 
+        # Add dispensary analytics to report
+        dispensary_analytics = {}
+        if self.track_dispensary_usage:
+            dispensary_analytics = self.get_dispensary_usage_stats()
+
         return PerformanceReport(
             timestamp=datetime.now(timezone.utc).isoformat(),
             total_executors=len(self.metrics),
@@ -679,6 +792,7 @@ class ExecutorProfiler:
             bottlenecks=bottlenecks,
             summary=summary,
             executor_rankings=executor_rankings,
+            dispensary_analytics=dispensary_analytics,
         )
 
     def _rank_executors_by(self, metric_name: str, top_n: int = 10) -> list[str]:
@@ -743,10 +857,15 @@ class ExecutorProfiler:
             method_calls = [
                 MethodCallMetrics(**m) for m in data.pop("method_calls", [])
             ]
+            # Remove computed properties before reconstructing
             data.pop("total_method_calls", None)
+            data.pop("dispensary_method_calls", None)
+            data.pop("dispensary_usage_ratio", None)
+            data.pop("unique_dispensaries_used", None)
             data.pop("average_method_time_ms", None)
             data.pop("slowest_method", None)
             data.pop("memory_intensive_method", None)
+
             metrics = ExecutorMetrics(**data, method_calls=method_calls)
             self.baseline_metrics[executor_id] = metrics
 
@@ -797,6 +916,32 @@ class ExecutorProfiler:
             "",
         ]
 
+        # Dispensary analytics section
+        if report.dispensary_analytics.get("tracking_enabled"):
+            lines.extend(
+                [
+                    "## Dispensary Usage Analytics",
+                    "",
+                    f"- **Total Dispensaries Used:** {report.dispensary_analytics.get('total_dispensaries_used', 0)}",
+                    f"- **Total Dispensary Calls:** {report.dispensary_analytics.get('total_dispensary_calls', 0)}",
+                    "",
+                    "### Hottest Dispensaries",
+                    "",
+                    "| Rank | Class | Total Time (ms) | Avg Time (ms) | Executors | Reuse Factor |",
+                    "|------|-------|----------------|---------------|-----------|--------------|",
+                ]
+            )
+
+            for i, disp in enumerate(
+                report.dispensary_analytics.get("hottest_dispensaries", []), 1
+            ):
+                lines.append(
+                    f"| {i} | {disp['class']} | {disp['total_time_ms']:.1f} | "
+                    f"{disp['avg_time_ms']:.1f} | {disp['executor_count']} | "
+                    f"{disp['reuse_factor']:.1f} |"
+                )
+            lines.append("")
+
         if report.regressions:
             lines.extend(
                 [
@@ -819,17 +964,19 @@ class ExecutorProfiler:
                 [
                     "## Top Bottlenecks",
                     "",
-                    "| Rank | Executor | Score | Exec Time | Memory | Recommendation |",
-                    "|------|----------|-------|-----------|--------|----------------|",
+                    "| Rank | Executor | Score | Exec Time | Memory | Dispensaries | Recommendation |",
+                    "|------|----------|-------|-----------|--------|--------------|----------------|",
                 ]
             )
             for i, bottleneck in enumerate(report.bottlenecks[:10], 1):
+                disp_count = len(bottleneck.get("unique_dispensaries", []))
                 lines.append(
                     f"| {i} | {bottleneck['executor_id']} | "
                     f"{bottleneck['bottleneck_score']:.1f} | "
                     f"{bottleneck['avg_execution_time_ms']:.1f}ms | "
                     f"{bottleneck['avg_memory_mb']:.1f}MB | "
-                    f"{bottleneck['recommendation'][:50]}... |"
+                    f"{disp_count} | "
+                    f"{bottleneck['recommendation'][:60]}... |"
                 )
             lines.append("")
 
@@ -865,6 +1012,36 @@ class ExecutorProfiler:
         <li><strong>Bottlenecks Identified:</strong> {report.summary.get('bottlenecks_identified', 0)}</li>
     </ul>
 """
+
+        # Add dispensary analytics
+        if report.dispensary_analytics.get("tracking_enabled"):
+            html += """
+    <h2>Dispensary Usage Analytics</h2>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Dispensary Class</th>
+            <th>Total Time (ms)</th>
+            <th>Avg Time (ms)</th>
+            <th>Executor Count</th>
+            <th>Reuse Factor</th>
+        </tr>
+"""
+
+            for i, disp in enumerate(
+                report.dispensary_analytics.get("hottest_dispensaries", []), 1
+            ):
+                html += f"""
+        <tr>
+            <td>{i}</td>
+            <td>{disp['class']}</td>
+            <td>{disp['total_time_ms']:.1f}</td>
+            <td>{disp['avg_time_ms']:.1f}</td>
+            <td>{disp['executor_count']}</td>
+            <td>{disp['reuse_factor']:.1f}</td>
+        </tr>
+"""
+            html += "    </table>\n"
 
         if report.regressions:
             html += """
@@ -930,6 +1107,9 @@ class ExecutorProfiler:
         """Clear all collected metrics (but not baseline)."""
         self.metrics.clear()
         self.regressions.clear()
+        self.dispensary_call_counts.clear()
+        self.dispensary_execution_times.clear()
+        self.executor_dispensary_usage.clear()
 
 
 class ProfilerContext:
@@ -1053,4 +1233,5 @@ __all__ = [
     "MethodCallMetrics",
     "PerformanceRegression",
     "PerformanceReport",
+    "KNOWN_DISPENSARY_CLASSES",
 ]
