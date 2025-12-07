@@ -134,7 +134,10 @@ class MethodCallMetrics:
 
 @dataclass
 class ExecutorMetrics:
-    """Comprehensive metrics for a single executor execution."""
+    """Comprehensive metrics for a single executor execution.
+    
+    Enhanced with dispensary usage tracking.
+    """
 
     executor_id: str
     execution_time_ms: float
@@ -155,6 +158,22 @@ class ExecutorMetrics:
     def total_method_calls(self) -> int:
         """Total number of method calls during execution."""
         return sum(m.call_count for m in self.method_calls)
+
+    @property
+    def dispensary_method_calls(self) -> int:
+        """Number of calls to dispensary methods."""
+        return sum(m.call_count for m in self.method_calls if m.is_dispensary_method)
+    
+    @property
+    def dispensary_usage_ratio(self) -> float:
+        """Ratio of dispensary calls to total calls."""
+        total = self.total_method_calls
+        return self.dispensary_method_calls / total if total > 0 else 0.0
+    
+    @property
+    def unique_dispensaries_used(self) -> set[str]:
+        """Set of unique dispensary classes used."""
+        return {m.class_name for m in self.method_calls if m.is_dispensary_method}
 
     @property
     def average_method_time_ms(self) -> float:
@@ -184,6 +203,9 @@ class ExecutorMetrics:
         data = asdict(self)
         data["method_calls"] = [m.to_dict() for m in self.method_calls]
         data["total_method_calls"] = self.total_method_calls
+        data["dispensary_method_calls"] = self.dispensary_method_calls
+        data["dispensary_usage_ratio"] = self.dispensary_usage_ratio
+        data["unique_dispensaries_used"] = list(self.unique_dispensaries_used)
         data["average_method_time_ms"] = self.average_method_time_ms
         slowest = self.slowest_method
         data["slowest_method"] = (
@@ -218,7 +240,10 @@ class PerformanceRegression:
 
 @dataclass
 class PerformanceReport:
-    """Comprehensive performance report with bottleneck analysis."""
+    """Comprehensive performance report with bottleneck analysis.
+    
+    Enhanced with dispensary pattern analytics.
+    """
 
     timestamp: str
     total_executors: int
@@ -228,6 +253,7 @@ class PerformanceReport:
     bottlenecks: list[dict[str, Any]] = field(default_factory=list)
     summary: dict[str, Any] = field(default_factory=dict)
     executor_rankings: dict[str, list[str]] = field(default_factory=dict)
+    dispensary_analytics: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
