@@ -110,29 +110,28 @@ import logging
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Dict, Optional, Type
+from typing import Any
 
-from farfan_pipeline.core.orchestrator.core import Orchestrator, MethodExecutor
+from farfan_pipeline.core.orchestrator.arg_router import ExtendedArgRouter
+from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
+from farfan_pipeline.core.orchestrator.core import MethodExecutor, Orchestrator
 from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
 from farfan_pipeline.core.orchestrator.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
 )
-from farfan_pipeline.core.orchestrator.signal_registry import (
-    QuestionnaireSignalRegistry,
-    create_signal_registry,
+from farfan_pipeline.core.orchestrator.questionnaire import (
+    CanonicalQuestionnaire,
+    load_questionnaire,
 )
 from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from farfan_pipeline.core.orchestrator.questionnaire import (
-    CanonicalQuestionnaire,
-    load_questionnaire,
+from farfan_pipeline.core.orchestrator.signal_registry import (
+    QuestionnaireSignalRegistry,
+    create_signal_registry,
 )
-from farfan_pipeline.core.orchestrator.arg_router import ExtendedArgRouter
-from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
 
 # Phase 1 validation constants module
 try:
@@ -230,14 +229,14 @@ class ProcessorBundle:
     executor_config: ExecutorConfig
     enriched_signal_packs: dict[str, EnrichedSignalPack]
     validation_constants: dict[str, Any]
-    core_module_factory: Optional[Any] = None
+    core_module_factory: Any | None = None
     seed_registry_initialized: bool = False
     provenance: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         """SIN_CARRETA § Contract Enforcement: validate bundle integrity."""
         errors = []
-        
+
         # Critical components validation
         if self.orchestrator is None:
             errors.append("orchestrator must not be None")
@@ -253,10 +252,10 @@ class ProcessorBundle:
             errors.append("enriched_signal_packs must not be None")
         elif not isinstance(self.enriched_signal_packs, dict):
             errors.append("enriched_signal_packs must be dict[str, EnrichedSignalPack]")
-        
+
         if self.validation_constants is None:
             errors.append("validation_constants must not be None")
-        
+
         # Provenance validation
         if not self.provenance.get("construction_timestamp_utc"):
             errors.append("provenance must include construction_timestamp_utc")
@@ -264,14 +263,14 @@ class ProcessorBundle:
             errors.append("provenance must include canonical_sha256")
         if self.provenance.get("signal_registry_version") != "2.0":
             errors.append("provenance must indicate signal_registry_version=2.0")
-        
+
         # Factory pattern enforcement check
         if not self.provenance.get("factory_instantiation_confirmed"):
             errors.append("provenance must confirm factory instantiation (not direct construction)")
-        
+
         if errors:
             raise FactoryError(f"ProcessorBundle validation failed: {'; '.join(errors)}")
-        
+
         logger.info(
             "processor_bundle_validated "
             "canonical_sha256=%s construction_ts=%s policy_areas=%d validation_constants=%d",
@@ -308,20 +307,20 @@ class AnalysisPipelineFactory:
         bundle = factory.create_orchestrator()
         orchestrator = bundle.orchestrator
     """
-    
+
     # Singleton tracking for load_questionnaire() call
     _questionnaire_loaded = False
-    _questionnaire_instance: Optional[CanonicalQuestionnaire] = None
-    
+    _questionnaire_instance: CanonicalQuestionnaire | None = None
+
     def __init__(
         self,
         *,
-        questionnaire_path: Optional[str] = None,
-        expected_questionnaire_hash: Optional[str] = None,
-        executor_config: Optional[ExecutorConfig] = None,
-        validation_constants: Optional[dict[str, Any]] = None,
+        questionnaire_path: str | None = None,
+        expected_questionnaire_hash: str | None = None,
+        executor_config: ExecutorConfig | None = None,
+        validation_constants: dict[str, Any] | None = None,
         enable_intelligence_layer: bool = True,
-        seed_for_determinism: Optional[int] = None,
+        seed_for_determinism: int | None = None,
         strict_validation: bool = True,
     ):
         """Initialize the Analysis Pipeline Factory.
@@ -342,20 +341,20 @@ class AnalysisPipelineFactory:
         self._enable_intelligence = enable_intelligence_layer
         self._seed = seed_for_determinism
         self._strict = strict_validation
-        
+
         # Internal state (set during construction)
-        self._canonical_questionnaire: Optional[CanonicalQuestionnaire] = None
-        self._signal_registry: Optional[QuestionnaireSignalRegistry] = None
-        self._method_executor: Optional[MethodExecutor] = None
+        self._canonical_questionnaire: CanonicalQuestionnaire | None = None
+        self._signal_registry: QuestionnaireSignalRegistry | None = None
+        self._method_executor: MethodExecutor | None = None
         self._enriched_packs: dict[str, EnrichedSignalPack] = {}
-        
+
         logger.info(
             "factory_initialized questionnaire_path=%s intelligence_layer=%s seed=%s",
             questionnaire_path or "default",
             enable_intelligence_layer,
             seed_for_determinism is not None,
         )
-    
+
     def create_orchestrator(self) -> ProcessorBundle:
         """Create fully configured Orchestrator with all dependencies injected.
         
@@ -373,41 +372,41 @@ class AnalysisPipelineFactory:
         """
         construction_start = time.time()
         timestamp_utc = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-        
+
         logger.info("factory_create_orchestrator_start timestamp=%s", timestamp_utc)
-        
+
         try:
             # Step 1: Load canonical questionnaire (ONCE, with integrity check)
             self._load_canonical_questionnaire()
-            
+
             # Step 2: Build signal registry from canonical source
             self._build_signal_registry()
-            
+
             # Step 3: Build enriched signal packs (intelligence layer)
             self._build_enriched_signal_packs()
-            
+
             # Step 4: Initialize seed registry for determinism
             seed_initialized = self._initialize_seed_registry()
-            
+
             # Step 5: Build method executor with signal registry DI
             self._build_method_executor()
-            
+
             # Step 6: Load Phase 1 validation constants
             validation_constants = self._load_validation_constants()
-            
+
             # Step 7: Get or create executor config
             executor_config = self._get_executor_config()
-            
+
             # Step 8: Build orchestrator with full DI
             orchestrator = self._build_orchestrator(
                 executor_config=executor_config,
                 validation_constants=validation_constants,
             )
-            
+
             # Step 9: Assemble provenance metadata
             construction_duration = time.time() - construction_start
             canonical_hash = self._compute_questionnaire_hash()
-            
+
             provenance = {
                 "construction_timestamp_utc": timestamp_utc,
                 "canonical_sha256": canonical_hash,
@@ -422,7 +421,7 @@ class AnalysisPipelineFactory:
                 "factory_instantiation_confirmed": True,  # Critical for bundle validation
                 "factory_class": "AnalysisPipelineFactory",
             }
-            
+
             # Step 10: Build complete bundle
             bundle = ProcessorBundle(
                 orchestrator=orchestrator,
@@ -436,23 +435,23 @@ class AnalysisPipelineFactory:
                 seed_registry_initialized=seed_initialized,
                 provenance=provenance,
             )
-            
+
             logger.info(
                 "factory_create_orchestrator_complete duration=%.3fs hash=%s",
                 construction_duration,
                 canonical_hash[:16],
             )
-            
+
             return bundle
-            
+
         except Exception as e:
             logger.error("factory_create_orchestrator_failed error=%s", str(e), exc_info=True)
             raise FactoryError(f"Failed to create orchestrator: {e}") from e
-    
+
     # =========================================================================
     # Internal Construction Methods
     # =========================================================================
-    
+
     def _load_canonical_questionnaire(self) -> None:
         """Load canonical questionnaire with singleton enforcement and integrity check.
         
@@ -478,20 +477,20 @@ class AnalysisPipelineFactory:
                     "load_questionnaire() was called but instance is None. "
                     "This indicates a singleton pattern violation."
                 )
-        
+
         logger.info("questionnaire_loading_start path=%s", self._questionnaire_path or "default")
-        
+
         try:
             # Load questionnaire (this should be the ONLY call in the entire codebase)
             questionnaire = load_questionnaire(self._questionnaire_path)
-            
+
             # Mark singleton as loaded
             AnalysisPipelineFactory._questionnaire_loaded = True
             AnalysisPipelineFactory._questionnaire_instance = questionnaire
-            
+
             # Compute integrity hash
             actual_hash = self._compute_questionnaire_hash_from_instance(questionnaire)
-            
+
             # Verify integrity if expected hash provided
             if self._expected_hash is not None:
                 if actual_hash != self._expected_hash:
@@ -508,32 +507,32 @@ class AnalysisPipelineFactory:
                     "actual_hash=%s",
                     actual_hash[:16]
                 )
-            
+
             # Validate structure
             if not hasattr(questionnaire, 'questions'):
                 if self._strict:
                     raise QuestionnaireValidationError("Questionnaire missing 'questions' attribute")
                 logger.warning("questionnaire_validation_warning missing_questions_attribute")
-            
+
             questions = getattr(questionnaire, 'questions', [])
             if not questions:
                 if self._strict:
                     raise QuestionnaireValidationError("Questionnaire has no questions")
                 logger.warning("questionnaire_validation_warning no_questions")
-            
+
             self._canonical_questionnaire = questionnaire
-            
+
             logger.info(
                 "questionnaire_loaded_successfully questions=%d hash=%s singleton=established",
                 len(questions),
                 actual_hash[:16],
             )
-            
+
         except Exception as e:
             if isinstance(e, (IntegrityError, SingletonViolationError, QuestionnaireValidationError)):
                 raise
             raise QuestionnaireValidationError(f"Failed to load questionnaire: {e}") from e
-    
+
     def _build_signal_registry(self) -> None:
         """Build signal registry from canonical questionnaire.
         
@@ -549,33 +548,33 @@ class AnalysisPipelineFactory:
             raise RegistryConstructionError(
                 "Cannot build signal registry: canonical questionnaire not loaded"
             )
-        
+
         logger.info("signal_registry_building_start")
-        
+
         try:
             # Build registry from canonical source ONLY
             registry = create_signal_registry(self._canonical_questionnaire)
-            
+
             # Validate registry
             if not hasattr(registry, 'get_all_policy_areas'):
                 if self._strict:
                     raise RegistryConstructionError("Registry missing required methods")
                 logger.warning("registry_validation_warning missing_methods")
-            
+
             policy_areas = registry.get_all_policy_areas() if hasattr(registry, 'get_all_policy_areas') else []
-            
+
             self._signal_registry = registry
-            
+
             logger.info(
                 "signal_registry_built_successfully version=2.0 policy_areas=%d",
                 len(policy_areas),
             )
-            
+
         except Exception as e:
             if isinstance(e, RegistryConstructionError):
                 raise
             raise RegistryConstructionError(f"Failed to build signal registry: {e}") from e
-    
+
     def _build_enriched_signal_packs(self) -> None:
         """Build enriched signal packs for all policy areas.
         
@@ -589,64 +588,64 @@ class AnalysisPipelineFactory:
             logger.info("enriched_packs_disabled intelligence_layer=off")
             self._enriched_packs = {}
             return
-        
+
         if self._signal_registry is None:
             raise RegistryConstructionError(
                 "Cannot build enriched packs: signal registry not built"
             )
-        
+
         logger.info("enriched_packs_building_start")
-        
+
         enriched_packs: dict[str, EnrichedSignalPack] = {}
-        
+
         try:
             policy_areas = self._signal_registry.get_all_policy_areas() if hasattr(self._signal_registry, 'get_all_policy_areas') else []
-            
+
             if not policy_areas:
                 logger.warning("enriched_packs_warning no_policy_areas_found")
                 self._enriched_packs = enriched_packs
                 return
-            
+
             for policy_area_id in policy_areas:
                 try:
                     # Get base pack from registry
                     base_pack = self._signal_registry.get(policy_area_id) if hasattr(self._signal_registry, 'get') else None
-                    
+
                     if base_pack is None:
                         logger.warning("base_pack_missing policy_area=%s", policy_area_id)
                         continue
-                    
+
                     # Create enriched pack (semantic expansion + context filtering)
                     enriched_pack = create_enriched_signal_pack(
                         base_pack=base_pack,
                         questionnaire=self._canonical_questionnaire,
                     )
-                    
+
                     enriched_packs[policy_area_id] = enriched_pack
-                    
+
                     logger.debug(
                         "enriched_pack_created policy_area=%s",
                         policy_area_id,
                     )
-                    
+
                 except Exception as e:
                     msg = f"Failed to create enriched pack for {policy_area_id}: {e}"
                     if self._strict:
                         raise RegistryConstructionError(msg) from e
                     logger.error("enriched_pack_creation_failed policy_area=%s", policy_area_id, exc_info=True)
-            
+
             self._enriched_packs = enriched_packs
-            
+
             logger.info(
                 "enriched_packs_built_successfully count=%d",
                 len(enriched_packs),
             )
-            
+
         except Exception as e:
             if isinstance(e, RegistryConstructionError):
                 raise
             raise RegistryConstructionError(f"Failed to build enriched packs: {e}") from e
-    
+
     def _initialize_seed_registry(self) -> bool:
         """Initialize SeedRegistry singleton for deterministic operations.
         
@@ -656,19 +655,19 @@ class AnalysisPipelineFactory:
         if not SEED_REGISTRY_AVAILABLE:
             logger.warning("seed_registry_unavailable module_not_found determinism_not_guaranteed")
             return False
-        
+
         if self._seed is None:
             logger.info("seed_registry_not_initialized no_seed_provided")
             return False
-        
+
         try:
             SeedRegistry.initialize(master_seed=self._seed)
             logger.info("seed_registry_initialized master_seed=%d determinism=enabled", self._seed)
             return True
-        except Exception as e:
+        except Exception:
             logger.error("seed_registry_initialization_failed", exc_info=True)
             return False
-    
+
     def _build_method_executor(self) -> None:
         """Build MethodExecutor with full dependency wiring.
         
@@ -757,39 +756,39 @@ class AnalysisPipelineFactory:
             raise ExecutorConstructionError(
                 "Cannot build method executor: signal registry not built"
             )
-        
+
         logger.info("method_executor_building_start dispensaries=loading")
-        
+
         try:
             # Step 1: Build method registry with special instantiation rules
             # MethodRegistry handles shared instances (e.g., MunicipalOntology singleton)
             # and custom instantiation logic for complex analyzers
             method_registry = MethodRegistry()
             setup_default_instantiation_rules(method_registry)
-            
+
             logger.info("method_registry_built instantiation_rules=configured")
-            
+
             # Step 2: Build class registry - THE METHOD DISPENSARIES
             # This loads ~20 monolith classes with 240+ methods total
             # Each class is a "dispensary" that provides methods to executors
             class_registry = build_class_registry()
-            
+
             logger.info(
                 "class_registry_built dispensaries=%d total_methods=240+",
                 len(class_registry)
             )
-            
+
             # Step 3: Build extended arg router with special routes
             # Handles 30+ high-traffic method routes + generic routing
             arg_router = ExtendedArgRouter(class_registry)
-            
+
             special_routes = arg_router.get_special_route_coverage() if hasattr(arg_router, 'get_special_route_coverage') else 0
-            
+
             logger.info(
                 "arg_router_built special_routes=%d generic_routing=enabled",
                 special_routes
             )
-            
+
             # Step 4: Build method executor WITH signal registry injected
             # This is the CORE integration point - executors call methods through this
             method_executor = MethodExecutor(
@@ -797,27 +796,71 @@ class AnalysisPipelineFactory:
                 arg_router=arg_router,
                 signal_registry=self._signal_registry,  # DI: inject signal registry
             )
-            
+
+            # Step 5: PRE-EXECUTION CONTRACT VERIFICATION
+            # Verify all 30 base executor contracts (D1-Q1 through D6-Q5) before execution
+            # This ensures contract integrity and method class availability at startup
+            logger.info("contract_verification_start verifying_30_base_contracts")
+
+            from farfan_pipeline.core.orchestrator.base_executor_with_contract import (
+                BaseExecutorWithContract,
+            )
+
+            verification_result = BaseExecutorWithContract.verify_all_base_contracts(
+                class_registry=class_registry
+            )
+
+            if not verification_result["passed"]:
+                error_summary = f"{len(verification_result['errors'])} contract validation errors"
+                logger.error(
+                    "contract_verification_failed errors=%d warnings=%d",
+                    len(verification_result["errors"]),
+                    len(verification_result.get("warnings", [])),
+                )
+
+                for error in verification_result["errors"][:10]:
+                    logger.error("contract_error: %s", error)
+
+                if self._strict:
+                    raise ExecutorConstructionError(
+                        f"Pre-execution contract verification failed: {error_summary}. "
+                        f"See logs for details. Total errors: {len(verification_result['errors'])}"
+                    )
+                else:
+                    logger.warning(
+                        "contract_verification_failed_non_strict continuing_with_errors=%d",
+                        len(verification_result["errors"])
+                    )
+            else:
+                logger.info(
+                    "contract_verification_passed verified=%d warnings=%d",
+                    len(verification_result["verified_contracts"]),
+                    len(verification_result.get("warnings", []))
+                )
+
+                for warning in verification_result.get("warnings", [])[:5]:
+                    logger.warning("contract_warning: %s", warning)
+
             # Validate construction
             if not hasattr(method_executor, 'execute'):
                 if self._strict:
                     raise ExecutorConstructionError("MethodExecutor missing 'execute' method")
                 logger.warning("method_executor_validation_warning missing_execute")
-            
+
             self._method_executor = method_executor
-            
+
             logger.info(
                 "method_executor_built_successfully "
                 "dispensaries=%d special_routes=%d signal_registry=injected",
                 len(class_registry),
                 special_routes,
             )
-            
+
         except Exception as e:
             if isinstance(e, ExecutorConstructionError):
                 raise
             raise ExecutorConstructionError(f"Failed to build method executor: {e}") from e
-    
+
     def _load_validation_constants(self) -> dict[str, Any]:
         """Load Phase 1 validation constants (hard contracts).
         
@@ -832,7 +875,7 @@ class AnalysisPipelineFactory:
         if self._validation_constants is not None:
             logger.info("validation_constants_using_provided count=%d", len(self._validation_constants))
             return self._validation_constants
-        
+
         if VALIDATION_CONSTANTS_AVAILABLE:
             try:
                 raw_constants = (
@@ -850,7 +893,7 @@ class AnalysisPipelineFactory:
                 return constants
             except Exception:
                 logger.error("validation_constants_load_failed using_defaults", exc_info=True)
-        
+
         # Default validation constants
         default_constants = {
             "P01_EXPECTED_CHUNK_COUNT": 60,
@@ -859,20 +902,20 @@ class AnalysisPipelineFactory:
             "P02_MIN_TABLE_COUNT": 5,
             "P02_MAX_TABLES_PER_DOCUMENT": 100,
         }
-        
+
         logger.warning(
             "validation_constants_using_defaults count=%d constants_module_unavailable",
             len(default_constants),
         )
-        
+
         return default_constants
-    
+
     def _get_executor_config(self) -> ExecutorConfig:
         """Get or create ExecutorConfig."""
         if self._executor_config is not None:
             return self._executor_config
         return ExecutorConfig.default()
-    
+
     def _build_orchestrator(
         self,
         executor_config: ExecutorConfig,
@@ -900,9 +943,9 @@ class AnalysisPipelineFactory:
             raise ExecutorConstructionError("Cannot build orchestrator: questionnaire not loaded")
         if self._method_executor is None:
             raise ExecutorConstructionError("Cannot build orchestrator: method executor not built")
-        
+
         logger.info("orchestrator_building_start")
-        
+
         try:
             # Build orchestrator with FULL dependency injection
             orchestrator = Orchestrator(
@@ -912,33 +955,33 @@ class AnalysisPipelineFactory:
                 validation_constants=validation_constants,  # DI: inject Phase 1 contracts
                 signal_registry=self._signal_registry,  # DI: inject signal registry
             )
-            
+
             logger.info("orchestrator_built_successfully")
-            
+
             return orchestrator
-            
+
         except Exception as e:
             raise ExecutorConstructionError(f"Failed to build orchestrator: {e}") from e
-    
-    def _build_core_module_factory(self) -> Optional[Any]:
+
+    def _build_core_module_factory(self) -> Any | None:
         """Build CoreModuleFactory if available."""
         if not CORE_MODULE_FACTORY_AVAILABLE:
             return None
-        
+
         try:
             factory = CoreModuleFactory()
             logger.info("core_module_factory_built")
             return factory
-        except Exception as e:
+        except Exception:
             logger.error("core_module_factory_construction_error", exc_info=True)
             return None
-    
+
     def _compute_questionnaire_hash(self) -> str:
         """Compute SHA-256 hash of loaded questionnaire."""
         if self._canonical_questionnaire is None:
             return ""
         return self._compute_questionnaire_hash_from_instance(self._canonical_questionnaire)
-    
+
     @staticmethod
     def _compute_questionnaire_hash_from_instance(questionnaire: CanonicalQuestionnaire) -> str:
         """Compute deterministic SHA-256 hash of questionnaire content."""
@@ -950,17 +993,17 @@ class AnalysisPipelineFactory:
                 content = json.dumps(questionnaire.__dict__, sort_keys=True, default=str)
             else:
                 content = str(questionnaire)
-            
+
             return hashlib.sha256(content.encode('utf-8')).hexdigest()
-            
+
         except Exception as e:
             logger.warning("questionnaire_hash_computation_degraded error=%s", str(e))
             # Fallback to simple string hash
             return hashlib.sha256(str(questionnaire).encode('utf-8')).hexdigest()
-    
+
     def create_executor_instance(
         self,
-        executor_class: Type,
+        executor_class: type,
         policy_area_id: str,
         **extra_kwargs: Any,
     ) -> Any:
@@ -984,17 +1027,17 @@ class AnalysisPipelineFactory:
             raise ExecutorConstructionError(
                 "Cannot create executor: method executor not built"
             )
-        
+
         # Get enriched signal pack for this policy area
         enriched_pack = self._enriched_packs.get(policy_area_id)
-        
+
         if enriched_pack is None and self._enable_intelligence:
             logger.warning(
                 "executor_creation_warning no_enriched_pack policy_area=%s executor=%s",
                 policy_area_id,
                 executor_class.__name__,
             )
-        
+
         try:
             # Inject dependencies into executor
             executor_instance = executor_class(
@@ -1005,15 +1048,15 @@ class AnalysisPipelineFactory:
                 enriched_pack=enriched_pack,  # DI: inject enriched signal pack (specific to policy area)
                 **extra_kwargs,
             )
-            
+
             logger.debug(
                 "executor_instance_created executor=%s policy_area=%s",
                 executor_class.__name__,
                 policy_area_id,
             )
-            
+
             return executor_instance
-            
+
         except Exception as e:
             raise ExecutorConstructionError(
                 f"Failed to create executor {executor_class.__name__}: {e}"
@@ -1026,9 +1069,9 @@ class AnalysisPipelineFactory:
 
 
 def create_analysis_pipeline(
-    questionnaire_path: Optional[str] = None,
-    expected_hash: Optional[str] = None,
-    seed: Optional[int] = None,
+    questionnaire_path: str | None = None,
+    expected_hash: str | None = None,
+    seed: int | None = None,
 ) -> ProcessorBundle:
     """Convenience function to create complete analysis pipeline.
     
@@ -1053,7 +1096,7 @@ def create_analysis_pipeline(
 
 
 def create_minimal_pipeline(
-    questionnaire_path: Optional[str] = None,
+    questionnaire_path: str | None = None,
 ) -> ProcessorBundle:
     """Create minimal pipeline without intelligence layer.
     
@@ -1088,7 +1131,7 @@ def validate_factory_singleton() -> dict[str, Any]:
         "questionnaire_loaded": AnalysisPipelineFactory._questionnaire_loaded,
         "questionnaire_instance_exists": AnalysisPipelineFactory._questionnaire_instance is not None,
         "singleton_pattern_valid": (
-            AnalysisPipelineFactory._questionnaire_loaded and 
+            AnalysisPipelineFactory._questionnaire_loaded and
             AnalysisPipelineFactory._questionnaire_instance is not None
         ),
     }
@@ -1103,14 +1146,14 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
         "components": {},
         "metrics": {},
     }
-    
+
     # Validate orchestrator
     if bundle.orchestrator is None:
         diagnostics["valid"] = False
         diagnostics["errors"].append("orchestrator is None")
     else:
         diagnostics["components"]["orchestrator"] = "present"
-    
+
     # Validate method executor
     if bundle.method_executor is None:
         diagnostics["valid"] = False
@@ -1121,7 +1164,7 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
             router = bundle.method_executor.arg_router
             if hasattr(router, 'get_special_route_coverage'):
                 diagnostics["metrics"]["special_routes"] = router.get_special_route_coverage()
-    
+
     # Validate questionnaire
     if bundle.questionnaire is None:
         diagnostics["valid"] = False
@@ -1130,7 +1173,7 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
         diagnostics["components"]["questionnaire"] = "present"
         if hasattr(bundle.questionnaire, 'questions'):
             diagnostics["metrics"]["question_count"] = len(bundle.questionnaire.questions)
-    
+
     # Validate signal registry
     if bundle.signal_registry is None:
         diagnostics["valid"] = False
@@ -1139,24 +1182,24 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
         diagnostics["components"]["signal_registry"] = "present"
         if hasattr(bundle.signal_registry, 'get_all_policy_areas'):
             diagnostics["metrics"]["policy_areas"] = len(bundle.signal_registry.get_all_policy_areas())
-    
+
     # Validate enriched packs
     diagnostics["components"]["enriched_packs"] = len(bundle.enriched_signal_packs)
     diagnostics["metrics"]["enriched_pack_count"] = len(bundle.enriched_signal_packs)
-    
+
     # Validate validation constants
     diagnostics["components"]["validation_constants"] = len(bundle.validation_constants)
     diagnostics["metrics"]["validation_constant_count"] = len(bundle.validation_constants)
-    
+
     # Validate seed registry
     if not bundle.seed_registry_initialized:
         diagnostics["warnings"].append("SeedRegistry not initialized - determinism not guaranteed")
-    
+
     # Check factory instantiation
     if not bundle.provenance.get("factory_instantiation_confirmed"):
         diagnostics["errors"].append("Bundle not created via AnalysisPipelineFactory")
         diagnostics["valid"] = False
-    
+
     return diagnostics
 
 
@@ -1233,9 +1276,9 @@ def get_method_dispensary_info() -> dict[str, Any]:
         dict with dispensary statistics and usage patterns.
     """
     from farfan_pipeline.core.orchestrator.class_registry import get_class_paths
-    
+
     class_paths = get_class_paths()
-    
+
     # Load executor→methods mapping
     try:
         import json
@@ -1248,7 +1291,7 @@ def get_method_dispensary_info() -> dict[str, Any]:
             executors_methods = []
     except Exception:
         executors_methods = []
-    
+
     # Build dispensary statistics
     dispensaries = {}
     for class_name in class_paths.keys():
@@ -1258,36 +1301,36 @@ def get_method_dispensary_info() -> dict[str, Any]:
             "used_by_executors": [],
             "total_usage_count": 0,
         }
-    
+
     # Count method usage per dispensary
     for executor_info in executors_methods:
         executor_id = executor_info.get("executor_id")
         methods = executor_info.get("methods", [])
-        
+
         for method_info in methods:
             class_name = method_info.get("class")
             method_name = method_info.get("method")
-            
+
             if class_name in dispensaries:
                 if method_name not in dispensaries[class_name]["methods_provided"]:
                     dispensaries[class_name]["methods_provided"].append(method_name)
-                
+
                 if executor_id not in dispensaries[class_name]["used_by_executors"]:
                     dispensaries[class_name]["used_by_executors"].append(executor_id)
-                
+
                 dispensaries[class_name]["total_usage_count"] += 1
-    
+
     # Sort by usage count
     sorted_dispensaries = sorted(
         dispensaries.items(),
         key=lambda x: x[1]["total_usage_count"],
         reverse=True
     )
-    
+
     # Build summary statistics
     total_methods = sum(len(d["methods_provided"]) for _, d in sorted_dispensaries)
     total_usage = sum(d["total_usage_count"] for _, d in sorted_dispensaries)
-    
+
     return {
         "pattern": "method_dispensary",
         "description": "Monolith classes serve as method dispensaries for 30 executors",
@@ -1329,7 +1372,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         dict with validation results.
     """
     from farfan_pipeline.core.orchestrator.class_registry import get_class_paths
-    
+
     class_paths = get_class_paths()
     validation_results = {
         "pattern_valid": True,
@@ -1337,7 +1380,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         "warnings": [],
         "checks": {},
     }
-    
+
     # Check 1: Verify class_registry is populated
     if not class_paths:
         validation_results["pattern_valid"] = False
@@ -1346,7 +1389,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         )
     else:
         validation_results["checks"]["dispensaries_registered"] = len(class_paths)
-    
+
     # Check 2: Verify executor_methods.json exists
     try:
         import json
@@ -1364,7 +1407,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         validation_results["warnings"].append(
             f"Failed to load executors_methods.json: {e}"
         )
-    
+
     # Check 3: Verify validation file exists
     try:
         validation_path = Path(__file__).parent / "executor_factory_validation.json"
@@ -1381,5 +1424,5 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         validation_results["warnings"].append(
             f"Failed to load executor_factory_validation.json: {e}"
         )
-    
+
     return validation_results

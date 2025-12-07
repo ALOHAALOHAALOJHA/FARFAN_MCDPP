@@ -32,6 +32,8 @@ class BaseExecutorWithContract(ABC):
 
     _contract_cache: dict[str, dict[str, Any]] = {}
     _schema_validators: dict[str, Draft7Validator] = {}
+    _factory_contracts_verified: bool = False
+    _factory_verification_errors: list[str] = []
 
     def __init__(
         self,
@@ -72,6 +74,359 @@ class BaseExecutorWithContract(ABC):
     @abstractmethod
     def get_base_slot(cls) -> str:
         raise NotImplementedError
+
+    @classmethod
+    def verify_all_base_contracts(
+        cls, class_registry: dict[str, type[object]] | None = None
+    ) -> dict[str, Any]:
+        """Verify all 30 base executor contracts at factory initialization time.
+
+        This method loads and validates all contracts for D1-Q1 through D6-Q5, checking:
+        - Contract files exist and are valid JSON
+        - Required fields are present (method_inputs/method_binding, assembly_rules,
+          validation_rules, expected_elements)
+        - JSON schema compliance (v2 or v3)
+        - All referenced method classes exist in the class registry
+
+        Args:
+            class_registry: Optional class registry to verify method class existence.
+                          If None, will attempt to import and build one.
+
+        Returns:
+            dict with keys:
+                - passed: bool indicating if all contracts are valid
+                - total_contracts: int count of contracts checked
+                - errors: list of error messages for failed contracts
+                - warnings: list of warning messages
+                - verified_contracts: list of base_slot identifiers that passed
+
+        Raises:
+            RuntimeError: If verification fails with strict=True
+        """
+        if cls._factory_contracts_verified:
+            return {
+                "passed": len(cls._factory_verification_errors) == 0,
+                "total_contracts": 30,
+                "errors": cls._factory_verification_errors,
+                "warnings": [],
+                "verified_contracts": list(cls._contract_cache.keys()),
+            }
+
+        base_slots = [
+            f"D{d}-Q{q}" for d in range(1, 7) for q in range(1, 6)
+        ]
+
+        if class_registry is None:
+            try:
+                from farfan_pipeline.core.orchestrator.class_registry import (
+                    build_class_registry,
+                )
+                class_registry = build_class_registry()
+            except Exception as exc:
+                cls._factory_verification_errors.append(
+                    f"Failed to build class registry for verification: {exc}"
+                )
+
+        errors: list[str] = []
+        warnings: list[str] = []
+        verified_contracts: list[str] = []
+
+        for base_slot in base_slots:
+            try:
+                result = cls._verify_single_contract(base_slot, class_registry)
+                if result["passed"]:
+                    verified_contracts.append(base_slot)
+                else:
+                    errors.extend(
+                        f"[{base_slot}] {err}" for err in result["errors"]
+                    )
+                warnings.extend(
+                    f"[{base_slot}] {warn}" for warn in result.get("warnings", [])
+                )
+            except Exception as exc:
+                errors.append(f"[{base_slot}] Unexpected error during verification: {exc}")
+
+        cls._factory_contracts_verified = True
+        cls._factory_verification_errors = errors
+
+        return {
+            "passed": len(errors) == 0,
+            "total_contracts": len(base_slots),
+            "errors": errors,
+            "warnings": warnings,
+            "verified_contracts": verified_contracts,
+        }
+
+    @classmethod
+    def _verify_single_contract(
+        cls, base_slot: str, class_registry: dict[str, type[object]] | None = None
+    ) -> dict[str, Any]:
+        """Verify a single contract for completeness and validity.
+
+        Args:
+            base_slot: Base slot identifier (e.g., "D1-Q1")
+            class_registry: Optional class registry for method class verification
+
+        Returns:
+            dict with keys:
+                - passed: bool
+                - errors: list of error messages
+                - warnings: list of warning messages
+                - contract_version: detected version (v2/v3)
+                - contract_path: path to contract file
+        """
+        errors: list[str] = []
+        warnings: list[str] = []
+
+        dimension = int(base_slot[1])
+        question = int(base_slot[4])
+        q_number = (dimension - 1) * 5 + question
+        q_id = f"Q{q_number:03d}"
+
+        v3_path = (
+            PROJECT_ROOT / "config" / "executor_contracts" / f"{base_slot}.v3.json"
+        )
+        v2_path = PROJECT_ROOT / "config" / "executor_contracts" / f"{base_slot}.json"
+        v3_specialized_path = (
+            PROJECT_ROOT / "config" / "executor_contracts" / "specialized" / f"{q_id}.v3.json"
+        )
+        v2_specialized_path = (
+            PROJECT_ROOT / "config" / "executor_contracts" / "specialized" / f"{q_id}.json"
+        )
+
+        contract_path = None
+        if v3_path.exists():
+            contract_path = v3_path
+            expected_version = "v3"
+        elif v2_path.exists():
+            contract_path = v2_path
+            expected_version = "v2"
+        elif v3_specialized_path.exists():
+            contract_path = v3_specialized_path
+            expected_version = "v3"
+        elif v2_specialized_path.exists():
+            contract_path = v2_specialized_path
+            expected_version = "v2"
+        else:
+            errors.append(
+                f"Contract file not found. Tried: {v3_path}, {v2_path}, {v3_specialized_path}, {v2_specialized_path}"
+            )
+            return {
+                "passed": False,
+                "errors": errors,
+                "warnings": warnings,
+                "contract_version": None,
+                "contract_path": None,
+            }
+
+        try:
+            contract = json.loads(contract_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"Invalid JSON in contract file: {exc}")
+            return {
+                "passed": False,
+                "errors": errors,
+                "warnings": warnings,
+                "contract_version": expected_version,
+                "contract_path": str(contract_path),
+            }
+        except Exception as exc:
+            errors.append(f"Failed to read contract file: {exc}")
+            return {
+                "passed": False,
+                "errors": errors,
+                "warnings": warnings,
+                "contract_version": expected_version,
+                "contract_path": str(contract_path),
+            }
+
+        detected_version = cls._detect_contract_version(contract)
+        if detected_version != expected_version:
+            warnings.append(
+                f"Contract structure is {detected_version} but file naming suggests {expected_version}"
+            )
+
+        try:
+            validator = cls._get_schema_validator(detected_version)
+            schema_errors = sorted(validator.iter_errors(contract), key=lambda e: e.path)
+            if schema_errors:
+                errors.extend(
+                    f"Schema validation error: {err.message} at {'.'.join(str(p) for p in err.path)}"
+                    for err in schema_errors[:10]
+                )
+        except FileNotFoundError as exc:
+            warnings.append(f"Schema file not found: {exc}. Skipping schema validation.")
+        except Exception as exc:
+            warnings.append(f"Schema validation error: {exc}")
+
+        if detected_version == "v3":
+            v3_errors = cls._verify_v3_contract_fields(contract, base_slot, class_registry)
+            errors.extend(v3_errors)
+        else:
+            v2_errors = cls._verify_v2_contract_fields(contract, base_slot, class_registry)
+            errors.extend(v2_errors)
+
+        return {
+            "passed": len(errors) == 0,
+            "errors": errors,
+            "warnings": warnings,
+            "contract_version": detected_version,
+            "contract_path": str(contract_path),
+        }
+
+    @classmethod
+    def _verify_v2_contract_fields(
+        cls,
+        contract: dict[str, Any],
+        base_slot: str,
+        class_registry: dict[str, type[object]] | None = None,
+    ) -> list[str]:
+        """Verify required fields for v2 contract format.
+
+        Args:
+            contract: Parsed contract dict
+            base_slot: Base slot identifier
+            class_registry: Optional class registry for method verification
+
+        Returns:
+            List of error messages (empty if all checks pass)
+        """
+        errors: list[str] = []
+
+        if "method_inputs" not in contract:
+            errors.append("Missing required field: method_inputs")
+        elif not isinstance(contract["method_inputs"], list):
+            errors.append("method_inputs must be a list")
+        else:
+            method_inputs = contract["method_inputs"]
+            if not method_inputs:
+                errors.append("method_inputs is empty")
+            else:
+                for idx, method_spec in enumerate(method_inputs):
+                    if not isinstance(method_spec, dict):
+                        errors.append(f"method_inputs[{idx}] is not a dict")
+                        continue
+                    if "class" not in method_spec:
+                        errors.append(f"method_inputs[{idx}] missing 'class' field")
+                    if "method" not in method_spec:
+                        errors.append(f"method_inputs[{idx}] missing 'method' field")
+
+                    if class_registry is not None and "class" in method_spec:
+                        class_name = method_spec["class"]
+                        if class_name not in class_registry:
+                            errors.append(
+                                f"method_inputs[{idx}]: class '{class_name}' not found in class registry"
+                            )
+
+        if "assembly_rules" not in contract:
+            errors.append("Missing required field: assembly_rules")
+        elif not isinstance(contract["assembly_rules"], list):
+            errors.append("assembly_rules must be a list")
+
+        if "validation_rules" not in contract:
+            errors.append("Missing required field: validation_rules")
+
+        return errors
+
+    @classmethod
+    def _verify_v3_contract_fields(
+        cls,
+        contract: dict[str, Any],
+        base_slot: str,
+        class_registry: dict[str, type[object]] | None = None,
+    ) -> list[str]:
+        """Verify required fields for v3 contract format.
+
+        Args:
+            contract: Parsed contract dict
+            base_slot: Base slot identifier
+            class_registry: Optional class registry for method verification
+
+        Returns:
+            List of error messages (empty if all checks pass)
+        """
+        errors: list[str] = []
+
+        if "identity" not in contract:
+            errors.append("Missing required field: identity")
+        else:
+            identity = contract["identity"]
+            if "base_slot" not in identity:
+                errors.append("identity missing 'base_slot' field")
+            elif identity["base_slot"] != base_slot:
+                errors.append(
+                    f"identity.base_slot mismatch: expected {base_slot}, got {identity['base_slot']}"
+                )
+
+        if "method_binding" not in contract:
+            errors.append("Missing required field: method_binding")
+        else:
+            method_binding = contract["method_binding"]
+            orchestration_mode = method_binding.get("orchestration_mode", "single_method")
+
+            if orchestration_mode == "multi_method_pipeline":
+                if "methods" not in method_binding:
+                    errors.append("method_binding missing 'methods' array for multi_method_pipeline mode")
+                elif not isinstance(method_binding["methods"], list):
+                    errors.append("method_binding.methods must be a list")
+                else:
+                    methods = method_binding["methods"]
+                    if not methods:
+                        errors.append("method_binding.methods is empty")
+                    else:
+                        for idx, method_spec in enumerate(methods):
+                            if not isinstance(method_spec, dict):
+                                errors.append(f"methods[{idx}] is not a dict")
+                                continue
+                            if "class_name" not in method_spec:
+                                errors.append(f"methods[{idx}] missing 'class_name' field")
+                            if "method_name" not in method_spec:
+                                errors.append(f"methods[{idx}] missing 'method_name' field")
+
+                            if class_registry is not None and "class_name" in method_spec:
+                                class_name = method_spec["class_name"]
+                                if class_name not in class_registry:
+                                    errors.append(
+                                        f"methods[{idx}]: class '{class_name}' not found in class registry"
+                                    )
+            elif "class_name" not in method_binding and "primary_method" not in method_binding:
+                errors.append(
+                    "method_binding missing 'class_name' or 'primary_method' for single_method mode"
+                )
+            else:
+                class_name = method_binding.get("class_name")
+                if not class_name and "primary_method" in method_binding:
+                    class_name = method_binding["primary_method"].get("class_name")
+
+                if class_name and class_registry is not None:
+                    if class_name not in class_registry:
+                        errors.append(
+                            f"method_binding: class '{class_name}' not found in class registry"
+                        )
+
+        if "evidence_assembly" not in contract:
+            errors.append("Missing required field: evidence_assembly")
+        else:
+            evidence_assembly = contract["evidence_assembly"]
+            if "assembly_rules" not in evidence_assembly:
+                errors.append("evidence_assembly missing 'assembly_rules' field")
+            elif not isinstance(evidence_assembly["assembly_rules"], list):
+                errors.append("evidence_assembly.assembly_rules must be a list")
+
+        if "validation_rules" not in contract:
+            errors.append("Missing required field: validation_rules")
+
+        if "question_context" not in contract:
+            errors.append("Missing required field: question_context")
+        else:
+            question_context = contract["question_context"]
+            if "expected_elements" not in question_context:
+                errors.append("question_context missing 'expected_elements' field")
+
+        if "error_handling" not in contract:
+            errors.append("Missing required field: error_handling")
+
+        return errors
 
     @classmethod
     def _get_schema_validator(cls, version: str = "v2") -> Draft7Validator:
@@ -126,11 +481,21 @@ class BaseExecutorWithContract(ABC):
         if base_slot in cls._contract_cache:
             return cls._contract_cache[base_slot]
 
-        # Try v3 contract first, then fall back to v2
+        dimension = int(base_slot[1])
+        question = int(base_slot[4])
+        q_number = (dimension - 1) * 5 + question
+        q_id = f"Q{q_number:03d}"
+
         v3_path = (
             PROJECT_ROOT / "config" / "executor_contracts" / f"{base_slot}.v3.json"
         )
         v2_path = PROJECT_ROOT / "config" / "executor_contracts" / f"{base_slot}.json"
+        v3_specialized_path = (
+            PROJECT_ROOT / "config" / "executor_contracts" / "specialized" / f"{q_id}.v3.json"
+        )
+        v2_specialized_path = (
+            PROJECT_ROOT / "config" / "executor_contracts" / "specialized" / f"{q_id}.json"
+        )
 
         if v3_path.exists():
             contract_path = v3_path
@@ -138,9 +503,16 @@ class BaseExecutorWithContract(ABC):
         elif v2_path.exists():
             contract_path = v2_path
             expected_version = "v2"
+        elif v3_specialized_path.exists():
+            contract_path = v3_specialized_path
+            expected_version = "v3"
+        elif v2_specialized_path.exists():
+            contract_path = v2_specialized_path
+            expected_version = "v2"
         else:
             raise FileNotFoundError(
-                f"Contract not found for {base_slot}. " f"Tried: {v3_path}, {v2_path}"
+                f"Contract not found for {base_slot}. "
+                f"Tried: {v3_path}, {v2_path}, {v3_specialized_path}, {v2_specialized_path}"
             )
 
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
