@@ -268,6 +268,8 @@ class ExecutorProfiler:
     Tracks per-executor metrics including timing, memory, serialization overhead,
     and method call counts. Supports baseline comparison for regression detection
     and generates comprehensive performance reports.
+    
+    ENHANCED: Tracks method dispensary pattern usage for monolith reuse analysis.
     """
 
     def __init__(
@@ -275,6 +277,7 @@ class ExecutorProfiler:
         baseline_path: Path | str | None = None,
         auto_save_baseline: bool = False,
         memory_tracking: bool = True,
+        track_dispensary_usage: bool = True,
     ) -> None:
         """Initialize the profiler.
 
@@ -282,14 +285,21 @@ class ExecutorProfiler:
             baseline_path: Path to baseline metrics file (JSON)
             auto_save_baseline: Automatically update baseline after each run
             memory_tracking: Enable memory tracking (adds overhead)
+            track_dispensary_usage: Track dispensary class usage patterns
         """
         self.baseline_path = Path(baseline_path) if baseline_path else None
         self.auto_save_baseline = auto_save_baseline
         self.memory_tracking = memory_tracking
+        self.track_dispensary_usage = track_dispensary_usage
 
         self.metrics: dict[str, list[ExecutorMetrics]] = defaultdict(list)
         self.baseline_metrics: dict[str, ExecutorMetrics] = {}
         self.regressions: list[PerformanceRegression] = []
+        
+        # Dispensary usage tracking
+        self.dispensary_call_counts: dict[str, int] = defaultdict(int)
+        self.dispensary_execution_times: dict[str, list[float]] = defaultdict(list)
+        self.executor_dispensary_usage: dict[str, set[str]] = defaultdict(set)
 
         self._psutil = None
         self._psutil_process = None
@@ -345,9 +355,37 @@ class ExecutorProfiler:
             metrics: Collected metrics for the execution
         """
         self.metrics[executor_id].append(metrics)
+        
+        # Track dispensary usage
+        if self.track_dispensary_usage:
+            self._update_dispensary_stats(executor_id, metrics)
 
         if self.baseline_path and self.auto_save_baseline:
             self._update_baseline(executor_id, metrics)
+
+    def _update_dispensary_stats(
+        self, executor_id: str, metrics: ExecutorMetrics
+    ) -> None:
+        """Update dispensary usage statistics.
+        
+        Args:
+            executor_id: Executor identifier
+            metrics: Metrics containing method calls
+        """
+        for method_call in metrics.method_calls:
+            if method_call.is_dispensary_method:
+                class_name = method_call.class_name
+                
+                # Track call counts
+                self.dispensary_call_counts[class_name] += method_call.call_count
+                
+                # Track execution times
+                self.dispensary_execution_times[class_name].append(
+                    method_call.execution_time_ms
+                )
+                
+                # Track executor→dispensary usage
+                self.executor_dispensary_usage[executor_id].add(class_name)
 
     def _update_baseline(self, executor_id: str, metrics: ExecutorMetrics) -> None:
         """Update baseline with new metrics (running average).
@@ -418,7 +456,7 @@ class ExecutorProfiler:
                         "critical" if delta_percent > threshold * 2 else "warning"
                     )
                     recommendation = self._generate_recommendation(
-                        executor_id, metric_name, delta_percent
+                        executor_id, metric_name, delta_percent, current
                     )
 
                     regression = PerformanceRegression(
