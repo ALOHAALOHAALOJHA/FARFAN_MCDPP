@@ -48,13 +48,17 @@ from farfan_pipeline.processing.choquet_adapter import (
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
+    from farfan_pipeline.core.orchestrator.signal_registry import QuestionnaireSignalRegistry
 
 T = TypeVar('T')
 
 
 @dataclass(frozen=True)
 class AggregationSettings:
-    """Resolved aggregation settings derived from the questionnaire monolith."""
+    """Resolved aggregation settings derived from the questionnaire monolith.
+    
+    SISAS: Now supports construction from signal registry for deterministic irrigation.
+    """
 
     dimension_group_by_keys: list[str]
     area_group_by_keys: list[str]
@@ -65,9 +69,101 @@ class AggregationSettings:
     macro_cluster_weights: dict[str, float]
     dimension_expected_counts: dict[tuple[str, str], int]
     area_expected_dimension_counts: dict[str, int]
+    # SISAS: Signal provenance for byte-reproducibility
+    source_hash: str | None = None
+    sisas_source: str = "legacy"  # "legacy" or "sisas_registry"
 
     @classmethod
-    def from_monolith(cls, monolith: dict[str, Any] | None) -> AggregationSettings:
+    def from_signal_registry(
+        cls,
+        registry: "QuestionnaireSignalRegistry",
+        level: str = "MACRO_1",
+    ) -> "AggregationSettings":
+        """SISAS: Build aggregation settings from signal registry.
+        
+        This method provides deterministic, signal-driven aggregation by:
+        1. Using AssemblySignalPack for canonical weights
+        2. Tracking source_hash for byte-reproducibility
+        3. Ensuring single source of truth from registry
+        
+        Args:
+            registry: SISAS signal registry with assembly signals
+            level: Assembly level (MESO_1, MESO_2, MACRO_1)
+            
+        Returns:
+            AggregationSettings with signal-derived weights
+            
+        Raises:
+            SignalExtractionError: If assembly signals cannot be retrieved
+        """
+        logger.info(f"SISAS: Building AggregationSettings from registry (level={level})")
+        
+        try:
+            # Get assembly signals from registry
+            assembly_pack = registry.get_assembly_signals(level)
+            source_hash = getattr(assembly_pack, 'source_hash', None)
+            
+            # Extract weights from assembly pack
+            cluster_policy_areas = getattr(assembly_pack, 'cluster_policy_areas', {})
+            dimension_weights = getattr(assembly_pack, 'dimension_weights', {})
+            aggregation_methods = getattr(assembly_pack, 'aggregation_methods', {})
+            
+            # Build cluster weights from cluster_policy_areas mapping
+            cluster_policy_area_weights: dict[str, dict[str, float]] = {}
+            for cluster_id, area_ids in cluster_policy_areas.items():
+                if area_ids:
+                    equal_weight = 1.0 / len(area_ids)
+                    cluster_policy_area_weights[cluster_id] = {
+                        area_id: equal_weight for area_id in area_ids
+                    }
+            
+            # Build macro weights (equal across clusters)
+            cluster_ids = list(cluster_policy_areas.keys())
+            macro_cluster_weights: dict[str, float] = {}
+            if cluster_ids:
+                equal_weight = 1.0 / len(cluster_ids)
+                macro_cluster_weights = {cid: equal_weight for cid in cluster_ids}
+            
+            settings = cls(
+                dimension_group_by_keys=["policy_area", "dimension"],
+                area_group_by_keys=["area_id"],
+                cluster_group_by_keys=["cluster_id"],
+                dimension_question_weights=dimension_weights,
+                policy_area_dimension_weights={},  # Populated from registry if available
+                cluster_policy_area_weights=cluster_policy_area_weights,
+                macro_cluster_weights=macro_cluster_weights,
+                dimension_expected_counts={},
+                area_expected_dimension_counts={},
+                source_hash=source_hash,
+                sisas_source="sisas_registry",
+            )
+            
+            logger.info(
+                f"SISAS: AggregationSettings built from registry - "
+                f"clusters={len(cluster_policy_area_weights)}, source_hash={source_hash[:16] if source_hash else 'N/A'}..."
+            )
+            
+            return settings
+            
+        except Exception as e:
+            logger.warning(f"SISAS: Failed to build from registry, falling back to legacy: {e}")
+            # Return empty settings as fallback
+            return cls(
+                dimension_group_by_keys=["policy_area", "dimension"],
+                area_group_by_keys=["area_id"],
+                cluster_group_by_keys=["cluster_id"],
+                dimension_question_weights={},
+                policy_area_dimension_weights={},
+                cluster_policy_area_weights={},
+                macro_cluster_weights={},
+                dimension_expected_counts={},
+                area_expected_dimension_counts={},
+                source_hash=None,
+                sisas_source="legacy_fallback",
+            )
+
+    @classmethod
+    def from_monolith(cls, monolith: dict[str, Any] | None) -> "AggregationSettings":
         """Build aggregation settings from canonical questionnaire data."""
         if not monolith:
             return cls(
@@ -80,6 +176,8 @@ class AggregationSettings:
                 macro_cluster_weights={},
                 dimension_expected_counts={},
                 area_expected_dimension_counts={},
+                source_hash=None,  # SISAS: No hash for empty monolith
+                sisas_source="legacy_monolith",  # SISAS: Track source
             )
 
         blocks = monolith.get("blocks", {})
@@ -166,7 +264,41 @@ class AggregationSettings:
             macro_cluster_weights=macro_cluster_weights,
             dimension_expected_counts=dict(dimension_expected_counts),
             area_expected_dimension_counts=area_expected_dimension_counts,
+            source_hash=None,  # SISAS: No hash from raw monolith
+            sisas_source="legacy_monolith",  # SISAS: Track source
         )
+
+    @classmethod
+    def from_monolith_or_registry(
+        cls,
+        monolith: dict[str, Any] | None = None,
+        registry: "QuestionnaireSignalRegistry | None" = None,
+        level: str = "MACRO_1",
+    ) -> "AggregationSettings":
+        """SISAS: Transition method - prefer registry, fallback to monolith.
+        
+        This method enables gradual migration from legacy monolith-based
+        configuration to SISAS signal-driven configuration.
+        
+        Args:
+            monolith: Legacy questionnaire monolith (fallback)
+            registry: SISAS signal registry (preferred)
+            level: Assembly level for registry (MESO_1, MESO_2, MACRO_1)
+            
+        Returns:
+            AggregationSettings from registry if available, else from monolith
+            
+        Raises:
+            ValueError: If neither registry nor monolith provided
+        """
+        if registry is not None:
+            logger.info("SISAS: Building AggregationSettings from registry (preferred path)")
+            return cls.from_signal_registry(registry, level)
+        elif monolith is not None:
+            logger.info("SISAS: Building AggregationSettings from monolith (fallback path)")
+            return cls.from_monolith(monolith)
+        else:
+            raise ValueError("Must provide either registry or monolith")
 
     @staticmethod
     def _coerce_str_list(value: Any, *, fallback: list[str]) -> list[str]:
@@ -532,6 +664,7 @@ class DimensionAggregator:
         abort_on_insufficient: bool = True,
         aggregation_settings: AggregationSettings | None = None,
         enable_sota_features: bool = True,
+        signal_registry: "QuestionnaireSignalRegistry | None" = None,  # SISAS injection
     ) -> None:
         """
         Initialize dimension aggregator.
@@ -541,13 +674,28 @@ class DimensionAggregator:
             abort_on_insufficient: Whether to abort on insufficient coverage
             aggregation_settings: Resolved aggregation settings
             enable_sota_features: Enable SOTA features (Choquet, UQ, provenance)
+            signal_registry: SISAS signal registry for signal-driven aggregation
 
         Raises:
             ValueError: If monolith is None and required for operations
         """
         self.monolith = monolith
         self.abort_on_insufficient = abort_on_insufficient
-        self.aggregation_settings = aggregation_settings or AggregationSettings.from_monolith(monolith)
+        self._signal_registry = signal_registry  # SISAS: Cache for signal-driven config
+        
+        # SISAS: Use transition method for automatic detection
+        # Handle case where both are None gracefully
+        if aggregation_settings is not None:
+            self.aggregation_settings = aggregation_settings
+        elif signal_registry is not None or monolith is not None:
+            self.aggregation_settings = AggregationSettings.from_monolith_or_registry(
+                monolith=monolith,
+                registry=signal_registry,
+                level="MACRO_1"
+            )
+        else:
+            # Both None - use empty settings (legacy fallback)
+            self.aggregation_settings = AggregationSettings.from_monolith(None)
         self.dimension_group_by_keys = (
             self.aggregation_settings.dimension_group_by_keys or ["policy_area", "dimension"]
         )

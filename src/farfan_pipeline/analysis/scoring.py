@@ -66,11 +66,15 @@ Questionnaire monolith specification lines 34512-34607
 import logging
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import numpy as np
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 from farfan_pipeline.core.calibration.decorators import calibrated_method
+
+# SISAS: Type-only import for signal registry to avoid circular imports
+if TYPE_CHECKING:
+    from farfan_pipeline.core.orchestrator.signal_registry import QuestionnaireSignalRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -196,6 +200,8 @@ class ScoredResult:
     """
     Resultado con score aplicado.
     Output de este módulo.
+    
+    SISAS: Now includes signal provenance for traceability.
     """
     question_id: str
     question_global: int
@@ -206,6 +212,9 @@ class ScoredResult:
     quality_color: str  # "green", "blue", "yellow", "red"
     evidence: Evidence
     scoring_details: dict[str, Any] = field(default_factory=dict)
+    # SISAS: Signal provenance for traceability
+    signal_source_hash: str | None = None  # Source monolith hash for reproducibility
+    signal_modality_source: str = "legacy"  # "legacy" or "sisas_registry"
 
 # ============================================================================
 # CLASE: MicroQuestionScorer
@@ -221,14 +230,20 @@ class MicroQuestionScorer:
     - Determinar nivel de calidad (EXCELENTE/BUENO/ACEPTABLE/INSUFICIENTE)
     """
 
-    def __init__(self, config: ScoringConfig | None = None) -> None:
+    def __init__(
+        self, 
+        config: ScoringConfig | None = None,
+        signal_registry: "QuestionnaireSignalRegistry | None" = None,  # SISAS injection
+    ) -> None:
         """
         Inicializa scorer con configuración del monolith.
 
         Args:
             config: Configuración de scoring (defaults del monolith si None)
+            signal_registry: SISAS signal registry for tailored scoring configs
         """
         self.config = config or ScoringConfig()
+        self._signal_registry = signal_registry  # SISAS: Cache for signal-driven config
         self.logger = logger
 
     # ========================================================================
@@ -616,23 +631,59 @@ class MicroQuestionScorer:
         question_id: str,
         question_global: int,
         modality: ScoringModality,
-        evidence: Evidence
+        evidence: Evidence,
+        signal_registry: "QuestionnaireSignalRegistry | None" = None,  # SISAS injection
     ) -> ScoredResult:
         """
         MÉTODO 7: Aplica la modalidad de scoring correspondiente.
 
         ORQUESTADOR que delega a métodos 1-6 según modality.
+        
+        SISAS: If signal_registry is provided, retrieves tailored scoring config
+        from the registry instead of using static configuration.
 
         Args:
             question_id: ID de pregunta (ej: "Q001")
             question_global: Número global (1-305)
             modality: Modalidad de scoring
             evidence: Evidencia extraída
+            signal_registry: SISAS signal registry for tailored configs
 
         Returns:
             ScoredResult con score 0-3 y nivel de calidad
         """
-        self.logger.info(f"Aplicando scoring {modality.value} a {question_id}")
+        # SISAS: Use registry if available (from param or instance)
+        active_registry = signal_registry or self._signal_registry
+        signal_source_hash = None
+        modality_source = "legacy"
+        
+        if active_registry:
+            try:
+                # SISAS: Get tailored scoring signals from registry
+                scoring_pack = active_registry.get_scoring_signals(question_id)
+                signal_source_hash = getattr(scoring_pack, 'source_hash', None)
+                modality_source = "sisas_registry"
+                
+                # Override modality from registry if available
+                registry_modality_str = scoring_pack.question_modalities.get(question_id)
+                if registry_modality_str:
+                    modality = ScoringModality(registry_modality_str)
+                    self.logger.info(
+                        f"SISAS: Using registry modality {modality.value} for {question_id}"
+                    )
+                
+                # Override config with registry-derived thresholds
+                modality_config = scoring_pack.modality_configs.get(modality.value, {})
+                if modality_config:
+                    self._apply_sisas_config(modality, modality_config)
+                    
+            except Exception as e:
+                self.logger.warning(
+                    f"SISAS: Registry lookup failed for {question_id}, using legacy: {e}"
+                )
+                modality_source = "legacy_fallback"
+        
+        self.logger.info(f"Aplicando scoring {modality.value} a {question_id} [source={modality_source}]")
 
         # Delegar a método específico
         if modality == ScoringModality.TYPE_A:
@@ -656,6 +707,11 @@ class MicroQuestionScorer:
         else:
             raise ValueError(f"Modalidad desconocida: {modality}")
 
+        # SISAS: Add provenance to details
+        details['sisas_source'] = modality_source
+        if signal_source_hash:
+            details['signal_source_hash'] = signal_source_hash
+
         # Normalizar a 0-1
         normalized_score = raw_score / 3.0
 
@@ -672,15 +728,31 @@ class MicroQuestionScorer:
             quality_level=quality_level,
             quality_color=quality_color,
             evidence=evidence,
-            scoring_details=details
+            scoring_details=details,
+            signal_source_hash=signal_source_hash,
+            signal_modality_source=modality_source,
         )
 
         self.logger.info(
             f"✓ {question_id}: score={raw_score:.2f}/3.0 "
-            f"({normalized_score:.2%}), nivel={quality_level.value}"
+            f"({normalized_score:.2%}), nivel={quality_level.value} [SISAS:{modality_source}]"
         )
 
         return scored_result
+    
+    def _apply_sisas_config(self, modality: ScoringModality, config: dict[str, Any]) -> None:
+        """SISAS: Apply registry-derived configuration to scorer."""
+        if modality == ScoringModality.TYPE_A:
+            if 'threshold' in config:
+                self.config.type_a_threshold = config['threshold']
+            if 'expected_elements' in config:
+                self.config.type_a_expected_elements = config['expected_elements']
+        elif modality == ScoringModality.TYPE_D:
+            if 'weights' in config:
+                self.config.type_d_weights = config['weights']
+            if 'expected_elements' in config:
+                self.config.type_d_expected_elements = config['expected_elements']
+        # Add other modalities as needed
 
     # ========================================================================
     # MÉTODO 8: DETERMINE QUALITY LEVEL
@@ -723,7 +795,8 @@ def score_question(
     question_id: str,
     question_global: int,
     modality_str: str,
-    evidence_dict: dict[str, Any]
+    evidence_dict: dict[str, Any],
+    signal_registry: "QuestionnaireSignalRegistry | None" = None,  # SISAS: Registry injection
 ) -> ScoredResult:
     """
     Función de conveniencia para scoring de una pregunta.
@@ -733,6 +806,7 @@ def score_question(
         question_global: Número global
         modality_str: String de modalidad ("TYPE_A", "TYPE_B", etc.)
         evidence_dict: Diccionario con evidencia
+        signal_registry: SISAS signal registry for tailored scoring configs
 
     Returns:
         ScoredResult
@@ -749,8 +823,8 @@ def score_question(
         metadata=evidence_dict.get('metadata', {})
     )
 
-    # Aplicar scoring
-    scorer = MicroQuestionScorer()
+    # Aplicar scoring - SISAS: Pass registry for signal-driven modality
+    scorer = MicroQuestionScorer(signal_registry=signal_registry)
     result = scorer.apply_scoring_modality(
         question_id=question_id,
         question_global=question_global,
