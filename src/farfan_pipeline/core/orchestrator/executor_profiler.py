@@ -1,4 +1,4 @@
-"""Executor performance profiling framework with regression detection.
+"""Executor performance profiling framework with regression detection and dispensary analytics.
 
 This module provides comprehensive profiling for executor performance including:
 - Per-executor timing, memory, and serialization metrics
@@ -6,19 +6,39 @@ This module provides comprehensive profiling for executor performance including:
 - Baseline comparison for regression detection
 - Performance report generation identifying bottlenecks
 - Integration with BaseExecutor for automatic capture
+- **METHOD DISPENSARY PATTERN AWARENESS** for tracking monolith reuse
 
 Architecture:
 - ExecutorMetrics: Per-executor performance data
 - MethodCallMetrics: Per-method call statistics
-- ExecutorProfiler: Main profiler with baseline management
+- ExecutorProfiler: Main profiler with baseline management + dispensary analytics
 - ProfilerContext: Context manager for automatic profiling
 - PerformanceReport: Structured report with bottleneck analysis
 
+METHOD DISPENSARY INTEGRATION:
+==============================
+This profiler is aware of the factory's method dispensary pattern where:
+- 30 executors orchestrate methods from ~20 monolith classes
+- Methods are called via MethodExecutor.execute(class_name, method_name, **payload)
+- Same methods are PARTIALLY reused across different executors
+- Dispensary classes: PDETMunicipalPlanAnalyzer (52+ methods), CausalExtractor (28), etc.
+
+The profiler tracks:
+1. Which dispensary classes are used by each executor
+2. Method reuse patterns across executors
+3. Performance hotspots within dispensary classes
+4. Executor-specific vs dispensary-wide bottlenecks
+
 Usage:
+    # Basic profiling
     profiler = ExecutorProfiler()
     with profiler.profile_executor("D1-Q1"):
         result = executor.execute(context)
     report = profiler.generate_report()
+    
+    # With dispensary analytics
+    dispensary_stats = profiler.get_dispensary_usage_stats()
+    # Shows: PDETMunicipalPlanAnalyzer used by 15 executors, avg 245ms/call
 """
 
 from __future__ import annotations
@@ -36,14 +56,52 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+# Thresholds for identifying performance issues
 HIGH_EXECUTION_TIME_THRESHOLD_MS = 1000
 HIGH_MEMORY_THRESHOLD_MB = 100
 HIGH_SERIALIZATION_THRESHOLD_MS = 100
 
+# Known dispensary classes from the method dispensary pattern
+KNOWN_DISPENSARY_CLASSES = {
+    "PDETMunicipalPlanAnalyzer",
+    "IndustrialPolicyProcessor",
+    "CausalExtractor",
+    "FinancialAuditor",
+    "BayesianMechanismInference",
+    "BayesianCounterfactualAuditor",
+    "TextMiningEngine",
+    "SemanticAnalyzer",
+    "PerformanceAnalyzer",
+    "PolicyContradictionDetector",
+    "BayesianNumericalAnalyzer",
+    "TemporalLogicVerifier",
+    "OperationalizationAuditor",
+    "PolicyAnalysisEmbedder",
+    "SemanticProcessor",
+    "AdvancedDAGValidator",
+    "TeoriaCambio",
+    "ReportingEngine",
+    "HierarchicalGenerativeModel",
+    "AdaptivePriorCalculator",
+    "PolicyTextProcessor",
+    "MechanismPartExtractor",
+    "CausalInferenceSetup",
+    "BeachEvidentialTest",
+    "BayesFactorTable",
+    "ConfigLoader",
+    "CDAFFramework",
+    "IndustrialGradeValidator",
+    "BayesianConfidenceCalculator",
+    "PDFProcessor",
+}
+
 
 @dataclass
 class MethodCallMetrics:
-    """Metrics for a single method call within an executor."""
+    """Metrics for a single method call within an executor.
+    
+    Enhanced to track dispensary pattern usage.
+    """
 
     class_name: str
     method_name: str
@@ -56,14 +114,30 @@ class MethodCallMetrics:
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
 
+    @property
+    def is_dispensary_method(self) -> bool:
+        """Check if this method comes from a known dispensary class."""
+        return self.class_name in KNOWN_DISPENSARY_CLASSES
+    
+    @property
+    def full_method_name(self) -> str:
+        """Get full method name as class.method."""
+        return f"{self.class_name}.{self.method_name}"
+
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
-        return asdict(self)
+        data = asdict(self)
+        data["is_dispensary_method"] = self.is_dispensary_method
+        data["full_method_name"] = self.full_method_name
+        return data
 
 
 @dataclass
 class ExecutorMetrics:
-    """Comprehensive metrics for a single executor execution."""
+    """Comprehensive metrics for a single executor execution.
+    
+    Enhanced with dispensary usage tracking.
+    """
 
     executor_id: str
     execution_time_ms: float
@@ -84,6 +158,22 @@ class ExecutorMetrics:
     def total_method_calls(self) -> int:
         """Total number of method calls during execution."""
         return sum(m.call_count for m in self.method_calls)
+
+    @property
+    def dispensary_method_calls(self) -> int:
+        """Number of calls to dispensary methods."""
+        return sum(m.call_count for m in self.method_calls if m.is_dispensary_method)
+    
+    @property
+    def dispensary_usage_ratio(self) -> float:
+        """Ratio of dispensary calls to total calls."""
+        total = self.total_method_calls
+        return self.dispensary_method_calls / total if total > 0 else 0.0
+    
+    @property
+    def unique_dispensaries_used(self) -> set[str]:
+        """Set of unique dispensary classes used."""
+        return {m.class_name for m in self.method_calls if m.is_dispensary_method}
 
     @property
     def average_method_time_ms(self) -> float:
@@ -113,6 +203,9 @@ class ExecutorMetrics:
         data = asdict(self)
         data["method_calls"] = [m.to_dict() for m in self.method_calls]
         data["total_method_calls"] = self.total_method_calls
+        data["dispensary_method_calls"] = self.dispensary_method_calls
+        data["dispensary_usage_ratio"] = self.dispensary_usage_ratio
+        data["unique_dispensaries_used"] = list(self.unique_dispensaries_used)
         data["average_method_time_ms"] = self.average_method_time_ms
         slowest = self.slowest_method
         data["slowest_method"] = (
@@ -147,7 +240,10 @@ class PerformanceRegression:
 
 @dataclass
 class PerformanceReport:
-    """Comprehensive performance report with bottleneck analysis."""
+    """Comprehensive performance report with bottleneck analysis.
+    
+    Enhanced with dispensary pattern analytics.
+    """
 
     timestamp: str
     total_executors: int
@@ -157,6 +253,7 @@ class PerformanceReport:
     bottlenecks: list[dict[str, Any]] = field(default_factory=list)
     summary: dict[str, Any] = field(default_factory=dict)
     executor_rankings: dict[str, list[str]] = field(default_factory=dict)
+    dispensary_analytics: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""

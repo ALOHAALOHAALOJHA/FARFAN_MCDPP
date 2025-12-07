@@ -49,7 +49,7 @@ def get_system_health(orchestrator: Any) -> dict[str, Any]:
     
     # Check questionnaire provider
     try:
-        from farfan_pipeline.core.orchestrator import get_questionnaire_provider
+        from farfan_pipeline.core.orchestrator.questionnaire import get_questionnaire_provider
         provider = get_questionnaire_provider()
         questionnaire_health = {
             'has_data': provider.has_data(),
