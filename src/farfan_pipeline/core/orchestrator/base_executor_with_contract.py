@@ -416,7 +416,12 @@ class BaseExecutorWithContract(ABC):
                     method_outputs[key] = result
 
         assembly_rules = contract.get("assembly_rules", [])
-        assembled = EvidenceAssembler.assemble(method_outputs, assembly_rules)
+        # SISAS: Pass signal_pack for provenance tracking
+        assembled = EvidenceAssembler.assemble(
+            method_outputs, 
+            assembly_rules,
+            signal_pack=signal_pack  # SISAS: Enable signal provenance
+        )
         evidence = assembled["evidence"]
         trace = assembled["trace"]
 
@@ -457,7 +462,13 @@ class BaseExecutorWithContract(ABC):
         validation_rules = contract.get("validation_rules", [])
         na_policy = contract.get("na_policy", "abort")
         validation_rules_object = {"rules": validation_rules, "na_policy": na_policy}
-        validation = EvidenceValidator.validate(evidence, validation_rules_object)
+        # SISAS: Pass failure_contract for signal-driven abort conditions
+        failure_contract = error_handling.get("failure_contract", {}) if error_handling else {}
+        validation = EvidenceValidator.validate(
+            evidence, 
+            validation_rules_object,
+            failure_contract=failure_contract  # SISAS: Enable signal-driven abort
+        )
 
         # JOBFRONT 3: Add contract validation if enriched pack available
         if enriched_pack is not None:
@@ -708,7 +719,12 @@ class BaseExecutorWithContract(ABC):
         # Evidence assembly
         evidence_assembly = contract["evidence_assembly"]
         assembly_rules = evidence_assembly["assembly_rules"]
-        assembled = EvidenceAssembler.assemble(method_outputs, assembly_rules)
+        # SISAS: Pass signal_pack for provenance tracking
+        assembled = EvidenceAssembler.assemble(
+            method_outputs, 
+            assembly_rules,
+            signal_pack=signal_pack  # SISAS: Enable signal provenance
+        )
         evidence = assembled["evidence"]
         trace = assembled["trace"]
 
@@ -717,7 +733,14 @@ class BaseExecutorWithContract(ABC):
         validation_rules = validation_rules_section.get("rules", [])
         na_policy = validation_rules_section.get("na_policy", "abort_on_critical")
         validation_rules_object = {"rules": validation_rules, "na_policy": na_policy}
-        validation = EvidenceValidator.validate(evidence, validation_rules_object)
+        # SISAS: Pass failure_contract for signal-driven abort conditions  
+        error_handling = contract.get("error_handling", {})
+        failure_contract = error_handling.get("failure_contract", {}) if error_handling else {}
+        validation = EvidenceValidator.validate(
+            evidence, 
+            validation_rules_object,
+            failure_contract=failure_contract  # SISAS: Enable signal-driven abort
+        )
 
         # Handle validation failures based on NA policy
         validation_passed = validation.get("passed", True)
