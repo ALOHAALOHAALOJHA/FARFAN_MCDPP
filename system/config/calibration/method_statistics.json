@@ -1,0 +1,13 @@
+{
+  "by_layer": {
+    "UNKNOWN": 542,
+    "processor": 149,
+    "ingestion": 41,
+    "utility": 163,
+    "analyzer": 256,
+    "orchestrator": 394
+  },
+  "total_methods_found": 2750,
+  "total_methods_inventoried": 1545,
+  "total_methods_excluded": 1205
+}
