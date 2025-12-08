@@ -194,9 +194,13 @@ class SmartChunkConverter:
         # Preserve SPC rich data in metadata
         enriched_metadata = self._preserve_spc_rich_data(smart_chunks, document_metadata)
 
+        # Extract document_id from document_metadata or first chunk
+        document_id = document_metadata.get('document_id') or getattr(smart_chunks[0], 'document_id', 'UNKNOWN')
+        
         # Build CanonPolicyPackage
         canon_package = CanonPolicyPackage(
             schema_version="SPC-2025.1",
+            document_id=document_id,
             chunk_graph=chunk_graph,
             policy_manifest=policy_manifest,
             quality_metrics=quality_metrics,

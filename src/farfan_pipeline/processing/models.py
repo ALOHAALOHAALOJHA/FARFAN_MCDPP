@@ -186,7 +186,7 @@ class IntegrityIndex:
     chunk_hashes: dict[str, str] = field(default_factory=dict)
 
 
-@dataclass
+@dataclass(frozen=True)
 class CanonPolicyPackage:
     """
     Canon Policy Package - Complete output from phase-one ingestion.
@@ -195,6 +195,7 @@ class CanonPolicyPackage:
     Also known as Smart Policy Chunks (SPC) in newer terminology.
     
     FOUNDATIONAL: document_id is MANDATORY unique identifier for the policy document.
+    IMMUTABLE: frozen=True prevents mutation after construction.
     """
     schema_version: str
     document_id: str
