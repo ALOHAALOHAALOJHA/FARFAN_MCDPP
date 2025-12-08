@@ -1,0 +1,192 @@
+{
+  "validation_timestamp": "2025-12-08T18:16:57.558264Z",
+  "signatures_version": "2.0.0",
+  "total_methods": 18,
+  "valid_methods": 18,
+  "invalid_methods": 0,
+  "incomplete_methods": 0,
+  "methods_with_warnings": 0,
+  "validation_details": {
+    "pattern_extractor_v2": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "coherence_validator": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "semantic_analyzer": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "structural_scorer": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "evidence_assembler": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "bayesian_scorer": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "causal_extractor": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "financial_auditor": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "mechanism_extractor": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "numerical_analyzer": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "semantic_expander": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "text_mining_engine": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "contradiction_detector": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "operationalization_auditor": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "performance_analyzer": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "dimension_aggregator": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "policy_area_scorer": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    },
+    "micro_question_scorer": {
+      "is_valid": true,
+      "missing_fields": [],
+      "issues": [],
+      "warnings": []
+    }
+  },
+  "summary": {
+    "completeness_rate": 100.0,
+    "methods_with_required_fields": 18,
+    "methods_missing_required_fields": 0,
+    "methods_with_incomplete_signatures": 0,
+    "most_common_required_inputs": [
+      [
+        "question_id",
+        11
+      ],
+      [
+        "extracted_text",
+        9
+      ],
+      [
+        "text",
+        2
+      ],
+      [
+        "evidence",
+        2
+      ],
+      [
+        "document_structure",
+        1
+      ]
+    ],
+    "most_common_optional_inputs": [
+      [
+        "reference_corpus",
+        8
+      ],
+      [
+        "weights",
+        3
+      ],
+      [
+        "context",
+        2
+      ],
+      [
+        "patterns",
+        2
+      ],
+      [
+        "threshold",
+        2
+      ]
+    ],
+    "most_common_critical_optional": [
+      [
+        "reference_corpus",
+        3
+      ],
+      [
+        "patterns",
+        1
+      ],
+      [
+        "ontology",
+        1
+      ],
+      [
+        "baseline",
+        1
+      ]
+    ],
+    "output_type_distribution": {
+      "dict": 11,
+      "float": 6,
+      "list": 1
+    }
+  }
+}

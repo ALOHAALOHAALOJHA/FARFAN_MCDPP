@@ -1,34 +1,187 @@
 {
-  "signatures_version": "1.0.0",
+  "signatures_version": "2.0.0",
   "last_updated": "2025-11-11",
+  "schema_version": "chain_layer_validation_v1",
   "methods": {
     "pattern_extractor_v2": {
-      "required_inputs": ["text", "question_id"],
-      "optional_inputs": ["context", "patterns", "regex_flags"],
-      "critical_optional": ["patterns"],
-      "output_type": "dict",
-      "description": "Extracts patterns from text"
+      "signature": {
+        "required_inputs": ["text", "question_id"],
+        "optional_inputs": ["context", "patterns", "regex_flags"],
+        "critical_optional": ["patterns"],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Extracts patterns from text using regex"
+      }
     },
     "coherence_validator": {
-      "required_inputs": ["text", "question_id"],
-      "optional_inputs": ["reference_corpus", "threshold"],
-      "critical_optional": ["reference_corpus"],
-      "output_type": "float",
-      "description": "Validates text coherence"
+      "signature": {
+        "required_inputs": ["extracted_text", "question_id"],
+        "optional_inputs": ["reference_corpus", "threshold"],
+        "critical_optional": ["reference_corpus"],
+        "output_type": "float",
+        "output_range": [0.0, 1.0],
+        "description": "Validates text coherence against reference corpus"
+      }
     },
     "semantic_analyzer": {
-      "required_inputs": ["text"],
-      "optional_inputs": ["context", "language"],
-      "critical_optional": [],
-      "output_type": "dict",
-      "description": "Analyzes semantics"
+      "signature": {
+        "required_inputs": ["text"],
+        "optional_inputs": ["context", "language", "model_name"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Analyzes text semantics and returns embedding vectors"
+      }
     },
     "structural_scorer": {
-      "required_inputs": ["document_structure"],
-      "optional_inputs": ["weights", "thresholds"],
-      "critical_optional": [],
-      "output_type": "float",
-      "description": "Scores structure"
+      "signature": {
+        "required_inputs": ["document_structure"],
+        "optional_inputs": ["weights", "thresholds"],
+        "critical_optional": [],
+        "output_type": "float",
+        "output_range": [0.0, 1.0],
+        "description": "Scores document structural quality"
+      }
+    },
+    "evidence_assembler": {
+      "signature": {
+        "required_inputs": ["extracted_text", "question_id", "chunk_id"],
+        "optional_inputs": ["metadata", "context_window"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Assembles evidence from extracted text for a question"
+      }
+    },
+    "bayesian_scorer": {
+      "signature": {
+        "required_inputs": ["evidence", "priors"],
+        "optional_inputs": ["reference_corpus", "confidence_threshold"],
+        "critical_optional": ["reference_corpus"],
+        "output_type": "float",
+        "output_range": [0.0, 1.0],
+        "description": "Computes Bayesian confidence score"
+      }
+    },
+    "causal_extractor": {
+      "signature": {
+        "required_inputs": ["extracted_text", "question_id"],
+        "optional_inputs": ["graph_context", "inference_depth"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Extracts causal relationships from text"
+      }
+    },
+    "financial_auditor": {
+      "signature": {
+        "required_inputs": ["extracted_text", "question_id"],
+        "optional_inputs": ["reference_corpus", "currency_conversion_rates"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Audits financial data in policy documents"
+      }
+    },
+    "mechanism_extractor": {
+      "signature": {
+        "required_inputs": ["extracted_text", "question_id"],
+        "optional_inputs": ["reference_corpus", "ontology"],
+        "critical_optional": ["ontology"],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Extracts policy mechanisms from text"
+      }
+    },
+    "numerical_analyzer": {
+      "signature": {
+        "required_inputs": ["extracted_text"],
+        "optional_inputs": ["unit_normalizer", "precision"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Analyzes numerical data in text"
+      }
+    },
+    "semantic_expander": {
+      "signature": {
+        "required_inputs": ["query", "question_id"],
+        "optional_inputs": ["reference_corpus", "expansion_depth", "similarity_threshold"],
+        "critical_optional": ["reference_corpus"],
+        "output_type": "list",
+        "output_range": null,
+        "description": "Expands semantic queries with related terms"
+      }
+    },
+    "text_mining_engine": {
+      "signature": {
+        "required_inputs": ["extracted_text"],
+        "optional_inputs": ["patterns", "stopwords"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Mines text for key information"
+      }
+    },
+    "contradiction_detector": {
+      "signature": {
+        "required_inputs": ["extracted_text", "question_id"],
+        "optional_inputs": ["reference_corpus", "threshold"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Detects contradictions in policy text"
+      }
+    },
+    "operationalization_auditor": {
+      "signature": {
+        "required_inputs": ["extracted_text", "question_id"],
+        "optional_inputs": ["reference_corpus", "audit_depth"],
+        "critical_optional": [],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Audits policy operationalization"
+      }
+    },
+    "performance_analyzer": {
+      "signature": {
+        "required_inputs": ["metrics", "question_id"],
+        "optional_inputs": ["baseline", "thresholds"],
+        "critical_optional": ["baseline"],
+        "output_type": "dict",
+        "output_range": null,
+        "description": "Analyzes performance metrics"
+      }
+    },
+    "dimension_aggregator": {
+      "signature": {
+        "required_inputs": ["scores", "dimension_id"],
+        "optional_inputs": ["weights", "aggregation_method"],
+        "critical_optional": [],
+        "output_type": "float",
+        "output_range": [0.0, 1.0],
+        "description": "Aggregates scores for a dimension"
+      }
+    },
+    "policy_area_scorer": {
+      "signature": {
+        "required_inputs": ["question_scores", "policy_area_id"],
+        "optional_inputs": ["weights"],
+        "critical_optional": [],
+        "output_type": "float",
+        "output_range": [0.0, 1.0],
+        "description": "Computes policy area score from question scores"
+      }
+    },
+    "micro_question_scorer": {
+      "signature": {
+        "required_inputs": ["evidence", "question_id"],
+        "optional_inputs": ["reference_corpus", "scoring_modality"],
+        "critical_optional": [],
+        "output_type": "float",
+        "output_range": [0.0, 1.0],
+        "description": "Scores micro questions based on evidence"
+      }
     }
   }
 }

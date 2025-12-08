@@ -72,6 +72,39 @@ from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
 )
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument, Provenance
 
+# Signature validation (lazy import to avoid circular dependencies)
+try:
+    from farfan_pipeline.core.orchestrator.method_signature_validator import (
+        MethodSignatureValidator,
+    )
+    from farfan_pipeline.core.orchestrator.signature_runtime_validator import (
+        SignatureRuntimeValidator,
+        ValidationResult as SignatureValidationResult,
+        get_runtime_validator,
+        validate_method_call,
+    )
+    from farfan_pipeline.core.orchestrator.signature_mixin import (
+        SignatureValidationMixin,
+        ValidatedMethodDecorator,
+    )
+    from farfan_pipeline.core.orchestrator.signature_types import (
+        MethodSignature,
+        ValidationReport,
+    )
+    
+    _SIGNATURE_VALIDATION_AVAILABLE = True
+except ImportError:
+    _SIGNATURE_VALIDATION_AVAILABLE = False
+    MethodSignatureValidator = None  # type: ignore
+    SignatureRuntimeValidator = None  # type: ignore
+    SignatureValidationResult = None  # type: ignore
+    get_runtime_validator = None  # type: ignore
+    validate_method_call = None  # type: ignore
+    SignatureValidationMixin = None  # type: ignore
+    ValidatedMethodDecorator = None  # type: ignore
+    MethodSignature = None  # type: ignore
+    ValidationReport = None  # type: ignore
+
 __all__ = [
     "EvidenceRecord",
     "EvidenceRegistry",
@@ -121,4 +154,14 @@ __all__ = [
     "track_pdt_precision_correlation",
     "PDT_QUALITY_THRESHOLDS",
     "BOOST_FACTORS",
+    # Signature validation
+    "MethodSignatureValidator",
+    "SignatureRuntimeValidator",
+    "SignatureValidationResult",
+    "get_runtime_validator",
+    "validate_method_call",
+    "SignatureValidationMixin",
+    "ValidatedMethodDecorator",
+    "MethodSignature",
+    "ValidationReport",
 ]
