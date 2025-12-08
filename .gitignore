@@ -136,3 +136,14 @@ config_depuration_report.md
 calibration_parametrization_system/.migration_temp/
 calibration_parametrization_system/**/__pycache__/
 calibration_parametrization_system/**/*.pyc
+
+# Cross-document comparative analysis artifacts
+strategic_importance_report.json
+coherence_statistics.json
+comparison_report.json
+statistics_report.json
+top_strategic.json
+strongest_causal.json
+threshold_results.json
+cross_document_*.json
+index_summary.json
