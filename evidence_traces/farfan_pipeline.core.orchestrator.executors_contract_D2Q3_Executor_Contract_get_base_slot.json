@@ -1,0 +1,129 @@
+{
+  "method_id": "farfan_pipeline.core.orchestrator.executors_contract::D2Q3_Executor_Contract::get_base_slot",
+  "calibration": {
+    "b_theory": 0.18,
+    "b_impl": 0.16,
+    "b_deploy": 0.593,
+    "status": "computed"
+  },
+  "evidence": {
+    "triage_decision": {
+      "q1_analytically_active": {
+        "result": false,
+        "matched_verbs_in_name": [],
+        "matched_verbs_in_doc": []
+      },
+      "q2_parametric": {
+        "result": false,
+        "matched_keywords": [],
+        "matched_verbs": [],
+        "layer_is_critical": false
+      },
+      "q3_safety_critical": {
+        "result": true,
+        "matched_safety_verbs": [],
+        "layer_is_critical": true,
+        "return_type_is_evaluative": false
+      },
+      "decision_rule": "requires_calibration = (q1 OR q2 OR q3) AND NOT excluded"
+    },
+    "triage_reason": "Requires calibration: safety-critical",
+    "b_theory_computation": {
+      "formula": "b_theory = 0.4*stat + 0.3*logic + 0.3*assumptions",
+      "components": {
+        "grounded_in_valid_statistics": {
+          "weight": 0.4,
+          "score": 0.0,
+          "matched_keywords": [],
+          "keyword_count": 0,
+          "rule_applied": "no_statistical_grounding"
+        },
+        "logical_consistency": {
+          "weight": 0.3,
+          "score": 0.2,
+          "docstring_length": 0,
+          "has_returns_doc": false,
+          "has_params_doc": false,
+          "rule_applied": "minimal_documentation"
+        },
+        "appropriate_assumptions": {
+          "weight": 0.3,
+          "score": 0.4,
+          "matched_keywords": [],
+          "rule_applied": "implicit_assumptions"
+        }
+      },
+      "final_score": 0.18
+    },
+    "b_impl_computation": {
+      "formula": "b_impl = 0.35*test + 0.25*type + 0.25*error + 0.15*doc",
+      "components": {
+        "test_coverage": {
+          "weight": 0.35,
+          "score": 0.2,
+          "rule_applied": "no_test_evidence",
+          "note": "Conservative default until measured"
+        },
+        "type_annotations": {
+          "weight": 0.25,
+          "score": 0.0,
+          "formula": "(typed_params / total_params) * 0.7 + (0.3 if has_return_type else 0)",
+          "details": {
+            "typed_params": 0,
+            "total_params": 1,
+            "has_return_type": false
+          }
+        },
+        "error_handling": {
+          "weight": 0.25,
+          "score": 0.3,
+          "rule_applied": "minimal_handling",
+          "has_try_except": false
+        },
+        "documentation": {
+          "weight": 0.15,
+          "score": 0.1,
+          "formula": "weighted_sum(desc, params, returns, examples)",
+          "details": {
+            "doc_length": 0,
+            "has_params": false,
+            "has_returns": false,
+            "has_examples": false
+          }
+        }
+      },
+      "final_score": 0.16
+    },
+    "b_deploy_computation": {
+      "formula": "b_deploy = 0.4*validation + 0.35*stability + 0.25*failure",
+      "components": {
+        "layer_maturity_baseline": {
+          "layer": "orchestrator",
+          "baseline_score": 0.7,
+          "source": "rubric layer_maturity_baseline mapping"
+        },
+        "validation_runs": {
+          "weight": 0.4,
+          "score": 0.56,
+          "formula": "layer_maturity_baseline * 0.8",
+          "computation": "0.7 * 0.8 = 0.56"
+        },
+        "stability_coefficient": {
+          "weight": 0.35,
+          "score": 0.63,
+          "formula": "layer_maturity_baseline * 0.9",
+          "computation": "0.7 * 0.9 = 0.63"
+        },
+        "failure_rate": {
+          "weight": 0.25,
+          "score": 0.595,
+          "formula": "layer_maturity_baseline * 0.85",
+          "computation": "0.7 * 0.85 = 0.595"
+        }
+      },
+      "final_score": 0.593
+    }
+  },
+  "layer": "orchestrator",
+  "last_updated": "2025-12-08T01:40:02.160725+00:00"
+}
