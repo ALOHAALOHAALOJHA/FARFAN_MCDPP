@@ -1,279 +1,325 @@
 {
   "_metadata": {
-    "version": "1.1.0",
-    "description": "Machine-readable rubric for computing intrinsic calibration scores",
+    "version": "2.0.0",
+    "description": "Canonical Intrinsic Calibration Rubric with exact formulas and decision automaton",
     "spec_reference": "CALIBRATION_CANONICAL_COHERENCE_ANALYSIS.md",
-    "last_updated": "2025-12-03T16:54:00Z",
-    "changelog": "v1.1.0: Aligned b_impl weights and field names with canonical specification"
+    "last_updated": "2025-12-04T00:00:00Z",
+    "authority": "Doctrina SIN_CARRETA",
+    "changelog": "v2.0.0: Complete implementation with exact formulas, exclusion patterns, and Q1/Q2/Q3 decision automaton"
   },
-  "b_theory": {
-    "description": "Theoretical foundation quality score",
-    "weights": {
-      "grounded_in_valid_statistics": 0.4,
-      "logical_consistency": 0.3,
-      "appropriate_assumptions": 0.3
-    },
-    "rules": {
-      "grounded_in_valid_statistics": {
-        "description": "Statistical grounding based on keywords and method semantics",
-        "scoring": {
-          "has_bayesian_or_statistical_model": {
-            "keywords": [
-              "bayesian",
-              "statistical",
-              "probability",
-              "distribution",
-              "regression",
-              "coefficient"
-            ],
-            "threshold": 3,
-            "score": 1.0
-          },
-          "has_some_statistical_grounding": {
-            "keywords": [
-              "bayesian",
-              "statistical",
-              "probability",
-              "distribution",
-              "regression",
-              "coefficient"
-            ],
-            "threshold": 1,
-            "score": 0.5
-          },
-          "no_statistical_grounding": {
-            "score": 0.0
+  "formulas": {
+    "b_theory": {
+      "formula": "b_theory = 0.4 * statistical_validity + 0.3 * logical_consistency + 0.3 * appropriate_assumptions",
+      "components": {
+        "statistical_validity": {
+          "weight": 0.4,
+          "description": "Presence of statistical methods and keywords",
+          "keywords": ["bayesian", "probability", "regression", "likelihood"],
+          "scoring": {
+            "strong_statistical": {
+              "condition": "keyword_count >= 2",
+              "score": 1.0
+            },
+            "moderate_statistical": {
+              "condition": "keyword_count == 1",
+              "score": 0.6
+            },
+            "weak_statistical": {
+              "condition": "keyword_count == 0",
+              "score": 0.2
+            }
           }
-        }
-      },
-      "logical_consistency": {
-        "description": "Documentation quality and logical structure",
-        "scoring": {
-          "complete_documentation": {
-            "conditions": [
-              "has_docstring_gt_50_chars",
-              "has_returns_doc",
-              "has_params_doc"
-            ],
-            "score": 1.0
-          },
-          "partial_documentation": {
-            "conditions": [
-              "has_docstring_gt_20_chars"
-            ],
-            "score": 0.5
-          },
-          "minimal_documentation": {
-            "score": 0.2
+        },
+        "logical_consistency": {
+          "weight": 0.3,
+          "description": "Documentation quality and logical structure",
+          "scoring": {
+            "complete": {
+              "condition": "has_docstring AND has_params_doc AND has_returns_doc AND docstring_length > 100",
+              "score": 1.0
+            },
+            "good": {
+              "condition": "has_docstring AND (has_params_doc OR has_returns_doc) AND docstring_length > 50",
+              "score": 0.7
+            },
+            "basic": {
+              "condition": "has_docstring AND docstring_length > 20",
+              "score": 0.4
+            },
+            "minimal": {
+              "condition": "otherwise",
+              "score": 0.1
+            }
           }
-        }
-      },
-      "appropriate_assumptions": {
-        "description": "Explicit assumption documentation",
-        "scoring": {
-          "assumptions_documented": {
-            "keywords": [
-              "assum",
-              "constraint",
-              "precondition",
-              "requires"
-            ],
-            "score": 0.7
-          },
-          "implicit_assumptions": {
-            "score": 0.4
+        },
+        "appropriate_assumptions": {
+          "weight": 0.3,
+          "description": "Explicit assumption documentation",
+          "keywords": ["assum", "constraint", "precondition"],
+          "scoring": {
+            "explicit_assumptions": {
+              "condition": "assumption_keyword_count >= 1",
+              "score": 0.8
+            },
+            "implicit_assumptions": {
+              "condition": "assumption_keyword_count == 0",
+              "score": 0.3
+            }
           }
         }
       }
-    }
-  },
-  "b_impl": {
-    "description": "Implementation quality score - Canonical specification from CALIBRATION_CANONICAL_COHERENCE_ANALYSIS.md",
-    "weights": {
-      "test_coverage": 0.35,
-      "type_annotations": 0.25,
-      "error_handling": 0.25,
-      "documentation": 0.15
     },
-    "rules": {
-      "test_coverage": {
-        "description": "Evidence of actual tests running (\u2265 80% \u2192 1.0, linear below)",
-        "scoring": {
-          "has_test_evidence": {
-            "description": "Test runs verified or high-quality test suite present",
-            "score": 0.8
+    "b_impl": {
+      "formula": "b_impl = 0.35 * test_coverage + 0.25 * type_annotations + 0.25 * error_handling + 0.15 * documentation",
+      "components": {
+        "test_coverage": {
+          "weight": 0.35,
+          "description": "Test coverage percentage (≥80% → 1.0, linear interpolation below)",
+          "scoring": {
+            "formula": "min(1.0, coverage_percent / 80.0)",
+            "excellent": {
+              "condition": "coverage >= 80%",
+              "score": 1.0
+            },
+            "good": {
+              "condition": "coverage >= 60%",
+              "score": 0.75
+            },
+            "fair": {
+              "condition": "coverage >= 40%",
+              "score": 0.5
+            },
+            "poor": {
+              "condition": "coverage < 40%",
+              "score": "coverage / 80.0"
+            }
           },
-          "has_test_files": {
-            "description": "Test files exist but execution not verified",
-            "score": 0.5
-          },
-          "no_test_evidence": {
-            "description": "No test evidence found",
-            "default": true,
-            "score": 0.2
+          "fallback": {
+            "description": "When coverage data unavailable, estimate from test file presence",
+            "has_test_file": 0.5,
+            "no_test_file": 0.2
           }
         },
-        "note": "Conservative scoring until CI/test metrics available"
-      },
-      "error_handling": {
-        "description": "Error handling and robustness patterns (all paths covered \u2192 1.0)",
-        "scoring": {
-          "comprehensive_handling": {
-            "description": "Try/except blocks, input validation, defensive checks",
-            "score": 0.8
-          },
-          "basic_handling": {
-            "description": "Some error handling present",
-            "score": 0.5
-          },
-          "minimal_handling": {
-            "description": "Limited or no explicit error handling",
-            "default": true,
-            "score": 0.3
+        "type_annotations": {
+          "weight": 0.25,
+          "description": "Type annotation completeness",
+          "formula": "(typed_params / total_params) * 0.7 + (0.3 if return_type else 0)",
+          "example": "3 typed params out of 5 total, with return type: (3/5)*0.7 + 0.3 = 0.72"
+        },
+        "error_handling": {
+          "weight": 0.25,
+          "description": "Error handling coverage (try/except blocks, input validation)",
+          "scoring": {
+            "comprehensive": {
+              "condition": "has_try_except AND has_input_validation",
+              "score": 1.0
+            },
+            "good": {
+              "condition": "has_try_except OR has_input_validation",
+              "score": 0.7
+            },
+            "basic": {
+              "condition": "otherwise",
+              "score": 0.3
+            }
           }
+        },
+        "documentation": {
+          "weight": 0.15,
+          "description": "Documentation completeness (length + params + returns + examples)",
+          "formula": "(0.4 if length > 50 else 0.1) + (0.3 if params else 0) + (0.2 if returns else 0) + (0.1 if examples else 0)"
         }
-      },
-      "type_annotations": {
-        "description": "Type annotation coverage (complete \u2192 1.0, partial weighted)",
-        "scoring": {
-          "complete_annotations": {
-            "description": "Full type coverage on parameters and returns",
-            "score": 1.0
-          },
-          "partial_annotations": {
-            "description": "Some type annotations present",
-            "formula": "(typed_params / total_params) * 0.7 + (0.3 if has_return_type else 0)",
-            "score": "computed"
-          },
-          "no_annotations": {
-            "description": "No type annotations",
-            "default": true,
-            "score": 0.0
-          }
-        },
-        "note": "Type hints are DOCUMENTATION, not runtime enforcement. They score here, not in enforcement."
-      },
-      "documentation": {
-        "description": "Documentation quality (complete API docs \u2192 1.0)",
-        "scoring": {
-          "formula": "(0.4 if doc_length > 50 else 0.1) + (0.25 if has_params_doc else 0) + (0.25 if has_returns_doc else 0) + (0.1 if has_examples else 0)"
-        },
-        "note": "Comprehensive docstrings with parameters, returns, and examples"
       }
-    }
-  },
-  "b_deploy": {
-    "description": "Deployment maturity score",
-    "weights": {
-      "validation_runs": 0.4,
-      "stability_coefficient": 0.35,
-      "failure_rate": 0.25
     },
-    "rules": {
-      "layer_maturity_baseline": {
-        "description": "Base maturity by layer classification",
-        "scoring": {
-          "orchestrator": 0.7,
-          "processor": 0.6,
-          "analyzer": 0.5,
-          "ingestion": 0.6,
-          "executor": 0.5,
-          "utility": 0.6,
-          "unknown": 0.3
-        }
-      },
-      "validation_runs": {
-        "description": "Validation run estimates scaled from layer maturity",
-        "scoring": {
-          "formula": "layer_maturity_baseline * 0.8"
-        }
-      },
-      "stability_coefficient": {
-        "description": "Stability estimates scaled from layer maturity",
-        "scoring": {
-          "formula": "layer_maturity_baseline * 0.9"
-        }
-      },
-      "failure_rate": {
-        "description": "Failure rate estimates scaled from layer maturity",
-        "scoring": {
-          "formula": "layer_maturity_baseline * 0.85"
+    "b_deploy": {
+      "formula": "b_deploy = 0.4 * validation_runs + 0.35 * stability_coefficient + 0.25 * failure_rate",
+      "components": {
+        "validation_runs": {
+          "weight": 0.4,
+          "description": "Number of successful validation projects (≥20 → 1.0, linear below)",
+          "scoring": {
+            "formula": "min(1.0, run_count / 20.0)",
+            "excellent": {
+              "condition": "runs >= 20",
+              "score": 1.0
+            },
+            "good": {
+              "condition": "runs >= 10",
+              "score": 0.5
+            },
+            "fair": {
+              "condition": "runs >= 5",
+              "score": 0.25
+            },
+            "poor": {
+              "condition": "runs < 5",
+              "score": "runs / 20.0"
+            }
+          },
+          "fallback": {
+            "description": "Estimate from layer maturity",
+            "orchestrator": 0.7,
+            "processor": 0.6,
+            "analyzer": 0.5,
+            "ingestion": 0.6,
+            "executor": 0.5,
+            "utility": 0.6,
+            "unknown": 0.3
+          }
+        },
+        "stability_coefficient": {
+          "weight": 0.35,
+          "description": "Coefficient of Variation (CV < 0.1 → 1.0, scaled)",
+          "scoring": {
+            "formula": "max(0.0, 1.0 - (cv / 0.5))",
+            "excellent": {
+              "condition": "cv < 0.1",
+              "score": 1.0
+            },
+            "good": {
+              "condition": "cv < 0.2",
+              "score": 0.8
+            },
+            "fair": {
+              "condition": "cv < 0.5",
+              "score": "1.0 - (cv / 0.5)"
+            },
+            "poor": {
+              "condition": "cv >= 0.5",
+              "score": 0.0
+            }
+          },
+          "fallback": {
+            "description": "Estimate from layer maturity * 0.9"
+          }
+        },
+        "failure_rate": {
+          "weight": 0.25,
+          "description": "Failure rate in percent (< 1% → 1.0, exponential decay)",
+          "scoring": {
+            "formula": "exp(-failure_rate / 5.0)",
+            "excellent": {
+              "condition": "failure_rate < 1%",
+              "score": 1.0
+            },
+            "good": {
+              "condition": "failure_rate < 5%",
+              "score": 0.8
+            },
+            "fair": {
+              "condition": "failure_rate < 10%",
+              "score": 0.5
+            },
+            "poor": {
+              "condition": "failure_rate >= 10%",
+              "score": "exp(-failure_rate / 5.0)"
+            }
+          },
+          "fallback": {
+            "description": "Estimate from layer maturity * 0.85"
+          }
         }
       }
     }
   },
   "exclusion_criteria": {
-    "description": "Rules for excluding methods from calibration",
+    "description": "Methods automatically excluded from calibration",
     "patterns": [
       {
         "pattern": "__init__",
-        "reason": "Constructor - non-analytical"
+        "reason": "Constructor - non-analytical",
+        "regex": "^__init__$"
       },
       {
         "pattern": "__str__",
-        "reason": "String representation - non-analytical"
+        "reason": "String representation - non-analytical",
+        "regex": "^__str__$"
       },
       {
         "pattern": "__repr__",
-        "reason": "String representation - non-analytical"
+        "reason": "String representation - non-analytical",
+        "regex": "^__repr__$"
       },
       {
         "pattern": "__eq__",
-        "reason": "Equality comparison - non-analytical"
+        "reason": "Equality comparison - non-analytical",
+        "regex": "^__eq__$"
       },
       {
         "pattern": "__hash__",
-        "reason": "Hash function - non-analytical"
+        "reason": "Hash function - non-analytical",
+        "regex": "^__hash__$"
       },
       {
         "pattern": "__len__",
-        "reason": "Length accessor - non-analytical"
+        "reason": "Length accessor - non-analytical",
+        "regex": "^__len__$"
       },
       {
         "pattern": "_format_",
-        "reason": "Formatting utility - non-semantic"
+        "reason": "Formatting utility - non-semantic",
+        "regex": ".*_format_.*"
       },
       {
         "pattern": "_log_",
-        "reason": "Logging utility - non-semantic"
+        "reason": "Logging utility - non-semantic",
+        "regex": ".*_log_.*"
       },
       {
         "pattern": "_print_",
-        "reason": "Print utility - non-semantic"
+        "reason": "Print utility - non-semantic",
+        "regex": ".*_print_.*"
       },
       {
         "pattern": "to_string",
-        "reason": "Serialization - non-semantic"
+        "reason": "Serialization - non-semantic",
+        "regex": ".*to_string.*"
       },
       {
         "pattern": "to_json",
-        "reason": "Serialization - non-semantic"
+        "reason": "Serialization - non-semantic",
+        "regex": ".*to_json.*"
       },
       {
         "pattern": "to_dict",
-        "reason": "Serialization - non-semantic"
+        "reason": "Serialization - non-semantic",
+        "regex": ".*to_dict.*"
+      },
+      {
+        "pattern": "from_json",
+        "reason": "Deserialization - non-semantic",
+        "regex": ".*from_json.*"
+      },
+      {
+        "pattern": "from_dict",
+        "reason": "Deserialization - non-semantic",
+        "regex": ".*from_dict.*"
       },
       {
         "pattern": "visit_",
-        "reason": "AST visitor - non-analytical"
+        "reason": "AST visitor - non-analytical",
+        "regex": "^visit_.*"
       }
     ],
-    "additional_rules": {
+    "conditional_rules": {
       "private_utility_in_utility_layer": {
-        "condition": "method_name.startswith('_') and layer == 'utility' and not analytically_active",
+        "condition": "method_name.startswith('_') AND layer == 'utility' AND NOT analytically_active",
         "reason": "Private utility function - non-analytical"
       },
       "pure_getter": {
-        "condition": "method_name.startswith('get_') and return_type in ['str', 'Path', 'bool'] and not analytically_active",
+        "condition": "method_name.startswith('get_') AND return_type in ['str', 'Path', 'bool'] AND NOT analytically_active",
         "reason": "Simple getter with no analytical logic"
       }
     }
   },
-  "calibration_triggers": {
-    "description": "Decision automaton mapping empirically observed verb clusters to fundamental calibration questions.",
+  "decision_automaton": {
+    "description": "3-question decision tree for determining calibration requirements",
+    "version": "1.0.0",
+    "logic": "requires_calibration = (Q1 OR Q2 OR Q3) AND NOT excluded",
     "questions": {
-      "q1_analytically_active": {
-        "question": "Can this method change what is true in the pipeline (transform, derive, or synthesize)?",
+      "Q1": {
+        "question": "Is the method analytically active?",
+        "full_question": "Can this method change what is true in the pipeline (transform, derive, or synthesize)?",
         "rationale": "Methods using these verbs modify data state or generate new insights, directly impacting the analytical chain.",
         "indicators": {
           "primary_analytical_verbs": [
@@ -307,12 +353,13 @@
             "join",
             "combine"
           ],
-          "check_method_name": true,
-          "check_docstring": true
+          "check_locations": ["method_name", "docstring"],
+          "decision": "YES if any indicator verb found in method_name OR docstring"
         }
       },
-      "q2_parametric": {
-        "question": "Does it encode assumptions or knobs that matter?",
+      "Q2": {
+        "question": "Is the method parametric?",
+        "full_question": "Does it encode assumptions or knobs that matter?",
         "rationale": "Methods that set boundaries, load configurations, or apply thresholds introduce subjective parameters that must be calibrated.",
         "indicators": {
           "parametric_verbs": [
@@ -338,16 +385,14 @@
             "config",
             "limit"
           ],
-          "check_docstring": true,
-          "check_layer": [
-            "analyzer",
-            "processor",
-            "executor"
-          ]
+          "critical_layers": ["analyzer", "processor", "executor"],
+          "check_locations": ["method_name", "docstring"],
+          "decision": "YES if (parametric_verb in method_name) OR (parametric_keyword in docstring) OR (layer in critical_layers)"
         }
       },
-      "q3_safety_critical": {
-        "question": "Would a bug/misuse materially mislead an evaluation?",
+      "Q3": {
+        "question": "Is the method safety-critical?",
+        "full_question": "Would a bug/misuse materially mislead an evaluation?",
         "rationale": "Methods explicitly designed to gate-keep, audit, or verify are the highest risk if they fail silently.",
         "indicators": {
           "safety_verbs": [
@@ -362,22 +407,24 @@
             "log",
             "record"
           ],
-          "critical_layers": [
-            "analyzer",
-            "processor",
-            "orchestrator"
-          ],
-          "evaluative_return_types": [
-            "float",
-            "int",
-            "dict",
-            "list",
-            "bool"
-          ],
-          "exclude_simple_getters": true
+          "critical_layers": ["analyzer", "processor", "orchestrator"],
+          "evaluative_return_types": ["float", "int", "dict", "list", "bool"],
+          "exclude_simple_getters": true,
+          "check_locations": ["method_name", "return_type", "layer"],
+          "decision": "YES if (safety_verb in method_name) OR (layer in critical_layers) OR (return_type in evaluative_return_types) UNLESS simple_getter"
         }
       }
-    },
-    "decision": "If a method matches a Verb Cluster, the corresponding Question is PRESUMED YES. Calibration is REQUIRED unless explicitly excluded."
+    }
+  },
+  "implementation_notes": {
+    "test_coverage": "When test coverage data unavailable, use fallback: has_test_file=0.5, no_test=0.2",
+    "type_annotations": "Formula: (typed_params/total)*0.7 + (0.3 if return_type else 0)",
+    "error_handling": "Scan source for 'try:', 'except', 'raise', input validation patterns",
+    "documentation": "Formula: (0.4 if len>50 else 0.1) + (0.3 if params) + (0.2 if returns) + (0.1 if examples)",
+    "statistical_validity": "Keywords: bayesian, probability, regression, likelihood",
+    "assumption_keywords": "Keywords: assum, constraint, precondition",
+    "validation_runs": "Linear scale: min(1.0, runs/20)",
+    "stability_coefficient": "CV scale: max(0, 1.0 - cv/0.5)",
+    "failure_rate": "Exponential decay: exp(-rate/5.0)"
   }
 }
