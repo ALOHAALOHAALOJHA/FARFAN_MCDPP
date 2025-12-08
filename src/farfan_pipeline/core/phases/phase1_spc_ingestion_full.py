@@ -76,9 +76,16 @@ class PADimGridSpecification:
         EVERY CHECK MUST PASS OR PIPELINE DIES
         """
         # MANDATORY FIELD PRESENCE
+        assert hasattr(chunk, 'chunk_id'), "FATAL: Missing chunk_id"
         assert hasattr(chunk, 'policy_area_id'), "FATAL: Missing policy_area_id"
         assert hasattr(chunk, 'dimension_id'), "FATAL: Missing dimension_id"
         assert hasattr(chunk, 'chunk_index'), "FATAL: Missing chunk_index"
+        
+        # CHUNK_ID FORMAT VALIDATION
+        import re
+        CHUNK_ID_PATTERN = r'^PA(0[1-9]|10)-DIM0[1-6]$'
+        assert re.match(CHUNK_ID_PATTERN, chunk.chunk_id), \
+            f"FATAL: Invalid chunk_id format {chunk.chunk_id}"
         
         # VALID VALUES
         assert chunk.policy_area_id in cls.POLICY_AREAS, \
@@ -87,6 +94,11 @@ class PADimGridSpecification:
             f"FATAL: Invalid DIM {chunk.dimension_id}"
         assert 0 <= chunk.chunk_index < 60, \
             f"FATAL: Invalid index {chunk.chunk_index}"
+        
+        # CHUNK_ID CONSISTENCY
+        expected_chunk_id = f"{chunk.policy_area_id}-{chunk.dimension_id}"
+        assert chunk.chunk_id == expected_chunk_id, \
+            f"FATAL: chunk_id mismatch {chunk.chunk_id} != {expected_chunk_id}"
         
         # MANDATORY METADATA - ALL MUST EXIST
         REQUIRED_METADATA = [
@@ -113,17 +125,21 @@ class PADimGridSpecification:
         # EXACT COUNT
         assert len(chunks) == 60, f"FATAL: Got {len(chunks)} chunks, need EXACTLY 60"
         
-        # UNIQUE COVERAGE
+        # UNIQUE COVERAGE BY chunk_id
+        seen_chunk_ids = set()
         seen_combinations = set()
         for chunk in chunks:
+            assert chunk.chunk_id not in seen_chunk_ids, f"FATAL: Duplicate chunk_id {chunk.chunk_id}"
+            seen_chunk_ids.add(chunk.chunk_id)
+            
             combo = (chunk.policy_area_id, chunk.dimension_id)
-            assert combo not in seen_combinations, f"FATAL: Duplicate {combo}"
+            assert combo not in seen_combinations, f"FATAL: Duplicate PA×DIM {combo}"
             seen_combinations.add(combo)
         
-        # COMPLETE COVERAGE
-        for pa in cls.POLICY_AREAS:
-            for dim in cls.DIMENSIONS:
-                assert (pa, dim) in seen_combinations, f"FATAL: Missing {pa}×{dim}"
+        # COMPLETE COVERAGE - ALL 60 COMBINATIONS
+        expected_chunk_ids = {f"{pa}-{dim}" for pa in cls.POLICY_AREAS for dim in cls.DIMENSIONS}
+        assert seen_chunk_ids == expected_chunk_ids, \
+            f"FATAL: Coverage mismatch. Missing: {expected_chunk_ids - seen_chunk_ids}"
 
 class Phase1FailureHandler:
     """
@@ -211,6 +227,7 @@ class Phase1SPCIngestionFullContract:
         self.subphase_results: Dict[int, Any] = {}
         self.error_log: List[Dict[str, Any]] = []
         self.invariant_checks: Dict[str, bool] = {}
+        self.document_id: str = ""  # Set from CanonicalInput
         
     def _deterministic_serialize(self, output: Any) -> str:
         """Helper to serialize output for hashing."""
@@ -238,6 +255,9 @@ class Phase1SPCIngestionFullContract:
         """
         CRITICAL PATH - NO DEVIATIONS ALLOWED
         """
+        # CAPTURE document_id FROM INPUT
+        self.document_id = canonical_input.document_id
+        
         # PRE-EXECUTION VALIDATION
         self._validate_canonical_input(canonical_input)  # WEIGHT: 1000
         
@@ -429,21 +449,31 @@ class Phase1SPCIngestionFullContract:
         return Strategic()
 
     def _execute_sp11_smart_chunks(self, chunks: List[Chunk], enrichments: Dict[int, Any]) -> List[SmartChunk]:
-        smart_chunks = []
-        for chunk in chunks:
-            smart_chunks.append(SmartChunk(
-                policy_area_id=chunk.policy_area_id,
-                dimension_id=chunk.dimension_id,
-                chunk_index=chunk.chunk_index,
-                causal_graph=chunk.causal_graph or CausalGraph(),
-                temporal_markers=chunk.temporal_markers or {},
-                arguments=chunk.arguments or {},
-                discourse_mode=chunk.discourse_mode,
-                strategic_rank=0, # Will be updated in SP15
-                signal_tags=chunk.signal_tags,
-                signal_scores=chunk.signal_scores
-            ))
-        return smart_chunks
+        try:
+            smart_chunks = []
+            for idx, chunk in enumerate(chunks):
+                try:
+                    chunk_id = f"{chunk.policy_area_id}-{chunk.dimension_id}"
+                    smart_chunk = SmartChunk(
+                        chunk_id=chunk_id,
+                        text=getattr(chunk, 'text', ''),
+                        chunk_index=chunk.chunk_index,
+                        causal_graph=chunk.causal_graph or CausalGraph(),
+                        temporal_markers=chunk.temporal_markers or {},
+                        arguments=chunk.arguments or {},
+                        discourse_mode=chunk.discourse_mode,
+                        strategic_rank=0,
+                        signal_tags=chunk.signal_tags,
+                        signal_scores=chunk.signal_scores
+                    )
+                    smart_chunks.append(smart_chunk)
+                except Exception as e:
+                    logger.error(f"SP11: Failed to create SmartChunk {idx} (chunk_id={chunk_id}): {e}")
+                    raise Phase1FatalError(f"SP11: Chunk {idx} construction failed: {e}")
+            return smart_chunks
+        except Exception as e:
+            logger.critical(f"SP11: Smart Chunk generation FATAL failure: {e}")
+            raise Phase1FatalError(f"SP11 FAILED: {e}")
 
     def _execute_sp12_irrigation(self, chunks: List[SmartChunk]) -> List[SmartChunk]:
         for chunk in chunks:
@@ -487,10 +517,11 @@ class Phase1SPCIngestionFullContract:
 
         cpp = CanonPolicyPackage(
             schema_version="SPC-2025.1",
+            document_id=self.document_id,
             chunk_graph=chunk_graph,
             metadata={
                 "execution_trace": self.execution_trace,
-                "subphase_results": self.subphase_results # Note: This might be too large for metadata in prod
+                "subphase_results": self.subphase_results
             }
         )
         return cpp

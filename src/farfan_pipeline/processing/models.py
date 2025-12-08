@@ -193,8 +193,11 @@ class CanonPolicyPackage:
 
     This is the top-level container for all ingestion results.
     Also known as Smart Policy Chunks (SPC) in newer terminology.
+    
+    FOUNDATIONAL: document_id is MANDATORY unique identifier for the policy document.
     """
     schema_version: str
+    document_id: str
     chunk_graph: ChunkGraph
 
     # Optional high-level metadata
@@ -204,3 +207,7 @@ class CanonPolicyPackage:
 
     # Raw metadata
     metadata: dict[str, Any] = field(default_factory=dict)
+    
+    def __post_init__(self):
+        if not self.document_id or not self.document_id.strip():
+            raise ValueError("document_id cannot be empty")

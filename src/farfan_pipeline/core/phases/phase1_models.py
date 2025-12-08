@@ -8,6 +8,7 @@ These models enforce strict typing and validation for the pipeline.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 from enum import Enum
@@ -145,20 +146,27 @@ class Strategic:
     """Output of SP10."""
     priorities: Dict[str, float] = field(default_factory=dict)
 
-@dataclass
+@dataclass(frozen=True)
 class SmartChunk:
     """
     Final chunk representation (SP11-SP15).
+    FOUNDATIONAL: chunk_id is PRIMARY identifier (PA##-DIM##)
+    policy_area_id and dimension_id are AUTO-DERIVED from chunk_id
     """
-    policy_area_id: str = ""
-    dimension_id: str = ""
+    chunk_id: str
+    text: str = ""
+    chunk_type: str = "semantic"
+    source_page: Optional[int] = None
     chunk_index: int = -1
+    
+    policy_area_id: str = field(default="", init=False)
+    dimension_id: str = field(default="", init=False)
     
     causal_graph: CausalGraph = field(default_factory=CausalGraph)
     temporal_markers: Dict[str, Any] = field(default_factory=dict)
     arguments: Dict[str, Any] = field(default_factory=dict)
     discourse_mode: str = "unknown"
-    strategic_rank: int = -1
+    strategic_rank: int = 0
     irrigation_links: List[Any] = field(default_factory=list)
     
     signal_tags: List[str] = field(default_factory=list)
@@ -167,6 +175,19 @@ class SmartChunk:
     
     rank_score: float = 0.0
     signal_weighted_score: float = 0.0
+    
+    def __post_init__(self):
+        CHUNK_ID_PATTERN = r'^PA(0[1-9]|10)-DIM0[1-6]$'
+        if not re.match(CHUNK_ID_PATTERN, self.chunk_id):
+            raise ValueError(f"Invalid chunk_id format: {self.chunk_id}. Must match {CHUNK_ID_PATTERN}")
+        
+        parts = self.chunk_id.split('-')
+        if len(parts) != 2:
+            raise ValueError(f"Invalid chunk_id structure: {self.chunk_id}")
+        
+        pa_part, dim_part = parts
+        object.__setattr__(self, 'policy_area_id', pa_part)
+        object.__setattr__(self, 'dimension_id', dim_part)
 
 @dataclass
 class ValidationResult:
