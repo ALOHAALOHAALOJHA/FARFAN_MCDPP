@@ -1,0 +1,135 @@
+{
+  "description": "Minimal acceptable PDT - Mínimo quality (0.5 ≤ U < 0.7)",
+  "pdt_structure": {
+    "full_text": "Basic PDT meeting minimum requirements",
+    "total_tokens": 3500,
+    "blocks_found": {
+      "Diagnóstico": {
+        "tokens": 900,
+        "numbers_count": 12,
+        "text": "Basic diagnostic section with minimal data"
+      },
+      "Parte Estratégica": {
+        "tokens": 700,
+        "numbers_count": 8,
+        "text": "Strategic section with basic objectives"
+      },
+      "PPI": {
+        "tokens": 500,
+        "numbers_count": 10,
+        "text": "Project list with basic financial info"
+      },
+      "Seguimiento": {
+        "tokens": 350,
+        "numbers_count": 5,
+        "text": "Basic monitoring framework"
+      }
+    },
+    "headers": [
+      {"level": 1, "text": "1. Diagnóstico", "valid_numbering": true},
+      {"level": 1, "text": "2. Estratégica", "valid_numbering": true},
+      {"level": 1, "text": "PPI", "valid_numbering": false},
+      {"level": 1, "text": "Seguimiento", "valid_numbering": false}
+    ],
+    "block_sequence": ["Diagnóstico", "Parte Estratégica", "PPI", "Seguimiento"],
+    "sections_found": {
+      "Diagnóstico": {
+        "present": true,
+        "token_count": 900,
+        "keyword_matches": 3,
+        "number_count": 12,
+        "sources_found": 2,
+        "keywords_found": ["brecha", "DANE", "indicador"]
+      },
+      "Parte Estratégica": {
+        "present": true,
+        "token_count": 700,
+        "keyword_matches": 2,
+        "number_count": 8,
+        "keywords_found": ["objetivo", "estrategia"]
+      },
+      "PPI": {
+        "present": true,
+        "token_count": 500,
+        "keyword_matches": 2,
+        "number_count": 10,
+        "keywords_found": ["proyecto", "costo"]
+      },
+      "Seguimiento": {
+        "present": true,
+        "token_count": 350,
+        "keyword_matches": 2,
+        "number_count": 5,
+        "keywords_found": ["seguimiento", "indicador"]
+      },
+      "Marco Normativo": {
+        "present": true,
+        "token_count": 250,
+        "keyword_matches": 1,
+        "keywords_found": ["ley"]
+      }
+    },
+    "indicator_matrix_present": true,
+    "indicator_rows": [
+      {
+        "Tipo": "PRODUCTO",
+        "Línea Estratégica": "Equidad de Género",
+        "Programa": "Prevención VBG",
+        "Línea Base": "120 casos",
+        "Año LB": 2023,
+        "Meta Cuatrienio": "80 casos",
+        "Fuente": "Comisaría",
+        "Unidad Medida": "Casos"
+      },
+      {
+        "Tipo": "RESULTADO",
+        "Línea Estratégica": "Educación",
+        "Programa": "Cobertura Educativa",
+        "Línea Base": "85%",
+        "Año LB": 2023,
+        "Meta Cuatrienio": "90%",
+        "Fuente": "Secretaría",
+        "Unidad Medida": "Porcentaje"
+      }
+    ],
+    "ppi_matrix_present": true,
+    "ppi_rows": [
+      {
+        "Línea Estratégica": "Equidad de Género",
+        "Programa": "Prevención VBG",
+        "Costo Total": 400000000,
+        "2024": 100000000,
+        "2025": 100000000,
+        "2026": 100000000,
+        "2027": 100000000,
+        "SGP": 250000000,
+        "SGR": 0,
+        "Propios": 150000000,
+        "Otras": 0
+      },
+      {
+        "Línea Estratégica": "Educación",
+        "Programa": "Cobertura Educativa",
+        "Costo Total": 600000000,
+        "2024": 150000000,
+        "2025": 150000000,
+        "2026": 150000000,
+        "2027": 150000000,
+        "SGP": 450000000,
+        "SGR": 100000000,
+        "Propios": 50000000,
+        "Otras": 0
+      }
+    ]
+  },
+  "expected_evaluation": {
+    "S": 0.69,
+    "M": 0.72,
+    "I": 0.68,
+    "P": 0.85,
+    "U_base": 0.73,
+    "penalty": 0.05,
+    "U_final": 0.68,
+    "quality_level": "mínimo"
+  }
+}
