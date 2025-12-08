@@ -129,3 +129,10 @@ config_consolidation_report.md
 config_reference_validation.md
 config_audit_summary.md
 config_depuration_report.md
+
+# COHORT 2024 Calibration/Parametrization System
+# DO NOT IGNORE: calibration_parametrization_system/ directory is tracked
+# Ignore only temporary migration artifacts
+calibration_parametrization_system/.migration_temp/
+calibration_parametrization_system/**/__pycache__/
+calibration_parametrization_system/**/*.pyc
