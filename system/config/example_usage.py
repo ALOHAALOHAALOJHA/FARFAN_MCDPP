@@ -1,6 +1,5 @@
 """Example usage of the configuration management system."""
 
-
 from config_manager import ConfigManager
 
 

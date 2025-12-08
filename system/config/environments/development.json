@@ -1,0 +1,46 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Development environment configuration",
+    "last_updated": "2024-12-02T00:00:00Z",
+    "environment": "development",
+    "implementation_wave": "GOVERNANCE_WAVE_2024_12_07",
+    "wave_label": "CONFIG_GOVERNANCE_STRICT_FOLDERIZATION"
+  },
+  "api": {
+    "host": "127.0.0.1",
+    "port": 5000,
+    "debug": true,
+    "workers": 1,
+    "timeout": 600,
+    "max_content_length": 52428800,
+    "reload": true
+  },
+  "database": {
+    "connection_pool_size": 5,
+    "connection_timeout": 10,
+    "query_timeout": 30
+  },
+  "logging": {
+    "level": "DEBUG",
+    "format": "text",
+    "output": "console",
+    "retention_days": 7
+  },
+  "security": {
+    "enable_auth": false,
+    "jwt_expiration": 86400,
+    "rate_limiting": false,
+    "max_requests_per_minute": 1000
+  },
+  "cache": {
+    "enabled": false,
+    "ttl": 60,
+    "max_size_mb": 256
+  },
+  "monitoring": {
+    "enable_metrics": true,
+    "enable_tracing": true,
+    "sample_rate": 0.1
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Production environment configuration",
+    "last_updated": "2024-12-02T00:00:00Z",
+    "environment": "production",
+    "implementation_wave": "GOVERNANCE_WAVE_2024_12_07",
+    "wave_label": "CONFIG_GOVERNANCE_STRICT_FOLDERIZATION"
+  },
+  "api": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "debug": false,
+    "workers": 4,
+    "timeout": 300,
+    "max_content_length": 104857600
+  },
+  "database": {
+    "connection_pool_size": 20,
+    "connection_timeout": 30,
+    "query_timeout": 60
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "output": "file",
+    "retention_days": 90
+  },
+  "security": {
+    "enable_auth": true,
+    "jwt_expiration": 3600,
+    "rate_limiting": true,
+    "max_requests_per_minute": 60
+  },
+  "cache": {
+    "enabled": true,
+    "ttl": 3600,
+    "max_size_mb": 1024
+  },
+  "monitoring": {
+    "enable_metrics": true,
+    "enable_tracing": true,
+    "sample_rate": 1.0
+  }
+}
