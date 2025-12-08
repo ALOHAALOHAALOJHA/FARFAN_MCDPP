@@ -1,11 +1,12 @@
 {
   "_metadata": {
     "version": "1.0.0",
-    "description": "Production environment configuration",
-    "last_updated": "2024-12-02T00:00:00Z",
+    "description": "Production environment configuration - optimized for reliability and performance",
+    "last_updated": "2025-01-10",
     "environment": "production",
     "implementation_wave": "GOVERNANCE_WAVE_2024_12_07",
-    "wave_label": "CONFIG_GOVERNANCE_STRICT_FOLDERIZATION"
+    "wave_label": "CONFIG_GOVERNANCE_STRICT_FOLDERIZATION",
+    "maintainer": "DevOps Team"
   },
   "api": {
     "host": "0.0.0.0",
@@ -20,26 +21,50 @@
     "connection_timeout": 30,
     "query_timeout": 60
   },
+  "executor": {
+    "timeout_s": 300.0,
+    "retry": 5,
+    "max_tokens": 4096,
+    "temperature": 0.7,
+    "seed": 42
+  },
   "logging": {
     "level": "INFO",
     "format": "json",
     "output": "file",
-    "retention_days": 90
+    "file_path": "/var/log/farfan/production.log",
+    "rotation": "daily",
+    "retention_days": 30
   },
   "security": {
     "enable_auth": true,
     "jwt_expiration": 3600,
     "rate_limiting": true,
-    "max_requests_per_minute": 60
+    "max_requests_per_minute": 60,
+    "enable_audit_log": true,
+    "mask_sensitive_data": true
   },
   "cache": {
     "enabled": true,
     "ttl": 3600,
     "max_size_mb": 1024
   },
+  "resources": {
+    "max_workers": 8,
+    "memory_limit_mb": 8192,
+    "enable_profiling": false
+  },
   "monitoring": {
     "enable_metrics": true,
     "enable_tracing": true,
-    "sample_rate": 1.0
-  }
+    "sample_rate": 0.1,
+    "export_endpoint": "http://monitoring.prod.internal:4317"
+  },
+  "_notes": [
+    "Production environment optimized for reliability and performance",
+    "Higher retry count for resilience",
+    "Longer timeout for complex analyses",
+    "Lower tracing sample rate to reduce overhead",
+    "Audit logging enabled for compliance"
+  ]
 }

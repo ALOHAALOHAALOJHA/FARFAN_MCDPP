@@ -52,6 +52,12 @@ from farfan_pipeline.core.orchestrator.resource_integration import (
     get_resource_status,
     reset_circuit_breakers,
 )
+from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
+from farfan_pipeline.core.orchestrator.parameter_loader import (
+    load_executor_config,
+    get_conservative_defaults,
+    CONSERVATIVE_CONFIG,
+)
 
 __all__ = [
     "EvidenceRecord",
@@ -89,4 +95,8 @@ __all__ = [
     "integrate_with_orchestrator",
     "get_resource_status",
     "reset_circuit_breakers",
+    "ExecutorConfig",
+    "load_executor_config",
+    "get_conservative_defaults",
+    "CONSERVATIVE_CONFIG",
 ]

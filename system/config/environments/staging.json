@@ -1,0 +1,38 @@
+{
+  "_metadata": {
+    "environment": "staging",
+    "description": "Staging environment configuration - matches production with enhanced monitoring",
+    "last_updated": "2025-01-10",
+    "maintainer": "DevOps Team"
+  },
+  "executor": {
+    "timeout_s": 180.0,
+    "retry": 4,
+    "max_tokens": 2048,
+    "temperature": 0.7,
+    "seed": 42
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "output": "file",
+    "file_path": "/var/log/farfan/staging.log"
+  },
+  "resources": {
+    "max_workers": 4,
+    "memory_limit_mb": 6144,
+    "enable_profiling": true
+  },
+  "monitoring": {
+    "enable_metrics": true,
+    "enable_tracing": true,
+    "sample_rate": 0.5,
+    "export_endpoint": "http://monitoring.staging.internal:4317"
+  },
+  "_notes": [
+    "Staging environment mirrors production with enhanced observability",
+    "Higher sampling rate for comprehensive testing",
+    "Moderate resource limits for cost control",
+    "Used for QA and pre-production validation"
+  ]
+}
