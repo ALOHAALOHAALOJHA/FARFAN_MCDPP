@@ -1,6 +1,6 @@
 """
-Signal Intelligence Layer - Integration of 4 Refactorings
-==========================================================
+Signal Intelligence Layer - Integration of 4 Refactorings + PDT Analysis
+========================================================================
 
 This module integrates the 4 surgical refactorings to unlock 91% unused
 intelligence in the signal monolith through EnrichedSignalPack:
@@ -9,6 +9,7 @@ intelligence in the signal monolith through EnrichedSignalPack:
 2. Context Scoping (#6) - get_patterns_for_context() for 60% precision filtering
 3. Evidence Extraction (#5) - extract_evidence() with 1,200 specifications
 4. Contract Validation (#4) - validate_result() across 600 validation contracts
+5. PDT Quality Integration - Unit Layer (@u) metrics (S/M/I/P) for pattern boosting
 
 Combined Impact:
 - Pattern variants: 4,200 → ~21,000 (5x multiplication via semantic_expander)
@@ -17,6 +18,7 @@ Combined Impact:
 - Precision: +60% (context filtering via context_scoper)
 - Speed: +200% (skip irrelevant patterns)
 - Intelligence Unlock: 91% of previously unused metadata
+- PDT Quality Boost: Patterns from high-quality sections (I_struct>0.8) prioritized
 
 All interactions use Pydantic v2 models from signals.py and signal_registry.py
 for type safety and runtime validation.
@@ -27,8 +29,9 @@ Integration Architecture:
         ↓
     ├── expand_all_patterns (semantic_expander)
     │   └── 5x pattern multiplication
-    ├── get_patterns_for_context (context_scoper)
-    │   └── 60% precision filtering
+    ├── get_patterns_for_context (context_scoper + PDT quality)
+    │   ├── 60% precision filtering
+    │   └── PDT quality boosting (I_struct>0.8)
     ├── extract_evidence (evidence_extractor)
     │   └── Structured extraction (1,200 elements)
     └── validate_result (contract_validator)
@@ -38,17 +41,24 @@ Metrics Tracking:
 -----------------
 - Semantic expansion: multiplier, variant_count, expansion_rate
 - Context filtering: filter_rate, precision_improvement, false_positive_reduction
+- PDT quality: S/M/I/P scores, section quality, pattern boost correlation
 - Evidence extraction: completeness, missing_elements, extraction_metadata
 - Contract validation: validation_status, error_codes, remediation
 
 Author: F.A.R.F.A.N Pipeline
 Date: 2025-12-02
-Integration: 4 Surgical Refactorings with Full Metrics
+Integration: 4 Surgical Refactorings + PDT Quality Integration
 """
 
 from dataclasses import dataclass
 from typing import Any
 
+from farfan_pipeline.core.orchestrator.pdt_quality_integration import (
+    PDTQualityMetrics,
+    apply_pdt_quality_boost,
+    compute_pdt_section_quality,
+    track_pdt_precision_correlation,
+)
 from farfan_pipeline.core.orchestrator.signal_context_scoper import (
     create_document_context,
     filter_patterns_by_context,
@@ -202,7 +212,7 @@ def compute_precision_improvement_stats(
 class IntelligenceMetrics:
     """
     Comprehensive metrics for 91% intelligence unlock validation.
-    
+
     Tracks all four refactoring integrations with detailed metrics:
     - Semantic expansion: 5x multiplication target
     - Context filtering: 60% precision improvement
@@ -311,12 +321,15 @@ class EnrichedSignalPack:
     2. Context-aware filtering (60% precision improvement)
     3. Contract validation (600 contracts)
     4. Structured evidence extraction (1,200 elements)
-    
+
     All integrations use Pydantic v2 models for type safety.
     """
 
     def __init__(
-        self, base_signal_pack: Any, enable_semantic_expansion: bool = True
+        self,
+        base_signal_pack: Any,
+        enable_semantic_expansion: bool = True,
+        pdt_quality_map: dict[str, PDTQualityMetrics] | None = None,
     ) -> None:
         """
         Initialize enriched signal pack with full intelligence layer.
@@ -324,6 +337,7 @@ class EnrichedSignalPack:
         Args:
             base_signal_pack: Original SignalPack from signal_loader
             enable_semantic_expansion: If True, expand patterns semantically (5x)
+            pdt_quality_map: Optional map of PDT section quality metrics for boosting
         """
         self.base_pack = base_signal_pack
         # Handle both dict and object types for base_signal_pack
@@ -334,6 +348,7 @@ class EnrichedSignalPack:
         self._semantic_expansion_enabled = enable_semantic_expansion
         self._original_pattern_count = len(self.patterns)
         self._expansion_metrics: dict[str, Any] = {}
+        self._pdt_quality_map = pdt_quality_map or {}
 
         # Apply semantic expansion (Refactoring #2)
         if enable_semantic_expansion:
@@ -368,7 +383,7 @@ class EnrichedSignalPack:
     def expand_all_patterns(self) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """
         Public method to invoke semantic_expander for 5x pattern multiplication.
-        
+
         Returns:
             Tuple of (expanded_patterns, expansion_metrics)
         """
@@ -379,17 +394,23 @@ class EnrichedSignalPack:
         return self.patterns, self._expansion_metrics
 
     def get_patterns_for_context(
-        self, document_context: dict[str, Any], track_precision_improvement: bool = True
+        self,
+        document_context: dict[str, Any],
+        track_precision_improvement: bool = True,
+        enable_pdt_boost: bool = True,
     ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """
-        Uses context_scoper for 60% precision filtering.
+        Uses context_scoper for 60% precision filtering with PDT quality boosting.
 
         This method demonstrates the integration of filter_patterns_by_context
-        from signal_context_scoper.py to achieve 60% false positive reduction.
+        from signal_context_scoper.py to achieve 60% false positive reduction,
+        enhanced with PDT quality metrics to prioritize patterns from high-quality
+        sections (e.g., I_struct>0.8).
 
         Args:
             document_context: Current document context
             track_precision_improvement: If True, compute detailed precision metrics
+            enable_pdt_boost: If True, apply PDT quality-based pattern boosting
 
         Returns:
             Tuple of (filtered_patterns, comprehensive_stats)
@@ -405,9 +426,22 @@ class EnrichedSignalPack:
         pattern_distribution = self._compute_pattern_distribution()
         context_complexity = self._compute_context_complexity(document_context)
 
+        patterns_to_filter = self.patterns
+
+        pdt_boost_stats = {}
+        if enable_pdt_boost and self._pdt_quality_map:
+            patterns_to_filter, pdt_boost_stats = apply_pdt_quality_boost(
+                self.patterns, self._pdt_quality_map, document_context
+            )
+            logger.info(
+                "pdt_quality_boost_enabled",
+                boosted_patterns=pdt_boost_stats.get("boosted_count", 0),
+                avg_boost=pdt_boost_stats.get("avg_boost_factor", 1.0),
+            )
+
         # INTEGRATION: Call filter_patterns_by_context from signal_context_scoper
         filtered, base_stats = filter_patterns_by_context(
-            self.patterns, document_context
+            patterns_to_filter, document_context
         )
 
         end_time = time.perf_counter()
@@ -497,6 +531,22 @@ class EnrichedSignalPack:
                 ),
             }
 
+            if enable_pdt_boost and self._pdt_quality_map:
+                comprehensive_stats["pdt_quality_boost"] = pdt_boost_stats
+
+                pdt_correlation = track_pdt_precision_correlation(
+                    self.patterns, filtered, self._pdt_quality_map, comprehensive_stats
+                )
+                comprehensive_stats["pdt_precision_correlation"] = pdt_correlation
+
+                logger.info(
+                    "pdt_quality_correlation_tracked",
+                    high_quality_retention=pdt_correlation.get(
+                        "high_quality_retention_rate", 0.0
+                    ),
+                    quality_correlation=pdt_correlation.get("quality_correlation", 0.0),
+                )
+
             logger.info(
                 "context_filtering_complete",
                 total_patterns=precision_stats.total_patterns,
@@ -514,6 +564,9 @@ class EnrichedSignalPack:
                 filtering_duration_ms, 2
             )
             comprehensive_stats["timestamp"] = timestamp
+
+            if enable_pdt_boost and self._pdt_quality_map:
+                comprehensive_stats["pdt_quality_boost"] = pdt_boost_stats
 
         return filtered, comprehensive_stats
 
@@ -566,7 +619,7 @@ class EnrichedSignalPack:
         for value in document_context.values():
             if isinstance(value, str) and value:
                 value_specificity += 0.2
-            elif isinstance(value, (int, float)) and value > 0:
+            elif isinstance(value, int | float) and value > 0:
                 value_specificity += 0.15
             elif value is not None:
                 value_specificity += 0.1
@@ -661,12 +714,12 @@ class EnrichedSignalPack:
     ) -> IntelligenceMetrics:
         """
         Compute comprehensive intelligence unlock metrics across all 4 refactorings.
-        
+
         Args:
             context_stats: Stats from get_patterns_for_context()
             evidence_result: Result from extract_evidence()
             validation_result: Result from validate_result()
-        
+
         Returns:
             IntelligenceMetrics with comprehensive 91% unlock validation
         """
@@ -676,7 +729,9 @@ class EnrichedSignalPack:
             if self._expansion_metrics
             else 1.0
         )
-        semantic_target_met = semantic_multiplier >= SEMANTIC_EXPANSION_TARGET_MULTIPLIER
+        semantic_target_met = (
+            semantic_multiplier >= SEMANTIC_EXPANSION_TARGET_MULTIPLIER
+        )
 
         # Context filtering metrics
         if context_stats:
@@ -706,7 +761,9 @@ class EnrichedSignalPack:
         if validation_result:
             validation_passed = validation_result.passed
             validation_failures = len(validation_result.failures_detailed)
-            error_codes = [validation_result.error_code] if validation_result.error_code else []
+            error_codes = (
+                [validation_result.error_code] if validation_result.error_code else []
+            )
         else:
             validation_passed = False
             validation_failures = 0
@@ -714,12 +771,24 @@ class EnrichedSignalPack:
 
         # Calculate overall intelligence unlock percentage
         # Each refactoring contributes 25% to the total 91% (with 9% baseline)
-        semantic_contribution = 25.0 if semantic_target_met else (semantic_multiplier / SEMANTIC_EXPANSION_TARGET_MULTIPLIER) * 25.0
-        precision_contribution = 25.0 if precision_target_met else (fp_reduction / 0.60) * 25.0
+        semantic_contribution = (
+            25.0
+            if semantic_target_met
+            else (semantic_multiplier / SEMANTIC_EXPANSION_TARGET_MULTIPLIER) * 25.0
+        )
+        precision_contribution = (
+            25.0 if precision_target_met else (fp_reduction / 0.60) * 25.0
+        )
         evidence_contribution = evidence_completeness * 25.0
         validation_contribution = 25.0 if validation_passed else 0.0
 
-        intelligence_unlock = 9.0 + semantic_contribution + precision_contribution + evidence_contribution + validation_contribution
+        intelligence_unlock = (
+            9.0
+            + semantic_contribution
+            + precision_contribution
+            + evidence_contribution
+            + validation_contribution
+        )
 
         all_validated = (
             semantic_target_met
@@ -750,6 +819,96 @@ class EnrichedSignalPack:
             all_integrations_validated=all_validated,
         )
 
+    def set_pdt_quality_map(
+        self, pdt_quality_map: dict[str, PDTQualityMetrics]
+    ) -> None:
+        """
+        Set or update PDT quality map for pattern boosting.
+
+        Args:
+            pdt_quality_map: Map of section names to quality metrics
+        """
+        self._pdt_quality_map = pdt_quality_map
+        logger.info(
+            "pdt_quality_map_updated",
+            sections=len(pdt_quality_map),
+            sections_list=list(pdt_quality_map.keys()),
+        )
+
+    def add_pdt_section_quality(
+        self,
+        section_name: str,
+        pdt_structure: Any | None = None,
+        unit_layer_scores: dict[str, Any] | None = None,
+    ) -> PDTQualityMetrics:
+        """
+        Add or update quality metrics for a PDT section.
+
+        Args:
+            section_name: Name of PDT section
+            pdt_structure: Optional PDTStructure with extracted data
+            unit_layer_scores: Optional pre-computed Unit Layer scores
+
+        Returns:
+            Computed PDTQualityMetrics for the section
+        """
+        metrics = compute_pdt_section_quality(
+            section_name, pdt_structure, unit_layer_scores
+        )
+        self._pdt_quality_map[section_name] = metrics
+
+        logger.info(
+            "pdt_section_quality_added",
+            section=section_name,
+            I_struct=metrics.I_struct,
+            quality_level=metrics.quality_level,
+        )
+
+        return metrics
+
+    def get_pdt_quality_summary(self) -> dict[str, Any]:
+        """
+        Get summary of PDT quality metrics across all tracked sections.
+
+        Returns:
+            Summary dictionary with quality statistics
+        """
+        if not self._pdt_quality_map:
+            return {
+                "total_sections": 0,
+                "sections": [],
+                "avg_I_struct": 0.0,
+                "quality_distribution": {},
+            }
+
+        sections_summary = []
+        total_I_struct = 0.0
+        quality_counts = {"excellent": 0, "good": 0, "acceptable": 0, "poor": 0}
+
+        for section_name, metrics in self._pdt_quality_map.items():
+            sections_summary.append(
+                {
+                    "section": section_name,
+                    "I_struct": metrics.I_struct,
+                    "quality_level": metrics.quality_level,
+                    "boost_factor": metrics.boost_factor,
+                    "U_total": metrics.U_total,
+                }
+            )
+            total_I_struct += metrics.I_struct
+            quality_counts[metrics.quality_level] = (
+                quality_counts.get(metrics.quality_level, 0) + 1
+            )
+
+        avg_I_struct = total_I_struct / len(self._pdt_quality_map)
+
+        return {
+            "total_sections": len(self._pdt_quality_map),
+            "sections": sections_summary,
+            "avg_I_struct": avg_I_struct,
+            "quality_distribution": quality_counts,
+        }
+
     def get_node(self, signal_id: str) -> dict[str, Any] | None:
         """Get signal node by ID from base pack."""
         if hasattr(self.base_pack, "get_node"):
@@ -771,7 +930,9 @@ class EnrichedSignalPack:
 
 
 def create_enriched_signal_pack(
-    base_signal_pack: Any, enable_semantic_expansion: bool = True
+    base_signal_pack: Any,
+    enable_semantic_expansion: bool = True,
+    pdt_quality_map: dict[str, PDTQualityMetrics] | None = None,
 ) -> EnrichedSignalPack:
     """
     Factory function to create enriched signal pack with intelligence layer.
@@ -779,11 +940,14 @@ def create_enriched_signal_pack(
     Args:
         base_signal_pack: Original SignalPack from signal_loader
         enable_semantic_expansion: Enable semantic pattern expansion (5x)
+        pdt_quality_map: Optional map of PDT section quality metrics
 
     Returns:
-        EnrichedSignalPack with 4 refactoring integrations
+        EnrichedSignalPack with 4 refactoring integrations + PDT quality
     """
-    return EnrichedSignalPack(base_signal_pack, enable_semantic_expansion)
+    return EnrichedSignalPack(
+        base_signal_pack, enable_semantic_expansion, pdt_quality_map
+    )
 
 
 def analyze_with_intelligence_layer(
@@ -867,7 +1031,7 @@ __all__ = [
     "EnrichedSignalPack",
     "create_enriched_signal_pack",
     "analyze_with_intelligence_layer",
-    "create_document_context",  # Re-export for convenience
+    "create_document_context",
     "PrecisionImprovementStats",
     "compute_precision_improvement_stats",
     "IntelligenceMetrics",
