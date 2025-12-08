@@ -121,3 +121,11 @@ system/config/config_hash_registry.json
 # Temporary test files
 test_irrigation_simple.py
 index.html
+
+# Configuration audit system artifacts
+.archive/
+violations_audit.md
+config_consolidation_report.md
+config_reference_validation.md
+config_audit_summary.md
+config_depuration_report.md
