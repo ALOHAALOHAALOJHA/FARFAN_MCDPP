@@ -12,7 +12,7 @@
         "Q091": 0.3
       },
       "dimensions": {
-        "DIM01": 1.0,
+        "DIM01": 0.9,
         "DIM02": 0.7,
         "DIM03": 0.3
       },
@@ -25,10 +25,10 @@
     "coherence_validator": {
       "questions": {
         "Q001": 1.0,
-        "Q002": 1.0
+        "Q002": 0.9
       },
       "dimensions": {
-        "DIM01": 1.0,
+        "DIM01": 0.9,
         "DIM02": 0.7
       },
       "policies": {

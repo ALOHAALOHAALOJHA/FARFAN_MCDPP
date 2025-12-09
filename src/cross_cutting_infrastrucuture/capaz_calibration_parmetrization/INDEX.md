@@ -10,7 +10,7 @@
 
 ### Audit & Metadata
 - `COHORT_MANIFEST.json` - Complete migration manifest with audit trail
-  - 16 calibration files tracked
+  - 20 calibration files tracked
   - 4 parametrization files tracked
   - Original → New path mappings
   - Cohort metadata for each file
@@ -28,9 +28,10 @@
 - `README.md` - Full documentation
 - `QUICK_REFERENCE.md` - API quick reference
 - `USAGE_EXAMPLES.py` - Comprehensive usage examples
+- `calibration/CONTEXTUAL_LAYERS_README.md` - Contextual layers (@q, @d, @p) documentation
 - `INDEX.md` - This file
 
-## Calibration Files (16 total)
+## Calibration Files (20 total)
 
 ### Configuration Files (JSON)
 1. `COHORT_2024_intrinsic_calibration.json` - Base layer (@b) parameters
@@ -72,8 +73,12 @@
 12. `COHORT_2024_congruence_layer.py` - Congruence evaluator
 13. `COHORT_2024_meta_layer.py` - @m evaluator (→ src/orchestration/meta_layer.py)
 14. `COHORT_2024_unit_layer.py` - @u evaluator (→ src/orchestration/unit_layer.py) ✓ IMPLEMENTED
-15. `COHORT_2024_intrinsic_scoring.py` - Scoring formulas
-16. `COHORT_2024_intrinsic_calibration_loader.py` - Config loader utilities
+15. `COHORT_2024_contextual_layers.py` - **Contextual layer evaluators (@q, @d, @p)**
+16. `COHORT_2024_question_layer.py` - @q evaluator (reference stub)
+17. `COHORT_2024_dimension_layer.py` - @d evaluator (reference stub)
+18. `COHORT_2024_policy_layer.py` - @p evaluator (reference stub)
+19. `COHORT_2024_intrinsic_scoring.py` - Scoring formulas
+20. `COHORT_2024_intrinsic_calibration_loader.py` - Config loader utilities
 
 ## Parametrization Files (4 total)
 
@@ -195,10 +200,10 @@ All COHORT_2024 files include:
 
 ## Statistics
 
-- **Total Files**: 20 (16 calibration + 4 parametrization)
+- **Total Files**: 24 (20 calibration + 4 parametrization)
 - **JSON Files**: 9
-- **Python Files**: 11
-- **Documentation Files**: 4
+- **Python Files**: 15
+- **Documentation Files**: 5
 - **Migration Tools**: 2
 - **Loader/Adapter Files**: 3
 

@@ -229,6 +229,62 @@
         "creation_date": "2024-12-15T00:00:00+00:00",
         "wave_version": "REFACTOR_WAVE_2024_12"
       }
+    },
+    {
+      "original_path": "NEW",
+      "new_path": "calibration_parametrization_system/calibration/COHORT_2024_contextual_layers.py",
+      "original_filename": "NEW",
+      "new_filename": "COHORT_2024_contextual_layers.py",
+      "file_type": "py",
+      "category": "calibration",
+      "purpose": "Contextual layer evaluators (@q, @d, @p) with CompatibilityRegistry",
+      "cohort_metadata": {
+        "cohort_id": "COHORT_2024",
+        "creation_date": "2024-12-15T00:00:00+00:00",
+        "wave_version": "REFACTOR_WAVE_2024_12"
+      }
+    },
+    {
+      "original_path": "NEW",
+      "new_path": "calibration_parametrization_system/calibration/COHORT_2024_question_layer.py",
+      "original_filename": "NEW",
+      "new_filename": "COHORT_2024_question_layer.py",
+      "file_type": "py",
+      "category": "calibration",
+      "purpose": "Question layer (@q) evaluator reference stub",
+      "cohort_metadata": {
+        "cohort_id": "COHORT_2024",
+        "creation_date": "2024-12-15T00:00:00+00:00",
+        "wave_version": "REFACTOR_WAVE_2024_12"
+      }
+    },
+    {
+      "original_path": "NEW",
+      "new_path": "calibration_parametrization_system/calibration/COHORT_2024_dimension_layer.py",
+      "original_filename": "NEW",
+      "new_filename": "COHORT_2024_dimension_layer.py",
+      "file_type": "py",
+      "category": "calibration",
+      "purpose": "Dimension layer (@d) evaluator reference stub",
+      "cohort_metadata": {
+        "cohort_id": "COHORT_2024",
+        "creation_date": "2024-12-15T00:00:00+00:00",
+        "wave_version": "REFACTOR_WAVE_2024_12"
+      }
+    },
+    {
+      "original_path": "NEW",
+      "new_path": "calibration_parametrization_system/calibration/COHORT_2024_policy_layer.py",
+      "original_filename": "NEW",
+      "new_filename": "COHORT_2024_policy_layer.py",
+      "file_type": "py",
+      "category": "calibration",
+      "purpose": "Policy layer (@p) evaluator reference stub",
+      "cohort_metadata": {
+        "cohort_id": "COHORT_2024",
+        "creation_date": "2024-12-15T00:00:00+00:00",
+        "wave_version": "REFACTOR_WAVE_2024_12"
+      }
     }
   ],
   "parametrization_files": [
@@ -290,11 +346,11 @@
     }
   ],
   "statistics": {
-    "total_calibration_files": 16,
+    "total_calibration_files": 20,
     "total_parametrization_files": 4,
-    "total_files_migrated": 20,
+    "total_files_migrated": 24,
     "json_files": 9,
-    "python_files": 11
+    "python_files": 15
   },
   "wave_separation_policy": {
     "purpose": "Strict separation between refactoring waves",
