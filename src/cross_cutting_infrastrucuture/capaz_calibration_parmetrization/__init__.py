@@ -31,6 +31,14 @@ from __future__ import annotations
 
 from typing import Any
 
+from .calibration.COHORT_2024_calibration_orchestrator import (
+    CalibrationContext,
+    CalibrationEvidence,
+    CalibrationOrchestrator,
+    CalibrationResult,
+    FusionWeights,
+    LayerScores,
+)
 from .cohort_loader import CohortLoader
 
 _loader: CohortLoader | None = None
@@ -106,4 +114,10 @@ __all__ = [
     "get_cohort_metadata",
     "list_available_configs",
     "CohortLoader",
+    "CalibrationOrchestrator",
+    "CalibrationContext",
+    "CalibrationEvidence",
+    "CalibrationResult",
+    "FusionWeights",
+    "LayerScores",
 ]
