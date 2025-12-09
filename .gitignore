@@ -1,21 +1,9 @@
-# Python virtual environments
-farfan-env/
-.venv/
-venv/
-env/
-ENV/
-
-# Python cache and compiled files
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
 *.py[cod]
 *$py.class
 *.so
 .Python
-
-# Distribution / packaging
 build/
 develop-eggs/
 dist/
@@ -35,47 +23,11 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# PyInstaller
-*.manifest
-*.spec
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-
-# MyPy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Ruff
-.ruff_cache/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-.ipynb_checkpoints/
-
-# pyenv
-.python-version
-
-# Environments
-.env
-.env.local
-.venv
-env/
+# Virtual environments
 venv/
+env/
 ENV/
-env.bak/
-venv.bak/
+.venv
 
 # IDE
 .vscode/
@@ -88,33 +40,33 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
-# Artifacts
-artifacts/
-artifacts/test_runs/
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
 # Logs
 *.log
 
-# Audit Trail Logs
-logs/
-logs/calibration/
-
-# Trace Examples (generated)
-trace_examples/*.log
-
 # Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.hypothesis/
 test-results/
 *.junit.xml
 calibration_system_failure_report.md
 calibration_triage.log
+artifacts/test_runs/
 
-# Data backups
+# Jupyter
+.ipynb_checkpoints/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+farfan-env/
 data/questionnaire_monolith.json.backup
+
+# Environment variables
+.env
 
 # Migration artifacts
 migrate_to_pep420.py
@@ -124,10 +76,12 @@ migrate_to_pep420.py
 
 # Build artifacts
 *.whl
-*.tar.gz
+pip-wheel-metadata/
 
 # CI/CD Artifacts (GitHub Actions)
+test-results/
 *.xml
+coverage.xml
 mutation_report.txt
 .mutmut-cache/
 release_certificates_*/
