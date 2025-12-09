@@ -1,16 +1,16 @@
-# Virtual environment (farfan-env convention)
+# Python virtual environments
 farfan-env/
-*.env
-venv/
-ENV/
-env/
 .venv/
+venv/
+env/
 
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -24,154 +24,28 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
-
-# Virtual environments
-venv/
-env/
-ENV/
-.venv
 
 # Testing
 .pytest_cache/
 .coverage
-.coverage.*
-htmlcov/
-.tox/
-.nox/
 .hypothesis/
-test-results/
-*.junit.xml
-calibration_system_failure_report.md
-calibration_triage.log
-artifacts/test_runs/
+htmlcov/
 
 # Type checking
 .mypy_cache/
 .dmypy.json
 dmypy.json
-.pytype/
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-.DS_Store
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
-
-# Logs
-*.log
-
-# Jupyter
-.ipynb_checkpoints/
-
-# MyPy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-farfan-env/
-data/questionnaire_monolith.json.backup
-
-# Environment variables
-.env
-
-# Migration artifacts
-migrate_to_pep420.py
-
-# libcst
-.libcst.metadata/
-
-# Build artifacts
-*.whl
-pip-wheel-metadata/
-
-# CI/CD Artifacts (GitHub Actions)
-test-results/
-*.xml
-coverage.xml
-mutation_report.txt
-.mutmut-cache/
-release_certificates_*/
-release_notes.md
-summary.md
-health_report.md
-historical_certs/
-validation_log.txt
-contract-badge.json
-
-# Contract Certificates (generated, not committed)
-*_certificate.json
-!.github/workflows/
-
-# Calibration cleanup artifacts
-.cleanup_backup/
-test_imports.py
-test_calibration_imports.py
-
-# Import contract validation
-LAYER_VIOLATION_REPORT.md
-validator_output.txt
-test_validator.py
-test_ast.py
-
-# Import analysis reports (generated)
-IMPORT_HEALTH_REPORT.md
-
-# Import linter cache
-.import_linter_cache/
-import_linter_detailed_report.txt
-
-# Config management system
-system/config/.backup/
-system/config/config_hash_registry.json
-
-# Temporary test files
-test_irrigation_simple.py
-index.html
-
-# Configuration audit system artifacts
-.archive/
-violations_audit.md
-config_consolidation_report.md
-config_reference_validation.md
-config_audit_summary.md
-config_depuration_report.md
-
-# COHORT 2024 Calibration/Parametrization System
-# DO NOT IGNORE: calibration_parametrization_system/ directory is tracked
-# Ignore only temporary migration artifacts
-calibration_parametrization_system/.migration_temp/
-calibration_parametrization_system/**/__pycache__/
-calibration_parametrization_system/**/*.pyc
-
-# Cross-document comparative analysis artifacts
-strategic_importance_report.json
-coherence_statistics.json
-comparison_report.json
-statistics_report.json
-top_strategic.json
-strongest_causal.json
-threshold_results.json
-cross_document_*.json
-index_summary.json
-
-# Model cache & data
-models/
-*.model
-*.pkl
-*.h5
-.cache/
