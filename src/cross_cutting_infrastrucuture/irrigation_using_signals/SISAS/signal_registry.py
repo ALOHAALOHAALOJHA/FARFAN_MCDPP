@@ -74,7 +74,7 @@ except ImportError:
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.questionnaire import CanonicalQuestionnaire
+    from orchestration.factory import CanonicalQuestionnaire
 
 
 # ============================================================================
@@ -460,7 +460,7 @@ class QuestionnaireSignalRegistry:
     Thread Safety: Single-threaded (use locks for multi-threaded access)
     
     Example:
-        >>> from farfan_pipeline.core.orchestrator.questionnaire import load_questionnaire
+        >>> from orchestration.factory import CanonicalQuestionnaire, load_questionnaire
         >>> canonical = load_questionnaire()
         >>> registry = QuestionnaireSignalRegistry(canonical)
         >>> signals = registry.get_micro_answering_signals("Q001")
@@ -1279,7 +1279,7 @@ def create_signal_registry(
         Initialized signal registry
     
     Example:
-        >>> from farfan_pipeline.core.orchestrator.questionnaire import load_questionnaire
+        >>> from orchestration.factory import CanonicalQuestionnaire, load_questionnaire
         >>> canonical = load_questionnaire()
         >>> registry = create_signal_registry(canonical)
         >>> signals = registry.get_chunking_signals()
