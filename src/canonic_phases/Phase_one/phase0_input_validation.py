@@ -127,22 +127,34 @@ if PYDANTIC_AVAILABLE:
                 )
             return v
 else:
-    # Fallback validator without pydantic
+    # Fallback validator without pydantic - maintains API compatibility
     class Phase0InputValidator:
         """Fallback validator for Phase0Input (no pydantic)."""
         
         def __init__(self, pdf_path: str, run_id: str, questionnaire_path: str | None = None):
-            # Basic validation
-            if not pdf_path or not pdf_path.strip():
-                raise ValueError("pdf_path cannot be empty")
-            if not run_id or not run_id.strip():
-                raise ValueError("run_id cannot be empty")
-            if any(char in run_id for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
-                raise ValueError("run_id contains invalid characters (must be filesystem-safe)")
-            
-            self.pdf_path = pdf_path
-            self.run_id = run_id
+            # Apply validation methods
+            self.pdf_path = self.validate_pdf_path(pdf_path)
+            self.run_id = self.validate_run_id(run_id)
             self.questionnaire_path = questionnaire_path
+        
+        @classmethod
+        def validate_pdf_path(cls, v: str) -> str:
+            """Validate PDF path format."""
+            if not v or not v.strip():
+                raise ValueError("pdf_path cannot be empty")
+            return v
+        
+        @classmethod
+        def validate_run_id(cls, v: str) -> str:
+            """Validate run_id format."""
+            if not v or not v.strip():
+                raise ValueError("run_id cannot be empty")
+            # Ensure run_id is filesystem-safe
+            if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
+                raise ValueError(
+                    "run_id contains invalid characters (must be filesystem-safe)"
+                )
+            return v
 
 
 # ============================================================================

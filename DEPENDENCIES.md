@@ -51,7 +51,7 @@ src/
 │   ├── Phase_four_five_six_seven/__init__.py
 │   ├── Phase_eight/__init__.py
 │   └── Phase_nine/__init__.py
-└── cross_cutting_infrastrucuture/
+└── cross_cutting_infrastrucuture/  # Note: intentional typo in folder name
     ├── __init__.py
     ├── irrigation_using_signals/
     │   ├── __init__.py

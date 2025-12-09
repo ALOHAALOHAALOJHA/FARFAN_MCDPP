@@ -19,6 +19,25 @@ Main Components:
 - signal_resolution: Signal resolution strategies
 """
 
+# Sentinel class for unavailable modules
+class _UnavailableModule:
+    """Sentinel class for modules that failed to import."""
+    def __init__(self, module_name: str):
+        self.module_name = module_name
+    
+    def __call__(self, *args, **kwargs):
+        raise ImportError(
+            f"SISAS module '{self.module_name}' is not available. "
+            f"Please install required dependencies (e.g., pydantic) to use this functionality."
+        )
+    
+    def __getattr__(self, name):
+        raise ImportError(
+            f"SISAS module '{self.module_name}' is not available. "
+            f"Cannot access attribute '{name}'. "
+            f"Please install required dependencies (e.g., pydantic)."
+        )
+
 # Core signal abstractions
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
@@ -28,24 +47,24 @@ try:
         create_default_signal_pack,
     )
 except ImportError:
-    SignalPack = None
-    SignalRegistry = None
-    SignalClient = None
-    create_default_signal_pack = None
+    SignalPack = _UnavailableModule('signals.SignalPack')
+    SignalRegistry = _UnavailableModule('signals.SignalRegistry')
+    SignalClient = _UnavailableModule('signals.SignalClient')
+    create_default_signal_pack = _UnavailableModule('signals.create_default_signal_pack')
 
 # Signal registry for questionnaires and chunks
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+    from cross_cutting_infrastrucuiture.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
         ChunkingSignalPack,
         MicroAnsweringSignalPack,
         create_signal_registry,
     )
 except ImportError:
-    QuestionnaireSignalRegistry = None
-    ChunkingSignalPack = None
-    MicroAnsweringSignalPack = None
-    create_signal_registry = None
+    QuestionnaireSignalRegistry = _UnavailableModule('signal_registry.QuestionnaireSignalRegistry')
+    ChunkingSignalPack = _UnavailableModule('signal_registry.ChunkingSignalPack')
+    MicroAnsweringSignalPack = _UnavailableModule('signal_registry.MicroAnsweringSignalPack')
+    create_signal_registry = _UnavailableModule('signal_registry.create_signal_registry')
 
 # Quality metrics
 try:
@@ -56,10 +75,10 @@ try:
         generate_quality_report,
     )
 except ImportError:
-    SignalQualityMetrics = None
-    compute_signal_quality_metrics = None
-    analyze_coverage_gaps = None
-    generate_quality_report = None
+    SignalQualityMetrics = _UnavailableModule('signal_quality_metrics.SignalQualityMetrics')
+    compute_signal_quality_metrics = _UnavailableModule('signal_quality_metrics.compute_signal_quality_metrics')
+    analyze_coverage_gaps = _UnavailableModule('signal_quality_metrics.analyze_coverage_gaps')
+    generate_quality_report = _UnavailableModule('signal_quality_metrics.generate_quality_report')
 
 __all__ = [
     # Core
