@@ -70,8 +70,8 @@
 10. `COHORT_2024_layer_influence_model.py` - Layer influence modeling
 11. `COHORT_2024_chain_layer.py` - @chain evaluator
 12. `COHORT_2024_congruence_layer.py` - Congruence evaluator
-13. `COHORT_2024_meta_layer.py` - @m evaluator
-14. `COHORT_2024_unit_layer.py` - @u evaluator
+13. `COHORT_2024_meta_layer.py` - @m evaluator (→ src/orchestration/meta_layer.py)
+14. `COHORT_2024_unit_layer.py` - @u evaluator (→ src/orchestration/unit_layer.py) ✓ IMPLEMENTED
 15. `COHORT_2024_intrinsic_scoring.py` - Scoring formulas
 16. `COHORT_2024_intrinsic_calibration_loader.py` - Config loader utilities
 
