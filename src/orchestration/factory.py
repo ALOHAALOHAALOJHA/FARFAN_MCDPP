@@ -114,11 +114,15 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
-from farfan_pipeline.core.orchestrator.arg_router import ExtendedArgRouter
-from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
-from farfan_pipeline.core.orchestrator.core import MethodExecutor, Orchestrator
-from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
-from farfan_pipeline.core.orchestrator.method_registry import (
+# Phase 2 orchestration components
+from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
+from canonic_phases.Phase_two.class_registry import build_class_registry, get_class_paths
+from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
+
+# Core orchestration
+from orchestration.orchestrator import MethodExecutor, Orchestrator
+from orchestration.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
 )
@@ -134,31 +138,23 @@ from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registr
 )
 
 # Phase 1 validation constants module
-try:
-    from farfan_pipeline.config.validation_constants import (
-        PHASE1_VALIDATION_CONSTANTS,
-        load_validation_constants,
-    )
-    VALIDATION_CONSTANTS_AVAILABLE = True
-except ImportError:
-    PHASE1_VALIDATION_CONSTANTS = {}
-    VALIDATION_CONSTANTS_AVAILABLE = False
+# NOTE: validation_constants module does not exist in current architecture
+# Using empty fallback - implement in future JOBFRONT if needed
+PHASE1_VALIDATION_CONSTANTS: dict[str, Any] = {}
+VALIDATION_CONSTANTS_AVAILABLE = False
+
+def load_validation_constants() -> dict[str, Any]:
+    """Stub for validation constants loading (module not yet implemented)."""
+    return PHASE1_VALIDATION_CONSTANTS
 
 # Optional: CoreModuleFactory for I/O helpers
-try:
-    from farfan_pipeline.core.orchestrator.core_module_factory import CoreModuleFactory
-    CORE_MODULE_FACTORY_AVAILABLE = True
-except ImportError:
-    CoreModuleFactory = None  # type: ignore
-    CORE_MODULE_FACTORY_AVAILABLE = False
+# NOTE: CoreModuleFactory does not exist in current architecture
+CoreModuleFactory = None
+CORE_MODULE_FACTORY_AVAILABLE = False
 
-# SeedRegistry for determinism (REQUIRED for production)
-try:
-    from farfan_pipeline.core.orchestrator.seed_registry import SeedRegistry
-    SEED_REGISTRY_AVAILABLE = True
-except ImportError:
-    SeedRegistry = None  # type: ignore
-    SEED_REGISTRY_AVAILABLE = False
+# SeedRegistry for determinism
+from orchestration.seed_registry import SeedRegistry
+SEED_REGISTRY_AVAILABLE = True
 
 logger = logging.getLogger(__name__)
 
@@ -919,9 +915,7 @@ class AnalysisPipelineFactory:
             # This ensures contract integrity and method class availability at startup
             logger.info("contract_verification_start verifying_30_base_contracts")
 
-            from farfan_pipeline.core.orchestrator.base_executor_with_contract import (
-                BaseExecutorWithContract,
-            )
+
 
             verification_result = BaseExecutorWithContract.verify_all_base_contracts(
                 class_registry=class_registry
@@ -1392,7 +1386,7 @@ def get_method_dispensary_info() -> dict[str, Any]:
     Returns:
         dict with dispensary statistics and usage patterns.
     """
-    from farfan_pipeline.core.orchestrator.class_registry import get_class_paths
+
 
     class_paths = get_class_paths()
 
@@ -1488,7 +1482,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     Returns:
         dict with validation results.
     """
-    from farfan_pipeline.core.orchestrator.class_registry import get_class_paths
+
 
     class_paths = get_class_paths()
     validation_results = {
