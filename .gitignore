@@ -69,6 +69,7 @@ dmypy.json
 
 # Environments
 .env
+.env.local
 .venv
 env/
 venv/
@@ -116,6 +117,7 @@ migrate_to_pep420.py
 
 # Build artifacts
 *.whl
+*.tar.gz
 
 # CI/CD Artifacts (GitHub Actions)
 *.xml
