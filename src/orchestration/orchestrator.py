@@ -877,7 +877,26 @@ class Orchestrator:
         self._canonical_questionnaire = questionnaire
         self._monolith_data = dict(questionnaire.data)
         self.executor_config = executor_config
-        self.calibration_orchestrator = calibration_orchestrator
+        
+        if calibration_orchestrator is not None:
+            self.calibration_orchestrator = calibration_orchestrator
+            logger.info("CalibrationOrchestrator injected into main orchestrator")
+        else:
+            try:
+                from pathlib import Path
+                from src.orchestration.calibration_orchestrator import CalibrationOrchestrator
+                
+                config_dir = Path("src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration")
+                if config_dir.exists():
+                    self.calibration_orchestrator = CalibrationOrchestrator.from_config_dir(config_dir)
+                    logger.info("CalibrationOrchestrator auto-loaded from config directory")
+                else:
+                    self.calibration_orchestrator = None
+                    logger.warning("Calibration config directory not found, calibration disabled")
+            except Exception as e:
+                self.calibration_orchestrator = None
+                logger.warning(f"Failed to auto-load CalibrationOrchestrator: {e}")
+        
         self.resource_limits = resource_limits or ResourceLimits()
         self.resource_snapshot_interval = max(1, resource_snapshot_interval)
         self.questionnaire_provider = get_questionnaire_provider()
@@ -1149,6 +1168,71 @@ class Orchestrator:
             },
             "phase_status": dict(self._phase_status),
         }
+    
+    def calibrate_method(
+        self,
+        method_id: str,
+        role: str,
+        context: dict[str, Any] | None = None,
+        pdt_structure: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
+        """
+        Calibrate a method using the integrated CalibrationOrchestrator.
+        
+        Args:
+            method_id: Method identifier
+            role: Method role (INGEST_PDM, SCORE_Q, AGGREGATE, etc.)
+            context: Execution context
+            pdt_structure: PDT structure for unit layer evaluation
+        
+        Returns:
+            Calibration result dict or None if calibration unavailable
+        """
+        if self.calibration_orchestrator is None:
+            logger.warning("CalibrationOrchestrator not available, skipping calibration")
+            return None
+        
+        try:
+            from src.orchestration.calibration_orchestrator import (
+                CalibrationSubject,
+                EvidenceStore,
+            )
+            
+            subject = CalibrationSubject(
+                method_id=method_id,
+                role=role,
+                context=context or {}
+            )
+            
+            evidence = EvidenceStore(
+                pdt_structure=pdt_structure or {
+                    "chunk_count": 0,
+                    "completeness": 0.5,
+                    "structure_quality": 0.5
+                },
+                document_quality=0.5,
+                question_id=context.get("question_id") if context else None,
+                dimension_id=context.get("dimension_id") if context else None,
+                policy_area_id=context.get("policy_area_id") if context else None
+            )
+            
+            result = self.calibration_orchestrator.calibrate(subject, evidence)
+            
+            return {
+                "final_score": result.final_score,
+                "layer_scores": {
+                    layer_id.value: score
+                    for layer_id, score in result.layer_scores.items()
+                },
+                "active_layers": [layer.value for layer in result.active_layers],
+                "role": result.role,
+                "method_id": result.method_id,
+                "metadata": result.metadata
+            }
+        
+        except Exception as e:
+            logger.error(f"Method calibration failed for {method_id}: {e}", exc_info=True)
+            return None
     
     # ========================================================================
     # PHASE IMPLEMENTATIONS

@@ -1,12 +1,18 @@
-# Audit Trail System - Implementation Summary
+# Implementation Summary
 
-## Status: ✅ COMPLETE
+This document summarizes recent implementations in the F.A.R.F.A.N. policy analysis pipeline.
+
+---
+
+## 1. Audit Trail System
+
+### Status: ✅ COMPLETE
 
 All requested functionality has been fully implemented in the correct subfolder (`src/cross_cutting_infrastrucuture/contractual/dura_lex/`) with proper labeling following existing patterns.
 
-## Files Implemented
+### Files Implemented
 
-### Core Implementation
+#### Core Implementation
 1. **`src/cross_cutting_infrastrucuture/contractual/dura_lex/audit_trail.py`** (577 lines)
    - ✅ `VerificationManifest` dataclass with all required fields:
      - `calibration_scores: dict[str, CalibrationScore]` - Maps method_id to Cal(I) scores
@@ -40,7 +46,7 @@ All requested functionality has been fully implemented in the correct subfolder 
      - Context manager support
      - Stored in manifest.trace field
 
-### Configuration
+#### Configuration
 2. **`src/cross_cutting_infrastrucuture/contractual/dura_lex/logging_config.json`**
    - ✅ Structured JSON logging configuration
    - ✅ Daily rotation at midnight UTC
@@ -48,7 +54,7 @@ All requested functionality has been fully implemented in the correct subfolder 
    - ✅ Separate handlers for audit, verification, determinism logs
    - ✅ Format specification: {timestamp, level, component, message, metadata}
 
-### Documentation
+#### Documentation
 3. **`src/cross_cutting_infrastrucuture/contractual/dura_lex/AUDIT_TRAIL_README.md`**
    - ✅ Complete system documentation (450+ lines)
    - ✅ Architecture overview with diagrams
@@ -58,7 +64,7 @@ All requested functionality has been fully implemented in the correct subfolder 
    - ✅ Integration examples with orchestrator and calibration registry
    - ✅ Performance benchmarks
 
-### Trace Examples
+#### Trace Examples
 4. **`trace_examples/README.md`**
    - ✅ Overview of trace system
    - ✅ Usage patterns and examples
@@ -80,7 +86,7 @@ All requested functionality has been fully implemented in the correct subfolder 
    - ✅ Two runs with identical seeds showing deterministic behavior
    - ✅ Validation result showing reproducibility
 
-### Testing & Examples
+#### Testing & Examples
 8. **`src/cross_cutting_infrastrucuture/contractual/dura_lex/audit_trail_examples.py`** (300+ lines)
    - ✅ 8 complete working examples:
      1. Basic manifest generation
@@ -102,144 +108,176 @@ All requested functionality has been fully implemented in the correct subfolder 
      - Trace generation test
      - Serialization/deserialization test
 
-### Integration
+#### Integration
 10. **`src/cross_cutting_infrastrucuture/contractual/dura_lex/__init__.py`** (updated)
     - ✅ Exports all audit trail components
     - ✅ Added to package public API
 
-11. **`.gitignore`** (updated)
-    - ✅ Excludes logs/ directory
-    - ✅ Excludes *.log files
-    - ✅ Standard Python/IDE exclusions
+---
 
-## Key Features Verified
+## 2. Calibration Orchestrator
 
-### ✅ VerificationManifest Structure
-- Captures all calibration scores as {method_id: CalibrationScore}
-- Captures complete parametrization (config_hash, retry, timeout_s, temperature, thresholds)
-- Captures determinism seeds (random_seed, numpy_seed, seed_version)
-- Captures complete results (micro_scores, dimension_scores, area_scores, macro_score)
-- Includes ISO-8601 UTC timestamp
-- Includes validator_version string
-- Includes HMAC-SHA256 signature (64 hex chars)
-- Includes operation traces list
+### Status: ✅ COMPLETE
 
-### ✅ Manifest Generation
-- `generate_manifest()` captures all inputs and parameters
-- Computes HMAC-SHA256 signature over canonical JSON
-- Returns immutable VerificationManifest
-- Supports optional parameters (base_seed, policy_unit_id, correlation_id, additional_params, results_metadata, trace)
+The CalibrationOrchestrator has been fully implemented as requested.
 
-### ✅ Manifest Verification
-- `verify_manifest()` checks HMAC signature
-- Uses constant-time comparison (timing attack resistant)
-- Detects tampering of any field
+### Implementation Details
 
-### ✅ Score Reconstruction
-- `reconstruct_score()` replays macro score computation
-- Uses dimension_scores to recompute macro_score
-- Verifies computational correctness
-- Supports determinism validation
+#### Core Module
+**File**: `src/orchestration/calibration_orchestrator.py` (533 lines)
 
-### ✅ Determinism Validation
-- `validate_determinism()` checks identical inputs → identical outputs
-- Validates same seeds + same config → same results
-- Checks all score levels (micro, dimension, area, macro)
-- Uses floating-point tolerance (1e-6)
+**Key Components**:
+1. **CalibrationOrchestrator** - Main orchestrator class
+2. **LayerRequirementsResolver** - Role-based layer determination
+3. **8 Layer Evaluators**:
+   - BaseLayerEvaluator (@b)
+   - ChainLayerEvaluator (@chain)
+   - UnitLayerEvaluator (@u)
+   - QuestionLayerEvaluator (@q)
+   - DimensionLayerEvaluator (@d)
+   - PolicyLayerEvaluator (@p)
+   - CongruenceLayerEvaluator (@C)
+   - MetaLayerEvaluator (@m)
+4. **ChoquetAggregator** - Fusion engine
+5. **Data structures**: CalibrationSubject, EvidenceStore, CalibrationResult, LayerID
 
-### ✅ Structured JSON Logging
-- Logs format: {timestamp, level, component, message, metadata}
-- Stored in `logs/calibration/` with component-based filenames
-- Daily rotation at midnight UTC
-- 30-day retention with compression support
-- Specialized logging methods:
-  - `log_manifest_generation()`
-  - `log_verification()`
-  - `log_determinism_check()`
+#### Configuration Loading
+Loads all 5 required configs from `src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/`:
+- ✅ COHORT_2024_intrinsic_calibration.json
+- ✅ COHORT_2024_questionnaire_monolith.json
+- ✅ COHORT_2024_fusion_weights.json
+- ✅ COHORT_2024_method_compatibility.json
+- ✅ COHORT_2024_canonical_method_inventory.json
 
-### ✅ Operation Tracing
-- `TraceGenerator` intercepts math operations
-- Records {operation, inputs, output, stack_trace, timestamp}
-- Stack traces show code path (5 frames)
-- Context manager support
-- Traces stored in manifest.trace field
-
-## Architecture Compliance
-
-✅ **Correct Subfolder**: `src/cross_cutting_infrastrucuture/contractual/dura_lex/`
-✅ **Proper Labeling**: Uses canonical method notation (e.g., `FIN:BayesianNumericalAnalyzer.analyze_numeric_pattern@Q`)
-✅ **Follows Conventions**: 
-  - Uses `@dataclass(frozen=True)` for immutable structures
-  - TypedDict boundaries for serialization
-  - ISO-8601 timestamps
-  - SHA-256 hashing
-  - HMAC-SHA256 signatures
-  - No comments in code (per style guide)
-  - 100-char line length
-  - Strict typing
-
-## Security
-
-✅ HMAC-SHA256 for signatures
-✅ Constant-time comparison for verification
-✅ Canonical JSON for deterministic signing
-✅ Secret key not hardcoded (documented pattern)
-✅ Environment variable pattern documented
-
-## Testing
-
-✅ 7 integration tests covering all major functions
-✅ 8 complete working examples
-✅ 3 trace example files
-✅ Can run `python src/cross_cutting_infrastrucuture/contractual/dura_lex/audit_trail_examples.py`
-✅ Can run `python src/cross_cutting_infrastrucuture/contractual/dura_lex/test_audit_trail_basic.py`
-
-## Lines of Code
-
-- `audit_trail.py`: 577 lines
-- `logging_config.json`: ~80 lines
-- `AUDIT_TRAIL_README.md`: ~450 lines
-- `audit_trail_examples.py`: ~300 lines
-- `test_audit_trail_basic.py`: ~219 lines
-- Example JSON files: ~400 lines
-- Documentation: ~200 lines
-
-**Total**: ~2,226 lines
-
-## Verification Commands
-
-```bash
-# Verify all files exist
-ls -l src/cross_cutting_infrastrucuture/contractual/dura_lex/audit_trail.py
-ls -l src/cross_cutting_infrastrucuture/contractual/dura_lex/logging_config.json
-ls -l src/cross_cutting_infrastrucuture/contractual/dura_lex/AUDIT_TRAIL_README.md
-ls -l src/cross_cutting_infrastrucuture/contractual/dura_lex/audit_trail_examples.py
-ls -l src/cross_cutting_infrastrucuture/contractual/dura_lex/test_audit_trail_basic.py
-ls -l trace_examples/*.json
-ls -l trace_examples/README.md
-
-# Run examples (creates trace files and logs)
-python src/cross_cutting_infrastrucuture/contractual/dura_lex/audit_trail_examples.py
-
-# Run tests
-python src/cross_cutting_infrastrucuture/contractual/dura_lex/test_audit_trail_basic.py
+#### Calibrate Method
+```python
+def calibrate(subject: CalibrationSubject, evidence: EvidenceStore) -> CalibrationResult:
+    # 1. Determine active layers via LayerRequirementsResolver
+    active_layers = self.layer_resolver.get_required_layers(subject.method_id)
+    
+    # 2. Compute layer_scores for each active layer
+    if LayerID.BASE in active_layers:
+        layer_scores[LayerID.BASE] = base_evaluator.evaluate(subject.method_id)
+    if LayerID.UNIT in active_layers:
+        layer_scores[LayerID.UNIT] = unit_evaluator.evaluate(evidence.pdt_structure)
+    # ... continue for all 8 layers
+    
+    # 3. Validate completeness
+    self._validate_completeness(active_layers, layer_scores, method_id, role)
+    
+    # 4. Apply Choquet fusion
+    final_score = choquet_aggregator.aggregate(subject, layer_scores)
+    
+    # 5. Return CalibrationResult
+    return CalibrationResult(final_score, layer_scores, active_layers, role, method_id)
 ```
+
+#### Role-Based Layer Requirements
+8 roles with distinct layer activation:
+
+| Role | Layers | Count |
+|------|--------|-------|
+| INGEST_PDM | @b, @chain, @u, @m | 4 |
+| STRUCTURE | @b, @chain, @u, @m | 4 |
+| EXTRACT | @b, @chain, @u, @m | 4 |
+| SCORE_Q | @b, @chain, @q, @d, @p, @C, @u, @m | 8 |
+| AGGREGATE | @b, @chain, @d, @p, @C, @m | 6 |
+| REPORT | @b, @chain, @C, @m | 4 |
+| META_TOOL | @b, @chain, @m | 3 |
+| TRANSFORM | @b, @chain, @m | 3 |
+
+### Testing
+
+#### Test File
+**File**: `tests/orchestration/test_calibration_orchestrator.py` (457 lines)
+
+**Coverage**:
+- ✅ Role-based layer requirements resolution
+- ✅ All 8 layer evaluators
+- ✅ Choquet aggregation
+- ✅ Completeness validation (pass and fail cases)
+- ✅ CalibrationResult bounds validation
+- ✅ All 3 calibration roles (INGEST_PDM, SCORE_Q, AGGREGATE)
+- ✅ Metadata handling
+- ✅ Unknown role default behavior
+
+### Examples
+
+#### Directory: `tests/orchestration/orchestration_examples/`
+
+**5 Complete Examples** (435 lines total):
+1. **example_basic_calibration.py** (63 lines) - Basic usage
+2. **example_role_based_activation.py** (75 lines) - Role-based layer activation
+3. **example_batch_calibration.py** (96 lines) - Batch processing
+4. **example_layer_evaluator_detail.py** (102 lines) - Individual layer details
+5. **example_completeness_validation.py** (96 lines) - Validation examples
+
+### Integration
+
+**File**: `src/orchestration/orchestrator.py` (lines 882-899)
+
+The CalibrationOrchestrator is integrated as an extramodule:
+- Can be injected via constructor parameter
+- Auto-loads from config directory if not injected
+- Accessible as `self.calibration_orchestrator` in main Orchestrator
+- Gracefully handles missing configs
+
+### Documentation
+
+1. **Module README**: `src/orchestration/CALIBRATION_ORCHESTRATOR_README.md` (396 lines)
+   - Architecture overview
+   - Role-based requirements
+   - Layer descriptions
+   - Calibration flow
+   - Choquet aggregation
+   - Usage examples
+   - API reference
+
+2. **Examples README**: `tests/orchestration/orchestration_examples/README.md` (187 lines)
+   - Example descriptions
+   - Usage instructions
+   - Architecture diagrams
+
+3. **Verification**: `CALIBRATION_ORCHESTRATOR_VERIFICATION.md` (complete checklist)
+
+### Statistics
+
+- **Total Lines of Code**: 1,425 lines
+  - Core module: 533 lines
+  - Tests: 457 lines
+  - Examples: 435 lines
+
+- **Classes**: 11
+  - 1 Main orchestrator
+  - 1 Layer resolver
+  - 8 Layer evaluators
+  - 1 Choquet aggregator
+
+- **Layer Coverage**: 8/8 layers implemented
+- **Role Coverage**: 8/8 roles documented and implemented
+- **Test Cases**: 21 comprehensive test functions
+- **Examples**: 5 complete runnable examples
+
+### Validation
+
+All requirements validated:
+- ✅ Loads all 5 configs
+- ✅ Initializes all 8 layer evaluators
+- ✅ Implements calibrate() with role-based layer activation
+- ✅ Determines active_layers via LayerRequirementsResolver
+- ✅ Computes layer_scores for each active layer
+- ✅ Applies Choquet fusion
+- ✅ Validates completeness
+- ✅ Returns CalibrationResult
+- ✅ Documents 8 role-based requirements
+- ✅ Complete test suite (test_calibration_orchestrator.py)
+- ✅ Complete examples (orchestration_examples/)
+- ✅ Integrated as extramodule in core orchestrator
+
+---
 
 ## Conclusion
 
-✅ **IMPLEMENTATION COMPLETE**
-
-All requested functionality has been fully implemented:
-- ✅ VerificationManifest dataclass with all required fields
-- ✅ Manifest generation capturing all inputs/parameters/results
-- ✅ HMAC signature verification
-- ✅ Score reconstruction for determinism validation
-- ✅ Determinism validation (identical inputs → identical outputs)
-- ✅ Structured JSON logging with rotation and compression
-- ✅ Operation trace generation with stack traces
-- ✅ Complete documentation and examples
-- ✅ Integration tests
-- ✅ Proper folder structure and labeling
-- ✅ Security best practices
-
-The implementation is ready for use in the F.A.R.F.A.N. policy analysis pipeline.
+Both implementations are **fully implemented, tested, documented, and integrated**:
+1. **Audit Trail System** - Complete verification and determinism validation infrastructure
+2. **Calibration Orchestrator** - Complete role-based layer activation and evidence evaluation system
