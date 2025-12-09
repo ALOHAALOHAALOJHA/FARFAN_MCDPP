@@ -58,7 +58,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field, field_validator
+# Optional pydantic for enhanced validation
+try:
+    from pydantic import BaseModel, Field, field_validator
+    PYDANTIC_AVAILABLE = True
+except ImportError:
+    PYDANTIC_AVAILABLE = False
+    BaseModel = object  # Fallback base class
+    Field = lambda **kwargs: None  # Mock Field
+    field_validator = lambda *args, **kwargs: lambda f: f  # Mock decorator
 
 # Phase protocol from same directory
 from canonic_phases.Phase_one.phase_protocol import (
@@ -88,35 +96,53 @@ class Phase0Input:
     questionnaire_path: Path | None = None
 
 
-class Phase0InputValidator(BaseModel):
-    """Pydantic validator for Phase0Input."""
+if PYDANTIC_AVAILABLE:
+    class Phase0InputValidator(BaseModel):
+        """Pydantic validator for Phase0Input."""
 
-    pdf_path: str = Field(description="Path to input PDF")
-    run_id: str = Field(min_length=1, description="Unique run identifier")
-    questionnaire_path: str | None = Field(
-        default=None, description="Optional questionnaire path"
-    )
+        pdf_path: str = Field(description="Path to input PDF")
+        run_id: str = Field(min_length=1, description="Unique run identifier")
+        questionnaire_path: str | None = Field(
+            default=None, description="Optional questionnaire path"
+        )
 
-    @field_validator("pdf_path")
-    @classmethod
-    def validate_pdf_path(cls, v: str) -> str:
-        """Validate PDF path format."""
-        if not v or not v.strip():
-            raise ValueError("pdf_path cannot be empty")
-        return v
+        @field_validator("pdf_path")
+        @classmethod
+        def validate_pdf_path(cls, v: str) -> str:
+            """Validate PDF path format."""
+            if not v or not v.strip():
+                raise ValueError("pdf_path cannot be empty")
+            return v
 
-    @field_validator("run_id")
-    @classmethod
-    def validate_run_id(cls, v: str) -> str:
-        """Validate run_id format."""
-        if not v or not v.strip():
-            raise ValueError("run_id cannot be empty")
-        # Ensure run_id is filesystem-safe
-        if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
-            raise ValueError(
-                "run_id contains invalid characters (must be filesystem-safe)"
-            )
-        return v
+        @field_validator("run_id")
+        @classmethod
+        def validate_run_id(cls, v: str) -> str:
+            """Validate run_id format."""
+            if not v or not v.strip():
+                raise ValueError("run_id cannot be empty")
+            # Ensure run_id is filesystem-safe
+            if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
+                raise ValueError(
+                    "run_id contains invalid characters (must be filesystem-safe)"
+                )
+            return v
+else:
+    # Fallback validator without pydantic
+    class Phase0InputValidator:
+        """Fallback validator for Phase0Input (no pydantic)."""
+        
+        def __init__(self, pdf_path: str, run_id: str, questionnaire_path: str | None = None):
+            # Basic validation
+            if not pdf_path or not pdf_path.strip():
+                raise ValueError("pdf_path cannot be empty")
+            if not run_id or not run_id.strip():
+                raise ValueError("run_id cannot be empty")
+            if any(char in run_id for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
+                raise ValueError("run_id contains invalid characters (must be filesystem-safe)")
+            
+            self.pdf_path = pdf_path
+            self.run_id = run_id
+            self.questionnaire_path = questionnaire_path
 
 
 # ============================================================================
