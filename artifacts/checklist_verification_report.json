@@ -1,0 +1,26 @@
+{
+  "summary": {
+    "total_checks": 2,
+    "passed": 2,
+    "fatal_failures": 0,
+    "warnings": 0,
+    "duration_seconds": 0.021745920181274414,
+    "all_fatal_passed": true
+  },
+  "results": [
+    {
+      "check_id": "SISAS-PRE-001",
+      "category": "SISAS_PRECONDITION",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Questionnaire at /Users/recovered/Applications/F.A.R.F.A.N -MECHANISTIC-PIPELINE/canonic_questionnaire_central/questionnaire_monolith.json: exists=True"
+    },
+    {
+      "check_id": "SISAS-PRE-003",
+      "category": "SISAS_PRECONDITION",
+      "passed": true,
+      "severity": "FATAL",
+      "message": "Found 10 policy areas"
+    }
+  ]
+}
