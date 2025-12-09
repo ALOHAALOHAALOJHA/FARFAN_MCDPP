@@ -1,0 +1,398 @@
+{
+  "certificate_version": "1.0.0",
+  "instance_id": "analyzer-teoria-cambio-20241215-002",
+  "method_id": "farfan_pipeline.methods_dispensary.teoria_cambio.TeoriaCambioAnalyzer",
+  "node_id": "node_analyzer_tc_002",
+  "context": {
+    "execution_id": "exec-20241215-153045-uuid-def456",
+    "document_id": "PDM-MED-2024-002",
+    "policy_unit_id": "MUNICIPALITY-MEDELLIN-2024",
+    "analysis_type": "theory_of_change",
+    "phase": "phase_2",
+    "cohort": "COHORT_2024"
+  },
+  "intrinsic_score": 0.79,
+  "layer_scores": {
+    "@b": 0.85,
+    "@chain": 0.82,
+    "@q": 0.78,
+    "@d": 0.81,
+    "@p": 0.76,
+    "@C": 0.80,
+    "@u": 0.72,
+    "@m": 0.75
+  },
+  "calibrated_score": 0.7823,
+  "fusion_formula": {
+    "symbolic": "Σ(aₗ·xₗ) + Σ(aₗₖ·min(xₗ,xₖ))",
+    "expanded": "(0.17·x_@b) + (0.13·x_@chain) + (0.08·x_@q) + (0.07·x_@d) + (0.06·x_@p) + (0.08·x_@C) + (0.04·x_@u) + (0.04·x_@m) + (0.13·min(x_@u,x_@chain)) + (0.10·min(x_@chain,x_@C)) + (0.10·min(x_@q,x_@d))",
+    "computation_trace": [
+      {
+        "step": 1,
+        "operation": "0.17 * 0.85",
+        "layer": "@b",
+        "weight": 0.17,
+        "score": 0.85,
+        "result": 0.1445,
+        "cumulative": 0.1445
+      },
+      {
+        "step": 2,
+        "operation": "0.13 * 0.82",
+        "layer": "@chain",
+        "weight": 0.13,
+        "score": 0.82,
+        "result": 0.1066,
+        "cumulative": 0.2511
+      },
+      {
+        "step": 3,
+        "operation": "0.08 * 0.78",
+        "layer": "@q",
+        "weight": 0.08,
+        "score": 0.78,
+        "result": 0.0624,
+        "cumulative": 0.3135
+      },
+      {
+        "step": 4,
+        "operation": "0.07 * 0.81",
+        "layer": "@d",
+        "weight": 0.07,
+        "score": 0.81,
+        "result": 0.0567,
+        "cumulative": 0.3702
+      },
+      {
+        "step": 5,
+        "operation": "0.06 * 0.76",
+        "layer": "@p",
+        "weight": 0.06,
+        "score": 0.76,
+        "result": 0.0456,
+        "cumulative": 0.4158
+      },
+      {
+        "step": 6,
+        "operation": "0.08 * 0.80",
+        "layer": "@C",
+        "weight": 0.08,
+        "score": 0.8,
+        "result": 0.064,
+        "cumulative": 0.4798
+      },
+      {
+        "step": 7,
+        "operation": "0.04 * 0.72",
+        "layer": "@u",
+        "weight": 0.04,
+        "score": 0.72,
+        "result": 0.0288,
+        "cumulative": 0.5086
+      },
+      {
+        "step": 8,
+        "operation": "0.04 * 0.75",
+        "layer": "@m",
+        "weight": 0.04,
+        "score": 0.75,
+        "result": 0.03,
+        "cumulative": 0.5386
+      },
+      {
+        "step": 9,
+        "operation": "0.13 * min(0.72, 0.82)",
+        "layer_pair": "@u,@chain",
+        "weight": 0.13,
+        "score1": 0.72,
+        "score2": 0.82,
+        "min_score": 0.72,
+        "result": 0.0936,
+        "cumulative": 0.6322
+      },
+      {
+        "step": 10,
+        "operation": "0.10 * min(0.82, 0.80)",
+        "layer_pair": "@chain,@C",
+        "weight": 0.1,
+        "score1": 0.82,
+        "score2": 0.8,
+        "min_score": 0.8,
+        "result": 0.08,
+        "cumulative": 0.7122
+      },
+      {
+        "step": 11,
+        "operation": "0.10 * min(0.78, 0.81)",
+        "layer_pair": "@q,@d",
+        "weight": 0.1,
+        "score1": 0.78,
+        "score2": 0.81,
+        "min_score": 0.78,
+        "result": 0.078,
+        "cumulative": 0.7902
+      },
+      {
+        "step": 12,
+        "operation": "final_calibrated_score",
+        "linear_sum": 0.5386,
+        "interaction_sum": 0.2516,
+        "result": 0.7902
+      }
+    ]
+  },
+  "parameter_provenance": {
+    "a_@b": {
+      "value": 0.17,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @b from COHORT_2024 fusion specification"
+    },
+    "a_@chain": {
+      "value": 0.13,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @chain from COHORT_2024 fusion specification"
+    },
+    "a_@q": {
+      "value": 0.08,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @q from COHORT_2024 fusion specification"
+    },
+    "a_@d": {
+      "value": 0.07,
+      "source": "src/cross_cutting_infrastrucuiture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @d from COHORT_2024 fusion specification"
+    },
+    "a_@p": {
+      "value": 0.06,
+      "source": "src/cross_cutting_infrastrucuiture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @p from COHORT_2024 fusion specification"
+    },
+    "a_@C": {
+      "value": 0.08,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @C from COHORT_2024 fusion specification"
+    },
+    "a_@u": {
+      "value": 0.04,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @u from COHORT_2024 fusion specification"
+    },
+    "a_@m": {
+      "value": 0.04,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:weights",
+      "justification": "Linear weight for layer @m from COHORT_2024 fusion specification"
+    },
+    "a_@u,@chain": {
+      "value": 0.13,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:interaction_weights",
+      "justification": "Interaction weight for layers @u,@chain capturing synergy effects"
+    },
+    "a_@chain,@C": {
+      "value": 0.1,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:interaction_weights",
+      "justification": "Interaction weight for layers @chain,@C capturing synergy effects"
+    },
+    "a_@q,@d": {
+      "value": 0.1,
+      "source": "src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json:interaction_weights",
+      "justification": "Interaction weight for layers @q,@d capturing synergy effects"
+    }
+  },
+  "evidence_trail": {
+    "@b": {
+      "source": "intrinsic_calibration_rubric.json",
+      "components": {
+        "statistical_validity": 0.88,
+        "logical_consistency": 0.84,
+        "appropriate_assumptions": 0.82
+      },
+      "formula": "0.4*statistical_validity + 0.3*logical_consistency + 0.3*appropriate_assumptions",
+      "computation": "0.4*0.88 + 0.3*0.84 + 0.3*0.82 = 0.85"
+    },
+    "@chain": {
+      "source": "method_compatibility.json",
+      "evidence": [
+        "Theory of Change DAG construction validated",
+        "Monte Carlo simulation configured",
+        "Evidence flow to downstream phases verified"
+      ],
+      "pass_rate": 0.82
+    },
+    "@q": {
+      "source": "questionnaire_monolith.json",
+      "question_match": "Multiple questions mapped to theory of change analysis",
+      "dimension_alignment": 0.78,
+      "semantic_similarity": 0.80
+    },
+    "@d": {
+      "source": "dimension_alignment_validator",
+      "dimensions_covered": [
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "evidence_count": 22,
+      "relevance_score": 0.81
+    },
+    "@p": {
+      "source": "policy_area_classifier",
+      "primary_areas": [
+        "strategic_planning",
+        "territorial_development",
+        "social_policy"
+      ],
+      "confidence": 0.76
+    },
+    "@C": {
+      "source": "contract_compliance_validator",
+      "checks_passed": 15,
+      "checks_total": 19,
+      "compliance_rate": 0.79
+    },
+    "@u": {
+      "source": "document_quality_metrics",
+      "text_clarity": 0.75,
+      "structure_completeness": 0.70,
+      "metadata_quality": 0.71
+    },
+    "@m": {
+      "source": "governance_maturity_evaluator",
+      "institutional_capacity": 0.78,
+      "transparency_level": 0.72
+    }
+  },
+  "config_hash": "b8e4d0f3c5a7e9b1d3f5a7c9e1b3d5f7a9c1e3f5b7d9e1c3f5a7b9d1e3f5a7c9",
+  "graph_hash": "fedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321",
+  "validation_checks": {
+    "boundedness": {
+      "intrinsic_score_in_bounds": true,
+      "intrinsic_score_value": 0.79,
+      "layer_scores_in_bounds": {
+        "@b": {
+          "score": 0.85,
+          "in_bounds": true
+        },
+        "@chain": {
+          "score": 0.82,
+          "in_bounds": true
+        },
+        "@q": {
+          "score": 0.78,
+          "in_bounds": true
+        },
+        "@d": {
+          "score": 0.81,
+          "in_bounds": true
+        },
+        "@p": {
+          "score": 0.76,
+          "in_bounds": true
+        },
+        "@C": {
+          "score": 0.8,
+          "in_bounds": true
+        },
+        "@u": {
+          "score": 0.72,
+          "in_bounds": true
+        },
+        "@m": {
+          "score": 0.75,
+          "in_bounds": true
+        }
+      },
+      "calibrated_score_in_bounds": true,
+      "calibrated_score_value": 0.7823,
+      "all_bounded": true
+    },
+    "monotonicity": {
+      "all_weights_non_negative": true,
+      "weight_signs": {
+        "@b": {
+          "value": 0.17,
+          "non_negative": true
+        },
+        "@chain": {
+          "value": 0.13,
+          "non_negative": true
+        },
+        "@q": {
+          "value": 0.08,
+          "non_negative": true
+        },
+        "@d": {
+          "value": 0.07,
+          "non_negative": true
+        },
+        "@p": {
+          "value": 0.06,
+          "non_negative": true
+        },
+        "@C": {
+          "value": 0.08,
+          "non_negative": true
+        },
+        "@u": {
+          "value": 0.04,
+          "non_negative": true
+        },
+        "@m": {
+          "value": 0.04,
+          "non_negative": true
+        }
+      },
+      "interaction_weight_signs": {
+        "@u,@chain": {
+          "value": 0.13,
+          "non_negative": true
+        },
+        "@chain,@C": {
+          "value": 0.1,
+          "non_negative": true
+        },
+        "@q,@d": {
+          "value": 0.1,
+          "non_negative": true
+        }
+      }
+    },
+    "normalization": {
+      "linear_sum": 0.67,
+      "interaction_sum": 0.33,
+      "total_sum": 1.0,
+      "is_normalized": true,
+      "tolerance": 0.01,
+      "deviation": 0.0
+    },
+    "completeness": {
+      "required_layers": [
+        "@C",
+        "@b",
+        "@chain",
+        "@d",
+        "@m",
+        "@p",
+        "@q",
+        "@u"
+      ],
+      "provided_layers": [
+        "@C",
+        "@b",
+        "@chain",
+        "@d",
+        "@m",
+        "@p",
+        "@q",
+        "@u"
+      ],
+      "missing_layers": [],
+      "extra_layers": [],
+      "is_complete": true,
+      "has_no_extras": true
+    }
+  },
+  "timestamp": "2024-12-15T15:30:45Z",
+  "validator_version": "1.0.0",
+  "signature": "d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0"
+}
