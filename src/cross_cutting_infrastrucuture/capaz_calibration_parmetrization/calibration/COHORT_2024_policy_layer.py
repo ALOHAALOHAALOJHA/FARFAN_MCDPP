@@ -5,17 +5,21 @@ Created: 2024-12-15T00:00:00+00:00
 Policy Layer (@p) Evaluator Implementation
 
 This is a COHORT_2024 reference file. For production use, import from:
-    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_contextual_layers import *
+    from ..COHORT_2024_contextual_layers import *
 """
 
-from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_contextual_layers import (
-    PolicyEvaluator,
+from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_contextual_layers import (  # noqa: E501
+    POLICY_LAYER_METADATA,
     CompatibilityRegistry,
+    PolicyEvaluator,
     create_contextual_evaluators,
+    get_policy_metadata,
 )
 
 __all__ = [
-    "PolicyEvaluator",
+    "POLICY_LAYER_METADATA",
     "CompatibilityRegistry",
+    "PolicyEvaluator",
     "create_contextual_evaluators",
+    "get_policy_metadata",
 ]
