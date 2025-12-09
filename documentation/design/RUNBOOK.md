@@ -647,7 +647,7 @@ import json
 import hashlib
 
 # Load questionnaire
-with open('data/questionnaire_monolith.json', 'r') as f:
+with open('canonic_questionnaire_central/questionnaire_monolith.json', 'r') as f:
     data = json.load(f)
 
 # Compute hash
@@ -863,8 +863,8 @@ python scripts/run_policy_pipeline_verified.py \
 
 ```bash
 # 1. Restore from git
-git status data/
-git checkout data/questionnaire_monolith.json
+git status canonic_questionnaire_central/
+git checkout canonic_questionnaire_central/questionnaire_monolith.json
 
 # 2. Verify integrity
 python3 -c "from farfan_core.core.orchestrator.questionnaire import load_questionnaire; load_questionnaire()"
@@ -951,7 +951,7 @@ echo "========================================="
 | Path | Contents |
 |------|----------|
 | `data/plans/` | Input PDF files |
-| `data/questionnaire_monolith.json` | 300-question evaluation framework |
+| `canonic_questionnaire_central/questionnaire_monolith.json` | 300-question evaluation framework |
 | `artifacts/` | Pipeline outputs and verification manifests |
 | `farfan-env/` | Python virtual environment |
 | `scripts/` | Execution scripts |

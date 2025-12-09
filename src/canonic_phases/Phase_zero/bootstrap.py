@@ -33,6 +33,10 @@ from farfan_pipeline.core.orchestrator.signals import (
     SignalPack,
     SignalRegistry,
 )
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_consumption import (
+    AccessLevel,
+    get_access_audit,
+)
 
 @dataclass
 class QuestionnaireResourceProvider:
@@ -87,13 +91,31 @@ class QuestionnaireResourceProvider:
         """
         SCOPE: Solo canonical_notation.dimensions (6 items)
         """
-        return self._require_initialized().dimensions
+        result = self._require_initialized().dimensions
+        get_access_audit().record_access(
+            level=AccessLevel.ORCHESTRATOR,
+            accessor_module=__name__,
+            accessor_class="QuestionnaireResourceProvider",
+            accessor_method="get_dimensions",
+            accessed_block="dimensions",
+            accessed_keys=list(result.keys()),
+        )
+        return result
 
     def get_policy_areas(self) -> dict[str, Any]:
         """
         SCOPE: Solo canonical_notation.policy_areas (10 items)
         """
-        return self._require_initialized().policy_areas
+        result = self._require_initialized().policy_areas
+        get_access_audit().record_access(
+            level=AccessLevel.ORCHESTRATOR,
+            accessor_module=__name__,
+            accessor_class="QuestionnaireResourceProvider",
+            accessor_method="get_policy_areas",
+            accessed_block="policy_areas",
+            accessed_keys=list(result.keys()),
+        )
+        return result
 
     def get_micro_questions_for_policy_area(self, pa_id: str) -> list[dict[str, Any]]:
         """
@@ -101,7 +123,17 @@ class QuestionnaireResourceProvider:
         Ejemplo: get_micro_questions_for_policy_area("PA01") → 30 preguntas
         """
         canonical = self._require_initialized()
-        return [q for q in canonical.micro_questions if q.get("policy_area_id") == pa_id]
+        result = [q for q in canonical.micro_questions if q.get("policy_area_id") == pa_id]
+        get_access_audit().record_access(
+            level=AccessLevel.ORCHESTRATOR,
+            accessor_module=__name__,
+            accessor_class="QuestionnaireResourceProvider",
+            accessor_method="get_micro_questions_for_policy_area",
+            accessed_block="micro_questions",
+            accessed_keys=[q.get("question_id", "") for q in result],
+            scope_filter=f"policy_area_id={pa_id}",
+        )
+        return result
 
     def get_micro_questions_for_dimension(self, dim_id: str) -> list[dict[str, Any]]:
         """
@@ -109,7 +141,17 @@ class QuestionnaireResourceProvider:
         Ejemplo: get_micro_questions_for_dimension("DIM01") → 50 preguntas
         """
         canonical = self._require_initialized()
-        return [q for q in canonical.micro_questions if q.get("dimension_id") == dim_id]
+        result = [q for q in canonical.micro_questions if q.get("dimension_id") == dim_id]
+        get_access_audit().record_access(
+            level=AccessLevel.ORCHESTRATOR,
+            accessor_module=__name__,
+            accessor_class="QuestionnaireResourceProvider",
+            accessor_method="get_micro_questions_for_dimension",
+            accessed_block="micro_questions",
+            accessed_keys=[q.get("question_id", "") for q in result],
+            scope_filter=f"dimension_id={dim_id}",
+        )
+        return result
 
     def get_patterns_by_question(self, question_id: str) -> list[dict[str, Any]]:
         """
@@ -117,10 +159,22 @@ class QuestionnaireResourceProvider:
         USO: ReportAssembler para enrichment de respuestas
         """
         canonical = self._require_initialized()
+        result = []
         for q in canonical.micro_questions:
             if q.get("question_id") == question_id:
-                return list(q.get("patterns", []))
-        return []
+                result = list(q.get("patterns", []))
+                break
+        pattern_ids = [p.get("id", f"idx_{i}") for i, p in enumerate(result)]
+        get_access_audit().record_access(
+            level=AccessLevel.ORCHESTRATOR,
+            accessor_module=__name__,
+            accessor_class="QuestionnaireResourceProvider",
+            accessor_method="get_patterns_by_question",
+            accessed_block="patterns",
+            accessed_keys=pattern_ids,
+            scope_filter=f"question_id={question_id}",
+        )
+        return result
 
     def get_expected_elements_for_question(self, question_id: str) -> list[dict[str, Any]]:
         """
@@ -128,10 +182,22 @@ class QuestionnaireResourceProvider:
         USO: EvidenceValidator para verificación
         """
         canonical = self._require_initialized()
+        result = []
         for q in canonical.micro_questions:
             if q.get("question_id") == question_id:
-                return list(q.get("expected_elements", []))
-        return []
+                result = list(q.get("expected_elements", []))
+                break
+        element_types = [e.get("type", f"idx_{i}") for i, e in enumerate(result)]
+        get_access_audit().record_access(
+            level=AccessLevel.ORCHESTRATOR,
+            accessor_module=__name__,
+            accessor_class="QuestionnaireResourceProvider",
+            accessor_method="get_expected_elements_for_question",
+            accessed_block="expected_elements",
+            accessed_keys=element_types,
+            scope_filter=f"question_id={question_id}",
+        )
+        return result
 
     def get_failure_contract_for_question(self, question_id: str) -> dict[str, Any] | None:
         """
@@ -139,10 +205,21 @@ class QuestionnaireResourceProvider:
         USO: EvidenceValidator para abort conditions
         """
         canonical = self._require_initialized()
+        result = None
         for q in canonical.micro_questions:
             if q.get("question_id") == question_id:
-                return q.get("failure_contract")
-        return None
+                result = q.get("failure_contract")
+                break
+        get_access_audit().record_access(
+            level=AccessLevel.ORCHESTRATOR,
+            accessor_module=__name__,
+            accessor_class="QuestionnaireResourceProvider",
+            accessor_method="get_failure_contract_for_question",
+            accessed_block="failure_contract",
+            accessed_keys=[question_id] if result else [],
+            scope_filter=f"question_id={question_id}",
+        )
+        return result
 
     @property
     def source_hash(self) -> str:
