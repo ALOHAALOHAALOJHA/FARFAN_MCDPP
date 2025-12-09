@@ -85,6 +85,21 @@ from .COHORT_2024_layer_assignment import (
     generate_canonical_inventory,
 )
 
+# Layer Versioning
+from .layer_versioning import (
+    LayerMetadataRegistry,
+    FormulaChangeDetector,
+    WeightDiffAnalyzer,
+    MigrationImpactAssessor,
+    LayerEvolutionValidator,
+    LayerMetadata,
+    WeightChange,
+    FormulaChange,
+    MigrationImpact,
+    DiffThresholds,
+    create_versioning_tools,
+)
+
 __all__ = [
     # Chain Layer
     "ChainLayerEvaluator",
@@ -136,5 +151,17 @@ __all__ = [
     "identify_executors",
     "assign_layers_and_weights",
     "generate_canonical_inventory",
+    # Layer Versioning
+    "LayerMetadataRegistry",
+    "FormulaChangeDetector",
+    "WeightDiffAnalyzer",
+    "MigrationImpactAssessor",
+    "LayerEvolutionValidator",
+    "LayerMetadata",
+    "WeightChange",
+    "FormulaChange",
+    "MigrationImpact",
+    "DiffThresholds",
+    "create_versioning_tools",
 ]
 
