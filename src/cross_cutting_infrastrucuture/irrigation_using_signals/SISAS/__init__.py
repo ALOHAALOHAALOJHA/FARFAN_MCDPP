@@ -21,21 +21,29 @@ Main Components:
 
 # Sentinel class for unavailable modules
 class _UnavailableModule:
-    """Sentinel class for modules that failed to import."""
-    def __init__(self, module_name: str):
+    """
+    Sentinel class for modules that failed to import.
+    
+    Provides helpful error messages when attempting to use unavailable SISAS functionality.
+    Common causes: missing pydantic, missing numpy, or other dependencies.
+    """
+    def __init__(self, module_name: str, typical_dependency: str = "required dependencies"):
         self.module_name = module_name
+        self.typical_dependency = typical_dependency
     
     def __call__(self, *args, **kwargs):
         raise ImportError(
             f"SISAS module '{self.module_name}' is not available. "
-            f"Please install required dependencies (e.g., pydantic) to use this functionality."
+            f"Please install {self.typical_dependency} to use this functionality. "
+            f"Common dependencies: pydantic>=2.0, numpy, pandas"
         )
     
     def __getattr__(self, name):
         raise ImportError(
             f"SISAS module '{self.module_name}' is not available. "
             f"Cannot access attribute '{name}'. "
-            f"Please install required dependencies (e.g., pydantic)."
+            f"Please install {self.typical_dependency}. "
+            f"Common dependencies: pydantic>=2.0, numpy, pandas"
         )
 
 # Core signal abstractions
@@ -54,7 +62,7 @@ except ImportError:
 
 # Signal registry for questionnaires and chunks
 try:
-    from cross_cutting_infrastrucuiture.irrigation_using_signals.SISAS.signal_registry import (
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
         ChunkingSignalPack,
         MicroAnsweringSignalPack,
