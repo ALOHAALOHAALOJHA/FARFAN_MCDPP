@@ -152,3 +152,8 @@ index_summary.json
 # Note: Evidence traces are kept in repo for COHORT_2024 but may be moved to secure storage
 # src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/evidence_traces/*.json
 # !src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/evidence_traces/.gitkeep
+
+# Validation Suite (generated reports and artifacts)
+sensitive_rules_for_coding/validation_suite/reports/
+validation_suite_report.json
+example_validation_report.json
