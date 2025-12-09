@@ -1,0 +1,29 @@
+{
+  "_cohort_metadata": {
+    "cohort_id": "COHORT_2024",
+    "creation_date": "2024-12-15T00:00:00+00:00",
+    "wave_version": "REFACTOR_WAVE_2024_12"
+  },
+  "_reference_note": "Use ConfigPathAdapter to load full fusion_specification.json with cohort metadata merged.",
+  "_original_path": "config/json_files_ no_schemas/fusion_specification.json",
+  "_metadata": {
+    "version": "1.0.0",
+    "generated_at": "2025-11-10T08:23:00Z",
+    "description": "Fusion specification - weights and interaction terms for calibration fusion",
+    "spec_compliance": "SUPERPROMPT Three-Pillar Calibration System",
+    "purpose": "Defines a_ℓ (linear weights) and a_ℓk (interaction weights) per role"
+  },
+  "_fusion_formula": {
+    "description": "Cal(I) = Σ(a_ℓ · x_ℓ) + Σ(a_ℓk · min(x_ℓ, x_k))",
+    "constraints": [
+      "a_ℓ ≥ 0 for all ℓ",
+      "a_ℓk ≥ 0 for all (ℓ,k)",
+      "Σ(a_ℓ) + Σ(a_ℓk) = 1.0",
+      "Cal(I) ∈ [0,1] (bounded)",
+      "∂Cal/∂x_ℓ ≥ 0 (monotonic)"
+    ]
+  },
+  "role_fusion_parameters": {
+    "_note": "Full fusion parameters for all roles (INGEST_PDM, STRUCTURE, EXTRACT, SCORE_Q, AGGREGATE, REPORT, META_TOOL, TRANSFORM) available in original file."
+  }
+}

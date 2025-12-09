@@ -1,7 +1,0 @@
-{
-  "_metadata": {
-    "description": "SHA256 hash registry for config files",
-    "last_updated": "2025-01-15T10:00:00Z",
-    "note": "Run 'python scripts/update_hash_registry.py' to update this registry"
-  }
-}

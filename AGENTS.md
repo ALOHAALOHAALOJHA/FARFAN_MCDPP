@@ -1,39 +1,32 @@
-# Agent Development Guide
+# F.A.R.F.A.N Developer Guide
 
 ## Setup
 ```bash
-python3.12 -m venv farfan-env
-source farfan-env/bin/activate  # On Windows: farfan-env\Scripts\activate
-pip install --upgrade pip setuptools wheel
-pip install -r requirements.txt
-pip install -e .
+python3.12 -m venv farfan-env        # Virtual env (see .gitignore for convention)
+source farfan-env/bin/activate       # Activate
+pip install -e .                     # Install package + dependencies
 ```
 
 ## Commands
-- **Build**: `pip install -e .`
-- **Lint**: `ruff check . && black --check . && mypy farfan_core/`
-- **Test**: `python -m pytest tests/ -v --cov=farfan_core --cov-report=term-missing`
-- **Dev Server**: `python farfan_core/farfan_core/api/api_server.py`
+- **Build**: N/A (interpreted Python)
+- **Lint**: `ruff check farfan_core/` or `mypy farfan_core/farfan_core/core/` (strict type checking)
+- **Test**: `pytest -m "updated and not outdated" -v` (run current tests) or `pytest tests/` (all)
+- **Dev Server**: `python farfan_core/farfan_core/api/api_server.py` or `farfan_core-api` (FastAPI on port 8000)
 
 ## Tech Stack
-- **Language**: Python 3.12+
-- **Core**: Deterministic 9-phase policy analysis pipeline with provenance tracking
-- **NLP**: transformers, sentence-transformers, spacy
-- **API**: Flask, FastAPI with JWT auth
-- **Data**: pandas, numpy, scikit-learn, PyMuPDF
-- **Testing**: pytest with property-based testing (hypothesis)
+- **Language**: Python 3.12
+- **Core**: FastAPI (API), Pydantic (validation), transformers/sentence-transformers (NLP)
+- **Analysis**: PyMC (Bayesian), scikit-learn, NetworkX, spaCy
+- **Quality**: pytest, ruff (linter), mypy (type checker), black (formatter)
 
 ## Architecture
-- `farfan_core/farfan_core/`: Main package with layered architecture
-  - `core/`: Orchestrator, calibration, phase execution
-  - `processing/`: SPC ingestion pipeline (canonical policy package)
-  - `analysis/`: 7 producers for 300-question analysis (D1-D6 dimensions × PA01-PA10 areas)
-  - `api/`: REST API server for dashboard integration
-  - `flux/`: Signal system with memory:// and HTTP transport
+**Layered**: `core/` (orchestration) → `processing/` (ingestion) → `analysis/` (methods)  
+**Pipeline**: 9-phase deterministic policy analysis (Phase 0 validation → Phase 1-9 processing)  
+**Structure**: Package at `farfan_core/farfan_core/`, entry point: `farfan_core/entrypoint/main.py`
 
-## Code Style
-- Type hints required (strict mypy/pyright enforcement)
-- Line length: 100 chars (ruff)
-- No comments unless complex logic requires explanation
-- TypedDict for contracts with explicit pre/postconditions
-- Deterministic execution: fixed seeds, explicit error handling
+## Conventions
+- Strict typing (mypy strict mode, Pyright strict)
+- No comments unless complex logic
+- Contract-based architecture with TypedDict boundaries
+- 100-char line length (ruff)
+- Deterministic execution (fixed seeds, reproducible)

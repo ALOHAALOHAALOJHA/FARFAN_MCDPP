@@ -1,0 +1,191 @@
+{
+  "_cohort_metadata": {
+    "cohort_id": "COHORT_2024",
+    "creation_date": "2024-12-15T00:00:00+00:00",
+    "wave_version": "REFACTOR_WAVE_2024_12"
+  },
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Intrinsic calibration base layer parameters (@b)",
+    "last_updated": "2024-12-02T00:00:00Z",
+    "authority": "Doctrina SIN_CARRETA",
+    "implementation_wave": "GOVERNANCE_WAVE_2024_12_07",
+    "wave_label": "CONFIG_GOVERNANCE_STRICT_FOLDERIZATION"
+  },
+  "base_layer": {
+    "symbol": "@b",
+    "name": "Base Layer",
+    "description": "Intrinsic quality of the method code",
+    "aggregation": {
+      "method": "weighted_sum",
+      "weights": {
+        "b_theory": 0.40,
+        "b_impl": 0.35,
+        "b_deploy": 0.25
+      }
+    }
+  },
+  "components": {
+    "b_theory": {
+      "description": "Conceptual and methodological soundness",
+      "weight": 0.40,
+      "subcomponents": {
+        "grounded_in_valid_statistics": {
+          "weight": 0.40,
+          "criteria": "Method uses valid statistical principles",
+          "evaluation_method": "expert_review"
+        },
+        "logical_consistency": {
+          "weight": 0.30,
+          "criteria": "Internal logic is consistent and contradiction-free",
+          "evaluation_method": "formal_verification"
+        },
+        "appropriate_assumptions": {
+          "weight": 0.30,
+          "criteria": "Assumptions are stated and appropriate for the context",
+          "evaluation_method": "documentation_review"
+        }
+      }
+    },
+    "b_impl": {
+      "description": "Code implementation quality",
+      "weight": 0.35,
+      "subcomponents": {
+        "test_coverage": {
+          "weight": 0.35,
+          "criteria": "Percentage of code covered by tests",
+          "evaluation_method": "automated_coverage",
+          "thresholds": {
+            "excellent": 80.0,
+            "good": 60.0,
+            "acceptable": 40.0,
+            "poor": 0.0
+          },
+          "score_mapping": {
+            "excellent": 1.0,
+            "good": 0.8,
+            "acceptable": 0.5,
+            "poor": 0.0
+          }
+        },
+        "type_annotations": {
+          "weight": 0.25,
+          "criteria": "Completeness of type hints",
+          "evaluation_method": "mypy_strict"
+        },
+        "error_handling": {
+          "weight": 0.25,
+          "criteria": "Robustness of error management",
+          "evaluation_method": "exception_coverage"
+        },
+        "documentation": {
+          "weight": 0.15,
+          "criteria": "Clarity and completeness of docstrings",
+          "evaluation_method": "docstring_coverage"
+        }
+      }
+    },
+    "b_deploy": {
+      "description": "Operational stability and reliability",
+      "weight": 0.25,
+      "subcomponents": {
+        "validation_runs": {
+          "weight": 0.40,
+          "criteria": "Number of successful validation projects",
+          "evaluation_method": "historical_data",
+          "thresholds": {
+            "excellent": 20,
+            "good": 10,
+            "acceptable": 5,
+            "poor": 0
+          },
+          "score_mapping": {
+            "excellent": 1.0,
+            "good": 0.8,
+            "acceptable": 0.5,
+            "poor": 0.0
+          }
+        },
+        "stability_coefficient": {
+          "weight": 0.35,
+          "criteria": "Coefficient of Variation (CV)",
+          "evaluation_method": "statistical_analysis",
+          "direction": "lower_is_better",
+          "thresholds": {
+            "excellent": 0.1,
+            "good": 0.2,
+            "acceptable": 0.5,
+            "poor": 1.0
+          },
+          "score_mapping": {
+            "excellent": 1.0,
+            "good": 0.8,
+            "acceptable": 0.5,
+            "poor": 0.0
+          }
+        },
+        "failure_rate": {
+          "weight": 0.25,
+          "criteria": "Rate of execution failure",
+          "evaluation_method": "error_tracking",
+          "direction": "lower_is_better",
+          "unit": "percent",
+          "thresholds": {
+            "excellent": 1.0,
+            "good": 5.0,
+            "acceptable": 10.0,
+            "poor": 100.0
+          },
+          "score_mapping": {
+            "excellent": 1.0,
+            "good": 0.8,
+            "acceptable": 0.5,
+            "poor": 0.0
+          }
+        }
+      }
+    }
+  },
+  "role_requirements": {
+    "SCORE_Q": {
+      "required_layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
+      "min_base_score": 0.7,
+      "critical_components": ["b_theory", "b_impl"]
+    },
+    "INGEST_PDM": {
+      "required_layers": ["@b", "@chain", "@u", "@m"],
+      "min_base_score": 0.6,
+      "critical_components": ["b_impl", "b_deploy"]
+    },
+    "STRUCTURE": {
+      "required_layers": ["@b", "@chain", "@u", "@m"],
+      "min_base_score": 0.6,
+      "critical_components": ["b_impl"]
+    },
+    "EXTRACT": {
+      "required_layers": ["@b", "@chain", "@u", "@m"],
+      "min_base_score": 0.6,
+      "critical_components": ["b_impl", "b_deploy"]
+    },
+    "AGGREGATE": {
+      "required_layers": ["@b", "@chain", "@u", "@m"],
+      "min_base_score": 0.7,
+      "critical_components": ["b_theory", "b_impl"]
+    },
+    "REPORT": {
+      "required_layers": ["@b", "@chain", "@u", "@m"],
+      "min_base_score": 0.6,
+      "critical_components": ["b_impl"]
+    },
+    "META_TOOL": {
+      "required_layers": ["@b", "@chain", "@u", "@m"],
+      "min_base_score": 0.7,
+      "critical_components": ["b_theory", "b_impl"]
+    },
+    "TRANSFORM": {
+      "required_layers": ["@b", "@chain", "@u", "@m"],
+      "min_base_score": 0.6,
+      "critical_components": ["b_impl"]
+    }
+  }
+}

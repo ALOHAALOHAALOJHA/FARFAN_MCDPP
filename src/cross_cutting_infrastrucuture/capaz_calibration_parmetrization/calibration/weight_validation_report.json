@@ -1,0 +1,133 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "generated_at": "2025-01-10T00:00:00Z",
+    "description": "Validation report for Choquet fusion weights",
+    "source_file": "fusion_weights.json",
+    "validation_status": "PASSED"
+  },
+  "weight_validation": {
+    "linear_weights": {
+      "b": {
+        "value": 0.122951,
+        "non_negative": true,
+        "valid": true
+      },
+      "u": {
+        "value": 0.098361,
+        "non_negative": true,
+        "valid": true
+      },
+      "q": {
+        "value": 0.081967,
+        "non_negative": true,
+        "valid": true
+      },
+      "d": {
+        "value": 0.065574,
+        "non_negative": true,
+        "valid": true
+      },
+      "p": {
+        "value": 0.04918,
+        "non_negative": true,
+        "valid": true
+      },
+      "C": {
+        "value": 0.081967,
+        "non_negative": true,
+        "valid": true
+      },
+      "chain": {
+        "value": 0.065574,
+        "non_negative": true,
+        "valid": true
+      },
+      "m": {
+        "value": 0.034426,
+        "non_negative": true,
+        "valid": true
+      }
+    },
+    "interaction_weights": {
+      "(u,chain)": {
+        "value": 0.15,
+        "non_negative": true,
+        "valid": true,
+        "rationale": "Plan quality only matters with sound wiring"
+      },
+      "(chain,C)": {
+        "value": 0.12,
+        "non_negative": true,
+        "valid": true,
+        "rationale": "Ensemble validity requires chain integrity"
+      },
+      "(q,d)": {
+        "value": 0.08,
+        "non_negative": true,
+        "valid": true,
+        "rationale": "Question-dimension alignment synergy"
+      },
+      "(d,p)": {
+        "value": 0.05,
+        "non_negative": true,
+        "valid": true,
+        "rationale": "Dimension-policy coherence synergy"
+      }
+    }
+  },
+  "sum_validation": {
+    "linear_sum": {
+      "computed": 0.6,
+      "expected": 0.6,
+      "difference": 0.0,
+      "within_tolerance": true
+    },
+    "interaction_sum": {
+      "computed": 0.4,
+      "expected": 0.4,
+      "difference": 0.0,
+      "within_tolerance": true
+    },
+    "total_sum": {
+      "computed": 1.0,
+      "expected": 1.0,
+      "difference": 0.0,
+      "tolerance": 1e-09,
+      "within_tolerance": true
+    }
+  },
+  "constraint_validation": {
+    "all_weights_non_negative": {
+      "constraint": "a_ℓ ≥ 0 for all ℓ and a_ℓk ≥ 0 for all (ℓ,k)",
+      "status": "PASSED",
+      "violations": []
+    },
+    "normalization": {
+      "constraint": "Σ(a_ℓ) + Σ(a_ℓk) = 1.0 ± 1e-9",
+      "status": "PASSED",
+      "computed_sum": 1.0,
+      "expected_sum": 1.0,
+      "tolerance": 1e-09,
+      "difference": 0.0
+    },
+    "monotonicity": {
+      "constraint": "∂Cal/∂x_ℓ ≥ 0 (monotonic)",
+      "status": "PASSED",
+      "note": "All weights are non-negative, ensuring monotonicity"
+    },
+    "boundedness": {
+      "constraint": "Cal(I) ∈ [0,1] (bounded)",
+      "status": "PASSED",
+      "note": "Normalization ensures output in [0,1] range"
+    }
+  },
+  "validation_summary": {
+    "overall_status": "PASSED",
+    "total_checks": 12,
+    "passed_checks": 12,
+    "failed_checks": 0,
+    "warnings": 0,
+    "timestamp": "2025-01-10T00:00:00Z"
+  }
+}

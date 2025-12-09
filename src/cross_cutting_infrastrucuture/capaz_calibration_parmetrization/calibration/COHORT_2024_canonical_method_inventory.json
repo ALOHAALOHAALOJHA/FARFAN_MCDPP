@@ -1,0 +1,18 @@
+{
+  "_cohort_metadata": {
+    "cohort_id": "COHORT_2024",
+    "creation_date": "2024-12-15T00:00:00+00:00",
+    "wave_version": "REFACTOR_WAVE_2024_12"
+  },
+  "_reference_note": "Due to size (14K+ lines, 2000+ methods), full inventory content should be loaded from scripts/inventory/canonical_method_inventory.json and merged with this cohort metadata. Use CohortLoader for automatic handling.",
+  "_original_path": "scripts/inventory/canonical_method_inventory.json",
+  "metadata": {
+    "scan_timestamp": "2025-01-30T00:00:00.000000+00:00",
+    "repository": "PEROPOROBTANTE/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL",
+    "total_methods": 2000,
+    "description": "Canonical method inventory for F.A.R.F.A.N policy analysis pipeline"
+  },
+  "methods": {
+    "_note": "Full 2000+ method entries available in original file. This is a COHORT_2024 reference stub."
+  }
+}

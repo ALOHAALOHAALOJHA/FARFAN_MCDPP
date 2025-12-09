@@ -1,0 +1,45 @@
+{
+  "_cohort_metadata": {
+    "cohort_id": "COHORT_2024",
+    "creation_date": "2024-12-15T00:00:00+00:00",
+    "wave_version": "REFACTOR_WAVE_2024_12"
+  },
+  "_reference_note": "Due to size (430+ lines), full rubric content should be loaded from system/config/calibration/intrinsic_calibration_rubric.json and merged with this cohort metadata. Use CohortLoader for automatic handling.",
+  "_original_path": "system/config/calibration/intrinsic_calibration_rubric.json",
+  "_metadata": {
+    "version": "2.0.0",
+    "description": "Canonical Intrinsic Calibration Rubric with exact formulas and decision automaton",
+    "spec_reference": "CALIBRATION_CANONICAL_COHERENCE_ANALYSIS.md",
+    "last_updated": "2025-12-04T00:00:00Z",
+    "authority": "Doctrina SIN_CARRETA",
+    "changelog": "v2.0.0: Complete implementation with exact formulas, exclusion patterns, and Q1/Q2/Q3 decision automaton"
+  },
+  "formulas": {
+    "b_theory": {
+      "formula": "b_theory = 0.4 * statistical_validity + 0.3 * logical_consistency + 0.3 * appropriate_assumptions"
+    },
+    "b_impl": {
+      "formula": "b_impl = 0.35 * test_coverage + 0.25 * type_annotations + 0.25 * error_handling + 0.15 * documentation"
+    },
+    "b_deploy": {
+      "formula": "b_deploy = 0.4 * validation_runs + 0.35 * stability_coefficient + 0.25 * failure_rate"
+    }
+  },
+  "decision_automaton": {
+    "description": "3-question decision tree for determining calibration requirements",
+    "version": "1.0.0",
+    "logic": "requires_calibration = (Q1 OR Q2 OR Q3) AND NOT excluded",
+    "questions": {
+      "Q1": {
+        "question": "Is the method analytically active?"
+      },
+      "Q2": {
+        "question": "Is the method parametric?"
+      },
+      "Q3": {
+        "question": "Is the method safety-critical?"
+      }
+    }
+  },
+  "_note": "Full rubric with complete formulas, scoring rules, and implementation notes available in original file."
+}

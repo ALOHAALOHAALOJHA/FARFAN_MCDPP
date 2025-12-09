@@ -747,10 +747,10 @@ HashValidationError: Discrepancia de hash del cuestionario
 **Solución**:
 ```bash
 # Verificar si el archivo fue modificado
-git status data/questionnaire_monolith.json
+git status canonic_questionnaire_central/questionnaire_monolith.json
 
 # Revertir a versión canónica
-git checkout data/questionnaire_monolith.json
+git checkout canonic_questionnaire_central/questionnaire_monolith.json
 
 # Verificar integridad
 python3 -c "
