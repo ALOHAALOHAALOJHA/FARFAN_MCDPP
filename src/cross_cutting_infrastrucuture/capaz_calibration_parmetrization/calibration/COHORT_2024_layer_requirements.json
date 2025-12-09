@@ -1,0 +1,241 @@
+{
+  "_metadata": {
+    "cohort_id": "COHORT_2024",
+    "version": "1.0.0",
+    "generated_at": "2024-12-15T00:00:00+00:00",
+    "description": "Layer requirements and dependencies for COHORT_2024 calibration system",
+    "authority": "COHORT_2024 Calibration Governance",
+    "spec_compliance": "SUPERPROMPT Three-Pillar Calibration System",
+    "implementation_wave": "REFACTOR_WAVE_2024_12"
+  },
+  "layers": {
+    "@b": {
+      "name": "Base Theory Layer",
+      "symbol": "@b",
+      "description": "Code quality and theoretical soundness",
+      "purpose": "Validates fundamental code correctness, type safety, and documentation",
+      "required_methods": [
+        "static_analysis",
+        "type_checking",
+        "documentation_coverage",
+        "code_complexity_analysis"
+      ],
+      "dependencies": [],
+      "weight": 0.122951,
+      "computation_source": "COHORT_2024_layer_computers.py::compute_base_layer",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "required_coverage": 0.8,
+        "critical": true
+      }
+    },
+    "@chain": {
+      "name": "Chain Layer",
+      "symbol": "@chain",
+      "description": "Method wiring and orchestration integrity",
+      "purpose": "Ensures correct method dependencies and execution flow",
+      "required_methods": [
+        "chain_validator",
+        "dependency_checker",
+        "cycle_detector",
+        "flow_analyzer"
+      ],
+      "dependencies": ["@b"],
+      "weight": 0.065574,
+      "computation_source": "COHORT_2024_chain_layer.py::ChainLayerEvaluator",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "no_cycles_allowed": true,
+        "critical": true
+      }
+    },
+    "@q": {
+      "name": "Question Layer",
+      "symbol": "@q",
+      "description": "Question appropriateness and alignment",
+      "purpose": "Validates question relevance and semantic correctness",
+      "required_methods": [
+        "question_validator",
+        "semantic_analyzer",
+        "relevance_scorer",
+        "question_dimension_mapper"
+      ],
+      "dependencies": ["@b"],
+      "weight": 0.081967,
+      "computation_source": "COHORT_2024_layer_computers.py::compute_question_layer",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "required_semantic_coherence": 0.7,
+        "critical": false
+      }
+    },
+    "@d": {
+      "name": "Dimension Layer",
+      "symbol": "@d",
+      "description": "Dimensional analysis alignment",
+      "purpose": "Ensures proper dimensional coverage and mapping",
+      "required_methods": [
+        "dimension_mapper",
+        "coverage_analyzer",
+        "dimension_validator",
+        "alignment_scorer"
+      ],
+      "dependencies": ["@q"],
+      "weight": 0.065574,
+      "computation_source": "COHORT_2024_layer_computers.py::compute_dimension_layer",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "required_coverage": 0.75,
+        "critical": false
+      }
+    },
+    "@p": {
+      "name": "Policy Layer",
+      "symbol": "@p",
+      "description": "Policy area fit and domain alignment",
+      "purpose": "Validates policy domain relevance and appropriateness",
+      "required_methods": [
+        "policy_classifier",
+        "domain_matcher",
+        "policy_validator",
+        "domain_coverage_analyzer"
+      ],
+      "dependencies": ["@d"],
+      "weight": 0.049180,
+      "computation_source": "COHORT_2024_layer_computers.py::compute_policy_layer",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "required_domain_match": 0.6,
+        "critical": false
+      }
+    },
+    "@C": {
+      "name": "Contract Layer",
+      "symbol": "@C",
+      "description": "Contract compliance and specification adherence",
+      "purpose": "Ensures TypedDict boundaries and contract integrity",
+      "required_methods": [
+        "contract_validator",
+        "schema_checker",
+        "type_boundary_validator",
+        "specification_compliance_checker"
+      ],
+      "dependencies": ["@chain"],
+      "weight": 0.081967,
+      "computation_source": "COHORT_2024_layer_computers.py::compute_contract_layer",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "strict_typing_required": true,
+        "critical": true
+      }
+    },
+    "@u": {
+      "name": "Unit Layer",
+      "symbol": "@u",
+      "description": "Document quality and completeness",
+      "purpose": "Validates input document quality and sufficiency",
+      "required_methods": [
+        "document_analyzer",
+        "completeness_checker",
+        "quality_scorer",
+        "content_validator"
+      ],
+      "dependencies": ["@b"],
+      "weight": 0.098361,
+      "computation_source": "COHORT_2024_unit_layer.py::UnitLayerEvaluator",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "required_completeness": 0.8,
+        "critical": true
+      }
+    },
+    "@m": {
+      "name": "Meta Layer",
+      "symbol": "@m",
+      "description": "Governance maturity and process quality",
+      "purpose": "Assesses overall system governance and maturity",
+      "required_methods": [
+        "governance_analyzer",
+        "maturity_assessor",
+        "process_quality_evaluator",
+        "meta_compliance_checker"
+      ],
+      "dependencies": ["@b", "@C"],
+      "weight": 0.034426,
+      "computation_source": "COHORT_2024_meta_layer.py::MetaLayerEvaluator",
+      "validation_rules": {
+        "min_score": 0.0,
+        "max_score": 1.0,
+        "required_governance_score": 0.5,
+        "critical": false
+      }
+    }
+  },
+  "interactions": {
+    "(@u, @chain)": {
+      "pair": ["@u", "@chain"],
+      "weight": 0.15,
+      "rationale": "Plan quality only matters with sound wiring",
+      "description": "Document quality amplifies chain integrity through better execution planning",
+      "computation_method": "min(x_u, x_chain)"
+    },
+    "(@chain, @C)": {
+      "pair": ["@chain", "@C"],
+      "weight": 0.12,
+      "rationale": "Ensemble validity requires chain integrity",
+      "description": "Chain correctness and contract compliance create synergistic validation",
+      "computation_method": "min(x_chain, x_C)"
+    },
+    "(@q, @d)": {
+      "pair": ["@q", "@d"],
+      "weight": 0.08,
+      "rationale": "Question-dimension alignment synergy",
+      "description": "Well-formed questions enhance dimensional analysis effectiveness",
+      "computation_method": "min(x_q, x_d)"
+    },
+    "(@d, @p)": {
+      "pair": ["@d", "@p"],
+      "weight": 0.05,
+      "rationale": "Dimension-policy coherence synergy",
+      "description": "Dimensional coverage reinforces policy domain alignment",
+      "computation_method": "min(x_d, x_p)"
+    }
+  },
+  "dependency_graph": {
+    "description": "Directed acyclic graph of layer dependencies",
+    "root_layers": ["@b"],
+    "leaf_layers": ["@m", "@p"],
+    "critical_path": ["@b", "@chain", "@C"],
+    "validation_order": ["@b", "@chain", "@q", "@u", "@d", "@p", "@C", "@m"]
+  },
+  "fusion_formula": {
+    "description": "Choquet integral fusion of layer scores",
+    "formula": "Cal(I) = Σ(a_ℓ · x_ℓ) + Σ(a_ℓk · min(x_ℓ, x_k))",
+    "linear_weights_source": "COHORT_2024_fusion_weights.json::linear_weights",
+    "interaction_weights_source": "COHORT_2024_fusion_weights.json::interaction_weights",
+    "constraints": [
+      "a_ℓ ≥ 0 for all ℓ",
+      "a_ℓk ≥ 0 for all (ℓ,k)",
+      "Σ(a_ℓ) + Σ(a_ℓk) = 1.0",
+      "Cal(I) ∈ [0,1]",
+      "∂Cal/∂x_ℓ ≥ 0 (monotonic)"
+    ]
+  },
+  "validation": {
+    "all_layers_present": true,
+    "weights_sum_to_one": true,
+    "no_circular_dependencies": true,
+    "interaction_pairs_valid": true,
+    "critical_layers": ["@b", "@chain", "@C", "@u"],
+    "total_linear_weight": 0.6,
+    "total_interaction_weight": 0.4,
+    "normalization_verified": true
+  }
+}

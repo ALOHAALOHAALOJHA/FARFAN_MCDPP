@@ -1,0 +1,298 @@
+{
+  "audit_metadata": {
+    "cohort_id": "COHORT_2024",
+    "audit_date": "2024-12-15T00:00:00+00:00",
+    "auditor_version": "1.0.0"
+  },
+  "summary": {
+    "total_files": 27,
+    "cohort_2024_files": 21,
+    "legacy_files": 0,
+    "misplaced_files": 0,
+    "unlabeled_files": 6,
+    "duplicate_files": 1
+  },
+  "file_inventory": [
+    {
+      "path": "calibration/validate_fusion_weights.py",
+      "filename": "validate_fusion_weights.py",
+      "has_cohort_prefix": false,
+      "is_cohort_2024": false,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_intrinsic_calibration_loader.py",
+      "filename": "COHORT_2024_intrinsic_calibration_loader.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/certificate_validator.py",
+      "filename": "certificate_validator.py",
+      "has_cohort_prefix": false,
+      "is_cohort_2024": false,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/fusion_weights.json",
+      "filename": "fusion_weights.json",
+      "has_cohort_prefix": false,
+      "is_cohort_2024": false,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": true,
+      "issues": [
+        "UNLABELED: Missing COHORT_2024 prefix"
+      ]
+    },
+    {
+      "path": "calibration/chain_layer_tests.py",
+      "filename": "chain_layer_tests.py",
+      "has_cohort_prefix": false,
+      "is_cohort_2024": false,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_congruence_layer.py",
+      "filename": "COHORT_2024_congruence_layer.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_fusion_weights.json",
+      "filename": "COHORT_2024_fusion_weights.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": true,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_method_compatibility.json",
+      "filename": "COHORT_2024_method_compatibility.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_layer_assignment.py",
+      "filename": "COHORT_2024_layer_assignment.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_questionnaire_monolith.json",
+      "filename": "COHORT_2024_questionnaire_monolith.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_layer_computers.py",
+      "filename": "COHORT_2024_layer_computers.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_intrinsic_calibration_rubric.json",
+      "filename": "COHORT_2024_intrinsic_calibration_rubric.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_layer_coexistence.py",
+      "filename": "COHORT_2024_layer_coexistence.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_intrinsic_scoring.py",
+      "filename": "COHORT_2024_intrinsic_scoring.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_unit_layer.py",
+      "filename": "COHORT_2024_unit_layer.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_layer_requirements.json",
+      "filename": "COHORT_2024_layer_requirements.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/certificate_generator.py",
+      "filename": "certificate_generator.py",
+      "has_cohort_prefix": false,
+      "is_cohort_2024": false,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_meta_layer.py",
+      "filename": "COHORT_2024_meta_layer.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_intrinsic_calibration.json",
+      "filename": "COHORT_2024_intrinsic_calibration.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_chain_layer.py",
+      "filename": "COHORT_2024_chain_layer.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/weight_validation_report.json",
+      "filename": "weight_validation_report.json",
+      "has_cohort_prefix": false,
+      "is_cohort_2024": false,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_layer_influence_model.py",
+      "filename": "COHORT_2024_layer_influence_model.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "calibration/COHORT_2024_canonical_method_inventory.json",
+      "filename": "COHORT_2024_canonical_method_inventory.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "calibration",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "parametrization/COHORT_2024_executor_config.py",
+      "filename": "COHORT_2024_executor_config.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "parametrization",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "parametrization/COHORT_2024_executor_profiler.py",
+      "filename": "COHORT_2024_executor_profiler.py",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "parametrization",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "parametrization/COHORT_2024_runtime_layers.json",
+      "filename": "COHORT_2024_runtime_layers.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "parametrization",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    },
+    {
+      "path": "parametrization/COHORT_2024_executor_config.json",
+      "filename": "COHORT_2024_executor_config.json",
+      "has_cohort_prefix": true,
+      "is_cohort_2024": true,
+      "category": "parametrization",
+      "is_legacy": false,
+      "is_duplicate": false,
+      "issues": []
+    }
+  ],
+  "issues": [
+    "DUPLICATE: Multiple versions of fusion_weights.json found",
+    "UNLABELED FILES: 6 files missing COHORT_2024 prefix"
+  ],
+  "recommendations": [
+    "RENAME UNLABELED CONFIG FILES:",
+    "  - mv src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/fusion_weights.json src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_fusion_weights.json",
+    "\u2717 ISSUES FOUND: 2 structural issues require attention"
+  ]
+}

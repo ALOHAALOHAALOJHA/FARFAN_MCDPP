@@ -10,10 +10,32 @@
 
 ### Audit & Metadata
 - `COHORT_MANIFEST.json` - Complete migration manifest with audit trail
-  - 20 calibration files tracked
+  - 23 calibration files tracked
   - 4 parametrization files tracked
   - Original → New path mappings
   - Cohort metadata for each file
+
+### Structural Audit Tools (NEW)
+- `master_structural_audit.py` - **Complete end-to-end audit orchestration**
+  - Phase 1: Initial structural audit
+  - Phase 2: File reorganization
+  - Phase 3: Legacy cleanup
+  - Phase 4: Final verification
+- `structural_audit.py` - Comprehensive structure verification
+  - Verify all required files present
+  - Check COHORT_2024 prefix compliance
+  - Detect legacy and duplicate files
+  - Generate detailed compliance report
+- `cleanup_legacy_files.py` - Legacy file deletion utility
+  - Remove unlabeled configuration files
+  - Delete duplicate legacy versions
+  - Preserve utility scripts
+- `reorganize_files.py` - File reorganization and creation
+  - Create missing required files
+  - Validate directory structure
+  - Generate configurations from data
+- `STRUCTURAL_GOVERNANCE.md` - **Structural governance documentation**
+- `AUDIT_QUICKSTART.md` - **Quick start guide for audits**
 
 ### Loaders & Adapters
 - `cohort_loader.py` - `CohortLoader` class for configuration loading
@@ -31,7 +53,7 @@
 - `calibration/CONTEXTUAL_LAYERS_README.md` - Contextual layers (@q, @d, @p) documentation
 - `INDEX.md` - This file
 
-## Calibration Files (20 total)
+## Calibration Files (23 total)
 
 ### Configuration Files (JSON)
 1. `COHORT_2024_intrinsic_calibration.json` - Base layer (@b) parameters
@@ -59,26 +81,35 @@
    - Interaction weights (a_ℓk)
    - Role-specific parameters
 
-6. `COHORT_2024_canonical_method_inventory.json` - Method inventory
+6. `COHORT_2024_layer_requirements.json` - **Layer requirements and dependencies (NEW)**
+   - Layer dependencies (@b → @chain → @C, etc.)
+   - Required methods per layer
+   - Interaction pairs and weights
+   - Validation rules
+   - Fusion formula specification
+
+7. `COHORT_2024_canonical_method_inventory.json` - Method inventory
    - ~2000 methods
    - Executor catalog
    - Role assignments
 
 ### Implementation Files (Python)
-7. `COHORT_2024_layer_assignment.py` - Layer requirements and Choquet weights
-8. `COHORT_2024_layer_coexistence.py` - Layer coexistence validation
-9. `COHORT_2024_layer_computers.py` - Layer score computations
-10. `COHORT_2024_layer_influence_model.py` - Layer influence modeling
-11. `COHORT_2024_chain_layer.py` - @chain evaluator
-12. `COHORT_2024_congruence_layer.py` - Congruence evaluator
-13. `COHORT_2024_meta_layer.py` - @m evaluator (→ src/orchestration/meta_layer.py)
-14. `COHORT_2024_unit_layer.py` - @u evaluator (→ src/orchestration/unit_layer.py) ✓ IMPLEMENTED
-15. `COHORT_2024_contextual_layers.py` - **Contextual layer evaluators (@q, @d, @p)**
-16. `COHORT_2024_question_layer.py` - @q evaluator (reference stub)
-17. `COHORT_2024_dimension_layer.py` - @d evaluator (reference stub)
-18. `COHORT_2024_policy_layer.py` - @p evaluator (reference stub)
-19. `COHORT_2024_intrinsic_scoring.py` - Scoring formulas
-20. `COHORT_2024_intrinsic_calibration_loader.py` - Config loader utilities
+8. `COHORT_2024_calibration_orchestrator.py` - **Calibration orchestrator (NEW)**
+9. `COHORT_2024_calibration_orchestrator_example.py` - **Orchestrator usage examples (NEW)**
+10. `COHORT_2024_layer_assignment.py` - Layer requirements and Choquet weights
+11. `COHORT_2024_layer_coexistence.py` - Layer coexistence validation
+12. `COHORT_2024_layer_computers.py` - Layer score computations
+13. `COHORT_2024_layer_influence_model.py` - Layer influence modeling
+14. `COHORT_2024_chain_layer.py` - @chain evaluator
+15. `COHORT_2024_congruence_layer.py` - Congruence evaluator
+16. `COHORT_2024_meta_layer.py` - @m evaluator (→ src/orchestration/meta_layer.py)
+17. `COHORT_2024_unit_layer.py` - @u evaluator (→ src/orchestration/unit_layer.py) ✓ IMPLEMENTED
+18. `COHORT_2024_contextual_layers.py` - **Contextual layer evaluators (@q, @d, @p)**
+19. `COHORT_2024_question_layer.py` - @q evaluator (reference stub)
+20. `COHORT_2024_dimension_layer.py` - @d evaluator (reference stub)
+21. `COHORT_2024_policy_layer.py` - @p evaluator (reference stub)
+22. `COHORT_2024_intrinsic_scoring.py` - Scoring formulas
+23. `COHORT_2024_intrinsic_calibration_loader.py` - Config loader utilities
 
 ## Parametrization Files (4 total)
 
@@ -200,12 +231,13 @@ All COHORT_2024 files include:
 
 ## Statistics
 
-- **Total Files**: 24 (20 calibration + 4 parametrization)
-- **JSON Files**: 9
-- **Python Files**: 15
-- **Documentation Files**: 5
-- **Migration Tools**: 2
-- **Loader/Adapter Files**: 3
+- **Total Files**: 27 (23 calibration + 4 parametrization)
+- **JSON Files**: 10 (7 calibration + 2 parametrization + 1 manifest)
+- **Python Files**: 17 (16 calibration + 1 parametrization)
+- **Documentation Files**: 6 (README, INDEX, QUICK_REFERENCE, STRUCTURAL_GOVERNANCE, AUDIT_QUICKSTART, USAGE_EXAMPLES)
+- **Audit Tools**: 4 (master_structural_audit, structural_audit, cleanup_legacy_files, reorganize_files)
+- **Migration Tools**: 2 (migrate_cohort_2024, batch_migrate)
+- **Loader/Adapter Files**: 3 (cohort_loader, import_adapters, __init__)
 
 ## Future Cohorts
 
@@ -216,8 +248,31 @@ When creating COHORT_2025:
 4. Update metadata: cohort_id, wave_version, creation_date
 5. Preserve `calibration_parametrization_system/` as-is
 
+## Quick Start Commands
+
+### Run Complete Structural Audit
+```bash
+# Preview (dry run)
+python master_structural_audit.py
+
+# Execute (apply changes)
+python master_structural_audit.py --execute
+```
+
+### Verify Compliance
+```bash
+python structural_audit.py
+```
+
+### Clean Legacy Files
+```bash
+python cleanup_legacy_files.py --execute
+```
+
 ## Support
 
+- **Structural Audit**: See `AUDIT_QUICKSTART.md` for quick start guide
+- **Governance Policy**: See `STRUCTURAL_GOVERNANCE.md` for detailed policies
 - **Issues**: Check COHORT_MANIFEST.json for original file paths
 - **Migration**: Run `batch_migrate.py` to regenerate files
 - **Testing**: Run `USAGE_EXAMPLES.py` to validate system
@@ -225,4 +280,4 @@ When creating COHORT_2025:
 
 ---
 
-*COHORT 2024 - Strict wave separation with auditable migration trails*
+*COHORT 2024 - Strict wave separation with auditable migration trails and comprehensive structural governance*
