@@ -2,13 +2,17 @@
 
 ## Core Dependencies
 
-### Required for Phase 1 Execution
+### REQUIRED for Phase 1 Execution
 
-These dependencies are **required** for the Phase 1 SPC Ingestion pipeline to function:
+These dependencies are **MANDATORY** and the pipeline will NOT function without them. The F.A.R.F.A.N pipeline uses the dura_lex contract system for maximum performance and deterministic execution with zero tolerance for contract violations.
 
-- **pydantic** (>= 2.0): Used for contract validation in Phase 0 and throughout the pipeline
-  - `phase0_input_validation.py`: Input/output contract validation
-  - SISAS modules: Signal validation and contract enforcement
+- **pydantic** (>= 2.0): **REQUIRED** - Hard dependency for runtime contract validation
+  - Phase 0: `phase0_input_validation.py` - Input/output contract validation
+  - SISAS modules: Signal validation and contract enforcement  
+  - Dura_lex system: `contracts_runtime.py` - All runtime contract validators
+  - Used throughout pipeline for ensuring maximum performance and deterministic execution
+  - **Pipeline will FAIL on import if pydantic is not installed**
+  - Install with: `pip install 'pydantic>=2.0'`
 
 ### Optional Dependencies
 

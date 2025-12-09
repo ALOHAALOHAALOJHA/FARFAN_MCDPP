@@ -58,58 +58,17 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-# Optional pydantic for enhanced validation
+# REQUIRED: pydantic for runtime contract validation
+# This is a hard dependency for Phase 0 as per dura_lex contract system
 try:
     from pydantic import BaseModel, Field, field_validator
-    PYDANTIC_AVAILABLE = True
-except ImportError:
-    PYDANTIC_AVAILABLE = False
-    # Fallback definitions - these are no-op placeholders when pydantic is unavailable
-    BaseModel = object  # Fallback base class (no validation)
-    Field = lambda **kwargs: None  # No-op mock for Field descriptor
-    field_validator = lambda *args, **kwargs: lambda f: f  # No-op decorator passthrough
-
-
-# Shared validation functions - used by both pydantic and fallback validators
-def _validate_pdf_path_logic(v: str) -> str:
-    """
-    Validate PDF path format (shared logic).
-    
-    Args:
-        v: PDF path string to validate
-        
-    Returns:
-        Validated path string
-        
-    Raises:
-        ValueError: If path is empty or invalid
-    """
-    if not v or not v.strip():
-        raise ValueError("pdf_path cannot be empty")
-    return v
-
-
-def _validate_run_id_logic(v: str) -> str:
-    """
-    Validate run_id format (shared logic).
-    
-    Args:
-        v: run_id string to validate
-        
-    Returns:
-        Validated run_id string
-        
-    Raises:
-        ValueError: If run_id is empty or contains invalid characters
-    """
-    if not v or not v.strip():
-        raise ValueError("run_id cannot be empty")
-    # Ensure run_id is filesystem-safe
-    if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
-        raise ValueError(
-            "run_id contains invalid characters (must be filesystem-safe)"
-        )
-    return v
+except ImportError as e:
+    raise ImportError(
+        "pydantic>=2.0 is REQUIRED for Phase 0 contract validation. "
+        "The F.A.R.F.A.N pipeline uses the dura_lex contract system which depends on pydantic "
+        "for runtime validation, ensuring maximum performance and deterministic execution. "
+        "Install with: pip install 'pydantic>=2.0'"
+    ) from e
 
 # Phase protocol from same directory
 from canonic_phases.Phase_one.phase_protocol import (
@@ -139,52 +98,41 @@ class Phase0Input:
     questionnaire_path: Path | None = None
 
 
-if PYDANTIC_AVAILABLE:
-    class Phase0InputValidator(BaseModel):
-        """Pydantic validator for Phase0Input with enhanced validation."""
+class Phase0InputValidator(BaseModel):
+    """
+    Runtime validator for Phase0Input contract.
+    
+    Uses pydantic for strict runtime validation as per dura_lex contract system.
+    This ensures maximum performance and deterministic execution with zero tolerance
+    for invalid inputs.
+    """
 
-        pdf_path: str = Field(description="Path to input PDF")
-        run_id: str = Field(min_length=1, description="Unique run identifier")
-        questionnaire_path: str | None = Field(
-            default=None, description="Optional questionnaire path"
-        )
+    pdf_path: str = Field(description="Path to input PDF")
+    run_id: str = Field(min_length=1, description="Unique run identifier")
+    questionnaire_path: str | None = Field(
+        default=None, description="Optional questionnaire path"
+    )
 
-        @field_validator("pdf_path")
-        @classmethod
-        def validate_pdf_path(cls, v: str) -> str:
-            """Validate PDF path format using shared validation logic."""
-            return _validate_pdf_path_logic(v)
+    @field_validator("pdf_path")
+    @classmethod
+    def validate_pdf_path(cls, v: str) -> str:
+        """Validate PDF path format with zero tolerance."""
+        if not v or not v.strip():
+            raise ValueError("pdf_path cannot be empty")
+        return v
 
-        @field_validator("run_id")
-        @classmethod
-        def validate_run_id(cls, v: str) -> str:
-            """Validate run_id format using shared validation logic."""
-            return _validate_run_id_logic(v)
-else:
-    # Fallback validator without pydantic - maintains API compatibility
-    class Phase0InputValidator:
-        """
-        Fallback validator for Phase0Input (no pydantic).
-        
-        Provides the same validation interface as the pydantic version
-        but with manual validation. Used when pydantic is not available.
-        """
-        
-        def __init__(self, pdf_path: str, run_id: str, questionnaire_path: str | None = None):
-            # Apply validation using shared logic
-            self.pdf_path = self.validate_pdf_path(pdf_path)
-            self.run_id = self.validate_run_id(run_id)
-            self.questionnaire_path = questionnaire_path
-        
-        @classmethod
-        def validate_pdf_path(cls, v: str) -> str:
-            """Validate PDF path format using shared validation logic."""
-            return _validate_pdf_path_logic(v)
-        
-        @classmethod
-        def validate_run_id(cls, v: str) -> str:
-            """Validate run_id format using shared validation logic."""
-            return _validate_run_id_logic(v)
+    @field_validator("run_id")
+    @classmethod
+    def validate_run_id(cls, v: str) -> str:
+        """Validate run_id format with zero tolerance."""
+        if not v or not v.strip():
+            raise ValueError("run_id cannot be empty")
+        # Ensure run_id is filesystem-safe
+        if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
+            raise ValueError(
+                "run_id contains invalid characters (must be filesystem-safe)"
+            )
+        return v
 
 
 # ============================================================================

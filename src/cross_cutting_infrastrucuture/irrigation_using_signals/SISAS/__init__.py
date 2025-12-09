@@ -17,36 +17,12 @@ Main Components:
 - signal_consumption: Signal consumption patterns
 - signal_loader: Signal loading utilities
 - signal_resolution: Signal resolution strategies
+
+IMPORTANT: This module requires pydantic>=2.0 as part of the dura_lex contract system.
+The F.A.R.F.A.N pipeline enforces contracts with zero tolerance for maximum performance.
 """
 
-# Sentinel class for unavailable modules
-class _UnavailableModule:
-    """
-    Sentinel class for modules that failed to import.
-    
-    Provides helpful error messages when attempting to use unavailable SISAS functionality.
-    Common causes: missing pydantic, missing numpy, or other dependencies.
-    """
-    def __init__(self, module_name: str, typical_dependency: str = "required dependencies"):
-        self.module_name = module_name
-        self.typical_dependency = typical_dependency
-    
-    def __call__(self, *args, **kwargs):
-        raise AttributeError(
-            f"SISAS module '{self.module_name}' is not available. "
-            f"Please install {self.typical_dependency} to use this functionality. "
-            f"Common dependencies: pydantic>=2.0, numpy, pandas"
-        )
-    
-    def __getattr__(self, name):
-        raise AttributeError(
-            f"SISAS module '{self.module_name}' is not available. "
-            f"Cannot access attribute '{name}'. "
-            f"Please install {self.typical_dependency}. "
-            f"Common dependencies: pydantic>=2.0, numpy, pandas"
-        )
-
-# Core signal abstractions
+# Core signal abstractions - REQUIRED for dura_lex contract system
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
         SignalPack,
@@ -54,13 +30,15 @@ try:
         SignalClient,
         create_default_signal_pack,
     )
-except ImportError:
-    SignalPack = _UnavailableModule('signals.SignalPack')
-    SignalRegistry = _UnavailableModule('signals.SignalRegistry')
-    SignalClient = _UnavailableModule('signals.SignalClient')
-    create_default_signal_pack = _UnavailableModule('signals.create_default_signal_pack')
+except ImportError as e:
+    raise ImportError(
+        "SISAS signals module requires pydantic>=2.0 (REQUIRED dependency). "
+        "The F.A.R.F.A.N pipeline uses the dura_lex contract system for maximum performance "
+        "and deterministic execution with zero tolerance for contract violations. "
+        f"Install with: pip install 'pydantic>=2.0'. Original error: {e}"
+    ) from e
 
-# Signal registry for questionnaires and chunks
+# Signal registry for questionnaires and chunks - REQUIRED
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
@@ -68,13 +46,13 @@ try:
         MicroAnsweringSignalPack,
         create_signal_registry,
     )
-except ImportError:
-    QuestionnaireSignalRegistry = _UnavailableModule('signal_registry.QuestionnaireSignalRegistry')
-    ChunkingSignalPack = _UnavailableModule('signal_registry.ChunkingSignalPack')
-    MicroAnsweringSignalPack = _UnavailableModule('signal_registry.MicroAnsweringSignalPack')
-    create_signal_registry = _UnavailableModule('signal_registry.create_signal_registry')
+except ImportError as e:
+    raise ImportError(
+        "SISAS signal_registry module requires pydantic>=2.0 (REQUIRED dependency). "
+        f"Install with: pip install 'pydantic>=2.0'. Original error: {e}"
+    ) from e
 
-# Quality metrics
+# Quality metrics - REQUIRED
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_quality_metrics import (
         SignalQualityMetrics,
@@ -82,11 +60,11 @@ try:
         analyze_coverage_gaps,
         generate_quality_report,
     )
-except ImportError:
-    SignalQualityMetrics = _UnavailableModule('signal_quality_metrics.SignalQualityMetrics')
-    compute_signal_quality_metrics = _UnavailableModule('signal_quality_metrics.compute_signal_quality_metrics')
-    analyze_coverage_gaps = _UnavailableModule('signal_quality_metrics.analyze_coverage_gaps')
-    generate_quality_report = _UnavailableModule('signal_quality_metrics.generate_quality_report')
+except ImportError as e:
+    raise ImportError(
+        "SISAS signal_quality_metrics module failed to import. "
+        f"Ensure all dependencies are installed. Original error: {e}"
+    ) from e
 
 __all__ = [
     # Core
