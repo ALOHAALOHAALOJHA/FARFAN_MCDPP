@@ -869,8 +869,7 @@ class Orchestrator:
         processor_bundle: Any | None = None,
     ) -> None:
         """Initialize orchestrator."""
-        from farfan_pipeline.core.orchestrator.factory import _validate_questionnaire_structure
-        from farfan_pipeline.core.orchestrator.questionnaire import get_questionnaire_provider
+        from orchestration.factory import _validate_questionnaire_structure
         
         validate_phase_definitions(self.FASES, self.__class__)
         

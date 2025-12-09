@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.questionnaire import CanonicalQuestionnaire
+    from orchestration.factory import CanonicalQuestionnaire
 
 from farfan_pipeline.core.orchestrator.core import (
     AbortRequested,
