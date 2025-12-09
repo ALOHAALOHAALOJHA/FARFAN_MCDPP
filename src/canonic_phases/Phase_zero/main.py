@@ -717,12 +717,25 @@ def cli() -> None:
         self.log_claim("start", "spc_ingestion", "Starting SPC ingestion (phase-one)")
 
         try:
-            from farfan_pipeline.processing.spc_ingestion import CPPIngestionPipeline
+            from canonic_phases.Phase_one.phase0_input_validation import (
+                Phase0Input,
+                Phase0ValidationContract,
+            )
+            from canonic_phases.Phase_one.phase1_spc_ingestion_full import (
+                execute_phase_1_with_full_contract,
+            )
 
-            # CPPIngestionPipeline does NOT take questionnaire_path
-            # Questionnaire access is ONLY through factory/orchestrator
-            pipeline = CPPIngestionPipeline()
-            cpp = await pipeline.process(self.plan_pdf_path)
+            # Phase 0: Validación
+            phase0_input = Phase0Input(
+                pdf_path=self.plan_pdf_path,
+                run_id=self.execution_id,
+                questionnaire_path=self.questionnaire_path,
+            )
+            phase0_contract = Phase0ValidationContract()
+            canonical_input = await phase0_contract.execute(phase0_input)
+
+            # Phase 1: Ingestion
+            cpp = execute_phase_1_with_full_contract(canonical_input)
 
             self.phases_completed += 1
             self.log_claim(
@@ -747,18 +760,18 @@ def cli() -> None:
 
     async def run_cpp_adapter(self, cpp: Any) -> Optional[Any]:
         """
-        Run SPC adapter to convert to PreprocessedDocument.
+        Run CPP adapter to convert CanonPolicyPackage to PreprocessedDocument.
 
         Args:
-            cpp: CPP/SPC object from ingestion
+            cpp: CanonPolicyPackage from Phase 1 ingestion
 
         Returns:
             PreprocessedDocument if successful, None otherwise
         """
-        self.log_claim("start", "spc_adapter", "Starting SPC adaptation")
+        self.log_claim("start", "cpp_adapter", "Starting CPP adaptation")
 
         try:
-            from farfan_pipeline.utils.spc_adapter import SPCAdapter
+            from farfan_pipeline.utils.cpp_adapter import CPPAdapter
 
             # Derive document_id from CPP metadata or fallback to plan filename
             document_id = None
@@ -767,8 +780,7 @@ def cli() -> None:
             if not document_id:
                 document_id = self.plan_pdf_path.stem
 
-            adapter = SPCAdapter()
-            # Pass document_id as required by SPCAdapter API
+            adapter = CPPAdapter()
             preprocessed = adapter.to_preprocessed_document(
                 cpp, document_id=document_id
             )
@@ -776,17 +788,23 @@ def cli() -> None:
             self.phases_completed += 1
             self.log_claim(
                 "complete",
-                "spc_adapter",
-                "SPC adaptation completed successfully",
-                {"phases_completed": self.phases_completed},
+                "cpp_adapter",
+                "CPP adaptation completed successfully",
+                {
+                    "phases_completed": self.phases_completed,
+                    "document_id": document_id,
+                },
             )
             return preprocessed
 
         except Exception as e:
             self.phases_failed += 1
-            error_msg = f"SPC adaptation failed: {str(e)}"
+            error_msg = f"CPP adaptation failed: {str(e)}"
             self.log_claim(
-                "error", "spc_adapter", error_msg, {"traceback": traceback.format_exc()}
+                "error",
+                "cpp_adapter",
+                error_msg,
+                {"traceback": traceback.format_exc()},
             )
             self.errors.append(error_msg)
             return None

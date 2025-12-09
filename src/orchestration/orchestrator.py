@@ -676,7 +676,7 @@ class MethodExecutor:
         signal_registry: Any | None = None,
         method_registry: Any | None = None,
     ) -> None:
-        from farfan_pipeline.core.orchestrator.method_registry import (
+        from orchestration.method_registry import (
             MethodRegistry,
             setup_default_instantiation_rules,
         )
@@ -700,7 +700,7 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
         
         try:
-            from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
+            from canonic_phases.Phase_two.class_registry import build_class_registry
             registry = build_class_registry()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
@@ -722,7 +722,7 @@ class MethodExecutor:
     
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
-        from farfan_pipeline.core.orchestrator.method_registry import MethodRegistryError
+        from orchestration.method_registry import MethodRegistryError
         
         try:
             method = self._method_registry.get_method(class_name, method_name)
@@ -862,7 +862,7 @@ class Orchestrator:
         calibration_orchestrator: Any | None = None,
         resource_limits: ResourceLimits | None = None,
         resource_snapshot_interval: int = 10,
-        recommendation_engine_port: RecommendationEnginePort | None = None,
+        recommendation_engine_port: Any | None = None,
         processor_bundle: Any | None = None,
     ) -> None:
         """Initialize orchestrator."""
@@ -1322,7 +1322,7 @@ class Orchestrator:
         return preprocessed
     
     async def _execute_micro_questions_async(
-        self, document: PreprocessedDocument, config: dict[str, Any]
+        self, document: dict[str, Any], config: dict[str, Any]
     ) -> list[MicroQuestionRun]:
         """FASE 2: Execute micro-questions (STUB - requires your implementation)."""
         self._ensure_not_aborted()
