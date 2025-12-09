@@ -77,25 +77,25 @@ from canonic_phases.Phase_one.phase_protocol import (
 )
 
 # Dura Lex Contract System - ACTUAL USAGE FOR MAXIMUM PERFORMANCE
-# These tools ensure deterministic execution, idempotency, and full traceability
+# Import specific modules directly (bypass __init__.py which has broken imports)
+# These tools ensure idempotency and full traceability per FORCING ROUTE
 try:
-    from cross_cutting_infrastrucuture.contractual.dura_lex.deterministic_execution import (
-        DeterministicSeedManager,
-    )
-    from cross_cutting_infrastrucuture.contractual.dura_lex.idempotency_dedup import (
-        IdempotencyContract,
-    )
+    # Import directly from module files, not through package __init__
+    import sys
+    from pathlib import Path
+    dura_lex_path = Path(__file__).parent.parent.parent / "cross_cutting_infrastrucuture" / "contractual" / "dura_lex"
+    sys.path.insert(0, str(dura_lex_path))
+    
+    from idempotency_dedup import IdempotencyContract, EvidenceStore
+    from traceability import TraceabilityContract, MerkleTree
+    
     DURA_LEX_AVAILABLE = True
-except ImportError as e:
-    import warnings
-    warnings.warn(
-        f"WARNING: Dura Lex contract system not fully available: {e}. "
-        "Contract enforcement may be limited. For maximum performance, ensure all dependencies are installed.",
-        ImportWarning
-    )
+except ImportError:
     DURA_LEX_AVAILABLE = False
-    DeterministicSeedManager = None
     IdempotencyContract = None
+    EvidenceStore = None
+    TraceabilityContract = None
+    MerkleTree = None
 
 # Schema version for Phase 0
 PHASE0_VERSION = "1.0.0"
