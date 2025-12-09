@@ -1,0 +1,12 @@
+{
+  "executor_id": "D3_Q5_OutputOutcomeLinkageAnalyzer",
+  "dimension": "D3",
+  "question": "Q5",
+  "canonical_label": "DIM03_Q05_OUTPUT_OUTCOME_LINKAGE",
+  "role": "SCORE_Q",
+  "required_layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
+  "runtime_parameters": {"timeout_s": 300, "retry": 3, "temperature": 0.0, "max_tokens": 4096, "memory_limit_mb": 1024, "enable_profiling": true, "seed": 42},
+  "thresholds": {"min_quality_score": 0.5, "min_evidence_confidence": 0.7, "max_runtime_ms": 300000},
+  "epistemic_mix": ["causal", "structural", "semantic"],
+  "contextual_params": {"expected_methods": 9, "critical_methods": [], "dimension_label": "DIM03", "question_label": "DIM03_Q05_OUTPUT_OUTCOME_LINKAGE"}
+}

@@ -1,0 +1,40 @@
+{
+  "_template": "Executor configuration template",
+  "_description": "Runtime parameters (HOW) - NO calibration values (WHAT)",
+  "executor_id": "D{X}_Q{Y}_{ExecutorName}",
+  "dimension": "D{X}",
+  "question": "Q{Y}",
+  "role": "SCORE_Q",
+  "required_layers": [
+    "@b",
+    "@chain",
+    "@q",
+    "@d",
+    "@p",
+    "@C",
+    "@u",
+    "@m"
+  ],
+  "runtime_parameters": {
+    "timeout_s": 300,
+    "retry": 3,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "memory_limit_mb": 512,
+    "enable_profiling": true
+  },
+  "thresholds": {
+    "min_quality_score": 0.5,
+    "min_evidence_confidence": 0.6,
+    "max_runtime_ms": 60000
+  },
+  "epistemic_mix": [
+    "structural",
+    "bayesian",
+    "semantic"
+  ],
+  "contextual_params": {
+    "expected_methods": 10,
+    "critical_methods": []
+  }
+}

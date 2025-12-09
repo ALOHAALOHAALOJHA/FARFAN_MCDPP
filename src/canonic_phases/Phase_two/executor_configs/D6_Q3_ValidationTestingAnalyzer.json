@@ -1,0 +1,12 @@
+{
+  "executor_id": "D6_Q3_ValidationTestingAnalyzer",
+  "dimension": "D6",
+  "question": "Q3",
+  "canonical_label": "Análisis de Pruebas de Validación",
+  "role": "SCORE_Q",
+  "required_layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
+  "runtime_parameters": {"timeout_s": 300, "retry": 3, "temperature": 0.0, "max_tokens": 4096, "memory_limit_mb": 1024, "enable_profiling": true, "seed": 42},
+  "thresholds": {"min_quality_score": 0.5, "min_evidence_confidence": 0.7, "max_runtime_ms": 300000},
+  "epistemic_mix": ["causal", "bayesian", "statistical"],
+  "contextual_params": {"expected_methods": 13, "critical_methods": [], "dimension_label": "DIM06", "question_label": "Análisis de Pruebas de Validación"}
+}

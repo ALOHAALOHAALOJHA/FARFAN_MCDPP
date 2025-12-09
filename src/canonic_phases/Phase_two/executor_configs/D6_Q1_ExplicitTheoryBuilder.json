@@ -1,0 +1,38 @@
+{
+  "executor_id": "D6_Q1_ExplicitTheoryBuilder",
+  "dimension": "D6",
+  "question": "Q1",
+  "role": "SCORE_Q",
+  "required_layers": [
+    "@b",
+    "@chain",
+    "@q",
+    "@d",
+    "@p",
+    "@C",
+    "@u",
+    "@m"
+  ],
+  "runtime_parameters": {
+    "timeout_s": 450,
+    "retry": 3,
+    "temperature": 0.0,
+    "max_tokens": 8192,
+    "memory_limit_mb": 1024,
+    "enable_profiling": true
+  },
+  "thresholds": {
+    "min_quality_score": 0.5,
+    "min_evidence_confidence": 0.6,
+    "max_runtime_ms": 60000
+  },
+  "epistemic_mix": [
+    "causal",
+    "structural",
+    "semantic"
+  ],
+  "contextual_params": {
+    "expected_methods": 15,
+    "critical_methods": []
+  }
+}

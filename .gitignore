@@ -65,6 +65,7 @@ artifacts/test_runs/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
 data/questionnaire_monolith.json.backup
 
 # Environment variables
