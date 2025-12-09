@@ -32,14 +32,14 @@ class _UnavailableModule:
         self.typical_dependency = typical_dependency
     
     def __call__(self, *args, **kwargs):
-        raise ImportError(
+        raise AttributeError(
             f"SISAS module '{self.module_name}' is not available. "
             f"Please install {self.typical_dependency} to use this functionality. "
             f"Common dependencies: pydantic>=2.0, numpy, pandas"
         )
     
     def __getattr__(self, name):
-        raise ImportError(
+        raise AttributeError(
             f"SISAS module '{self.module_name}' is not available. "
             f"Cannot access attribute '{name}'. "
             f"Please install {self.typical_dependency}. "
