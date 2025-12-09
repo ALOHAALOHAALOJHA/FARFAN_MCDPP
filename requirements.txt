@@ -1,44 +1,68 @@
-# Core API & Validation
-fastapi>=0.104.0
-uvicorn[standard]>=0.24.0
-pydantic>=2.5.0
-jsonschema>=4.20.0
-python-dotenv>=1.0.0
-pyyaml>=6.0.0
+# Certified Production Dependencies
+# Curated and verified on 2025-11-18
+# Version pins have been tightened to resolve dependency conflicts.
 
-# NLP & Transformers
-transformers>=4.35.0
-sentence-transformers>=2.2.2
-torch>=2.1.0
-spacy>=3.7.0
+# PDF and Document Processing
+PyMuPDF==1.25.2
+PyPDF2==3.0.1
+camelot-py[cv]==0.11.0
+python-docx==1.1.2
+pdfplumber==0.11.8
+tabula-py==2.9.0
 
-# Statistical Analysis & Bayesian
-pymc>=5.10.0
-scikit-learn>=1.3.0
-numpy>=1.24.0,<2.0.0
-pandas>=2.1.0
-scipy>=1.11.0
-networkx>=3.2.0
+# Core Data Science & ML
+numpy==1.26.4 # Pinned for stability
+pandas==2.2.2 # Pinned for stability
+scipy==1.14.0 # Pinned for stability
+scikit-learn==1.5.2 # Downgraded for econml compatibility
+polars==1.19.0
 
-# Web Frameworks
-flask>=3.0.0
-flask-cors>=4.0.0
-flask-socketio>=5.3.0
-sse-starlette>=1.8.0
-werkzeug>=3.0.0
+# NLP - Tightly pinned versions to resolve conflicts
+gensim==4.4.0
+nltk==3.9.2
+spacy==3.8.9
+sentence-transformers==3.0.1
+transformers==4.53.0
+tokenizers==0.21.0
+safetensors==0.5.2
+huggingface-hub==0.30.0
+tiktoken==0.7.0
+sentencepiece==0.2.0
 
-# Logging & Structured Output
-structlog>=23.2.0
+# Web & API - Tightly pinned versions to resolve conflicts
+fastapi==0.118.0
+uvicorn==0.34.0
+sse-starlette==2.2.1
+starlette==0.48.0 # Pinned for fastapi compatibility.
+httpx==0.28.1
+requests==2.32.4
+flask==2.3.2
+flask-cors==6.0.0
+flask-socketio==5.3.6
+pyjwt==2.8.0
 
-# PDF & Document Processing
-camelot-py[cv]>=0.11.0
-tabula-py>=2.8.0
+# Data Validation & Configuration - Tightly pinned versions
+pydantic==2.10.6
+jsonschema==4.23.0
+python-dotenv==1.0.1
+pyyaml==6.0.2
 
-# Development & Testing
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
-pytest-cov>=4.1.0
-hypothesis>=6.92.0
+# Utilities
+tqdm==4.66.3
+click==8.1.7
+typer==0.15.1
+structlog==24.4.0
+tenacity==9.0.0
+blake3==0.4.1
+filelock==3.15.0
+networkx==3.5
+fuzzywuzzy==0.18.0
+pydot==4.0.1
+
+# Testing (includes property-based testing with Hypothesis)
+pytest==8.3.4
+pytest-cov==6.0.0
+hypothesis==6.122.3
 
 # Code Quality
 ruff>=0.1.0
@@ -46,3 +70,30 @@ mypy>=1.7.0
 black>=23.11.0
 types-PyYAML>=6.0.0
 types-requests>=2.31.0
+
+# OpenTelemetry - Production Observability Stack
+opentelemetry-api==1.27.0
+opentelemetry-sdk==1.27.0
+opentelemetry-exporter-jaeger==1.21.0
+opentelemetry-exporter-jaeger-thrift==1.21.0
+opentelemetry-exporter-prometheus==0.48b0
+prometheus-client==0.21.0
+
+# Transitive dependencies that need to be pinned for stability
+protobuf==4.25.8 # Required by transformers for some tokenizers
+pydantic-core==2.27.2 # Aligned with pydantic 2.10.6
+spacy-legacy==3.0.12
+spacy-loggers==1.0.5
+urllib3==2.5.0
+werkzeug==3.1.4
+certifi==2024.7.4
+charset-normalizer==3.3.2
+idna==3.7
+joblib==1.3.2
+packaging==23.2
+python-dateutil==2.8.2
+pytz==2024.1
+regex==2023.10.3
+six==1.16.0
+threadpoolctl==3.2.0
+typing-extensions==4.12.2

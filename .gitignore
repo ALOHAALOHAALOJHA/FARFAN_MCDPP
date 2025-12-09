@@ -1,3 +1,11 @@
+# Virtual environment (farfan-env convention)
+farfan-env/
+*.env
+venv/
+ENV/
+env/
+.venv/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -29,31 +37,44 @@ env/
 ENV/
 .venv
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
 # Testing
 .pytest_cache/
 .coverage
 .coverage.*
 htmlcov/
+.tox/
+.nox/
 .hypothesis/
 test-results/
 *.junit.xml
 calibration_system_failure_report.md
 calibration_triage.log
 artifacts/test_runs/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+*.log
 
 # Jupyter
 .ipynb_checkpoints/
@@ -147,3 +168,10 @@ strongest_causal.json
 threshold_results.json
 cross_document_*.json
 index_summary.json
+
+# Model cache & data
+models/
+*.model
+*.pkl
+*.h5
+.cache/

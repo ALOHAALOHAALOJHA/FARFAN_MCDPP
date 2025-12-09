@@ -1,0 +1,56 @@
+{
+  "ensemble_configs": [
+    {
+      "ensemble_id": "analyzer_validator_ensemble",
+      "description": "Pattern extraction + coherence validation",
+      "methods": ["pattern_extractor_v2", "coherence_validator"],
+      "fusion_rule": "TYPE_A",
+      "scale_compatible": true,
+      "semantic_overlap": 1.0,
+      "concepts": ["coherence", "textual_quality"],
+      "expected_c_scale": 1.0,
+      "expected_c_sem": 1.0,
+      "expected_c_fusion": 1.0,
+      "expected_congruence": 1.0
+    },
+    {
+      "ensemble_id": "partial_overlap_ensemble",
+      "description": "Methods with partial semantic overlap",
+      "methods": ["pattern_extractor_v2", "semantic_analyzer", "quality_checker"],
+      "fusion_rule": "TYPE_B",
+      "scale_compatible": true,
+      "semantic_overlap": 0.5,
+      "concepts": ["patterns", "semantics", "quality"],
+      "expected_c_scale": 1.0,
+      "expected_c_sem": 0.5,
+      "expected_c_fusion": 1.0,
+      "expected_congruence": 0.5
+    },
+    {
+      "ensemble_id": "scale_incompatible_ensemble",
+      "description": "Methods with incompatible output scales",
+      "methods": ["binary_classifier", "continuous_scorer"],
+      "fusion_rule": "TYPE_A",
+      "scale_compatible": false,
+      "semantic_overlap": 1.0,
+      "concepts": ["classification"],
+      "expected_c_scale": 0.0,
+      "expected_c_sem": 1.0,
+      "expected_c_fusion": 1.0,
+      "expected_congruence": 0.0
+    },
+    {
+      "ensemble_id": "no_fusion_rule_ensemble",
+      "description": "Methods without declared fusion rule",
+      "methods": ["method_a", "method_b"],
+      "fusion_rule": null,
+      "scale_compatible": true,
+      "semantic_overlap": 1.0,
+      "concepts": ["analysis"],
+      "expected_c_scale": 1.0,
+      "expected_c_sem": 1.0,
+      "expected_c_fusion": 0.0,
+      "expected_congruence": 0.0
+    }
+  ]
+}

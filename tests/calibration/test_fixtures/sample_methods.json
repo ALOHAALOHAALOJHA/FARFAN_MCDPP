@@ -1,0 +1,90 @@
+{
+  "sample_methods": [
+    {
+      "method_id": "pattern_extractor_v2",
+      "role": "score",
+      "version": "2.0.0",
+      "description": "Extracts patterns from policy text",
+      "base_metrics": {
+        "b_theory": 0.90,
+        "b_impl": 0.85,
+        "b_deploy": 0.80
+      },
+      "contexts": [
+        {
+          "question": "Q001",
+          "dimension": "DIM01",
+          "policy": "PA01",
+          "expected_q": 1.0,
+          "expected_d": 1.0,
+          "expected_p": 1.0
+        },
+        {
+          "question": "Q031",
+          "dimension": "DIM02",
+          "policy": "PA10",
+          "expected_q": 0.7,
+          "expected_d": 0.7,
+          "expected_p": 0.7
+        }
+      ]
+    },
+    {
+      "method_id": "coherence_validator",
+      "role": "analyzer",
+      "version": "1.5.0",
+      "description": "Validates textual coherence",
+      "base_metrics": {
+        "b_theory": 0.92,
+        "b_impl": 0.88,
+        "b_deploy": 0.85
+      },
+      "contexts": [
+        {
+          "question": "Q001",
+          "dimension": "DIM01",
+          "policy": "PA01",
+          "expected_q": 1.0,
+          "expected_d": 1.0,
+          "expected_p": 1.0
+        }
+      ]
+    },
+    {
+      "method_id": "pdt_ingester",
+      "role": "INGEST_PDM",
+      "version": "3.0.0",
+      "description": "Ingests PDT documents",
+      "base_metrics": {
+        "b_theory": 0.75,
+        "b_impl": 0.80,
+        "b_deploy": 0.85
+      },
+      "contexts": []
+    },
+    {
+      "method_id": "structural_analyzer",
+      "role": "STRUCTURE",
+      "version": "1.2.0",
+      "description": "Analyzes document structure",
+      "base_metrics": {
+        "b_theory": 0.85,
+        "b_impl": 0.83,
+        "b_deploy": 0.78
+      },
+      "contexts": []
+    },
+    {
+      "method_id": "indicator_extractor",
+      "role": "EXTRACT",
+      "version": "2.1.0",
+      "description": "Extracts indicators from PDT",
+      "base_metrics": {
+        "b_theory": 0.88,
+        "b_impl": 0.85,
+        "b_deploy": 0.82
+      },
+      "contexts": []
+    }
+  ]
+}
