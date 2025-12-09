@@ -95,7 +95,7 @@ except ImportError:
     SIGNAL_REGISTRY_AVAILABLE = False
     QuestionnaireSignalRegistry = None
 
-# SISAS Signal Registry imports (production implementation)
+# SISAS Signal Registry - REAL PATHS after repo reorganization
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry as SISASSignalRegistry,
@@ -107,7 +107,7 @@ except ImportError:
     SISASSignalRegistry = None
     create_signal_registry = None
 
-# SignalPack with compute_hash
+# SignalPack with compute_hash - REAL PATH
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalPack
     SIGNAL_PACK_AVAILABLE = True
@@ -115,7 +115,7 @@ except ImportError:
     SIGNAL_PACK_AVAILABLE = False
     SignalPack = None
 
-# Signal loader for building packs by policy area
+# Signal loader for building packs by policy area - REAL PATH
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_loader import (
         build_all_signal_packs,
@@ -127,22 +127,32 @@ except ImportError:
     build_all_signal_packs = None
     build_signal_pack_from_monolith = None
 
-# CanonicalQuestionnaire loader
+# CanonicalQuestionnaire - REAL PATH in orchestration/
 try:
-    from orchestration.factory import load_questionnaire, CanonicalQuestionnaire
+    from orchestration.factory import CanonicalQuestionnaire
+    CANONICAL_QUESTIONNAIRE_AVAILABLE = True
+except ImportError:
+    CANONICAL_QUESTIONNAIRE_AVAILABLE = False
+    CanonicalQuestionnaire = None
+
+# Questionnaire loader - check multiple possible locations
+QUESTIONNAIRE_LOADER_AVAILABLE = False
+load_questionnaire = None
+
+# Try orchestration.factory first (primary location after reorg)
+try:
+    from orchestration.factory import load_questionnaire
     QUESTIONNAIRE_LOADER_AVAILABLE = True
 except ImportError:
+    pass
+
+# If not found, try canonic_phases.Phase_zero (bootstrap location)
+if not QUESTIONNAIRE_LOADER_AVAILABLE:
     try:
-        # Alternative import path
-        from farfan_pipeline.core.orchestrator.questionnaire import (
-            load_questionnaire,
-            CanonicalQuestionnaire,
-        )
+        from canonic_phases.Phase_zero.bootstrap import load_questionnaire
         QUESTIONNAIRE_LOADER_AVAILABLE = True
     except ImportError:
-        QUESTIONNAIRE_LOADER_AVAILABLE = False
-        load_questionnaire = None
-        CanonicalQuestionnaire = None
+        pass
 
 
 # ============================================================================
