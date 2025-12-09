@@ -9,7 +9,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 # UPDATED: cuestionario_FIXED.json migrated to questionnaire_monolith.json
 QUESTIONNAIRE_FILES = [
-    ROOT / "data" / "questionnaire_monolith.json",
+    ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json",
 ]
 
 SPECIFICITY_HIGH_KEYWORDS = {
