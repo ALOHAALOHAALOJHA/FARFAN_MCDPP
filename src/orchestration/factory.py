@@ -107,6 +107,8 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+from datetime import datetime, timezone
+from pathlib import Path
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass, field
@@ -120,15 +122,13 @@ from farfan_pipeline.core.orchestrator.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
 )
-from farfan_pipeline.core.orchestrator.questionnaire import (
-    CanonicalQuestionnaire,
-    load_questionnaire,
-)
-from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
+
+# SISAS - Signal Intelligence Layer (Nivel 2)
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from farfan_pipeline.core.orchestrator.signal_registry import (
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
@@ -161,6 +161,123 @@ except ImportError:
     SEED_REGISTRY_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
+
+
+# ============================================================================
+# RUTA CANÓNICA DEL CUESTIONARIO - NIVEL 1
+# Según AGENTS.md - NO MODIFICAR sin actualizar documentación
+# ============================================================================
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+
+
+@dataclass(frozen=True)
+class CanonicalQuestionnaire:
+    """
+    Objeto inmutable del cuestionario monolito.
+
+    NIVEL 1: Acceso Total
+    CONSUMIDOR ÚNICO: AnalysisPipelineFactory (este archivo)
+    PROHIBIDO: Instanciar directamente, usar load_questionnaire()
+    """
+    data: dict[str, Any]
+    sha256: str
+    version: str
+    load_timestamp: str
+    source_path: str
+
+    @property
+    def dimensions(self) -> dict[str, Any]:
+        """6 dimensiones: DIM01-DIM06"""
+        return dict(self.data.get("canonical_notation", {}).get("dimensions", {}))
+
+    @property
+    def policy_areas(self) -> dict[str, Any]:
+        """10 áreas: PA01-PA10"""
+        return dict(self.data.get("canonical_notation", {}).get("policy_areas", {}))
+
+    @property
+    def micro_questions(self) -> list[dict[str, Any]]:
+        """300 micro preguntas"""
+        return list(self.data.get("blocks", {}).get("micro_questions", []))
+
+    @property
+    def meso_questions(self) -> list[dict[str, Any]]:
+        """4 meso preguntas"""
+        return list(self.data.get("blocks", {}).get("meso_questions", []))
+
+    @property
+    def macro_question(self) -> dict[str, Any]:
+        """1 macro pregunta"""
+        return dict(self.data.get("blocks", {}).get("macro_question", {}))
+
+
+class QuestionnaireLoadError(Exception):
+    """Error al cargar el cuestionario."""
+    pass
+
+
+class QuestionnaireIntegrityError(QuestionnaireLoadError):
+    """Hash del cuestionario no coincide."""
+    pass
+
+
+def load_questionnaire(
+    path: Path | None = None,
+    expected_hash: str | None = None,
+) -> CanonicalQuestionnaire:
+    """
+    Carga el cuestionario canónico con verificación de integridad.
+
+    NIVEL 1: ÚNICA función autorizada para I/O del monolito.
+    CONSUMIDOR: Solo AnalysisPipelineFactory._load_canonical_questionnaire
+
+    Args:
+        path: Ruta al archivo (default: CANONICAL_QUESTIONNAIRE_PATH)
+        expected_hash: Hash SHA256 esperado para verificación
+
+    Returns:
+        CanonicalQuestionnaire: Objeto inmutable verificado
+
+    Raises:
+        QuestionnaireLoadError: Archivo no existe o JSON inválido
+        QuestionnaireIntegrityError: Hash no coincide
+    """
+    questionnaire_path = path or CANONICAL_QUESTIONNAIRE_PATH
+
+    if not questionnaire_path.exists():
+        raise QuestionnaireLoadError(
+            f"Questionnaire not found: {questionnaire_path}"
+        )
+
+    content_bytes = questionnaire_path.read_bytes()
+    computed_hash = hashlib.sha256(content_bytes).hexdigest()
+
+    if expected_hash and computed_hash.lower() != expected_hash.lower():
+        raise QuestionnaireIntegrityError(
+            f"Hash mismatch: expected {expected_hash[:16]}..., "
+            f"got {computed_hash[:16]}..."
+        )
+
+    try:
+        content = json.loads(content_bytes.decode("utf-8"))
+    except json.JSONDecodeError as e:
+        raise QuestionnaireLoadError(f"Invalid JSON: {e}")
+
+    if "canonical_notation" not in content:
+        raise QuestionnaireLoadError("Missing 'canonical_notation'")
+    if "blocks" not in content:
+        raise QuestionnaireLoadError("Missing 'blocks'")
+
+    version = content.get("version", "unknown")
+
+    return CanonicalQuestionnaire(
+        data=content,
+        sha256=computed_hash,
+        version=version,
+        load_timestamp=datetime.now(timezone.utc).isoformat(),
+        source_path=str(questionnaire_path.resolve()),
+    )
 
 
 # =============================================================================

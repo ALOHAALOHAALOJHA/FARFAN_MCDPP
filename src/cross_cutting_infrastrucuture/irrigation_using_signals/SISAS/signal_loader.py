@@ -19,7 +19,7 @@ import json
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.questionnaire import CanonicalQuestionnaire
+    from orchestration.factory import CanonicalQuestionnaire
 
 try:
     import blake3
@@ -34,8 +34,15 @@ except ImportError:
     import logging
     logger = logging.getLogger(__name__)
 
-from farfan_pipeline.core.orchestrator.signal_consumption import SignalManifest, generate_signal_manifests
-from farfan_pipeline.core.orchestrator.signals import SignalPack
+# Nivel 1: Acceso al cuestionario canónico (desde Factory)
+from orchestration.factory import (
+    CanonicalQuestionnaire,
+    load_questionnaire,
+    CANONICAL_QUESTIONNAIRE_PATH,
+)
+
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_consumption import SignalManifest, generate_signal_manifests
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalPack
 
 
 def compute_fingerprint(content: str | bytes) -> str:
@@ -231,8 +238,7 @@ def build_signal_pack_from_monolith(
         >>> print(f"Patterns: {len(pack.patterns)}")
         >>> print(f"Indicators: {len(pack.indicators)}")
     """
-    # Import here to avoid circular dependency
-    from farfan_pipeline.core.orchestrator.questionnaire import load_questionnaire
+
 
     # Handle legacy monolith parameter
     if monolith is not None:
@@ -352,8 +358,7 @@ def build_all_signal_packs(
         >>> packs = build_all_signal_packs(questionnaire=canonical)
         >>> print(f"Built {len(packs)} signal packs")
     """
-    # Import here to avoid circular dependency
-    from farfan_pipeline.core.orchestrator.questionnaire import load_questionnaire
+
 
     # Handle legacy monolith parameter and ensure questionnaire is loaded only once
     if monolith is not None:
@@ -406,8 +411,7 @@ def build_signal_manifests(
         >>> manifests = build_signal_manifests(questionnaire=canonical)
         >>> print(f"Built {len(manifests)} manifests")
     """
-    # Import here to avoid circular dependency
-    from farfan_pipeline.core.orchestrator.questionnaire import QUESTIONNAIRE_PATH, load_questionnaire
+
 
     # Handle legacy monolith parameter
     if monolith is not None:
@@ -428,7 +432,7 @@ def build_signal_manifests(
         monolith_data = dict(canonical.data)
 
     # Always use canonical path
-    monolith_path = QUESTIONNAIRE_PATH
+    monolith_path = CANONICAL_QUESTIONNAIRE_PATH
     manifests = generate_signal_manifests(monolith_data, monolith_path)
 
     logger.info(
