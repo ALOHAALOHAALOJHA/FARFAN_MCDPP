@@ -23,6 +23,7 @@ The F.A.R.F.A.N pipeline enforces contracts with zero tolerance for maximum perf
 """
 
 # Core signal abstractions - REQUIRED for dura_lex contract system
+# Note: 'infrastrucuture' spelling is intentional - matches actual folder name
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
         SignalPack,
