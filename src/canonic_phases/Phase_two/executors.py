@@ -35,6 +35,16 @@ from farfan_pipeline.core.orchestrator.memory_safety import (
 )
 from farfan_pipeline.processing.policy_processor import CausalDimension
 
+try:
+    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+        CalibrationOrchestrator,
+        MethodBelowThresholdError,
+    )
+except ImportError:
+    CalibrationOrchestrator = None
+    MethodBelowThresholdError = None
+    logging.getLogger(__name__).warning("CalibrationOrchestrator not available")
+
 logger = logging.getLogger(__name__)
 
 # Canonical question labels (only defined when verified in repo)
@@ -183,7 +193,7 @@ class BaseExecutor(ABC):
     Includes systematic memory safety guards for processing large objects.
     """
     
-    def __init__(self, executor_id: str, config: Dict[str, Any], method_executor: MethodExecutor, profiler: Any | None = None):
+    def __init__(self, executor_id: str, config: Dict[str, Any], method_executor: MethodExecutor, profiler: Any | None = None, calibration_orchestrator: Any | None = None):
         self.executor_id = executor_id
         self.config = config
         if not isinstance(method_executor, MethodExecutor):
@@ -191,6 +201,8 @@ class BaseExecutor(ABC):
         self.method_executor = method_executor
         self.execution_log = []
         self._dimension_info = None
+        self.calibration_orchestrator = calibration_orchestrator
+        self.calibration_results: Dict[str, Any] = {}
         
         memory_config = config.get("memory_safety", {})
         if isinstance(memory_config, dict):
@@ -310,10 +322,39 @@ class BaseExecutor(ABC):
             "error": error
         })
     
+    def _log_calibration_trace(self, method_id: str, calibration_result: Any) -> None:
+        """Log structured calibration trace."""
+        trace = {
+            "method_id": method_id,
+            "final_score": calibration_result.final_score,
+            "timestamp": calibration_result.timestamp.isoformat(),
+            "layer_breakdown": {}
+        }
+        
+        for layer_name, layer_score in calibration_result.layer_scores.items():
+            trace["layer_breakdown"][layer_name] = {
+                "score": layer_score,
+                "weight": 1.0 if layer_name == "@b" else 0.0
+            }
+        
+        if calibration_result.breakdown:
+            trace["intrinsic_breakdown"] = calibration_result.breakdown
+        
+        logger.info(
+            f"[CALIBRATION_TRACE] {method_id}: "
+            f"final={calibration_result.final_score:.3f}, "
+            f"base={calibration_result.layer_scores.get('@b', 0.0):.3f}"
+        )
+        
+        if hasattr(logger, 'structured'):
+            logger.structured("calibration", trace)
+        else:
+            logger.debug(f"Calibration trace: {trace}")
+    
     def _execute_method(self, class_name: str, method_name: str,
                        context: Dict[str, Any], **kwargs) -> Any:
         """
-        Execute a single method with error handling and profiling.
+        Execute a single method with error handling, profiling, and calibration.
 
         Raises:
             ExecutorFailure: If method execution fails
@@ -324,6 +365,37 @@ class BaseExecutor(ABC):
         
         if self._profiler and self._profiler.memory_tracking:
             start_memory = self._profiler._get_memory_usage_mb()
+        
+        method_id = f"{class_name}.{method_name}"
+        calibration_result = None
+        
+        if self.calibration_orchestrator:
+            try:
+                calibration_result = self.calibration_orchestrator.calibrate(
+                    method_id=method_id,
+                    context=context,
+                    evidence=kwargs
+                )
+                self.calibration_results[method_id] = calibration_result.to_dict()
+                
+                self._log_calibration_trace(method_id, calibration_result)
+                
+                logger.info(
+                    f"[{self.executor_id}] Calibration: {method_id} → {calibration_result.final_score:.3f} "
+                    f"(layers: {', '.join(f'{k}={v:.3f}' for k, v in calibration_result.layer_scores.items())})"
+                )
+            except Exception as calib_error:
+                if MethodBelowThresholdError and isinstance(calib_error, MethodBelowThresholdError):
+                    logger.error(
+                        f"[{self.executor_id}] {method_id} FAILED calibration threshold: "
+                        f"score={calib_error.score:.3f}, threshold={calib_error.threshold:.3f}"
+                    )
+                    raise ExecutorFailure(
+                        f"Method {method_id} failed calibration: score {calib_error.score:.3f} "
+                        f"below threshold {calib_error.threshold:.3f}"
+                    ) from calib_error
+                else:
+                    logger.warning(f"[{self.executor_id}] Calibration error for {method_id}: {calib_error}")
         
         try:
             method = self._get_method(class_name, method_name)
@@ -385,7 +457,7 @@ class BaseExecutor(ABC):
             context: Canonical package with document, tables, metadata
             
         Returns:
-            Dict with raw_evidence, metadata, execution_metrics
+            Dict with raw_evidence, metadata, execution_metrics, calibration_metadata
         """
         if self._profiler:
             with self._profiler.profile_executor(self.executor_id) as ctx:
@@ -393,11 +465,44 @@ class BaseExecutor(ABC):
                 try:
                     result = self.execute(context)
                     ctx.set_result(result)
+                    result = self._inject_calibration_metadata(result)
                     return result
                 finally:
                     self._profiler_context = None
         else:
-            return self.execute(context)
+            result = self.execute(context)
+            result = self._inject_calibration_metadata(result)
+            return result
+    
+    def _inject_calibration_metadata(self, result: Dict[str, Any]) -> Dict[str, Any]:
+        """Inject calibration metadata into execution result."""
+        if not self.calibration_results:
+            return result
+        
+        if "metadata" not in result:
+            result["metadata"] = {}
+        
+        result["metadata"]["calibration_results"] = self.calibration_results
+        
+        if "execution_metrics" not in result:
+            result["execution_metrics"] = {}
+        
+        result["execution_metrics"]["calibration_summary"] = {
+            "total_methods": len(self.calibration_results),
+            "average_score": sum(
+                cr["final_score"] for cr in self.calibration_results.values()
+            ) / len(self.calibration_results) if self.calibration_results else 0.0,
+            "min_score": min(
+                (cr["final_score"] for cr in self.calibration_results.values()),
+                default=0.0
+            ),
+            "max_score": max(
+                (cr["final_score"] for cr in self.calibration_results.values()),
+                default=0.0
+            ),
+        }
+        
+        return result
 
 
 @dataclass

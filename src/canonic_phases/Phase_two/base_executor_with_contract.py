@@ -762,6 +762,9 @@ class BaseExecutorWithContract(ABC):
         sorted_inputs = sorted(
             indexed, key=lambda pair: (pair[1].get("priority", 2), pair[0])
         )
+        
+        calibration_results = {}
+        
         for _, entry in sorted_inputs:
             class_name = entry["class"]
             method_name = entry["method"]
@@ -769,6 +772,43 @@ class BaseExecutorWithContract(ABC):
             extra_args = entry.get("args", {})
 
             payload = {**common_kwargs, **extra_args}
+            
+            method_id = f"{class_name}.{method_name}"
+            
+            if self.calibration_orchestrator:
+                try:
+                    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                        MethodBelowThresholdError,
+                    )
+                    
+                    calibration_result = self.calibration_orchestrator.calibrate(
+                        method_id=method_id,
+                        context=payload,
+                        evidence=None
+                    )
+                    
+                    calibration_results[method_id] = calibration_result.to_dict()
+                    
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.info(
+                        f"[{base_slot}] Calibration: {method_id} → {calibration_result.final_score:.3f}"
+                    )
+                    
+                except MethodBelowThresholdError as e:
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.error(
+                        f"[{base_slot}] Method {method_id} FAILED calibration: "
+                        f"score={e.score:.3f}, threshold={e.threshold:.3f}"
+                    )
+                    raise RuntimeError(
+                        f"Method {method_id} failed calibration threshold"
+                    ) from e
+                except Exception as e:
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
 
             result = self.method_executor.execute(
                 class_name=class_name,
@@ -955,6 +995,25 @@ class BaseExecutorWithContract(ABC):
                 "error_code": contract_validation.error_code if contract_validation else None,
                 "failure_count": len(contract_validation.failures_detailed) if contract_validation else 0,
                 "orchestrator_registered": self._use_validation_orchestrator
+            },
+            # CALIBRATION: Add calibration metadata
+            "calibration_metadata": {
+                "enabled": self.calibration_orchestrator is not None,
+                "results": calibration_results,
+                "summary": {
+                    "total_methods": len(calibration_results),
+                    "average_score": sum(
+                        cr["final_score"] for cr in calibration_results.values()
+                    ) / len(calibration_results) if calibration_results else 0.0,
+                    "min_score": min(
+                        (cr["final_score"] for cr in calibration_results.values()),
+                        default=0.0
+                    ),
+                    "max_score": max(
+                        (cr["final_score"] for cr in calibration_results.values()),
+                        default=0.0
+                    ),
+                }
             }
         }
 
@@ -1042,6 +1101,7 @@ class BaseExecutorWithContract(ABC):
         # Execute methods based on orchestration mode
         method_outputs: dict[str, Any] = {}
         signal_usage_list: list[dict[str, Any]] = []
+        calibration_results: dict[str, Any] = {}
 
         if orchestration_mode == "multi_method_pipeline":
             # Multi-method execution: process all methods in priority order
@@ -1059,6 +1119,43 @@ class BaseExecutorWithContract(ABC):
                 method_name = method_spec["method_name"]
                 provides = method_spec.get("provides", f"{class_name}.{method_name}")
                 priority = method_spec.get("priority", 99)
+                
+                method_id = f"{class_name}.{method_name}"
+                
+                if self.calibration_orchestrator:
+                    try:
+                        from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                            MethodBelowThresholdError,
+                        )
+                        
+                        calibration_result = self.calibration_orchestrator.calibrate(
+                            method_id=method_id,
+                            context=common_kwargs,
+                            evidence=None
+                        )
+                        
+                        calibration_results[method_id] = calibration_result.to_dict()
+                        
+                        import logging
+                        logger = logging.getLogger(__name__)
+                        logger.info(
+                            f"[{base_slot}] Calibration: {method_id} → {calibration_result.final_score:.3f}"
+                        )
+                        
+                    except MethodBelowThresholdError as e:
+                        import logging
+                        logger = logging.getLogger(__name__)
+                        logger.error(
+                            f"[{base_slot}] Method {method_id} FAILED calibration: "
+                            f"score={e.score:.3f}, threshold={e.threshold:.3f}"
+                        )
+                        raise RuntimeError(
+                            f"Method {method_id} failed calibration threshold"
+                        ) from e
+                    except Exception as e:
+                        import logging
+                        logger = logging.getLogger(__name__)
+                        logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
 
                 try:
                     result = self.method_executor.execute(
@@ -1122,6 +1219,43 @@ class BaseExecutorWithContract(ABC):
                 raise ValueError(
                     f"Invalid method_binding for {base_slot}: missing class_name or method_name"
                 )
+            
+            method_id = f"{class_name}.{method_name}"
+            
+            if self.calibration_orchestrator:
+                try:
+                    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                        MethodBelowThresholdError,
+                    )
+                    
+                    calibration_result = self.calibration_orchestrator.calibrate(
+                        method_id=method_id,
+                        context=common_kwargs,
+                        evidence=None
+                    )
+                    
+                    calibration_results[method_id] = calibration_result.to_dict()
+                    
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.info(
+                        f"[{base_slot}] Calibration: {method_id} → {calibration_result.final_score:.3f}"
+                    )
+                    
+                except MethodBelowThresholdError as e:
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.error(
+                        f"[{base_slot}] Method {method_id} FAILED calibration: "
+                        f"score={e.score:.3f}, threshold={e.threshold:.3f}"
+                    )
+                    raise RuntimeError(
+                        f"Method {method_id} failed calibration threshold"
+                    ) from e
+                except Exception as e:
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
 
             result = self.method_executor.execute(
                 class_name=class_name,
@@ -1246,6 +1380,25 @@ class BaseExecutorWithContract(ABC):
                 "error_code": contract_validation.error_code if contract_validation else None,
                 "failure_count": len(contract_validation.failures_detailed) if contract_validation else 0,
                 "orchestrator_registered": self._use_validation_orchestrator
+            },
+            # CALIBRATION METADATA
+            "calibration_metadata": {
+                "enabled": self.calibration_orchestrator is not None,
+                "results": calibration_results,
+                "summary": {
+                    "total_methods": len(calibration_results),
+                    "average_score": sum(
+                        cr["final_score"] for cr in calibration_results.values()
+                    ) / len(calibration_results) if calibration_results else 0.0,
+                    "min_score": min(
+                        (cr["final_score"] for cr in calibration_results.values()),
+                        default=0.0
+                    ),
+                    "max_score": max(
+                        (cr["final_score"] for cr in calibration_results.values()),
+                        default=0.0
+                    ),
+                }
             }
         }
 

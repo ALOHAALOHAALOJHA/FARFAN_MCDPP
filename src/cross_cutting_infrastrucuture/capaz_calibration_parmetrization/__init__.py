@@ -39,6 +39,11 @@ from .calibration.COHORT_2024_calibration_orchestrator import (
     FusionWeights,
     LayerScores,
 )
+from .calibration_orchestrator import (
+    CalibrationOrchestrator as LegacyCalibrationOrchestrator,
+    CalibrationResult as LegacyCalibrationResult,
+    MethodBelowThresholdError,
+)
 from .cohort_loader import CohortLoader
 
 _loader: CohortLoader | None = None
@@ -120,4 +125,7 @@ __all__ = [
     "CalibrationResult",
     "FusionWeights",
     "LayerScores",
+    "LegacyCalibrationOrchestrator",
+    "LegacyCalibrationResult",
+    "MethodBelowThresholdError",
 ]
