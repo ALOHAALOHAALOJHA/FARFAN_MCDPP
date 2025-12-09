@@ -50,8 +50,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Generic, TypeVar
 
-from pydantic import BaseModel, Field, ValidationError
-
 # Type variables for generic phase contracts
 TInput = TypeVar("TInput")
 TOutput = TypeVar("TOutput")
