@@ -29,11 +29,11 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.factory import CanonicalQuestionnaire
+    from orchestration.factory import CanonicalQuestionnaire
 
-from farfan_pipeline.core.analysis_port import RecommendationEnginePort
-from farfan_pipeline.config.paths import PROJECT_ROOT, RULES_DIR
-from farfan_pipeline.processing.aggregation import (
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.paths import safe_join
+from canonic_phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
     AreaScore,
@@ -46,18 +46,15 @@ from farfan_pipeline.processing.aggregation import (
     group_by,
     validate_scored_results,
 )
-from farfan_pipeline.utils.paths import safe_join
-from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
-from farfan_pipeline.core.types import PreprocessedDocument
-from farfan_pipeline.core.orchestrator import executors_contract as executors
-from farfan_pipeline.core.orchestrator.arg_router import (
+from canonic_phases.Phase_two import executors_contract as executors
+from canonic_phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
 )
-from farfan_pipeline.core.orchestrator.class_registry import ClassRegistryError
-from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
-from farfan_pipeline.core.orchestrator.irrigation_synchronizer import (
+from canonic_phases.Phase_two.class_registry import ClassRegistryError
+from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )

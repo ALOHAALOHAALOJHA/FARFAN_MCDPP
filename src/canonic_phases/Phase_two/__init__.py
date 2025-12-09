@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from farfan_pipeline.core.orchestrator.core import (
+# Core orchestration - REAL PATH: orchestration.orchestrator
+from orchestration.orchestrator import (
     AbortRequested,
     AbortSignal,
     Evidence,
@@ -19,39 +20,37 @@ from farfan_pipeline.core.orchestrator.core import (
     ResourceLimits,
     ScoredMicroQuestion,
 )
-from farfan_pipeline.core.orchestrator.evidence_registry import (
+
+# Evidence registry - REAL PATH: canonic_phases.Phase_two.evidence_registry
+from canonic_phases.Phase_two.evidence_registry import (
     EvidenceRecord,
     EvidenceRegistry,
     ProvenanceDAG,
     ProvenanceNode,
     get_global_registry,
 )
-from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
-from farfan_pipeline.core.orchestrator.parameter_loader import (
-    CONSERVATIVE_CONFIG,
-    get_conservative_defaults,
-    load_executor_config,
-)
-from farfan_pipeline.core.orchestrator.pdt_quality_integration import (
-    PDTSectionQuality,
-)
-from farfan_pipeline.core.orchestrator.resource_alerts import (
+
+# Executor config - REAL PATH: canonic_phases.Phase_two.executor_config
+from canonic_phases.Phase_two.executor_config import ExecutorConfig
+
+# Resource management - REAL PATHS: orchestration.*
+from orchestration.resource_alerts import (
     AlertChannel,
     AlertSeverity,
     ResourceAlert,
     ResourceAlertManager,
 )
-from farfan_pipeline.core.orchestrator.resource_aware_executor import (
+from orchestration.resource_aware_executor import (
     ResourceAwareExecutor,
     ResourceConstraints,
 )
-from farfan_pipeline.core.orchestrator.resource_integration import (
+from orchestration.resource_integration import (
     create_resource_manager,
     get_resource_status,
     integrate_with_orchestrator,
     reset_circuit_breakers,
 )
-from farfan_pipeline.core.orchestrator.resource_manager import (
+from orchestration.resource_manager import (
     AdaptiveResourceManager,
     CircuitBreaker,
     CircuitState,
@@ -60,62 +59,38 @@ from farfan_pipeline.core.orchestrator.resource_manager import (
     ResourceAllocationPolicy,
     ResourcePressureLevel,
 )
-from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
-    BOOST_FACTORS,
-    PDT_QUALITY_THRESHOLDS,
-    EnrichedSignalPack,
-    PDTQualityMetrics,
-    apply_pdt_quality_boost,
-    compute_pdt_section_quality,
-    create_enriched_signal_pack,
-    track_pdt_precision_correlation,
-)
-from farfan_pipeline.core.types import ChunkData, PreprocessedDocument, Provenance
 
-# Signature validation (lazy import to avoid circular dependencies)
-try:
-    from farfan_pipeline.core.orchestrator.method_signature_validator import (
-        MethodSignatureValidator,
-    )
-    from farfan_pipeline.core.orchestrator.signature_runtime_validator import (
-        SignatureRuntimeValidator,
-        ValidationResult as SignatureValidationResult,
-        get_runtime_validator,
-        validate_method_call,
-    )
-    from farfan_pipeline.core.orchestrator.signature_mixin import (
-        SignatureValidationMixin,
-        ValidatedMethodDecorator,
-    )
-    from farfan_pipeline.core.orchestrator.signature_types import (
-        MethodSignature,
-        ValidationReport,
-    )
-    
-    _SIGNATURE_VALIDATION_AVAILABLE = True
-except ImportError:
-    _SIGNATURE_VALIDATION_AVAILABLE = False
-    MethodSignatureValidator = None  # type: ignore
-    SignatureRuntimeValidator = None  # type: ignore
-    SignatureValidationResult = None  # type: ignore
-    get_runtime_validator = None  # type: ignore
-    validate_method_call = None  # type: ignore
-    SignatureValidationMixin = None  # type: ignore
-    ValidatedMethodDecorator = None  # type: ignore
-    MethodSignature = None  # type: ignore
-    ValidationReport = None  # type: ignore
+# Signal intelligence - REAL PATH: cross_cutting_infrastrucuture.irrigation_using_signals.SISAS
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+    EnrichedSignalPack,
+    create_enriched_signal_pack,
+)
+
+# Signature validation - REAL PATHS: orchestration.*
+from orchestration.method_signature_validator import (
+    MethodSignatureValidator,
+)
+from orchestration.signature_runtime_validator import (
+    SignatureRuntimeValidator,
+    ValidationResult as SignatureValidationResult,
+    get_runtime_validator,
+    validate_method_call,
+)
+from orchestration.signature_types import (
+    MethodSignature,
+    ValidationReport,
+)
 
 __all__ = [
+    # Evidence
     "EvidenceRecord",
     "EvidenceRegistry",
     "ProvenanceDAG",
     "ProvenanceNode",
     "get_global_registry",
+    # Orchestration core
     "Orchestrator",
     "MethodExecutor",
-    "PreprocessedDocument",
-    "ChunkData",
-    "Provenance",
     "Evidence",
     "AbortSignal",
     "AbortRequested",
@@ -124,6 +99,7 @@ __all__ = [
     "PhaseResult",
     "MicroQuestionRun",
     "ScoredMicroQuestion",
+    # Resource management
     "AdaptiveResourceManager",
     "CircuitBreaker",
     "CircuitState",
@@ -141,27 +117,17 @@ __all__ = [
     "integrate_with_orchestrator",
     "get_resource_status",
     "reset_circuit_breakers",
+    # Config
     "ExecutorConfig",
-    "load_executor_config",
-    "get_conservative_defaults",
-    "CONSERVATIVE_CONFIG",
+    # Signal intelligence
     "EnrichedSignalPack",
     "create_enriched_signal_pack",
-    "PDTQualityMetrics",
-    "PDTSectionQuality",
-    "compute_pdt_section_quality",
-    "apply_pdt_quality_boost",
-    "track_pdt_precision_correlation",
-    "PDT_QUALITY_THRESHOLDS",
-    "BOOST_FACTORS",
     # Signature validation
     "MethodSignatureValidator",
     "SignatureRuntimeValidator",
     "SignatureValidationResult",
     "get_runtime_validator",
     "validate_method_call",
-    "SignatureValidationMixin",
-    "ValidatedMethodDecorator",
     "MethodSignature",
     "ValidationReport",
 ]
