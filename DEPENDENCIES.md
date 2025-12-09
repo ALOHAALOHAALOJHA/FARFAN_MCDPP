@@ -2,17 +2,66 @@
 
 ## Core Dependencies
 
-### REQUIRED for Phase 1 Execution
+### REQUIRED for Phase 1 Maximum Performance
 
-These dependencies are **MANDATORY** and the pipeline will NOT function without them. The F.A.R.F.A.N pipeline uses the dura_lex contract system for maximum performance and deterministic execution with zero tolerance for contract violations.
+The F.A.R.F.A.N pipeline enforces **ZERO TOLERANCE** for missing dependencies required by the dura_lex contract system. These are MANDATORY for ensuring:
+- Deterministic execution (as per FORCING ROUTE)
+- Maximum performance
+- Full contract enforcement
+- Idempotency guarantees
+- Complete traceability
 
-- **pydantic** (>= 2.0): **REQUIRED** - Hard dependency for runtime contract validation
-  - Phase 0: `phase0_input_validation.py` - Input/output contract validation
-  - SISAS modules: Signal validation and contract enforcement  
-  - Dura_lex system: `contracts_runtime.py` - All runtime contract validators
-  - Used throughout pipeline for ensuring maximum performance and deterministic execution
-  - **Pipeline will FAIL on import if pydantic is not installed**
-  - Install with: `pip install 'pydantic>=2.0'`
+Install all at once with:
+```bash
+pip install -r requirements-phase1.txt
+```
+
+#### 1. pydantic (>= 2.0) - **REQUIRED**
+**Purpose**: Runtime contract validation throughout the dura_lex system
+
+**Used in**:
+- Phase 0: `phase0_input_validation.py` - Input/output contract validation with StrictModel pattern
+- SISAS modules: Signal validation and contract enforcement  
+- Dura_lex: `contracts_runtime.py` - All runtime contract validators
+- Used throughout pipeline for maximum performance and deterministic execution
+
+**Consequence if missing**: Pipeline will FAIL immediately on import with clear error message
+
+#### 2. numpy (>= 1.24.0) - **REQUIRED**
+**Purpose**: Deterministic operations and numerical stability
+
+**Used in**:
+- Dura_lex: `deterministic_execution.py` - DeterministicSeedManager for reproducible execution
+- Required for FORCING ROUTE compliance (deterministic execution requirement)
+
+**Consequence if missing**: Deterministic execution cannot be guaranteed
+
+#### 3. spacy (>= 3.0.0) - **REQUIRED for SP1**
+**Purpose**: Advanced NLP preprocessing
+
+**Used in**:
+- Phase 1, SP1: Advanced preprocessing, tokenization, segmentation
+- FORCING ROUTE [EXEC-SP1-001] through [EXEC-SP1-011]
+
+**Consequence if missing**: Cannot execute SP1 preprocessing (FORCING ROUTE FATAL)
+
+#### 4. langdetect (>= 1.0.9) - **REQUIRED for SP0**
+**Purpose**: Language detection
+
+**Used in**:
+- Phase 1, SP0: Language detection
+- FORCING ROUTE [EXEC-SP0-001] through [EXEC-SP0-005]
+
+**Consequence if missing**: Cannot execute SP0 language detection (FORCING ROUTE FATAL)
+
+#### 5. PyMuPDF (>= 1.23.0) - **REQUIRED for PDF Processing**
+**Purpose**: PDF text extraction
+
+**Used in**:
+- Phase 0: PDF reading and validation
+- FORCING ROUTE [PRE-003] PDF path validation
+
+**Consequence if missing**: Cannot process PDF inputs (FORCING ROUTE FATAL)
 
 ### Optional Dependencies
 

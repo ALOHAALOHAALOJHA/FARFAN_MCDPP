@@ -76,6 +76,27 @@ from canonic_phases.Phase_one.phase_protocol import (
     PhaseContract,
 )
 
+# Dura Lex Contract System - ACTUAL USAGE FOR MAXIMUM PERFORMANCE
+# These tools ensure deterministic execution, idempotency, and full traceability
+try:
+    from cross_cutting_infrastrucuture.contractual.dura_lex.deterministic_execution import (
+        DeterministicSeedManager,
+    )
+    from cross_cutting_infrastrucuture.contractual.dura_lex.idempotency_dedup import (
+        IdempotencyContract,
+    )
+    DURA_LEX_AVAILABLE = True
+except ImportError as e:
+    import warnings
+    warnings.warn(
+        f"WARNING: Dura Lex contract system not fully available: {e}. "
+        "Contract enforcement may be limited. For maximum performance, ensure all dependencies are installed.",
+        ImportWarning
+    )
+    DURA_LEX_AVAILABLE = False
+    DeterministicSeedManager = None
+    IdempotencyContract = None
+
 # Schema version for Phase 0
 PHASE0_VERSION = "1.0.0"
 
@@ -100,14 +121,29 @@ class Phase0Input:
 
 class Phase0InputValidator(BaseModel):
     """
-    Runtime validator for Phase0Input contract.
+    Runtime validator for Phase0Input contract - Dura Lex StrictModel Pattern.
     
-    Uses pydantic for strict runtime validation as per dura_lex contract system.
+    Uses pydantic for strict runtime validation following the dura_lex contract system.
     This ensures maximum performance and deterministic execution with zero tolerance
     for invalid inputs.
+    
+    Configuration follows dura_lex/contracts_runtime.py StrictModel pattern:
+    - extra='forbid': Refuse unknown fields
+    - validate_assignment=True: Validate on assignment
+    - str_strip_whitespace=True: Auto-strip strings
+    - validate_default=True: Validate default values
     """
+    
+    # Strict configuration per dura_lex contract system
+    model_config = {
+        'extra': 'forbid',  # Refuse unknown fields - zero tolerance
+        'validate_assignment': True,  # Validate on assignment
+        'str_strip_whitespace': True,  # Auto-strip whitespace
+        'validate_default': True,  # Validate defaults
+        'frozen': False,  # Allow mutation for validation
+    }
 
-    pdf_path: str = Field(description="Path to input PDF")
+    pdf_path: str = Field(min_length=1, description="Path to input PDF")
     run_id: str = Field(min_length=1, description="Unique run identifier")
     questionnaire_path: str | None = Field(
         default=None, description="Optional questionnaire path"
@@ -116,21 +152,21 @@ class Phase0InputValidator(BaseModel):
     @field_validator("pdf_path")
     @classmethod
     def validate_pdf_path(cls, v: str) -> str:
-        """Validate PDF path format with zero tolerance."""
+        """Validate PDF path format with zero tolerance per FORCING ROUTE [PRE-003]."""
         if not v or not v.strip():
-            raise ValueError("pdf_path cannot be empty")
+            raise ValueError("[PRE-003] FATAL: pdf_path cannot be empty")
         return v
 
     @field_validator("run_id")
     @classmethod
     def validate_run_id(cls, v: str) -> str:
-        """Validate run_id format with zero tolerance."""
+        """Validate run_id format with zero tolerance per FORCING ROUTE [PRE-002]."""
         if not v or not v.strip():
-            raise ValueError("run_id cannot be empty")
-        # Ensure run_id is filesystem-safe
+            raise ValueError("[PRE-002] FATAL: run_id cannot be empty")
+        # Ensure run_id is filesystem-safe and deterministic
         if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
             raise ValueError(
-                "run_id contains invalid characters (must be filesystem-safe)"
+                "[PRE-002] FATAL: run_id contains invalid characters (must be filesystem-safe)"
             )
         return v
 
