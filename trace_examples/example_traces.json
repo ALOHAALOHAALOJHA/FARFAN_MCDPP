@@ -1,0 +1,89 @@
+{
+  "description": "Example operation traces for calibration audit",
+  "version": "1.0.0",
+  "traces": [
+    {
+      "operation": "np.mean",
+      "inputs": {
+        "values": [0.8, 0.9, 0.7, 0.85, 0.75]
+      },
+      "output": 0.81,
+      "stack_trace": [
+        "src/methods_dispensary/bayesian_multilevel_system.py:900 in aggregate_micro_to_meso",
+        "src/methods_dispensary/bayesian_multilevel_system.py:1206 in analyze_macro_level",
+        "src/orchestration/orchestrator.py:450 in execute_phase_9"
+      ],
+      "timestamp": "2024-12-09T12:00:00.000Z"
+    },
+    {
+      "operation": "aggregate_dimension_scores",
+      "inputs": {
+        "dimension_scores": {
+          "DIM01": 0.82,
+          "DIM02": 0.89,
+          "DIM03": 0.76,
+          "DIM04": 0.84,
+          "DIM05": 0.78,
+          "DIM06": 0.81
+        }
+      },
+      "output": 0.8166666666666667,
+      "stack_trace": [
+        "src/methods_dispensary/bayesian_multilevel_system.py:952 in calculate_macro_score",
+        "src/orchestration/orchestrator.py:480 in finalize_analysis"
+      ],
+      "timestamp": "2024-12-09T12:00:01.234Z"
+    },
+    {
+      "operation": "apply_dispersion_penalty",
+      "inputs": {
+        "raw_score": 0.85,
+        "dispersion_penalty": 0.05,
+        "peer_penalty": 0.02
+      },
+      "output": 0.78,
+      "stack_trace": [
+        "src/methods_dispensary/bayesian_multilevel_system.py:670 in aggregate_micro_to_meso",
+        "src/methods_dispensary/bayesian_multilevel_system.py:1227 in build_meso_analysis"
+      ],
+      "timestamp": "2024-12-09T12:00:02.456Z"
+    },
+    {
+      "operation": "calculate_calibration_score",
+      "inputs": {
+        "method_id": "FIN:BayesianNumericalAnalyzer.analyze_numeric_pattern@Q",
+        "raw_evidence_score": 0.87,
+        "confidence": 0.92
+      },
+      "output": 0.8004,
+      "stack_trace": [
+        "src/methods_dispensary/policy_processor.py:518 in compute_bayesian_score",
+        "src/methods_dispensary/policy_processor.py:1031 in analyze_contradictions"
+      ],
+      "timestamp": "2024-12-09T12:00:03.789Z"
+    },
+    {
+      "operation": "np.percentile",
+      "inputs": {
+        "scores": [0.75, 0.78, 0.82, 0.85, 0.88, 0.90],
+        "percentiles": [25, 50, 75]
+      },
+      "output": [0.7825, 0.835, 0.8725],
+      "stack_trace": [
+        "src/cross_cutting_infrastrucuture/contractual/dura_lex/risk_certificate.py:22 in conformal_prediction",
+        "src/methods_dispensary/bayesian_multilevel_system.py:555 in peer_calibration"
+      ],
+      "timestamp": "2024-12-09T12:00:04.012Z"
+    }
+  ],
+  "statistics": {
+    "total_operations": 5,
+    "total_duration_ms": 4012,
+    "operations_by_type": {
+      "aggregation": 2,
+      "penalty_application": 1,
+      "scoring": 1,
+      "statistical": 1
+    }
+  }
+}

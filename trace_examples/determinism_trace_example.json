@@ -1,0 +1,117 @@
+{
+  "description": "Determinism validation: identical inputs produce identical traces",
+  "test_scenario": "Two calibration runs with identical seeds and configuration",
+  "run_1": {
+    "execution_id": "RUN-2024-12-09-001",
+    "determinism_seeds": {
+      "random_seed": 123456,
+      "numpy_seed": 789012,
+      "seed_version": "sha256_v1",
+      "base_seed": 42,
+      "policy_unit_id": "PDM-TEST-001"
+    },
+    "parametrization": {
+      "config_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retry": 3,
+      "timeout_s": 300.0,
+      "temperature": 0.7,
+      "thresholds": {
+        "min_confidence": 0.7,
+        "min_evidence": 0.6,
+        "min_coherence": 0.65
+      }
+    },
+    "traces": [
+      {
+        "operation": "np.random.seed",
+        "inputs": {
+          "seed": 123456
+        },
+        "output": null,
+        "stack_trace": [
+          "src/orchestration/seed_registry.py:75 in set_numpy_seed"
+        ],
+        "timestamp": "2024-12-09T12:00:00.100Z"
+      },
+      {
+        "operation": "compute_score",
+        "inputs": {
+          "evidence_score": 0.85,
+          "confidence": 0.9
+        },
+        "output": 0.765,
+        "stack_trace": [
+          "src/methods_dispensary/policy_processor.py:518 in compute_bayesian_score"
+        ],
+        "timestamp": "2024-12-09T12:00:01.000Z"
+      }
+    ],
+    "results": {
+      "macro_score": 0.8166666666666667
+    }
+  },
+  "run_2": {
+    "execution_id": "RUN-2024-12-09-002",
+    "determinism_seeds": {
+      "random_seed": 123456,
+      "numpy_seed": 789012,
+      "seed_version": "sha256_v1",
+      "base_seed": 42,
+      "policy_unit_id": "PDM-TEST-001"
+    },
+    "parametrization": {
+      "config_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retry": 3,
+      "timeout_s": 300.0,
+      "temperature": 0.7,
+      "thresholds": {
+        "min_confidence": 0.7,
+        "min_evidence": 0.6,
+        "min_coherence": 0.65
+      }
+    },
+    "traces": [
+      {
+        "operation": "np.random.seed",
+        "inputs": {
+          "seed": 123456
+        },
+        "output": null,
+        "stack_trace": [
+          "src/orchestration/seed_registry.py:75 in set_numpy_seed"
+        ],
+        "timestamp": "2024-12-09T12:05:00.100Z"
+      },
+      {
+        "operation": "compute_score",
+        "inputs": {
+          "evidence_score": 0.85,
+          "confidence": 0.9
+        },
+        "output": 0.765,
+        "stack_trace": [
+          "src/methods_dispensary/policy_processor.py:518 in compute_bayesian_score"
+        ],
+        "timestamp": "2024-12-09T12:05:01.000Z"
+      }
+    ],
+    "results": {
+      "macro_score": 0.8166666666666667
+    }
+  },
+  "validation_result": {
+    "deterministic": true,
+    "seeds_match": true,
+    "config_match": true,
+    "results_match": true,
+    "score_difference": 0.0,
+    "trace_count_match": true,
+    "trace_operations_match": true,
+    "notes": [
+      "Identical seeds and configuration produced identical results",
+      "All operation outputs match across runs",
+      "Timestamps differ but operation sequence is identical",
+      "Determinism validation passed"
+    ]
+  }
+}
