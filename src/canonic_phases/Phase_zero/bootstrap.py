@@ -22,6 +22,7 @@ from typing import Any
 import structlog
 
 from farfan_pipeline.config.paths import CONFIG_DIR, DATA_DIR
+from orchestration.factory import CanonicalQuestionnaire
 from farfan_pipeline.core.orchestrator.arg_router import ExtendedArgRouter
 from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
 from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
@@ -35,9 +36,120 @@ from farfan_pipeline.core.orchestrator.signals import (
 
 @dataclass
 class QuestionnaireResourceProvider:
-    """Provider for questionnaire resources."""
+    """
+    Proveedor de recursos del cuestionario con acceso scoped.
+
+    NIVEL 2: Acceso Parcial Recurrente
+    PROVEEDOR: AnalysisPipelineFactory (Nivel 1)
+    CONSUMIDORES: Orchestrator, ReportAssembler, SISAS components
+
+    Este provider NO hace I/O. Recibe CanonicalQuestionnaire ya cargado
+    y expone métodos que retornan subconjuntos específicos.
+    """
     questionnaire_path: Path | None = None
     data_dir: Path = field(default_factory=lambda: DATA_DIR)
+    _canonical: CanonicalQuestionnaire | None = field(default=None, repr=False)
+
+    # === MÉTODOS DE INICIALIZACIÓN ===
+
+    def initialize(self, canonical: CanonicalQuestionnaire) -> None:
+        """
+        Inicializa el provider con el cuestionario canónico.
+        DEBE ser llamado por Factory después de load_questionnaire().
+        """
+        object.__setattr__(self, '_canonical', canonical)
+
+    @property
+    def is_initialized(self) -> bool:
+        """Verifica si el provider fue inicializado."""
+        return self._canonical is not None
+
+    def _require_initialized(self) -> CanonicalQuestionnaire:
+        """Guarda que lanza error si no está inicializado."""
+        if self._canonical is None:
+            raise RuntimeError(
+                "QuestionnaireResourceProvider not initialized. "
+                "Call initialize() with CanonicalQuestionnaire first."
+            )
+        return self._canonical
+
+    # === MÉTODOS DE ACCESO SCOPED (NIVEL 2) ===
+
+    def get_data(self) -> dict[str, Any]:
+        """
+        Retorna el contenido completo del cuestionario.
+        SCOPE: Total (pero solo lectura, no I/O)
+        USO: ReportAssembler para metadatos
+        """
+        return dict(self._require_initialized().data)
+
+    def get_dimensions(self) -> dict[str, Any]:
+        """
+        SCOPE: Solo canonical_notation.dimensions (6 items)
+        """
+        return self._require_initialized().dimensions
+
+    def get_policy_areas(self) -> dict[str, Any]:
+        """
+        SCOPE: Solo canonical_notation.policy_areas (10 items)
+        """
+        return self._require_initialized().policy_areas
+
+    def get_micro_questions_for_policy_area(self, pa_id: str) -> list[dict[str, Any]]:
+        """
+        SCOPE: Micro preguntas filtradas por policy_area_id
+        Ejemplo: get_micro_questions_for_policy_area("PA01") → 30 preguntas
+        """
+        canonical = self._require_initialized()
+        return [q for q in canonical.micro_questions if q.get("policy_area_id") == pa_id]
+
+    def get_micro_questions_for_dimension(self, dim_id: str) -> list[dict[str, Any]]:
+        """
+        SCOPE: Micro preguntas filtradas por dimension_id
+        Ejemplo: get_micro_questions_for_dimension("DIM01") → 50 preguntas
+        """
+        canonical = self._require_initialized()
+        return [q for q in canonical.micro_questions if q.get("dimension_id") == dim_id]
+
+    def get_patterns_by_question(self, question_id: str) -> list[dict[str, Any]]:
+        """
+        SCOPE: Patrones de una micro pregunta específica
+        USO: ReportAssembler para enrichment de respuestas
+        """
+        canonical = self._require_initialized()
+        for q in canonical.micro_questions:
+            if q.get("question_id") == question_id:
+                return list(q.get("patterns", []))
+        return []
+
+    def get_expected_elements_for_question(self, question_id: str) -> list[dict[str, Any]]:
+        """
+        SCOPE: Elementos esperados de una micro pregunta específica
+        USO: EvidenceValidator para verificación
+        """
+        canonical = self._require_initialized()
+        for q in canonical.micro_questions:
+            if q.get("question_id") == question_id:
+                return list(q.get("expected_elements", []))
+        return []
+
+    def get_failure_contract_for_question(self, question_id: str) -> dict[str, Any] | None:
+        """
+        SCOPE: Contrato de falla de una micro pregunta específica
+        USO: EvidenceValidator para abort conditions
+        """
+        canonical = self._require_initialized()
+        for q in canonical.micro_questions:
+            if q.get("question_id") == question_id:
+                return q.get("failure_contract")
+        return None
+
+    @property
+    def source_hash(self) -> str:
+        """Hash SHA256 del cuestionario para trazabilidad."""
+        if self._canonical is None:
+            return ""
+        return self._canonical.sha256
 
 try:  # Optional dependency: calibration orchestrator
     from farfan_pipeline.core.calibration.orchestrator import CalibrationOrchestrator as _CalibrationOrchestrator
