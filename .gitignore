@@ -147,3 +147,8 @@ strongest_causal.json
 threshold_results.json
 cross_document_*.json
 index_summary.json
+
+# Sensitive calibration data (evidence traces contain production quality scores)
+# Note: Evidence traces are kept in repo for COHORT_2024 but may be moved to secure storage
+# src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/evidence_traces/*.json
+# !src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/evidence_traces/.gitkeep
