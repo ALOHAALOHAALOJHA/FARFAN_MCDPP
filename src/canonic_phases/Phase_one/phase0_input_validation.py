@@ -60,7 +60,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
-from farfan_pipeline.core.phases.phase_protocol import (
+# Phase protocol from same directory
+from canonic_phases.Phase_one.phase_protocol import (
     ContractValidationResult,
     PhaseContract,
 )

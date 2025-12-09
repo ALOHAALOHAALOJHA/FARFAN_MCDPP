@@ -5,7 +5,16 @@ Segments documents into policy-aware units.
 """
 
 from typing import Any
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+
+# Provide calibrated_method stub if not available
+try:
+    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.decorators import calibrated_method
+except ImportError:
+    # Stub decorator that does nothing
+    def calibrated_method(name: str):
+        def decorator(func):
+            return func
+        return decorator
 
 
 class StructuralNormalizer:

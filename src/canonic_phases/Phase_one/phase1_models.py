@@ -48,6 +48,11 @@ class StructureData:
     unassigned_paragraphs: List[int] = field(default_factory=list)
     tables: List[Any] = field(default_factory=list)
     lists: List[Any] = field(default_factory=list)
+    
+    @property
+    def paragraph_to_section(self) -> Dict[int, str]:
+        """Alias for paragraph_mapping per FORCING ROUTE [EXEC-SP2-005]."""
+        return self.paragraph_mapping
 
 @dataclass
 class KGNode:
@@ -120,31 +125,61 @@ class Chunk:
 class CausalChains:
     """Output of SP5."""
     chains: List[Any] = field(default_factory=list)
+    
+    @property
+    def causal_chains(self) -> List[Any]:
+        """Alias per FORCING ROUTE [EXEC-SP5-002]."""
+        return self.chains
 
 @dataclass
 class IntegratedCausal:
     """Output of SP6."""
     global_graph: Any = None
+    
+    @property
+    def integrated_causal(self) -> Any:
+        """Alias per FORCING ROUTE [EXEC-SP6-002]."""
+        return self.global_graph
 
 @dataclass
 class Arguments:
     """Output of SP7."""
     arguments_map: Dict[str, Any] = field(default_factory=dict)
+    
+    @property
+    def argumentative_structure(self) -> Dict[str, Any]:
+        """Alias per FORCING ROUTE [EXEC-SP7-002]."""
+        return self.arguments_map
 
 @dataclass
 class Temporal:
     """Output of SP8."""
     timeline: List[Any] = field(default_factory=list)
+    
+    @property
+    def temporal_markers(self) -> List[Any]:
+        """Alias per FORCING ROUTE [EXEC-SP8-002]."""
+        return self.timeline
 
 @dataclass
 class Discourse:
     """Output of SP9."""
     patterns: Dict[str, Any] = field(default_factory=dict)
+    
+    @property
+    def discourse_structure(self) -> Dict[str, Any]:
+        """Alias per FORCING ROUTE [EXEC-SP9-002]."""
+        return self.patterns
 
 @dataclass
 class Strategic:
     """Output of SP10."""
     priorities: Dict[str, float] = field(default_factory=dict)
+    
+    @property
+    def strategic_integration(self) -> Dict[str, float]:
+        """Alias per FORCING ROUTE [EXEC-SP10-002]."""
+        return self.priorities
 
 @dataclass(frozen=True)
 class SmartChunk:
