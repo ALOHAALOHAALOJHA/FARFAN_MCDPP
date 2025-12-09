@@ -276,8 +276,184 @@ All requirements validated:
 
 ---
 
+## 3. Meta Layer Evaluator (@m)
+
+### Status: ✅ COMPLETE
+
+The meta layer evaluator (@m) has been fully implemented in `src/orchestration/meta_layer.py` with all requested functionality.
+
+### Components Implemented
+
+#### 1. Transparency Metric (m_transp)
+**Location**: `MetaLayerEvaluator.evaluate_transparency()`
+
+**Discrete Values**: {1.0, 0.7, 0.4, 0.0}
+
+**Logic**:
+- Evaluates 3 conditions: formula_export, trace, logs
+- **1.0**: All 3 conditions met
+- **0.7**: 2 of 3 conditions met
+- **0.4**: 1 of 3 conditions met
+- **0.0**: None met
+
+**Validation**:
+- `formula_export`: Contains "Choquet", "Cal(I)", or "x_" (min 10 chars)
+- `trace`: Contains "step", "phase", or "method" (min 20 chars)
+- `logs`: Conforms to provided schema with required fields
+
+#### 2. Governance Metric (m_gov)
+**Location**: `MetaLayerEvaluator.evaluate_governance()`
+
+**Discrete Values**: {1.0, 0.66, 0.33, 0.0}
+
+**Logic**:
+- Evaluates 3 conditions: version_tag, config_hash, signature
+- **1.0**: All 3 conditions met
+- **0.66**: 2 of 3 conditions met
+- **0.33**: 1 of 3 conditions met
+- **0.0**: None met
+
+**Validation**:
+- `version_tag`: Non-empty, not "unknown", "1.0", or "0.0.0"
+- `config_hash`: 64-character hex string (SHA256)
+- `signature`: Min 32 chars (only checked if required)
+
+#### 3. Cost Metric (m_cost)
+**Location**: `MetaLayerEvaluator.evaluate_cost()`
+
+**Discrete Values**: {1.0, 0.8, 0.5, 0.0}
+
+**Logic**:
+- Evaluates execution time and memory usage against thresholds
+- **1.0**: time < 1.0s AND memory ≤ 512MB (fast)
+- **0.8**: time < 5.0s AND memory ≤ 512MB (acceptable)
+- **0.5**: time ≥ 5.0s OR memory > 512MB (poor)
+- **0.0**: Negative values (invalid)
+
+**Thresholds** (configurable):
+- `threshold_fast`: 1.0s
+- `threshold_acceptable`: 5.0s
+- `threshold_memory_normal`: 512MB
+
+#### 4. Aggregation Formula
+**Location**: `MetaLayerEvaluator.evaluate()`
+
+**Formula**: `x_@m = 0.5 · m_transp + 0.4 · m_gov + 0.1 · m_cost`
+
+**Implementation**:
+```python
+score = (
+    self.config.w_transparency * m_transp +
+    self.config.w_governance * m_gov +
+    self.config.w_cost * m_cost
+)
+```
+
+**Default Weights**:
+- `w_transparency`: 0.5 (50%)
+- `w_governance`: 0.4 (40%)
+- `w_cost`: 0.1 (10%)
+
+### Files
+
+#### Core Implementation
+- **Main**: `src/orchestration/meta_layer.py` (267 lines)
+- **Example**: `src/orchestration/meta_layer_example.py` (170 lines)
+- **Tests**: `tests/test_meta_layer.py` (420 lines)
+- **Documentation**: `src/orchestration/META_LAYER_README.md`
+
+#### Key Classes & Types
+- `MetaLayerConfig` - Configuration dataclass with weight validation
+- `MetaLayerEvaluator` - Main evaluator class
+- `TransparencyArtifacts` - TypedDict for transparency inputs
+- `GovernanceArtifacts` - TypedDict for governance inputs
+- `CostMetrics` - TypedDict for cost inputs
+- Helper functions: `create_default_config()`, `compute_config_hash()`
+
+### API Usage
+
+```python
+from src.orchestration.meta_layer import (
+    MetaLayerEvaluator,
+    create_default_config
+)
+
+# Initialize evaluator
+evaluator = MetaLayerEvaluator(create_default_config())
+
+# Evaluate method
+result = evaluator.evaluate(
+    transparency_artifacts={
+        "formula_export": "Cal(I) = Choquet expanded formula",
+        "trace": "Phase 0 -> Phase 1 -> Phase 2",
+        "logs": {"timestamp": "...", "level": "INFO", ...}
+    },
+    governance_artifacts={
+        "version_tag": "v2.1.3",
+        "config_hash": "a" * 64,
+        "signature": None
+    },
+    cost_metrics={
+        "execution_time_s": 0.8,
+        "memory_usage_mb": 256.0
+    }
+)
+
+# Access results
+print(f"Overall Score: {result['score']}")
+print(f"Transparency: {result['m_transparency']}")
+print(f"Governance: {result['m_governance']}")
+print(f"Cost: {result['m_cost']}")
+```
+
+### Test Coverage
+
+The implementation includes comprehensive tests covering:
+- ✅ Config creation and validation (weight sum = 1.0, non-negative)
+- ✅ Transparency evaluation (all discrete values: 1.0, 0.7, 0.4, 0.0)
+- ✅ Governance evaluation (all discrete values: 1.0, 0.66, 0.33, 0.0)
+- ✅ Cost evaluation (all discrete values: 1.0, 0.8, 0.5, 0.0)
+- ✅ Full evaluation with weighted aggregation
+- ✅ Config hash generation (deterministic, order-invariant)
+- ✅ Edge cases (negative values, invalid inputs, missing data)
+
+### Validation Commands
+
+```bash
+# Run example
+python -m src.orchestration.meta_layer_example
+
+# Run tests
+pytest tests/test_meta_layer.py -v
+
+# Run specific test class
+pytest tests/test_meta_layer.py::TestTransparencyEvaluation -v
+pytest tests/test_meta_layer.py::TestGovernanceEvaluation -v
+pytest tests/test_meta_layer.py::TestCostEvaluation -v
+pytest tests/test_meta_layer.py::TestFullEvaluation -v
+```
+
+### Implementation Completeness
+
+✅ All requirements fully implemented:
+1. ✅ `m_transp` with discrete values {1.0, 0.7, 0.4, 0.0}
+2. ✅ `m_gov` with discrete values {1.0, 0.66, 0.33, 0.0}
+3. ✅ `m_cost` with discrete values {1.0, 0.8, 0.5, 0.0}
+4. ✅ Aggregation formula: x_@m = 0.5·m_transp + 0.4·m_gov + 0.1·m_cost
+5. ✅ Configuration with weight validation
+6. ✅ TypedDict contracts for all artifacts
+7. ✅ Comprehensive validation logic
+8. ✅ Full test coverage
+9. ✅ Example usage code
+10. ✅ Documentation
+
+**Status**: Ready for use. No additional implementation needed.
+
+---
+
 ## Conclusion
 
-Both implementations are **fully implemented, tested, documented, and integrated**:
+All three implementations are **fully implemented, tested, documented, and integrated**:
 1. **Audit Trail System** - Complete verification and determinism validation infrastructure
 2. **Calibration Orchestrator** - Complete role-based layer activation and evidence evaluation system
+3. **Meta Layer Evaluator (@m)** - Complete transparency, governance, and cost metrics with weighted aggregation
