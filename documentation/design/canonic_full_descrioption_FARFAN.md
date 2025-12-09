@@ -170,7 +170,7 @@ A continuación, se describe cada una de las capas, desde la más externa (inter
 
 -   **Propósito:** No es una capa de código, sino la representación de los datos en reposo. Contiene todos los archivos de configuración, datos de entrada y especificaciones que el sistema necesita para funcionar.
 -   **Componentes Clave:**
-    -   `data/questionnaire_monolith.json`: Especifica preguntas, ejecutores y scoring.
+    -   `canonic_questionnaire_central/questionnaire_monolith.json`: Especifica preguntas, ejecutores y scoring.
     -   `config/`: Monolitos y parámetros (intrinsic calibration, catálogos canónicos, rutas).
     -   `system/config/`: Configs gestionables en runtime (p.ej. `calibration/runtime_layers.json`, `unit_transforms.json`).
 -   **Dependencias:** Es la base sobre la que operan todas las demás capas. No depende de ninguna otra capa.
@@ -3998,7 +3998,7 @@ Todos los `schemas` canónicos se encuentran en el directorio `config/schemas/` 
 
 Este es el artefacto más importante del sistema. No es simplemente un archivo de datos, sino la **especificación ejecutable** de la lógica de negocio completa del análisis de políticas públicas.
 
--   **Ubicación:** `data/questionnaire_monolith.json`
+-   **Ubicación:** `canonic_questionnaire_central/questionnaire_monolith.json`
 -   **Schema de Validación:** `config/schemas/questionnaire_monolith.schema.json`
 -   **Propósito:** Define de forma jerárquica toda la estructura del análisis, incluyendo:
     -   Los clústeres, áreas de política y dimensiones.
@@ -4313,12 +4313,12 @@ Este es el paso más crítico para la reproducibilidad. Verifique que los hashes
 
 ```bash
 # Ejemplo de verificación
-sha256sum data/questionnaire_monolith.json
+sha256sum canonic_questionnaire_central/questionnaire_monolith.json
 sha256sum config/intrinsic_calibration.json
 sha256sum MIGRATION_ARTIFACTS_FAKE_TO_REAL/03_METHOD_INVENTORIES/CANONICAL_METHOD_PARAMETERIZATION_SPEC.json
 
 # Salida esperada (ejemplo):
-# a1b2c3d4...  data/questionnaire_monolith.json
+# a1b2c3d4...  canonic_questionnaire_central/questionnaire_monolith.json
 # e5f6g7h8...  config/intrinsic_calibration.json
 # i9j0k1l2...  .../CANONICAL_METHOD_PARAMETERIZATION_SPEC.json
 ```
