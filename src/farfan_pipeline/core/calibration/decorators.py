@@ -1,7 +1,12 @@
-"""Stub for decorators to allow imports."""
+"""
+Calibration Decorators - Stub for calibration system
+"""
 
-def calibrated_method(name):
-    """Stub decorator."""
-    def decorator(func):
+from typing import Any, Callable
+
+
+def calibrated_method(method_id: str) -> Callable[[Any], Any]:
+    """Decorator stub for calibrated methods"""
+    def decorator(func: Any) -> Any:
         return func
     return decorator
