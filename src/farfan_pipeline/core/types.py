@@ -111,6 +111,18 @@ class DimensionCausal(Enum):
         return mapping.get(legacy_id, cls.DIM01_INSUMOS)
 
 
+class CategoriaCausal(Enum):
+    """
+    Categorías causales jerárquicas para teoría de cambio.
+    Axioma: 1-5 en orden INSUMOS->CAUSALIDAD.
+    """
+    INSUMOS = 1
+    PROCESOS = 2
+    PRODUCTOS = 3
+    RESULTADOS = 4
+    CAUSALIDAD = 5
+
+
 class PolicyArea(Enum):
     """
     Áreas de política del questionnaire (PA01-PA10).
@@ -549,7 +561,7 @@ class MicroQuestion:
     validations: Optional[Dict[str, Any]] = None
 
     def validate_question_id(self) -> bool:
-        """Valida que question_id siga el patrón ^Q\d{3}$."""
+        """Valida que question_id siga el patrón ^Q\\d{3}$."""
         return bool(re.match(r"^Q\d{3}$", self.question_id))
 
 
