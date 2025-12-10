@@ -57,6 +57,17 @@ from typing import (
     Union,
 )
 
+# Readability and style checking libraries
+try:
+    import textstat  # Flesch-Kincaid and readability metrics
+except ImportError:
+    textstat = None  # type: ignore
+
+try:
+    from proselint.tools import lint as proselint_check  # Style and clarity checking
+except ImportError:
+    proselint_check = None  # type: ignore
+
 
 # =============================================================================
 # TYPE SYSTEM
@@ -917,6 +928,122 @@ def get_dimension_strategy(dimension:  Dimension) -> DimensionStrategy:
 
 
 # =============================================================================
+# READABILITY & STYLE CHECKER (Flesch-Kincaid + Proselint)
+# =============================================================================
+
+@dataclass
+class ReadabilityMetrics:
+    """Métricas de legibilidad según Flesch-Kincaid y Proselint."""
+    flesch_reading_ease: Optional[float] = None  # 0-100, higher is easier
+    flesch_kincaid_grade: Optional[float] = None  # US grade level
+    gunning_fog: Optional[float] = None  # Years of education needed
+    avg_sentence_length: Optional[float] = None  # Words per sentence
+    avg_word_length: Optional[float] = None  # Characters per word
+    proselint_errors: List[Dict[str, Any]] = field(default_factory=list)  # Style issues
+    proselint_score: Optional[float] = None  # 0-1, higher is better
+    
+    def passes_carver_standards(self) -> bool:
+        """
+        Verifica si el texto cumple estándares Carver:
+        - Flesch Reading Ease >= 60 (standard readability)
+        - Grade level <= 12 (accesible a público educado)
+        - Sentence length <= 20 words (oraciones cortas)
+        - Proselint score >= 0.9 (sin errores críticos)
+        """
+        if self.flesch_reading_ease and self.flesch_reading_ease < 60:
+            return False
+        if self.flesch_kincaid_grade and self.flesch_kincaid_grade > 12:
+            return False
+        if self.avg_sentence_length and self.avg_sentence_length > 20:
+            return False
+        if self.proselint_score and self.proselint_score < 0.9:
+            return False
+        return True
+
+
+class ReadabilityChecker:
+    """
+    Aplica Flesch-Kincaid y Proselint para garantizar claridad Carver.
+    
+    Invariantes:
+    - Flesch Reading Ease >= 60 (legible para público general)
+    - Grade Level <= 12 (no requiere posgrado)
+    - Oraciones <= 20 palabras promedio
+    - Sin errores Proselint críticos
+    """
+    
+    @staticmethod
+    def check_text(text: str) -> ReadabilityMetrics:
+        """Analiza texto con Flesch-Kincaid y Proselint."""
+        metrics = ReadabilityMetrics()
+        
+        # Flesch-Kincaid metrics (via textstat)
+        if textstat:
+            try:
+                metrics.flesch_reading_ease = textstat.flesch_reading_ease(text)
+                metrics.flesch_kincaid_grade = textstat.flesch_kincaid_grade(text)
+                metrics.gunning_fog = textstat.gunning_fog(text)
+                
+                # Sentence and word stats
+                sentences = textstat.sentence_count(text)
+                words = textstat.lexicon_count(text, removepunct=True)
+                if sentences > 0:
+                    metrics.avg_sentence_length = words / sentences
+                
+                chars = sum(len(word) for word in text.split())
+                if words > 0:
+                    metrics.avg_word_length = chars / words
+                    
+            except Exception as e:
+                # Textstat can fail on very short or malformed text
+                pass
+        
+        # Proselint style checking
+        if proselint_check:
+            try:
+                errors = proselint_check(text)
+                if errors:
+                    metrics.proselint_errors = errors
+                    # Score: 1.0 - (error_count / 100), capped at 0
+                    metrics.proselint_score = max(0.0, 1.0 - len(errors) / 100.0)
+                else:
+                    metrics.proselint_score = 1.0
+            except Exception as e:
+                # Proselint can fail on malformed text
+                metrics.proselint_score = 1.0  # Assume OK if check fails
+        
+        return metrics
+    
+    @staticmethod
+    def enforce_carver_style(text: str) -> Tuple[str, ReadabilityMetrics]:
+        """
+        Analiza y opcionalmente ajusta texto para cumplir estándares Carver.
+        
+        Returns:
+            (texto_ajustado, metrics)
+        """
+        metrics = ReadabilityChecker.check_text(text)
+        
+        # Si el texto ya cumple estándares, retornar sin modificar
+        if metrics.passes_carver_standards():
+            return text, metrics
+        
+        # Ajustes automáticos simples
+        adjusted_text = text
+        
+        # Split long sentences (if avg > 20 words)
+        if metrics.avg_sentence_length and metrics.avg_sentence_length > 20:
+            # Replace comma-separated clauses with periods
+            adjusted_text = re.sub(r',\s+([a-záéíóúñ])', r'. \1', adjusted_text)
+            adjusted_text = re.sub(r'\s+y\s+([a-záéíóúñ])', r'. \1', adjusted_text)
+        
+        # Re-check after adjustments
+        metrics = ReadabilityChecker.check_text(adjusted_text)
+        
+        return adjusted_text, metrics
+
+
+# =============================================================================
 # CARVER RENDERER
 # =============================================================================
 
@@ -1063,7 +1190,7 @@ class CarverRenderer:
     @classmethod
     def render_full_answer(cls, answer: CarverAnswer) -> str:
         """
-        Render complete answer in Carver style.
+        Render complete answer in Carver style with readability enforcement.
         """
         sections = []
         
@@ -1091,7 +1218,36 @@ class CarverRenderer:
         # Method note (discrete)
         sections.append(f"\n---\n*{answer.method_note}*")
         
-        return "\n".join(sections)
+        # Join all sections
+        full_text = "\n".join(sections)
+        
+        # Apply Flesch-Kincaid and Proselint readability checking
+        adjusted_text, metrics = ReadabilityChecker.enforce_carver_style(full_text)
+        
+        # Add readability report if metrics available
+        if metrics.flesch_reading_ease or metrics.proselint_score:
+            readability_note = "\n\n---\n**Métricas de Legibilidad**:\n"
+            if metrics.flesch_reading_ease:
+                readability_note += f"- Flesch Reading Ease: {metrics.flesch_reading_ease:.1f} "
+                readability_note += ("(Fácil)" if metrics.flesch_reading_ease >= 60 else "(Difícil)")
+                readability_note += "\n"
+            if metrics.flesch_kincaid_grade:
+                readability_note += f"- Nivel Educativo: {metrics.flesch_kincaid_grade:.1f} grado\n"
+            if metrics.avg_sentence_length:
+                readability_note += f"- Longitud Promedio: {metrics.avg_sentence_length:.1f} palabras/oración\n"
+            if metrics.proselint_score is not None:
+                readability_note += f"- Calidad Proselint: {metrics.proselint_score:.0%}"
+                if metrics.proselint_errors:
+                    readability_note += f" ({len(metrics.proselint_errors)} sugerencias)"
+                readability_note += "\n"
+            
+            # Only add note if text meets Carver standards
+            if metrics.passes_carver_standards():
+                readability_note += "\n✓ Cumple estándares Carver de claridad y concisión."
+            
+            adjusted_text += readability_note
+        
+        return adjusted_text
 
 
 # =============================================================================

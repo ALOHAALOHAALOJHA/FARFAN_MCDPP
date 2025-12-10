@@ -21,13 +21,19 @@ from orchestration.orchestrator import (
     ScoredMicroQuestion,
 )
 
-# Evidence registry - REAL PATH: canonic_phases.Phase_two.evidence_registry
-from canonic_phases.Phase_two.evidence_registry import (
-    EvidenceRecord,
-    EvidenceRegistry,
-    ProvenanceDAG,
-    ProvenanceNode,
-    get_global_registry,
+# NEW: Evidence processing - REAL PATH: canonic_phases.Phase_two.evidence_nexus
+# Replaces evidence_assembler, evidence_validator, evidence_registry
+from canonic_phases.Phase_two.evidence_nexus import (
+    EvidenceNexus,
+    EvidenceGraph,
+    EvidenceNode,
+    process_evidence,
+)
+
+# NEW: Narrative synthesis - REAL PATH: canonic_phases.Phase_two.carver
+from canonic_phases.Phase_two.carver import (
+    DoctoralCarverSynthesizer,
+    CarverAnswer,
 )
 
 # Executor config - REAL PATH: canonic_phases.Phase_two.executor_config
@@ -82,12 +88,14 @@ from orchestration.signature_types import (
 )
 
 __all__ = [
-    # Evidence
-    "EvidenceRecord",
-    "EvidenceRegistry",
-    "ProvenanceDAG",
-    "ProvenanceNode",
-    "get_global_registry",
+    # NEW: Evidence processing (EvidenceNexus)
+    "EvidenceNexus",
+    "EvidenceGraph",
+    "EvidenceNode",
+    "process_evidence",
+    # NEW: Narrative synthesis (Carver)
+    "DoctoralCarverSynthesizer",
+    "CarverAnswer",
     # Orchestration core
     "Orchestrator",
     "MethodExecutor",
