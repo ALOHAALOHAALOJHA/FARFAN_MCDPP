@@ -135,7 +135,10 @@ def verify_contract(contract_path: Path) -> dict[str, Any]:
     
     # 2. Verificar identity
     identity = contract.get("identity", {})
-    for field in REQUIRED_IDENTITY:
+    if not isinstance(identity, dict):
+        results["valid"] = False
+        results["errors"].append("identity no es un objeto JSON")
+        identity = {}
         if field not in identity:
             results["valid"] = False
             results["errors"].append(f"Falta identity.{field}")
