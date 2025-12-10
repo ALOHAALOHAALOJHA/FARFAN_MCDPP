@@ -706,9 +706,9 @@ class BayesianRollUp:
                 f"{analysis.peer_penalty:.4f}",
                 f"{analysis.total_penalty:.4f}",
                 f"{analysis.adjusted_score:.4f}",
-                f"{analysis.dispersion_metrics.get('cv', ParameterLoaderV2.get("farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.__init__", "auto_param_L709_57", 0.0)):.4f}",
-                f"{analysis.dispersion_metrics.get('max_gap', ParameterLoaderV2.get("farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.__init__", "auto_param_L710_62", 0.0)):.4f}",
-                f"{analysis.dispersion_metrics.get('gini', ParameterLoaderV2.get("farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.__init__", "auto_param_L711_59", 0.0)):.4f}"
+                f"{analysis.dispersion_metrics.get('cv', ParameterLoaderV2.get('farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.__init__', 'auto_param_L709_57', 0.0)):.4f}",
+                f"{analysis.dispersion_metrics.get('max_gap', ParameterLoaderV2.get('farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.__init__', 'auto_param_L710_62', 0.0)):.4f}",
+                f"{analysis.dispersion_metrics.get('gini', ParameterLoaderV2.get('farfan_core.analysis.bayesian_multilevel_system.BayesianRollUp.__init__', 'auto_param_L711_59', 0.0)):.4f}"
             ])
 
         write_csv(rows, output_path, headers=headers)

@@ -5,7 +5,7 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "4e797ab3794b066b9afeb44956f4ce36b031338fb68a8286ba5b3acc53ba7904",
+    "contract_hash": "4d55cec31e4cd99522c8634efb23ebf625fbb2d00cf8a0a67b54b6b88e1adee3",
     "created_at": "2025-11-28T03:50:42.196085+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
@@ -223,8 +223,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "baseline_completeness",
+      "data_sources",
+      "institutional_capacity",
+      "participation_mechanisms",
+      "transparency"
+    ],
+    "optional_signals": [
+      "citizen_satisfaction",
+      "corruption_indicators",
+      "geographic_scope",
+      "planning_quality",
+      "temporal_coverage"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

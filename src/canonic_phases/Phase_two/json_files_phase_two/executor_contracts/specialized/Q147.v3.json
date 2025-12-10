@@ -5,7 +5,7 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "83cff821cc9e17e1760be361b9826bf1e86c3d207f14d09b0d420a9f1da08f81",
+    "contract_hash": "31b55bf7f9d7cba44bccc3d4003b5bf7efa80c283356a49939b422b002798a21",
     "created_at": "2025-11-28T03:50:31.561192+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
@@ -139,8 +139,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "differential_needs",
+      "health_coverage",
+      "mortality_rates",
+      "service_availability",
+      "territorial_diagnosis"
+    ],
+    "optional_signals": [
+      "disease_prevalence",
+      "equity_considerations",
+      "infrastructure",
+      "participation_evidence",
+      "vaccination_rates"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

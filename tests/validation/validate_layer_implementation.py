@@ -15,7 +15,7 @@ def validate_imports():
     print("=" * 60)
     
     try:
-        from src.orchestration.congruence_layer import (
+        from orchestration.congruence_layer import (
             CongruenceLayerEvaluator,
             CongruenceLayerConfig,
             OutputRangeSpec,
@@ -29,7 +29,7 @@ def validate_imports():
         return False
 
     try:
-        from src.orchestration.chain_layer import (
+        from orchestration.chain_layer import (
             ChainLayerEvaluator,
             ChainLayerConfig,
             MethodSignature,
@@ -42,7 +42,7 @@ def validate_imports():
         return False
 
     try:
-        from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_congruence_layer import (
+        from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_congruence_layer import (
             CongruenceLayerEvaluator as C2024_CongruenceEvaluator
         )
         print("✅ COHORT_2024 Congruence Layer imports successful")
@@ -51,7 +51,7 @@ def validate_imports():
         return False
 
     try:
-        from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_chain_layer import (
+        from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_chain_layer import (
             ChainLayerEvaluator as C2024_ChainEvaluator
         )
         print("✅ COHORT_2024 Chain Layer imports successful")
@@ -69,7 +69,7 @@ def validate_functionality():
     print("=" * 60)
     
     try:
-        from src.orchestration.congruence_layer import (
+        from orchestration.congruence_layer import (
             CongruenceLayerEvaluator,
             OutputRangeSpec,
             SemanticTagSet,
@@ -109,7 +109,7 @@ def validate_functionality():
         return False
 
     try:
-        from src.orchestration.chain_layer import (
+        from orchestration.chain_layer import (
             ChainLayerEvaluator,
             MethodSignature,
             UpstreamOutputs,

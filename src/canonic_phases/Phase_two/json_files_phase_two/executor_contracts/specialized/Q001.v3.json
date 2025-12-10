@@ -5,7 +5,7 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "c223a0bd724e70011d7d281a37cef82552ff1bed99010f6a5714e1bfd35fe94b",
+    "contract_hash": "11fb08b8c16761434fc60b6d1252f3209469b8212f690e3bcc27c8942af76bdb",
     "created_at": "2025-11-28T03:49:29.779617+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
@@ -360,8 +360,20 @@
     }
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "baseline_completeness",
+      "data_sources",
+      "gender_baseline_data",
+      "policy_coverage",
+      "vbg_statistics"
+    ],
+    "optional_signals": [
+      "geographic_scope",
+      "source_validation",
+      "temporal_coverage",
+      "temporal_series",
+      "territorial_scope"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

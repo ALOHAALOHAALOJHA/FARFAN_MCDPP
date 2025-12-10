@@ -5,7 +5,7 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "744f08fa4547619f219a5e360101c33b01e562fbf89adf962444f0113d4547a2",
+    "contract_hash": "5f44979b37826a28952ec00d9933df862df966cbec86348a97746d11749a92a2",
     "created_at": "2025-11-28T03:50:01.882495+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
@@ -187,8 +187,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "causal_chains",
+      "cultural_assets",
+      "heritage_protection",
+      "intervention_logic",
+      "tourism_infrastructure"
+    ],
+    "optional_signals": [
+      "assumptions",
+      "cultural_programming",
+      "economic_impact",
+      "theory_of_change",
+      "visitor_statistics"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

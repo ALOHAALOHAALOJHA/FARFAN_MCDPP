@@ -16,7 +16,7 @@ from orchestration.unit_layer import (
     UnitLayerEvaluator,
     create_default_config
 )
-from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.pdt_structure import PDTStructure
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.pdt_structure import PDTStructure
 
 
 class TestUnitLayerConfig:
@@ -644,7 +644,7 @@ class TestIntegration:
     
     def test_incomplete_gaming_pdt(self):
         """Incomplete PDT with gaming attempts."""
-        from src.orchestration.unit_layer_example import example_incomplete_pdt
+        from orchestration.unit_layer_example import example_incomplete_pdt
         
         pdt = example_incomplete_pdt()
         evaluator = UnitLayerEvaluator()
@@ -655,7 +655,7 @@ class TestIntegration:
     
     def test_custom_config_relaxed_gates(self):
         """Custom configuration with relaxed gate thresholds."""
-        from src.orchestration.unit_layer_example import example_incomplete_pdt
+        from orchestration.unit_layer_example import example_incomplete_pdt
         
         pdt = example_incomplete_pdt()
         config = UnitLayerConfig(i_hard_gate=0.3, p_hard_gate=0.3)

@@ -8,7 +8,7 @@ and anti-universality validation.
 import json
 import pytest
 from pathlib import Path
-from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_contextual_layers import (
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_contextual_layers import (
     CompatibilityRegistry,
     QuestionEvaluator,
     DimensionEvaluator,

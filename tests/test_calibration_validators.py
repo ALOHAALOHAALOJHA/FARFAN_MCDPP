@@ -12,7 +12,7 @@ Comprehensive test suite for CalibrationValidator class covering:
 
 import pytest
 
-from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_validator import (
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_validator import (
     CalibrationValidator,
     validate_all_pillars
 )
