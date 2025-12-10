@@ -38,21 +38,82 @@ from farfan_pipeline.core.calibration.decorators import calibrated_method
 if TYPE_CHECKING:
     import fitz
 
-# Core dependencies
+# Core dependencies - graceful degradation for Phase 0 compatibility
+_MISSING_DEPS = []
 try:
     import networkx as nx
+except ImportError as e:
+    _MISSING_DEPS.append(e.name)
+    nx = None
+
+try:
     import numpy as np
+except ImportError as e:
+    _MISSING_DEPS.append(e.name)
+    np = None
+
+try:
     import pandas as pd
+except ImportError as e:
+    _MISSING_DEPS.append(e.name)
+    pd = None
+
+try:
     import spacy
+except ImportError as e:
+    _MISSING_DEPS.append(e.name)
+    spacy = None
+
+try:
     import yaml
+except ImportError as e:
+    _MISSING_DEPS.append(e.name)
+    yaml = None
+
+try:
     from fuzzywuzzy import fuzz, process
+except ImportError as e:
+    _MISSING_DEPS.append('fuzzywuzzy')
+    fuzz = None
+    process = None
+
+try:
     from pydantic import BaseModel, Field, ValidationError, validator
+except ImportError as e:
+    _MISSING_DEPS.append(e.name)
+    BaseModel = None
+    Field = None
+    ValidationError = None
+    validator = None
+
+try:
     from pydot import Dot, Edge, Node
+except ImportError as e:
+    _MISSING_DEPS.append(e.name)
+    Dot = None
+    Edge = None
+    Node = None
+
+try:
     from scipy.spatial.distance import cosine
     from scipy.special import rel_entr
 except ImportError as e:
-    print(f"ERROR: Dependencia faltante. Ejecute: pip install {e.name}")
-    sys.exit(1)
+    _MISSING_DEPS.append('scipy')
+    cosine = None
+    rel_entr = None
+
+# Module availability flag
+DEREK_BEACH_AVAILABLE = len(_MISSING_DEPS) == 0
+
+# Warn about missing dependencies but don't crash at import time
+if _MISSING_DEPS:
+    warnings.warn(
+        f"derek_beach module has missing dependencies: {', '.join(set(_MISSING_DEPS))}. "
+        f"Causal analysis features will be unavailable. "
+        f"Install with: pip install {' '.join(set(_MISSING_DEPS))}",
+        ImportWarning,
+        stacklevel=2
+    )
 
 # DNP Standards Integration
 try:
