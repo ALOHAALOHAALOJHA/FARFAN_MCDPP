@@ -42,7 +42,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import farfan_pipeline
-from farfan_pipeline.config.paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 
 if os.environ.get("PIPELINE_DEBUG"):
     print(f"DEBUG: farfan_pipeline loaded from {farfan_pipeline.__file__}", flush=True)
@@ -57,13 +57,13 @@ from farfan_pipeline.core.boot_checks import (
 from farfan_pipeline.core.observability.structured_logging import (
     log_runtime_config_loaded,
 )
-from farfan_pipeline.core.orchestrator.seed_registry import get_global_seed_registry
-from farfan_pipeline.core.orchestrator.verification_manifest import (
+from orchestration.seed_registry import get_global_seed_registry
+from orchestration.verification_manifest import (
     VerificationManifest as VerificationManifestBuilder,
     verify_manifest_integrity,
 )
 from farfan_pipeline.core.phases.phase2_types import validate_phase2_result
-from farfan_pipeline.core.orchestrator.versions import get_all_versions
+from orchestration.versions import get_all_versions
 
 
 @dataclass
@@ -139,7 +139,7 @@ class VerifiedPipelineRunner:
 
         # Set questionnaire path (explicit input, SIN_CARRETA compliance)
         if questionnaire_path is None:
-            from farfan_pipeline.config.paths import QUESTIONNAIRE_FILE
+            from canonic_phases.Phase_zero.paths import QUESTIONNAIRE_FILE
 
             questionnaire_path = QUESTIONNAIRE_FILE
 
@@ -823,7 +823,7 @@ def cli() -> None:
 
         try:
             # This is not the PhaseOrchestrator from the other file, but the core one.
-            from farfan_pipeline.core.orchestrator.factory import build_processor
+            from orchestration.factory import build_processor
 
             processor = build_processor()
 

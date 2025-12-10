@@ -6,20 +6,19 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
-
-# Core orchestration - REAL PATH: orchestration.orchestrator
-from orchestration.orchestrator import (
-    AbortRequested,
-    AbortSignal,
-    Evidence,
-    MethodExecutor,
-    MicroQuestionRun,
-    Orchestrator,
-    PhaseInstrumentation,
-    PhaseResult,
-    ResourceLimits,
-    ScoredMicroQuestion,
-)
+    # Core orchestration - REAL PATH: orchestration.orchestrator
+    from orchestration.orchestrator import (
+        AbortRequested,
+        AbortSignal,
+        Evidence,
+        MethodExecutor,
+        MicroQuestionRun,
+        Orchestrator,
+        PhaseInstrumentation,
+        PhaseResult,
+        ResourceLimits,
+        ScoredMicroQuestion,
+    )
 
 # Evidence registry - REAL PATH: canonic_phases.Phase_two.evidence_registry
 from canonic_phases.Phase_two.evidence_registry import (

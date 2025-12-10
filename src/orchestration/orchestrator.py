@@ -45,7 +45,6 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
-from canonic_phases.Phase_two import executors_contract as executors
 from canonic_phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,
@@ -675,7 +674,7 @@ class MethodExecutor:
         signal_registry: Any | None = None,
         method_registry: Any | None = None,
     ) -> None:
-        from farfan_pipeline.core.orchestrator.method_registry import (
+        from orchestration.method_registry import (
             MethodRegistry,
             setup_default_instantiation_rules,
         )
@@ -699,7 +698,7 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
         
         try:
-            from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
+            from canonic_phases.Phase_two.class_registry import build_class_registry
             registry = build_class_registry()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
@@ -721,7 +720,7 @@ class MethodExecutor:
     
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
-        from farfan_pipeline.core.orchestrator.method_registry import MethodRegistryError
+        from orchestration.method_registry import MethodRegistryError
         
         try:
             method = self._method_registry.get_method(class_name, method_name)
@@ -917,6 +916,9 @@ class Orchestrator:
         
         if not self.executor.instances:
             raise RuntimeError("MethodExecutor.instances is empty")
+        
+        # Lazy import to avoid circular dependency
+        import canonic_phases.Phase_two.executors_contract as executors
         
         self.executors = {
             "D1-Q1": executors.D1Q1_Executor, "D1-Q2": executors.D1Q2_Executor,

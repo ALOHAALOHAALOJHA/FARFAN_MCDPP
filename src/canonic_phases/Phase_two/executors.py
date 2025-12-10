@@ -25,8 +25,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from farfan_pipeline.core.canonical_notation import CanonicalDimension, get_dimension_info
-from farfan_pipeline.core.orchestrator.core import MethodExecutor
-from farfan_pipeline.core.orchestrator.factory import build_processor
+from orchestration.orchestrator import MethodExecutor
+from orchestration.factory import build_processor
 from farfan_pipeline.core.orchestrator.memory_safety import (
     MemorySafetyGuard,
     MemorySafetyConfig,

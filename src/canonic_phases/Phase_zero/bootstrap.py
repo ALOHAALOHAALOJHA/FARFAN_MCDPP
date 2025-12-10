@@ -21,13 +21,13 @@ from typing import Any
 
 import structlog
 
-from farfan_pipeline.config.paths import CONFIG_DIR, DATA_DIR
+from canonic_phases.Phase_zero.paths import CONFIG_DIR, DATA_DIR
 from orchestration.factory import CanonicalQuestionnaire
-from farfan_pipeline.core.orchestrator.arg_router import ExtendedArgRouter
-from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
-from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
-from farfan_pipeline.core.orchestrator.factory import CoreModuleFactory
-from farfan_pipeline.core.orchestrator.signals import (
+from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
+from canonic_phases.Phase_two.class_registry import build_class_registry
+from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from orchestration.factory import CoreModuleFactory
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
     InMemorySignalSource,
     SignalClient,
     SignalPack,
