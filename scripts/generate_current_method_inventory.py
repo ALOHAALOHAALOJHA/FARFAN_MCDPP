@@ -82,7 +82,7 @@ class CurrentCodebaseScanner:
             module_path = str(rel_path).replace('/', '.').replace('.py', '')
             
             for node in ast.walk(tree):
-                if isinstance(node, ast.FunctionDef):
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                     if node.name.startswith('_') and not node.name.startswith('__'):
                         continue
                     
