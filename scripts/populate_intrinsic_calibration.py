@@ -176,7 +176,13 @@ if __name__ == "__main__":
     
     # Verify executors
     executors = [m for m in methods.values() if m['layer'] == 'executor']
-    dq_executors = [m for m in executors if 'D' in m['canonical_name'] and 'Q' in m['canonical_name']]
+    dq_executors = [
+        m
+        for m in executors
+        if isinstance(m.get('canonical_name'), str)
+        and 'D' in m['canonical_name']
+        and 'Q' in m['canonical_name']
+    ]
     
     print(f"\n🎯 Executor Verification:")
     print(f"   Total executors: {len(executors)}")
