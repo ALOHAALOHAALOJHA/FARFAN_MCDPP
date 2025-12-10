@@ -296,7 +296,10 @@ def verify_contract(contract_path: Path) -> dict[str, Any]:
     
     # 8. Verificar validation_rules
     validation_rules = contract.get("validation_rules", {})
-    for field in REQUIRED_VALIDATION_RULES:
+    if not isinstance(validation_rules, dict):
+        results["valid"] = False
+        results["errors"].append("validation_rules no es un objeto JSON")
+        validation_rules = {}
         if field not in validation_rules:
             results["valid"] = False
             results["errors"].append(f"Falta validation_rules.{field}")
