@@ -180,6 +180,7 @@ class CertificateAnalyzer:
             },
             "layer_statistics": CertificateAnalyzer._analyze_layers(certificate),
             "weight_statistics": CertificateAnalyzer._analyze_weights(certificate),
+            "layer_metadata_summary": CertificateAnalyzer._analyze_layer_metadata(certificate),
             "computation_complexity": {
                 "total_steps": len(certificate.fusion_formula.computation_trace),
                 "linear_terms": sum(1 for p in certificate.parameter_provenance if "," not in p),
@@ -235,6 +236,40 @@ class CertificateAnalyzer:
                 "mean": sum(interaction_values) / len(interaction_values) if interaction_values else 0,
                 "weights": interaction_weights,
             },
+        }
+
+    @staticmethod
+    def _analyze_layer_metadata(certificate: CalibrationCertificate) -> dict[str, Any]:
+        if not hasattr(certificate, "layer_metadata") or not certificate.layer_metadata:
+            return {
+                "present": False,
+                "count": 0,
+                "layers": [],
+            }
+
+        layer_info = {}
+        for layer_symbol, metadata in certificate.layer_metadata.items():
+            layer_info[layer_symbol] = {
+                "name": metadata.name,
+                "formula_length": len(metadata.formula),
+                "num_weights": len(metadata.weights) if isinstance(metadata.weights, dict) else 0,
+                "num_thresholds": len(metadata.thresholds) if isinstance(metadata.thresholds, dict) else 0,
+            }
+
+        return {
+            "present": True,
+            "count": len(certificate.layer_metadata),
+            "layers": list(certificate.layer_metadata.keys()),
+            "layer_info": layer_info,
+            "total_formulas": len(certificate.layer_metadata),
+            "total_thresholds": sum(
+                len(m.thresholds) if isinstance(m.thresholds, dict) else 0
+                for m in certificate.layer_metadata.values()
+            ),
+            "total_component_weights": sum(
+                len(m.weights) if isinstance(m.weights, dict) else 0
+                for m in certificate.layer_metadata.values()
+            ),
         }
 
 
@@ -332,7 +367,7 @@ def load_certificate_from_json(json_path: Path) -> CalibrationCertificate:
     with open(json_path) as f:
         data = json.load(f)
 
-    from certificate_generator import FusionFormula, ParameterProvenance, ValidationChecks
+    from certificate_generator import FusionFormula, LayerMetadata, ParameterProvenance, ValidationChecks
 
     fusion_formula = FusionFormula(**data["fusion_formula"])
 
@@ -341,6 +376,10 @@ def load_certificate_from_json(json_path: Path) -> CalibrationCertificate:
     }
 
     validation_checks = ValidationChecks(**data["validation_checks"])
+
+    layer_metadata = {
+        k: LayerMetadata(**v) for k, v in data.get("layer_metadata", {}).items()
+    }
 
     return CalibrationCertificate(
         certificate_version=data["certificate_version"],
@@ -357,6 +396,7 @@ def load_certificate_from_json(json_path: Path) -> CalibrationCertificate:
         config_hash=data["config_hash"],
         graph_hash=data["graph_hash"],
         validation_checks=validation_checks,
+        layer_metadata=layer_metadata,
         timestamp=data["timestamp"],
         validator_version=data["validator_version"],
         signature=data["signature"],
