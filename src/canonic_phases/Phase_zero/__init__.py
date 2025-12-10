@@ -9,16 +9,21 @@ This phase ensures that all inputs meet the required preconditions for
 downstream phases.
 
 CANONICAL LOCATION: Phase 0 validation contract is in Phase_one/phase0_input_validation.py
-This __init__ re-exports for backward compatibility.
+Access via explicit imports to avoid heavy dependency loading.
 """
 
-# Re-export Phase 0 validation components from their canonical location
-from canonic_phases.Phase_one.phase0_input_validation import (
-    Phase0Input,
-    CanonicalInput,
-    Phase0ValidationContract,
-    PHASE0_VERSION,
-)
+def __getattr__(name):
+    """Lazy import to avoid loading heavy Phase_one dependencies at import time."""
+    if name in ("Phase0Input", "CanonicalInput", "Phase0ValidationContract", "PHASE0_VERSION"):
+        from canonic_phases.Phase_one.phase0_input_validation import (
+            Phase0Input,
+            CanonicalInput,
+            Phase0ValidationContract,
+            PHASE0_VERSION,
+        )
+        globals()[name] = locals()[name]
+        return locals()[name]
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 __all__ = [
     "Phase0Input",
