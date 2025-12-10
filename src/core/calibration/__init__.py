@@ -41,9 +41,21 @@ from .layer_requirements import (
     LAYER_REQUIREMENTS,
     get_required_layers,
 )
+from .intrinsic_loader import (
+    IntrinsicCalibrationLoader,
+    get_intrinsic_loader,
+)
+from .decorators import (
+    calibrated_method,
+    calibration_required,
+)
 
 __all__ = [
     "get_calibration_orchestrator",
     "LAYER_REQUIREMENTS",
     "get_required_layers",
+    "IntrinsicCalibrationLoader",
+    "get_intrinsic_loader",
+    "calibrated_method",
+    "calibration_required",
 ]
