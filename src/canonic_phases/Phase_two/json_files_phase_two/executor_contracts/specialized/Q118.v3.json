@@ -5,7 +5,7 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "TODO_COMPUTE_SHA256_OF_THIS_FILE",
+    "contract_hash": "b665d27ea2eaf0f008f3c86c350fdb92f9b17e7125ce703002a1cd57c6e01e0e",
     "created_at": "2025-11-28T03:50:31.294975+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
