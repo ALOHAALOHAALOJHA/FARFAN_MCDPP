@@ -708,7 +708,7 @@ class IndustrialPolicyProcessor:
         )
 
         if ontology is None or semantic_analyzer is None or performance_analyzer is None:
-            from farfan_pipeline.core.wiring.analysis_factory import (
+            from orchestration.wiring.analysis_factory import (
                 create_municipal_ontology,
                 create_semantic_analyzer,
                 create_performance_analyzer,
@@ -718,19 +718,19 @@ class IndustrialPolicyProcessor:
             performance_analyzer = performance_analyzer or create_performance_analyzer(ontology)
 
         if contradiction_detector is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_contradiction_detector
+            from orchestration.wiring.analysis_factory import create_contradiction_detector
             contradiction_detector = create_contradiction_detector()
 
         if temporal_verifier is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_temporal_logic_verifier
+            from orchestration.wiring.analysis_factory import create_temporal_logic_verifier
             temporal_verifier = create_temporal_logic_verifier()
 
         if confidence_calculator is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_bayesian_confidence_calculator
+            from orchestration.wiring.analysis_factory import create_bayesian_confidence_calculator
             confidence_calculator = create_bayesian_confidence_calculator()
 
         if municipal_analyzer is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_municipal_analyzer
+            from orchestration.wiring.analysis_factory import create_municipal_analyzer
             municipal_analyzer = create_municipal_analyzer()
 
         self.ontology = ontology
@@ -1520,7 +1520,7 @@ class PolicyAnalysisPipeline:
         self.config = config or ProcessorConfig()
         self.sanitizer = AdvancedTextSanitizer(self.config)
 
-        from farfan_pipeline.core.wiring.analysis_factory import create_analysis_components
+        from orchestration.wiring.analysis_factory import create_analysis_components
 
         components = create_analysis_components()
         self.document_loader = components['document_loader']

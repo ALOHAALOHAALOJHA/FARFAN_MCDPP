@@ -102,6 +102,7 @@ SRC_DIR: Final[Path] = PROJECT_ROOT / "src"
 DATA_DIR: Final[Path] = PROJECT_ROOT / "data"
 TESTS_DIR: Final[Path] = PROJECT_ROOT / "tests"
 RULES_DIR: Final[Path] = PROJECT_ROOT / "sensitive_rules_for_coding"
+CONFIG_DIR: Final[Path] = SRC_DIR / "config"
 
 
 def proj_root() -> Path:
@@ -451,6 +452,7 @@ __all__ = [
     "DATA_DIR",
     "TESTS_DIR",
     "RULES_DIR",
+    "CONFIG_DIR",
     # Directory accessors
     "proj_root",
     "src_dir",
