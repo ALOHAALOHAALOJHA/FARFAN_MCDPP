@@ -187,5 +187,322 @@
       "min_base_score": 0.6,
       "critical_components": ["b_impl"]
     }
+  },
+  "methods": {
+    "D1Q1_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 1, Question 1",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D1Q2_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 1, Question 2",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D1Q3_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 1, Question 3",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D1Q4_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 1, Question 4",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D1Q5_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 1, Question 5",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D2Q1_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 2, Question 1",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D2Q2_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 2, Question 2",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D2Q3_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 2, Question 3",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D2Q4_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 2, Question 4",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D2Q5_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 2, Question 5",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D3Q1_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 3, Question 1",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D3Q2_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 3, Question 2",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D3Q3_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 3, Question 3",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D3Q4_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 3, Question 4",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D3Q5_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 3, Question 5",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D4Q1_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 4, Question 1",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D4Q2_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 4, Question 2",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D4Q3_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 4, Question 3",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D4Q4_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 4, Question 4",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D4Q5_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 4, Question 5",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D5Q1_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 5, Question 1",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D5Q2_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 5, Question 2",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D5Q3_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 5, Question 3",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D5Q4_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 5, Question 4",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D5Q5_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 5, Question 5",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D6Q1_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 6, Question 1",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D6Q2_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 6, Question 2",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D6Q3_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 6, Question 3",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D6Q4_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 6, Question 4",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "D6Q5_Executor_Contract": {
+      "layer": "executor",
+      "role": "SCORE_Q",
+      "base_score": 0.75,
+      "description": "Executor for Dimension 6, Question 5",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    },
+    "PDMIngestor": {
+      "layer": "ingest",
+      "role": "INGEST_PDM",
+      "base_score": 0.65,
+      "description": "Ingests PDM documents",
+      "b_theory": 0.6,
+      "b_impl": 0.7,
+      "b_deploy": 0.65
+    },
+    "PDTProcessor": {
+      "layer": "processor",
+      "role": "STRUCTURE",
+      "base_score": 0.65,
+      "description": "Processes PDT structure",
+      "b_theory": 0.6,
+      "b_impl": 0.7,
+      "b_deploy": 0.65
+    },
+    "FeatureExtractor": {
+      "layer": "extractor",
+      "role": "EXTRACT",
+      "base_score": 0.65,
+      "description": "Extracts features from documents",
+      "b_theory": 0.6,
+      "b_impl": 0.7,
+      "b_deploy": 0.65
+    },
+    "ReportGenerator": {
+      "layer": "orchestrator",
+      "role": "REPORT",
+      "base_score": 0.65,
+      "description": "Generates analysis reports",
+      "b_theory": 0.6,
+      "b_impl": 0.7,
+      "b_deploy": 0.65
+    },
+    "AggregationEngine": {
+      "layer": "core",
+      "role": "AGGREGATE",
+      "base_score": 0.75,
+      "description": "Aggregates scores across dimensions",
+      "b_theory": 0.8,
+      "b_impl": 0.7,
+      "b_deploy": 0.75
+    }
   }
 }

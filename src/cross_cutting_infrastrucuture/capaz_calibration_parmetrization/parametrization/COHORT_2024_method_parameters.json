@@ -1,0 +1,201 @@
+{
+  "_cohort_metadata": {
+    "cohort_id": "COHORT_2024",
+    "creation_date": "2024-12-15T00:00:00+00:00",
+    "wave_version": "REFACTOR_WAVE_2024_12"
+  },
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Method runtime parameters configuration",
+    "last_updated": "2024-12-10T00:00:00Z",
+    "authority": "Doctrina SIN_CARRETA",
+    "implementation_wave": "GOVERNANCE_WAVE_2024_12_07",
+    "wave_label": "CONFIG_GOVERNANCE_STRICT_FOLDERIZATION"
+  },
+  "parameter_schema": {
+    "description": "Schema for method parameter configuration",
+    "fields": {
+      "method_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique method identifier"
+      },
+      "parameters": {
+        "type": "object",
+        "required": true,
+        "description": "Runtime parameters for the method"
+      },
+      "validation": {
+        "type": "object",
+        "required": false,
+        "description": "Parameter validation rules"
+      }
+    }
+  },
+  "methods": {
+    "D1Q1_Executor_Contract": {
+      "parameters": {
+        "min_confidence": 0.7,
+        "max_iterations": 100,
+        "timeout_seconds": 300,
+        "enable_caching": true
+      },
+      "validation": {
+        "min_confidence": {
+          "type": "float",
+          "range": [0.0, 1.0]
+        },
+        "max_iterations": {
+          "type": "int",
+          "range": [1, 1000]
+        },
+        "timeout_seconds": {
+          "type": "int",
+          "range": [1, 3600]
+        }
+      }
+    },
+    "D1Q2_Executor_Contract": {
+      "parameters": {
+        "min_confidence": 0.7,
+        "max_iterations": 100,
+        "timeout_seconds": 300,
+        "enable_caching": true
+      },
+      "validation": {
+        "min_confidence": {
+          "type": "float",
+          "range": [0.0, 1.0]
+        },
+        "max_iterations": {
+          "type": "int",
+          "range": [1, 1000]
+        },
+        "timeout_seconds": {
+          "type": "int",
+          "range": [1, 3600]
+        }
+      }
+    },
+    "D1Q3_Executor_Contract": {
+      "parameters": {
+        "min_confidence": 0.7,
+        "max_iterations": 100,
+        "timeout_seconds": 300,
+        "enable_caching": true
+      },
+      "validation": {
+        "min_confidence": {
+          "type": "float",
+          "range": [0.0, 1.0]
+        },
+        "max_iterations": {
+          "type": "int",
+          "range": [1, 1000]
+        },
+        "timeout_seconds": {
+          "type": "int",
+          "range": [1, 3600]
+        }
+      }
+    },
+    "PDMIngestor": {
+      "parameters": {
+        "chunk_size": 1000,
+        "batch_size": 10,
+        "encoding": "utf-8",
+        "validate_schema": true
+      },
+      "validation": {
+        "chunk_size": {
+          "type": "int",
+          "range": [100, 10000]
+        },
+        "batch_size": {
+          "type": "int",
+          "range": [1, 100]
+        }
+      }
+    },
+    "PDTProcessor": {
+      "parameters": {
+        "strict_mode": true,
+        "preserve_metadata": true,
+        "max_depth": 5
+      },
+      "validation": {
+        "max_depth": {
+          "type": "int",
+          "range": [1, 10]
+        }
+      }
+    },
+    "FeatureExtractor": {
+      "parameters": {
+        "feature_set": "default",
+        "normalize": true,
+        "scale_range": [0.0, 1.0]
+      },
+      "validation": {
+        "feature_set": {
+          "type": "string",
+          "allowed_values": ["default", "extended", "minimal"]
+        }
+      }
+    },
+    "ReportGenerator": {
+      "parameters": {
+        "format": "json",
+        "include_metadata": true,
+        "compression": false
+      },
+      "validation": {
+        "format": {
+          "type": "string",
+          "allowed_values": ["json", "yaml", "xml"]
+        }
+      }
+    },
+    "AggregationEngine": {
+      "parameters": {
+        "aggregation_method": "weighted_sum",
+        "normalize_weights": true,
+        "min_data_points": 3
+      },
+      "validation": {
+        "aggregation_method": {
+          "type": "string",
+          "allowed_values": ["weighted_sum", "median", "mean", "choquet"]
+        },
+        "min_data_points": {
+          "type": "int",
+          "range": [1, 100]
+        }
+      }
+    }
+  },
+  "defaults": {
+    "executor": {
+      "min_confidence": 0.7,
+      "max_iterations": 100,
+      "timeout_seconds": 300,
+      "enable_caching": true
+    },
+    "ingest": {
+      "chunk_size": 1000,
+      "batch_size": 10,
+      "encoding": "utf-8",
+      "validate_schema": true
+    },
+    "processor": {
+      "strict_mode": true,
+      "preserve_metadata": true
+    },
+    "extractor": {
+      "normalize": true
+    },
+    "orchestrator": {
+      "include_metadata": true
+    }
+  }
+}

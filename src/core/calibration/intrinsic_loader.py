@@ -72,8 +72,18 @@ class IntrinsicCalibrationLoader:
         self._method_cache[method_id] = metadata
         return metadata
     
-    def _is_executor(self, method_id: str) -> bool:
-        """Check if method is an executor (D1Q1-D6Q5)."""
+    def is_executor(self, method_id: str) -> bool:
+        """
+        Check if method is an executor (D1Q1-D6Q5).
+        
+        Public API for executor detection.
+        
+        Args:
+            method_id: Method identifier to check
+            
+        Returns:
+            True if method is an executor, False otherwise
+        """
         method_lower = method_id.lower()
         if "executor" in method_lower:
             return True
@@ -95,7 +105,7 @@ class IntrinsicCalibrationLoader:
         """
         from .layer_requirements import LAYER_REQUIREMENTS
         
-        if self._is_executor(method_id):
+        if self.is_executor(method_id):
             return ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"]
         
         metadata = self.get_metadata(method_id)
@@ -135,8 +145,41 @@ def get_intrinsic_loader() -> IntrinsicCalibrationLoader:
     return _intrinsic_loader
 
 
+def get_required_layers_for_method(method_id: str) -> list[str]:
+    """
+    OBLIGATORIO: Get required layers for a method.
+    
+    This is the canonical function to determine which layers a method needs.
+    Delegates to the singleton IntrinsicCalibrationLoader.
+    
+    Args:
+        method_id: Method identifier
+        
+    Returns:
+        List of required layer identifiers (e.g., ["@b", "@chain", "@q", ...])
+    """
+    loader = get_intrinsic_loader()
+    return loader.get_required_layers_for_method(method_id)
+
+
+def is_executor(method_id: str) -> bool:
+    """
+    Check if method is an executor (D1Q1-D6Q5).
+    
+    Args:
+        method_id: Method identifier to check
+        
+    Returns:
+        True if method is an executor, False otherwise
+    """
+    loader = get_intrinsic_loader()
+    return loader.is_executor(method_id)
+
+
 __all__ = [
     "IntrinsicCalibrationLoader",
     "get_intrinsic_loader",
     "MethodMetadata",
+    "get_required_layers_for_method",
+    "is_executor",
 ]
