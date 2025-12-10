@@ -150,28 +150,40 @@ def verify_contract(contract_path: Path) -> dict[str, Any]:
     
     # 3. Verificar output_contract
     output_contract = contract.get("output_contract", {})
+    if not isinstance(output_contract, dict):
+        results["valid"] = False
+        results["errors"].append("output_contract no es un objeto JSON")
+        output_contract = {}
     for field in REQUIRED_OUTPUT_CONTRACT:
         if field not in output_contract:
             results["valid"] = False
             results["errors"].append(f"Falta output_contract.{field}")
-    
+
     # 3.1 Verificar output_contract.schema.properties
     schema = output_contract.get("schema", {})
-    properties = schema.get("properties", {})
-    
+    if not isinstance(schema, dict):
+        results["warnings"].append("output_contract.schema no es un objeto JSON")
+        schema = {}
+    properties = schema.get("properties", {}) if isinstance(schema, dict) else {}
+    if not isinstance(properties, dict):
+        properties = {}
+
     # 3.2 Verificar const values correctos
     for field in REQUIRED_SCHEMA_CONST_FIELDS:
         if field in properties:
             prop = properties[field]
-            if "const" in prop:
+            if isinstance(prop, dict) and "const" in prop:
                 expected = identity.get(field)
                 actual = prop["const"]
                 if expected != actual:
                     results["valid"] = False
                     results["errors"].append(f"const incorrecto: {field}={actual}, esperado={expected}")
-    
+
     # 3.3 Verificar human_readable_output tiene template
     hr_output = output_contract.get("human_readable_output", {})
+    if not isinstance(hr_output, dict):
+        results["warnings"].append("output_contract.human_readable_output no es un objeto JSON")
+        hr_output = {}
     if not hr_output.get("template"):
         results["warnings"].append("output_contract.human_readable_output.template vacío o faltante")
     else:
