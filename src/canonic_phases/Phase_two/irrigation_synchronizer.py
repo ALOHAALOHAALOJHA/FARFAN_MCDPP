@@ -31,17 +31,16 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.signals import SignalRegistry
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalRegistry
 
-from farfan_pipeline.core.orchestrator.task_planner import ExecutableTask
-from farfan_pipeline.core.orchestrator.phase6_validation import (
+from orchestration.task_planner import ExecutableTask
+from canonic_phases.Phase_two.phase6_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
-from farfan_pipeline.synchronization import ChunkMatrix
 
 try:
-    from farfan_pipeline.core.orchestrator.signals import (
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
         SignalRegistry as _SignalRegistry,
     )
 except ImportError:
@@ -66,6 +65,27 @@ logger = logging.getLogger(__name__)
 SHA256_HEX_DIGEST_LENGTH = 64
 
 SKEW_THRESHOLD_CV = 0.3
+
+
+class ChunkMatrix:
+    """Minimal matrix wrapper for PreprocessedDocument chunks indexed by PA×DIM coordinates."""
+    EXPECTED_CHUNK_COUNT = 60
+
+    def __init__(self, preprocessed_document: PreprocessedDocument) -> None:
+        self.preprocessed_document = preprocessed_document
+        self._chunk_map: dict[tuple[str, str], ChunkData] = {}
+        for chunk in preprocessed_document.chunks:
+            if chunk.policy_area and chunk.dimension:
+                key = (chunk.policy_area.value, chunk.dimension.value)
+                self._chunk_map[key] = chunk
+
+    def get_chunk(self, policy_area_id: str, dimension_id: str) -> ChunkData:
+        """Get chunk by policy area and dimension coordinates."""
+        key = (policy_area_id, dimension_id)
+        if key not in self._chunk_map:
+            raise ValueError(f"No chunk found for PA={policy_area_id}, DIM={dimension_id}")
+        return self._chunk_map[key]
+
 
 class SignalRegistry(Protocol):
     """Protocol for signal registry implementations.

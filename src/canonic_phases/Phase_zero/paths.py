@@ -101,6 +101,7 @@ PROJECT_ROOT: Final[Path] = _detect_project_root()
 SRC_DIR: Final[Path] = PROJECT_ROOT / "src"
 DATA_DIR: Final[Path] = PROJECT_ROOT / "data"
 TESTS_DIR: Final[Path] = PROJECT_ROOT / "tests"
+RULES_DIR: Final[Path] = PROJECT_ROOT / "sensitive_rules_for_coding"
 
 
 def proj_root() -> Path:
@@ -449,6 +450,7 @@ __all__ = [
     "SRC_DIR",
     "DATA_DIR",
     "TESTS_DIR",
+    "RULES_DIR",
     # Directory accessors
     "proj_root",
     "src_dir",

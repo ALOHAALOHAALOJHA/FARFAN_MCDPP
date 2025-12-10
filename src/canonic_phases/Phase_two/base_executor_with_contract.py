@@ -6,13 +6,13 @@ from typing import TYPE_CHECKING, Any
 
 from jsonschema import Draft7Validator
 
-from farfan_pipeline.config.paths import PROJECT_ROOT
-from farfan_pipeline.core.orchestrator.evidence_assembler import EvidenceAssembler
-from farfan_pipeline.core.orchestrator.evidence_registry import get_global_registry
-from farfan_pipeline.core.orchestrator.evidence_validator import EvidenceValidator
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+from canonic_phases.Phase_two.evidence_assembler import EvidenceAssembler
+from canonic_phases.Phase_two.evidence_registry import get_global_registry
+from canonic_phases.Phase_two.evidence_validator import EvidenceValidator
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.core import MethodExecutor
+    from orchestration.orchestrator import MethodExecutor
     from farfan_pipeline.core.types import PreprocessedDocument
 else:  # pragma: no cover - runtime avoids import to break cycles
     MethodExecutor = Any
@@ -46,13 +46,13 @@ class BaseExecutorWithContract(ABC):
         validation_orchestrator: Any | None = None,
     ) -> None:
         try:
-            from farfan_pipeline.core.orchestrator.core import (
+            from orchestration.orchestrator import (
                 MethodExecutor as _MethodExecutor,
             )
         except Exception as exc:  # pragma: no cover - defensive guard
             raise RuntimeError(
                 "Failed to import MethodExecutor for BaseExecutorWithContract invariants. "
-                "Ensure farfan_core.core.orchestrator.core is importable before constructing contract executors."
+                "Ensure orchestration.orchestrator is importable before constructing contract executors."
             ) from exc
         if not isinstance(method_executor, _MethodExecutor):
             raise RuntimeError(
