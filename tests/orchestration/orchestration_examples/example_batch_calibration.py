@@ -6,7 +6,7 @@ Demonstrates calibrating multiple methods in batch with result aggregation.
 
 from pathlib import Path
 from typing import List
-from src.orchestration.calibration_orchestrator import (
+from orchestration.calibration_orchestrator import (
     CalibrationOrchestrator,
     CalibrationSubject,
     CalibrationResult,

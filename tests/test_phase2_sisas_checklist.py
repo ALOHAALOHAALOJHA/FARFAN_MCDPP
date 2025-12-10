@@ -43,14 +43,14 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 # ============================================================================
 
 try:
-    from farfan_pipeline.config.paths import PROJECT_ROOT as FARFAN_PROJECT_ROOT
+    from orchestration.settings import PROJECT_ROOT as FARFAN_PROJECT_ROOT
     PATHS_AVAILABLE = True
 except ImportError: 
     FARFAN_PROJECT_ROOT = PROJECT_ROOT
     PATHS_AVAILABLE = False
 
 try:
-    from farfan_pipeline.core.orchestrator.evidence_registry import (
+    from orchestration.orchestrator import (
         EvidenceRecord,
         EvidenceRegistry,
         get_global_registry,
@@ -62,7 +62,7 @@ except ImportError:
     EvidenceRegistry = None
 
 try:
-    from farfan_pipeline.core.orchestrator.base_executor_with_contract import (
+    from orchestration.orchestrator import (
         BaseExecutorWithContract,
     )
     EXECUTOR_CONTRACT_AVAILABLE = True
@@ -71,14 +71,14 @@ except ImportError:
     BaseExecutorWithContract = None
 
 try:
-    from farfan_pipeline.core.orchestrator.task_planner import ExecutableTask
+    from orchestration.task_planner import ExecutableTask
     TASK_PLANNER_AVAILABLE = True
 except ImportError:
     TASK_PLANNER_AVAILABLE = False
     ExecutableTask = None
 
 try:
-    from farfan_pipeline.core.orchestrator.irrigation_synchronizer import (
+    from orchestration.orchestrator import (
         IrrigationSynchronizer,
         ExecutionPlan,
     )
@@ -89,7 +89,7 @@ except ImportError:
     ExecutionPlan = None
 
 try:
-    from farfan_pipeline.core.orchestrator.signals import QuestionnaireSignalRegistry
+    from orchestration.orchestrator import QuestionnaireSignalRegistry
     SIGNAL_REGISTRY_AVAILABLE = True
 except ImportError:
     SIGNAL_REGISTRY_AVAILABLE = False

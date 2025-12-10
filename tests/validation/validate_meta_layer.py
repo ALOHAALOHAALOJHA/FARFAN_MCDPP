@@ -8,7 +8,7 @@ import sys
 
 def validate():
     try:
-        from src.orchestration.meta_layer import (
+        from orchestration.meta_layer import (
             MetaLayerEvaluator,
             MetaLayerConfig,
             TransparencyArtifacts,
@@ -76,7 +76,7 @@ def validate():
         assert m_gov_066 == 0.66, f"Should be 0.66, got {m_gov_066}"
         
         # Create config with signature required to test 1/3 and 0/3
-        from src.orchestration.meta_layer import MetaLayerConfig
+        from orchestration.meta_layer import MetaLayerConfig
         config_with_sig = MetaLayerConfig(
             w_transparency=0.5,
             w_governance=0.4,

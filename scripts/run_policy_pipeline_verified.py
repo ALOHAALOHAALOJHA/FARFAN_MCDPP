@@ -47,7 +47,7 @@ from saaaaaa.core.orchestrator.verification_manifest import (
     VerificationManifestBuilder,
     verify_manifest_integrity
 )
-from saaaaaa.core.orchestrator.versions import get_all_versions
+from src.orchestration.versions import get_all_versions
 
 
 @dataclass

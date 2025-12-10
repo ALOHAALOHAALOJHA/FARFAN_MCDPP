@@ -5,7 +5,7 @@ Demonstrates how different roles activate different layers in calibration.
 """
 
 from pathlib import Path
-from src.orchestration.calibration_orchestrator import (
+from orchestration.calibration_orchestrator import (
     CalibrationOrchestrator,
     CalibrationSubject,
     EvidenceStore,

@@ -11,7 +11,7 @@ Tests comprehensive PDT structure analysis including:
 """
 
 import pytest
-from src.orchestration.unit_layer import (
+from orchestration.unit_layer import (
     UnitLayerConfig,
     UnitLayerEvaluator,
     create_default_config
@@ -632,7 +632,7 @@ class TestIntegration:
     
     def test_complete_high_quality_pdt(self):
         """Complete PDT with high-quality content."""
-        from src.orchestration.unit_layer_example import example_complete_pdt
+        from orchestration.unit_layer_example import example_complete_pdt
         
         pdt = example_complete_pdt()
         evaluator = UnitLayerEvaluator()

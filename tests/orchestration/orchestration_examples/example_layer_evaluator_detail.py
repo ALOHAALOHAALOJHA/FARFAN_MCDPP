@@ -5,7 +5,7 @@ Demonstrates individual layer evaluator behavior and score computation.
 """
 
 from pathlib import Path
-from src.orchestration.calibration_orchestrator import (
+from orchestration.calibration_orchestrator import (
     CalibrationOrchestrator,
     LayerID,
 )

@@ -5,7 +5,7 @@ Demonstrates basic usage of CalibrationOrchestrator for single method calibratio
 """
 
 from pathlib import Path
-from src.orchestration.calibration_orchestrator import (
+from orchestration.calibration_orchestrator import (
     CalibrationOrchestrator,
     CalibrationSubject,
     EvidenceStore,

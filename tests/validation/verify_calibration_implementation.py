@@ -16,7 +16,7 @@ def check_imports():
     print("\n1. Checking imports...")
     
     try:
-        from src.orchestration.calibration_orchestrator import (
+        from orchestration.calibration_orchestrator import (
             CalibrationOrchestrator,
             CalibrationSubject,
             CalibrationResult,
@@ -45,7 +45,7 @@ def check_layer_ids():
     print("\n2. Checking LayerID enum...")
     
     try:
-        from src.orchestration.calibration_orchestrator import LayerID
+        from orchestration.calibration_orchestrator import LayerID
         
         expected_layers = ["@b", "@chain", "@u", "@q", "@d", "@p", "@C", "@m"]
         actual_layers = [layer.value for layer in LayerID]
@@ -67,7 +67,7 @@ def check_role_requirements():
     print("\n3. Checking role layer requirements...")
     
     try:
-        from src.orchestration.calibration_orchestrator import ROLE_LAYER_REQUIREMENTS
+        from orchestration.calibration_orchestrator import ROLE_LAYER_REQUIREMENTS
         
         expected_roles = [
             "INGEST_PDM", "STRUCTURE", "EXTRACT", "SCORE_Q",
@@ -160,7 +160,7 @@ def check_orchestrator_integration():
     print("\n7. Checking integration with main Orchestrator...")
     
     try:
-        from src.orchestration.orchestrator import Orchestrator
+        from orchestration.orchestrator import Orchestrator
         
         if hasattr(Orchestrator, 'calibrate_method'):
             print("   ✓ calibrate_method exists in Orchestrator")

@@ -3,7 +3,7 @@ Tests for Congruence Layer (@C) Configuration and Evaluator
 """
 
 import pytest
-from src.orchestration.congruence_layer import (
+from orchestration.congruence_layer import (
     CongruenceLayerConfig,
     CongruenceLayerEvaluator,
     OutputRangeSpec,
