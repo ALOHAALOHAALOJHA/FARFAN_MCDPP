@@ -52,7 +52,6 @@ from canonic_phases.Phase_zero.exit_gates import (
     check_all_gates,
     get_gate_summary,
 )
-from canonic_phases.Phase_zero.hash_utils import compute_hash
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig
 
 

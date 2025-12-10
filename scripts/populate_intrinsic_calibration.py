@@ -8,7 +8,8 @@ import logging
 from pathlib import Path
 from datetime import datetime
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+if not logging.getLogger().handlers:
+    logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 

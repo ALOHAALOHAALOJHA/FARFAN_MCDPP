@@ -133,20 +133,30 @@ def check_input_verification_gate(runner: Phase0Runner) -> GateResult:
     gate_id = 2
     gate_name = "input_verification"
     
-    if not hasattr(runner, 'input_pdf_sha256') or not runner.input_pdf_sha256:
+    pdf_hash = getattr(runner, "input_pdf_sha256", "") or ""
+    if not (
+        isinstance(pdf_hash, str)
+        and len(pdf_hash) == 64
+        and all(c in "0123456789abcdef" for c in pdf_hash.lower())
+    ):
         return GateResult(
             passed=False,
             gate_name=gate_name,
             gate_id=gate_id,
-            reason="Input PDF not hashed"
+            reason="Input PDF not hashed with valid SHA-256"
         )
-    
-    if not hasattr(runner, 'questionnaire_sha256') or not runner.questionnaire_sha256:
+
+    questionnaire_hash = getattr(runner, "questionnaire_sha256", "") or ""
+    if not (
+        isinstance(questionnaire_hash, str)
+        and len(questionnaire_hash) == 64
+        and all(c in "0123456789abcdef" for c in questionnaire_hash.lower())
+    ):
         return GateResult(
             passed=False,
             gate_name=gate_name,
             gate_id=gate_id,
-            reason="Questionnaire not hashed"
+            reason="Questionnaire not hashed with valid SHA-256"
         )
     
     if runner.errors:
@@ -246,10 +256,18 @@ def check_determinism_gate(runner: Phase0Runner) -> GateResult:
             reason=f"Missing mandatory seeds: {missing_mandatory}"
         )
     
+    if runner.errors:
+        return GateResult(
+            passed=False,
+            gate_name=gate_name,
+            gate_id=gate_id,
+            reason=f"Determinism errors: {'; '.join(runner.errors)}"
+        )
+
     # OPTIONAL seeds (log warning if missing, but don't fail gate)
     OPTIONAL_SEEDS = ["quantum", "neuromorphic", "meta_learner"]
     missing_optional = [s for s in OPTIONAL_SEEDS if runner.seed_snapshot.get(s) is None]
-    
+
     if missing_optional:
         # Don't fail gate, but note in reason for observability
         return GateResult(
@@ -257,14 +275,6 @@ def check_determinism_gate(runner: Phase0Runner) -> GateResult:
             gate_name=gate_name,
             gate_id=gate_id,
             reason=f"Optional seeds missing (non-fatal): {missing_optional}"
-        )
-    
-    if runner.errors:
-        return GateResult(
-            passed=False,
-            gate_name=gate_name,
-            gate_id=gate_id,
-            reason=f"Determinism errors: {'; '.join(runner.errors)}"
         )
     
     return GateResult(passed=True, gate_name=gate_name, gate_id=gate_id)
@@ -335,7 +345,7 @@ def get_gate_summary(results: list[GateResult]) -> str:
           ✓ Gate 4 (determinism): PASS
     """
     passed = sum(1 for r in results if r.passed)
-    total = len(results)
+    total = 4  # There are always 4 defined Phase 0 gates
     
     lines = [f"Phase 0 Exit Gates: {passed}/{total} passed"]
     
