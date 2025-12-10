@@ -32,13 +32,10 @@ from canonic_phases.Phase_zero.determinism import (
     validate_seed_application,
 )
 from canonic_phases.Phase_zero.exit_gates import (
-    GateResult,
     check_all_gates,
-    check_boot_checks_gate,
     check_bootstrap_gate,
     check_determinism_gate,
     check_input_verification_gate,
-    get_gate_summary,
 )
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig
 
