@@ -40,7 +40,7 @@ from canonic_phases.Phase_zero.exit_gates import (
     check_input_verification_gate,
     get_gate_summary,
 )
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.runtime_config import RuntimeConfig
 
 
 # ============================================================================
