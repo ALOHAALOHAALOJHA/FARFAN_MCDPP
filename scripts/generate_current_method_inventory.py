@@ -120,9 +120,19 @@ class CurrentCodebaseScanner:
         role = self._infer_role(canonical_name, node.name)
         layer = self._infer_layer(file_path)
         
+        all_args = (
+            list(getattr(node.args, "posonlyargs", []))
+            + list(node.args.args)
+            + list(node.args.kwonlyargs)
+        )
+        if node.args.vararg is not None:
+            all_args.append(node.args.vararg)
+        if node.args.kwarg is not None:
+            all_args.append(node.args.kwarg)
+
         has_type_hints = any(
             arg.annotation is not None 
-            for arg in node.args.args
+            for arg in all_args
         ) or node.returns is not None
         
         docstring = ast.get_docstring(node)
