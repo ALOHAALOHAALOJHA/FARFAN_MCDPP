@@ -259,6 +259,10 @@ def verify_contract(contract_path: Path) -> dict[str, Any]:
     
     # 6. Verificar error_handling.failure_contract (NO en question_context)
     error_handling = contract.get("error_handling", {})
+    if not isinstance(error_handling, dict):
+        results["valid"] = False
+        results["errors"].append("error_handling no es un objeto JSON")
+        error_handling = {}
     failure_contract = error_handling.get("failure_contract", {})
     if not failure_contract:
         results["warnings"].append("error_handling.failure_contract está vacío")
@@ -270,10 +274,13 @@ def verify_contract(contract_path: Path) -> dict[str, Any]:
             results["warnings"].append("failure_contract sin abort_if")
         if not has_emit:
             results["warnings"].append("failure_contract sin emit_code")
-    
+
     # 7. Verificar evidence_assembly
     evidence_assembly = contract.get("evidence_assembly", {})
-    assembly_rules = evidence_assembly.get("assembly_rules", [])
+    if not isinstance(evidence_assembly, dict):
+        results["valid"] = False
+        results["errors"].append("evidence_assembly no es un objeto JSON")
+        evidence_assembly = {}
     if not assembly_rules:
         results["warnings"].append("assembly_rules está vacío")
     else:
