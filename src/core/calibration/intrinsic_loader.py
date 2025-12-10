@@ -11,10 +11,12 @@ from typing import Any, TypedDict
 
 class MethodMetadata(TypedDict, total=False):
     """Method metadata from intrinsic calibration."""
-    layer: str
     role: str
     base_score: float
     description: str
+    b_theory: float
+    b_impl: float
+    b_deploy: float
 
 
 class IntrinsicCalibrationLoader:
@@ -63,10 +65,12 @@ class IntrinsicCalibrationLoader:
         
         method_data = methods[method_id]
         metadata: MethodMetadata = {
-            "layer": method_data.get("layer"),
-            "role": method_data.get("role"),
+            "role": method_data.get("role", ""),
             "base_score": method_data.get("base_score", 0.5),
             "description": method_data.get("description", ""),
+            "b_theory": method_data.get("b_theory", 0.5),
+            "b_impl": method_data.get("b_impl", 0.5),
+            "b_deploy": method_data.get("b_deploy", 0.5),
         }
         
         self._method_cache[method_id] = metadata
@@ -96,27 +100,53 @@ class IntrinsicCalibrationLoader:
     def get_required_layers_for_method(self, method_id: str) -> list[str]:
         """
         OBLIGATORIO: Única función que decide capas de un método.
-        Lee campo "layer" de intrinsic_calibration.json.
         
-        Priority:
-        1. Executors ALWAYS get 8 layers (full context)
-        2. Method-specific "layer" field from JSON
-        3. Fallback to "core" (conservative 8 layers)
+        Sigue la ruta canónica F.A.R.F.A.N.:
+        1. Executors ALWAYS get 8 layers (SCORE_Q role)
+        2. Other methods: derive layers from ROLE using LAYER_REQUIREMENTS mapping
+        3. Unknown methods: fallback to "core" (8 layers, conservative)
+        
+        Args:
+            method_id: Method identifier
+            
+        Returns:
+            List of required layer identifiers
         """
         from .layer_requirements import LAYER_REQUIREMENTS
         
+        # Special case: Executors always get SCORE_Q role (8 layers)
         if self.is_executor(method_id):
-            return ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"]
+            return LAYER_REQUIREMENTS["score"]["layers"]
         
+        # Get method metadata to determine role
         metadata = self.get_metadata(method_id)
+        
         if metadata is None:
+            # Method not in intrinsic calibration - use conservative default
             return LAYER_REQUIREMENTS["core"]["layers"]
         
-        method_type = metadata.get("layer")
-        if method_type is None or method_type not in LAYER_REQUIREMENTS:
+        # Get role from metadata
+        role = metadata.get("role", "").upper()
+        
+        # Map role to layer requirement type
+        role_to_layer_type = {
+            "SCORE_Q": "score",
+            "INGEST_PDM": "ingest",
+            "STRUCTURE": "processor",
+            "EXTRACT": "extractor",
+            "AGGREGATE": "core",
+            "REPORT": "orchestrator",
+            "META_TOOL": "utility",
+            "TRANSFORM": "utility",
+        }
+        
+        layer_type = role_to_layer_type.get(role)
+        
+        if layer_type is None or layer_type not in LAYER_REQUIREMENTS:
+            # Unknown role - use conservative default (8 layers)
             return LAYER_REQUIREMENTS["core"]["layers"]
         
-        return LAYER_REQUIREMENTS[method_type]["layers"]
+        return LAYER_REQUIREMENTS[layer_type]["layers"]
     
     def get_base_score(self, method_id: str) -> float:
         """Get base calibration score for method."""
