@@ -158,3 +158,10 @@ index_summary.json
 sensitive_rules_for_coding/validation_suite/reports/
 validation_suite_report.json
 example_validation_report.json
+
+# Calibration Inventory System (generated artifacts - keep source scripts)
+system/config/calibration/inventories/COHORT_2024_canonical_method_inventory.json
+system/config/calibration/inventories/COHORT_2024_method_signatures.json
+system/config/calibration/inventories/COHORT_2024_calibration_coverage_matrix.json
+system/config/calibration/inventories/COHORT_2024_consolidation_summary.md
+system/config/calibration/inventories/calibration_consolidation.log
