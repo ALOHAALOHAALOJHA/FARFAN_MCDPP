@@ -1,0 +1,208 @@
+{
+  "timestamp": "2025-12-10T02:09:52.708906",
+  "validation_version": "1.0.0",
+  "checks": {
+    "config_file_COHORT_2024_intrinsic_calibration.json": {
+      "passed": true,
+      "details": "\u2705 Intrinsic calibration scores present and valid JSON",
+      "severity": "critical"
+    },
+    "config_file_COHORT_2024_intrinsic_calibration_rubric.json": {
+      "passed": true,
+      "details": "\u2705 Intrinsic rubric present and valid JSON",
+      "severity": "critical"
+    },
+    "config_file_COHORT_2024_fusion_weights.json": {
+      "passed": true,
+      "details": "\u2705 Fusion weights present and valid JSON",
+      "severity": "critical"
+    },
+    "config_file_COHORT_2024_layer_requirements.json": {
+      "passed": true,
+      "details": "\u2705 Layer requirements present and valid JSON",
+      "severity": "critical"
+    },
+    "config_file_COHORT_2024_method_compatibility.json": {
+      "passed": true,
+      "details": "\u2705 Method compatibility present and valid JSON",
+      "severity": "critical"
+    },
+    "config_file_COHORT_2024_canonical_method_inventory.json": {
+      "passed": true,
+      "details": "\u2705 Method inventory present and valid JSON",
+      "severity": "critical"
+    },
+    "config_file_COHORT_2024_questionnaire_monolith.json": {
+      "passed": true,
+      "details": "\u2705 Questionnaire monolith present and valid JSON",
+      "severity": "critical"
+    },
+    "fusion_weights_sum": {
+      "passed": true,
+      "details": "\u2705 Fusion weights validated (sum = 1.0 \u00b1 0.001)",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_calibration_orchestrator.py": {
+      "passed": true,
+      "details": "\u2705 Main orchestrator present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_chain_layer.py": {
+      "passed": true,
+      "details": "\u2705 Chain layer present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_congruence_layer.py": {
+      "passed": true,
+      "details": "\u2705 Congruence layer present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_contextual_layers.py": {
+      "passed": true,
+      "details": "\u2705 Contextual layers (Q/D/P) present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_dimension_layer.py": {
+      "passed": true,
+      "details": "\u2705 Dimension layer present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_policy_layer.py": {
+      "passed": true,
+      "details": "\u2705 Policy layer present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_question_layer.py": {
+      "passed": true,
+      "details": "\u2705 Question layer present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_unit_layer.py": {
+      "passed": true,
+      "details": "\u2705 Unit layer present",
+      "severity": "critical"
+    },
+    "impl_COHORT_2024_meta_layer.py": {
+      "passed": true,
+      "details": "\u2705 Meta layer present",
+      "severity": "critical"
+    },
+    "impl_certificate_generator.py": {
+      "passed": true,
+      "details": "\u2705 Certificate generator present",
+      "severity": "critical"
+    },
+    "impl_certificate_validator.py": {
+      "passed": true,
+      "details": "\u2705 Certificate validator present",
+      "severity": "critical"
+    },
+    "test_test_base_layer.py": {
+      "passed": true,
+      "details": "\u2705 Base layer tests present",
+      "severity": "critical"
+    },
+    "test_test_chain_layer.py": {
+      "passed": true,
+      "details": "\u2705 Chain layer tests present",
+      "severity": "critical"
+    },
+    "test_test_contextual_layers.py": {
+      "passed": true,
+      "details": "\u2705 Contextual layers tests present",
+      "severity": "critical"
+    },
+    "test_test_unit_layer.py": {
+      "passed": true,
+      "details": "\u2705 Unit layer tests present",
+      "severity": "critical"
+    },
+    "test_test_meta_layer.py": {
+      "passed": true,
+      "details": "\u2705 Meta layer tests present",
+      "severity": "critical"
+    },
+    "test_test_congruence_layer.py": {
+      "passed": true,
+      "details": "\u2705 Congruence layer tests present",
+      "severity": "critical"
+    },
+    "test_test_choquet_aggregation.py": {
+      "passed": true,
+      "details": "\u2705 Choquet fusion tests present",
+      "severity": "critical"
+    },
+    "test_test_orchestrator.py": {
+      "passed": true,
+      "details": "\u2705 Orchestrator integration tests present",
+      "severity": "critical"
+    },
+    "test_test_property_based.py": {
+      "passed": true,
+      "details": "\u2705 Property-based tests (monotonicity, boundedness) present",
+      "severity": "critical"
+    },
+    "evidence_evidence_traces/base_layer": {
+      "passed": false,
+      "details": "\u26a0\ufe0f  Base layer traces directory exists but empty",
+      "severity": "warning"
+    },
+    "evidence_evidence_traces/chain_layer": {
+      "passed": false,
+      "details": "\u26a0\ufe0f  Chain layer traces directory exists but empty",
+      "severity": "warning"
+    },
+    "evidence_evidence_traces/fusion": {
+      "passed": false,
+      "details": "\u26a0\ufe0f  Fusion traces directory exists but empty",
+      "severity": "warning"
+    },
+    "artifact_artifacts/certificates": {
+      "passed": false,
+      "details": "\u26a0\ufe0f  Certificate artifacts directory exists but empty",
+      "severity": "warning"
+    },
+    "artifact_artifacts/calibration_cache": {
+      "passed": false,
+      "details": "\u26a0\ufe0f  Calibration cache directory exists but empty",
+      "severity": "warning"
+    },
+    "artifact_artifacts/validation": {
+      "passed": true,
+      "details": "\u2705 Validation reports directory exists with 1 artifacts",
+      "severity": "critical"
+    },
+    "doc_docs/CALIBRATION_GUIDE.md": {
+      "passed": true,
+      "details": "\u2705 Calibration guide present",
+      "severity": "critical"
+    },
+    "doc_docs/mathematical_foundations_capax_system.md": {
+      "passed": true,
+      "details": "\u2705 Mathematical foundations present",
+      "severity": "critical"
+    },
+    "doc_docs/LAYER_SYSTEM.md": {
+      "passed": true,
+      "details": "\u2705 Layer system present",
+      "severity": "critical"
+    },
+    "doc_docs/CALIBRATION_CANONICAL_COHERENCE_ANALYSIS.md": {
+      "passed": true,
+      "details": "\u2705 Coherence analysis (this doc) present",
+      "severity": "critical"
+    },
+    "doc_docs/CALIBRATION_VS_PARAMETRIZATION.md": {
+      "passed": true,
+      "details": "\u2705 Calibration vs parametrization present",
+      "severity": "critical"
+    }
+  },
+  "summary": {
+    "total_checks": 39,
+    "passed": 34,
+    "failed": 0,
+    "warnings": 5
+  },
+  "status": "OPERATIONAL_WITH_WARNINGS"
+}
