@@ -14,7 +14,8 @@ from typing import Any
 import hashlib
 
 
-CONTRACTS_DIR = Path("src/canonic_phases/Phase_two/json_files_phase_two/executor_contracts/specialized")
+BASE_DIR = Path(__file__).resolve().parent.parent
+CONTRACTS_DIR = BASE_DIR / "src" / "canonic_phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
 
 
 def fix_output_contract_const(contract: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
