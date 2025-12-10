@@ -1570,53 +1570,244 @@ class BaseExecutorWithContract(ABC):
     ) -> dict[str, Any]:
         """Build comprehensive context for template variable substitution.
 
+        DOCTORAL-LEVEL IMPLEMENTATION: This method transforms raw evidence into
+        a rich context suitable for generating human-readable outputs with full
+        epistemological rigor, uncertainty quantification, and methodological transparency.
+
         Args:
-            evidence: Evidence dict
+            evidence: Evidence dict (normalized by EvidenceAssembler._normalize_for_phase3)
             validation: Validation dict
-            contract: Full contract
+            contract: Full contract for accessing question_context metadata
 
         Returns:
-            Context dict with all variables and derived metrics
+            Context dict with all variables, derived metrics, and doctoral-level analytics
         """
+        import statistics
+        import re
+
         # Base context
         context = {
             "evidence": evidence.copy(),
             "validation": validation.copy(),
         }
 
-        # Add derived metrics from evidence
-        if "elements" in evidence and isinstance(evidence["elements"], list):
-            context["evidence"]["elements_found_count"] = len(evidence["elements"])
-            context["evidence"]["elements_found_list"] = self._format_evidence_list(
-                evidence["elements"]
-            )
+        # ═══════════════════════════════════════════════════════════════════════
+        # PHASE 2→3 NORMALIZED FIELD MAPPING
+        # Contracts produce: elements_found, confidence_scores, pattern_matches
+        # Code also accepts: elements, confidences, patterns (legacy names)
+        # ═══════════════════════════════════════════════════════════════════════
 
-        if "confidences" in evidence and isinstance(evidence["confidences"], list):
-            confidences = evidence["confidences"]
-            if confidences:
+        # Elements: primary evidence units
+        elements = (
+            evidence.get("elements")
+            or evidence.get("elements_found")
+            or []
+        )
+        if isinstance(elements, list):
+            context["evidence"]["elements_found_count"] = len(elements)
+            context["evidence"]["elements_found_list"] = self._format_evidence_list(elements)
+            context["evidence"]["elements"] = elements  # Ensure canonical name exists
+
+        # Confidence scores: extract from normalized structure or legacy
+        confidence_scores = (
+            evidence.get("confidence_scores")
+            or evidence.get("confidences")
+            or evidence.get("raw_results", {}).get("confidence_scores")
+            or []
+        )
+        if isinstance(confidence_scores, list) and confidence_scores:
+            numeric_scores = [s for s in confidence_scores if isinstance(s, (int, float))]
+            if numeric_scores:
                 context["evidence"]["confidence_scores"] = {
-                    "mean": sum(confidences) / len(confidences),
-                    "min": min(confidences),
-                    "max": max(confidences),
+                    "mean": statistics.mean(numeric_scores),
+                    "min": min(numeric_scores),
+                    "max": max(numeric_scores),
+                    "std": statistics.stdev(numeric_scores) if len(numeric_scores) > 1 else 0.0,
+                    "count": len(numeric_scores),
+                    # DOCTORAL: Credible interval (assuming normal distribution)
+                    "ci_lower": statistics.mean(numeric_scores) - 1.96 * (statistics.stdev(numeric_scores) / len(numeric_scores)**0.5) if len(numeric_scores) > 1 else statistics.mean(numeric_scores),
+                    "ci_upper": statistics.mean(numeric_scores) + 1.96 * (statistics.stdev(numeric_scores) / len(numeric_scores)**0.5) if len(numeric_scores) > 1 else statistics.mean(numeric_scores),
                 }
+        else:
+            context["evidence"]["confidence_scores"] = {
+                "mean": 0.0, "min": 0.0, "max": 0.0, "std": 0.0, "count": 0,
+                "ci_lower": 0.0, "ci_upper": 0.0
+            }
 
-        if "patterns" in evidence and isinstance(evidence["patterns"], dict):
-            context["evidence"]["pattern_matches_count"] = len(evidence["patterns"])
+        # Pattern matches: count and analyze
+        pattern_matches = (
+            evidence.get("pattern_matches")
+            or evidence.get("patterns")
+            or evidence.get("raw_results", {}).get("pattern_matches")
+            or {}
+        )
+        if isinstance(pattern_matches, dict):
+            context["evidence"]["pattern_matches_count"] = len(pattern_matches)
+            context["evidence"]["pattern_matches"] = pattern_matches
+        elif isinstance(pattern_matches, list):
+            context["evidence"]["pattern_matches_count"] = len(pattern_matches)
+            context["evidence"]["pattern_matches"] = {f"pattern_{i}": p for i, p in enumerate(pattern_matches)}
+        else:
+            context["evidence"]["pattern_matches_count"] = 0
+            context["evidence"]["pattern_matches"] = {}
 
-        # Add defaults for missing keys to prevent KeyError
-        context["evidence"].setdefault("missing_required_elements", "None")
-        context["evidence"].setdefault("official_sources_count", 0)
-        context["evidence"].setdefault("quantitative_indicators_count", 0)
-        context["evidence"].setdefault("temporal_series_count", 0)
-        context["evidence"].setdefault("territorial_coverage", "Not specified")
-        context["evidence"].setdefault(
-            "recommendations", "No specific recommendations available"
+        # ═══════════════════════════════════════════════════════════════════════
+        # DOCTORAL-LEVEL DERIVED METRICS
+        # Extract domain-specific counts from evidence elements
+        # ═══════════════════════════════════════════════════════════════════════
+
+        # Official sources: DANE, DNP, SISPRO, Ministerio, etc.
+        official_source_patterns = [
+            r'\bDANE\b', r'\bDNP\b', r'\bSISPRO\b', r'\bSIVIGILA\b',
+            r'\bMinisterio\b', r'\bFiscalía\b', r'\bMedicina Legal\b',
+            r'\bObservatorio\b', r'\bSecretaría\b', r'\bContraloría\b'
+        ]
+        official_sources_count = 0
+        if isinstance(elements, list):
+            for elem in elements:
+                elem_str = str(elem.get("text", elem) if isinstance(elem, dict) else elem)
+                for pattern in official_source_patterns:
+                    if re.search(pattern, elem_str, re.IGNORECASE):
+                        official_sources_count += 1
+                        break
+        context["evidence"]["official_sources_count"] = official_sources_count
+
+        # Quantitative indicators: numbers with %, rates, indices
+        quantitative_patterns = [
+            r'\d+[.,]?\d*\s*%', r'tasa de', r'índice de', r'por cada \d+',
+            r'\d+[.,]\d+', r'porcentaje', r'proporción'
+        ]
+        quantitative_count = 0
+        if isinstance(elements, list):
+            for elem in elements:
+                elem_str = str(elem.get("text", elem) if isinstance(elem, dict) else elem)
+                for pattern in quantitative_patterns:
+                    if re.search(pattern, elem_str, re.IGNORECASE):
+                        quantitative_count += 1
+                        break
+        context["evidence"]["quantitative_indicators_count"] = quantitative_count
+
+        # Temporal series: year references
+        temporal_pattern = r'20\d{2}|año\s+\d{4}|periodo|histórico|serie'
+        temporal_count = 0
+        years_found = set()
+        if isinstance(elements, list):
+            for elem in elements:
+                elem_str = str(elem.get("text", elem) if isinstance(elem, dict) else elem)
+                year_matches = re.findall(r'20\d{2}', elem_str)
+                years_found.update(year_matches)
+                if re.search(temporal_pattern, elem_str, re.IGNORECASE):
+                    temporal_count += 1
+        context["evidence"]["temporal_series_count"] = len(years_found)
+        context["evidence"]["years_referenced"] = sorted(years_found) if years_found else []
+
+        # Territorial coverage detection
+        territorial_patterns = {
+            "municipal": r'\bmunicipal\b|\bmunicipio\b',
+            "departamental": r'\bdepartamental\b|\bdepartamento\b',
+            "nacional": r'\bnacional\b|\bpaís\b',
+            "rural": r'\brural\b|\bveredal\b',
+            "urbano": r'\burbano\b|\bcabecera\b',
+            "PDET": r'\bPDET\b|\bsubregión\b'
+        }
+        coverages_found = []
+        all_elements_text = " ".join(
+            str(elem.get("text", elem) if isinstance(elem, dict) else elem)
+            for elem in (elements if isinstance(elements, list) else [])
+        )
+        for coverage_name, pattern in territorial_patterns.items():
+            if re.search(pattern, all_elements_text, re.IGNORECASE):
+                coverages_found.append(coverage_name)
+        context["evidence"]["territorial_coverage"] = (
+            ", ".join(coverages_found) if coverages_found else "Not specified"
         )
 
-        # Add score and quality from validation or defaults
+        # Missing required elements: from validation
+        missing_elements = validation.get("errors", [])
+        if missing_elements:
+            missing_list = [e for e in missing_elements if "missing" in str(e).lower()]
+            context["evidence"]["missing_required_elements"] = (
+                "; ".join(missing_list[:5]) if missing_list else "None"
+            )
+        else:
+            context["evidence"]["missing_required_elements"] = "None"
+
+        # ═══════════════════════════════════════════════════════════════════════
+        # DOCTORAL: STRENGTH OF EVIDENCE ASSESSMENT
+        # ═══════════════════════════════════════════════════════════════════════
+
+        # Evidence strength score (0-1) based on multiple factors
+        strength_factors = {
+            "element_count": min(len(elements) / 10, 1.0) if isinstance(elements, list) else 0.0,
+            "source_diversity": min(official_sources_count / 3, 1.0),
+            "quantitative_rigor": min(quantitative_count / 5, 1.0),
+            "temporal_depth": min(len(years_found) / 3, 1.0),
+            "confidence_level": context["evidence"]["confidence_scores"]["mean"],
+        }
+        evidence_strength = sum(strength_factors.values()) / len(strength_factors)
+        context["evidence"]["strength_score"] = round(evidence_strength, 3)
+        context["evidence"]["strength_factors"] = strength_factors
+        context["evidence"]["strength_level"] = (
+            "Strong" if evidence_strength >= 0.7 else
+            "Moderate" if evidence_strength >= 0.4 else
+            "Weak"
+        )
+
+        # ═══════════════════════════════════════════════════════════════════════
+        # DOCTORAL: RECOMMENDATIONS ENGINE
+        # ═══════════════════════════════════════════════════════════════════════
+
+        recommendations = []
+
+        if official_sources_count < 2:
+            recommendations.append(
+                "**Data Provenance Gap**: Include additional official sources (DANE, SISPRO, DNP) "
+                "to strengthen baseline validity and enable cross-validation."
+            )
+
+        if len(years_found) < 2:
+            recommendations.append(
+                "**Temporal Depth Required**: Incorporate multi-year data series to establish "
+                "trends and enable evidence-based target setting."
+            )
+
+        if quantitative_count < 3:
+            recommendations.append(
+                "**Quantitative Rigor Needed**: Add numerical indicators with explicit units "
+                "(rates per 100,000, percentages, absolute counts) for measurable baselines."
+            )
+
+        if evidence_strength < 0.4:
+            recommendations.append(
+                "**Evidence Strengthening Priority**: Current evidence base is weak. "
+                "Recommend systematic data collection before policy formulation."
+            )
+
+        if not coverages_found:
+            recommendations.append(
+                "**Territorial Specification**: Clarify geographic scope (municipal, rural, urban) "
+                "for proper targeting and resource allocation."
+            )
+
+        context["evidence"]["recommendations"] = (
+            "\n\n".join(recommendations) if recommendations
+            else "Evidence base meets minimum quality standards. Consider adding Bayesian uncertainty quantification for enhanced rigor."
+        )
+
+        # ═══════════════════════════════════════════════════════════════════════
+        # SCORE AND QUALITY LEVEL
+        # ═══════════════════════════════════════════════════════════════════════
+
         context["score"] = validation.get("score", 0.0)
         context["quality_level"] = self._determine_quality_level(
             validation.get("score", 0.0)
+        )
+
+        # DOCTORAL: Add epistemic confidence qualifier
+        context["epistemic_confidence"] = (
+            "High - Multiple independent sources corroborate findings" if official_sources_count >= 3 else
+            "Moderate - Limited source triangulation" if official_sources_count >= 1 else
+            "Low - Single source or unverified data"
         )
 
         return context

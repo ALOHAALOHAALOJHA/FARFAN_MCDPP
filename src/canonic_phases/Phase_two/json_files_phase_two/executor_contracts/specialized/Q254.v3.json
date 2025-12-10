@@ -413,12 +413,12 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q284"
+          "const": "Q254"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 284
+          "const": 254
         },
         "policy_area_id": {
           "type": [
@@ -426,7 +426,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [
@@ -434,7 +434,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM03"
         },
         "cluster_id": {
           "type": [
@@ -442,7 +442,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL03"
         },
         "evidence": {
           "type": [
