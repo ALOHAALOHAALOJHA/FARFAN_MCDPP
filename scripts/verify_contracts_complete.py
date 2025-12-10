@@ -193,7 +193,10 @@ def verify_contract(contract_path: Path) -> dict[str, Any]:
     
     # 4. Verificar question_context
     question_context = contract.get("question_context", {})
-    for field in REQUIRED_QUESTION_CONTEXT:
+    if not isinstance(question_context, dict):
+        results["valid"] = False
+        results["errors"].append("question_context no es un objeto JSON")
+        question_context = {}
         if field not in question_context:
             results["valid"] = False
             results["errors"].append(f"Falta question_context.{field}")
