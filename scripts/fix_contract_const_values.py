@@ -41,7 +41,8 @@ def fix_output_contract_const(contract: dict[str, Any]) -> tuple[dict[str, Any],
     
     for identity_field, schema_field in sync_map.items():
         identity_value = identity.get(identity_field)
-        if schema_field in output_schema:
+        if identity_value is None:
+            continue
             current_const = output_schema[schema_field].get("const")
             if current_const != identity_value:
                 changes.append(f"{schema_field}.const: {current_const} → {identity_value}")
