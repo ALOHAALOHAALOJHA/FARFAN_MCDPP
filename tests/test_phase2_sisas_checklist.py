@@ -50,7 +50,7 @@ except ImportError:
     PATHS_AVAILABLE = False
 
 try:
-    from farfan_pipeline.core.orchestrator.evidence_registry import (
+    from canonic_phases.Phase_two.evidence_registry import (
         EvidenceRecord,
         EvidenceRegistry,
         get_global_registry,
@@ -62,7 +62,7 @@ except ImportError:
     EvidenceRegistry = None
 
 try:
-    from farfan_pipeline.core.orchestrator.base_executor_with_contract import (
+    from canonic_phases.Phase_two.base_executor_with_contract import (
         BaseExecutorWithContract,
     )
     EXECUTOR_CONTRACT_AVAILABLE = True

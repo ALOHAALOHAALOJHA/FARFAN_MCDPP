@@ -85,10 +85,10 @@ INTEGRATION GUIDE:
    Pass validation orchestrator to executors:
 
    ```python
-   from farfan_pipeline.core.orchestrator.base_executor_with_contract import (
+   from canonic_phases.Phase_two.base_executor_with_contract import (
        BaseExecutorWithContract
    )
-   from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+   from canonic_phases.Phase_two.signal_contract_validator import (
        ValidationOrchestrator
    )
 

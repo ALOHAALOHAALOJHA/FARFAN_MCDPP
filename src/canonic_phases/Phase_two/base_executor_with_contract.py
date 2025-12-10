@@ -7,9 +7,9 @@ from typing import TYPE_CHECKING, Any
 from jsonschema import Draft7Validator
 
 from farfan_pipeline.config.paths import PROJECT_ROOT
-from farfan_pipeline.core.orchestrator.evidence_assembler import EvidenceAssembler
-from farfan_pipeline.core.orchestrator.evidence_registry import get_global_registry
-from farfan_pipeline.core.orchestrator.evidence_validator import EvidenceValidator
+from canonic_phases.Phase_two.evidence_assembler import EvidenceAssembler
+from canonic_phases.Phase_two.evidence_registry import get_global_registry
+from canonic_phases.Phase_two.evidence_validator import EvidenceValidator
 
 if TYPE_CHECKING:
     from farfan_pipeline.core.orchestrator.core import MethodExecutor
