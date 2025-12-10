@@ -82,7 +82,7 @@ class CurrentCodebaseScanner:
             module_path = str(rel_path).replace('/', '.').replace('.py', '')
             
             for node in ast.walk(tree):
-                if isinstance(node, ast.FunctionDef):
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                     if node.name.startswith('_') and not node.name.startswith('__'):
                         continue
                     
@@ -120,9 +120,19 @@ class CurrentCodebaseScanner:
         role = self._infer_role(canonical_name, node.name)
         layer = self._infer_layer(file_path)
         
+        all_args = (
+            list(getattr(node.args, "posonlyargs", []))
+            + list(node.args.args)
+            + list(node.args.kwonlyargs)
+        )
+        if node.args.vararg is not None:
+            all_args.append(node.args.vararg)
+        if node.args.kwarg is not None:
+            all_args.append(node.args.kwarg)
+
         has_type_hints = any(
             arg.annotation is not None 
-            for arg in node.args.args
+            for arg in all_args
         ) or node.returns is not None
         
         docstring = ast.get_docstring(node)
@@ -145,6 +155,17 @@ class CurrentCodebaseScanner:
     def _infer_role(self, canonical_name: str, method_name: str) -> str:
         """Infer method role from name patterns."""
         name_lower = f"{canonical_name} {method_name}".lower()
+        
+        # Detect executor codes like D1Q1 / D2Q3 etc.
+        for i, ch in enumerate(name_lower):
+            if (
+                ch == 'd'
+                and i + 3 < len(name_lower)
+                and name_lower[i + 1].isdigit()
+                and name_lower[i + 2] == 'q'
+                and name_lower[i + 3].isdigit()
+            ):
+                return 'executor'
         
         for role, keywords in self.ROLE_KEYWORDS.items():
             for keyword in keywords:

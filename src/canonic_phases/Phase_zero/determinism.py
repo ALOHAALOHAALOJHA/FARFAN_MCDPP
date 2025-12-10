@@ -83,7 +83,7 @@ def derive_seed_from_string(base_material: str, salt: bytes | None = None) -> in
         >>> assert seed1 == seed2  # Deterministic
     """
     default_salt = b"FARFAN_PHASE0_DETERMINISTIC_SEED_2025"
-    actual_salt = salt or default_salt
+    actual_salt = default_salt if salt is None else salt
     
     seed_hmac = hmac.new(
         key=actual_salt,
@@ -224,8 +224,9 @@ def initialize_determinism_from_registry(
         - status: Dictionary of application status
         - errors: List of errors (empty if successful)
         
-    Raises:
-        ValueError: If mandatory seeds missing from registry
+    Note:
+        Errors (including missing mandatory seeds) are reported via the
+        returned errors list rather than by raising exceptions.
         
     Specification:
         P00-EN v2.0 Section 3.4 - Determinism Context

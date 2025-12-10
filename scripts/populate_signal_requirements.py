@@ -202,6 +202,12 @@ def main():
             # Populate signal requirements
             modified, message = populate_signal_requirements(contract, dry_run=args.dry_run)
             
+            # Treat missing identifiers as an error, not "already correct"
+            if not modified and message.startswith("Missing policy_area_id or dimension_id"):
+                errors += 1
+                print(f"❌ {contract_id}: {message}")
+                continue
+
             if modified:
                 updated += 1
                 print(f"✅ {contract_id}: {message}")

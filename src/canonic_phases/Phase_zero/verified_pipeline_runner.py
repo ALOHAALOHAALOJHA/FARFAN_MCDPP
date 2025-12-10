@@ -52,7 +52,6 @@ from canonic_phases.Phase_zero.exit_gates import (
     check_all_gates,
     get_gate_summary,
 )
-from canonic_phases.Phase_zero.hash_utils import compute_hash
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig
 
 
@@ -415,47 +414,49 @@ class VerifiedPipelineRunner:
         Specification:
             P00-EN v2.0 Section 4.1 - Exit Conditions & Guarantees
         """
+        import asyncio
+
         print("\n" + "="*80, flush=True)
         print("PHASE 0: PRE-EXECUTION VALIDATION & DETERMINISTIC BOOTSTRAP", flush=True)
         print("="*80 + "\n", flush=True)
-        
+    
         # Check all gates (bootstrap already happened in __init__)
         all_passed, gate_results = check_all_gates(self)
-        
+    
         # If bootstrap failed, abort immediately
         if gate_results and not gate_results[0].passed:
             print("\n❌ Gate 1 (Bootstrap) FAILED", flush=True)
             print(get_gate_summary(gate_results), flush=True)
             return False
-        
+    
         # P0.1: Input Verification
-        if not self.verify_input():
+        if not await asyncio.to_thread(self.verify_input):
             print("\n❌ P0.1 Input Verification FAILED", flush=True)
             return False
-        
+    
         # Gate 2: Input Verification
         all_passed, gate_results = check_all_gates(self)
         if not gate_results[1].passed:
             print("\n❌ Gate 2 (Input Verification) FAILED", flush=True)
             print(get_gate_summary(gate_results), flush=True)
             return False
-        
+    
         # P0.2: Boot Checks
         try:
-            self.run_boot_checks()
+            await asyncio.to_thread(self.run_boot_checks)
         except BootCheckError:
             print("\n❌ P0.2 Boot Checks FAILED (PROD mode)", flush=True)
             return False
-        
+    
         # Gate 3: Boot Checks
         all_passed, gate_results = check_all_gates(self)
         if not gate_results[2].passed:
             print("\n❌ Gate 3 (Boot Checks) FAILED", flush=True)
             print(get_gate_summary(gate_results), flush=True)
             return False
-        
+    
         # P0.3: Determinism
-        if not self.initialize_determinism():
+        if not await asyncio.to_thread(self.initialize_determinism):
             print("\n❌ P0.3 Determinism Initialization FAILED", flush=True)
             return False
         
