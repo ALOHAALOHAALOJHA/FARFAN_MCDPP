@@ -9,11 +9,11 @@ REPLACES:
 
 ARCHITECTURE: Graph-Native Evidence Reasoning
 ---------------------------------------------
-1. Evidence Ingestion → Typed nodes in causal graph
-2. Relationship Inference → Edge weights via Bayesian inference
-3. Consistency Validation → Graph-theoretic conflict detection
-4. Narrative Synthesis → LLM-free template-driven answer generation
-5. Provenance Tracking → Merkle DAG with content-addressable storage
+1.Evidence Ingestion → Typed nodes in causal graph
+2.Relationship Inference → Edge weights via Bayesian inference
+3.Consistency Validation → Graph-theoretic conflict detection
+4.Narrative Synthesis → LLM-free template-driven answer generation
+5.Provenance Tracking → Merkle DAG with content-addressable storage
 
 THEORETICAL FOUNDATIONS:
 - Pearl's Causal Inference (do-calculus for counterfactual reasoning)
@@ -41,26 +41,15 @@ import math
 import re
 import statistics
 import time
-from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum, auto
-from functools import cached_property
+from enum import Enum
 from pathlib import Path
 from typing import (
     Any,
-    Callable,
-    Generic,
-    Iterator,
-    Literal,
     Protocol,
     Sequence,
     TypeAlias,
-    TypedDict,
-    TypeVar,
-    cast,
-    overload,
 )
 
 try:
@@ -159,7 +148,7 @@ class EvidenceNode:
     Immutable evidence node with cryptographic identity. 
     
     Each node represents a discrete piece of evidence extracted from
-    document analysis. Nodes are content-addressed via SHA-256.
+    document analysis.Nodes are content-addressed via SHA-256.
     
     Invariants:
     - node_id == SHA-256(canonical_json(content))
@@ -201,7 +190,7 @@ class EvidenceNode:
         """Factory method with automatic ID generation."""
         # Compute content hash for identity
         canonical = cls._canonical_json(content)
-        node_id = hashlib. sha256(canonical.encode()).hexdigest()
+        node_id = hashlib.sha256(canonical.encode()).hexdigest()
         
         # Default belief mass to confidence if not specified
         bm = belief_mass if belief_mass is not None else confidence
@@ -239,13 +228,13 @@ class EvidenceNode:
         return {
             "node_id": self.node_id,
             "evidence_type": self.evidence_type.value,
-            "content": self. content,
+            "content": self.content,
             "confidence": self.confidence,
             "belief_mass": self.belief_mass,
             "uncertainty_mass": self.uncertainty_mass,
             "source_method": self.source_method,
             "extraction_timestamp": self.extraction_timestamp,
-            "document_location": self. document_location,
+            "document_location": self.document_location,
             "tags": list(self.tags),
             "parent_ids": list(self.parent_ids),
         }
@@ -307,7 +296,7 @@ class ValidationFinding:
         return {
             "finding_id":  self.finding_id,
             "severity": self.severity.value,
-            "code": self. code,
+            "code": self.code,
             "message": self.message,
             "affected_nodes": self.affected_nodes,
             "remediation": self.remediation,
@@ -329,7 +318,7 @@ class ValidationReport:
     @classmethod
     def create(cls, findings: list[ValidationFinding]) -> ValidationReport:
         """Create report with computed aggregates."""
-        critical = sum(1 for f in findings if f. severity == ValidationSeverity. CRITICAL)
+        critical = sum(1 for f in findings if f.severity == ValidationSeverity.CRITICAL)
         errors = sum(1 for f in findings if f.severity == ValidationSeverity.ERROR)
         warnings = sum(1 for f in findings if f.severity == ValidationSeverity.WARNING)
         
@@ -369,7 +358,7 @@ class Citation:
         """Render citation in specified format."""
         conf_pct = f"{self.confidence * 100:.0f}%"
         if format_type == "markdown":
-            ref = f" (p.{self. document_reference})" if self.document_reference else ""
+            ref = f" (p.{self.document_reference})" if self.document_reference else ""
             return f"[{self.evidence_type}:  {self.value_summary}]{ref} (confianza: {conf_pct})"
         return f"{self.evidence_type}: {self.value_summary} ({conf_pct})"
 
@@ -387,16 +376,16 @@ class NarrativeBlock:
         if format_type == "markdown":
             header_map = {
                 NarrativeSection.DIRECT_ANSWER:  "## Respuesta",
-                NarrativeSection. EVIDENCE_SUMMARY: "### Resumen de Evidencia",
-                NarrativeSection. CONFIDENCE_STATEMENT: "### Nivel de Confianza",
+                NarrativeSection.EVIDENCE_SUMMARY: "### Resumen de Evidencia",
+                NarrativeSection.CONFIDENCE_STATEMENT: "### Nivel de Confianza",
                 NarrativeSection.SUPPORTING_DETAILS: "### Análisis Detallado",
                 NarrativeSection.GAPS_AND_LIMITATIONS: "### Limitaciones Identificadas",
                 NarrativeSection.RECOMMENDATIONS: "### Recomendaciones",
-                NarrativeSection. METHODOLOGY_NOTE: "### Nota Metodológica",
+                NarrativeSection.METHODOLOGY_NOTE: "### Nota Metodológica",
             }
-            header = header_map. get(self.section, f"### {self.section.value}")
+            header = header_map.get(self.section, f"### {self.section.value}")
             return f"{header}\n\n{self.content}"
-        return f"{self.section.value. upper()}\n{self.content}"
+        return f"{self.section.value.upper()}\n{self.content}"
 
 
 @dataclass
@@ -440,7 +429,7 @@ class SynthesizedAnswer:
     def to_dict(self) -> dict[str, Any]:
         """Full serialization."""
         return {
-            "direct_answer": self. direct_answer,
+            "direct_answer": self.direct_answer,
             "completeness": self.completeness.value,
             "overall_confidence":  self.overall_confidence,
             "calibrated_interval": list(self.calibrated_interval),
@@ -516,7 +505,7 @@ class EvidenceGraph:
     
     def get_nodes_by_type(self, evidence_type: EvidenceType) -> list[EvidenceNode]:
         """Get all nodes of a specific type."""
-        node_ids = self._type_index. get(evidence_type, [])
+        node_ids = self._type_index.get(evidence_type, [])
         return [self._nodes[nid] for nid in node_ids if nid in self._nodes]
     
     def get_nodes_by_source(self, source_method: str) -> list[EvidenceNode]:
@@ -533,21 +522,21 @@ class EvidenceGraph:
         if edge.source_id not in self._nodes or edge.target_id not in self._nodes:
             raise ValueError(
                 f"Cannot add edge:  source {edge.source_id[: 12]} or "
-                f"target {edge. target_id[:12]} not in graph"
+                f"target {edge.target_id[:12]} not in graph"
             )
         
         if edge.edge_id in self._edges:
             return edge.edge_id  # Idempotent
         
         # Check for cycle (DAG invariant)
-        if self._would_create_cycle(edge. source_id, edge.target_id):
+        if self._would_create_cycle(edge.source_id, edge.target_id):
             raise ValueError(
                 f"Cannot add edge: would create cycle from "
-                f"{edge.source_id[:12]} to {edge. target_id[:12]}"
+                f"{edge.source_id[:12]} to {edge.target_id[:12]}"
             )
         
         self._edges[edge.edge_id] = edge
-        self._adjacency[edge.source_id]. append(edge.edge_id)
+        self._adjacency[edge.source_id].append(edge.edge_id)
         self._reverse_adjacency[edge.target_id].append(edge.edge_id)
         
         return edge.edge_id
@@ -575,7 +564,7 @@ class EvidenceGraph:
     
     def get_edges_from(self, node_id: EvidenceID) -> list[EvidenceEdge]:
         """Get outgoing edges from node."""
-        edge_ids = self._adjacency. get(node_id, [])
+        edge_ids = self._adjacency.get(node_id, [])
         return [self._edges[eid] for eid in edge_ids if eid in self._edges]
     
     def get_edges_to(self, node_id: EvidenceID) -> list[EvidenceEdge]: 
@@ -608,9 +597,9 @@ class EvidenceGraph:
                 return
             visited.add(nid)
             
-            for edge in self. get_edges_to(nid):
+            for edge in self.get_edges_to(nid):
                 if edge.relation_type in (RelationType.SUPPORTS, RelationType.DERIVES_FROM):
-                    source_node = self._nodes. get(edge.source_id)
+                    source_node = self._nodes.get(edge.source_id)
                     if source_node:
                         results.append((source_node, depth))
                         traverse(edge.source_id, depth + 1)
@@ -621,11 +610,11 @@ class EvidenceGraph:
     def find_contradictions(self) -> list[tuple[EvidenceNode, EvidenceNode, EvidenceEdge]]:
         """Find all contradiction pairs in graph."""
         contradictions = []
-        for edge in self. get_edges_by_type(RelationType.CONTRADICTS):
-            source = self._nodes.get(edge. source_id)
-            target = self._nodes.get(edge. target_id)
+        for edge in self.get_edges_by_type(RelationType.CONTRADICTS):
+            source = self._nodes.get(edge.source_id)
+            target = self._nodes.get(edge.target_id)
             if source and target:
-                contradictions. append((source, target, edge))
+                contradictions.append((source, target, edge))
         return contradictions
     
     def compute_belief_propagation(self) -> dict[EvidenceID, float]: 
@@ -642,7 +631,7 @@ class EvidenceGraph:
         
         for node_id in sorted_nodes:
             node = self._nodes[node_id]
-            incoming = self. get_edges_to(node_id)
+            incoming = self.get_edges_to(node_id)
             
             if not incoming:
                 # Root node:  use intrinsic belief
@@ -693,7 +682,7 @@ class EvidenceGraph:
             node_id = queue.pop(0)
             result.append(node_id)
             
-            for edge in self. get_edges_from(node_id):
+            for edge in self.get_edges_from(node_id):
                 in_degree[edge.target_id] -= 1
                 if in_degree[edge.target_id] == 0:
                     queue.append(edge.target_id)
@@ -715,7 +704,7 @@ class EvidenceGraph:
             json.dumps(chain_data, sort_keys=True).encode()
         ).hexdigest()
         
-        self._hash_chain. append(entry_hash)
+        self._hash_chain.append(entry_hash)
         self._last_hash = entry_hash
     
     def verify_hash_chain(self) -> bool:
@@ -747,7 +736,7 @@ class EvidenceGraph:
     
     def get_statistics(self) -> dict[str, Any]:
         """Comprehensive graph statistics."""
-        type_counts = {t. value: len(ids) for t, ids in self._type_index.items()}
+        type_counts = {t.value: len(ids) for t, ids in self._type_index.items()}
         source_counts = {s:  len(ids) for s, ids in self._source_index.items()}
         
         confidences = [n.confidence for n in self._nodes.values()]
@@ -755,7 +744,7 @@ class EvidenceGraph:
         
         edge_type_counts = defaultdict(int)
         for edge in self._edges.values():
-            edge_type_counts[edge.relation_type. value] += 1
+            edge_type_counts[edge.relation_type.value] += 1
         
         return {
             "node_count": self.node_count,
@@ -826,7 +815,7 @@ class RequiredElementsRule:
             elif minimum > 0 and count < minimum:
                 findings.append(ValidationFinding(
                     finding_id=f"MIN_{elem_type}",
-                    severity=ValidationSeverity. WARNING,
+                    severity=ValidationSeverity.WARNING,
                     code="MIN_ELEMENTS",
                     message=f"Element type '{elem_type}' has {count}/{minimum} required instances",
                     affected_nodes=[n.node_id for n in nodes],
@@ -859,7 +848,7 @@ class ConsistencyRule:
                     severity=ValidationSeverity.WARNING,
                     code=self.code,
                     message=f"Contradiction detected between evidence nodes",
-                    affected_nodes=[source. node_id, target.node_id],
+                    affected_nodes=[source.node_id, target.node_id],
                     remediation="Review contradictory evidence for resolution",
                 ))
         
@@ -904,7 +893,7 @@ class GraphIntegrityRule:
     """Validate graph structural integrity."""
     
     code = "INTEGRITY"
-    severity = ValidationSeverity. CRITICAL
+    severity = ValidationSeverity.CRITICAL
     
     def validate(
         self, 
@@ -929,8 +918,8 @@ class GraphIntegrityRule:
             if edge.source_id not in graph._nodes or edge.target_id not in graph._nodes:
                 findings.append(ValidationFinding(
                     finding_id=f"ORPHAN_EDGE_{edge.edge_id}",
-                    severity=ValidationSeverity. ERROR,
-                    code=self. code,
+                    severity=ValidationSeverity.ERROR,
+                    code=self.code,
                     message=f"Edge references non-existent node",
                     affected_nodes=[],
                     remediation="Remove orphan edge or add missing nodes",
@@ -967,7 +956,7 @@ class ValidationEngine:
                 findings = rule.validate(graph, contract)
                 all_findings.extend(findings)
             except Exception as e:
-                logger.error("validation_rule_failed", rule=rule. code, error=str(e))
+                logger.error("validation_rule_failed", rule=rule.code, error=str(e))
                 all_findings.append(ValidationFinding(
                     finding_id=f"RULE_ERROR_{rule.code}",
                     severity=ValidationSeverity.ERROR,
@@ -976,7 +965,7 @@ class ValidationEngine:
                     affected_nodes=[],
                 ))
         
-        report = ValidationReport. create(all_findings)
+        report = ValidationReport.create(all_findings)
         report.graph_integrity = graph.verify_hash_chain()
         
         logger.info(
@@ -1007,7 +996,7 @@ class NarrativeSynthesizer:
         max_citations_per_claim: int = 3,
     ):
         self.citation_threshold = citation_threshold
-        self. max_citations_per_claim = max_citations_per_claim
+        self.max_citations_per_claim = max_citations_per_claim
     
     def synthesize(
         self,
@@ -1020,12 +1009,12 @@ class NarrativeSynthesizer:
         Synthesize complete answer from evidence graph.
         
         Process: 
-        1. Determine answer completeness from validation
-        2. Select primary and supporting evidence
-        3. Generate direct answer based on question type
-        4. Build narrative blocks with citations
-        5. Identify gaps and contradictions
-        6. Compute calibrated confidence
+        1.Determine answer completeness from validation
+        2.Select primary and supporting evidence
+        3.Generate direct answer based on question type
+        4.Build narrative blocks with citations
+        5.Identify gaps and contradictions
+        6.Compute calibrated confidence
         """
         question_global = question_context.get("question_global", "")
         question_id = question_context.get("question_id", "UNKNOWN")
@@ -1056,7 +1045,7 @@ class NarrativeSynthesizer:
         
         # 6. Identify gaps and contradictions
         gaps = self._identify_gaps(graph, expected_elements)
-        contradictions = self._format_contradictions(graph. find_contradictions())
+        contradictions = self._format_contradictions(graph.find_contradictions())
         
         # 7. Compute confidence
         overall_confidence, calibrated_interval = self._compute_confidence(
@@ -1099,7 +1088,7 @@ class NarrativeSynthesizer:
         
         for ev_type in EvidenceType:
             if graph.get_nodes_by_type(ev_type):
-                found_types.add(ev_type. value)
+                found_types.add(ev_type.value)
         
         missing_required = set(required_types) - found_types
         
@@ -1127,14 +1116,14 @@ class NarrativeSynthesizer:
                 nodes = graph.get_nodes_by_type(ev_type)
                 # Take highest confidence nodes
                 sorted_nodes = sorted(nodes, key=lambda n: n.confidence, reverse=True)
-                primary. extend(sorted_nodes[:self. max_citations_per_claim])
+                primary.extend(sorted_nodes[:self.max_citations_per_claim])
             except ValueError:
                 continue
         
         # If no required types found, take highest confidence overall
         if not primary:
             all_nodes = list(graph._nodes.values())
-            sorted_nodes = sorted(all_nodes, key=lambda n: n. confidence, reverse=True)
+            sorted_nodes = sorted(all_nodes, key=lambda n: n.confidence, reverse=True)
             primary = sorted_nodes[:5]
         
         return primary
@@ -1158,7 +1147,7 @@ class NarrativeSynthesizer:
         seen = set()
         unique_supporting = []
         for n in supporting:
-            if n. node_id not in seen: 
+            if n.node_id not in seen: 
                 seen.add(n.node_id)
                 unique_supporting.append(n)
         
@@ -1170,7 +1159,7 @@ class NarrativeSynthesizer:
         
         return Citation(
             node_id=node.node_id,
-            evidence_type=node.evidence_type. value,
+            evidence_type=node.evidence_type.value,
             value_summary=value_summary,
             confidence=node.confidence,
             source_method=node.source_method,
@@ -1237,7 +1226,7 @@ class NarrativeSynthesizer:
                     )
                 else:
                     return (
-                        f"**Parcialmente sí**, aunque con reservas. Se encontró evidencia "
+                        f"**Parcialmente sí**, aunque con reservas.Se encontró evidencia "
                         f"({n_citations} elementos), pero la confianza promedio es {conf_avg*100:.0f}%, "
                         f"lo que sugiere información incompleta o ambigua."
                     )
@@ -1255,7 +1244,8 @@ class NarrativeSynthesizer:
                     nums = re.findall(r'[\d,. ]+', c.value_summary)
                     if nums:
                         numeric_vals.append((c.evidence_type, nums[0]))
-                except:
+                except (AttributeError, TypeError):
+                    # If value_summary is missing or not a string, skip this citation.
                     pass
             
             if numeric_vals:
@@ -1300,7 +1290,7 @@ class NarrativeSynthesizer:
         
         # 1. Direct Answer
         blocks.append(NarrativeBlock(
-            section=NarrativeSection. DIRECT_ANSWER,
+            section=NarrativeSection.DIRECT_ANSWER,
             content=direct_answer,
             citations=primary_citations[: 3],
             confidence=validation.consistency_score,
@@ -1365,9 +1355,9 @@ class NarrativeSynthesizer:
         gaps = []
         
         for elem in expected_elements:
-            elem_type = elem. get("type", "")
+            elem_type = elem.get("type", "")
             required = elem.get("required", False)
-                        minimum = elem.get("minimum", 0)
+            minimum = elem.get("minimum", 0)
             
             try:
                 ev_type = EvidenceType(elem_type)
@@ -1375,7 +1365,7 @@ class NarrativeSynthesizer:
                 count = len(nodes)
                 
                 if required and count == 0:
-                    gaps. append(
+                    gaps.append(
                         f"**{self._humanize_type(elem_type)}** (requerido): "
                         f"No se encontró evidencia de este tipo en el documento."
                     )
@@ -1391,7 +1381,7 @@ class NarrativeSynthesizer:
         low_conf_types:  dict[str, int] = defaultdict(int)
         for node in graph._nodes.values():
             if node.confidence < 0.5:
-                low_conf_types[node.evidence_type. value] += 1
+                low_conf_types[node.evidence_type.value] += 1
         
         for ev_type, count in low_conf_types.items():
             if count >= 3:
@@ -1413,7 +1403,7 @@ class NarrativeSynthesizer:
         for source, target, edge in contradictions[: 5]:  # Limit to 5
             formatted.append(
                 f"Contradicción entre '{self._summarize_content(source.content)[: 50]}' "
-                f"y '{self._summarize_content(target. content)[:50]}' "
+                f"y '{self._summarize_content(target.content)[:50]}' "
                 f"(confianza del conflicto: {edge.confidence*100:.0f}%)"
             )
         
@@ -1436,8 +1426,8 @@ class NarrativeSynthesizer:
         # Adjust for completeness
         completeness_factor = {
             AnswerCompleteness.COMPLETE: 1.0,
-            AnswerCompleteness. PARTIAL: 0.7,
-            AnswerCompleteness. INSUFFICIENT: 0.3,
+            AnswerCompleteness.PARTIAL: 0.7,
+            AnswerCompleteness.INSUFFICIENT: 0.3,
             AnswerCompleteness.NOT_APPLICABLE: 0.0,
         }[completeness]
         
@@ -1506,7 +1496,7 @@ class NarrativeSynthesizer:
             "series_temporales_años": "series temporales",
             "cobertura_territorial_especificada": "cobertura territorial",
         }
-        return mappings.get(elem_type, elem_type. replace("_", " "))
+        return mappings.get(elem_type, elem_type.replace("_", " "))
 
 
 # =============================================================================
@@ -1560,7 +1550,7 @@ class EvidenceNexus:
             validation_rules:  Custom validation rules
             citation_threshold:  Minimum confidence for citation
         """
-        self.storage_path = storage_path or Path("evidence_nexus. jsonl")
+        self.storage_path = storage_path or Path("evidence_nexus.jsonl")
         self.enable_persistence = enable_persistence
         
         self.validation_engine = ValidationEngine(rules=validation_rules)
@@ -1588,8 +1578,8 @@ class EvidenceNexus:
         Process method outputs into complete answer.
         
         This is the main entry point that replaces: 
-        - EvidenceAssembler. assemble()
-        - EvidenceValidator. validate()
+        - EvidenceAssembler.assemble()
+        - EvidenceValidator.validate()
         - EvidenceRegistry.record_evidence()
         
         Args: 
@@ -1622,7 +1612,7 @@ class EvidenceNexus:
         beliefs = graph.compute_belief_propagation()
         
         # 4. Validate graph
-        validation_report = self. validation_engine.validate(graph, contract)
+        validation_report = self.validation_engine.validate(graph, contract)
         
         # 5. Synthesize narrative answer
         synthesized = self.narrative_synthesizer.synthesize(
@@ -1645,7 +1635,7 @@ class EvidenceNexus:
             node_count=graph.node_count,
             edge_count=graph.edge_count,
             is_valid=validation_report.is_valid,
-            completeness=synthesized.completeness. value,
+            completeness=synthesized.completeness.value,
             confidence=f"{synthesized.overall_confidence:. 2f}",
             processing_time_ms=f"{processing_time_ms:.1f}",
         )
@@ -1666,7 +1656,7 @@ class EvidenceNexus:
             "graph_hash": graph.get_graph_hash(),
             
             # Metrics
-            "completeness": synthesized.completeness. value,
+            "completeness": synthesized.completeness.value,
             "overall_confidence": synthesized.overall_confidence,
             "calibrated_interval": list(synthesized.calibrated_interval),
             "gaps": synthesized.gaps,
@@ -1697,7 +1687,7 @@ class EvidenceNexus:
         
         # Process each method output
         for source_key, output in method_outputs.items():
-            if source_key. startswith("_"):
+            if source_key.startswith("_"):
                 continue  # Skip internal keys like _signal_usage
             
             nodes = self._extract_nodes_from_output(
@@ -1715,7 +1705,7 @@ class EvidenceNexus:
                 target, sources, strategy, graph, method_outputs
             )
             if aggregate_node:
-                graph. add_node(aggregate_node)
+                graph.add_node(aggregate_node)
         
         # Add signal provenance if available
         if signal_pack is not None:
@@ -1752,7 +1742,7 @@ class EvidenceNexus:
             # Check if it's a single evidence item or container
             if "elements" in output:
                 # Container with elements list
-                for idx, item in enumerate(output. get("elements", [])):
+                for idx, item in enumerate(output.get("elements", [])):
                     node = self._item_to_node(
                         item,
                         source_method=source_key,
@@ -1771,8 +1761,8 @@ class EvidenceNexus:
         
         # Handle scalar outputs
         else:
-            node = EvidenceNode. create(
-                evidence_type=EvidenceType. METHOD_OUTPUT,
+            node = EvidenceNode.create(
+                evidence_type=EvidenceType.METHOD_OUTPUT,
                 content={"value": output, "source":  source_key},
                 confidence=0.7,  # Default for raw method output
                 source_method=source_key,
@@ -1797,22 +1787,22 @@ class EvidenceNexus:
             try:
                 ev_type = EvidenceType(item_type)
             except ValueError:
-                ev_type = EvidenceType. METHOD_OUTPUT
+                ev_type = EvidenceType.METHOD_OUTPUT
             
             # Extract confidence
             confidence = item.get("confidence", item.get("score", 0.7))
             if isinstance(confidence, str):
                 try:
-                    confidence = float(confidence. strip("%")) / 100
-                except: 
+                    confidence = float(confidence.strip("%")) / 100
+                except (ValueError, TypeError):
                     confidence = 0.7
             
             # Extract document location
-            doc_loc = item. get("page", item.get("location", item.get("section")))
+            doc_loc = item.get("page", item.get("location", item.get("section")))
             if doc_loc is not None:
                 doc_loc = str(doc_loc)
             
-            return EvidenceNode. create(
+            return EvidenceNode.create(
                 evidence_type=ev_type,
                 content=item,
                 confidence=float(confidence),
@@ -1848,8 +1838,8 @@ class EvidenceNexus:
             if value is not None:
                 values.append(value)
                 # Find corresponding nodes
-                for node in graph._nodes. values():
-                    if node. source_method == source. split(". ")[0]:
+                for node in graph._nodes.values():
+                    if node.source_method == source.split(". ")[0]:
                         parent_ids.append(node.node_id)
         
         if not values:
@@ -1942,7 +1932,7 @@ class EvidenceNexus:
         version = getattr(signal_pack, "version", "unknown")
         
         return EvidenceNode.create(
-            evidence_type=EvidenceType. METHOD_OUTPUT,
+            evidence_type=EvidenceType.METHOD_OUTPUT,
             content={
                 "provenance_type": "signal_pack",
                 "pack_id": pack_id,
@@ -1988,14 +1978,14 @@ class EvidenceNexus:
         
         # Infer SUPPORTS between related types
         support_pairs = [
-            (EvidenceType. OFFICIAL_SOURCE, EvidenceType.INDICATOR_NUMERIC),
+            (EvidenceType.OFFICIAL_SOURCE, EvidenceType.INDICATOR_NUMERIC),
             (EvidenceType.INDICATOR_NUMERIC, EvidenceType.GOAL_TARGET),
             (EvidenceType.BUDGET_AMOUNT, EvidenceType.POLICY_INSTRUMENT),
         ]
         
         for source_type, target_type in support_pairs:
-            source_nodes = graph. get_nodes_by_type(source_type)
-            target_nodes = graph. get_nodes_by_type(target_type)
+            source_nodes = graph.get_nodes_by_type(source_type)
+            target_nodes = graph.get_nodes_by_type(target_type)
             
             for sn in source_nodes[: 5]:  # Limit to prevent explosion
                 for tn in target_nodes[:5]:
@@ -2010,7 +2000,7 @@ class EvidenceNexus:
                         try:
                             graph.add_edge(edge)
                         except ValueError:
-                            pass
+                            pass  # Skip if adding SUPPORTS edge would create cycle or is invalid
     
     def _persist_graph(self, graph: EvidenceGraph) -> None:
         """Persist graph to storage."""
@@ -2056,7 +2046,7 @@ class EvidenceNexus:
                 "source_method": node.source_method,
             }
             elements.append(elem)
-            by_type[node.evidence_type. value].append(elem)
+            by_type[node.evidence_type.value].append(elem)
             confidences.append(node.confidence)
         
         return {
@@ -2086,7 +2076,7 @@ class EvidenceNexus:
         return {
             "valid":  report.is_valid,
             "passed":  report.is_valid,
-            "errors": [f. to_dict() for f in report.findings if f.severity in (ValidationSeverity. CRITICAL, ValidationSeverity.ERROR)],
+            "errors": [f.to_dict() for f in report.findings if f.severity in (ValidationSeverity.CRITICAL, ValidationSeverity.ERROR)],
             "warnings": [f.to_dict() for f in report.findings if f.severity == ValidationSeverity.WARNING],
             "critical_count": report.critical_count,
             "error_count": report.error_count,
@@ -2128,7 +2118,7 @@ class EvidenceNexus:
         """Query nodes by type from current graph."""
         if self._graph is None:
             return []
-        return self._graph. get_nodes_by_type(evidence_type)
+        return self._graph.get_nodes_by_type(evidence_type)
     
     def query_by_source(self, source_method: str) -> list[EvidenceNode]:
         """Query nodes by source method from current graph."""
@@ -2171,7 +2161,7 @@ def process_evidence(
     This replaces the typical pattern of:
         assembled = EvidenceAssembler.assemble(...)
         validation = EvidenceValidator.validate(...)
-        registry. record_evidence(...)
+        registry.record_evidence(...)
     
     With:
         result = process_evidence(...)

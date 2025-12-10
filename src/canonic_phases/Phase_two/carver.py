@@ -17,12 +17,12 @@ Fundamentos Teóricos:
 - Calibrated Uncertainty Quantification (Gneiting & Raftery, 2007)
 
 Arquitectura: 
-1. ContractInterpreter: Extrae semántica profunda del contrato v3
-2. EvidenceGraph: Construye grafo causal de evidencia
-3. GapAnalyzer: Análisis multi-dimensional de vacíos
-4. BayesianConfidence: Inferencia calibrada de confianza
-5. DimensionTheory: Estrategias teóricamente fundamentadas por D1-D6
-6. CarverRenderer: Prosa minimalista con máximo impacto
+1.ContractInterpreter: Extrae semántica profunda del contrato v3
+2.EvidenceGraph: Construye grafo causal de evidencia
+3.GapAnalyzer: Análisis multi-dimensional de vacíos
+4.BayesianConfidence: Inferencia calibrada de confianza
+5.DimensionTheory: Estrategias teóricamente fundamentadas por D1-D6
+6.CarverRenderer: Prosa minimalista con máximo impacto
 
 Invariantes: 
 [INV-001] Toda afirmación debe tener ≥1 evidencia citada
@@ -30,31 +30,26 @@ Invariantes:
 [INV-003] Confianza debe ser calibrada (no optimista)
 [INV-004] Estilo Carver:  oraciones cortas, verbos activos, sin adverbios
 
-Author: F. A. R. F.A.N Pipeline
+Author: F.A. R.F.A.N Pipeline
 Version: 2.0.0-SOTA
 """
 
 from __future__ import annotations
 
-import hashlib
 import math
 import re
 import statistics
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
-from enum import Enum, auto
+from enum import Enum
 from typing import (
     Any,
-    Callable,
     Dict,
     List,
     Optional,
-    Protocol,
-    Sequence,
     Tuple,
     TypeAlias,
-    Union,
 )
 
 # Readability and style checking libraries
@@ -131,7 +126,7 @@ class ExpectedElement:
     @classmethod
     def from_contract(cls, elem: Dict[str, Any]) -> ExpectedElement:
         """Factory desde contrato."""
-        elem_type = elem. get("type", "")
+        elem_type = elem.get("type", "")
         
         # Inferir categoría desde tipo
         quantitative_types = {
@@ -184,7 +179,7 @@ class EvidenceItem:
         if self.confidence >= 0.9:
             self.strength = EvidenceStrength.STRONG
         elif self.confidence >= 0.7:
-            self. strength = EvidenceStrength. MODERATE
+            self.strength = EvidenceStrength.MODERATE
         else:
             self.strength = EvidenceStrength.WEAK
         
@@ -193,7 +188,7 @@ class EvidenceItem:
             self.is_quantitative = True
         elif isinstance(self.value, str):
             # Check for numeric patterns
-            self.is_quantitative = bool(re.search(r'\d+[.,]?\d*\s*%? ', self.value))
+            self.is_quantitative = bool(re.search(r'\d+[.,]?\d*\s*%?', self.value))
 
 
 @dataclass
@@ -229,12 +224,12 @@ class ArgumentUnit:
         """Render según rol."""
         if self.role == ArgumentRole.CLAIM: 
             return self.content
-        elif self.role == ArgumentRole. EVIDENCE:
+        elif self.role == ArgumentRole.EVIDENCE:
             return f"- {self.content}"
-        elif self.role == ArgumentRole. QUALIFIER:
+        elif self.role == ArgumentRole.QUALIFIER:
             return f"*{self.content}*"
         elif self.role == ArgumentRole.REBUTTAL:
-            return f"Sin embargo:  {self.content}"
+            return f"Sin embargo: {self.content}"
         return self.content
 
 
@@ -259,7 +254,7 @@ class BayesianConfidenceResult:
             return "ALTA"
         elif self.point_estimate >= 0.70:
             return "MEDIA-ALTA"
-        elif self. point_estimate >= 0.50:
+        elif self.point_estimate >= 0.50:
             return "MEDIA"
         elif self.point_estimate >= 0.30:
             return "BAJA"
@@ -271,9 +266,9 @@ class BayesianConfidenceResult:
 class CarverAnswer:
     """Respuesta estructurada estilo Carver."""
     # Core components
-    verdict: str  # Una oración.  Directa.  Sin escape. 
-    evidence_statements: List[str]  # Hechos.  Verificables.
-    gap_statements: List[str]  # Vacíos. Sin disculpas.
+    verdict: str  # Una oración.Directa.Sin escape. 
+    evidence_statements: List[str]  # Hechos.Verificables.
+    gap_statements: List[str]  # Vacíos.Sin disculpas.
     
     # Confidence
     confidence_result: BayesianConfidenceResult
@@ -328,7 +323,7 @@ class ContractInterpreter:
             "minimum_sources": 1,
             "temporal_requirement": True,
         },
-        Dimension. D5_IMPACTOS:  {
+        Dimension.D5_IMPACTOS:  {
             "primary_need":  "teoría de cambio",
             "evidence_type": "relational",
             "minimum_sources": 1,
@@ -406,7 +401,7 @@ class ContractInterpreter:
     @classmethod
     def get_dimension_theory(cls, dimension: Dimension) -> Dict[str, Any]:
         """Obtiene teoría epistemológica de la dimensión."""
-        return cls. DIMENSION_REQUIREMENTS.get(dimension, {})
+        return cls.DIMENSION_REQUIREMENTS.get(dimension, {})
     
     @classmethod
     def extract_method_metadata(cls, contract: Dict) -> Dict[str, Any]:
@@ -417,7 +412,7 @@ class ContractInterpreter:
             "method_count": method_binding.get("method_count", 0),
             "orchestration_mode": method_binding.get("orchestration_mode", "unknown"),
             "methods": [
-                m. get("method_name", "unknown") 
+                m.get("method_name", "unknown") 
                 for m in method_binding.get("methods", [])
             ][: 5],  # Top 5
         }
@@ -441,7 +436,7 @@ class EvidenceAnalyzer:
             if isinstance(elem, dict):
                 items.append(EvidenceItem(
                     element_type=elem.get("type", "unknown"),
-                    value=elem. get("value", elem.get("description", "")),
+                    value=elem.get("value", elem.get("description", "")),
                     confidence=float(elem.get("confidence", 0.5)),
                     source_method=elem.get("source_method", "unknown"),
                     document_location=elem.get("page", elem.get("location")),
@@ -481,7 +476,7 @@ class EvidenceAnalyzer:
         Corroboración: mismo tipo, diferentes fuentes, valores consistentes.
         """
         corroborations = []
-        groups = EvidenceAnalyzer. group_by_type(items)
+        groups = EvidenceAnalyzer.group_by_type(items)
         
         for elem_type, group_items in groups.items():
             if len(group_items) < 2:
@@ -521,7 +516,8 @@ class EvidenceAnalyzer:
                         nums = re.findall(r'[\d.]+', val_str)
                         if nums:
                             values.append((item, float(nums[0])))
-                    except:
+                    except (ValueError, TypeError, IndexError):
+                        # Skip evidence items with non-numeric values
                         pass
                 
                 if len(values) >= 2:
@@ -608,7 +604,7 @@ class GapAnalyzer:
         dim_theory = ContractInterpreter.get_dimension_theory(dimension)
         
         for elem in expected:
-            found = found_counts.get(elem. type, 0)
+            found = found_counts.get(elem.type, 0)
             
             if found >= elem.minimum:
                 continue  # No gap
@@ -617,7 +613,7 @@ class GapAnalyzer:
             severity = cls._compute_severity(elem, found, dim_theory)
             
             # Obtener implicación y remediación
-            implication, remediation = cls. GAP_IMPLICATIONS.get(
+            implication, remediation = cls.GAP_IMPLICATIONS.get(
                 elem.type,
                 (f"Falta {elem.type}.", f"Agregar {elem.type}.")
             )
@@ -634,7 +630,7 @@ class GapAnalyzer:
         # Sort by severity
         severity_order = {
             GapSeverity.CRITICAL: 0,
-            GapSeverity. MAJOR: 1,
+            GapSeverity.MAJOR: 1,
             GapSeverity.MINOR:  2,
             GapSeverity.COSMETIC: 3,
         }
@@ -656,7 +652,6 @@ class GapAnalyzer:
             return GapSeverity.CRITICAL
         
         # Check if matches dimension's primary need
-        primary_need = dim_theory.get("primary_need", "")
         evidence_type = dim_theory.get("evidence_type", "")
         
         # Critical if element type matches dimension's evidence type and missing
@@ -814,7 +809,7 @@ class D2ActividadesStrategy(DimensionStrategy):
     
     @property
     def dimension(self) -> Dimension:
-        return Dimension. D2_ACTIVIDADES
+        return Dimension.D2_ACTIVIDADES
     
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
         if has_critical_gaps:
@@ -856,7 +851,7 @@ class D4ResultadosStrategy(DimensionStrategy):
     
     @property
     def dimension(self) -> Dimension:
-        return Dimension. D4_RESULTADOS
+        return Dimension.D4_RESULTADOS
     
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
         if has_critical_gaps:
@@ -920,9 +915,9 @@ def get_dimension_strategy(dimension:  Dimension) -> DimensionStrategy:
         Dimension.D1_INSUMOS: D1InsumosStrategy(),
         Dimension.D2_ACTIVIDADES: D2ActividadesStrategy(),
         Dimension.D3_PRODUCTOS: D3ProductosStrategy(),
-        Dimension. D4_RESULTADOS: D4ResultadosStrategy(),
+        Dimension.D4_RESULTADOS: D4ResultadosStrategy(),
         Dimension.D5_IMPACTOS: D5ImpactosStrategy(),
-        Dimension. D6_CAUSALIDAD:  D6CausalidadStrategy(),
+        Dimension.D6_CAUSALIDAD:  D6CausalidadStrategy(),
     }
     return strategies.get(dimension, D1InsumosStrategy())
 
@@ -1052,11 +1047,11 @@ class CarverRenderer:
     Renderiza prosa estilo Raymond Carver. 
     
     Principios:
-    - Oraciones cortas.  Sujeto-verbo-objeto.
-    - Verbos activos. Sin pasiva.
-    - Sin adverbios.  Sin adjetivos innecesarios.
-    - Cada palabra cuenta.  Si sobra, eliminar.
-    - La verdad es suficiente. Sin adornos.
+    - Oraciones cortas.Sujeto-verbo-objeto.
+    - Verbos activos.Sin pasiva.
+    - Sin adverbios.Sin adjetivos innecesarios.
+    - Cada palabra cuenta.Si sobra, eliminar.
+    - La verdad es suficiente.Sin adornos.
     """
     
     # Type mappings (technical → plain Spanish)
@@ -1067,7 +1062,7 @@ class CarverRenderer:
         "cobertura_territorial_especificada": "cobertura territorial",
         "instrumento_especificado": "instrumentos",
         "poblacion_objetivo_definida": "población objetivo",
-        "logica_causal_explicita":  "lógica causal",
+        "logica_causal_explicita": "lógica causal",
         "riesgos_identificados": "riesgos",
         "mitigacion_propuesta": "mitigación",
         "impacto_definido": "impactos",
@@ -1088,7 +1083,7 @@ class CarverRenderer:
     @classmethod
     def humanize(cls, elem_type: str) -> str:
         """Convert technical type to plain Spanish."""
-        return cls.TYPE_LABELS.get(elem_type, elem_type. replace("_", " "))
+        return cls.TYPE_LABELS.get(elem_type, elem_type.replace("_", " "))
     
     @classmethod
     def render_verdict(
@@ -1098,9 +1093,9 @@ class CarverRenderer:
         items: List[EvidenceItem],
     ) -> str:
         """
-        Render verdict:  una oración.  Sin escape.
+        Render verdict:  una oración.Sin escape.
         """
-        critical_gaps = [g for g in gaps if g. severity == GapSeverity. CRITICAL]
+        critical_gaps = [g for g in gaps if g.severity == GapSeverity.CRITICAL]
         has_critical = len(critical_gaps) > 0
         
         prefix = strategy.verdict_prefix(has_critical)
@@ -1110,7 +1105,7 @@ class CarverRenderer:
         
         if has_critical:
             missing = [cls.humanize(g.element_type) for g in critical_gaps[: 2]]
-            return f"{prefix} Falta:  {', '.join(missing)}."
+            return f"{prefix} Falta: {', '.join(missing)}."
         
         return prefix
     
@@ -1121,7 +1116,7 @@ class CarverRenderer:
         found_counts: Dict[str, int],
     ) -> List[str]:
         """
-        Render evidence as facts.  Short.  Verifiable.
+        Render evidence as facts.Short.Verifiable.
         """
         statements = []
         
@@ -1149,7 +1144,7 @@ class CarverRenderer:
         gaps: List[EvidenceGap],
     ) -> List[str]:
         """
-        Render gaps.  No excuses.  Just facts.
+        Render gaps.No excuses.Just facts.
         """
         statements = []
         
@@ -1170,7 +1165,7 @@ class CarverRenderer:
         strategy: DimensionStrategy,
     ) -> str:
         """
-        Render confidence.  Honest. Calibrated.
+        Render confidence.Honest.Calibrated.
         """
         label = conf.to_label()
         pct = int(conf.point_estimate * 100)
@@ -1182,7 +1177,7 @@ class CarverRenderer:
     @classmethod
     def render_method_note(cls, method_meta: Dict[str, Any]) -> str:
         """
-        Render method note. Brief. At the end.
+        Render method note.Brief.At the end.
         """
         count = method_meta.get("method_count", 0)
         return f"Análisis con {count} métodos."
@@ -1195,7 +1190,7 @@ class CarverRenderer:
         sections = []
         
         # Question context
-        sections.append(f"**Pregunta**:  {answer.question_text}\n")
+        sections.append(f"**Pregunta**: {answer.question_text}\n")
         
         # Verdict (the core)
         sections.append(f"## Respuesta\n\n{answer.verdict}\n")
@@ -1259,8 +1254,8 @@ class DoctoralCarverSynthesizer:
     Sintetizador Doctoral-Carver v2.0 SOTA.
     
     Combina rigor académico con prosa minimalista.
-    Cada afirmación respaldada.  Cada gap reconocido.
-    Sin adornos. Sin excusas.  Solo verdad.
+    Cada afirmación respaldada.Cada gap reconocido.
+    Sin adornos.Sin excusas.Solo verdad.
     """
     
     def __init__(self):
@@ -1296,7 +1291,7 @@ class DoctoralCarverSynthesizer:
         
         # 3. Analyze evidence
         items = self.analyzer.extract_items(evidence)
-        found_counts = self. analyzer.count_by_type(items)
+        found_counts = self.analyzer.count_by_type(items)
         corroborations = self.analyzer.find_corroborations(items)
         contradictions = self.analyzer.find_contradictions(items)
         
@@ -1326,13 +1321,13 @@ class DoctoralCarverSynthesizer:
             dimension=dimension,
             method_note=method_note,
             synthesis_trace={
-                "dimension": dimension. value,
+                "dimension": dimension.value,
                 "items_count": len(items),
                 "gaps_count": len(gaps),
                 "critical_gaps":  sum(1 for g in gaps if g.severity == GapSeverity.CRITICAL),
                 "corroborations":  len(corroborations),
                 "contradictions": len(contradictions),
-                "confidence": confidence. point_estimate,
+                "confidence": confidence.point_estimate,
             }
         )
         
