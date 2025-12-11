@@ -2106,9 +2106,9 @@ class Phase1SPCIngestionFullContract:
             weight = Phase1MissionContract.get_weight(i)
             subphase_weights[f'SP{i}'] = weight
             total_weight += weight
-            if Phase1MissionContract.is_critical(i):
+            if weight >= Phase1MissionContract.CRITICAL_THRESHOLD:
                 critical_count += 1
-            if Phase1MissionContract.is_high_priority(i):
+            if weight >= Phase1MissionContract.HIGH_PRIORITY_THRESHOLD:
                 high_priority_count += 1
         
         metadata = {
