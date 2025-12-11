@@ -13,7 +13,7 @@ from typing import Any
 
 import jsonschema
 from pydantic import BaseModel, ConfigDict, Field
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 
 class SchemaInitializationError(Exception):

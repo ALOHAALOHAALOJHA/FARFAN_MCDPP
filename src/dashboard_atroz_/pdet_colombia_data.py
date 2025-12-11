@@ -7,7 +7,7 @@ Data compiled from official government sources (2024)
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 
 class PDETSubregion(Enum):

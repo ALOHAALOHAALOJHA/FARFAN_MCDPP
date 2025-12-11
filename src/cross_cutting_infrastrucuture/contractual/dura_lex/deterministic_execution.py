@@ -30,7 +30,7 @@ from typing import Any
 import numpy as np
 
 from farfan_pipeline.utils.enhanced_contracts import StructuredLogger, utc_now_iso
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 # ============================================================================
 # DETERMINISTIC SEED MANAGEMENT

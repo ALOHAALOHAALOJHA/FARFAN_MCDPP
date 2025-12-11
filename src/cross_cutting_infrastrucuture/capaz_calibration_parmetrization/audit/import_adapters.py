@@ -8,10 +8,10 @@ This module allows existing code to continue working without modification while
 enforcing the new cohort structure.
 
 Usage in existing code (no changes needed):
-    from farfan_pipeline.core.calibration import intrinsic_calibration_loader
+    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration import intrinsic_calibration_loader
     # Automatically loads from calibration_parametrization_system/calibration/
     
-    from farfan_pipeline.core.orchestrator import executor_config
+    from orchestration.orchestrator import executor_config
     # Automatically loads from calibration_parametrization_system/parametrization/
 """
 

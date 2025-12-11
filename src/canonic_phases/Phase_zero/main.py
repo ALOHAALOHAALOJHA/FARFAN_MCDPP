@@ -48,8 +48,8 @@ if os.environ.get("PIPELINE_DEBUG"):
     print(f"DEBUG: farfan_pipeline loaded from {farfan_pipeline.__file__}", flush=True)
 
 # Import contract enforcement infrastructure
-from farfan_pipeline.core.runtime_config import RuntimeConfig, get_runtime_config
-from farfan_pipeline.core.boot_checks import (
+from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, get_runtime_config
+from canonic_phases.Phase_zero.boot_checks import (
     run_boot_checks,
     get_boot_check_summary,
     BootCheckError,

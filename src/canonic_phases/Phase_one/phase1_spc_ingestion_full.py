@@ -151,49 +151,31 @@ except ImportError as e:
     SignalRegistry = None
     SignalQualityMetrics = None
 
-# Methods Dispensary - Causal Analysis - REAL PATH
-# BeachEvidentialTest is the PRODUCTION implementation from derek_beach.py
-try:
-    from methods_dispensary.derek_beach import (
-        BeachEvidentialTest,
-        CausalExtractor,
-        MechanismPartExtractor,
-    )
-    DEREK_BEACH_AVAILABLE = True
-except ImportError:
-    # Log warning but DO NOT provide stub - this is REQUIRED infrastructure
-    import warnings
-    warnings.warn(
-        "CRITICAL: methods_dispensary.derek_beach not available. "
-        "BeachEvidentialTest is REQUIRED for causal analysis. "
-        "Install dependencies or check import paths.",
-        ImportWarning
-    )
-    DEREK_BEACH_AVAILABLE = False
-    BeachEvidentialTest = None
-    CausalExtractor = None
-    MechanismPartExtractor = None
+# Methods Dispensary via factory/registry (no direct module imports)
+from orchestration.method_registry import MethodRegistry, MethodRegistryError
 
-# TeoriaCambio DAG Validation - REAL PATH (PRODUCTION)
-# Motor for validating causal hierarchy: Insumos → Procesos → Productos → Resultados → Causalidad
-try:
-    from methods_dispensary.teoria_cambio import (
-        TeoriaCambio,
-        ValidacionResultado,
-        AdvancedDAGValidator,
-    )
-    TEORIA_CAMBIO_AVAILABLE = True
-except ImportError as e:
-    import warnings
-    warnings.warn(
-        f"CRITICAL: methods_dispensary.teoria_cambio not available: {e}. "
-        "DAG validation will be limited.",
-        ImportWarning
-    )
-    TEORIA_CAMBIO_AVAILABLE = False
-    TeoriaCambio = None
-    ValidacionResultado = None
-    AdvancedDAGValidator = None
+_METHOD_REGISTRY = MethodRegistry()
+
+def _get_beach_classifier():
+    """Resolve BeachEvidentialTest.classify_test via registry."""
+    try:
+        return _METHOD_REGISTRY.get_method("BeachEvidentialTest", "classify_test")
+    except MethodRegistryError:
+        return None
+
+
+def _get_teoria_cambio_class():
+    """Resolve TeoriaCambio class via registry without direct import."""
+    try:
+        # Protected access acceptable here to avoid module-level import
+        return _METHOD_REGISTRY._load_class("TeoriaCambio")
+    except MethodRegistryError:
+        return None
+
+
+BEACH_CLASSIFY = _get_beach_classifier()
+TEORIA_CAMBIO_CLASS = _get_teoria_cambio_class()
+TEORIA_CAMBIO_AVAILABLE = TEORIA_CAMBIO_CLASS is not None
 
 # Signal Enrichment Module - PRODUCTION (same directory)
 try:

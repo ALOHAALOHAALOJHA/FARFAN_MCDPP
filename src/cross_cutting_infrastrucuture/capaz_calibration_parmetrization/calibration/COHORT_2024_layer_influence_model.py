@@ -5,7 +5,7 @@ Created: 2024-12-15T00:00:00+00:00
 Layer Influence and Interaction Models
 
 This is a COHORT_2024 reference file. For production use, import from:
-    from farfan_pipeline.core.calibration.layer_influence_model import *
+    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.layer_influence_model import *
 """
 
 __all__ = []

@@ -68,7 +68,7 @@ except ImportError:  # pragma: no cover - jsonschema es opcional
 
 # CategoriaCausal moved to farfan_core.core.types to break architectural dependency
 # (core.orchestrator was importing from analysis, which violates layer rules)
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 from farfan_pipeline.core.types import CategoriaCausal
 

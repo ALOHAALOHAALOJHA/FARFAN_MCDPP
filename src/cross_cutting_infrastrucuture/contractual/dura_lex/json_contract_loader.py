@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping

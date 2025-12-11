@@ -39,7 +39,7 @@ from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
 # Import runtime error fixes for defensive programming
 from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return, safe_text_extract
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 _lockdown = get_dependency_lockdown()
 

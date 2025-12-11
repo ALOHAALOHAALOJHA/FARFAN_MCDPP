@@ -12,7 +12,7 @@ This module provides:
 4. Target achievement verification
 
 Usage:
-    >>> from farfan_pipeline.core.orchestrator.precision_tracking import (
+    >>> from orchestration.orchestrator.precision_tracking import (
     ...     get_patterns_with_validation
     ... )
     >>> patterns, stats = get_patterns_with_validation(

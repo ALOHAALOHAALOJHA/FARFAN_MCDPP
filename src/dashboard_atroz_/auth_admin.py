@@ -9,7 +9,7 @@ import secrets
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 logger = logging.getLogger(__name__)
 

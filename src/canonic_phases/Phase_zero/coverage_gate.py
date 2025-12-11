@@ -16,7 +16,7 @@ import json
 import sys
 from datetime import datetime
 from pathlib import Path
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 
 def count_methods_in_class(filepath: Path, class_name: str) -> tuple[list[str], dict[str, int]]:

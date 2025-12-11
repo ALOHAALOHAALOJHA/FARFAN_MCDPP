@@ -229,18 +229,18 @@ class QuestionnaireResourceProvider:
         return self._canonical.sha256
 
 try:  # Optional dependency: calibration orchestrator
-    from farfan_pipeline.core.calibration.orchestrator import CalibrationOrchestrator as _CalibrationOrchestrator
-    from farfan_pipeline.core.calibration.config import DEFAULT_CALIBRATION_CONFIG as _DEFAULT_CALIBRATION_CONFIG
+    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.orchestrator import CalibrationOrchestrator as _CalibrationOrchestrator
+    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.config import DEFAULT_CALIBRATION_CONFIG as _DEFAULT_CALIBRATION_CONFIG
     _HAS_CALIBRATION = True
 except Exception:  # pragma: no cover - only during stripped installs
     _CalibrationOrchestrator = None  # type: ignore[assignment]
     _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
     _HAS_CALIBRATION = False
 
-from farfan_pipeline.core.wiring.errors import MissingDependencyError, WiringInitializationError
-from farfan_pipeline.core.wiring.feature_flags import WiringFeatureFlags
-from farfan_pipeline.core.wiring.phase_0_validator import Phase0Validator
-from farfan_pipeline.core.wiring.validation import WiringValidator
+from orchestration.wiring.errors import MissingDependencyError, WiringInitializationError
+from orchestration.wiring.feature_flags import WiringFeatureFlags
+from orchestration.wiring.phase_0_validator import Phase0Validator
+from orchestration.wiring.validation import WiringValidator
 
 logger = structlog.get_logger(__name__)
 

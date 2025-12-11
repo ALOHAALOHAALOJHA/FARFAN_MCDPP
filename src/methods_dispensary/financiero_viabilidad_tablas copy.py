@@ -58,7 +58,7 @@ from sklearn.cluster import DBSCAN, AgglomerativeClustering
 from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import pipeline
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 _lockdown = get_dependency_lockdown()
 

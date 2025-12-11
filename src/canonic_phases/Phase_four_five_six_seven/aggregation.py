@@ -27,8 +27,8 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, TypeVar
-from farfan_pipeline.core.calibration.parameter_loader import get_parameter_loader
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.parameter_loader import get_parameter_loader
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 # SOTA imports

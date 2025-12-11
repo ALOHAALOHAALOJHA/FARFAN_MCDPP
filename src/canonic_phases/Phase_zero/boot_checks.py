@@ -72,7 +72,7 @@ def check_wiring_validator_available(config: RuntimeConfig) -> bool:
         BootCheckError: If validator unavailable in strict PROD mode
     """
     try:
-        from farfan_pipeline.core.wiring.validator import WiringValidator
+        from orchestration.wiring.validator import WiringValidator
         return True
     except ImportError as e:
         if config.mode == RuntimeMode.PROD and not config.allow_validator_disable:

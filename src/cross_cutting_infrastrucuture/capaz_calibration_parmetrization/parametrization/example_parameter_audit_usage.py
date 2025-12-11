@@ -281,7 +281,7 @@ def example_8_programmatic_fix_suggestions():
             print("   Fix:")
             print("   1. Add to COHORT_2024_fusion_weights.json or COHORT_2024_intrinsic_calibration.json")
             print("   2. Replace with:")
-            print(f"      from farfan_pipeline.core.calibration.parameter_loader import get_parameter_loader")
+            print(f"      from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.parameter_loader import get_parameter_loader")
             print(f"      loader = get_parameter_loader()")
             print(f"      {v.variable_name} = loader.get('component.{v.variable_name}', {v.hardcoded_value})")
         

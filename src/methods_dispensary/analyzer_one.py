@@ -30,7 +30,7 @@ from typing import (
 )
 
 # from farfan_pipeline import get_parameter_loader  # CALIBRATION DISABLED
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:
     from farfan_pipeline.utils.method_config_loader import MethodConfigLoader

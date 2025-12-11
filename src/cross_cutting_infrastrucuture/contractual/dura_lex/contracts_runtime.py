@@ -18,7 +18,7 @@ Schema Version Format: sem-{major}.{minor}
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 # ============================================================================
 # CONFIGURATION
