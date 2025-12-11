@@ -258,7 +258,7 @@ def test_enum_value_aggregation():
         # String comparison
         start = time.perf_counter()
         for _ in range(iterations):
-            result = [c for c in chunks if c.policy_area_id == "PA01"]
+            [c for c in chunks if c.policy_area_id == "PA01"]
         string_time = time.perf_counter() - start
         
         # Enum comparison
