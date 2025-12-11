@@ -18,6 +18,13 @@ Main Components:
 - signal_loader: Signal loading utilities
 - signal_resolution: Signal resolution strategies
 
+Strategic Irrigation Enhancements (2025-12-11):
+- signal_method_metadata: Method execution metadata (Enhancement #1)
+- signal_validation_specs: Structured validation specifications (Enhancement #2)
+- signal_scoring_context: Scoring modality context (Enhancement #3)
+- signal_semantic_context: Semantic disambiguation layer (Enhancement #4)
+- signal_enhancement_integrator: Unified enhancement integration
+
 IMPORTANT: This module requires pydantic>=2.0 as part of the dura_lex contract system.
 The F.A.R.F.A.N pipeline enforces contracts with zero tolerance for maximum performance.
 """
@@ -67,6 +74,38 @@ except ImportError as e:
         f"Ensure all dependencies are installed. Original error: {e}"
     ) from e
 
+# Strategic Enhancements - NEW 2025-12-11
+try:
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_method_metadata import (
+        MethodMetadata,
+        MethodExecutionMetadata,
+        extract_method_metadata,
+    )
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_validation_specs import (
+        ValidationSpec,
+        ValidationSpecifications,
+        extract_validation_specifications,
+    )
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_scoring_context import (
+        ScoringModalityDefinition,
+        ScoringContext,
+        extract_scoring_context,
+    )
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_semantic_context import (
+        SemanticContext,
+        DisambiguationRule,
+        extract_semantic_context,
+    )
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
+        SignalEnhancementIntegrator,
+        create_enhancement_integrator,
+    )
+except ImportError as e:
+    raise ImportError(
+        "SISAS strategic enhancements failed to import. "
+        f"Ensure all dependencies are installed. Original error: {e}"
+    ) from e
+
 __all__ = [
     # Core
     "SignalPack",
@@ -83,4 +122,19 @@ __all__ = [
     "compute_signal_quality_metrics",
     "analyze_coverage_gaps",
     "generate_quality_report",
+    # Enhancements
+    "MethodMetadata",
+    "MethodExecutionMetadata",
+    "extract_method_metadata",
+    "ValidationSpec",
+    "ValidationSpecifications",
+    "extract_validation_specifications",
+    "ScoringModalityDefinition",
+    "ScoringContext",
+    "extract_scoring_context",
+    "SemanticContext",
+    "DisambiguationRule",
+    "extract_semantic_context",
+    "SignalEnhancementIntegrator",
+    "create_enhancement_integrator",
 ]
