@@ -50,16 +50,17 @@ except ImportError:
     PATHS_AVAILABLE = False
 
 try:
-    from orchestration.orchestrator import (
-        EvidenceRecord,
-        EvidenceRegistry,
-        get_global_registry,
+    from canonic_phases.Phase_two.evidence_nexus import (
+        EvidenceNexus,
+        EvidenceGraph,
+        EvidenceNode,
+        EvidenceType,
     )
-    EVIDENCE_REGISTRY_AVAILABLE = True
+    EVIDENCE_NEXUS_AVAILABLE = True
 except ImportError:
-    EVIDENCE_REGISTRY_AVAILABLE = False
-    EvidenceRecord = None
-    EvidenceRegistry = None
+    EVIDENCE_NEXUS_AVAILABLE = False
+    EvidenceNexus = None
+    EvidenceGraph = None
 
 try:
     from orchestration.orchestrator import (
@@ -383,32 +384,40 @@ class TestConstitutionalInvariants:
         _checklist_report.add(result)
         assert result.passed, result.message
 
-    @pytest.mark.skipif(not EVIDENCE_REGISTRY_AVAILABLE, reason="EvidenceRegistry not available")
-    def test_int_f2_006_evidence_chain_integrity(self, tmp_path: Path):
-        """[INT-F2-006] Verify EvidenceRegistry chain integrity verification works."""
-        # Create a temporary registry
-        storage_path = tmp_path / "test_evidence.jsonl"
-        registry = EvidenceRegistry(storage_path=storage_path, enable_dag=True)
+    @pytest.mark.skipif(not EVIDENCE_NEXUS_AVAILABLE, reason="EvidenceNexus not available")
+    def test_int_f2_006_evidence_chain_integrity(self):
+        """[INT-F2-006] Verify EvidenceGraph hash chain integrity."""
+        # Create a graph
+        graph = EvidenceGraph()
         
-        # Add some test evidence
+        # Add some test evidence nodes
         for i in range(5):
-            registry.record_evidence(
-                evidence_type="test_evidence",
-                payload={"test_id": i, "data": f"test_data_{i}"},
-                question_id=f"Q{i:03d}",
+            node = EvidenceNode.create(
+                evidence_type=EvidenceType.OFFICIAL_SOURCE,
+                content={"test_id": i, "data": f"test_data_{i}"},
+                confidence=0.9,
+                source_method="test_method"
             )
+            graph.add_node(node)
         
-        # Verify chain integrity
-        is_valid, errors = registry.verify_chain_integrity()
+        # Verify hash chain exists and matches node count
+        # In the new system, verify_hash_chain checks length consistency
+        is_valid = graph.verify_hash_chain()
+        chain_length = len(graph._hash_chain)
         
         result = CheckResult(
             check_id="INT-F2-006",
             category="CONSTITUTIONAL",
-            description="EvidenceRegistry cadena íntegra",
-            passed=is_valid and len(errors) == 0,
+            description="EvidenceGraph cadena íntegra",
+            passed=is_valid and chain_length == 5,
             severity="FATAL",
-            message=f"Chain integrity: valid={is_valid}, errors={len(errors)}",
-            evidence={"is_valid": is_valid, "error_count": len(errors), "errors": errors[:5]}
+            message=f"Chain integrity: valid={is_valid}, length={chain_length}/5",
+            evidence={
+                "is_valid": is_valid, 
+                "chain_length": chain_length,
+                "node_count": graph.node_count,
+                "graph_hash": graph.get_graph_hash()
+            }
         )
         _checklist_report.add(result)
         assert result.passed, result.message
