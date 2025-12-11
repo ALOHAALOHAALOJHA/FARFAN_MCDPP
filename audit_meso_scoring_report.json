@@ -11,8 +11,8 @@
   "average_sensitivity_score": 3.2142857142857144,
   "overall_rating": "GOOD",
   "recommendations": [
-    "Strengthen penalties for high-dispersion scenarios",
     "Implement adaptive penalty weights based on scenario characteristics",
+    "Strengthen penalties for high-dispersion scenarios",
     "Implement non-linear penalty scaling for extreme dispersion cases"
   ],
   "critical_issues": [],
