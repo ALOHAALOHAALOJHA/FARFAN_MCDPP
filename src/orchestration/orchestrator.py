@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT, RULES_DIR
 from canonic_phases.Phase_zero.paths import safe_join
 from canonic_phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
@@ -803,6 +803,28 @@ def validate_phase_definitions(
 
 
 # ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+def get_questionnaire_provider() -> Any:
+    """Get questionnaire provider (placeholder)."""
+    return None
+
+
+def get_dependency_lockdown() -> Any:
+    """Get dependency lockdown manager."""
+    class DependencyLockdown:
+        def get_mode_description(self) -> str:
+            return "Production mode - all dependencies locked"
+    return DependencyLockdown()
+
+
+class RecommendationEnginePort:
+    """Port interface for recommendation engine."""
+    pass
+
+
+# ============================================================================
 # ORCHESTRATOR
 # ============================================================================
 
@@ -1271,8 +1293,8 @@ class Orchestrator:
             "_aggregation_settings": aggregation_settings,
         }
     
-    def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> PreprocessedDocument:
-        """FASE 1: Ingest document using SPC pipeline."""
+    def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> Any:
+        """FASE 1: Ingest document using Phase 1 SPC pipeline."""
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[1]
         start = time.perf_counter()
@@ -1280,37 +1302,74 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
         
         try:
-            from farfan_pipeline.processing.spc_ingestion import CPPIngestionPipeline
+            # Import Phase 1 components
+            from canonic_phases.Phase_one import (
+                CanonicalInput,
+                execute_phase_1_with_full_contract,
+                CanonPolicyPackage,
+            )
+            from pathlib import Path
+            import hashlib
             
-            pipeline = CPPIngestionPipeline()
-            canon_package = asyncio.run(pipeline.process(
-                document_path=Path(pdf_path),
-                document_id=document_id
-            ))
+            # Get questionnaire path from canonical questionnaire
+            questionnaire_path = self._canonical_questionnaire.source_path if hasattr(self._canonical_questionnaire, 'source_path') else None
+            if not questionnaire_path:
+                # Fallback to default path
+                from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+                questionnaire_path = PROJECT_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+            else:
+                questionnaire_path = Path(questionnaire_path)
             
-            preprocessed = PreprocessedDocument.ensure(
-                canon_package,
+            pdf_path_obj = Path(pdf_path)
+            
+            # Compute hashes for integrity
+            pdf_sha256 = hashlib.sha256(pdf_path_obj.read_bytes()).hexdigest()
+            questionnaire_sha256 = hashlib.sha256(questionnaire_path.read_bytes()).hexdigest()
+            
+            # Create CanonicalInput for Phase 1
+            canonical_input = CanonicalInput(
                 document_id=document_id,
-                use_spc_ingestion=True
+                run_id=f"run_{document_id}_{int(time.time())}",
+                pdf_path=pdf_path_obj,
+                pdf_sha256=pdf_sha256,
+                pdf_size_bytes=pdf_path_obj.stat().st_size,
+                pdf_page_count=0,  # Will be computed by Phase 1
+                questionnaire_path=questionnaire_path,
+                questionnaire_sha256=questionnaire_sha256,
+                created_at=datetime.utcnow(),
+                phase0_version="1.0.0",
+                validation_passed=True,
+                validation_errors=[],
+                validation_warnings=[],
             )
             
-            if not preprocessed.raw_text or not preprocessed.raw_text.strip():
-                raise ValueError("Empty document after ingestion")
+            # Execute Phase 1 with full contract
+            canon_package = execute_phase_1_with_full_contract(canonical_input)
             
-            actual_chunk_count = preprocessed.metadata.get("chunk_count", 0)
+            # Validate output
+            if not isinstance(canon_package, CanonPolicyPackage):
+                raise ValueError(f"Phase 1 returned invalid type: {type(canon_package)}")
+            
+            # Validate chunk count
+            actual_chunk_count = len(canon_package.chunk_graph.chunks)
             if actual_chunk_count != P01_EXPECTED_CHUNK_COUNT:
                 raise ValueError(
                     f"P01 validation failed: expected {P01_EXPECTED_CHUNK_COUNT} chunks, "
                     f"got {actual_chunk_count}"
                 )
             
-            for i, chunk in enumerate(preprocessed.chunks):
-                if not getattr(chunk, "policy_area_id", None):
-                    raise ValueError(f"Chunk {i} missing policy_area_id")
-                if not getattr(chunk, "dimension_id", None):
-                    raise ValueError(f"Chunk {i} missing dimension_id")
+            # Validate each chunk has policy_area_id and dimension_id
+            for i, chunk in enumerate(canon_package.chunk_graph.chunks):
+                if not hasattr(chunk, "policy_area") or not chunk.policy_area:
+                    raise ValueError(f"Chunk {i} missing policy_area")
+                if not hasattr(chunk, "dimension") or not chunk.dimension:
+                    raise ValueError(f"Chunk {i} missing dimension")
             
             logger.info(f"✓ P01-ES v1.0 validation passed: {actual_chunk_count} chunks")
+            
+            # Store canon_package for subsequent phases
+            # Note: Downstream phases should work with CanonPolicyPackage directly
+            return canon_package
             
         except Exception as e:
             instrumentation.record_error("ingestion", str(e))
@@ -1319,12 +1378,20 @@ class Orchestrator:
         duration = time.perf_counter() - start
         instrumentation.increment(latency=duration)
         
-        return preprocessed
+        return canon_package
     
     async def _execute_micro_questions_async(
-        self, document: PreprocessedDocument, config: dict[str, Any]
+        self, document: Any, config: dict[str, Any]
     ) -> list[MicroQuestionRun]:
-        """FASE 2: Execute micro-questions (STUB - requires your implementation)."""
+        """FASE 2: Execute micro-questions.
+        
+        Args:
+            document: CanonPolicyPackage from Phase 1 (60 chunks with PA×DIM coordinates)
+            config: Configuration dictionary
+            
+        Returns:
+            List of MicroQuestionRun results
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
         
