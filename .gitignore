@@ -165,3 +165,12 @@ system/config/calibration/inventories/COHORT_2024_method_signatures.json
 system/config/calibration/inventories/COHORT_2024_calibration_coverage_matrix.json
 system/config/calibration/inventories/COHORT_2024_consolidation_summary.md
 system/config/calibration/inventories/calibration_consolidation.log
+
+# Pipeline cleanup artifacts
+test_output/*.failed
+test_output/*.error
+method_signature_assessment.json
+
+# Backup files from fixes
+*.bak
+*.backup
