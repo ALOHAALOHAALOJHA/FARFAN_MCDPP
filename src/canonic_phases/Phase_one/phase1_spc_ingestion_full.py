@@ -1518,12 +1518,32 @@ class Phase1SPCIngestionFullContract:
         for chunk in chunks:
             chunk_text = chunk.segmentation_metadata.get('text', '') if hasattr(chunk, 'segmentation_metadata') else ''
             chunk_lower = chunk_text.lower()
+            pa_id = chunk.policy_area_id
             
             # Determine dominant discourse mode
             mode_scores = {}
             for mode, indicators in DISCOURSE_MODES.items():
                 score = sum(1 for ind in indicators if ind in chunk_lower)
                 mode_scores[mode] = score
+            
+            # SIGNAL ENRICHMENT: Boost discourse detection with signal patterns
+            if self.signal_enricher is not None and pa_id in self.signal_enricher.context.signal_packs:
+                signal_pack = self.signal_enricher.context.signal_packs[pa_id]
+                
+                # Check for signal patterns that indicate specific discourse modes
+                for pattern in signal_pack.patterns[:15]:  # Limit for performance
+                    pattern_lower = pattern.lower()
+                    try:
+                        if re.search(pattern, chunk_lower, re.IGNORECASE):
+                            # Classify pattern-based discourse hints
+                            if any(kw in pattern_lower for kw in ['debe', 'deberá', 'requiere', 'obligator']):
+                                mode_scores['injunctive'] = mode_scores.get('injunctive', 0) + 2
+                            elif any(kw in pattern_lower for kw in ['por tanto', 'debido', 'porque']):
+                                mode_scores['argumentative'] = mode_scores.get('argumentative', 0) + 2
+                            elif any(kw in pattern_lower for kw in ['define', 'consiste', 'significa']):
+                                mode_scores['expository'] = mode_scores.get('expository', 0) + 1
+                    except re.error:
+                        continue
             
             # Select mode with highest score, default to 'expository'
             dominant_mode = max(mode_scores.keys(), key=lambda k: mode_scores[k]) if max(mode_scores.values()) > 0 else 'expository'
@@ -1591,6 +1611,15 @@ class Phase1SPCIngestionFullContract:
             evidence_count = len(arg_data.get('evidence', [])) if isinstance(arg_data, dict) else 0
             argument_score = min(1.0, evidence_count / 3)
             
+            # SIGNAL ENRICHMENT: Boost argument score with signal-based evidence
+            signal_boost = 0.0
+            if self.signal_enricher is not None and isinstance(arg_data, dict):
+                # Check for signal-enhanced evidence
+                for ev in arg_data.get('evidence', []):
+                    if isinstance(ev, dict) and ev.get('signal_score') is not None:
+                        signal_boost += ev['signal_score'] * 0.1  # Boost from signal-enhanced evidence
+                argument_score = min(1.0, argument_score + signal_boost)
+            
             # Discourse actionability
             actionable_modes = {'injunctive', 'performative', 'argumentative'}
             discourse_score = 1.0 if chunk.discourse_mode in actionable_modes else 0.3
@@ -1599,13 +1628,24 @@ class Phase1SPCIngestionFullContract:
             link_count = cross_link_counts.get(chunk.chunk_id, 0)
             centrality_score = link_count / max_links if max_links > 0 else 0
             
+            # SIGNAL ENRICHMENT: Add signal quality boost to strategic priority
+            signal_quality_boost = 0.0
+            if self.signal_enricher is not None:
+                pa_id = chunk.policy_area_id
+                if pa_id in self.signal_enricher.context.quality_metrics:
+                    metrics = self.signal_enricher.context.quality_metrics[pa_id]
+                    # Boost based on signal quality tier
+                    tier_boosts = {'EXCELLENT': 0.15, 'GOOD': 0.10, 'ADEQUATE': 0.05, 'SPARSE': 0.0}
+                    signal_quality_boost = tier_boosts.get(metrics.coverage_tier, 0.0)
+            
             # Calculate weighted strategic priority
             strategic_priority = (
                 WEIGHTS['causal_density'] * causal_score +
                 WEIGHTS['temporal_urgency'] * temporal_score +
                 WEIGHTS['argument_strength'] * argument_score +
                 WEIGHTS['discourse_actionability'] * discourse_score +
-                WEIGHTS['cross_link_centrality'] * centrality_score
+                WEIGHTS['cross_link_centrality'] * centrality_score +
+                signal_quality_boost  # Additional boost from signal quality
             )
             
             # Normalize to 0-100 scale
@@ -1754,7 +1794,54 @@ class Phase1SPCIngestionFullContract:
                                 'strength': 0.9
                             })
             
-            irrigation_map[chunk.chunk_id] = links[:10]  # Limit links per chunk
+            # SIGNAL ENRICHMENT: Add signal-based semantic similarity links
+            if self.signal_enricher is not None:
+                # Compare signal tags for semantic similarity
+                chunk_signal_tags = set(chunk.signal_tags) if chunk.signal_tags else set()
+                
+                for other in chunks:
+                    if other.chunk_id != chunk.chunk_id and other.signal_tags:
+                        other_signal_tags = set(other.signal_tags)
+                        
+                        # Calculate Jaccard similarity of signal tags
+                        if chunk_signal_tags and other_signal_tags:
+                            intersection = len(chunk_signal_tags & other_signal_tags)
+                            union = len(chunk_signal_tags | other_signal_tags)
+                            similarity = intersection / union if union > 0 else 0
+                            
+                            # Add link if similarity is significant
+                            if similarity >= 0.3:  # At least 30% overlap
+                                links.append({
+                                    'target': other.chunk_id,
+                                    'type': 'signal_semantic_similarity',
+                                    'strength': min(0.95, similarity),
+                                    'shared_signals': list(chunk_signal_tags & other_signal_tags)[:5]
+                                })
+                
+                # Add signal-based score similarity links
+                if chunk.signal_scores:
+                    for other in chunks:
+                        if other.chunk_id != chunk.chunk_id and other.signal_scores:
+                            # Check if both chunks have high scores for similar signal types
+                            common_signal_types = set(chunk.signal_scores.keys()) & set(other.signal_scores.keys())
+                            if common_signal_types:
+                                avg_score_diff = sum(
+                                    abs(chunk.signal_scores[k] - other.signal_scores[k]) 
+                                    for k in common_signal_types
+                                ) / len(common_signal_types)
+                                
+                                # Link if scores are similar (low difference)
+                                if avg_score_diff < 0.3:
+                                    links.append({
+                                        'target': other.chunk_id,
+                                        'type': 'signal_score_similarity',
+                                        'strength': 1.0 - avg_score_diff,
+                                        'common_types': list(common_signal_types)
+                                    })
+            
+            # Sort links by strength and keep top 15
+            links.sort(key=lambda x: x['strength'], reverse=True)
+            irrigation_map[chunk.chunk_id] = links[:15]  # Increased limit with signal links
         
         # Since SmartChunk is frozen, we return the original chunks
         # The irrigation links are tracked in metadata
@@ -1817,6 +1904,32 @@ class Phase1SPCIngestionFullContract:
                 violations.append(f"Missing PA×DIM combinations: {missing}")
             if extra:
                 violations.append(f"Unexpected PA×DIM combinations: {extra}")
+        
+        # SIGNAL ENRICHMENT: Validate signal coverage quality
+        if self.signal_enricher is not None:
+            try:
+                signal_coverage = self.signal_enricher.compute_signal_coverage_metrics(chunks)
+                
+                # Quality gate: Check if signal coverage meets minimum thresholds
+                if signal_coverage['coverage_completeness'] < 0.5:
+                    violations.append(
+                        f"Signal coverage too low: {signal_coverage['coverage_completeness']:.1%} "
+                        f"(minimum 50% required)"
+                    )
+                
+                if signal_coverage['quality_tier'] == 'SPARSE':
+                    violations.append(
+                        f"Signal quality tier is SPARSE "
+                        f"(avg {signal_coverage['avg_signal_tags_per_chunk']:.1f} tags/chunk)"
+                    )
+                
+                logger.info(
+                    f"SP13: Signal quality validation - "
+                    f"coverage={signal_coverage['coverage_completeness']:.1%}, "
+                    f"tier={signal_coverage['quality_tier']}"
+                )
+            except Exception as e:
+                logger.warning(f"SP13: Signal coverage validation failed: {e}")
         
         # Determine status
         status = "VALID" if not violations else "INVALID"
