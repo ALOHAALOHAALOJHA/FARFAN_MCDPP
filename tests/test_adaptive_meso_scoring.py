@@ -31,12 +31,12 @@ class TestAdaptiveMesoScoring:
         adjusted_score, details = scorer.compute_adjusted_score(scores)
         
         # Should have no penalty
-        assert details["metrics"]["cv"] == 0.0
-        assert details["metrics"]["dispersion_index"] == 0.0
+        assert details["metrics"]["cv"] == pytest.approx(0.0)
+        assert details["metrics"]["dispersion_index"] == pytest.approx(0.0)
         assert details["metrics"]["scenario_type"] == "convergence"
-        assert details["penalty_computation"]["penalty_factor"] == 1.0
-        assert adjusted_score == details["weighted_score"]
-        assert abs(adjusted_score - 2.5) < 1e-6
+        assert details["penalty_computation"]["penalty_factor"] == pytest.approx(1.0)
+        assert adjusted_score == pytest.approx(details["weighted_score"])
+        assert adjusted_score == pytest.approx(2.5)
     
     def test_mild_convergence(self, scorer: AdaptiveMesoScoring) -> None:
         """Test mild convergence with small variance."""

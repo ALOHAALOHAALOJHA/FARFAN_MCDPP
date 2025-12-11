@@ -307,8 +307,9 @@ class AdaptiveMesoScoring:
         if len(weights) != len(scores):
             raise ValueError(f"Weight length mismatch: {len(weights)} != {len(scores)}")
         
-        if abs(sum(weights) - 1.0) > 1e-6:
-            raise ValueError(f"Weights don't sum to 1.0: {sum(weights):.6f}")
+        weight_sum = sum(weights)
+        if abs(weight_sum - 1.0) > 1e-6:
+            raise ValueError(f"Weights don't sum to 1.0: {weight_sum:.6f}")
         
         # Compute weighted score
         weighted_score = sum(s * w for s, w in zip(scores, weights, strict=True))
