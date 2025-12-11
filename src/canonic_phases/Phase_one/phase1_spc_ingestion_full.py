@@ -263,6 +263,15 @@ class Phase1MissionContract:
         """
         Get timeout multiplier based on weight.
         Critical subphases get more execution time.
+        
+        NOTE: This method provides the policy for timeout allocation but is not
+        currently enforced in the execution path. Phase 1 subphases run without
+        explicit timeouts. This method is provided for future enhancement when
+        timeout enforcement is added to the pipeline orchestrator.
+        
+        Future implementations should apply these multipliers to base timeouts
+        for async/long-running operations to ensure critical subphases have
+        adequate execution time.
         """
         weight = cls.get_weight(sp_num)
         if weight >= cls.CRITICAL_THRESHOLD:
@@ -604,12 +613,15 @@ class Phase1SPCIngestionFullContract:
         """
         Weight-based error handling.
         Critical weight subphases (>=10000) trigger immediate abort with no recovery.
-        Lower weight subphases allow for potential fallback strategies.
+        
+        This method logs the error with weight context, records it in the error log,
+        then delegates to Phase1FailureHandler which raises Phase1FatalError.
+        No code after calling this method will execute.
         """
         weight = Phase1MissionContract.get_weight(sp_num)
         is_critical = Phase1MissionContract.is_critical(sp_num)
         
-        # Log error with weight context
+        # Log error with weight context before handler raises exception
         if is_critical:
             logger.critical(
                 f"CRITICAL SUBPHASE SP{sp_num} [WEIGHT={weight}] FAILED: {e}\n"
@@ -622,7 +634,7 @@ class Phase1SPCIngestionFullContract:
                 f"Non-critical failure but still fatal for pipeline integrity."
             )
         
-        # Record in error log with weight metadata
+        # Record in error log with weight metadata before raising
         self.error_log.append({
             'sp_num': sp_num,
             'weight': weight,
@@ -633,7 +645,7 @@ class Phase1SPCIngestionFullContract:
             'recovery_possible': not is_critical  # Critical failures have no recovery
         })
         
-        # Delegate to failure handler
+        # Delegate to failure handler - RAISES Phase1FatalError (does not return)
         Phase1FailureHandler.handle_subphase_failure(sp_num, e)
 
     def run(self, canonical_input: CanonicalInput) -> CanonPolicyPackage:
@@ -734,17 +746,13 @@ class Phase1SPCIngestionFullContract:
             
         except Exception as e:
             # Determine which subphase failed based on execution trace length
+            # Note: execution_trace contains successfully recorded subphases,
+            # so len(trace) is the index of the currently failing subphase
             failed_sp_num = len(self.execution_trace)
-            self._handle_fatal_error(failed_sp_num, e)
             
-            # Check if this was a critical weight failure
-            if Phase1MissionContract.is_critical(failed_sp_num):
-                raise Phase1FatalError(
-                    f"CRITICAL SUBPHASE SP{failed_sp_num} "
-                    f"[WEIGHT={Phase1MissionContract.get_weight(failed_sp_num)}] FAILED: {e}"
-                )
-            else:
-                raise Phase1FatalError(f"Phase 1 FAILED at SP{failed_sp_num}: {e}")
+            # _handle_fatal_error logs the error with weight context and raises Phase1FatalError
+            # No code after this call will execute - the exception propagates immediately
+            self._handle_fatal_error(failed_sp_num, e)
     
     def _record_subphase(self, sp_num: int, output: Any):
         """
@@ -2102,6 +2110,8 @@ class Phase1SPCIngestionFullContract:
         total_weight = 0
         subphase_weights = {}
         
+        # Assumption: Subphases are numbered 0 to trace_length-1 (SP0, SP1, ..., SP15)
+        # This loop iterates over subphase indices that match the execution trace
         for i in range(trace_length):
             weight = Phase1MissionContract.get_weight(i)
             subphase_weights[f'SP{i}'] = weight
