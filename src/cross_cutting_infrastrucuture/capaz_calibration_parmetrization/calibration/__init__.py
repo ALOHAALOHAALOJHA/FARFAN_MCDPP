@@ -19,10 +19,13 @@ COHORT exports with metadata in: calibration/COHORT_2024_*.py
 
 # Chain Layer
 from .COHORT_2024_chain_layer import (
-    ChainEvaluationResult,
+    ChainLayerConfig,
     ChainLayerEvaluator,
-    ChainSequenceResult,
-    create_evaluator_from_validator,
+    ChainValidationConfig,
+    ChainValidationResult,
+    MethodSignature,
+    UpstreamOutputs,
+    create_default_chain_config,
 )
 
 # Contextual Layers (@q, @d, @p)
@@ -109,10 +112,13 @@ from .layer_versioning import (
 
 __all__ = [
     # Chain Layer
+    "ChainLayerConfig",
     "ChainLayerEvaluator",
-    "ChainEvaluationResult",
-    "ChainSequenceResult",
-    "create_evaluator_from_validator",
+    "ChainValidationConfig",
+    "ChainValidationResult",
+    "MethodSignature",
+    "UpstreamOutputs",
+    "create_default_chain_config",
     # Contextual Layers
     "CompatibilityRegistry",
     "CompatibilityMapping",
