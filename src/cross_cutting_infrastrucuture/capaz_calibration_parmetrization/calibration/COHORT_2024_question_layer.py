@@ -8,7 +8,7 @@ This is a COHORT_2024 reference file. For production use, import from:
     from ..COHORT_2024_contextual_layers import *
 """
 
-from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_contextual_layers import (  # noqa: E501
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.COHORT_2024_contextual_layers import (  # noqa: E501
     QUESTION_LAYER_METADATA,
     CompatibilityRegistry,
     QuestionEvaluator,

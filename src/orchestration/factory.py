@@ -1341,7 +1341,7 @@ def check_legacy_signal_loader_deleted() -> dict[str, Any]:
         dict with check results.
     """
     try:
-        import farfan_pipeline.core.orchestrator.signal_loader
+        import cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_loader
         return {
             "legacy_loader_deleted": False,
             "error": "signal_loader.py still exists - must be deleted per architecture requirements",

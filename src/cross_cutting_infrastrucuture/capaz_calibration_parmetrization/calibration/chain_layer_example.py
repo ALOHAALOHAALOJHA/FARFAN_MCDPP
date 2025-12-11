@@ -6,7 +6,7 @@ method chaining and orchestration through signature validation
 against upstream outputs.
 """
 
-from src.orchestration.chain_layer import (
+from orchestration.chain_layer import (
     ChainLayerEvaluator,
     MethodSignature,
     UpstreamOutputs,
@@ -226,7 +226,7 @@ def example_strict_mode():
     """Example: Using strict validation mode."""
     print("=== Example 7: Strict Mode Validation ===")
     
-    from src.orchestration.chain_layer import ChainLayerConfig
+    from orchestration.chain_layer import ChainLayerConfig
     
     strict_config = ChainLayerConfig(
         validation_config={

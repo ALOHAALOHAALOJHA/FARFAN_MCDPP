@@ -21,7 +21,7 @@ Layers:
 import re
 from typing import Any
 
-from src.core.calibration.layer_requirements import (
+from core.calibration.layer_requirements import (
     LAYER_REQUIREMENTS,
     get_required_layers,
 )

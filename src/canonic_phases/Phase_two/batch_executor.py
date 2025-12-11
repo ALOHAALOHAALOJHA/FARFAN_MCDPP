@@ -24,7 +24,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, TypedDict
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.core import MethodExecutor
+    from orchestration.orchestrator import MethodExecutor
     from farfan_pipeline.core.types import PreprocessedDocument
 
 logger = logging.getLogger(__name__)

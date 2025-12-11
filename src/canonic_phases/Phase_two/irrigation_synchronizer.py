@@ -31,10 +31,10 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.signals import SignalRegistry
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalRegistry
 
-from farfan_pipeline.core.orchestrator.task_planner import ExecutableTask
-from farfan_pipeline.core.orchestrator.phase6_validation import (
+from orchestration.task_planner import ExecutableTask
+from canonic_phases.Phase_two.phase6_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
@@ -84,7 +84,7 @@ except ImportError as e:
         pass
 
 try:
-    from farfan_pipeline.core.orchestrator.signals import (
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
         SignalRegistry as _SignalRegistry,
     )
 except ImportError:

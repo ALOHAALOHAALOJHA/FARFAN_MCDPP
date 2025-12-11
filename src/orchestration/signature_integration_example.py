@@ -8,7 +8,7 @@ into the execution pipeline for method calls.
 from typing import Any, Callable
 import logging
 
-from farfan_pipeline.core.orchestrator.signature_runtime_validator import (
+from orchestration.signature_runtime_validator import (
     SignatureRuntimeValidator,
     get_runtime_validator,
 )

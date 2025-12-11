@@ -5,7 +5,7 @@ Created: 2024-12-15T00:00:00+00:00
 Layer Coexistence Rules and Validation
 
 This is a COHORT_2024 reference file. For production use, import from:
-    from src.farfan_pipeline.core.calibration.layer_coexistence import *
+    from farfan_pipeline.core.calibration.layer_coexistence import *
 """
 
 __all__ = []

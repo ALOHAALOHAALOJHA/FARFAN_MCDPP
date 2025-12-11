@@ -17,7 +17,7 @@ Implements discrete scoring logic for method chain validation:
 Formula: Chain_quality = min(method_scores) [weakest link principle]
 """
 
-from src.orchestration.chain_layer import (
+from orchestration.chain_layer import (
     ChainLayerConfig,
     ChainLayerEvaluator,
     ChainValidationConfig,

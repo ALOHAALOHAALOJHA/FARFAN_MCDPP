@@ -53,25 +53,25 @@ Integration: 4 Surgical Refactorings + PDT Quality Integration
 from dataclasses import dataclass
 from typing import Any
 
-from farfan_pipeline.core.orchestrator.pdt_quality_integration import (
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.pdt_quality_integration import (
     PDTQualityMetrics,
     apply_pdt_quality_boost,
     compute_pdt_section_quality,
     track_pdt_precision_correlation,
 )
-from farfan_pipeline.core.orchestrator.signal_context_scoper import (
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_context_scoper import (
     create_document_context,
     filter_patterns_by_context,
 )
-from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_contract_validator import (
     ValidationResult,
     validate_with_contract,
 )
-from farfan_pipeline.core.orchestrator.signal_evidence_extractor import (
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_evidence_extractor import (
     EvidenceExtractionResult,
     extract_structured_evidence,
 )
-from farfan_pipeline.core.orchestrator.signal_semantic_expander import (
+from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_semantic_expander import (
     expand_all_patterns,
     validate_expansion_result,
 )

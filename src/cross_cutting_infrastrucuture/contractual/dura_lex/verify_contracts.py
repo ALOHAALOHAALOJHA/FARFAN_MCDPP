@@ -11,7 +11,7 @@ Usage:
     python -m farfan_pipeline.core.orchestrator.verify_contracts --strict
 
     # Programmatic usage
-    from farfan_pipeline.core.orchestrator.verify_contracts import verify_all_contracts
+    from orchestration.verify_contracts import verify_all_contracts
     result = verify_all_contracts()
     if not result["passed"]:
         print(f"Validation failed: {result['errors']}")
@@ -24,7 +24,7 @@ import logging
 import sys
 from typing import Any
 
-from farfan_pipeline.core.orchestrator.base_executor_with_contract import (
+from canonic_phases.Phase_two.base_executor_with_contract import (
     BaseExecutorWithContract,
 )
 
@@ -64,7 +64,7 @@ def verify_all_contracts(
     if class_registry is None:
         logger.info("Building class registry...")
         try:
-            from farfan_pipeline.core.orchestrator.class_registry import (
+            from canonic_phases.Phase_two.class_registry import (
                 build_class_registry,
             )
             class_registry = build_class_registry()
@@ -140,7 +140,7 @@ def main() -> int:
     try:
         class_registry = None
         if not args.no_class_registry:
-            from farfan_pipeline.core.orchestrator.class_registry import (
+            from canonic_phases.Phase_two.class_registry import (
                 build_class_registry,
             )
             class_registry = build_class_registry()

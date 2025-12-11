@@ -679,7 +679,7 @@ class MethodExecutor:
         signal_registry: Any | None = None,
         method_registry: Any | None = None,
     ) -> None:
-        from farfan_pipeline.core.orchestrator.method_registry import (
+        from orchestration.method_registry import (
             MethodRegistry,
             setup_default_instantiation_rules,
         )
@@ -703,7 +703,7 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
         
         try:
-            from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
+            from canonic_phases.Phase_two.class_registry import build_class_registry
             registry = build_class_registry()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
@@ -725,7 +725,7 @@ class MethodExecutor:
     
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
-        from farfan_pipeline.core.orchestrator.method_registry import MethodRegistryError
+        from orchestration.method_registry import MethodRegistryError
         
         try:
             method = self._method_registry.get_method(class_name, method_name)
@@ -906,7 +906,7 @@ class Orchestrator:
         else:
             try:
                 from pathlib import Path
-                from src.orchestration.calibration_orchestrator import CalibrationOrchestrator
+                from orchestration.calibration_orchestrator import CalibrationOrchestrator
                 
                 config_dir = Path("src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration")
                 if config_dir.exists():
@@ -1215,7 +1215,7 @@ class Orchestrator:
             return None
         
         try:
-            from src.orchestration.calibration_orchestrator import (
+            from orchestration.calibration_orchestrator import (
                 CalibrationSubject,
                 EvidenceStore,
             )

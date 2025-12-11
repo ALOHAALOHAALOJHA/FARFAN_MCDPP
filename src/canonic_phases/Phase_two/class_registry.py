@@ -11,34 +11,68 @@ class ClassRegistryError(RuntimeError):
     """Raised when one or more classes cannot be loaded."""
 
 # Map of orchestrator-facing class names to their import paths.
+# CORRECTED: Changed from non-existent 'farfan_core' to actual 'methods_dispensary' package
 _CLASS_PATHS: Mapping[str, str] = {
-    "IndustrialPolicyProcessor": "farfan_core.processing.policy_processor.IndustrialPolicyProcessor",
-    "PolicyTextProcessor": "farfan_core.processing.policy_processor.PolicyTextProcessor",
-    "BayesianEvidenceScorer": "farfan_core.processing.policy_processor.BayesianEvidenceScorer",
-    "PolicyContradictionDetector": "farfan_core.analysis.contradiction_deteccion.PolicyContradictionDetector",
-    "TemporalLogicVerifier": "farfan_core.analysis.contradiction_deteccion.TemporalLogicVerifier",
-    "BayesianConfidenceCalculator": "farfan_core.analysis.contradiction_deteccion.BayesianConfidenceCalculator",
-    "PDETMunicipalPlanAnalyzer": "farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer",
-    "CDAFFramework": "farfan_core.analysis.derek_beach.CDAFFramework",
-    "CausalExtractor": "farfan_core.analysis.derek_beach.CausalExtractor",
-    "OperationalizationAuditor": "farfan_core.analysis.derek_beach.OperationalizationAuditor",
-    "FinancialAuditor": "farfan_core.analysis.derek_beach.FinancialAuditor",
-    "BayesianMechanismInference": "farfan_core.analysis.derek_beach.BayesianMechanismInference",
-    "BayesianNumericalAnalyzer": "farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer",
-    "PolicyAnalysisEmbedder": "farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder",
-    "AdvancedSemanticChunker": "farfan_core.processing.embedding_policy.AdvancedSemanticChunker",
+    # Policy Processing
+    "IndustrialPolicyProcessor": "methods_dispensary.policy_processor.IndustrialPolicyProcessor",
+    "PolicyTextProcessor": "methods_dispensary.policy_processor.PolicyTextProcessor",
+    "BayesianEvidenceScorer": "methods_dispensary.policy_processor.BayesianEvidenceScorer",
+    
+    # Contradiction Detection
+    "PolicyContradictionDetector": "methods_dispensary.contradiction_deteccion.PolicyContradictionDetector",
+    "TemporalLogicVerifier": "methods_dispensary.contradiction_deteccion.TemporalLogicVerifier",
+    "BayesianConfidenceCalculator": "methods_dispensary.contradiction_deteccion.BayesianConfidenceCalculator",
+    
+    # Financial Analysis (derek_beach.py)
+    "PDETMunicipalPlanAnalyzer": "methods_dispensary.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer",
+    "CDAFFramework": "methods_dispensary.derek_beach.CDAFFramework",
+    "CausalExtractor": "methods_dispensary.derek_beach.CausalExtractor",
+    "OperationalizationAuditor": "methods_dispensary.derek_beach.OperationalizationAuditor",
+    "FinancialAuditor": "methods_dispensary.derek_beach.FinancialAuditor",
+    "BayesianMechanismInference": "methods_dispensary.derek_beach.BayesianMechanismInference",
+    "BayesianCounterfactualAuditor": "methods_dispensary.derek_beach.BayesianCounterfactualAuditor",
+    
+    # Embedding & Semantic Processing
+    "BayesianNumericalAnalyzer": "methods_dispensary.embedding_policy.BayesianNumericalAnalyzer",
+    "PolicyAnalysisEmbedder": "methods_dispensary.embedding_policy.PolicyAnalysisEmbedder",
+    "AdvancedSemanticChunker": "methods_dispensary.embedding_policy.AdvancedSemanticChunker",
+    "EmbeddingPolicyProducer": "methods_dispensary.embedding_policy.EmbeddingPolicyProducer",
     # SemanticChunker is an alias maintained for backwards compatibility.
-    "SemanticChunker": "farfan_core.processing.embedding_policy.AdvancedSemanticChunker",
-    "SemanticAnalyzer": "farfan_core.analysis.Analyzer_one.SemanticAnalyzer",
-    "PerformanceAnalyzer": "farfan_core.analysis.Analyzer_one.PerformanceAnalyzer",
-    "TextMiningEngine": "farfan_core.analysis.Analyzer_one.TextMiningEngine",
-    "MunicipalOntology": "farfan_core.analysis.Analyzer_one.MunicipalOntology",
-    "TeoriaCambio": "farfan_core.analysis.teoria_cambio.TeoriaCambio",
-    "AdvancedDAGValidator": "farfan_core.analysis.teoria_cambio.AdvancedDAGValidator",
-    "D1_Q1_QuantitativeBaselineExtractor": "farfan_core.core.orchestrator.executors.D1_Q1_QuantitativeBaselineExtractor",
-    "D1_Q2_ProblemDimensioningAnalyzer": "farfan_core.core.orchestrator.executors.D1_Q2_ProblemDimensioningAnalyzer",
-    "SemanticProcessor": "farfan_core.processing.semantic_chunking_policy.SemanticProcessor",
-    "BayesianCounterfactualAuditor": "farfan_core.analysis.derek_beach.BayesianCounterfactualAuditor",
+    "SemanticChunker": "methods_dispensary.embedding_policy.AdvancedSemanticChunker",
+    "SemanticProcessor": "methods_dispensary.semantic_chunking_policy.SemanticProcessor",
+    "SemanticChunkingProducer": "methods_dispensary.semantic_chunking_policy.SemanticChunkingProducer",
+    
+    # Analyzer One
+    "SemanticAnalyzer": "methods_dispensary.analyzer_one.SemanticAnalyzer",
+    "PerformanceAnalyzer": "methods_dispensary.analyzer_one.PerformanceAnalyzer",
+    "TextMiningEngine": "methods_dispensary.analyzer_one.TextMiningEngine",
+    "MunicipalOntology": "methods_dispensary.analyzer_one.MunicipalOntology",
+    
+    # Teoria de Cambio
+    "TeoriaCambio": "methods_dispensary.teoria_cambio.TeoriaCambio",
+    "AdvancedDAGValidator": "methods_dispensary.teoria_cambio.AdvancedDAGValidator",
+    "IndustrialGradeValidator": "methods_dispensary.teoria_cambio.IndustrialGradeValidator",
+    
+    # Derek Beach - Additional Classes
+    "BeachEvidentialTest": "methods_dispensary.derek_beach.BeachEvidentialTest",
+    "ConfigLoader": "methods_dispensary.derek_beach.ConfigLoader",
+    "PDFProcessor": "methods_dispensary.derek_beach.PDFProcessor",
+    "ReportingEngine": "methods_dispensary.derek_beach.ReportingEngine",
+    "BayesFactorTable": "methods_dispensary.derek_beach.BayesFactorTable",
+    "AdaptivePriorCalculator": "methods_dispensary.derek_beach.AdaptivePriorCalculator",
+    "HierarchicalGenerativeModel": "methods_dispensary.derek_beach.HierarchicalGenerativeModel",
+    
+    # Evidence Nexus (replaced EvidenceAssembler)
+    "EvidenceNexus": "canonic_phases.Phase_two.evidence_nexus.EvidenceNexus",
+    "EvidenceAssembler": "canonic_phases.Phase_two.evidence_nexus.EvidenceNexus",  # Alias for backwards compatibility
+    
+    # Executors (in canonic_phases/Phase_two/executors.py)
+    "D1_Q1_QuantitativeBaselineExtractor": "canonic_phases.Phase_two.executors.D1_Q1_QuantitativeBaselineExtractor",
+    "D1_Q2_ProblemDimensioningAnalyzer": "canonic_phases.Phase_two.executors.D1_Q2_ProblemDimensioningAnalyzer",
+    
+    # Additional classes that may be referenced in contracts
+    "MechanismPartExtractor": "methods_dispensary.derek_beach.MechanismPartExtractor",
+    "CausalInferenceSetup": "methods_dispensary.derek_beach.CausalInferenceSetup",
 }
 
 def build_class_registry() -> dict[str, type[object]]:

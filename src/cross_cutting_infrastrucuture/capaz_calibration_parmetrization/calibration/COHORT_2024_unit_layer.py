@@ -17,7 +17,7 @@ Implements PDT (Plan de Desarrollo Territorial) structure analysis with:
 Formula: U = geometric_mean(S, M, gated(I), gated(P)) × (1 - penalty)
 """
 
-from src.orchestration.unit_layer import (
+from orchestration.unit_layer import (
     UnitLayerConfig,
     UnitLayerEvaluator,
     UnitLayerResult,

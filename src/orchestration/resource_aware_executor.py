@@ -16,8 +16,8 @@ import time
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.core import MethodExecutor
-    from farfan_pipeline.core.orchestrator.resource_manager import AdaptiveResourceManager
+    from orchestration.orchestrator import MethodExecutor
+    from orchestration.resource_manager import AdaptiveResourceManager
 
 logger = logging.getLogger(__name__)
 
@@ -162,7 +162,7 @@ class ResourceAwareExecutor:
     ) -> dict[str, Any]:
         """Synchronous execution wrapper."""
         try:
-            from farfan_pipeline.core.orchestrator.executors import (
+            from canonic_phases.Phase_two.executors import (
                 D3_Q3_TraceabilityValidator,
                 D4_Q2_CausalChainValidator,
             )

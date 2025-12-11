@@ -6,7 +6,7 @@ method ensemble harmony through output range compatibility,
 semantic tag alignment, and fusion rule validity.
 """
 
-from src.orchestration.congruence_layer import (
+from orchestration.congruence_layer import (
     CongruenceLayerEvaluator,
     OutputRangeSpec,
     SemanticTagSet,

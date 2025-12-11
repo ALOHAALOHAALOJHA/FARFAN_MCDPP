@@ -5,7 +5,7 @@ Demonstrates how to use the MetaLayerEvaluator to evaluate
 method transparency, governance, and cost metrics.
 """
 
-from src.orchestration.meta_layer import (
+from orchestration.meta_layer import (
     MetaLayerConfig,
     MetaLayerEvaluator,
     TransparencyArtifacts,

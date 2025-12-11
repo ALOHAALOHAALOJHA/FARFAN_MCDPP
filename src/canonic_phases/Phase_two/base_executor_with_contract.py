@@ -12,7 +12,7 @@ from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evide
 from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.core import MethodExecutor
+    from orchestration.orchestrator import MethodExecutor
     from farfan_pipeline.core.types import PreprocessedDocument
 else:  # pragma: no cover - runtime avoids import to break cycles
     MethodExecutor = Any
@@ -46,7 +46,7 @@ class BaseExecutorWithContract(ABC):
         validation_orchestrator: Any | None = None,
     ) -> None:
         try:
-            from farfan_pipeline.core.orchestrator.core import (
+            from orchestration.orchestrator import (
                 MethodExecutor as _MethodExecutor,
             )
         except Exception as exc:  # pragma: no cover - defensive guard
@@ -118,7 +118,7 @@ class BaseExecutorWithContract(ABC):
 
         if class_registry is None:
             try:
-                from farfan_pipeline.core.orchestrator.class_registry import (
+                from canonic_phases.Phase_two.class_registry import (
                     build_class_registry,
                 )
                 class_registry = build_class_registry()
@@ -711,7 +711,7 @@ class BaseExecutorWithContract(ABC):
             signal_pack = enriched_pack.base_pack  # Maintain compatibility
 
             # Create document context from available metadata
-            from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
+            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
                 create_document_context,
             )
 
@@ -777,7 +777,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -903,7 +903,7 @@ class BaseExecutorWithContract(ABC):
             }
 
             # Validate with contracts (REFACTORING #4: contract validation)
-            from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -941,7 +941,7 @@ class BaseExecutorWithContract(ABC):
                 }
         elif self._use_validation_orchestrator:
             # Even without enriched pack, use validation orchestrator with basic validation
-            from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -1125,7 +1125,7 @@ class BaseExecutorWithContract(ABC):
                 
                 if self.calibration_orchestrator:
                     try:
-                        from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                        from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
                             MethodBelowThresholdError,
                         )
                         
@@ -1225,7 +1225,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -1316,7 +1316,7 @@ class BaseExecutorWithContract(ABC):
         # CONTRACT VALIDATION with ValidationOrchestrator
         contract_validation = None
         if self._use_validation_orchestrator:
-            from farfan_pipeline.core.orchestrator.signal_contract_validator import (
+            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 

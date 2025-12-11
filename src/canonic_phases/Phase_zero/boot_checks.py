@@ -201,7 +201,7 @@ def check_orchestration_metrics_contract(config: RuntimeConfig) -> bool:
     """
     try:
         # Import orchestrator to check metrics contract
-        from farfan_pipeline.core.orchestrator.core import Orchestrator
+        from orchestration.orchestrator import Orchestrator
         
         # Verify phase_2 metrics schema exists
         # This is a placeholder - actual implementation would check the schema

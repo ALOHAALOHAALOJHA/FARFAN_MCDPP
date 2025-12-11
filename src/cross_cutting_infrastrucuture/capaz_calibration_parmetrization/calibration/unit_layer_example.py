@@ -4,12 +4,12 @@ Unit Layer (@u) Evaluator Usage Examples
 Demonstrates the PDT structure analysis with real-world scenarios.
 """
 
-from src.orchestration.unit_layer import (
+from orchestration.unit_layer import (
     UnitLayerConfig,
     UnitLayerEvaluator,
     create_default_config
 )
-from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.pdt_structure import PDTStructure
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.pdt_structure import PDTStructure
 
 
 def example_complete_pdt() -> PDTStructure:

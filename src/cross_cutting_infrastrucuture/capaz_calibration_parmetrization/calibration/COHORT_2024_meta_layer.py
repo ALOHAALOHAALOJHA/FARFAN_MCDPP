@@ -15,7 +15,7 @@ Implements meta-level calibration evaluation with:
 Formula: M = 0.5·m_transparency + 0.4·m_governance + 0.1·m_cost
 """
 
-from src.orchestration.meta_layer import (
+from orchestration.meta_layer import (
     CostMetrics,
     CostThresholds,
     GovernanceArtifacts,

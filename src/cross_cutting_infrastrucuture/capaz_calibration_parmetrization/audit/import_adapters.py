@@ -8,10 +8,10 @@ This module allows existing code to continue working without modification while
 enforcing the new cohort structure.
 
 Usage in existing code (no changes needed):
-    from src.farfan_pipeline.core.calibration import intrinsic_calibration_loader
+    from farfan_pipeline.core.calibration import intrinsic_calibration_loader
     # Automatically loads from calibration_parametrization_system/calibration/
     
-    from src.farfan_pipeline.core.orchestrator import executor_config
+    from farfan_pipeline.core.orchestrator import executor_config
     # Automatically loads from calibration_parametrization_system/parametrization/
 """
 

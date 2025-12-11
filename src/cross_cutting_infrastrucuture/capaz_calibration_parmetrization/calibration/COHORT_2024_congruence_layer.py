@@ -16,7 +16,7 @@ Formula: C_play = c_scale × c_sem × c_fusion
 Weights: 0.4·scale + 0.35·semantic + 0.25·fusion
 """
 
-from src.orchestration.congruence_layer import (
+from orchestration.congruence_layer import (
     CongruenceLayerConfig,
     CongruenceRequirements,
     CongruenceThresholds,

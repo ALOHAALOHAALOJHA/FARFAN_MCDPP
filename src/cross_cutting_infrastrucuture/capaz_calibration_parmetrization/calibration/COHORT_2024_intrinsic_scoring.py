@@ -12,7 +12,7 @@ Implements exact formulas from intrinsic_calibration_rubric.json v2.0.0:
 All formulas are traceable and reproducible.
 
 This is a COHORT_2024 reference file. For production use, import from:
-    from src.farfan_pipeline.core.calibration import intrinsic_scoring
+    from farfan_pipeline.core.calibration import intrinsic_scoring
 
 Or use the cohort loader:
     from calibration_parametrization_system import get_calibration_config

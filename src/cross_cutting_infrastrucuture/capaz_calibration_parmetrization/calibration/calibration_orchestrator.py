@@ -19,7 +19,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, Set, TypedDict
 
-from src.core.calibration.layer_requirements import (
+from core.calibration.layer_requirements import (
     LAYER_REQUIREMENTS,
     get_required_layers,
 )

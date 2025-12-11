@@ -2,7 +2,7 @@
 Core calibration system - Singletons and access points.
 
 USAGE:
-    from src._new_calibration_system.core import (
+    from _new_calibration_system.core import (
         get_calibration_orchestrator,
         get_intrinsic_loader,
         get_parameter_loader,

@@ -25,9 +25,9 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from farfan_pipeline.core.canonical_notation import CanonicalDimension, get_dimension_info
-from farfan_pipeline.core.orchestrator.core import MethodExecutor
-from farfan_pipeline.core.orchestrator.factory import build_processor
-from farfan_pipeline.core.orchestrator.memory_safety import (
+from orchestration.orchestrator import MethodExecutor
+from orchestration.factory import build_processor
+from orchestration.memory_safety import (
     MemorySafetyGuard,
     MemorySafetyConfig,
     ExecutorType,
@@ -36,7 +36,7 @@ from farfan_pipeline.core.orchestrator.memory_safety import (
 from farfan_pipeline.processing.policy_processor import CausalDimension
 
 try:
-    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
         CalibrationOrchestrator,
         MethodBelowThresholdError,
     )
