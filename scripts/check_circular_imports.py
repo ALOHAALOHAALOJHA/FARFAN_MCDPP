@@ -211,6 +211,7 @@ class CircularImportDetector:
         """
         if modules_to_test is None:
             # Test key top-level modules
+            # Note: 'infrastrucuiture' spelling preserved to match actual directory name
             modules_to_test = [
                 'src.farfan_pipeline',
                 'src.orchestration',
