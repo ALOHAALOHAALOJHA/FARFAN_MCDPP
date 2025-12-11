@@ -1415,6 +1415,17 @@ class BaseExecutorWithContract(ABC):
         if "provenance_record" in nexus_result:
             # Provenance is now handled internally by EvidenceNexus
             result_data["provenance"] = nexus_result["provenance_record"]
+        
+        # NEW: Add EvidenceNexus scoring fields for Phase 3
+        # These are essential for Phase 3 to extract scores for aggregation
+        if "overall_confidence" in nexus_result:
+            result_data["overall_confidence"] = nexus_result["overall_confidence"]
+        if "completeness" in nexus_result:
+            result_data["completeness"] = nexus_result["completeness"]
+        if "calibrated_interval" in nexus_result:
+            result_data["calibrated_interval"] = nexus_result["calibrated_interval"]
+        if "synthesized_answer" in nexus_result:
+            result_data["synthesized_answer"] = nexus_result["synthesized_answer"]
 
         # Validate output against output_contract schema if present
         output_contract = contract.get("output_contract", {})
