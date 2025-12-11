@@ -986,14 +986,6 @@ class Phase1SPCIngestionFullContract:
                         policy_area_enum = getattr(PolicyArea, pa, None)
                         
                         # Map DIM01-DIM06 to DimensionCausal enum
-                        dim_mapping = {
-                            'DIM01': DimensionCausal.DIM01_INSUMOS,
-                            'DIM02': DimensionCausal.DIM02_ACTIVIDADES,
-                            'DIM03': DimensionCausal.DIM03_PRODUCTOS,
-                            'DIM04': DimensionCausal.DIM04_RESULTADOS,
-                            'DIM05': DimensionCausal.DIM05_IMPACTOS,
-                            'DIM06': DimensionCausal.DIM06_CAUSALIDAD,
-                        }
                         dimension_enum = dim_mapping.get(dim)
                     except (AttributeError, KeyError):
                         pass  # Keep as None if conversion fails
