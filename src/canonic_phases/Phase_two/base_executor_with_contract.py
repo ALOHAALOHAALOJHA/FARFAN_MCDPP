@@ -7,9 +7,9 @@ from typing import TYPE_CHECKING, Any
 from jsonschema import Draft7Validator
 
 from farfan_pipeline.config.paths import PROJECT_ROOT
-from farfan_pipeline.core.orchestrator.evidence_assembler import EvidenceAssembler
-from farfan_pipeline.core.orchestrator.evidence_registry import get_global_registry
-from farfan_pipeline.core.orchestrator.evidence_validator import EvidenceValidator
+# NEW: Replace legacy evidence modules with EvidenceNexus and Carver
+from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
+from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
 
 if TYPE_CHECKING:
     from farfan_pipeline.core.orchestrator.core import MethodExecutor
@@ -834,14 +834,25 @@ class BaseExecutorWithContract(ABC):
                     method_outputs[key] = result
 
         assembly_rules = contract.get("assembly_rules", [])
-        # SISAS: Pass signal_pack for provenance tracking
-        assembled = EvidenceAssembler.assemble(
-            method_outputs, 
-            assembly_rules,
-            signal_pack=signal_pack  # SISAS: Enable signal provenance
+        
+        # NEW: Use EvidenceNexus instead of legacy EvidenceAssembler
+        nexus_result = process_evidence(
+            method_outputs=method_outputs,
+            assembly_rules=assembly_rules,
+            validation_rules=contract.get("validation_rules", []),
+            question_context={
+                "question_id": question_id,
+                "question_global": question_global,
+                "expected_elements": expected_elements,
+                "patterns": applicable_patterns,
+            },
+            signal_pack=signal_pack,  # SISAS: Enable signal provenance
+            contract=contract,
         )
-        evidence = assembled["evidence"]
-        trace = assembled["trace"]
+        
+        evidence = nexus_result["evidence"]
+        trace = nexus_result["trace"]
+        validation = nexus_result["validation"]
 
         # JOBFRONT 3: Extract structured evidence if enriched pack available
         completeness = 1.0
@@ -877,17 +888,7 @@ class BaseExecutorWithContract(ABC):
                 patterns_used = [p.get('id', p) if isinstance(p, dict) else p
                                for p in applicable_patterns[:10]]  # Top 10
 
-        validation_rules = contract.get("validation_rules", [])
-        na_policy = contract.get("na_policy", "abort")
-        validation_rules_object = {"rules": validation_rules, "na_policy": na_policy}
-        # SISAS: Pass failure_contract for signal-driven abort conditions
-        failure_contract = error_handling.get("failure_contract", {}) if error_handling else {}
-        validation = EvidenceValidator.validate(
-            evidence, 
-            validation_rules_object,
-            failure_contract=failure_contract  # SISAS: Enable signal-driven abort
-        )
-
+        # Note: Validation is now handled by EvidenceNexus above
         error_handling = contract.get("error_handling", {})
 
         # JOBFRONT 3: Add contract validation if enriched pack available
@@ -1278,31 +1279,39 @@ class BaseExecutorWithContract(ABC):
         if signal_usage_list:
             method_outputs["_signal_usage"] = signal_usage_list
 
-        # Evidence assembly
+        # NEW: Evidence assembly and validation using EvidenceNexus
         evidence_assembly = contract["evidence_assembly"]
         assembly_rules = evidence_assembly["assembly_rules"]
-        # SISAS: Pass signal_pack for provenance tracking
-        assembled = EvidenceAssembler.assemble(
-            method_outputs, 
-            assembly_rules,
-            signal_pack=signal_pack  # SISAS: Enable signal provenance
-        )
-        evidence = assembled["evidence"]
-        trace = assembled["trace"]
-
-        # Validation with ENHANCED NA POLICY SUPPORT
         validation_rules_section = contract["validation_rules"]
+        
+        nexus_result = process_evidence(
+            method_outputs=method_outputs,
+            assembly_rules=assembly_rules,
+            validation_rules=validation_rules_section.get("rules", []),
+            question_context={
+                "question_id": question_id,
+                "question_global": question_global,
+                "policy_area_id": policy_area_id,
+                "dimension_id": dimension_id,
+                "expected_elements": expected_elements,
+                "patterns": patterns,
+            },
+            signal_pack=signal_pack,  # SISAS: Enable signal provenance
+            contract=contract,
+            na_policy=validation_rules_section.get("na_policy", "abort_on_critical"),
+        )
+        
+        evidence = nexus_result["evidence"]
+        trace = nexus_result["trace"]
+        validation = nexus_result["validation"]
+        
+        # Get error_handling for subsequent validation orchestrator
+        error_handling = contract.get("error_handling", {})
+        
+        # Reconstruct validation_rules_object for compatibility with ValidationOrchestrator
         validation_rules = validation_rules_section.get("rules", [])
         na_policy = validation_rules_section.get("na_policy", "abort_on_critical")
         validation_rules_object = {"rules": validation_rules, "na_policy": na_policy}
-        # SISAS: Pass failure_contract for signal-driven abort conditions  
-        error_handling = contract.get("error_handling", {})
-        failure_contract = error_handling.get("failure_contract", {}) if error_handling else {}
-        validation = EvidenceValidator.validate(
-            evidence, 
-            validation_rules_object,
-            failure_contract=failure_contract  # SISAS: Enable signal-driven abort
-        )
 
         # CONTRACT VALIDATION with ValidationOrchestrator
         contract_validation = None
@@ -1402,15 +1411,10 @@ class BaseExecutorWithContract(ABC):
             }
         }
 
-        # Record evidence in global registry for provenance tracking
-        registry = get_global_registry()
-        registry.record_evidence(
-            evidence_type="executor_result_v3",
-            payload=result_data,
-            source_method=f"{self.__class__.__module__}.{self.__class__.__name__}.execute",
-            question_id=question_id,
-            document_id=getattr(document, "document_id", None),
-        )
+        # NEW: Record evidence provenance in EvidenceNexus internal store (if available in nexus_result)
+        if "provenance_record" in nexus_result:
+            # Provenance is now handled internally by EvidenceNexus
+            result_data["provenance"] = nexus_result["provenance_record"]
 
         # Validate output against output_contract schema if present
         output_contract = contract.get("output_contract", {})
@@ -1419,12 +1423,40 @@ class BaseExecutorWithContract(ABC):
                 result_data, output_contract["schema"], base_slot
             )
 
-        # Generate human_readable_output if template exists
+        # NEW: Generate doctoral-level narrative using Carver synthesizer
         human_readable_config = output_contract.get("human_readable_output", {})
-        if human_readable_config:
-            result_data["human_readable_output"] = self._generate_human_readable_output(
-                evidence, validation, human_readable_config, contract
-            )
+        if human_readable_config or nexus_result.get("graph"):
+            # Use Carver to generate PhD-level narrative from evidence graph
+            carver = DoctoralCarverSynthesizer()
+            
+            # Prepare contract interpretation for Carver
+            carver_input = {
+                "contract": contract,
+                "evidence": evidence,
+                "validation": validation,
+                "graph": nexus_result.get("graph"),
+                "question_context": {
+                    "question_id": question_id,
+                    "question_global": question_global,
+                    "dimension_id": dimension_id,
+                    "policy_area_id": policy_area_id,
+                },
+                "signal_pack": {
+                    "policy_area": getattr(signal_pack, "policy_area", policy_area_id) if signal_pack else policy_area_id,
+                    "version": getattr(signal_pack, "version", "unknown") if signal_pack else "unknown",
+                },
+            }
+            
+            try:
+                carver_answer = carver.synthesize(carver_input)
+                result_data["human_readable_output"] = carver_answer.get("full_text", "")
+                result_data["carver_metrics"] = carver_answer.get("metrics", {})
+            except Exception as e:
+                # Fallback to basic template if Carver fails
+                result_data["human_readable_output"] = self._generate_human_readable_output(
+                    evidence, validation, human_readable_config, contract
+                )
+                result_data["carver_error"] = str(e)
 
         return result_data
 
