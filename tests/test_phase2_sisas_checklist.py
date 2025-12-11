@@ -863,19 +863,19 @@ class TestContractValidation:
 # SECTION 4: EVIDENCE RECORD VALIDATION
 # ============================================================================
 
-class TestEvidenceRecordValidation:
-    """Tests for EvidenceRecord structure and validation."""
+class TestEvidenceNodeValidation:
+    """Tests for EvidenceNode structure and validation (replaces EvidenceRecord)."""
     
-    @pytest.mark.skipif(not EVIDENCE_REGISTRY_AVAILABLE, reason="EvidenceRegistry not available")
-    def test_evid_001_evidence_id_sha256(self, tmp_path: Path):
+    @pytest.mark.skipif(not EVIDENCE_NEXUS_AVAILABLE, reason="EvidenceNexus not available")
+    def test_evid_001_evidence_id_sha256(self):
         """[EVID-001] Verify evidence_id is SHA-256 (64 hex chars)."""
-        storage_path = tmp_path / "test_evidence.jsonl"
-        registry = EvidenceRegistry(storage_path=storage_path, enable_dag=False)
-        
-        evidence_id = registry.record_evidence(
-            evidence_type="test",
-            payload={"test": "data"},
+        node = EvidenceNode.create(
+            evidence_type=EvidenceType.OFFICIAL_SOURCE,
+            content={"test": "data"},
+            confidence=0.9,
+            source_method="test_method"
         )
+        evidence_id = node.node_id
         
         is_64_hex = len(evidence_id) == 64 and all(c in '0123456789abcdef' for c in evidence_id)
         
@@ -891,56 +891,52 @@ class TestEvidenceRecordValidation:
         _checklist_report.add(result)
         assert result.passed, result.message
 
-    @pytest.mark.skipif(not EVIDENCE_REGISTRY_AVAILABLE, reason="EvidenceRegistry not available")
-    def test_evid_002_content_hash_computation(self, tmp_path: Path):
-        """[EVID-002] Verify content_hash is computed correctly."""
-        storage_path = tmp_path / "test_evidence.jsonl"
-        registry = EvidenceRegistry(storage_path=storage_path, enable_dag=False)
-        
-        test_payload = {"test": "data", "number": 42}
-        evidence_id = registry.record_evidence(
-            evidence_type="test",
-            payload=test_payload,
+    @pytest.mark.skipif(not EVIDENCE_NEXUS_AVAILABLE, reason="EvidenceNexus not available")
+    def test_evid_002_content_hash_computation(self):
+        """[EVID-002] Verify node_id derived from content hash."""
+        content = {"test": "data", "number": 42}
+        node = EvidenceNode.create(
+            evidence_type=EvidenceType.OFFICIAL_SOURCE,
+            content=content,
+            confidence=0.9,
+            source_method="test_method"
         )
         
-        record = registry.get_evidence(evidence_id)
+        # Recompute ID manually to verify
+        canonical = EvidenceNode._canonical_json(content)
+        expected_id = hashlib.sha256(canonical.encode()).hexdigest()
         
-        # Verify content_hash matches recomputation
-        recomputed = record._compute_content_hash()
-        matches = record.content_hash == recomputed
+        matches = node.node_id == expected_id
         
         result = CheckResult(
             check_id="EVID-002",
             category="EVIDENCE",
-            description="content_hash computado correctamente",
+            description="node_id computado correctamente (hash de contenido)",
             passed=matches,
             severity="FATAL",
-            message=f"Content hash matches recomputation: {matches}",
+            message=f"Node ID matches recomputation: {matches}",
             evidence={
-                "stored": record.content_hash[:16] + "..." if record.content_hash else None,
-                "recomputed": recomputed[:16] + "..." if recomputed else None
+                "stored": node.node_id[:16] + "...",
+                "recomputed": expected_id[:16] + "..."
             }
         )
         _checklist_report.add(result)
         assert result.passed, result.message
 
-    @pytest.mark.skipif(not EVIDENCE_REGISTRY_AVAILABLE, reason="EvidenceRegistry not available")
-    def test_evid_005_timestamp_is_float(self, tmp_path: Path):
+    @pytest.mark.skipif(not EVIDENCE_NEXUS_AVAILABLE, reason="EvidenceNexus not available")
+    def test_evid_005_timestamp_is_float(self):
         """[EVID-005] Verify timestamp is float Unix epoch."""
-        storage_path = tmp_path / "test_evidence.jsonl"
-        registry = EvidenceRegistry(storage_path=storage_path, enable_dag=False)
-        
         before = time.time()
-        evidence_id = registry.record_evidence(
-            evidence_type="test",
-            payload={"test": "data"},
+        node = EvidenceNode.create(
+            evidence_type=EvidenceType.OFFICIAL_SOURCE,
+            content={"test": "data"},
+            confidence=0.9,
+            source_method="test_method"
         )
         after = time.time()
         
-        record = registry.get_evidence(evidence_id)
-        
-        is_float = isinstance(record.timestamp, float)
-        in_range = before <= record.timestamp <= after
+        is_float = isinstance(node.extraction_timestamp, float)
+        in_range = before <= node.extraction_timestamp <= after
         
         result = CheckResult(
             check_id="EVID-005",
@@ -948,9 +944,9 @@ class TestEvidenceRecordValidation:
             description="timestamp es float Unix epoch",
             passed=is_float and in_range,
             severity="WARNING",
-            message=f"timestamp type={type(record.timestamp).__name__}, in_range={in_range}",
+            message=f"timestamp type={type(node.extraction_timestamp).__name__}, in_range={in_range}",
             evidence={
-                "timestamp": record.timestamp,
+                "timestamp": node.extraction_timestamp,
                 "is_float": is_float,
                 "before": before,
                 "after": after
@@ -959,42 +955,37 @@ class TestEvidenceRecordValidation:
         _checklist_report.add(result)
         assert result.passed, result.message
 
-    @pytest.mark.skipif(not EVIDENCE_REGISTRY_AVAILABLE, reason="EvidenceRegistry not available")
-    def test_evid_006_chain_verification_method(self, tmp_path: Path):
-        """[EVID-006] Verify verify_chain_integrity() works correctly."""
-        storage_path = tmp_path / "test_evidence.jsonl"
-        registry = EvidenceRegistry(storage_path=storage_path, enable_dag=False)
+    @pytest.mark.skipif(not EVIDENCE_NEXUS_AVAILABLE, reason="EvidenceNexus not available")
+    def test_evid_006_chain_verification_method(self):
+        """[EVID-006] Verify verify_hash_chain() works correctly on Graph."""
+        graph = EvidenceGraph()
         
         # Add multiple records to test chain
         for i in range(10):
-            registry.record_evidence(
-                evidence_type="test",
-                payload={"index": i},
+            node = EvidenceNode.create(
+                evidence_type=EvidenceType.OFFICIAL_SOURCE,
+                content={"index": i},
+                confidence=0.9,
+                source_method="test_method"
             )
+            graph.add_node(node)
         
         # Verify chain
-        is_valid, errors = registry.verify_chain_integrity()
+        is_valid = graph.verify_hash_chain()
         
         # Check return type
-        correct_return_type = (
-            isinstance(is_valid, bool) and 
-            isinstance(errors, list)
-        )
+        correct_return_type = isinstance(is_valid, bool)
         
         result = CheckResult(
             check_id="EVID-006",
             category="EVIDENCE",
-            description="verify_chain_integrity() returns (bool, list)",
+            description="verify_hash_chain() returns bool",
             passed=correct_return_type and is_valid,
             severity="FATAL",
             message=f"Return type correct: {correct_return_type}, chain valid: {is_valid}",
             evidence={
                 "is_valid": is_valid,
-                "error_count": len(errors),
-                "return_types": {
-                    "is_valid": type(is_valid).__name__,
-                    "errors": type(errors).__name__
-                }
+                "return_type": type(is_valid).__name__
             }
         )
         _checklist_report.add(result)
