@@ -31,8 +31,11 @@ from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT, RULES_DIR
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 from canonic_phases.Phase_zero.paths import safe_join
+
+# Define RULES_DIR locally (not exported from paths)
+RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
 from canonic_phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
