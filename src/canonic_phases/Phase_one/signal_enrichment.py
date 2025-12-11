@@ -47,7 +47,6 @@ try:
         create_default_signal_pack,
     )
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_quality_metrics import (
-        SignalQualityMetrics,
         compute_signal_quality_metrics,
         analyze_coverage_gaps,
     )
