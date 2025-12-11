@@ -139,9 +139,11 @@ class TestPhase1CircuitBreaker:
         cb = Phase1CircuitBreaker()
         cb.state = CircuitState.OPEN
         
-        with pytest.raises(RuntimeError, match="Circuit breaker is OPEN"):
-            cb.ensure_can_execute = lambda: ensure_can_execute() if cb.can_execute() else (_ for _ in ()).throw(RuntimeError("Circuit breaker is OPEN"))
-            cb.ensure_can_execute()
+        # Test that execution is blocked when circuit is OPEN
+        with pytest.raises(RuntimeError, match="execution blocked"):
+            if not cb.can_execute():
+                raise RuntimeError("Phase 1 execution blocked by circuit breaker")
+            # Should not reach here
 
 
 class TestSubphaseCheckpoint:
