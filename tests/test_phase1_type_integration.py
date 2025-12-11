@@ -52,19 +52,8 @@ def test_phase1_models_have_enum_fields():
     print("="*80)
     
     try:
-        # Import directly from modules to avoid __init__.py dependency issues
-        import sys
-        import importlib.util
-        
-        # Load phase1_models directly
-        spec = importlib.util.spec_from_file_location(
-            "phase1_models",
-            Path(__file__).parent.parent / "src/canonic_phases/Phase_one/phase1_models.py"
-        )
-        phase1_models = importlib.util.module_from_spec(spec)
-        sys.modules['phase1_models_test'] = phase1_models
-        spec.loader.exec_module(phase1_models)
-        
+        # Import phase1_models using standard import
+        from canonic_phases.Phase_one import phase1_models
         Chunk = phase1_models.Chunk
         SmartChunk = phase1_models.SmartChunk
         CANONICAL_TYPES_AVAILABLE = phase1_models.CANONICAL_TYPES_AVAILABLE
