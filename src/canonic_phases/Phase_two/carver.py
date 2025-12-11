@@ -1,6 +1,6 @@
 """
-Doctoral-Carver Narrative Synthesizer v2.0 (SOTA Edition)
-=========================================================
+Doctoral-Carver Narrative Synthesizer v2.1 (SOTA Edition + Macro Synthesis)
+============================================================================
 
 Genera respuestas PhD-level con estilo minimalista Raymond Carver: 
 - Precisión quirúrgica en cada afirmación
@@ -23,15 +23,17 @@ Arquitectura:
 4.BayesianConfidence: Inferencia calibrada de confianza
 5.DimensionTheory: Estrategias teóricamente fundamentadas por D1-D6
 6.CarverRenderer: Prosa minimalista con máximo impacto
+7.MacroSynthesizer: Agregación holística con análisis PA×DIM (v2.1)
 
 Invariantes: 
 [INV-001] Toda afirmación debe tener ≥1 evidencia citada
 [INV-002] Gaps críticos siempre aparecen en respuesta
 [INV-003] Confianza debe ser calibrada (no optimista)
 [INV-004] Estilo Carver:  oraciones cortas, verbos activos, sin adverbios
+[INV-005] Macro synthesis con divergencia PA×DIM explícita (v2.1)
 
 Author: F.A. R.F.A.N Pipeline
-Version: 2.0.0-SOTA
+Version: 2.1.0-SOTA-MACRO
 """
 
 from __future__ import annotations
@@ -1388,6 +1390,434 @@ class DoctoralCarverSynthesizer:
                 "confidence": confidence.point_estimate,
             }
         )
+    
+    def synthesize_macro(
+        self,
+        meso_results: List[Any],  # List[MesoQuestionResult]
+        coverage_matrix: Optional[Dict[Tuple[str, str], float]] = None,
+        macro_question_text: str = "¿El Plan de Desarrollo presenta una visión integral y coherente?",
+    ) -> Dict[str, Any]:
+        """
+        Sintetiza respuesta macro-level con análisis de divergencia PA×DIM.
+        
+        Agregación holística de múltiples meso-questions con:
+        - Análisis de cobertura PA×DIM (10 policy areas × 6 dimensions)
+        - Identificación de divergencias críticas
+        - Cálculo de score holístico calibrado
+        - Generación de hallazgos, fortalezas y debilidades
+        
+        Args:
+            meso_results: Lista de resultados de meso-questions
+            coverage_matrix: Matriz PA×DIM con scores {("PA01", "DIM01"): 0.85, ...}
+            macro_question_text: Texto de la pregunta macro
+            
+        Returns:
+            Dict con estructura de MacroQuestionResult:
+                - score: Score holístico 0-1
+                - scoring_level: Nivel (excelente/bueno/aceptable/insuficiente)
+                - hallazgos: Lista de hallazgos globales
+                - recomendaciones: Lista de recomendaciones priorizadas
+                - fortalezas: Fortalezas identificadas
+                - debilidades: Debilidades identificadas (gaps)
+                - divergence_analysis: Análisis PA×DIM detallado
+        """
+        # 1. Analizar cobertura PA×DIM si está disponible
+        divergence_analysis = {}
+        if coverage_matrix:
+            divergence_analysis = self._analyze_pa_dim_divergence(coverage_matrix)
+        
+        # 2. Agregar scores de meso-questions
+        meso_scores = [m.get("score", 0.0) if isinstance(m, dict) else getattr(m, "score", 0.0) 
+                       for m in meso_results]
+        
+        if not meso_scores:
+            base_score = 0.0
+        else:
+            # Promedio ponderado con penalización por varianza alta
+            base_score = statistics.mean(meso_scores)
+            if len(meso_scores) > 1:
+                variance = statistics.variance(meso_scores)
+                # Penalizar inconsistencia (varianza alta)
+                variance_penalty = min(0.15, variance * 0.3)
+                base_score = max(0.0, base_score - variance_penalty)
+        
+        # 3. Ajustar score con análisis de divergencia
+        if divergence_analysis:
+            coverage_score = divergence_analysis.get("overall_coverage", 1.0)
+            critical_gaps_count = divergence_analysis.get("critical_gaps_count", 0)
+            
+            # Penalizar gaps críticos en PA×DIM
+            gap_penalty = min(0.25, critical_gaps_count * 0.05)
+            
+            # Score final como promedio ponderado
+            final_score = (0.7 * base_score + 0.3 * coverage_score) - gap_penalty
+        else:
+            final_score = base_score
+        
+        final_score = max(0.0, min(1.0, final_score))
+        
+        # 4. Determinar nivel de scoring
+        if final_score >= 0.85:
+            scoring_level = "excelente"
+        elif final_score >= 0.70:
+            scoring_level = "bueno"
+        elif final_score >= 0.55:
+            scoring_level = "aceptable"
+        else:
+            scoring_level = "insuficiente"
+        
+        # 5. Generar hallazgos globales
+        hallazgos = self._generate_macro_hallazgos(
+            meso_results, divergence_analysis, final_score
+        )
+        
+        # 6. Generar fortalezas y debilidades
+        fortalezas, debilidades = self._identify_strengths_weaknesses(
+            meso_results, divergence_analysis
+        )
+        
+        # 7. Generar recomendaciones priorizadas
+        recomendaciones = self._generate_macro_recommendations(
+            debilidades, divergence_analysis
+        )
+        
+        # 8. Construir resultado macro
+        return {
+            "score": round(final_score, 3),
+            "scoring_level": scoring_level,
+            "aggregation_method": "holistic_assessment",
+            "meso_results": meso_results,
+            "n_meso_evaluated": len(meso_results),
+            "hallazgos": hallazgos,
+            "recomendaciones": recomendaciones,
+            "fortalezas": fortalezas,
+            "debilidades": debilidades,
+            "divergence_analysis": divergence_analysis,
+            "metadata": {
+                "question_text": macro_question_text,
+                "synthesis_method": "doctoral_carver_macro_v2",
+                "base_score": round(base_score, 3),
+                "coverage_adjusted": coverage_matrix is not None,
+            }
+        }
+    
+    def _analyze_pa_dim_divergence(
+        self, 
+        coverage_matrix: Dict[Tuple[str, str], float]
+    ) -> Dict[str, Any]:
+        """
+        Analiza divergencia en matriz PA×DIM (10×6 = 60 células).
+        
+        Identifica:
+        - Cobertura global (% de células con score >= threshold)
+        - Gaps críticos (células con score < 0.5)
+        - PAs y DIMs con baja cobertura
+        - Patrones de divergencia
+        """
+        if not coverage_matrix:
+            return {}
+        
+        # Definir umbrales
+        THRESHOLD_ACCEPTABLE = 0.55
+        THRESHOLD_CRITICAL = 0.50
+        
+        # 1. Análisis global
+        all_scores = list(coverage_matrix.values())
+        if not all_scores:
+            return {"overall_coverage": 0.0, "critical_gaps_count": 0}
+        
+        overall_coverage = statistics.mean(all_scores)
+        cells_above_threshold = sum(1 for s in all_scores if s >= THRESHOLD_ACCEPTABLE)
+        coverage_percentage = cells_above_threshold / len(all_scores) if all_scores else 0.0
+        
+        # 2. Identificar gaps críticos
+        critical_gaps = [
+            (pa, dim, score) 
+            for (pa, dim), score in coverage_matrix.items() 
+            if score < THRESHOLD_CRITICAL
+        ]
+        
+        # 3. Análisis por Policy Area
+        policy_areas = set(pa for (pa, dim) in coverage_matrix.keys())
+        pa_scores = {}
+        for pa in policy_areas:
+            pa_cells = [score for (p, d), score in coverage_matrix.items() if p == pa]
+            pa_scores[pa] = statistics.mean(pa_cells) if pa_cells else 0.0
+        
+        low_coverage_pas = [pa for pa, score in pa_scores.items() if score < THRESHOLD_ACCEPTABLE]
+        
+        # 4. Análisis por Dimension
+        dimensions = set(dim for (pa, dim) in coverage_matrix.keys())
+        dim_scores = {}
+        for dim in dimensions:
+            dim_cells = [score for (p, d), score in coverage_matrix.items() if d == dim]
+            dim_scores[dim] = statistics.mean(dim_cells) if dim_cells else 0.0
+        
+        low_coverage_dims = [dim for dim, score in dim_scores.items() if score < THRESHOLD_ACCEPTABLE]
+        
+        # 5. Identificar patrones de divergencia
+        divergence_patterns = []
+        
+        if low_coverage_pas:
+            divergence_patterns.append(
+                f"Áreas de política con baja cobertura: {', '.join(low_coverage_pas)}"
+            )
+        
+        if low_coverage_dims:
+            dim_names = {
+                "DIM01": "Insumos",
+                "DIM02": "Actividades", 
+                "DIM03": "Productos",
+                "DIM04": "Resultados",
+                "DIM05": "Impactos",
+                "DIM06": "Causalidad"
+            }
+            dim_labels = [dim_names.get(d, d) for d in low_coverage_dims]
+            divergence_patterns.append(
+                f"Dimensiones con baja cobertura: {', '.join(dim_labels)}"
+            )
+        
+        if critical_gaps:
+            # Agrupar por PA
+            gaps_by_pa = defaultdict(int)
+            for pa, dim, score in critical_gaps:
+                gaps_by_pa[pa] += 1
+            
+            top_gap_pas = sorted(gaps_by_pa.items(), key=lambda x: x[1], reverse=True)[:3]
+            if top_gap_pas:
+                pa_list = [f"{pa} ({count} gaps)" for pa, count in top_gap_pas]
+                divergence_patterns.append(
+                    f"PAs con más gaps críticos: {', '.join(pa_list)}"
+                )
+        
+        return {
+            "overall_coverage": round(overall_coverage, 3),
+            "coverage_percentage": round(coverage_percentage, 3),
+            "total_cells": len(coverage_matrix),
+            "cells_above_threshold": cells_above_threshold,
+            "critical_gaps_count": len(critical_gaps),
+            "critical_gaps": critical_gaps[:5],  # Top 5 para no sobrecargar
+            "low_coverage_pas": low_coverage_pas,
+            "low_coverage_dims": low_coverage_dims,
+            "pa_scores": {pa: round(score, 3) for pa, score in pa_scores.items()},
+            "dim_scores": {dim: round(score, 3) for dim, score in dim_scores.items()},
+            "divergence_patterns": divergence_patterns,
+        }
+    
+    def _generate_macro_hallazgos(
+        self,
+        meso_results: List[Any],
+        divergence_analysis: Dict[str, Any],
+        final_score: float,
+    ) -> List[str]:
+        """Genera hallazgos globales del análisis macro."""
+        hallazgos = []
+        
+        # 1. Hallazgo sobre score global
+        if final_score >= 0.85:
+            hallazgos.append(
+                "El plan presenta un nivel excelente de integración y coherencia global."
+            )
+        elif final_score >= 0.70:
+            hallazgos.append(
+                "El plan muestra un nivel bueno de articulación entre dimensiones."
+            )
+        elif final_score >= 0.55:
+            hallazgos.append(
+                "El plan alcanza un nivel aceptable de coherencia, con áreas de mejora."
+            )
+        else:
+            hallazgos.append(
+                "El plan presenta deficiencias significativas en integración y coherencia."
+            )
+        
+        # 2. Hallazgos de meso-questions
+        if meso_results:
+            high_scoring_mesos = [
+                m for m in meso_results 
+                if (isinstance(m, dict) and m.get("score", 0) >= 0.80) or
+                   (hasattr(m, "score") and m.score >= 0.80)
+            ]
+            low_scoring_mesos = [
+                m for m in meso_results 
+                if (isinstance(m, dict) and m.get("score", 0) < 0.55) or
+                   (hasattr(m, "score") and m.score < 0.55)
+            ]
+            
+            if high_scoring_mesos:
+                hallazgos.append(
+                    f"{len(high_scoring_mesos)} de {len(meso_results)} clusters muestran alto desempeño."
+                )
+            
+            if low_scoring_mesos:
+                hallazgos.append(
+                    f"{len(low_scoring_mesos)} clusters requieren atención prioritaria."
+                )
+        
+        # 3. Hallazgos de divergencia PA×DIM
+        if divergence_analysis:
+            coverage_pct = divergence_analysis.get("coverage_percentage", 0.0)
+            critical_gaps = divergence_analysis.get("critical_gaps_count", 0)
+            
+            if coverage_pct >= 0.80:
+                hallazgos.append(
+                    f"Cobertura PA×DIM: {coverage_pct:.0%} de células con nivel aceptable."
+                )
+            else:
+                hallazgos.append(
+                    f"Cobertura PA×DIM insuficiente: solo {coverage_pct:.0%} de células aceptables."
+                )
+            
+            if critical_gaps > 0:
+                hallazgos.append(
+                    f"{critical_gaps} células críticas identificadas en matriz PA×DIM."
+                )
+            
+            # Agregar patrones de divergencia
+            patterns = divergence_analysis.get("divergence_patterns", [])
+            hallazgos.extend(patterns[:2])  # Top 2 patrones
+        
+        return hallazgos
+    
+    def _identify_strengths_weaknesses(
+        self,
+        meso_results: List[Any],
+        divergence_analysis: Dict[str, Any],
+    ) -> Tuple[List[str], List[str]]:
+        """Identifica fortalezas y debilidades globales."""
+        fortalezas = []
+        debilidades = []
+        
+        # Analizar meso-questions
+        if meso_results:
+            scores = [
+                m.get("score", 0.0) if isinstance(m, dict) else getattr(m, "score", 0.0)
+                for m in meso_results
+            ]
+            
+            if scores:
+                avg_score = statistics.mean(scores)
+                
+                if avg_score >= 0.75:
+                    fortalezas.append(
+                        "Consistencia alta entre clusters temáticos."
+                    )
+                
+                if len(scores) > 1:
+                    variance = statistics.variance(scores)
+                    if variance < 0.05:
+                        fortalezas.append(
+                            "Homogeneidad en calidad de implementación."
+                        )
+                    elif variance > 0.15:
+                        debilidades.append(
+                            "Heterogeneidad significativa entre clusters."
+                        )
+        
+        # Analizar divergencia PA×DIM
+        if divergence_analysis:
+            overall_cov = divergence_analysis.get("overall_coverage", 0.0)
+            
+            if overall_cov >= 0.80:
+                fortalezas.append(
+                    "Cobertura equilibrada de policy areas y dimensiones."
+                )
+            elif overall_cov < 0.60:
+                debilidades.append(
+                    "Cobertura deficiente en matriz PA×DIM."
+                )
+            
+            low_pas = divergence_analysis.get("low_coverage_pas", [])
+            if low_pas:
+                debilidades.append(
+                    f"Déficit en áreas: {', '.join(low_pas[:3])}."
+                )
+            
+            low_dims = divergence_analysis.get("low_coverage_dims", [])
+            if low_dims:
+                dim_names = {
+                    "DIM01": "Insumos", "DIM02": "Actividades",
+                    "DIM03": "Productos", "DIM04": "Resultados",
+                    "DIM05": "Impactos", "DIM06": "Causalidad"
+                }
+                dim_labels = [dim_names.get(d, d) for d in low_dims[:2]]
+                debilidades.append(
+                    f"Débil en dimensiones: {', '.join(dim_labels)}."
+                )
+        
+        # Asegurar al menos un elemento en cada lista
+        if not fortalezas:
+            fortalezas.append("Plan documentado y estructurado.")
+        
+        if not debilidades:
+            debilidades.append("Oportunidades de fortalecimiento identificadas.")
+        
+        return fortalezas, debilidades
+    
+    def _generate_macro_recommendations(
+        self,
+        debilidades: List[str],
+        divergence_analysis: Dict[str, Any],
+    ) -> List[str]:
+        """Genera recomendaciones priorizadas basadas en debilidades y gaps."""
+        recomendaciones = []
+        
+        # 1. Recomendaciones basadas en divergencia PA×DIM
+        if divergence_analysis:
+            critical_gaps = divergence_analysis.get("critical_gaps_count", 0)
+            
+            if critical_gaps > 5:
+                recomendaciones.append(
+                    f"PRIORIDAD ALTA: Abordar {critical_gaps} gaps críticos en matriz PA×DIM."
+                )
+            
+            low_pas = divergence_analysis.get("low_coverage_pas", [])
+            if low_pas:
+                recomendaciones.append(
+                    f"Fortalecer policy areas: {', '.join(low_pas[:2])}."
+                )
+            
+            low_dims = divergence_analysis.get("low_coverage_dims", [])
+            if low_dims:
+                dim_names = {
+                    "DIM01": "Insumos", "DIM02": "Actividades",
+                    "DIM03": "Productos", "DIM04": "Resultados",
+                    "DIM05": "Impactos", "DIM06": "Causalidad"
+                }
+                dim_labels = [dim_names.get(d, d) for d in low_dims[:2]]
+                recomendaciones.append(
+                    f"Reforzar dimensiones: {', '.join(dim_labels)}."
+                )
+            
+            # Recomendación específica por dimensión débil
+            dim_scores = divergence_analysis.get("dim_scores", {})
+            if dim_scores:
+                weakest_dim = min(dim_scores.items(), key=lambda x: x[1])
+                if weakest_dim[1] < 0.60:
+                    dim_recs = {
+                        "DIM01": "Mejorar diagnóstico con datos cuantitativos verificables.",
+                        "DIM02": "Especificar instrumentos y población objetivo de intervenciones.",
+                        "DIM03": "Cuantificar metas y establecer proporcionalidad con problema.",
+                        "DIM04": "Definir indicadores de resultado con línea base.",
+                        "DIM05": "Explicitar teoría de cambio y horizonte temporal de impactos.",
+                        "DIM06": "Documentar lógica causal y sistema de monitoreo y evaluación.",
+                    }
+                    rec = dim_recs.get(weakest_dim[0])
+                    if rec:
+                        recomendaciones.append(rec)
+        
+        # 2. Recomendaciones basadas en debilidades
+        if any("heterogeneidad" in d.lower() or "inconsistencia" in d.lower() for d in debilidades):
+            recomendaciones.append(
+                "Estandarizar metodología de formulación entre clusters."
+            )
+        
+        # 3. Recomendación general de integración
+        recomendaciones.append(
+            "Reforzar articulación transversal entre policy areas y dimensiones."
+        )
+        
+        return recomendaciones[:8]  # Máximo 8 recomendaciones
 
 
 # =============================================================================

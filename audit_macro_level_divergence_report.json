@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-12-11T06:34:11.308961",
+  "timestamp": "2025-12-11T07:31:40.942515",
   "summary": {
     "macro_level_ready": true,
-    "overall_score": 0.938,
+    "overall_score": 1.0,
     "total_capabilities_checked": 8,
-    "capabilities_present": 7,
-    "capabilities_partial": 1,
+    "capabilities_present": 8,
+    "capabilities_partial": 0,
     "capabilities_missing": 0,
     "critical_findings_count": 0
   },
@@ -28,7 +28,7 @@
         "dimension_support": "PRESENT",
         "gap_analysis": "PRESENT",
         "divergence_analysis": "PRESENT",
-        "macro_synthesis": "PARTIAL"
+        "macro_synthesis": "PRESENT"
       },
       "findings_count": 4,
       "metadata": {}
@@ -193,11 +193,13 @@
     {
       "capability": "macro_synthesis",
       "component": "Carver",
-      "severity": "MEDIUM",
-      "status": "PARTIAL",
-      "description": "Carver may not fully support macro synthesis",
-      "evidence": [],
-      "recommendation": "Extend Carver to handle macro-level holistic assessment",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Carver supports macro-level synthesis",
+      "evidence": [
+        "MacroQuestion or holistic assessment references found"
+      ],
+      "recommendation": null,
       "code_references": []
     },
     {
