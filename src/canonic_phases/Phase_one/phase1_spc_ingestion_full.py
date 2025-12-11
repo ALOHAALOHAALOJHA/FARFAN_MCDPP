@@ -476,6 +476,7 @@ class Phase1SPCIngestionFullContract:
         self.error_log: List[Dict[str, Any]] = []
         self.invariant_checks: Dict[str, bool] = {}
         self.document_id: str = ""  # Set from CanonicalInput
+        self.signal_enricher = None  # Optional signal enrichment component
         
     def _deterministic_serialize(self, output: Any) -> str:
         """Helper to serialize output for hashing."""
@@ -2102,6 +2103,22 @@ class Phase1SPCIngestionFullContract:
         integrity_index = IntegrityIndex.compute(chunk_graph.chunks)
         logger.info(f"CPP: Computed IntegrityIndex - blake2b_root={integrity_index.blake2b_root[:32]}...")
         
+        # SIGNAL COVERAGE METRICS: Compute comprehensive signal enrichment metrics
+        signal_coverage_metrics = {}
+        signal_provenance_report = {}
+        if self.signal_enricher is not None:
+            try:
+                signal_coverage_metrics = self.signal_enricher.compute_signal_coverage_metrics(ranked)
+                signal_provenance_report = self.signal_enricher.get_provenance_report()
+                logger.info(
+                    f"Signal enrichment metrics: "
+                    f"coverage={signal_coverage_metrics.get('coverage_completeness', 0):.2%}, "
+                    f"quality_tier={signal_coverage_metrics.get('quality_tier', 'N/A')}, "
+                    f"avg_tags_per_chunk={signal_coverage_metrics.get('avg_signal_tags_per_chunk', 0):.1f}"
+                )
+            except Exception as e:
+                logger.warning(f"Signal coverage metrics computation failed: {e}")
+        
         # [EXEC-CPP-015] Build metadata with execution trace and weight-based metrics
         # Compute weight metrics efficiently in a single pass
         trace_length = len(self.execution_trace)
@@ -2141,6 +2158,9 @@ class Phase1SPCIngestionFullContract:
                 'total_weight_score': total_weight,
                 'error_log': self.error_log,  # Include any errors with weight context
             },
+            # Signal enrichment metrics (if signal enricher is available)
+            'signal_coverage_metrics': signal_coverage_metrics,
+            'signal_provenance_report': signal_provenance_report,
         }
         
         # Build PolicyManifest for canonical notation reference
