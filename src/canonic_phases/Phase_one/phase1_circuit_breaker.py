@@ -469,7 +469,11 @@ class SubphaseCheckpoint:
         
         # Record checkpoint
         # Use a lightweight hash based on type and count rather than full serialization
-        output_summary = f"{type(output).__name__}:{len(output) if hasattr(output, '__len__') else 0}"
+        try:
+            output_len = len(output) if hasattr(output, '__len__') else 0
+        except (TypeError, AttributeError):
+            output_len = 0
+        output_summary = f"{type(output).__name__}:{output_len}"
         self.checkpoints[subphase_num] = {
             'timestamp': datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
             'passed': len(errors) == 0,
