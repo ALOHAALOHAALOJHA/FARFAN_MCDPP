@@ -47,6 +47,11 @@ from canonic_phases.Phase_one.phase1_models import (
     SmartChunk,
     ValidationResult,
     CausalGraph,
+    # NEW: Typed causal structures (CategoriaCausal integration)
+    CausalNode,
+    CausalEdge,
+    CausalChains,
+    IntegratedCausal,
 )
 
 # Phase 1: Main Executor
@@ -91,6 +96,11 @@ __all__ = [
     "SmartChunk",
     "ValidationResult",
     "CausalGraph",
+    # NEW: Typed causal structures (CategoriaCausal from types.py)
+    "CausalNode",
+    "CausalEdge", 
+    "CausalChains",
+    "IntegratedCausal",
     # Phase 1 Executor
     "Phase1SPCIngestionFullContract",
     "execute_phase_1_with_full_contract",
