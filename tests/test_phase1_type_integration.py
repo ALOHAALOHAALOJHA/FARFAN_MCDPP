@@ -256,18 +256,22 @@ def test_enum_value_aggregation():
         iterations = 10000
         
         # String comparison
+        string_total = 0
         start = time.perf_counter()
         for _ in range(iterations):
-            [c for c in chunks if c.policy_area_id == "PA01"]
+            result = [c for c in chunks if c.policy_area_id == "PA01"]
+            string_total += len(result)
         string_time = time.perf_counter() - start
         
         # Enum comparison
+        enum_total = 0
         start = time.perf_counter()
         for _ in range(iterations):
             result = [c for c in chunks if c.policy_area == PolicyArea.PA01]
+            enum_total += len(result)
         enum_time = time.perf_counter() - start
         
-        print(f"  ℹ Performance: String={string_time:.4f}s, Enum={enum_time:.4f}s")
+        print(f"  ℹ Performance: String={string_time:.4f}s, Enum={enum_time:.4f}s (totals: string={string_total}, enum={enum_total})")
         print(f"  ✓ Enum comparison is {'faster' if enum_time < string_time else 'comparable'}")
         
         print("\n  ✅ PASSED: Enum value aggregation works correctly")
