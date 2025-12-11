@@ -71,6 +71,8 @@ class ReportAssemblyException(Exception):
         self.details = details or {}
         self.stage = stage
         self.recoverable = recoverable
+        # DETERMINISM WARNING: uuid.uuid4() used only when event_id not provided.
+        # In deterministic execution, event_id should be derived from correlation_id.
         self.event_id = event_id or str(uuid.uuid4())
         super().__init__(self._format_message())
 
@@ -186,9 +188,11 @@ class ReportMetadata(BaseModel):
     total_questions: int = Field(..., description="Total number of questions", ge=0)
     questions_analyzed: int = Field(..., description="Number of questions analyzed", ge=0)
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    # DETERMINISM WARNING: Default factory uses uuid.uuid4() as fallback only.
+    # For deterministic execution, correlation_id MUST be provided explicitly.
     correlation_id: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
-        description="UUID for request correlation"
+        description="UUID for request correlation (MUST be provided explicitly for deterministic execution)"
     )
 
     @field_validator('generated_at')
@@ -558,7 +562,13 @@ class ReportAssembler:
             timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
             report_id = f"report_{plan_name}_{timestamp}"
 
-        correlation_id = str(uuid.uuid4())
+        # DETERMINISM FIX: Generate deterministic correlation_id from policy_unit_id
+        from orchestration.deterministic_ids import generate_correlation_id
+        correlation_id = generate_correlation_id(
+            policy_unit_id=policy_unit_id or "unknown",
+            phase="phase_9_report_assembly",
+            run_counter=0
+        )
 
         try:
             # Get questionnaire data and compute hash

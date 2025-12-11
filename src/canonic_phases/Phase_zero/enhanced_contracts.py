@@ -32,6 +32,11 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 from farfan_pipeline.core.calibration.decorators import calibrated_method
 
+# NOTE: uuid.uuid4() usage in this file is DEPRECATED and should be replaced
+# with deterministic ID generation. UUIDs here are only fallbacks when
+# correlation_id/execution_id are not explicitly provided.
+# For deterministic execution, always pass these IDs explicitly from context.
+
 # ============================================================================
 # DOMAIN-SPECIFIC EXCEPTIONS
 # ============================================================================
@@ -41,6 +46,8 @@ class ContractValidationError(Exception):
 
     def __init__(self, message: str, field: str | None = None, event_id: str | None = None) -> None:
         self.field = field
+        # DETERMINISM WARNING: uuid.uuid4() used only when event_id not provided.
+        # In deterministic execution, event_id should be derived from correlation_id.
         self.event_id = event_id or str(uuid.uuid4())
         super().__init__(f"[{self.event_id}] {message}")
 
@@ -51,6 +58,8 @@ class DataIntegrityError(Exception):
     def __init__(self, message: str, expected: str | None = None, got: str | None = None, event_id: str | None = None) -> None:
         self.expected = expected
         self.got = got
+        # DETERMINISM WARNING: uuid.uuid4() used only when event_id not provided.
+        # In deterministic execution, event_id should be derived from correlation_id.
         self.event_id = event_id or str(uuid.uuid4())
         super().__init__(f"[{self.event_id}] {message}")
 
@@ -60,6 +69,8 @@ class SystemConfigError(Exception):
 
     def __init__(self, message: str, config_key: str | None = None, event_id: str | None = None) -> None:
         self.config_key = config_key
+        # DETERMINISM WARNING: uuid.uuid4() used only when event_id not provided.
+        # In deterministic execution, event_id should be derived from correlation_id.
         self.event_id = event_id or str(uuid.uuid4())
         super().__init__(f"[{self.event_id}] {message}")
 
@@ -70,6 +81,8 @@ class FlowCompatibilityError(Exception):
     def __init__(self, message: str, producer: str | None = None, consumer: str | None = None, event_id: str | None = None) -> None:
         self.producer = producer
         self.consumer = consumer
+        # DETERMINISM WARNING: uuid.uuid4() used only when event_id not provided.
+        # In deterministic execution, event_id should be derived from correlation_id.
         self.event_id = event_id or str(uuid.uuid4())
         super().__init__(f"[{self.event_id}] {message}")
 
@@ -159,9 +172,12 @@ class BaseContract(BaseModel):
         description="UTC timestamp in ISO-8601 format"
     )
 
+    # DETERMINISM WARNING: Default factory uses uuid.uuid4() as fallback only.
+    # For deterministic execution, correlation_id MUST be provided explicitly
+    # from deterministic context (e.g., derived from policy_unit_id + phase).
     correlation_id: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
-        description="UUID for request correlation and tracing"
+        description="UUID for request correlation and tracing (MUST be provided explicitly for deterministic execution)"
     )
 
     @field_validator('timestamp_utc')
@@ -375,9 +391,12 @@ class ExecutionContextV2(BaseContract):
     method_name: str = Field(..., description="Method being executed", min_length=1)
     document_id: str = Field(..., description="Document identifier")
     policy_unit_id: str = Field(..., description="Policy unit identifier")
+    # DETERMINISM WARNING: Default factory uses uuid.uuid4() as fallback only.
+    # For deterministic execution, execution_id MUST be provided explicitly
+    # from deterministic context (e.g., derived from correlation_id + executor_name).
     execution_id: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
-        description="Unique execution identifier"
+        description="Unique execution identifier (MUST be provided explicitly for deterministic execution)"
     )
     parent_correlation_id: str | None = Field(
         default=None,

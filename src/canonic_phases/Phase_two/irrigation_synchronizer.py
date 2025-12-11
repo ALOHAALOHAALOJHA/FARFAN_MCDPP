@@ -322,7 +322,14 @@ class IrrigationSynchronizer:
             ValueError: If chunk matrix validation fails or no chunks provided
         """
         self.questionnaire = questionnaire
-        self.correlation_id = str(uuid.uuid4())
+        # DETERMINISM FIX: Generate deterministic correlation_id from policy_unit_id
+        # This ensures reproducibility across runs with same input
+        from orchestration.deterministic_ids import generate_correlation_id
+        self.correlation_id = generate_correlation_id(
+            policy_unit_id=policy_unit_id or "unknown",
+            phase="phase_2_irrigation",
+            run_counter=0
+        )
         self.question_count = self._count_questions()
         self.chunk_matrix: ChunkMatrix | None = None
         self.document_chunks: list[dict[str, Any]] | None = None

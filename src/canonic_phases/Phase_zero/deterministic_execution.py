@@ -209,6 +209,9 @@ class DeterministicExecutor:
         def decorator(func: Callable) -> Callable:
             def wrapper(*args: Any, **kwargs: Any) -> Any:
                 # Generate correlation and event IDs
+                # DETERMINISM WARNING: Generating correlation_id from uuid.uuid4().
+                # This is acceptable here because this wrapper is primarily used for
+                # testing/development. In production, use explicit deterministic correlation_ids.
                 correlation_id = str(uuid.uuid4())
                 event_id = self.seed_manager.get_event_id(operation_name)
 
