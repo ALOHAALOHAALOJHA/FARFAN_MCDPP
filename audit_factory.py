@@ -231,13 +231,20 @@ class FactoryAuditor:
 
         try:
             # Execute grep command to find all load_questionnaire calls
-            search_cmd = "grep -r 'load_questionnaire(' --include='*.py' --exclude-dir=__pycache__ --exclude='*.pyc'"
+            search_cmd = [
+                "grep",
+                "-r",
+                "load_questionnaire(",
+                "--include=*.py",
+                "--exclude-dir=__pycache__",
+                "--exclude=*.pyc",
+            ]
             
             try:
                 # Run grep to find all load_questionnaire calls
                 grep_result = subprocess.run(
                     search_cmd,
-                    shell=True,
+                    shell=False,
                     cwd=REPO_ROOT,
                     capture_output=True,
                     text=True,
