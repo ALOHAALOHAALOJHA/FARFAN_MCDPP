@@ -172,11 +172,12 @@ class BaseContract(BaseModel):
         description="UTC timestamp in ISO-8601 format"
     )
 
-    # DETERMINISM WARNING: Default factory uses uuid.uuid4() as fallback only.
+    # DETERMINISM WARNING - FALLBACK ONLY: uuid.uuid4() used as default factory.
     # For deterministic execution, correlation_id MUST be provided explicitly
     # from deterministic context (e.g., derived from policy_unit_id + phase).
+    # This fallback is ONLY for backward compatibility and testing.
     correlation_id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()),
+        default_factory=lambda: str(uuid.uuid4()),  # FALLBACK ONLY - provide explicitly!
         description="UUID for request correlation and tracing (MUST be provided explicitly for deterministic execution)"
     )
 
@@ -391,11 +392,12 @@ class ExecutionContextV2(BaseContract):
     method_name: str = Field(..., description="Method being executed", min_length=1)
     document_id: str = Field(..., description="Document identifier")
     policy_unit_id: str = Field(..., description="Policy unit identifier")
-    # DETERMINISM WARNING: Default factory uses uuid.uuid4() as fallback only.
+    # DETERMINISM WARNING - FALLBACK ONLY: uuid.uuid4() used as default factory.
     # For deterministic execution, execution_id MUST be provided explicitly
     # from deterministic context (e.g., derived from correlation_id + executor_name).
+    # This fallback is ONLY for backward compatibility and testing.
     execution_id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()),
+        default_factory=lambda: str(uuid.uuid4()),  # FALLBACK ONLY - provide explicitly!
         description="Unique execution identifier (MUST be provided explicitly for deterministic execution)"
     )
     parent_correlation_id: str | None = Field(

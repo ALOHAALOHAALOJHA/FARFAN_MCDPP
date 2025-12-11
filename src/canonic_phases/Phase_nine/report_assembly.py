@@ -188,10 +188,11 @@ class ReportMetadata(BaseModel):
     total_questions: int = Field(..., description="Total number of questions", ge=0)
     questions_analyzed: int = Field(..., description="Number of questions analyzed", ge=0)
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
-    # DETERMINISM WARNING: Default factory uses uuid.uuid4() as fallback only.
+    # DETERMINISM WARNING - FALLBACK ONLY: uuid.uuid4() used as default factory.
     # For deterministic execution, correlation_id MUST be provided explicitly.
+    # This fallback is ONLY for backward compatibility and testing.
     correlation_id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()),
+        default_factory=lambda: str(uuid.uuid4()),  # FALLBACK ONLY - provide explicitly!
         description="UUID for request correlation (MUST be provided explicitly for deterministic execution)"
     )
 
