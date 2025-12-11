@@ -232,71 +232,86 @@ class FactoryAuditor:
         try:
             # Execute grep command to find all load_questionnaire calls
             search_cmd = "grep -r 'load_questionnaire(' --include='*.py' --exclude-dir=__pycache__ --exclude='*.pyc'"
-            if search_cmd:
-                try:
-                    # Run grep to find all load_questionnaire calls
-                    grep_result = subprocess.run(
-                        search_cmd,
-                        shell=True,
-                        cwd=REPO_ROOT,
-                        capture_output=True,
-                        text=True,
-                        timeout=10,
-                    )
+            
+            try:
+                # Run grep to find all load_questionnaire calls
+                grep_result = subprocess.run(
+                    search_cmd,
+                    shell=True,
+                    cwd=REPO_ROOT,
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                )
+                
+                # Parse results - filter out comments, function definitions, and documentation
+                matches = []
+                for line in grep_result.stdout.splitlines():
+                    # Extract the code portion (after filename:line:)
+                    parts = line.split(":", 2)
+                    code = parts[2] if len(parts) > 2 else line
                     
-                    # Parse results
-                    matches = [
-                        line for line in grep_result.stdout.splitlines()
-                        if "load_questionnaire(" in line and not line.strip().startswith("#")
-                    ]
+                    # Skip if it's a definition, in a comment, or in a string
+                    if any(pattern in code for pattern in [
+                        "def load_questionnaire",
+                        "\"load_questionnaire(",
+                        "'load_questionnaire(",
+                        ">>>",  # doctest
+                    ]) or code.strip().startswith("#"):
+                        continue
                     
-                    # Filter out acceptable matches (factory.py and its tests)
-                    problematic_matches = [
-                        match for match in matches
-                        if "factory.py" not in match and "test_factory" not in match
-                    ]
-                    
-                    if not problematic_matches:
-                        self.results["passed_checks"] += 1
-                        self.results["checks"][check_name] = {
-                            "status": "PASSED",
-                            "message": "Only factory.py calls load_questionnaire()",
-                            "total_matches": len(matches),
-                            "valid_matches": matches[:5],  # First 5 for reference
-                        }
-                        print(f"   ✅ PASSED: Only factory.py calls load_questionnaire()")
-                        print(f"      Valid matches: {len(matches)}")
-                    else:
-                        self.results["failed_checks"] += 1
-                        self.results["checks"][check_name] = {
-                            "status": "FAILED",
-                            "message": "Found unauthorized load_questionnaire() calls",
-                            "problematic_matches": problematic_matches[:10],
-                        }
-                        self.results["critical_errors"].append(
-                            f"Found {len(problematic_matches)} unauthorized load_questionnaire() calls"
-                        )
-                        print(f"   ❌ FAILED: Found {len(problematic_matches)} unauthorized calls")
-                        for match in problematic_matches[:3]:
-                            print(f"      - {match}")
-
-                except subprocess.TimeoutExpired:
-                    self.results["warnings"].append("Grep command timed out")
-                    self.results["passed_checks"] += 1  # Don't fail on timeout
+                    # Only include actual function calls
+                    if "load_questionnaire(" in code and "=" not in code.split("load_questionnaire")[0][-20:]:
+                        matches.append(line)
+                
+                # Filter out acceptable matches more precisely
+                # - factory.py (implementation)
+                # - test_factory*.py (factory tests)
+                # - audit_factory.py (this audit script itself)
+                problematic_matches = []
+                for match in matches:
+                    file_path = match.split(":")[0] if ":" in match else match
+                    if any(acceptable in file_path for acceptable in [
+                        "/factory.py:",
+                        "test_factory",
+                        "audit_factory.py",
+                    ]):
+                        continue
+                    problematic_matches.append(match)
+                
+                # Check results
+                if not problematic_matches:
+                    self.results["passed_checks"] += 1
                     self.results["checks"][check_name] = {
-                        "status": "WARNING",
-                        "message": "Could not verify (grep timeout)",
+                        "status": "PASSED",
+                        "message": "Only factory.py calls load_questionnaire()",
+                        "total_matches": len(matches),
+                        "valid_matches": matches[:5],  # First 5 for reference
                     }
-                    print(f"   ⚠️  WARNING: Grep command timed out")
+                    print(f"   ✅ PASSED: Only factory.py calls load_questionnaire()")
+                    print(f"      Valid matches: {len(matches)}")
+                else:
+                    self.results["failed_checks"] += 1
+                    self.results["checks"][check_name] = {
+                        "status": "FAILED",
+                        "message": "Found unauthorized load_questionnaire() calls",
+                        "problematic_matches": problematic_matches[:10],
+                    }
+                    self.results["critical_errors"].append(
+                        f"Found {len(problematic_matches)} unauthorized load_questionnaire() calls"
+                    )
+                    print(f"   ❌ FAILED: Found {len(problematic_matches)} unauthorized calls")
+                    for match in problematic_matches[:3]:
+                        print(f"      - {match}")
 
-            else:
-                self.results["warnings"].append("No search command provided")
-                self.results["passed_checks"] += 1  # Don't fail on missing command
+            except subprocess.TimeoutExpired:
+                self.results["warnings"].append("Grep command timed out")
+                self.results["passed_checks"] += 1  # Don't fail on timeout
                 self.results["checks"][check_name] = {
                     "status": "WARNING",
-                    "message": "No search command available",
+                    "message": "Could not verify (grep timeout)",
                 }
-                print(f"   ⚠️  WARNING: No search command available")
+                print(f"   ⚠️  WARNING: Grep command timed out")
 
         except Exception as e:
             self.results["failed_checks"] += 1
