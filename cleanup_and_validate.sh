@@ -213,10 +213,12 @@ echo ""
 echo "6. Running contract validation tests..."
 
 # Run a subset of critical tests
-if python3 -m pytest tests/phase2_contracts/test_bmc.py -v --tb=short -x 2>&1 | tail -20 | grep -q "passed"; then
+PYTEST_OUTPUT=$(python3 -m pytest tests/phase2_contracts/test_bmc.py -v --tb=short -x 2>&1)
+if [ $? -eq 0 ]; then
     echo "  ✅ Contract tests passing"
 else
-    echo "  ⚠️  Some contract tests may have issues (check details above)"
+    echo "  ⚠️  Some contract tests failed. See details below:"
+    echo "$PYTEST_OUTPUT"
 fi
 
 echo ""

@@ -45,15 +45,20 @@ class SignatureValidator:
                 print(f"❌ Syntax error in {file_path}: {e}")
                 return signatures
         
-        current_class = None
-        
-        for node in ast.walk(tree):
+        # Use a recursive AST traversal to maintain class context
+        def _visit_node(node, class_name=None):
             if isinstance(node, ast.ClassDef):
-                current_class = node.name
+                # Recurse into class body with updated class name
+                for child in node.body:
+                    _visit_node(child, class_name=node.name)
             elif isinstance(node, ast.FunctionDef):
-                sig = self._analyze_function(node, file_path, current_class)
+                sig = self._analyze_function(node, file_path, class_name)
                 signatures.append(sig)
-                
+            else:
+                for child in ast.iter_child_nodes(node):
+                    _visit_node(child, class_name)
+
+        _visit_node(tree)
         return signatures
     
     def _analyze_function(self, node: ast.FunctionDef, file_path: Path, class_name: str = None) -> MethodSignature:
@@ -77,13 +82,10 @@ class SignatureValidator:
         
         # Check return type
         return_type = ast.unparse(node.returns) if node.returns else None
-        has_type_hints = all(p['has_annotation'] or p['name'] in ('self', 'cls') for p in parameters)
+        has_type_hints = all(p['has_annotation'] or p['name'] in ('self', 'cls') for p in parameters) and return_type is not None
         
-        if has_type_hints and return_type:
-            has_type_hints = True
-        elif missing_hints or not return_type:
-            if not node.name.startswith('_'):
-                issues.append("Public method missing type hints")
+        if not has_type_hints and not node.name.startswith('_'):
+            issues.append("Public method missing type hints")
         
         return MethodSignature(
             file=str(file_path),
