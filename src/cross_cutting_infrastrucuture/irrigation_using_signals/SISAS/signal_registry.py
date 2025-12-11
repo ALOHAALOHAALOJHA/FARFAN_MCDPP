@@ -316,6 +316,30 @@ class MicroAnsweringSignalPack(BaseModel):
         description="Evidence boost factors per pattern ID (Intelligence Layer)"
     )
     
+    # Enhancement #1: Method Execution Metadata (Subphase 2.3)
+    method_execution_metadata: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Method priority, type, and execution ordering per question (Enhancement #1)"
+    )
+    
+    # Enhancement #2: Structured Validation Specifications (Subphase 2.5)
+    validation_specifications: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Structured validation specs with thresholds per question (Enhancement #2)"
+    )
+    
+    # Enhancement #3: Scoring Modality Context (Subphase 2.3)
+    scoring_modality_context: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Scoring modality definitions and adaptive thresholds (Enhancement #3)"
+    )
+    
+    # Enhancement #4: Semantic Disambiguation (Subphase 2.2)
+    semantic_disambiguation: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Semantic disambiguation rules and entity linking (Enhancement #4)"
+    )
+    
     version: str = Field(default="2.0.0", pattern=r"^\d+\.\d+\.\d+$")
     source_hash: str = Field(..., min_length=32, max_length=64)
     metadata: dict[str, Any] = Field(
