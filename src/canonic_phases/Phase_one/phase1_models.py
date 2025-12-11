@@ -246,7 +246,7 @@ class SmartChunk:
         object.__setattr__(self, 'dimension_id', dim_part)
         
         # Convert string IDs to enum types when available for type-safe aggregation
-        if CANONICAL_TYPES_AVAILABLE and PolicyArea and DimensionCausal:
+        if CANONICAL_TYPES_AVAILABLE and PolicyArea is not None and DimensionCausal is not None:
             try:
                 # Map PA01-PA10 to PolicyArea enum
                 pa_enum = getattr(PolicyArea, pa_part, None)
