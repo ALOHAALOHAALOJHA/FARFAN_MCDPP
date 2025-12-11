@@ -37,6 +37,18 @@ from .choquet_aggregator import (
     CalibrationConfigError,
 )
 
+from .aggregation_enhancements import (
+    EnhancedDimensionAggregator,
+    EnhancedAreaAggregator,
+    EnhancedClusterAggregator,
+    EnhancedMacroAggregator,
+    ConfidenceInterval,
+    DispersionMetrics,
+    HermeticityDiagnosis,
+    StrategicAlignmentMetrics,
+    enhance_aggregator,
+)
+
 __all__ = [
     # Existing aggregation
     "DimensionAggregator",
@@ -53,4 +65,14 @@ __all__ = [
     "CalibrationResult",
     "CalibrationBreakdown",
     "CalibrationConfigError",
+    # Enhancements and contracts
+    "EnhancedDimensionAggregator",
+    "EnhancedAreaAggregator",
+    "EnhancedClusterAggregator",
+    "EnhancedMacroAggregator",
+    "ConfidenceInterval",
+    "DispersionMetrics",
+    "HermeticityDiagnosis",
+    "StrategicAlignmentMetrics",
+    "enhance_aggregator",
 ]
