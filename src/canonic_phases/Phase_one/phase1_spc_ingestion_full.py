@@ -47,9 +47,9 @@ from canonic_phases.Phase_one.cpp_models import (
 # CANONICAL TYPE IMPORTS from farfan_pipeline.core.types for type-safe aggregation
 try:
     from farfan_pipeline.core.types import PolicyArea, DimensionCausal
-    TYPES_AVAILABLE = True
+    CANONICAL_TYPES_AVAILABLE = True
 except ImportError:
-    TYPES_AVAILABLE = False
+    CANONICAL_TYPES_AVAILABLE = False
     PolicyArea = None  # type: ignore
     DimensionCausal = None  # type: ignore
 
