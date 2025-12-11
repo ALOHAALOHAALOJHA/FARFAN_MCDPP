@@ -3,7 +3,7 @@ Tests for Meta Layer (@m) Configuration and Evaluator
 """
 
 import pytest
-from src.orchestration.meta_layer import (
+from orchestration.meta_layer import (
     MetaLayerConfig,
     MetaLayerEvaluator,
     TransparencyArtifacts,

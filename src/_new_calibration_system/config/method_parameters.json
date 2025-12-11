@@ -1,0 +1,8 @@
+{
+  "_metadata": {
+    "description": "Runtime parameters for methods (HOW they execute)",
+    "note": "Separate from calibration (WHAT quality they have)",
+    "status": "PENDING"
+  },
+  "methods": {}
+}

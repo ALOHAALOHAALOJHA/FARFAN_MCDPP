@@ -6,14 +6,14 @@ in realistic pipeline scenarios.
 """
 
 import pytest
-from src.orchestration.congruence_layer import (
+from orchestration.congruence_layer import (
     CongruenceLayerEvaluator,
     OutputRangeSpec,
     SemanticTagSet,
     FusionRule,
     create_default_congruence_config
 )
-from src.orchestration.chain_layer import (
+from orchestration.chain_layer import (
     ChainLayerEvaluator,
     MethodSignature,
     UpstreamOutputs,

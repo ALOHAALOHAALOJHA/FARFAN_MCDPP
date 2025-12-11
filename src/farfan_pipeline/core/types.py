@@ -889,12 +889,12 @@ class IniciativaPDET:
     Las iniciativas PDET son priorizadas por las comunidades en los PATR
     (Planes de Acción para la Transformación Regional).
     """
+    # Clasificación PDET (pilar es obligatorio, los demás campos son opcionales)
+    pilar_rri: PilarRRI  # Uno de los 8 pilares
     codigo: Optional[str] = None
     nombre: str = ""
     descripcion: str = ""
     
-    # Clasificación PDET
-    pilar_rri: PilarRRI  # Uno de los 8 pilares
     linea_accion: Optional[str] = None
     
     # Vinculación con el PDT

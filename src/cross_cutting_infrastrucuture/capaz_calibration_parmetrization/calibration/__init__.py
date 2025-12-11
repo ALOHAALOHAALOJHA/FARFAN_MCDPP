@@ -85,14 +85,21 @@ from .COHORT_2024_layer_assignment import (
     generate_canonical_inventory,
 )
 
-# Layer Versioning
-from .layer_versioning import (
+# Layer Metadata Registry (COHORT_2024 discovery and compatibility)
+from .layer_metadata_registry import (
     LayerMetadataRegistry,
+    LayerMetadata,
+    create_default_registry,
+)
+
+# Layer Versioning (cross-COHORT comparison)
+from .layer_versioning import (
+    LayerMetadataRegistry as VersioningRegistry,
     FormulaChangeDetector,
     WeightDiffAnalyzer,
     MigrationImpactAssessor,
     LayerEvolutionValidator,
-    LayerMetadata,
+    LayerMetadata as VersioningLayerMetadata,
     WeightChange,
     FormulaChange,
     MigrationImpact,
@@ -151,13 +158,17 @@ __all__ = [
     "identify_executors",
     "assign_layers_and_weights",
     "generate_canonical_inventory",
-    # Layer Versioning
+    # Layer Metadata Registry
     "LayerMetadataRegistry",
+    "LayerMetadata",
+    "create_default_registry",
+    # Layer Versioning
+    "VersioningRegistry",
     "FormulaChangeDetector",
     "WeightDiffAnalyzer",
     "MigrationImpactAssessor",
     "LayerEvolutionValidator",
-    "LayerMetadata",
+    "VersioningLayerMetadata",
     "WeightChange",
     "FormulaChange",
     "MigrationImpact",

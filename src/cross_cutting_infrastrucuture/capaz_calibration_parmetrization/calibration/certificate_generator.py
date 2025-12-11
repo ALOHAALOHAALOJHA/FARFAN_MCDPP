@@ -22,7 +22,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-__all__ = ["CalibrationCertificate", "CertificateGenerator"]
+__all__ = ["CalibrationCertificate", "CertificateGenerator", "LayerMetadata"]
 
 
 @dataclass(frozen=True)
@@ -48,6 +48,16 @@ class ValidationChecks:
 
 
 @dataclass(frozen=True)
+class LayerMetadata:
+    symbol: str
+    name: str
+    description: str
+    formula: str
+    weights: dict[str, Any]
+    thresholds: dict[str, Any]
+
+
+@dataclass(frozen=True)
 class CalibrationCertificate:
     certificate_version: str
     instance_id: str
@@ -63,6 +73,7 @@ class CalibrationCertificate:
     config_hash: str
     graph_hash: str
     validation_checks: ValidationChecks
+    layer_metadata: dict[str, LayerMetadata]
     timestamp: str
     validator_version: str
     signature: str
@@ -78,6 +89,146 @@ class CertificateGenerator:
     CERTIFICATE_VERSION = "1.0.0"
     VALIDATOR_VERSION = "1.0.0"
     SECRET_KEY = b"FARFAN_CALIBRATION_SYSTEM_v1.0"
+
+    LAYER_DEFINITIONS = {
+        "@b": {
+            "name": "Base Theory Layer",
+            "description": "Code quality and theoretical soundness",
+            "formula": "b = 0.40·b_theory + 0.35·b_impl + 0.25·b_deploy",
+            "weights": {
+                "b_theory": 0.40,
+                "b_impl": 0.35,
+                "b_deploy": 0.25,
+            },
+            "thresholds": {
+                "min_score_SCORE_Q": 0.7,
+                "min_score_INGEST_PDM": 0.6,
+                "required_coverage": 0.8,
+            },
+        },
+        "@chain": {
+            "name": "Chain Layer",
+            "description": "Method wiring and orchestration integrity",
+            "formula": "chain = discrete({0.0, 0.3, 0.6, 0.8, 1.0}) based on contract satisfaction",
+            "weights": {
+                "discrete_levels": {
+                    "0.0": "missing_required OR schema_incompatible",
+                    "0.3": "missing_critical",
+                    "0.6": "many_missing (ratio>0.5) OR soft_schema_violation",
+                    "0.8": "all contracts pass AND warnings exist",
+                    "1.0": "all inputs present AND no warnings",
+                }
+            },
+            "thresholds": {
+                "missing_optional_ratio": 0.5,
+                "no_cycles_allowed": True,
+            },
+        },
+        "@q": {
+            "name": "Question Layer",
+            "description": "Question appropriateness and alignment",
+            "formula": "q = compatibility_score(method_id, question_id)",
+            "weights": {
+                "Priority 3 (CRÍTICO)": 1.0,
+                "Priority 2 (IMPORTANTE)": 0.7,
+                "Priority 1 (COMPLEMENTARIO)": 0.3,
+                "Unmapped": 0.1,
+            },
+            "thresholds": {
+                "unmapped_penalty": 0.1,
+                "anti_universality_threshold": 0.9,
+                "required_semantic_coherence": 0.7,
+            },
+        },
+        "@d": {
+            "name": "Dimension Layer",
+            "description": "Dimensional analysis alignment",
+            "formula": "d = compatibility_score(method_id, dimension_id)",
+            "weights": {
+                "Priority 3 (CRÍTICO)": 1.0,
+                "Priority 2 (IMPORTANTE)": 0.7,
+                "Priority 1 (COMPLEMENTARIO)": 0.3,
+                "Unmapped": 0.1,
+            },
+            "thresholds": {
+                "unmapped_penalty": 0.1,
+                "anti_universality_threshold": 0.9,
+                "required_coverage": 0.75,
+            },
+        },
+        "@p": {
+            "name": "Policy Layer",
+            "description": "Policy area fit and domain alignment",
+            "formula": "p = compatibility_score(method_id, policy_id)",
+            "weights": {
+                "Priority 3 (CRÍTICO)": 1.0,
+                "Priority 2 (IMPORTANTE)": 0.7,
+                "Priority 1 (COMPLEMENTARIO)": 0.3,
+                "Unmapped": 0.1,
+            },
+            "thresholds": {
+                "unmapped_penalty": 0.1,
+                "anti_universality_threshold": 0.9,
+                "required_domain_match": 0.6,
+            },
+        },
+        "@C": {
+            "name": "Contract Layer",
+            "description": "Contract compliance and specification adherence",
+            "formula": "C_play = 0.4·c_scale + 0.35·c_sem + 0.25·c_fusion",
+            "weights": {
+                "w_scale": 0.4,
+                "w_semantic": 0.35,
+                "w_fusion": 0.25,
+            },
+            "thresholds": {
+                "min_jaccard_similarity": 0.3,
+                "max_range_mismatch_ratio": 0.5,
+                "min_fusion_validity_score": 0.6,
+                "strict_typing_required": True,
+            },
+        },
+        "@u": {
+            "name": "Unit Layer",
+            "description": "Document quality and completeness",
+            "formula": "U = geometric_mean(S, M, gated(I), gated(P)) × (1 - anti_gaming_penalty)",
+            "weights": {
+                "S_B_cov": 0.5,
+                "S_H": 0.25,
+                "S_O": 0.25,
+                "M_diagnostico": 2.0,
+                "M_estrategica": 2.0,
+                "M_ppi": 2.0,
+                "M_seguimiento": 1.0,
+                "I_struct": 0.4,
+                "I_link": 0.35,
+                "I_logic": 0.25,
+                "P_presence": 0.3,
+                "P_struct": 0.4,
+                "P_consistency": 0.3,
+            },
+            "thresholds": {
+                "gate_threshold_I": 0.5,
+                "gate_threshold_P": 0.4,
+                "anti_gaming_boilerplate_threshold": 0.7,
+                "required_completeness": 0.8,
+            },
+        },
+        "@m": {
+            "name": "Meta Layer",
+            "description": "Governance maturity and process quality",
+            "formula": "m = 0.40·transparency + 0.35·governance + 0.25·cost_efficiency",
+            "weights": {
+                "w_transparency": 0.40,
+                "w_governance": 0.35,
+                "w_cost": 0.25,
+            },
+            "thresholds": {
+                "required_governance_score": 0.5,
+                "min_transparency": 0.6,
+            },
+        },
+    }
 
     def __init__(self, config_dir: Path | None = None, secret_key: bytes | None = None):
         self.config_dir = config_dir or Path("src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration")
@@ -112,6 +263,11 @@ class CertificateGenerator:
             interaction_weights=interaction_weights,
         )
 
+        layer_metadata = self._extract_layer_metadata(
+            layer_scores=layer_scores,
+            weights=weights,
+        )
+
         config_hash = self._compute_config_hash()
         graph_hash = self._compute_graph_hash(computation_graph)
 
@@ -140,6 +296,7 @@ class CertificateGenerator:
             "config_hash": config_hash,
             "graph_hash": graph_hash,
             "validation_checks": asdict(validation_checks),
+            "layer_metadata": {k: asdict(v) for k, v in layer_metadata.items()},
             "timestamp": timestamp,
             "validator_version": self.VALIDATOR_VERSION,
         }
@@ -161,6 +318,7 @@ class CertificateGenerator:
             config_hash=config_hash,
             graph_hash=graph_hash,
             validation_checks=validation_checks,
+            layer_metadata=layer_metadata,
             timestamp=timestamp,
             validator_version=self.VALIDATOR_VERSION,
             signature=signature,
@@ -268,6 +426,29 @@ class CertificateGenerator:
             )
 
         return provenance
+
+    def _extract_layer_metadata(
+        self,
+        layer_scores: dict[str, float],
+        weights: dict[str, float],
+    ) -> dict[str, LayerMetadata]:
+        layer_metadata = {}
+
+        active_layers = set(layer_scores.keys()) | set(weights.keys())
+
+        for layer_symbol in active_layers:
+            if layer_symbol in self.LAYER_DEFINITIONS:
+                definition = self.LAYER_DEFINITIONS[layer_symbol]
+                layer_metadata[layer_symbol] = LayerMetadata(
+                    symbol=layer_symbol,
+                    name=definition["name"],
+                    description=definition["description"],
+                    formula=definition["formula"],
+                    weights=definition["weights"],
+                    thresholds=definition["thresholds"],
+                )
+
+        return layer_metadata
 
     def _compute_config_hash(self) -> str:
         config_files = [

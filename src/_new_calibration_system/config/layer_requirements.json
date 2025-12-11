@@ -1,0 +1,62 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Layer requirements by method type - SINGLE SOURCE OF TRUTH"
+  },
+  "layer_types": {
+    "ingest": {
+      "layers": ["@b", "@chain", "@u", "@m"],
+      "count": 4,
+      "description": "Data ingestion - simple loading",
+      "min_confidence": 0.5
+    },
+    "processor": {
+      "layers": ["@b", "@chain", "@u", "@m"],
+      "count": 4,
+      "description": "Data processing - transformation without decisions",
+      "min_confidence": 0.5
+    },
+    "analyzer": {
+      "layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
+      "count": 8,
+      "description": "Complex analysis - ALL context needed",
+      "min_confidence": 0.7
+    },
+    "extractor": {
+      "layers": ["@b", "@chain", "@u", "@m"],
+      "count": 4,
+      "description": "Feature extraction - pattern finding",
+      "min_confidence": 0.5
+    },
+    "score": {
+      "layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
+      "count": 8,
+      "description": "Scoring methods - ALL context",
+      "min_confidence": 0.7
+    },
+    "executor": {
+      "layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
+      "count": 8,
+      "description": "D1Q1-D6Q5 executors - ALL context",
+      "min_confidence": 0.7
+    },
+    "utility": {
+      "layers": ["@b", "@chain", "@m"],
+      "count": 3,
+      "description": "Helpers - minimal validation",
+      "min_confidence": 0.3
+    },
+    "orchestrator": {
+      "layers": ["@b", "@chain", "@m"],
+      "count": 3,
+      "description": "Coordination - minimal validation",
+      "min_confidence": 0.5
+    },
+    "core": {
+      "layers": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
+      "count": 8,
+      "description": "Critical foundation methods - ALL context",
+      "min_confidence": 0.8
+    }
+  }
+}

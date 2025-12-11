@@ -4,8 +4,8 @@ Created: 2024-12-15T00:00:00+00:00
 
 Layer Assignment System for Calibration
 
-This module defines the canonical layer requirements for all method roles
-and provides layer assignment with Choquet integral weights for executors.
+This module provides layer assignment with Choquet integral weights for executors.
+Layer requirements are imported from canonical source.
 
 Layers:
 - @b: Code quality (base theory)
@@ -21,17 +21,10 @@ Layers:
 import re
 from typing import Any
 
-LAYER_REQUIREMENTS: dict[str, list[str]] = {
-    "ingest": ["@b", "@chain", "@u", "@m"],
-    "processor": ["@b", "@chain", "@u", "@m"],
-    "analyzer": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "score": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "executor": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "utility": ["@b", "@chain", "@m"],
-    "orchestrator": ["@b", "@chain", "@m"],
-    "core": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "extractor": ["@b", "@chain", "@u", "@m"],
-}
+from src.core.calibration.layer_requirements import (
+    LAYER_REQUIREMENTS,
+    get_required_layers,
+)
 
 CHOQUET_WEIGHTS: dict[str, float] = {
     "@b": 0.17,

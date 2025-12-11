@@ -15,7 +15,7 @@
   - Original → New path mappings
   - Cohort metadata for each file
 
-### Structural Audit Tools (NEW)
+### Structural Audit Tools
 - `master_structural_audit.py` - **Complete end-to-end audit orchestration**
   - Phase 1: Initial structural audit
   - Phase 2: File reorganization
@@ -36,6 +36,32 @@
   - Generate configurations from data
 - `STRUCTURAL_GOVERNANCE.md` - **Structural governance documentation**
 - `AUDIT_QUICKSTART.md` - **Quick start guide for audits**
+
+### Comprehensive Calibration Audit Tools (NEW)
+- `run_complete_audit.py` - **Master audit runner (ONE COMMAND)**
+  - Executes all audits and generates master report
+  - Identifies critical gaps between claims and implementation
+  - Produces concrete file paths and line numbers for findings
+  - Exit codes: 0=compliant, 1=non-compliant, 2=error
+- `comprehensive_calibration_audit.py` - **Comprehensive calibration audit**
+  - Canonical Method Inventory (1995+ methods with calibration status)
+  - Parametrized Method Inventory (executor parameters)
+  - Calibration Completeness Matrix (8 layers × all methods)
+  - Verification Report (gaps, missing evaluators, stubs)
+- `layer_implementation_verifier.py` - **Layer evaluator verification**
+  - Deep verification of all 8 layer implementations
+  - AST-based method signature extraction
+  - Stub detection (NotImplementedError, TODO, return 0.5)
+  - Production logic verification
+  - Quality scoring (0-1 scale)
+- `hardcoded_parameter_scanner.py` - **Parameter compliance scanner**
+  - AST-based hardcoded parameter detection
+  - File:line citations for all violations
+  - Severity classification (critical/high/medium/low)
+  - Suggested fixes for each violation
+  - Compliance percentage calculation
+- `COMPREHENSIVE_AUDIT_README.md` - **Complete audit documentation**
+- `AUDIT_QUICK_REFERENCE.md` - **Quick reference guide**
 
 ### Loaders & Adapters
 - `cohort_loader.py` - `CohortLoader` class for configuration loading
@@ -231,11 +257,12 @@ All COHORT_2024 files include:
 
 ## Statistics
 
-- **Total Files**: 27 (23 calibration + 4 parametrization)
+- **Total Files**: 35 (23 calibration + 4 parametrization + 8 audit tools)
 - **JSON Files**: 10 (7 calibration + 2 parametrization + 1 manifest)
-- **Python Files**: 17 (16 calibration + 1 parametrization)
-- **Documentation Files**: 6 (README, INDEX, QUICK_REFERENCE, STRUCTURAL_GOVERNANCE, AUDIT_QUICKSTART, USAGE_EXAMPLES)
-- **Audit Tools**: 4 (master_structural_audit, structural_audit, cleanup_legacy_files, reorganize_files)
+- **Python Files**: 25 (16 calibration + 1 parametrization + 8 tools)
+- **Documentation Files**: 8 (README, INDEX, QUICK_REFERENCE, STRUCTURAL_GOVERNANCE, AUDIT_QUICKSTART, COMPREHENSIVE_AUDIT_README, AUDIT_QUICK_REFERENCE, USAGE_EXAMPLES)
+- **Structural Audit Tools**: 4 (master_structural_audit, structural_audit, cleanup_legacy_files, reorganize_files)
+- **Calibration Audit Tools**: 4 (run_complete_audit, comprehensive_calibration_audit, layer_implementation_verifier, hardcoded_parameter_scanner)
 - **Migration Tools**: 2 (migrate_cohort_2024, batch_migrate)
 - **Loader/Adapter Files**: 3 (cohort_loader, import_adapters, __init__)
 
@@ -249,6 +276,33 @@ When creating COHORT_2025:
 5. Preserve `calibration_parametrization_system/` as-is
 
 ## Quick Start Commands
+
+### Run Comprehensive Calibration Audit (ONE COMMAND)
+```bash
+# Complete system audit - generates all inventories and reports
+python run_complete_audit.py
+```
+
+### View Audit Results
+```bash
+# Human-readable summary
+cat artifacts/audit_reports/LATEST_AUDIT_SUMMARY.txt
+
+# Full JSON report
+cat artifacts/audit_reports/MASTER_AUDIT_REPORT_*.json | jq '.'
+```
+
+### Run Individual Audits
+```bash
+# Method inventory and completeness matrix
+python comprehensive_calibration_audit.py
+
+# Layer implementation verification
+python layer_implementation_verifier.py
+
+# Hardcoded parameter scan
+python hardcoded_parameter_scanner.py
+```
 
 ### Run Complete Structural Audit
 ```bash
@@ -271,6 +325,8 @@ python cleanup_legacy_files.py --execute
 
 ## Support
 
+- **Calibration Audit**: See `COMPREHENSIVE_AUDIT_README.md` for complete documentation
+- **Quick Audit Reference**: See `AUDIT_QUICK_REFERENCE.md` for one-page guide
 - **Structural Audit**: See `AUDIT_QUICKSTART.md` for quick start guide
 - **Governance Policy**: See `STRUCTURAL_GOVERNANCE.md` for detailed policies
 - **Issues**: Check COHORT_MANIFEST.json for original file paths

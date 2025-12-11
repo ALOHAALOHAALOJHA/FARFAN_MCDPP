@@ -282,11 +282,106 @@ def example_4_config_and_graph_hashes():
     print(f"Graph hashes match (different graph): {certificate1.graph_hash == certificate3.graph_hash}")
 
 
+def example_5_layer_metadata_audit_trail():
+    print("\n" + "=" * 80)
+    print("Example 5: Layer Metadata Audit Trail")
+    print("=" * 80)
+
+    generator = CertificateGenerator()
+
+    certificate = generator.generate_certificate(
+        instance_id="layer-metadata-demo-001",
+        method_id="farfan_pipeline.core.orchestrator.executors.D2_Q3_PolicyAlignmentEvaluator",
+        node_id="node_layer_meta_001",
+        context={
+            "execution_id": "exec-20241215-163000-uuid-xyz789",
+            "document_id": "PDM-CALI-2024-003",
+            "dimension": "D2",
+            "question": "Q3",
+            "cohort": "COHORT_2024",
+        },
+        intrinsic_score=0.84,
+        layer_scores={
+            "@b": 0.89,
+            "@chain": 0.85,
+            "@q": 0.82,
+            "@d": 0.88,
+            "@p": 0.80,
+            "@C": 0.86,
+            "@u": 0.76,
+            "@m": 0.79,
+        },
+        weights={
+            "@b": 0.17,
+            "@chain": 0.13,
+            "@q": 0.08,
+            "@d": 0.07,
+            "@p": 0.06,
+            "@C": 0.08,
+            "@u": 0.04,
+            "@m": 0.04,
+        },
+        interaction_weights={
+            "@u,@chain": 0.13,
+            "@chain,@C": 0.10,
+            "@q,@d": 0.10,
+        },
+    )
+
+    print(f"\nCertificate generated: {certificate.instance_id}")
+    print(f"Calibrated Score: {certificate.calibrated_score:.4f}")
+    
+    print("\n" + "-" * 80)
+    print("Layer Metadata Embedded in Certificate (Complete Layer Provenance)")
+    print("-" * 80)
+    
+    print(f"\nTotal layers documented: {len(certificate.layer_metadata)}")
+    
+    for layer_symbol in sorted(certificate.layer_metadata.keys()):
+        metadata = certificate.layer_metadata[layer_symbol]
+        score = certificate.layer_scores.get(layer_symbol, 0.0)
+        weight = certificate.parameter_provenance.get(f"a_{layer_symbol}")
+        
+        print(f"\n{layer_symbol} - {metadata.name}")
+        print(f"  Score: {score:.4f}")
+        if weight:
+            print(f"  Weight: {weight.value:.4f}")
+        print(f"  Description: {metadata.description}")
+        print(f"  Formula: {metadata.formula}")
+        
+        if isinstance(metadata.thresholds, dict) and len(metadata.thresholds) > 0:
+            print(f"  Thresholds:")
+            for threshold_name, threshold_value in list(metadata.thresholds.items())[:3]:
+                print(f"    - {threshold_name}: {threshold_value}")
+        
+        if isinstance(metadata.weights, dict) and len(metadata.weights) > 0:
+            weight_keys = list(metadata.weights.keys())[:3]
+            if weight_keys:
+                print(f"  Component Weights (sample): {', '.join(weight_keys)}")
+    
+    print("\n" + "-" * 80)
+    print("Layer Metadata Benefits for Reproducibility")
+    print("-" * 80)
+    print("✓ Complete formula documentation embedded in certificate")
+    print("✓ All thresholds and weights self-documented")
+    print("✓ Enables independent verification without external config files")
+    print("✓ Provides complete audit trail for layer computation provenance")
+    print("✓ Supports reproducibility verification across COHORT versions")
+    
+    output_path = Path("layer_metadata_certificate_example.json")
+    with open(output_path, "w") as f:
+        f.write(certificate.to_json())
+    print(f"\nCertificate with layer metadata saved to: {output_path}")
+    
+    return certificate
+
+
 if __name__ == "__main__":
     example_1_executor_certificate()
     example_2_analyzer_certificate()
     example_3_verify_certificate()
     example_4_config_and_graph_hashes()
+    example_5_layer_metadata_audit_trail()
 
     print("\n" + "=" * 80)
     print("All examples completed successfully!")

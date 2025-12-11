@@ -19,6 +19,11 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, Set, TypedDict
 
+from src.core.calibration.layer_requirements import (
+    LAYER_REQUIREMENTS,
+    get_required_layers,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -32,24 +37,6 @@ class LayerID(str, Enum):
     POLICY = "@p"
     CONGRUENCE = "@C"
     META = "@m"
-
-
-ROLE_LAYER_REQUIREMENTS: Dict[str, Set[LayerID]] = {
-    "INGEST_PDM": {LayerID.BASE, LayerID.CHAIN, LayerID.UNIT, LayerID.META},
-    "STRUCTURE": {LayerID.BASE, LayerID.CHAIN, LayerID.UNIT, LayerID.META},
-    "EXTRACT": {LayerID.BASE, LayerID.CHAIN, LayerID.UNIT, LayerID.META},
-    "SCORE_Q": {
-        LayerID.BASE, LayerID.CHAIN, LayerID.QUESTION, LayerID.DIMENSION,
-        LayerID.POLICY, LayerID.CONGRUENCE, LayerID.UNIT, LayerID.META
-    },
-    "AGGREGATE": {
-        LayerID.BASE, LayerID.CHAIN, LayerID.DIMENSION,
-        LayerID.POLICY, LayerID.CONGRUENCE, LayerID.META
-    },
-    "REPORT": {LayerID.BASE, LayerID.CHAIN, LayerID.CONGRUENCE, LayerID.META},
-    "META_TOOL": {LayerID.BASE, LayerID.CHAIN, LayerID.META},
-    "TRANSFORM": {LayerID.BASE, LayerID.CHAIN, LayerID.META},
-}
 
 
 class CalibrationSubject(TypedDict):
@@ -93,7 +80,20 @@ class LayerRequirementsResolver:
     ) -> None:
         self.intrinsic_config = intrinsic_config
         self.method_compatibility = method_compatibility
-        self.role_mapping = ROLE_LAYER_REQUIREMENTS.copy()
+        self.role_mapping = self._build_role_mapping()
+    
+    def _build_role_mapping(self) -> Dict[str, Set[LayerID]]:
+        """Build role mapping from canonical LAYER_REQUIREMENTS."""
+        return {
+            "INGEST_PDM": {LayerID(layer) for layer in LAYER_REQUIREMENTS["ingest"]["layers"]},
+            "STRUCTURE": {LayerID(layer) for layer in LAYER_REQUIREMENTS["processor"]["layers"]},
+            "EXTRACT": {LayerID(layer) for layer in LAYER_REQUIREMENTS["extractor"]["layers"]},
+            "SCORE_Q": {LayerID(layer) for layer in LAYER_REQUIREMENTS["score"]["layers"]},
+            "AGGREGATE": {LayerID(layer) for layer in LAYER_REQUIREMENTS["core"]["layers"]},
+            "REPORT": {LayerID(layer) for layer in LAYER_REQUIREMENTS["orchestrator"]["layers"]},
+            "META_TOOL": {LayerID(layer) for layer in LAYER_REQUIREMENTS["utility"]["layers"]},
+            "TRANSFORM": {LayerID(layer) for layer in LAYER_REQUIREMENTS["utility"]["layers"]},
+        }
     
     def get_required_layers(self, method_id: str) -> Set[LayerID]:
         """Get required layers for method based on role."""

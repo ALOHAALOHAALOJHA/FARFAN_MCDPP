@@ -4,6 +4,11 @@ import json
 from pathlib import Path
 from typing import Any, TypedDict
 
+from src.core.calibration.layer_requirements import (
+    LAYER_REQUIREMENTS,
+    get_required_layers,
+)
+
 
 class ValidationResult(TypedDict):
     validator_name: str
@@ -11,19 +16,6 @@ class ValidationResult(TypedDict):
     errors: list[str]
     warnings: list[str]
     details: dict[str, Any]
-
-
-LAYER_REQUIREMENTS: dict[str, list[str]] = {
-    "ingest": ["@b", "@chain", "@u", "@m"],
-    "processor": ["@b", "@chain", "@u", "@m"],
-    "analyzer": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "score": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "executor": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "utility": ["@b", "@chain", "@m"],
-    "orchestrator": ["@b", "@chain", "@m"],
-    "core": ["@b", "@chain", "@q", "@d", "@p", "@C", "@u", "@m"],
-    "extractor": ["@b", "@chain", "@u", "@m"],
-}
 
 
 def validate_layer_completeness(

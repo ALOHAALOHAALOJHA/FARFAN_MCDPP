@@ -5,7 +5,7 @@ Tests role-based layer activation, completeness validation, and fusion.
 """
 
 import pytest
-from src.orchestration.calibration_orchestrator import (
+from orchestration.calibration_orchestrator import (
     CalibrationOrchestrator,
     CalibrationSubject,
     CalibrationResult,

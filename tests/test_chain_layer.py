@@ -3,7 +3,7 @@ Tests for Chain Layer (@chain) Configuration and Evaluator
 """
 
 import pytest
-from src.orchestration.chain_layer import (
+from orchestration.chain_layer import (
     ChainLayerConfig,
     ChainLayerEvaluator,
     MethodSignature,

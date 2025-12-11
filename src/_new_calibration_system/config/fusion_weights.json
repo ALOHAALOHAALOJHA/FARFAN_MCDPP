@@ -1,0 +1,28 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Choquet fusion weights for calibration layer aggregation",
+    "formula": "Cal(I) = Σ(a_ℓ · x_ℓ) + Σ(a_ℓk · min(x_ℓ, x_k))"
+  },
+  "linear_weights": {
+    "@b": 0.122951,
+    "@u": 0.098361,
+    "@q": 0.081967,
+    "@d": 0.065574,
+    "@p": 0.049180,
+    "@C": 0.081967,
+    "@chain": 0.065574,
+    "@m": 0.034426
+  },
+  "interaction_weights": {
+    "(@u, @chain)": 0.15,
+    "(@chain, @C)": 0.12,
+    "(@q, @d)": 0.08,
+    "(@d, @p)": 0.05
+  },
+  "validation": {
+    "linear_sum": 0.6,
+    "interaction_sum": 0.4,
+    "total_sum": 1.0
+  }
+}

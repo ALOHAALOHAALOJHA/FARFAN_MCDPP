@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from farfan_pipeline.core.runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
 
 
 class BootCheckError(Exception):
