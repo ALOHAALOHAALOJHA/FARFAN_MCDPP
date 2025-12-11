@@ -10,7 +10,6 @@ Date: 2025-12-11
 """
 
 import pytest
-import sys
 from unittest.mock import patch, MagicMock
 
 from canonic_phases.Phase_one.phase1_circuit_breaker import (
@@ -23,7 +22,6 @@ from canonic_phases.Phase_one.phase1_circuit_breaker import (
     SubphaseCheckpoint,
     get_circuit_breaker,
     run_preflight_check,
-    ensure_can_execute,
 )
 
 
@@ -72,11 +70,11 @@ class TestPhase1CircuitBreaker:
     @patch('psutil.virtual_memory')
     def test_insufficient_memory_detection(self, mock_memory):
         """Test circuit breaker detects insufficient memory."""
-        # Mock insufficient memory (100 MB available)
-        mock_memory.return_value = MagicMock(
-            available=100 * 1024 * 1024,  # 100 MB
-            total=8 * 1024 * 1024 * 1024  # 8 GB
-        )
+        # Mock insufficient memory (100 MB available) with all required attributes
+        mock_mem = MagicMock()
+        mock_mem.available = 100 * 1024 * 1024  # 100 MB
+        mock_mem.total = 8 * 1024 * 1024 * 1024  # 8 GB
+        mock_memory.return_value = mock_mem
         
         cb = Phase1CircuitBreaker()
         result = cb.preflight_check()
@@ -134,16 +132,13 @@ class TestPhase1CircuitBreaker:
             assert "✗" in report
             assert "CRITICAL FAILURES" in report
     
-    def test_ensure_can_execute_raises_when_open(self):
-        """Test ensure_can_execute raises exception when circuit is OPEN."""
+    def test_cannot_execute_when_open(self):
+        """Test can_execute returns False when circuit is OPEN."""
         cb = Phase1CircuitBreaker()
         cb.state = CircuitState.OPEN
         
         # Test that execution is blocked when circuit is OPEN
-        with pytest.raises(RuntimeError, match="execution blocked"):
-            if not cb.can_execute():
-                raise RuntimeError("Phase 1 execution blocked by circuit breaker")
-            # Should not reach here
+        assert cb.can_execute() is False
 
 
 class TestSubphaseCheckpoint:

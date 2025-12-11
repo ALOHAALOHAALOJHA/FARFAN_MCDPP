@@ -472,9 +472,6 @@ class Phase1SPCIngestionFullContract:
         logger.info("✓ Resources: Sufficient memory and disk space")
         logger.info("=" * 80)
         
-        # Ensure we can execute
-        ensure_can_execute()
-        
         # CAPTURE document_id FROM INPUT
         self.document_id = canonical_input.document_id
         

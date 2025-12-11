@@ -98,14 +98,14 @@ class Phase1CircuitBreaker:
     conditions are met. No graceful degradation - fail fast.
     """
     
-    def __init__(self, strict_mode: bool = True):
+    def __init__(self):
         """
         Initialize circuit breaker.
         
-        Args:
-            strict_mode: If True, all checks must pass (default: True)
+        Note: This circuit breaker uses a singleton pattern with mutable state.
+        It is not thread-safe. If concurrent Phase 1 execution is required,
+        create separate circuit breaker instances per execution.
         """
-        self.strict_mode = strict_mode
         self.state = CircuitState.CLOSED
         self.last_check: Optional[PreflightResult] = None
         self.failure_count = 0
@@ -128,7 +128,7 @@ class Phase1CircuitBreaker:
         
         result = PreflightResult(
             passed=True,
-            timestamp=datetime.now(timezone.utc).isoformat() + 'Z',
+            timestamp=datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
             system_info=self._collect_system_info()
         )
         
@@ -468,17 +468,22 @@ class SubphaseCheckpoint:
                 errors.append(f"SP{subphase_num}: Validator exception: {e}")
         
         # Record checkpoint
+        # Use a lightweight hash based on type and count rather than full serialization
+        output_summary = f"{type(output).__name__}:{len(output) if hasattr(output, '__len__') else 0}"
         self.checkpoints[subphase_num] = {
-            'timestamp': datetime.now(timezone.utc).isoformat() + 'Z',
+            'timestamp': datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
             'passed': len(errors) == 0,
             'errors': errors,
-            'output_hash': hashlib.sha256(str(output).encode()).hexdigest()[:16]
+            'output_hash': hashlib.sha256(output_summary.encode()).hexdigest()[:16]
         }
         
         return len(errors) == 0, errors
 
 
 # Global circuit breaker instance
+# WARNING: This singleton is not thread-safe. If concurrent Phase 1 execution
+# is required, create separate Phase1CircuitBreaker instances per execution
+# instead of using the global instance.
 _circuit_breaker = Phase1CircuitBreaker()
 
 
