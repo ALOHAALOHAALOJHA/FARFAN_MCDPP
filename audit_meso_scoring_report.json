@@ -1,0 +1,224 @@
+{
+  "total_scenarios": 14,
+  "mathematically_correct": 14,
+  "mathematical_correctness_rate": 1.0,
+  "sensitivity_distribution": {
+    "EXCELLENT": 7,
+    "GOOD": 3,
+    "FAIR": 4,
+    "POOR": 0
+  },
+  "average_sensitivity_score": 3.2142857142857144,
+  "overall_rating": "GOOD",
+  "recommendations": [
+    "Strengthen penalties for high-dispersion scenarios",
+    "Implement non-linear penalty scaling for extreme dispersion cases",
+    "Implement adaptive penalty weights based on scenario characteristics"
+  ],
+  "critical_issues": [],
+  "detailed_results": [
+    {
+      "scenario": "Perfect Convergence",
+      "scores": [
+        2.5,
+        2.5,
+        2.5,
+        2.5
+      ],
+      "cv": 0.0,
+      "dispersion_index": 0.0,
+      "penalty_factor": 1.0,
+      "adjusted_score": 2.5,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "EXCELLENT"
+    },
+    {
+      "scenario": "Mild Convergence",
+      "scores": [
+        2.3,
+        2.4,
+        2.5,
+        2.6
+      ],
+      "cv": 0.045634040357138604,
+      "dispersion_index": 0.10000000000000009,
+      "penalty_factor": 0.988819660112501,
+      "adjusted_score": 2.4226081672756274,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "EXCELLENT"
+    },
+    {
+      "scenario": "Good Convergence",
+      "scores": [
+        2.0,
+        2.2,
+        2.3,
+        2.5
+      ],
+      "cv": 0.08012336167697753,
+      "dispersion_index": 0.16666666666666666,
+      "penalty_factor": 0.9819722436226801,
+      "adjusted_score": 2.20943754815103,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "EXCELLENT"
+    },
+    {
+      "scenario": "Moderate Dispersion",
+      "scores": [
+        1.5,
+        2.0,
+        2.5,
+        3.0
+      ],
+      "cv": 0.24845199749997665,
+      "dispersion_index": 0.5,
+      "penalty_factor": 0.9440983005625052,
+      "adjusted_score": 2.1242211762656367,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "EXCELLENT"
+    },
+    {
+      "scenario": "High Dispersion",
+      "scores": [
+        0.5,
+        1.5,
+        2.5,
+        3.0
+      ],
+      "cv": 0.5120763831912405,
+      "dispersion_index": 0.8333333333333334,
+      "penalty_factor": 0.9039856781516424,
+      "adjusted_score": 1.6949731465343296,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "FAIR"
+    },
+    {
+      "scenario": "Extreme Dispersion",
+      "scores": [
+        0.0,
+        1.0,
+        2.0,
+        3.0
+      ],
+      "cv": 0.7453559924999299,
+      "dispersion_index": 1.0,
+      "penalty_factor": 0.8881966011250105,
+      "adjusted_score": 1.3322949016875159,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "FAIR"
+    },
+    {
+      "scenario": "Bimodal Distribution",
+      "scores": [
+        0.5,
+        0.8,
+        2.8,
+        3.0
+      ],
+      "cv": 0.6378586971393945,
+      "dispersion_index": 0.8333333333333334,
+      "penalty_factor": 0.8867800812577575,
+      "adjusted_score": 1.5740346442325195,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "FAIR"
+    },
+    {
+      "scenario": "Mixed Low-High",
+      "scores": [
+        1.0,
+        1.5,
+        2.5,
+        3.0
+      ],
+      "cv": 0.39528470752104744,
+      "dispersion_index": 0.6666666666666666,
+      "penalty_factor": 0.9209430584957905,
+      "adjusted_score": 1.841886116991581,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "GOOD"
+    },
+    {
+      "scenario": "Clustered with Outlier",
+      "scores": [
+        2.0,
+        2.1,
+        2.2,
+        0.5
+      ],
+      "cv": 0.4096584787407094,
+      "dispersion_index": 0.5666666666666668,
+      "penalty_factor": 0.9303580586140794,
+      "adjusted_score": 1.5816086996439351,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "GOOD"
+    },
+    {
+      "scenario": "Single Score",
+      "scores": [
+        2.5
+      ],
+      "cv": 0.0,
+      "dispersion_index": 0.0,
+      "penalty_factor": 1.0,
+      "adjusted_score": 2.5,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "EXCELLENT"
+    },
+    {
+      "scenario": "Two Identical Scores",
+      "scores": [
+        2.0,
+        2.0
+      ],
+      "cv": 0.0,
+      "dispersion_index": 0.0,
+      "penalty_factor": 1.0,
+      "adjusted_score": 2.0,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "EXCELLENT"
+    },
+    {
+      "scenario": "Two Opposite Scores",
+      "scores": [
+        0.0,
+        3.0
+      ],
+      "cv": 1.0,
+      "dispersion_index": 1.0,
+      "penalty_factor": 0.85,
+      "adjusted_score": 1.275,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "FAIR"
+    },
+    {
+      "scenario": "Mostly Good with One Weak",
+      "scores": [
+        2.5,
+        2.6,
+        2.7,
+        1.2
+      ],
+      "cv": 0.27125679146074894,
+      "dispersion_index": 0.5000000000000001,
+      "penalty_factor": 0.9389672219213315,
+      "adjusted_score": 2.112676249322996,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "EXCELLENT"
+    },
+    {
+      "scenario": "Mostly Weak with One Strong",
+      "scores": [
+        0.8,
+        1.0,
+        1.2,
+        2.8
+      ],
+      "cv": 0.546309638543271,
+      "dispersion_index": 0.6666666666666666,
+      "penalty_factor": 0.9207851024112257,
+      "adjusted_score": 1.3351383984962772,
+      "mathematical_correctness": true,
+      "sensitivity_rating": "GOOD"
+    }
+  ]
+}
