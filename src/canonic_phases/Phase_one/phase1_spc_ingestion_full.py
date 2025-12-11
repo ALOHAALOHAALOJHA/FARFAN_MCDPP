@@ -28,7 +28,7 @@ from canonic_phases.Phase_one.phase0_input_validation import CanonicalInput
 from canonic_phases.Phase_one.phase1_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
     Chunk, CausalChains, IntegratedCausal, Arguments, Temporal, Discourse, Strategic,
-    SmartChunk, ValidationResult, CausalGraph
+    SmartChunk, ValidationResult, CausalGraph, CANONICAL_TYPES_AVAILABLE
 )
 
 # CPP models - REAL PRODUCTION MODELS (no stubs)
@@ -43,6 +43,15 @@ from canonic_phases.Phase_one.cpp_models import (
     TextSpan,
     ChunkResolution,
 )
+
+# CANONICAL TYPE IMPORTS from farfan_pipeline.core.types for type-safe aggregation
+try:
+    from farfan_pipeline.core.types import PolicyArea, DimensionCausal
+    CANONICAL_TYPES_AVAILABLE = True
+except ImportError:
+    CANONICAL_TYPES_AVAILABLE = False
+    PolicyArea = None  # type: ignore
+    DimensionCausal = None  # type: ignore
 
 # Optional production dependencies with graceful fallbacks
 try:
@@ -968,19 +977,37 @@ class Phase1SPCIngestionFullContract:
                     paragraph_ids = list(range(start_idx, end_idx))
                     chunk_text = ' '.join(preprocessed.paragraphs[start_idx:end_idx])[:1500]
                 
-                # Create chunk with validated format
+                # Convert string IDs to enum types for type-safe aggregation in CPP cycle
+                policy_area_enum = None
+                dimension_enum = None
+                if TYPES_AVAILABLE and PolicyArea is not None and DimensionCausal is not None:
+                    try:
+                        # Map PA01-PA10 to PolicyArea enum
+                        policy_area_enum = getattr(PolicyArea, pa, None)
+                        
+                        # Map DIM01-DIM06 to DimensionCausal enum
+                        dimension_enum = dim_mapping.get(dim)
+                    except (AttributeError, KeyError):
+                        pass  # Keep as None if conversion fails
+                
+                # Create chunk with validated format and enum types
                 chunk = Chunk(
                     chunk_id=chunk_id,
                     policy_area_id=pa,
                     dimension_id=dim,
+                    policy_area=policy_area_enum,
+                    dimension=dimension_enum,
                     chunk_index=idx,
                     text_spans=text_spans,
                     paragraph_ids=paragraph_ids,
                     signal_tags=[pa, dim],
                     signal_scores={pa: 0.5, dim: 0.5},
                 )
-                # Store text for later use
-                chunk.segmentation_metadata = {'text': chunk_text[:2000]}
+                # Store text for later use with enum flag
+                chunk.segmentation_metadata = {
+                    'text': chunk_text[:2000],
+                    'has_type_enums': policy_area_enum is not None and dimension_enum is not None
+                }
                 
                 chunks.append(chunk)
                 idx += 1
@@ -1801,7 +1828,7 @@ class Phase1SPCIngestionFullContract:
             # Get text from smart chunk
             text_content = sc.text if sc.text else '[CONTENT]'
             
-            # Create legacy chunk using REAL LegacyChunk from cpp_models
+            # Create legacy chunk using REAL LegacyChunk from cpp_models with enum types
             legacy_chunk = LegacyChunk(
                 id=sc.chunk_id.replace('-', '_'),  # Convert PA01-DIM01 to PA01_DIM01
                 text=text_content[:2000],
@@ -1809,7 +1836,10 @@ class Phase1SPCIngestionFullContract:
                 resolution=ChunkResolution.MACRO,
                 bytes_hash=hashlib.sha256(text_content.encode()).hexdigest()[:16],
                 policy_area_id=sc.policy_area_id,
-                dimension_id=sc.dimension_id
+                dimension_id=sc.dimension_id,
+                # Propagate enum types from SmartChunk for type-safe aggregation
+                policy_area=getattr(sc, 'policy_area', None),
+                dimension=getattr(sc, 'dimension', None)
             )
             chunk_graph.chunks[legacy_chunk.id] = legacy_chunk
         
@@ -1897,7 +1927,25 @@ class Phase1SPCIngestionFullContract:
         # [POST-001] Validate with CanonPolicyPackageValidator
         CanonPolicyPackageValidator.validate(cpp)
         
+        # Verify type enum propagation for value aggregation in CPP cycle
+        chunks_with_enums = sum(1 for c in chunk_graph.chunks.values() 
+                                if hasattr(c, 'policy_area') and c.policy_area is not None 
+                                and hasattr(c, 'dimension') and c.dimension is not None)
+        type_coverage_pct = (chunks_with_enums / 60) * 100 if chunks_with_enums else 0
+        
         logger.info(f"CPP Construction: Built VALIDATED CanonPolicyPackage with {len(chunk_graph.chunks)} chunks")
+        logger.info(f"CPP Type Enums: {chunks_with_enums}/60 chunks ({type_coverage_pct:.1f}%) have PolicyArea/DimensionCausal enums for value aggregation")
+        
+        # Store type propagation metadata for downstream phases
+        metadata_copy = dict(cpp.metadata)
+        metadata_copy['type_propagation'] = {
+            'chunks_with_enums': chunks_with_enums,
+            'coverage_percentage': type_coverage_pct,
+            'canonical_types_available': TYPES_AVAILABLE,
+            'enum_ready_for_aggregation': chunks_with_enums == 60
+        }
+        # Update metadata via object.__setattr__ since CPP is frozen
+        object.__setattr__(cpp, 'metadata', metadata_copy)
         
         return cpp
 
