@@ -1,0 +1,289 @@
+{
+  "timestamp": "2025-12-11T06:22:11.138549",
+  "summary": {
+    "macro_level_ready": true,
+    "overall_score": 0.938,
+    "total_capabilities_checked": 8,
+    "capabilities_present": 7,
+    "capabilities_partial": 1,
+    "capabilities_missing": 0,
+    "critical_findings_count": 0
+  },
+  "components": {
+    "orchestrator": {
+      "component_name": "Orchestrator",
+      "exists": true,
+      "capabilities": {
+        "macro_evaluation": "PRESENT",
+        "pa_dim_awareness": "PRESENT",
+        "macro_aggregation": "PRESENT"
+      },
+      "findings_count": 3,
+      "metadata": {}
+    },
+    "carver": {
+      "component_name": "Carver",
+      "exists": true,
+      "capabilities": {
+        "dimension_support": "PRESENT",
+        "gap_analysis": "PRESENT",
+        "divergence_analysis": "PRESENT",
+        "macro_synthesis": "PARTIAL"
+      },
+      "findings_count": 4,
+      "metadata": {}
+    },
+    "phase_three": {
+      "component_name": "Phase Three",
+      "exists": true,
+      "capabilities": {
+        "scoring_module": "PRESENT"
+      },
+      "findings_count": 1,
+      "metadata": {}
+    },
+    "questionnaire": {
+      "component_name": "Questionnaire",
+      "exists": true,
+      "capabilities": {
+        "macro_question_defined": "PRESENT"
+      },
+      "findings_count": 2,
+      "metadata": {
+        "macro_question": {
+          "question_id": "MACRO_1",
+          "type": "MACRO",
+          "aggregation_method": "holistic_assessment",
+          "scoring_modality": "MACRO_HOLISTIC"
+        }
+      }
+    },
+    "types": {
+      "component_name": "Types",
+      "exists": true,
+      "capabilities": {
+        "macro_result_type": "PRESENT",
+        "coverage_matrix_type": "PRESENT",
+        "policy_area_enum": "PRESENT",
+        "dimension_enum": "PRESENT"
+      },
+      "findings_count": 4,
+      "metadata": {}
+    }
+  },
+  "pa_dim_matrix_audit": {
+    "capability": "pa_dim_matrix_coverage",
+    "description": "Ability to track and analyze PA\u00d7DIM matrix (10\u00d76 = 60 cells)",
+    "findings": [
+      {
+        "status": "PRESENT",
+        "description": "60 chunks (PA\u00d7DIM) invariant documented",
+        "evidence": "Found reference to 60 chunks or 10\u00d76 matrix"
+      },
+      {
+        "status": "PRESENT",
+        "description": "Coverage matrix tracking capability found",
+        "evidence": "coverage_matrix field exists"
+      },
+      {
+        "status": "PRESENT",
+        "description": "Gap analysis capability found in Carver",
+        "evidence": "GapAnalyzer class exists"
+      }
+    ],
+    "expected_cells": 60,
+    "policy_areas": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM02",
+      "DIM03",
+      "DIM04",
+      "DIM05",
+      "DIM06"
+    ],
+    "has_60_chunks_invariant": true,
+    "has_coverage_tracking": true,
+    "has_gap_analysis": true
+  },
+  "critical_findings": [],
+  "all_findings": [
+    {
+      "capability": "macro_evaluation",
+      "component": "Orchestrator",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Orchestrator has macro evaluation capability",
+      "evidence": [
+        "_evaluate_macro method found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "pa_dim_awareness",
+      "component": "Orchestrator",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Orchestrator is PA\u00d7DIM aware",
+      "evidence": [
+        "Policy area and dimension references found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "macro_aggregation",
+      "component": "Orchestrator",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Orchestrator can aggregate macro results",
+      "evidence": [
+        "MacroEvaluation or macro_result found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "dimension_support",
+      "component": "Carver",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Carver supports 6 dimensions (D1-D6)",
+      "evidence": [
+        "Dimension enum found with D1_INSUMOS or DIM01"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "gap_analysis",
+      "component": "Carver",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Carver can identify gaps in evidence",
+      "evidence": [
+        "GapAnalyzer or gap references found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "divergence_analysis",
+      "component": "Carver",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Carver can analyze divergence/coverage",
+      "evidence": [
+        "Divergence or coverage references found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "macro_synthesis",
+      "component": "Carver",
+      "severity": "MEDIUM",
+      "status": "PARTIAL",
+      "description": "Carver may not fully support macro synthesis",
+      "evidence": [],
+      "recommendation": "Extend Carver to handle macro-level holistic assessment",
+      "code_references": []
+    },
+    {
+      "capability": "scoring_module",
+      "component": "Phase Three",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Phase Three has scoring module",
+      "evidence": [
+        "scoring.py exists at /home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/src/canonic_phases/Phase_three/scoring.py"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "macro_question_defined",
+      "component": "Questionnaire",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Macro question is defined in questionnaire",
+      "evidence": [
+        "Question ID: MACRO_1",
+        "Text: \u00bfEl Plan de Desarrollo presenta una visi\u00f3n integral y coherente que articula todos los clusters y di..."
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "holistic_aggregation",
+      "component": "Questionnaire",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Macro question uses holistic assessment",
+      "evidence": [
+        "aggregation_method: holistic_assessment"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "macro_result_type",
+      "component": "Types",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "MacroQuestionResult type is defined",
+      "evidence": [
+        "MacroQuestionResult class found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "coverage_matrix_type",
+      "component": "Types",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "Coverage matrix type is defined",
+      "evidence": [
+        "coverage_matrix field found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "policy_area_enum",
+      "component": "Types",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "PolicyArea enum (PA01-PA10) is defined",
+      "evidence": [
+        "PolicyArea enum found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    },
+    {
+      "capability": "dimension_enum",
+      "component": "Types",
+      "severity": "INFO",
+      "status": "PRESENT",
+      "description": "DimensionCausal enum (DIM01-DIM06) is defined",
+      "evidence": [
+        "DimensionCausal enum found"
+      ],
+      "recommendation": null,
+      "code_references": []
+    }
+  ]
+}
