@@ -28,6 +28,11 @@ from typing import Any, Literal
 
 logger = logging.getLogger(__name__)
 
+# Constants
+EXPECTED_CONTRACT_COUNT = 300  # Q001-Q300
+EXPECTED_CHUNK_COUNT = 60      # 10 PA × 6 DIM
+DEFAULT_CONTRACT_DIR = "config/executor_contracts/specialized"
+
 
 class ExecutorChunkSynchronizationError(Exception):
     """Raised when executor-chunk synchronization fails.
@@ -245,7 +250,7 @@ def build_join_table(
         expected_signals = signal_requirements.get("mandatory_signals", [])
         
         # Determine contract file path
-        contract_file = f"config/executor_contracts/specialized/{contract_id}.v3.json"
+        contract_file = f"{DEFAULT_CONTRACT_DIR}/{contract_id}.v3.json"
         
         # Create binding
         binding = ExecutorChunkBinding(
@@ -275,8 +280,8 @@ def build_join_table(
             f"(patterns={len(expected_patterns)}, signals={len(expected_signals)})"
         )
     
-    # Validate total bindings = 300
-    if len(bindings) != 300:
+    # Validate total bindings = EXPECTED_CONTRACT_COUNT
+    if len(bindings) != EXPECTED_CONTRACT_COUNT:
         error_msg = f"Expected 300 bindings, got {len(bindings)}"
         logger.error(error_msg)
         raise ExecutorChunkSynchronizationError(error_msg)
@@ -324,9 +329,9 @@ def validate_uniqueness(bindings: list[ExecutorChunkBinding]) -> None:
         logger.error(error_msg)
         raise ExecutorChunkSynchronizationError(error_msg)
     
-    # Check total bindings = 300
-    if len(bindings) != 300:
-        error_msg = f"Expected 300 bindings, got {len(bindings)}"
+    # Check total bindings = EXPECTED_CONTRACT_COUNT
+    if len(bindings) != EXPECTED_CONTRACT_COUNT:
+        error_msg = f"Expected {EXPECTED_CONTRACT_COUNT} bindings, got {len(bindings)}"
         logger.error(error_msg)
         raise ExecutorChunkSynchronizationError(error_msg)
     
@@ -376,7 +381,7 @@ def generate_verification_manifest(
         "all_contracts_have_chunks": all(b.chunk_id is not None for b in bindings),
         "all_chunks_assigned": all(b.status == "matched" for b in bindings),
         "no_duplicate_irrigation": len([b.chunk_id for b in bindings if b.chunk_id]) == len(set(b.chunk_id for b in bindings if b.chunk_id)),
-        "total_bindings_equals_300": len(bindings) == 300
+        "total_bindings_equals_expected": len(bindings) == EXPECTED_CONTRACT_COUNT
     }
     
     # Build manifest
@@ -446,7 +451,7 @@ def load_executor_contracts(contracts_dir: Path | str) -> list[dict[str, Any]]:
     
     contracts: list[dict[str, Any]] = []
     
-    for i in range(1, 301):
+    for i in range(1, EXPECTED_CONTRACT_COUNT + 1):
         contract_id = f"Q{i:03d}"
         contract_path = contracts_dir / f"{contract_id}.v3.json"
         
@@ -458,9 +463,9 @@ def load_executor_contracts(contracts_dir: Path | str) -> list[dict[str, Any]]:
             contract = json.load(f)
             contracts.append(contract)
     
-    if len(contracts) != 300:
+    if len(contracts) != EXPECTED_CONTRACT_COUNT:
         raise ValueError(
-            f"Expected 300 contracts, found {len(contracts)} in {contracts_dir}"
+            f"Expected {EXPECTED_CONTRACT_COUNT} contracts, found {len(contracts)} in {contracts_dir}"
         )
     
     logger.info(f"✓ Loaded {len(contracts)} executor contracts from {contracts_dir}")

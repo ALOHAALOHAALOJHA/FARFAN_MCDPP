@@ -11,11 +11,10 @@ Tests cover:
 import sys
 from pathlib import Path
 
-# Add src to path for imports
+# Add src to path for imports (required for test execution)
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import pytest
-from dataclasses import asdict
 
 from orchestration.executor_chunk_synchronizer import (
     ExecutorChunkBinding,
@@ -23,7 +22,13 @@ from orchestration.executor_chunk_synchronizer import (
     build_join_table,
     validate_uniqueness,
     generate_verification_manifest,
+    EXPECTED_CONTRACT_COUNT,
+    EXPECTED_CHUNK_COUNT,
 )
+
+# Test constants
+TEST_CONTRACTS_PER_PA = 30  # 30 questions per policy area
+TEST_DIMENSIONS = 6         # 6 dimensions cycle
 
 
 # ============================================================================
@@ -34,9 +39,9 @@ from orchestration.executor_chunk_synchronizer import (
 def sample_contracts():
     """Generate sample contracts for testing."""
     contracts = []
-    for i in range(1, 301):
-        pa_idx = ((i - 1) // 30) + 1  # 30 questions per PA
-        dim_idx = ((i - 1) % 6) + 1   # 6 dimensions cycle
+    for i in range(1, EXPECTED_CONTRACT_COUNT + 1):
+        pa_idx = ((i - 1) // TEST_CONTRACTS_PER_PA) + 1
+        dim_idx = ((i - 1) % TEST_DIMENSIONS) + 1
         
         contract = {
             "identity": {
@@ -134,7 +139,7 @@ def test_build_join_table_success(sample_contracts, sample_chunks):
     """Test successful JOIN table construction."""
     bindings = build_join_table(sample_contracts, sample_chunks)
     
-    assert len(bindings) == 300
+    assert len(bindings) == EXPECTED_CONTRACT_COUNT
     assert all(isinstance(b, ExecutorChunkBinding) for b in bindings)
     assert all(b.status == "matched" for b in bindings)
     assert all(b.chunk_id is not None for b in bindings)
@@ -283,7 +288,7 @@ def test_validate_uniqueness_duplicate_contract_id():
             contract_hash="hash",
             chunk_source="test"
         )
-        for _ in range(300)
+        for _ in range(EXPECTED_CONTRACT_COUNT)
     ]
     
     with pytest.raises(ExecutorChunkSynchronizationError) as exc:
@@ -324,16 +329,12 @@ def test_generate_verification_manifest_structure(sample_contracts, sample_chunk
     bindings = build_join_table(sample_contracts, sample_chunks)
     manifest = generate_verification_manifest(bindings)
     
-    assert "version" in manifest
-    assert "success" in manifest
-    assert "timestamp" in manifest
-    assert "total_contracts" in manifest
-    assert "total_chunks" in manifest
-    assert "bindings" in manifest
-    assert "errors" in manifest
-    assert "warnings" in manifest
-    assert "invariants_validated" in manifest
-    assert "statistics" in manifest
+    required_fields = [
+        "version", "success", "timestamp", "total_contracts", "total_chunks",
+        "bindings", "errors", "warnings", "invariants_validated", "statistics"
+    ]
+    for field in required_fields:
+        assert field in manifest
 
 
 def test_generate_verification_manifest_invariants(sample_contracts, sample_chunks):
@@ -347,7 +348,7 @@ def test_generate_verification_manifest_invariants(sample_contracts, sample_chun
     assert invariants["all_contracts_have_chunks"] is True
     assert invariants["all_chunks_assigned"] is True
     assert invariants["no_duplicate_irrigation"] is True
-    assert invariants["total_bindings_equals_300"] is True
+    assert invariants["total_bindings_equals_expected"] is True
 
 
 def test_generate_verification_manifest_statistics(sample_contracts, sample_chunks):
@@ -378,7 +379,7 @@ def test_generate_verification_manifest_bindings_optional(sample_contracts, samp
     # With bindings
     manifest_with = generate_verification_manifest(bindings, include_full_bindings=True)
     assert "bindings" in manifest_with
-    assert len(manifest_with["bindings"]) == 300
+    assert len(manifest_with["bindings"]) == EXPECTED_CONTRACT_COUNT
     
     # Without bindings
     manifest_without = generate_verification_manifest(bindings, include_full_bindings=False)
@@ -425,7 +426,7 @@ def test_full_synchronization_workflow(sample_contracts, sample_chunks):
     """Test complete synchronization workflow."""
     # Step 1: Build JOIN table
     bindings = build_join_table(sample_contracts, sample_chunks)
-    assert len(bindings) == 300
+    assert len(bindings) == EXPECTED_CONTRACT_COUNT
     
     # Step 2: Validate uniqueness (already done in build_join_table, but redundant check)
     validate_uniqueness(bindings)
@@ -442,8 +443,8 @@ def test_full_synchronization_workflow(sample_contracts, sample_chunks):
     manifest = generate_verification_manifest(bindings)
     
     assert manifest["success"] is True
-    assert manifest["total_contracts"] == 300
-    assert manifest["total_chunks"] == 60  # 60 unique chunks
+    assert manifest["total_contracts"] == EXPECTED_CONTRACT_COUNT
+    assert manifest["total_chunks"] == EXPECTED_CHUNK_COUNT
     assert manifest["invariants_validated"]["one_to_one_mapping"] is True
 
 
@@ -478,7 +479,7 @@ def test_empty_contracts_list():
 
 def test_malformed_contract():
     """Test build_join_table handles malformed contracts gracefully."""
-    contracts = [{"identity": {}} for _ in range(300)]  # Missing required fields
+    contracts = [{"identity": {}} for _ in range(EXPECTED_CONTRACT_COUNT)]  # Missing required fields
     chunks = [
         {"policy_area_id": f"PA{i:02d}", "dimension_id": f"DIM{j:02d}"}
         for i in range(1, 11) for j in range(1, 7)
@@ -500,11 +501,11 @@ def test_chunk_without_ids():
         },
         "question_context": {"patterns": []},
         "signal_requirements": {"mandatory_signals": []}
-    } for i in range(1, 301)]
+    } for i in range(1, EXPECTED_CONTRACT_COUNT + 1)]
     
     chunks = [{"policy_area_id": "PA01", "dimension_id": "DIM01"}]  # No chunk_id
     
     # Should generate chunk_id from PA and DIM
+    # Will fail because only 1 chunk for EXPECTED_CONTRACT_COUNT contracts
     with pytest.raises(ExecutorChunkSynchronizationError):
-        # Will fail because only 1 chunk for 300 contracts
         build_join_table(contracts, chunks)
