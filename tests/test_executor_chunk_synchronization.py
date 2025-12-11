@@ -8,12 +8,6 @@ Tests cover:
 - Error handling and edge cases
 """
 
-import sys
-from pathlib import Path
-
-# Add src to path for imports (required for test execution)
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
 import pytest
 
 from orchestration.executor_chunk_synchronizer import (

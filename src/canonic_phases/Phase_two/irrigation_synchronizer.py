@@ -42,27 +42,46 @@ from farfan_pipeline.synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table
 try:
-    import sys
-    from pathlib import Path as _Path
-    _src_path = _Path(__file__).resolve().parent.parent.parent
-    if str(_src_path) not in sys.path:
-        sys.path.insert(0, str(_src_path))
     from orchestration.executor_chunk_synchronizer import (
         ExecutorChunkBinding,
         build_join_table,
         generate_verification_manifest,
         save_verification_manifest,
         ExecutorChunkSynchronizationError,
-        EXPECTED_CONTRACT_COUNT,
     )
     SYNCHRONIZER_AVAILABLE = True
-except ImportError:
+except ImportError as e:
     SYNCHRONIZER_AVAILABLE = False
-    ExecutorChunkBinding = None  # type: ignore
-    build_join_table = None  # type: ignore
-    generate_verification_manifest = None  # type: ignore
-    ExecutorChunkSynchronizationError = None  # type: ignore
-    EXPECTED_CONTRACT_COUNT = 300
+    _import_error = e
+    
+    # Provide clear error messages when attempting to use unavailable features
+    class ExecutorChunkBinding:  # type: ignore
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
+            raise ImportError(
+                "orchestration.executor_chunk_synchronizer is not available. "
+                "Please ensure the dependency is installed and importable."
+            ) from _import_error
+    
+    def build_join_table(*args: Any, **kwargs: Any) -> Any:
+        raise ImportError(
+            "orchestration.executor_chunk_synchronizer is not available. "
+            "Please ensure the dependency is installed and importable."
+        ) from _import_error
+    
+    def generate_verification_manifest(*args: Any, **kwargs: Any) -> Any:
+        raise ImportError(
+            "orchestration.executor_chunk_synchronizer is not available. "
+            "Please ensure the dependency is installed and importable."
+        ) from _import_error
+    
+    def save_verification_manifest(*args: Any, **kwargs: Any) -> Any:
+        raise ImportError(
+            "orchestration.executor_chunk_synchronizer is not available. "
+            "Please ensure the dependency is installed and importable."
+        ) from _import_error
+    
+    class ExecutorChunkSynchronizationError(Exception):  # type: ignore
+        pass
 
 try:
     from farfan_pipeline.core.orchestrator.signals import (
@@ -1320,6 +1339,17 @@ class IrrigationSynchronizer:
                             applicable_patterns = self._filter_patterns_from_contract(contract)
                         else:
                             # Fallback to generic if contract not found
+                            logger.warning(
+                                json.dumps(
+                                    {
+                                        "event": "contract_not_found_fallback_to_generic",
+                                        "question_id": question_id,
+                                        "policy_area_id": policy_area_id,
+                                        "dimension_id": dimension_id,
+                                        "correlation_id": self.correlation_id,
+                                    }
+                                )
+                            )
                             patterns_raw = question.get("patterns", [])
                             applicable_patterns = self._filter_patterns(
                                 patterns_raw, routing_result.policy_area_id

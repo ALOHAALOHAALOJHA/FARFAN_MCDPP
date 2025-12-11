@@ -18,7 +18,6 @@ Design Principles:
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 from dataclasses import dataclass, field
@@ -32,6 +31,28 @@ logger = logging.getLogger(__name__)
 EXPECTED_CONTRACT_COUNT = 300  # Q001-Q300
 EXPECTED_CHUNK_COUNT = 60      # 10 PA × 6 DIM
 DEFAULT_CONTRACT_DIR = "config/executor_contracts/specialized"
+
+
+def _extract_chunk_coordinates(chunk: Any) -> tuple[str | None, str | None]:
+    """Extract policy_area_id and dimension_id from a chunk.
+    
+    Supports both object attributes and dict keys for flexibility.
+    
+    Args:
+        chunk: Chunk object or dict with coordinates
+        
+    Returns:
+        Tuple of (policy_area_id, dimension_id) or (None, None) if not found
+    """
+    policy_area_id = getattr(chunk, "policy_area_id", None)
+    if policy_area_id is None and isinstance(chunk, dict):
+        policy_area_id = chunk.get("policy_area_id")
+    
+    dimension_id = getattr(chunk, "dimension_id", None)
+    if dimension_id is None and isinstance(chunk, dict):
+        dimension_id = chunk.get("dimension_id")
+    
+    return policy_area_id, dimension_id
 
 
 class ExecutorChunkSynchronizationError(Exception):
@@ -192,13 +213,7 @@ def build_join_table(
         # Find matching chunks
         matching_chunks = []
         for i, chunk in enumerate(chunks):
-            # Support both dict and object chunk formats
-            chunk_pa = getattr(chunk, "policy_area_id", None) or (
-                chunk.get("policy_area_id") if isinstance(chunk, dict) else None
-            )
-            chunk_dim = getattr(chunk, "dimension_id", None) or (
-                chunk.get("dimension_id") if isinstance(chunk, dict) else None
-            )
+            chunk_pa, chunk_dim = _extract_chunk_coordinates(chunk)
             
             if chunk_pa == policy_area_id and chunk_dim == dimension_id:
                 matching_chunks.append((i, chunk))
