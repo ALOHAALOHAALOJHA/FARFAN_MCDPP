@@ -65,9 +65,15 @@ done
 if [ "$DEPS_OK" = false ]; then
     echo ""
     echo "⚠️  Missing dependencies detected"
-    echo "Installing required packages..."
-    pip install numpy scipy pandas pytest -q
-    echo "✅ Dependencies installed"
+    echo "Would you like to install the required packages now? [y/N]"
+    read -r INSTALL_DEPS
+    if [[ "$INSTALL_DEPS" =~ ^[Yy]$ ]]; then
+        pip install numpy scipy pandas pytest -q
+        echo "✅ Dependencies installed"
+    else
+        echo "❌ Dependencies not installed. Please install them manually and re-run the script."
+        exit 1
+    fi
 fi
 
 echo ""
