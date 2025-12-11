@@ -12,8 +12,8 @@
   "overall_rating": "GOOD",
   "recommendations": [
     "Strengthen penalties for high-dispersion scenarios",
-    "Implement non-linear penalty scaling for extreme dispersion cases",
-    "Implement adaptive penalty weights based on scenario characteristics"
+    "Implement adaptive penalty weights based on scenario characteristics",
+    "Implement non-linear penalty scaling for extreme dispersion cases"
   ],
   "critical_issues": [],
   "detailed_results": [
