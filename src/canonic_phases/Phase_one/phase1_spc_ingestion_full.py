@@ -28,7 +28,7 @@ from canonic_phases.Phase_one.phase0_input_validation import CanonicalInput
 from canonic_phases.Phase_one.phase1_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
     Chunk, CausalChains, IntegratedCausal, Arguments, Temporal, Discourse, Strategic,
-    SmartChunk, ValidationResult, CausalGraph
+    SmartChunk, ValidationResult, CausalGraph, CANONICAL_TYPES_AVAILABLE
 )
 
 # CPP models - REAL PRODUCTION MODELS (no stubs)
@@ -43,6 +43,15 @@ from canonic_phases.Phase_one.cpp_models import (
     TextSpan,
     ChunkResolution,
 )
+
+# CANONICAL TYPE IMPORTS from farfan_pipeline.core.types for type-safe aggregation
+try:
+    from farfan_pipeline.core.types import PolicyArea, DimensionCausal
+    CANONICAL_TYPES_AVAILABLE = True
+except ImportError:
+    CANONICAL_TYPES_AVAILABLE = False
+    PolicyArea = None  # type: ignore
+    DimensionCausal = None  # type: ignore
 
 # Optional production dependencies with graceful fallbacks
 try:
@@ -144,6 +153,23 @@ except ImportError as e:
     ValidacionResultado = None
     AdvancedDAGValidator = None
 
+# Signal Enrichment Module - PRODUCTION (same directory)
+try:
+    from canonic_phases.Phase_one.signal_enrichment import (
+        SignalEnricher,
+        create_signal_enricher,
+    )
+    SIGNAL_ENRICHMENT_AVAILABLE = True
+except ImportError as e:
+    import warnings
+    warnings.warn(
+        f"Signal enrichment module not available: {e}. "
+        "Signal-based analysis will be limited.",
+        ImportWarning
+    )
+    SIGNAL_ENRICHMENT_AVAILABLE = False
+    SignalEnricher = None
+
 # Structural Normalizer - REAL PATH (same directory)
 try:
     from canonic_phases.Phase_one.structural import StructuralNormalizer
@@ -152,6 +178,27 @@ except ImportError:
     STRUCTURAL_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
+
+# Signal enrichment constants
+MAX_SIGNAL_PATTERNS_PER_CHECK = 20
+SIGNAL_PATTERN_BOOST = 2
+SIGNAL_BOOST_COEFFICIENT = 0.15
+SIGNAL_BOOST_SUFFICIENCY_COEFFICIENT = 0.8
+DISCOURSE_SIGNAL_BOOST_INJUNCTIVE = 2
+DISCOURSE_SIGNAL_BOOST_ARGUMENTATIVE = 2
+DISCOURSE_SIGNAL_BOOST_EXPOSITORY = 1
+MAX_SIGNAL_PATTERNS_DISCOURSE = 15
+MIN_SIGNAL_SIMILARITY_THRESHOLD = 0.3
+MAX_SHARED_SIGNALS_DISPLAY = 5
+MAX_SIGNAL_SCORE_DIFFERENCE = 0.3
+MAX_IRRIGATION_LINKS_PER_CHUNK = 15
+MIN_SIGNAL_COVERAGE_THRESHOLD = 0.5
+SIGNAL_QUALITY_TIER_BOOSTS = {
+    'EXCELLENT': 0.15,
+    'GOOD': 0.10,
+    'ADEQUATE': 0.05,
+    'SPARSE': 0.0
+}
 
 class Phase1FatalError(Exception):
     """Fatal error in Phase 1 execution."""
@@ -474,6 +521,17 @@ class Phase1SPCIngestionFullContract:
         
         # PRE-EXECUTION VALIDATION
         self._validate_canonical_input(canonical_input)  # WEIGHT: 1000
+        
+        # INITIALIZE SIGNAL ENRICHER with questionnaire
+        if SIGNAL_ENRICHMENT_AVAILABLE and SignalEnricher is not None:
+            try:
+                self.signal_enricher = create_signal_enricher(canonical_input.questionnaire_path)
+                logger.info(f"Signal enricher initialized: {self.signal_enricher._initialized}")
+            except Exception as e:
+                logger.warning(f"Signal enricher initialization failed: {e}")
+                self.signal_enricher = None
+        else:
+            logger.warning("Signal enrichment not available, proceeding without signal enhancement")
         
         # SUBPHASE EXECUTION - EXACT ORDER MANDATORY
         try:
@@ -842,12 +900,28 @@ class Phase1SPCIngestionFullContract:
                             node_id = f"KG-{entity_type[:3]}-{entity_id_counter:04d}"
                             entity_id_counter += 1
                             
+                            # SIGNAL ENRICHMENT: Apply signal-based scoring to entity
+                            signal_data = {'signal_tags': [entity_type], 'signal_importance': 0.7}
+                            if self.signal_enricher is not None:
+                                # Try all policy areas and pick best match
+                                best_enrichment = signal_data
+                                best_score = 0.7
+                                for pa_num in range(1, 11):
+                                    pa_id = f"PA{pa_num:02d}"
+                                    enrichment = self.signal_enricher.enrich_entity_with_signals(
+                                        entity_text, entity_type, pa_id
+                                    )
+                                    if enrichment['signal_importance'] > best_score:
+                                        best_enrichment = enrichment
+                                        best_score = enrichment['signal_importance']
+                                signal_data = best_enrichment
+                            
                             nodes.append(KGNode(
                                 id=node_id,
                                 type=entity_type,
                                 text=entity_text,
-                                signal_tags=[entity_type],
-                                signal_importance=0.7,
+                                signal_tags=signal_data.get('signal_tags', [entity_type]),
+                                signal_importance=signal_data.get('signal_importance', 0.7),
                                 policy_area_relevance={}
                             ))
                 except re.error as e:
@@ -875,12 +949,27 @@ class Phase1SPCIngestionFullContract:
                         node_id = f"KG-{kg_type[:3]}-{entity_id_counter:04d}"
                         entity_id_counter += 1
                         
+                        # SIGNAL ENRICHMENT for spaCy entities
+                        signal_data = {'signal_tags': [ent.label_], 'signal_importance': 0.6}
+                        if self.signal_enricher is not None:
+                            best_enrichment = signal_data
+                            best_score = 0.6
+                            for pa_num in range(1, 11):
+                                pa_id = f"PA{pa_num:02d}"
+                                enrichment = self.signal_enricher.enrich_entity_with_signals(
+                                    ent.text[:200], kg_type, pa_id
+                                )
+                                if enrichment['signal_importance'] > best_score:
+                                    best_enrichment = enrichment
+                                    best_score = enrichment['signal_importance']
+                            signal_data = best_enrichment
+                        
                         nodes.append(KGNode(
                             id=node_id,
                             type=kg_type,
                             text=ent.text[:200],
-                            signal_tags=[ent.label_],
-                            signal_importance=0.6,
+                            signal_tags=signal_data.get('signal_tags', [ent.label_]),
+                            signal_importance=signal_data.get('signal_importance', 0.6),
                             policy_area_relevance={}
                         ))
             except Exception as e:
@@ -985,8 +1074,23 @@ class Phase1SPCIngestionFullContract:
                     pa_score = sum(1 for kw in pa_keywords if kw.lower() in para_lower)
                     dim_score = sum(1 for kw in dim_keywords if kw.lower() in para_lower)
                     
-                    if pa_score > 0 and dim_score > 0:
-                        relevant_paragraphs.append((para_idx, para, pa_score + dim_score))
+                    # SIGNAL ENRICHMENT: Boost scores with signal-based pattern matching
+                    signal_boost = 0
+                    if self.signal_enricher is not None and pa in self.signal_enricher.context.signal_packs:
+                        signal_pack = self.signal_enricher.context.signal_packs[pa]
+                        # Check for pattern matches
+                        for pattern in signal_pack.patterns[:MAX_SIGNAL_PATTERNS_PER_CHECK]:
+                            try:
+                                # Use pattern directly with IGNORECASE flag (more efficient)
+                                if re.search(pattern, para_lower, re.IGNORECASE):
+                                    signal_boost += SIGNAL_PATTERN_BOOST
+                                    break  # One match is enough per paragraph
+                            except re.error:
+                                continue
+                    
+                    total_score = pa_score + dim_score + signal_boost
+                    if total_score > 0:
+                        relevant_paragraphs.append((para_idx, para, total_score))
                 
                 # Sort by relevance score and take top matches
                 relevant_paragraphs.sort(key=lambda x: x[2], reverse=True)
@@ -1004,19 +1108,37 @@ class Phase1SPCIngestionFullContract:
                     paragraph_ids = list(range(start_idx, end_idx))
                     chunk_text = ' '.join(preprocessed.paragraphs[start_idx:end_idx])[:1500]
                 
-                # Create chunk with validated format
+                # Convert string IDs to enum types for type-safe aggregation in CPP cycle
+                policy_area_enum = None
+                dimension_enum = None
+                if TYPES_AVAILABLE and PolicyArea is not None and DimensionCausal is not None:
+                    try:
+                        # Map PA01-PA10 to PolicyArea enum
+                        policy_area_enum = getattr(PolicyArea, pa, None)
+                        
+                        # Map DIM01-DIM06 to DimensionCausal enum
+                        dimension_enum = dim_mapping.get(dim)
+                    except (AttributeError, KeyError):
+                        pass  # Keep as None if conversion fails
+                
+                # Create chunk with validated format and enum types
                 chunk = Chunk(
                     chunk_id=chunk_id,
                     policy_area_id=pa,
                     dimension_id=dim,
+                    policy_area=policy_area_enum,
+                    dimension=dimension_enum,
                     chunk_index=idx,
                     text_spans=text_spans,
                     paragraph_ids=paragraph_ids,
                     signal_tags=[pa, dim],
                     signal_scores={pa: 0.5, dim: 0.5},
                 )
-                # Store text for later use
-                chunk.segmentation_metadata = {'text': chunk_text[:2000]}
+                # Store text for later use with enum flag
+                chunk.segmentation_metadata = {
+                    'text': chunk_text[:2000],
+                    'has_type_enums': policy_area_enum is not None and dimension_enum is not None
+                }
                 
                 chunks.append(chunk)
                 idx += 1
@@ -1053,12 +1175,39 @@ class Phase1SPCIngestionFullContract:
         
         for chunk in chunks:
             chunk_text = chunk.segmentation_metadata.get('text', '') if hasattr(chunk, 'segmentation_metadata') else ''
+            pa_id = chunk.policy_area_id
+            
+            # SIGNAL ENRICHMENT: Extract causal markers with signal-driven detection
+            signal_markers = []
+            if self.signal_enricher is not None:
+                signal_markers = self.signal_enricher.extract_causal_markers_with_signals(
+                    chunk_text, pa_id
+                )
             
             # Extract causal relations from chunk text
             events = []
             causes = []
             effects = []
             
+            # Process signal-detected markers first (higher confidence)
+            for marker in signal_markers:
+                event_data = {
+                    'text': marker['text'],
+                    'marker_type': marker['type'],
+                    'confidence': marker['confidence'],
+                    'source': marker['source'],
+                    'chunk_id': chunk.chunk_id,
+                    'signal_enhanced': True,
+                }
+                
+                if marker['type'] in ['CAUSE', 'CAUSE_LINK']:
+                    causes.append(event_data)
+                elif marker['type'] in ['EFFECT', 'EFFECT_LINK', 'CONSEQUENCE']:
+                    effects.append(event_data)
+                else:
+                    events.append(event_data)
+            
+            # Fallback to keyword-based extraction
             for keyword in CAUSAL_KEYWORDS:
                 if keyword.lower() in chunk_text.lower():
                     # Find surrounding context
@@ -1068,7 +1217,8 @@ class Phase1SPCIngestionFullContract:
                         event_data = {
                             'text': match[:200],
                             'keyword': keyword,
-                            'chunk_id': chunk.chunk_id
+                            'chunk_id': chunk.chunk_id,
+                            'signal_enhanced': False,
                         }
                         
                         # Classify using REAL Beach test from methods_dispensary.derek_beach
@@ -1251,20 +1401,44 @@ class Phase1SPCIngestionFullContract:
                 for pattern in patterns:
                     matches = re.findall(rf'([^.]*{pattern}[^.]*)', chunk_text_lower)
                     for match in matches[:2]:
-                        chunk_arguments[arg_type + 's' if not arg_type.endswith('s') else arg_type].append({
+                        arg_entry = {
                             'text': match[:150],
-                            'pattern': pattern
-                        })
+                            'pattern': pattern,
+                            'signal_score': None,
+                        }
+                        
+                        # SIGNAL ENRICHMENT: Score argument strength with signals
+                        if self.signal_enricher is not None:
+                            pa_id = chunk.policy_area_id
+                            signal_score = self.signal_enricher.score_argument_with_signals(
+                                match[:150], arg_type, pa_id
+                            )
+                            arg_entry['signal_score'] = signal_score['final_score']
+                            arg_entry['signal_confidence'] = signal_score['confidence']
+                            arg_entry['supporting_signals'] = signal_score.get('supporting_signals', [])
+                        
+                        chunk_arguments[arg_type + 's' if not arg_type.endswith('s') else arg_type].append(arg_entry)
             
             # Classify using REAL Beach test taxonomy from methods_dispensary
             if DEREK_BEACH_AVAILABLE and BeachEvidentialTest is not None:
                 evidence_count = len(chunk_arguments['evidence'])
                 claim_count = len(chunk_arguments['claims'])
                 
+                # SIGNAL ENHANCEMENT: Boost necessity/sufficiency with signal scores
+                signal_boost = 0.0
+                if self.signal_enricher is not None:
+                    # Average signal scores from evidence
+                    evidence_signal_scores = [
+                        ev.get('signal_score', 0.0) for ev in chunk_arguments['evidence']
+                        if ev.get('signal_score') is not None
+                    ]
+                    if evidence_signal_scores:
+                        signal_boost = sum(evidence_signal_scores) / len(evidence_signal_scores) * SIGNAL_BOOST_COEFFICIENT
+                
                 # Heuristic for necessity/sufficiency based on evidence strength
                 # This follows Beach & Pedersen 2019 calibration guidelines
-                necessity = min(0.9, 0.3 + (evidence_count * 0.15))
-                sufficiency = min(0.9, 0.3 + (claim_count * 0.1) + (evidence_count * 0.1))
+                necessity = min(0.9, 0.3 + (evidence_count * 0.15) + signal_boost)
+                sufficiency = min(0.9, 0.3 + (claim_count * 0.1) + (evidence_count * 0.1) + signal_boost * SIGNAL_BOOST_SUFFICIENCY_COEFFICIENT)
                 
                 # Use REAL BeachEvidentialTest.classify_test from derek_beach.py
                 test_type = BeachEvidentialTest.classify_test(necessity, sufficiency)
@@ -1321,6 +1495,7 @@ class Phase1SPCIngestionFullContract:
         
         for chunk in chunks:
             chunk_text = chunk.segmentation_metadata.get('text', '') if hasattr(chunk, 'segmentation_metadata') else ''
+            pa_id = chunk.policy_area_id
             
             temporal_markers = {
                 'years': [],
@@ -1328,10 +1503,34 @@ class Phase1SPCIngestionFullContract:
                 'horizons': [],
                 'phases': [],
                 'verb_sequence': [],
-                'temporal_order': 0
+                'temporal_order': 0,
+                'signal_enhanced_markers': []
             }
             
-            # Extract temporal markers
+            # SIGNAL ENRICHMENT: Extract temporal markers with signal patterns
+            if self.signal_enricher is not None:
+                signal_temporal_markers = self.signal_enricher.extract_temporal_markers_with_signals(
+                    chunk_text, pa_id
+                )
+                temporal_markers['signal_enhanced_markers'] = signal_temporal_markers
+                
+                # Merge signal markers into main categories
+                for marker in signal_temporal_markers:
+                    if marker['type'] == 'YEAR':
+                        try:
+                            year_val = int(re.search(r'20\d{2}', marker['text']).group(0))
+                            temporal_markers['years'].append(year_val)
+                        except (AttributeError, ValueError, TypeError):
+                            # If year extraction fails (e.g., no match or invalid int), skip this marker
+                            logging.debug(f"Failed to extract year from marker text: {marker['text']!r}")
+                    elif marker['type'] in ['DATE', 'MONTH_YEAR']:
+                        temporal_markers['dates'].append(marker['text'])
+                    elif marker['type'] == 'HORIZON':
+                        temporal_markers['horizons'].append(marker['text'])
+                    elif marker['type'] in ['PERIOD', 'SIGNAL_TEMPORAL']:
+                        temporal_markers['phases'].append(marker['text'])
+            
+            # Extract temporal markers with base patterns
             for pattern, marker_type in TEMPORAL_PATTERNS:
                 matches = re.findall(pattern, chunk_text, re.IGNORECASE)
                 for match in matches:
@@ -1402,12 +1601,32 @@ class Phase1SPCIngestionFullContract:
         for chunk in chunks:
             chunk_text = chunk.segmentation_metadata.get('text', '') if hasattr(chunk, 'segmentation_metadata') else ''
             chunk_lower = chunk_text.lower()
+            pa_id = chunk.policy_area_id
             
             # Determine dominant discourse mode
             mode_scores = {}
             for mode, indicators in DISCOURSE_MODES.items():
                 score = sum(1 for ind in indicators if ind in chunk_lower)
                 mode_scores[mode] = score
+            
+            # SIGNAL ENRICHMENT: Boost discourse detection with signal patterns
+            if self.signal_enricher is not None and pa_id in self.signal_enricher.context.signal_packs:
+                signal_pack = self.signal_enricher.context.signal_packs[pa_id]
+                
+                # Check for signal patterns that indicate specific discourse modes
+                for pattern in signal_pack.patterns[:MAX_SIGNAL_PATTERNS_DISCOURSE]:
+                    pattern_lower = pattern.lower()
+                    try:
+                        if re.search(pattern, chunk_lower, re.IGNORECASE):
+                            # Classify pattern-based discourse hints
+                            if any(kw in pattern_lower for kw in ['debe', 'deberá', 'requiere', 'obligator']):
+                                mode_scores['injunctive'] = mode_scores.get('injunctive', 0) + DISCOURSE_SIGNAL_BOOST_INJUNCTIVE
+                            elif any(kw in pattern_lower for kw in ['por tanto', 'debido', 'porque']):
+                                mode_scores['argumentative'] = mode_scores.get('argumentative', 0) + DISCOURSE_SIGNAL_BOOST_ARGUMENTATIVE
+                            elif any(kw in pattern_lower for kw in ['define', 'consiste', 'significa']):
+                                mode_scores['expository'] = mode_scores.get('expository', 0) + DISCOURSE_SIGNAL_BOOST_EXPOSITORY
+                    except re.error:
+                        continue
             
             # Select mode with highest score, default to 'expository'
             dominant_mode = max(mode_scores.keys(), key=lambda k: mode_scores[k]) if max(mode_scores.values()) > 0 else 'expository'
@@ -1475,6 +1694,15 @@ class Phase1SPCIngestionFullContract:
             evidence_count = len(arg_data.get('evidence', [])) if isinstance(arg_data, dict) else 0
             argument_score = min(1.0, evidence_count / 3)
             
+            # SIGNAL ENRICHMENT: Boost argument score with signal-based evidence
+            signal_boost = 0.0
+            if self.signal_enricher is not None and isinstance(arg_data, dict):
+                # Check for signal-enhanced evidence
+                for ev in arg_data.get('evidence', []):
+                    if isinstance(ev, dict) and ev.get('signal_score') is not None:
+                        signal_boost += ev['signal_score'] * 0.1  # Boost from signal-enhanced evidence
+                argument_score = min(1.0, argument_score + signal_boost)
+            
             # Discourse actionability
             actionable_modes = {'injunctive', 'performative', 'argumentative'}
             discourse_score = 1.0 if chunk.discourse_mode in actionable_modes else 0.3
@@ -1483,13 +1711,23 @@ class Phase1SPCIngestionFullContract:
             link_count = cross_link_counts.get(chunk.chunk_id, 0)
             centrality_score = link_count / max_links if max_links > 0 else 0
             
+            # SIGNAL ENRICHMENT: Add signal quality boost to strategic priority
+            signal_quality_boost = 0.0
+            if self.signal_enricher is not None:
+                pa_id = chunk.policy_area_id
+                if pa_id in self.signal_enricher.context.quality_metrics:
+                    metrics = self.signal_enricher.context.quality_metrics[pa_id]
+                    # Boost based on signal quality tier using module constant
+                    signal_quality_boost = SIGNAL_QUALITY_TIER_BOOSTS.get(metrics.coverage_tier, 0.0)
+            
             # Calculate weighted strategic priority
             strategic_priority = (
                 WEIGHTS['causal_density'] * causal_score +
                 WEIGHTS['temporal_urgency'] * temporal_score +
                 WEIGHTS['argument_strength'] * argument_score +
                 WEIGHTS['discourse_actionability'] * discourse_score +
-                WEIGHTS['cross_link_centrality'] * centrality_score
+                WEIGHTS['cross_link_centrality'] * centrality_score +
+                signal_quality_boost  # Additional boost from signal quality
             )
             
             # Normalize to 0-100 scale
@@ -1638,7 +1876,54 @@ class Phase1SPCIngestionFullContract:
                                 'strength': 0.9
                             })
             
-            irrigation_map[chunk.chunk_id] = links[:10]  # Limit links per chunk
+            # SIGNAL ENRICHMENT: Add signal-based semantic similarity links
+            if self.signal_enricher is not None:
+                # Compare signal tags for semantic similarity
+                chunk_signal_tags = set(chunk.signal_tags) if chunk.signal_tags else set()
+                
+                for other in chunks:
+                    if other.chunk_id != chunk.chunk_id and other.signal_tags:
+                        other_signal_tags = set(other.signal_tags)
+                        
+                        # Calculate Jaccard similarity of signal tags
+                        if chunk_signal_tags and other_signal_tags:
+                            intersection = len(chunk_signal_tags & other_signal_tags)
+                            union = len(chunk_signal_tags | other_signal_tags)
+                            similarity = intersection / union if union > 0 else 0
+                            
+                            # Add link if similarity is significant
+                            if similarity >= MIN_SIGNAL_SIMILARITY_THRESHOLD:
+                                links.append({
+                                    'target': other.chunk_id,
+                                    'type': 'signal_semantic_similarity',
+                                    'strength': min(0.95, similarity),
+                                    'shared_signals': list(chunk_signal_tags & other_signal_tags)[:MAX_SHARED_SIGNALS_DISPLAY]
+                                })
+                
+                # Add signal-based score similarity links
+                if chunk.signal_scores:
+                    for other in chunks:
+                        if other.chunk_id != chunk.chunk_id and other.signal_scores:
+                            # Check if both chunks have high scores for similar signal types
+                            common_signal_types = set(chunk.signal_scores.keys()) & set(other.signal_scores.keys())
+                            if common_signal_types:
+                                avg_score_diff = sum(
+                                    abs(chunk.signal_scores[k] - other.signal_scores[k]) 
+                                    for k in common_signal_types
+                                ) / len(common_signal_types)
+                                
+                                # Link if scores are similar (low difference)
+                                if avg_score_diff < MAX_SIGNAL_SCORE_DIFFERENCE:
+                                    links.append({
+                                        'target': other.chunk_id,
+                                        'type': 'signal_score_similarity',
+                                        'strength': 1.0 - avg_score_diff,
+                                        'common_types': list(common_signal_types)
+                                    })
+            
+            # Sort links by strength and keep top N (increased with signal links)
+            links.sort(key=lambda x: x['strength'], reverse=True)
+            irrigation_map[chunk.chunk_id] = links[:MAX_IRRIGATION_LINKS_PER_CHUNK]
         
         # Since SmartChunk is frozen, we return the original chunks
         # The irrigation links are tracked in metadata
@@ -1701,6 +1986,32 @@ class Phase1SPCIngestionFullContract:
                 violations.append(f"Missing PA×DIM combinations: {missing}")
             if extra:
                 violations.append(f"Unexpected PA×DIM combinations: {extra}")
+        
+        # SIGNAL ENRICHMENT: Validate signal coverage quality
+        if self.signal_enricher is not None:
+            try:
+                signal_coverage = self.signal_enricher.compute_signal_coverage_metrics(chunks)
+                
+                # Quality gate: Check if signal coverage meets minimum thresholds
+                if signal_coverage['coverage_completeness'] < MIN_SIGNAL_COVERAGE_THRESHOLD:
+                    violations.append(
+                        f"Signal coverage too low: {signal_coverage['coverage_completeness']:.1%} "
+                        f"(minimum {MIN_SIGNAL_COVERAGE_THRESHOLD:.0%} required)"
+                    )
+                
+                if signal_coverage['quality_tier'] == 'SPARSE':
+                    violations.append(
+                        f"Signal quality tier is SPARSE "
+                        f"(avg {signal_coverage['avg_signal_tags_per_chunk']:.1f} tags/chunk)"
+                    )
+                
+                logger.info(
+                    f"SP13: Signal quality validation - "
+                    f"coverage={signal_coverage['coverage_completeness']:.1%}, "
+                    f"tier={signal_coverage['quality_tier']}"
+                )
+            except Exception as e:
+                logger.warning(f"SP13: Signal coverage validation failed: {e}")
         
         # Determine status
         status = "VALID" if not violations else "INVALID"
@@ -1837,7 +2148,7 @@ class Phase1SPCIngestionFullContract:
             # Get text from smart chunk
             text_content = sc.text if sc.text else '[CONTENT]'
             
-            # Create legacy chunk using REAL LegacyChunk from cpp_models
+            # Create legacy chunk using REAL LegacyChunk from cpp_models with enum types
             legacy_chunk = LegacyChunk(
                 id=sc.chunk_id.replace('-', '_'),  # Convert PA01-DIM01 to PA01_DIM01
                 text=text_content[:2000],
@@ -1845,7 +2156,10 @@ class Phase1SPCIngestionFullContract:
                 resolution=ChunkResolution.MACRO,
                 bytes_hash=hashlib.sha256(text_content.encode()).hexdigest()[:16],
                 policy_area_id=sc.policy_area_id,
-                dimension_id=sc.dimension_id
+                dimension_id=sc.dimension_id,
+                # Propagate enum types from SmartChunk for type-safe aggregation
+                policy_area=getattr(sc, 'policy_area', None),
+                dimension=getattr(sc, 'dimension', None)
             )
             chunk_graph.chunks[legacy_chunk.id] = legacy_chunk
         
@@ -1914,6 +2228,22 @@ class Phase1SPCIngestionFullContract:
         integrity_index = IntegrityIndex.compute(chunk_graph.chunks)
         logger.info(f"CPP: Computed IntegrityIndex - blake2b_root={integrity_index.blake2b_root[:32]}...")
         
+        # SIGNAL COVERAGE METRICS: Compute comprehensive signal enrichment metrics
+        signal_coverage_metrics = {}
+        signal_provenance_report = {}
+        if self.signal_enricher is not None:
+            try:
+                signal_coverage_metrics = self.signal_enricher.compute_signal_coverage_metrics(ranked)
+                signal_provenance_report = self.signal_enricher.get_provenance_report()
+                logger.info(
+                    f"Signal enrichment metrics: "
+                    f"coverage={signal_coverage_metrics['coverage_completeness']:.2%}, "
+                    f"quality_tier={signal_coverage_metrics['quality_tier']}, "
+                    f"avg_tags_per_chunk={signal_coverage_metrics['avg_signal_tags_per_chunk']:.1f}"
+                )
+            except Exception as e:
+                logger.warning(f"Signal coverage metrics computation failed: {e}")
+        
         # [EXEC-CPP-015] Build metadata with execution trace
         metadata = {
             'execution_trace': self.execution_trace,
@@ -1926,6 +2256,9 @@ class Phase1SPCIngestionFullContract:
             'sisas_available': SISAS_AVAILABLE,
             'derek_beach_available': DEREK_BEACH_AVAILABLE,
             'teoria_cambio_available': TEORIA_CAMBIO_AVAILABLE,
+            'signal_enrichment_available': SIGNAL_ENRICHMENT_AVAILABLE,
+            'signal_coverage_metrics': signal_coverage_metrics,
+            'signal_provenance': signal_provenance_report,
         }
         
         # Build PolicyManifest for canonical notation reference
@@ -1950,7 +2283,25 @@ class Phase1SPCIngestionFullContract:
         # [POST-001] Validate with CanonPolicyPackageValidator
         CanonPolicyPackageValidator.validate(cpp)
         
+        # Verify type enum propagation for value aggregation in CPP cycle
+        chunks_with_enums = sum(1 for c in chunk_graph.chunks.values() 
+                                if hasattr(c, 'policy_area') and c.policy_area is not None 
+                                and hasattr(c, 'dimension') and c.dimension is not None)
+        type_coverage_pct = (chunks_with_enums / 60) * 100 if chunks_with_enums else 0
+        
         logger.info(f"CPP Construction: Built VALIDATED CanonPolicyPackage with {len(chunk_graph.chunks)} chunks")
+        logger.info(f"CPP Type Enums: {chunks_with_enums}/60 chunks ({type_coverage_pct:.1f}%) have PolicyArea/DimensionCausal enums for value aggregation")
+        
+        # Store type propagation metadata for downstream phases
+        metadata_copy = dict(cpp.metadata)
+        metadata_copy['type_propagation'] = {
+            'chunks_with_enums': chunks_with_enums,
+            'coverage_percentage': type_coverage_pct,
+            'canonical_types_available': TYPES_AVAILABLE,
+            'enum_ready_for_aggregation': chunks_with_enums == 60
+        }
+        # Update metadata via object.__setattr__ since CPP is frozen
+        object.__setattr__(cpp, 'metadata', metadata_copy)
         
         return cpp
 
