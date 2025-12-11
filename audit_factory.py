@@ -23,7 +23,7 @@ import json
 import sys
 import ast
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any, Dict
 from collections import defaultdict
 import subprocess
 import time
@@ -258,17 +258,33 @@ class FactoryAuditor:
                     parts = line.split(":", 2)
                     code = parts[2] if len(parts) > 2 else line
                     
-                    # Skip if it's a definition, in a comment, or in a string
+                    # Skip if it's a definition, in a comment, or in a string literal
                     if any(pattern in code for pattern in [
                         "def load_questionnaire",
-                        "\"load_questionnaire(",
-                        "'load_questionnaire(",
                         ">>>",  # doctest
-                    ]) or code.strip().startswith("#"):
+                    ]):
+                        continue
+                    
+                    # Skip if it's in a comment
+                    if code.strip().startswith("#"):
+                        continue
+                    
+                    # Skip if it's in a string literal (check for quotes before the pattern)
+                    code_before_pattern = code.split("load_questionnaire")[0]
+                    # Count quotes before the pattern
+                    double_quotes = code_before_pattern.count('"')
+                    single_quotes = code_before_pattern.count("'")
+                    # If odd number of quotes, we're inside a string
+                    if double_quotes % 2 != 0 or single_quotes % 2 != 0:
+                        continue
+                    
+                    # Skip if it appears to be a description/comment (contains descriptive text after)
+                    if ":" in code and any(desc in code.lower() for desc in ["for", "via", "using", "with", "from", "calls", "returns", "canonical"]):
+                        # This is likely documentation like "- factory.load_questionnaire() for canonical loading"
                         continue
                     
                     # Only include actual function calls
-                    if "load_questionnaire(" in code and "=" not in code.split("load_questionnaire")[0][-20:]:
+                    if "load_questionnaire(" in code:
                         matches.append(line)
                 
                 # Filter out acceptable matches more precisely

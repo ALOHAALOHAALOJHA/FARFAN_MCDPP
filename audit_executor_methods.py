@@ -247,6 +247,60 @@ class ExecutorMethodAuditor:
         """Find similar methods in the dispensary."""
         suggestions = []
 
+        # Special high-quality replacements for known missing methods
+        known_replacements = {
+            ("FinancialAuditor", "_calculate_sufficiency"): [
+                {
+                    "class": "PDETMunicipalPlanAnalyzer",
+                    "method": "_assess_financial_sustainability",
+                    "similarity_score": 10,
+                    "docstring": "Bayesian assessment of financial sustainability with risk inference",
+                    "is_private": True,
+                    "recommended": True,
+                    "rationale": "Comprehensive sustainability analysis with Bayesian risk inference - superior to simple sufficiency check"
+                }
+            ],
+            ("FinancialAuditor", "_detect_allocation_gaps"): [
+                {
+                    "class": "PDETMunicipalPlanAnalyzer",
+                    "method": "_analyze_funding_sources",
+                    "similarity_score": 10,
+                    "docstring": "Comprehensive funding source gap analysis with territorial context",
+                    "is_private": True,
+                    "recommended": True,
+                    "rationale": "Identifies funding gaps mapped to Colombian official systems (SGP, SGR)"
+                }
+            ],
+            ("FinancialAuditor", "_match_goal_to_budget"): [
+                {
+                    "class": "PDETMunicipalPlanAnalyzer",
+                    "method": "_extract_budget_for_pillar",
+                    "similarity_score": 10,
+                    "docstring": "Semantic matching of goals to budget allocations with confidence scoring",
+                    "is_private": True,
+                    "recommended": True,
+                    "rationale": "Designed for PDET pillar-budget matching with semantic analysis"
+                }
+            ],
+            ("PDETMunicipalPlanAnalyzer", "_generate_optimal_remediations"): [
+                {
+                    "class": "PDETMunicipalPlanAnalyzer",
+                    "method": "_generate_optimal_remediations",
+                    "similarity_score": 10,
+                    "docstring": "Method EXISTS in dispensary - catalog needs update",
+                    "is_private": True,
+                    "recommended": True,
+                    "rationale": "Method is available in financiero_viabilidad_tablas.py - no replacement needed"
+                }
+            ],
+        }
+
+        # Check for known high-quality replacements first
+        replacement_key = (class_name, method_name)
+        if replacement_key in known_replacements:
+            suggestions.extend(known_replacements[replacement_key])
+            # Still continue to find additional alternatives
+
         # Check if class exists in dispensary
         if class_name in self.dispensary_methods_catalog:
             all_methods = self.dispensary_methods_catalog[class_name]

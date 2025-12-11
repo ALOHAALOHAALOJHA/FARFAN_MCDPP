@@ -1,10 +1,10 @@
 {
-  "audit_timestamp": "2025-12-11T08:10:33Z",
+  "audit_timestamp": "2025-12-11T13:38:10Z",
   "total_checks": 6,
   "passed_checks": 5,
   "failed_checks": 1,
   "critical_errors": [
-    "Found 19 unauthorized load_questionnaire() calls"
+    "Found 9 unauthorized load_questionnaire() calls"
   ],
   "warnings": [
     "Missing dispensary files: executors_methods.json"
@@ -64,16 +64,15 @@
       "status": "FAILED",
       "message": "Found unauthorized load_questionnaire() calls",
       "problematic_matches": [
-        "src/dashboard_atroz_/signals_service.py:    Uses questionnaire.load_questionnaire() for hash verification and immutability.",
-        "src/dashboard_atroz_/signals_service.py:    # Load from canonical questionnaire path (via questionnaire.load_questionnaire())",
-        "src/cross_cutting_infrastrucuture/contractual/dura_lex/json_contract_loader.py:    - factory.load_questionnaire() for canonical loading (returns CanonicalQuestionnaire)",
-        "src/cross_cutting_infrastrucuture/contractual/dura_lex/json_contract_loader.py:                \"loaded via factory.load_questionnaire() which enforces hash verification. \"",
-        "src/cross_cutting_infrastrucuture/contractual/dura_lex/json_contract_loader.py:                \"Use factory.load_questionnaire() for canonical loading.\"",
+        "tests/test_phase2_sisas_checklist.py:            questionnaire = load_questionnaire()",
+        "tests/test_phase2_sisas_checklist.py:            questionnaire = load_questionnaire()",
+        "tests/test_phase2_sisas_checklist.py:            questionnaire = load_questionnaire()",
         "src/canonic_phases/Phase_zero/bootstrap.py:        DEBE ser llamado por Factory despu\u00e9s de load_questionnaire().",
-        "src/canonic_phases/Phase_zero/json_contract_loader.py:    - factory.load_questionnaire() for canonical loading (returns CanonicalQuestionnaire)",
-        "src/canonic_phases/Phase_zero/json_contract_loader.py:                \"loaded via factory.load_questionnaire() which enforces hash verification. \"",
-        "src/canonic_phases/Phase_zero/json_contract_loader.py:                \"Use factory.load_questionnaire() for canonical loading.\"",
-        "src/canonic_phases/Phase_zero/verified_pipeline_runner.py:                  AFTER Phase 0 passes via load_questionnaire()."
+        "src/orchestration/factory.py:   - load_questionnaire() called ONCE by factory only (singleton + integrity hash)",
+        "src/orchestration/factory.py:   - Search codebase: NO other load_questionnaire() calls should exist",
+        "src/orchestration/factory.py:    PROHIBIDO: Instanciar directamente, usar load_questionnaire()",
+        "src/orchestration/factory.py:            SingletonViolationError: If load_questionnaire() already called.",
+        "src/orchestration/factory.py:            questionnaire = load_questionnaire(self._questionnaire_path)"
       ]
     },
     "dispensary_files": {

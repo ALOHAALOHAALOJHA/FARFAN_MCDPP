@@ -51,7 +51,7 @@ All signal loading now goes through:
 - **Tests**: 3 direct calls in `tests/test_phase2_sisas_checklist.py` (⚠️ WARNING)
 - **Documentation**: 16 calls in comments/examples (✅ ACCEPTABLE)
 - **Dashboard**: 1 call in `src/dashboard_atroz_/signals_service.py` (⚠️ WARNING)
-- **SISAS**: 4 calls in `src/cross_cutting_infrastrucuiture/irrigation_using_signals/SISAS/signal_loader.py` (⚠️ WARNING)
+- **SISAS**: 4 calls in `src/cross_cutting_infrastructure/irrigation_using_signals/SISAS/signal_loader.py` (⚠️ WARNING)
 
 **Recommendations**:
 1. Update tests to use `AnalysisPipelineFactory` instead of direct `load_questionnaire()` calls
