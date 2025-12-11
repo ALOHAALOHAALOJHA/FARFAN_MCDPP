@@ -95,7 +95,9 @@ class TestSignalEnricher:
     
     def test_initialization_with_invalid_path(self):
         """Test enricher initialization with invalid questionnaire path."""
-        invalid_path = Path("/nonexistent/path/questionnaire.json")
+        import uuid
+        # Use UUID to ensure path truly doesn't exist on any system
+        invalid_path = Path(f"/nonexistent-{uuid.uuid4().hex}/path/questionnaire.json")
         enricher = SignalEnricher(questionnaire_path=invalid_path)
         assert not enricher._initialized
     
@@ -313,10 +315,19 @@ class TestFactoryFunction:
         assert isinstance(enricher, SignalEnricher)
     
     def test_create_signal_enricher_with_path(self):
-        """Test factory function with questionnaire path."""
+        """
+        Test factory function with questionnaire path.
+        This test checks that create_signal_enricher handles a non-existent file gracefully.
+        """
         path = Path("/tmp/test_questionnaire.json")
+        # Ensure the file does not exist
+        if path.exists():
+            path.unlink()
         enricher = create_signal_enricher(questionnaire_path=path)
         assert enricher is not None
+        assert isinstance(enricher, SignalEnricher)
+        # Enricher should not be initialized when file doesn't exist
+        assert not enricher._initialized
 
 
 @pytest.mark.integration
