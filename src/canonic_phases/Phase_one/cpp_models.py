@@ -125,9 +125,17 @@ class LegacyChunk:
         
         # Validate enum types if provided and available
         if CANONICAL_TYPES_AVAILABLE:
-            if self.policy_area is not None and not isinstance(self.policy_area, PolicyArea):
+            if (
+                self.policy_area is not None
+                and PolicyArea is not None
+                and not isinstance(self.policy_area, PolicyArea)
+            ):
                 raise ValueError(f"policy_area must be PolicyArea enum, got {type(self.policy_area)}")
-            if self.dimension is not None and not isinstance(self.dimension, DimensionCausal):
+            if (
+                self.dimension is not None
+                and DimensionCausal is not None
+                and not isinstance(self.dimension, DimensionCausal)
+            ):
                 raise ValueError(f"dimension must be DimensionCausal enum, got {type(self.dimension)}")
 
 
