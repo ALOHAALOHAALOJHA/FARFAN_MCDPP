@@ -23,10 +23,7 @@ from canonic_phases.Phase_one.signal_enrichment import (
 # Phase 1 models
 from canonic_phases.Phase_one.phase1_models import (
     SmartChunk,
-    CausalGraph,
 )
-
-
 @pytest.fixture
 def mock_questionnaire_json():
     """Create a minimal mock questionnaire JSON file."""
