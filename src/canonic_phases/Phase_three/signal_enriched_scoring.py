@@ -32,10 +32,34 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# Quality level constants
+QUALITY_EXCELENTE = "EXCELENTE"
+QUALITY_ACEPTABLE = "ACEPTABLE"
+QUALITY_INSUFICIENTE = "INSUFICIENTE"
+QUALITY_NO_APLICABLE = "NO_APLICABLE"
+QUALITY_ERROR = "ERROR"
+
+# Threshold adjustment constants
+HIGH_PATTERN_THRESHOLD = 15  # Pattern count threshold for complexity
+HIGH_INDICATOR_THRESHOLD = 10  # Indicator count threshold for specificity
+PATTERN_COMPLEXITY_ADJUSTMENT = -0.05  # Lower threshold for complex questions
+INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03  # Raise threshold for specific questions
+COMPLETE_EVIDENCE_ADJUSTMENT = 0.02  # Bonus for complete evidence
+
+# Score thresholds for validation
+HIGH_SCORE_THRESHOLD = 0.8
+LOW_SCORE_THRESHOLD = 0.3
+
 __all__ = [
     "SignalEnrichedScorer",
     "get_signal_adjusted_threshold",
     "get_signal_quality_validation",
+    # Constants
+    "QUALITY_EXCELENTE",
+    "QUALITY_ACEPTABLE",
+    "QUALITY_INSUFICIENTE",
+    "QUALITY_NO_APLICABLE",
+    "QUALITY_ERROR",
 ]
 
 
@@ -112,9 +136,9 @@ class SignalEnrichedScorer:
             signal_pack = self.signal_registry.get_micro_answering_signals(question_id)
             
             # Adjust based on pattern complexity (more patterns = more complex)
-            pattern_count = len(signal_pack.patterns) if hasattr(signal_pack, 'patterns') else 0
-            if pattern_count > 15:  # High pattern complexity
-                adjustment = -0.05  # Lower threshold slightly
+            pattern_count = len(getattr(signal_pack, 'patterns', []))
+            if pattern_count > HIGH_PATTERN_THRESHOLD:
+                adjustment = PATTERN_COMPLEXITY_ADJUSTMENT
                 adjusted = max(0.3, adjusted + adjustment)
                 adjustment_details["adjustments"].append({
                     "type": "high_pattern_complexity",
@@ -123,9 +147,9 @@ class SignalEnrichedScorer:
                 })
             
             # Adjust based on indicator count (more indicators = more specific)
-            indicator_count = len(signal_pack.indicators) if hasattr(signal_pack, 'indicators') else 0
-            if indicator_count > 10:  # High indicator specificity
-                adjustment = 0.03  # Raise threshold slightly for specificity
+            indicator_count = len(getattr(signal_pack, 'indicators', []))
+            if indicator_count > HIGH_INDICATOR_THRESHOLD:
+                adjustment = INDICATOR_SPECIFICITY_ADJUSTMENT
                 adjusted = min(0.9, adjusted + adjustment)
                 adjustment_details["adjustments"].append({
                     "type": "high_indicator_specificity",
@@ -136,7 +160,7 @@ class SignalEnrichedScorer:
             # Adjust based on evidence quality from metadata
             completeness = metadata.get("completeness", "").lower()
             if completeness == "complete":
-                adjustment = 0.02  # Slight bonus for complete evidence
+                adjustment = COMPLETE_EVIDENCE_ADJUSTMENT
                 adjusted = min(0.9, adjusted + adjustment)
                 adjustment_details["adjustments"].append({
                     "type": "complete_evidence",
@@ -198,39 +222,39 @@ class SignalEnrichedScorer:
         
         try:
             # Check 1: Score-quality consistency
-            if score >= 0.8 and quality_level in ["INSUFICIENTE", "NO_APLICABLE"]:
+            if score >= HIGH_SCORE_THRESHOLD and quality_level in [QUALITY_INSUFICIENTE, QUALITY_NO_APLICABLE]:
                 validation_details["checks"].append({
                     "check": "score_quality_consistency",
                     "issue": "high_score_low_quality",
                     "action": "promote_quality",
                 })
-                validated = "ACEPTABLE"  # Promote to at least ACEPTABLE
+                validated = QUALITY_ACEPTABLE  # Promote to at least ACEPTABLE
                 logger.info(
                     f"Quality promoted for {question_id}: "
                     f"{quality_level} → {validated} (high score {score:.3f})"
                 )
             
             # Check 2: Completeness-quality alignment
-            if completeness == "complete" and quality_level == "INSUFICIENTE":
+            if completeness == "complete" and quality_level == QUALITY_INSUFICIENTE:
                 validation_details["checks"].append({
                     "check": "completeness_quality_alignment",
                     "issue": "complete_evidence_low_quality",
                     "action": "promote_quality",
                 })
-                validated = "ACEPTABLE"  # At least ACEPTABLE for complete evidence
+                validated = QUALITY_ACEPTABLE  # At least ACEPTABLE for complete evidence
                 logger.info(
                     f"Quality promoted for {question_id}: "
                     f"{quality_level} → {validated} (complete evidence)"
                 )
             
             # Check 3: Low score validation
-            if score < 0.3 and quality_level == "EXCELENTE":
+            if score < LOW_SCORE_THRESHOLD and quality_level == QUALITY_EXCELENTE:
                 validation_details["checks"].append({
                     "check": "low_score_validation",
                     "issue": "low_score_high_quality",
                     "action": "demote_quality",
                 })
-                validated = "ACEPTABLE"  # Demote to ACEPTABLE
+                validated = QUALITY_ACEPTABLE  # Demote to ACEPTABLE
                 logger.info(
                     f"Quality demoted for {question_id}: "
                     f"{quality_level} → {validated} (low score {score:.3f})"

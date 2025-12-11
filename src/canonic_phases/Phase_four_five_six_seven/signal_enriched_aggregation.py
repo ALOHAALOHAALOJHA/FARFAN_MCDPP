@@ -33,6 +33,20 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# Weight adjustment constants
+CRITICAL_SCORE_THRESHOLD = 0.4  # Scores below this are considered critical
+CRITICAL_SCORE_BOOST_FACTOR = 1.2  # Weight boost for critical scores
+HIGH_SIGNAL_PATTERN_THRESHOLD = 15  # Pattern count threshold
+HIGH_SIGNAL_BOOST_FACTOR = 1.05  # Proportional boost for high signal density
+
+# Dispersion analysis constants
+CV_CONVERGENCE_THRESHOLD = 0.15  # Coefficient of variation for convergence
+CV_MODERATE_THRESHOLD = 0.40  # CV threshold for moderate dispersion
+CV_HIGH_THRESHOLD = 0.60  # CV threshold for high dispersion
+
+# Representative question placeholder (to be replaced by actual logic)
+REPRESENTATIVE_QUESTION_PLACEHOLDER = "Q001"
+
 __all__ = [
     "SignalEnrichedAggregator",
     "adjust_weights",
@@ -113,9 +127,9 @@ class SignalEnrichedAggregator:
             # Adjustment 1: Boost weights for low-scoring components (need attention)
             if score_data:
                 for key, score in score_data.items():
-                    if key in adjusted_weights and score < 0.4:
+                    if key in adjusted_weights and score < CRITICAL_SCORE_THRESHOLD:
                         # Boost weight for critical scores
-                        boost_factor = 1.2
+                        boost_factor = CRITICAL_SCORE_BOOST_FACTOR
                         original_weight = adjusted_weights[key]
                         adjusted_weights[key] = min(1.0, original_weight * boost_factor)
                         
@@ -132,21 +146,22 @@ class SignalEnrichedAggregator:
             if self.signal_registry and dimension_id:
                 try:
                     # For dimension aggregation, check pattern density across questions
-                    # Use representative question for signal analysis
-                    representative_question = f"Q001"  # Placeholder
+                    # TODO: Replace with actual representative question logic
+                    representative_question = REPRESENTATIVE_QUESTION_PLACEHOLDER
                     signal_pack = self.signal_registry.get_micro_answering_signals(
                         representative_question
                     )
                     
-                    pattern_count = len(signal_pack.patterns) if hasattr(signal_pack, 'patterns') else 0
-                    indicator_count = len(signal_pack.indicators) if hasattr(signal_pack, 'indicators') else 0
+                    pattern_count = len(getattr(signal_pack, 'patterns', []))
+                    indicator_count = len(getattr(signal_pack, 'indicators', []))
                     
                     # High signal density suggests importance
-                    if pattern_count > 15:
+                    if pattern_count > HIGH_SIGNAL_PATTERN_THRESHOLD:
                         # Apply small boost to all weights (proportionally)
+                        boost_factor = HIGH_SIGNAL_BOOST_FACTOR
                         for key in adjusted_weights:
                             original_weight = adjusted_weights[key]
-                            adjusted_weights[key] = min(1.0, original_weight * 1.05)
+                            adjusted_weights[key] = min(1.0, original_weight * boost_factor)
                         
                         adjustment_details["adjustments"].append({
                             "type": "high_pattern_density",

@@ -32,6 +32,24 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# Default fallback values (replaced with actual values in production)
+DEFAULT_POLICY_AREA = "PA01"
+DEFAULT_QUESTION_FORMAT = "{:03d}"  # Format for question IDs
+
+# Pattern/indicator thresholds for signal support
+STRONG_PATTERN_THRESHOLD = 5  # Pattern count for strong support
+STRONG_INDICATOR_THRESHOLD = 3  # Indicator count for strong support
+
+# Priority scoring thresholds
+CRITICAL_SCORE_THRESHOLD = 0.3  # Scores below this are critical
+LOW_SCORE_THRESHOLD = 0.5  # Scores below this are low
+CRITICAL_PRIORITY_BOOST = 0.3  # Priority boost for critical scores
+LOW_PRIORITY_BOOST = 0.2  # Priority boost for low scores
+INSUFFICIENT_QUALITY_BOOST = 0.2  # Boost for insufficient quality
+ACTIONABILITY_PATTERN_THRESHOLD = 10  # Pattern count for actionability
+ACTIONABILITY_INDICATOR_THRESHOLD = 5  # Indicator count for actionability
+ACTIONABILITY_BOOST = 0.15  # Boost for high actionability
+
 __all__ = [
     "SignalEnrichedRecommender",
     "enhance_rule_matching",
