@@ -4,6 +4,48 @@ Utility scripts for F.A.R.F.A.N calibration system validation and maintenance.
 
 ## Available Scripts
 
+### check_circular_imports.py
+
+Detects circular import dependencies in the Python codebase using static AST analysis and optional runtime testing.
+
+**Usage:**
+```bash
+python scripts/check_circular_imports.py [--verbose] [--test-runtime]
+```
+
+**Options:**
+- `--verbose, -v`: Enable detailed logging
+- `--test-runtime, -r`: Test actual runtime imports in addition to static analysis
+
+**What it checks:**
+- ✅ Static analysis of all Python modules (AST-based)
+- ✅ Dependency graph construction
+- ✅ Cycle detection using Tarjan's algorithm
+- ✅ Optional runtime import validation
+
+**Output:**
+```bash
+$ python scripts/check_circular_imports.py
+F.A.R.F.A.N Circular Import Detection
+================================================================================
+Scanning: /path/to/project
+
+Analyzed 422 modules
+Found 31 import relationships
+
+Static Analysis Results:
+--------------------------------------------------------------------------------
+✅ No circular imports detected!
+```
+
+**Exit codes:**
+- `0`: No circular imports detected
+- `1`: Circular imports found (fails CI/CD)
+
+**Documentation:** See `docs/CIRCULAR_IMPORT_DETECTION.md` for full details
+
+---
+
 ### validate_calibration_system.py
 
 Validates the calibration system against expected products, quality metrics, and mathematical constraints.
@@ -71,11 +113,14 @@ These directories are created but await evidence generation from calibration run
 Add to CI pipeline:
 
 ```yaml
+- name: Check for Circular Imports
+  run: python scripts/check_circular_imports.py
+
 - name: Validate Calibration System
   run: python scripts/validate_calibration_system.py
 ```
 
-This ensures calibration system integrity on every commit.
+This ensures code quality and calibration system integrity on every commit.
 
 ## References
 
