@@ -41,6 +41,16 @@ python3 audit_signal_synchronization.py
 SIGNAL_EXIT=$?
 echo ""
 
+# Run factory audit
+echo "4. Running Factory Pattern Audit..."
+if [ ! -f audit_factory.py ]; then
+    echo "ERROR: audit_factory.py not found!" >&2
+    exit 2
+fi
+python3 audit_factory.py
+FACTORY_EXIT=$?
+echo ""
+
 # Calculate duration
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
@@ -53,18 +63,20 @@ echo ""
 echo "Completeness Audit:           $([ $COMPLETENESS_EXIT -eq 0 ] && echo '✅ PASSED' || echo '❌ FAILED')"
 echo "Evidence Flow Wiring:         $([ $WIRING_EXIT -eq 0 ] && echo '✅ PASSED' || echo '❌ FAILED')"
 echo "Signal Synchronization:       $([ $SIGNAL_EXIT -eq 0 ] && echo '✅ PASSED' || echo '❌ FAILED')"
+echo "Factory Pattern:              $([ $FACTORY_EXIT -eq 0 ] && echo '✅ PASSED' || echo '❌ FAILED')"
 echo ""
 echo "Total Duration: ${DURATION}s"
 echo ""
 
 # Check if all passed
-if [ $COMPLETENESS_EXIT -eq 0 ] && [ $WIRING_EXIT -eq 0 ] && [ $SIGNAL_EXIT -eq 0 ]; then
+if [ $COMPLETENESS_EXIT -eq 0 ] && [ $WIRING_EXIT -eq 0 ] && [ $SIGNAL_EXIT -eq 0 ] && [ $FACTORY_EXIT -eq 0 ]; then
     echo "🎉 ALL AUDITS PASSED - SYSTEM FULLY VALIDATED"
     echo ""
     echo "Reports generated:"
     echo "  - audit_contracts_report.json"
     echo "  - audit_evidence_flow_report.json"
     echo "  - audit_signal_sync_report.json"
+    echo "  - audit_factory_report.json"
     echo "  - AUDIT_REPORT_CONTRACTS_COMPLETENESS.md"
     echo ""
     exit 0
