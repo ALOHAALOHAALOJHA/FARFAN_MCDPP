@@ -13,7 +13,7 @@ This script verifies:
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any, Dict
 from collections import defaultdict
 
 
