@@ -1945,16 +1945,15 @@ class Phase1SPCIngestionFullContract:
         logger.info(f"CPP Type Enums: {chunks_with_enums}/60 chunks ({type_coverage_pct:.1f}%) have PolicyArea/DimensionCausal enums for value aggregation")
         
         # Store type propagation metadata for downstream phases
-        if 'type_propagation' not in cpp.metadata:
-            metadata_copy = dict(cpp.metadata)
-            metadata_copy['type_propagation'] = {
-                'chunks_with_enums': chunks_with_enums,
-                'coverage_percentage': type_coverage_pct,
-                'canonical_types_available': TYPES_AVAILABLE,
-                'enum_ready_for_aggregation': chunks_with_enums == 60
-            }
-            # Update metadata via object.__setattr__ since CPP is frozen
-            object.__setattr__(cpp, 'metadata', metadata_copy)
+        metadata_copy = dict(cpp.metadata)
+        metadata_copy['type_propagation'] = {
+            'chunks_with_enums': chunks_with_enums,
+            'coverage_percentage': type_coverage_pct,
+            'canonical_types_available': TYPES_AVAILABLE,
+            'enum_ready_for_aggregation': chunks_with_enums == 60
+        }
+        # Update metadata via object.__setattr__ since CPP is frozen
+        object.__setattr__(cpp, 'metadata', metadata_copy)
         
         return cpp
 
