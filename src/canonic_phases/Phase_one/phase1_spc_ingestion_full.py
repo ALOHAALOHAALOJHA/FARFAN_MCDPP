@@ -980,7 +980,7 @@ class Phase1SPCIngestionFullContract:
                 # Convert string IDs to enum types for type-safe aggregation in CPP cycle
                 policy_area_enum = None
                 dimension_enum = None
-                if TYPES_AVAILABLE and PolicyArea and DimensionCausal:
+                if TYPES_AVAILABLE and PolicyArea is not None and DimensionCausal is not None:
                     try:
                         # Map PA01-PA10 to PolicyArea enum
                         policy_area_enum = getattr(PolicyArea, pa, None)
