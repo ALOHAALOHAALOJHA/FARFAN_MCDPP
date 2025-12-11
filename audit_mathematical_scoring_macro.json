@@ -1,0 +1,442 @@
+{
+  "summary": {
+    "total_checks": 29,
+    "passed_checks": 29,
+    "failed_checks": 0,
+    "critical_issues": 0,
+    "high_issues": 0,
+    "medium_issues": 0,
+    "low_issues": 0
+  },
+  "checks": [
+    {
+      "check_id": "WA-001",
+      "procedure_name": "weighted_average",
+      "description": "Fórmula matemática de weighted average",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "Σ(score_i * weight_i)",
+        "implementation": "sum(s * w for s, w in zip(scores, weights))",
+        "location": "aggregation.py:910",
+        "verified": true
+      },
+      "recommendation": "Fórmula correcta. Sin cambios necesarios."
+    },
+    {
+      "check_id": "WA-002",
+      "procedure_name": "validate_weights",
+      "description": "Validación Σ(weights) = 1.0 ± tolerance",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "tolerance": 1e-06,
+        "validation_logic": "abs(weight_sum - 1.0) > tolerance",
+        "location": "aggregation.py:822-824",
+        "abort_on_failure": true
+      },
+      "recommendation": "Tolerancia apropiada (1e-6). Validación robusta con abort_on_insufficient."
+    },
+    {
+      "check_id": "WA-003",
+      "procedure_name": "weighted_average_length_validation",
+      "description": "Validación len(weights) == len(scores)",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "validation": "len(weights) != len(scores)",
+        "error_handling": "WeightValidationError raised",
+        "location": "aggregation.py:894-899"
+      },
+      "recommendation": "Validación correcta. Previene errores de indexación."
+    },
+    {
+      "check_id": "WA-004",
+      "procedure_name": "equal_weight_fallback",
+      "description": "Fallback a pesos iguales cuando weights=None",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": {
+        "fallback_formula": "1.0 / len(scores)",
+        "location": "aggregation.py:889-891",
+        "mathematically_sound": true
+      },
+      "recommendation": "Fallback correcto. Asume equiprobabilidad cuando no hay pesos explícitos."
+    },
+    {
+      "check_id": "CI-001",
+      "procedure_name": "choquet_linear_term",
+      "description": "Término lineal: Σ(a_l·x_l)",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "Σ(weight * score) over all layers",
+        "implementation": "sum(weight * score for layer, weight in linear_weights)",
+        "location": "choquet_aggregator.py:251-272",
+        "per_layer_tracking": true
+      },
+      "recommendation": "Implementación correcta con tracking granular por capa."
+    },
+    {
+      "check_id": "CI-002",
+      "procedure_name": "choquet_interaction_term",
+      "description": "Término de interacción: Σ(a_lk·min(x_l,x_k))",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "Σ(weight * min(score_i, score_j)) over all pairs",
+        "implementation": "weight * min(score_i, score_j)",
+        "location": "choquet_aggregator.py:291-315",
+        "min_function": "Correctly captures synergy bottleneck"
+      },
+      "recommendation": "Implementación correcta. min() captura correctamente el cuello de botella de sinergia."
+    },
+    {
+      "check_id": "CI-003",
+      "procedure_name": "choquet_linear_normalization",
+      "description": "Normalización de pesos lineales: weight / Σ(weights)",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "formula": "weight / total for total = Σ(all_weights)",
+        "validation": "total > 0 enforced",
+        "location": "choquet_aggregator.py:183-203",
+        "error_on_zero": true
+      },
+      "recommendation": "Normalización correcta con validación de total > 0."
+    },
+    {
+      "check_id": "CI-004",
+      "procedure_name": "choquet_interaction_normalization",
+      "description": "Normalización de pesos de interacción con restricción de boundedness",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "constraint": "Σ(a_lk) ≤ min(Σ(a_l), 1.0) * 0.5",
+        "implementation": "scale_factor applied if total_interaction > max_allowed",
+        "location": "choquet_aggregator.py:205-236",
+        "max_allowed_formula": "min(sum(linear_weights), 1.0) * 0.5"
+      },
+      "recommendation": "Restricción correcta. Factor 0.5 asegura boundedness [0,1]."
+    },
+    {
+      "check_id": "CI-005",
+      "procedure_name": "choquet_boundedness_validation",
+      "description": "Validación Cal(I) ∈ [0,1]",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "validation": "0.0 <= calibration_score <= 1.0",
+        "enforcement": "CalibrationConfigError raised if violated",
+        "clamping": "max(0.0, min(1.0, score)) as fallback",
+        "location": "choquet_aggregator.py:317-352, 403"
+      },
+      "recommendation": "Validación robusta con clamping defensivo."
+    },
+    {
+      "check_id": "CI-006",
+      "procedure_name": "choquet_input_clamping",
+      "description": "Clamping de layer scores a [0,1]",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": {
+        "validation": "score < 0.0 or score > 1.0",
+        "clamping": "max(0.0, min(1.0, score))",
+        "warning_logged": true,
+        "locations": [
+          "choquet_aggregator.py:258-260",
+          "choquet_aggregator.py:295-301"
+        ]
+      },
+      "recommendation": "Clamping preventivo correcto. Evita propagación de valores inválidos."
+    },
+    {
+      "check_id": "COH-001",
+      "procedure_name": "variance_calculation",
+      "description": "Varianza: Σ((x_i - mean)²) / n",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "sum((s - mean) ** 2 for s in scores) / len(scores)",
+        "location": "aggregation.py:1888",
+        "population_variance": true,
+        "sample_variance": false
+      },
+      "recommendation": "Fórmula correcta. Usa varianza poblacional (división por n, no n-1)."
+    },
+    {
+      "check_id": "COH-002",
+      "procedure_name": "std_dev_calculation",
+      "description": "Desviación estándar: √variance",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "variance ** 0.5",
+        "location": "aggregation.py:1889",
+        "mathematically_correct": true
+      },
+      "recommendation": "Fórmula correcta. Raíz cuadrada de varianza."
+    },
+    {
+      "check_id": "COH-003",
+      "procedure_name": "coherence_normalization",
+      "description": "Coherence normalizada: 1 - (std_dev / max_std)",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "formula": "max(0.0, 1.0 - (std_dev / max_std))",
+        "max_std": 3.0,
+        "range": "[0-3] score range",
+        "location": "aggregation.py:1893-1894",
+        "bounded": true
+      },
+      "recommendation": "Normalización correcta. max_std=3.0 apropiado para rango [0,3]."
+    },
+    {
+      "check_id": "COH-004",
+      "procedure_name": "coherence_edge_cases",
+      "description": "Coherence = 1.0 cuando len(scores) <= 1",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": {
+        "condition": "len(scores) <= 1",
+        "return_value": 1.0,
+        "rationale": "Perfect coherence with single or no data point",
+        "location": "aggregation.py:1881-1882"
+      },
+      "recommendation": "Manejo correcto de casos edge. Coherencia perfecta con 1 punto."
+    },
+    {
+      "check_id": "PF-001",
+      "procedure_name": "std_dev_normalization",
+      "description": "Normalización: normalized_std = std_dev / MAX_SCORE",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "formula": "min(std_dev / MAX_SCORE, 1.0)",
+        "MAX_SCORE": 3.0,
+        "clamping": "min(..., 1.0) prevents exceeding 1.0",
+        "location": "aggregation.py:1689"
+      },
+      "recommendation": "Normalización correcta con clamping a [0,1]."
+    },
+    {
+      "check_id": "PF-002",
+      "procedure_name": "penalty_weight_application",
+      "description": "Penalty Factor: 1.0 - (normalized_std * PENALTY_WEIGHT)",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "1.0 - (normalized_std * PENALTY_WEIGHT)",
+        "PENALTY_WEIGHT": 0.3,
+        "range": "[0.7, 1.0] when normalized_std ∈ [0,1]",
+        "location": "aggregation.py:1690"
+      },
+      "recommendation": "Fórmula correcta. PENALTY_WEIGHT=0.3 (30% máximo de penalización)."
+    },
+    {
+      "check_id": "PF-003",
+      "procedure_name": "adjusted_score_calculation",
+      "description": "Score ajustado: weighted_score * penalty_factor",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "weighted_score * penalty_factor",
+        "effect": "Reduces score when variance is high",
+        "location": "aggregation.py:1691",
+        "mathematical_interpretation": "Penaliza inconsistencia entre áreas"
+      },
+      "recommendation": "Aplicación correcta. Penaliza inconsistencia entre componentes."
+    },
+    {
+      "check_id": "PF-004",
+      "procedure_name": "penalty_weight_validation",
+      "description": "PENALTY_WEIGHT ∈ [0,1] para garantizar penalty_factor ≥ 0",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "current_value": 0.3,
+        "valid_range": "[0, 1]",
+        "bounded": true,
+        "ensures": "penalty_factor ∈ [0, 1] when normalized_std ∈ [0, 1]",
+        "location": "aggregation.py:1717"
+      },
+      "recommendation": "PENALTY_WEIGHT=0.3 está en rango válido. Penalización moderada."
+    },
+    {
+      "check_id": "TH-001",
+      "procedure_name": "score_normalization_for_thresholds",
+      "description": "Normalización: normalized_score = clamped_score / 3.0",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "clamping": "max(0.0, min(3.0, score))",
+        "normalization": "clamped_score / 3.0",
+        "result_range": "[0, 1]",
+        "locations": [
+          "aggregation.py:992-995 (DimensionAggregator)",
+          "aggregation.py:1509-1512 (AreaPolicyAggregator)",
+          "aggregation.py:2280-2283 (MacroAggregator)"
+        ]
+      },
+      "recommendation": "Normalización consistente en todos los niveles."
+    },
+    {
+      "check_id": "TH-002",
+      "procedure_name": "default_thresholds",
+      "description": "Umbrales por defecto: EXCELENTE=0.85, BUENO=0.70, ACEPTABLE=0.55",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "EXCELENTE": 0.85,
+        "BUENO": 0.7,
+        "ACEPTABLE": 0.55,
+        "INSUFICIENTE": "< 0.55",
+        "normalized": true,
+        "range": "[0, 1]",
+        "consistent_across_levels": true
+      },
+      "recommendation": "Umbrales consistentes y apropiados para escala normalizada."
+    },
+    {
+      "check_id": "TH-003",
+      "procedure_name": "threshold_comparison_logic",
+      "description": "Comparación: score >= threshold con orden descendente",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "logic_order": [
+          "if score >= excellent_threshold: EXCELENTE",
+          "elif score >= good_threshold: BUENO",
+          "elif score >= acceptable_threshold: ACEPTABLE",
+          "else: INSUFICIENTE"
+        ],
+        "inclusive": true,
+        "boundary_handling": "score == threshold maps to higher quality",
+        "locations": [
+          "aggregation.py:1008-1015",
+          "aggregation.py:1525-1532",
+          "aggregation.py:2296-2303"
+        ]
+      },
+      "recommendation": "Lógica correcta. Comparaciones >= son apropiadas para umbrales inclusivos."
+    },
+    {
+      "check_id": "TH-004",
+      "procedure_name": "threshold_consistency",
+      "description": "Umbrales idénticos en Dimension, Area y Macro levels",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": {
+        "dimension_level": "0.85 / 0.70 / 0.55",
+        "area_level": "0.85 / 0.70 / 0.55",
+        "macro_level": "0.85 / 0.70 / 0.55",
+        "consistent": true,
+        "rationale": "Permite comparabilidad directa entre niveles"
+      },
+      "recommendation": "Consistencia correcta. Facilita interpretación uniforme de calidad."
+    },
+    {
+      "check_id": "WN-001",
+      "procedure_name": "negative_weight_filtering",
+      "description": "Descarte de pesos negativos antes de normalización",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "logic": "positive_map = {k: v for k, v in weights if v >= 0.0}",
+        "location": "aggregation.py:314",
+        "fallback": "equal weights if no positive weights",
+        "mathematically_sound": true
+      },
+      "recommendation": "Manejo correcto. Pesos negativos no tienen sentido semántico."
+    },
+    {
+      "check_id": "WN-002",
+      "procedure_name": "zero_sum_handling",
+      "description": "Fallback a pesos iguales cuando Σ(weights) <= 0",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "condition": "total <= 0",
+        "fallback": "equal = 1.0 / len(positive_map)",
+        "location": "aggregation.py:319-321",
+        "prevents_division_by_zero": true
+      },
+      "recommendation": "Manejo robusto de casos edge. Previene división por cero."
+    },
+    {
+      "check_id": "WN-003",
+      "procedure_name": "normalization_formula",
+      "description": "Normalización: weight / total",
+      "passed": true,
+      "severity": "CRITICAL",
+      "details": {
+        "formula": "{k: value / total for k, value in weights.items()}",
+        "postcondition": "Σ(normalized_weights) = 1.0",
+        "location": "aggregation.py:322",
+        "precision": "float64"
+      },
+      "recommendation": "Fórmula correcta. Garantiza Σ(weights) = 1.0 post-normalización."
+    },
+    {
+      "check_id": "WN-004",
+      "procedure_name": "normalization_consistency",
+      "description": "Normalización aplicada en dimension, area, cluster y macro weights",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "locations": [
+          "_build_dimension_weights: line 342",
+          "_build_area_dimension_weights: line 369",
+          "_build_cluster_weights: line 398",
+          "_build_macro_weights: line 424"
+        ],
+        "method": "_normalize_weights() shared utility",
+        "consistent": true
+      },
+      "recommendation": "Consistencia correcta. Misma lógica aplicada en todos los niveles."
+    },
+    {
+      "check_id": "SN-001",
+      "procedure_name": "max_score_identification",
+      "description": "max_score extraído de validation_details o default 3.0",
+      "passed": true,
+      "severity": "MEDIUM",
+      "details": {
+        "primary_source": "d.validation_details.get('score_max', 3.0)",
+        "default": 3.0,
+        "location": "aggregation.py:1486",
+        "flexible": true
+      },
+      "recommendation": "Identificación correcta con fallback robusto."
+    },
+    {
+      "check_id": "SN-002",
+      "procedure_name": "dimension_score_normalization",
+      "description": "Normalización: max(0.0, min(max_expected, score)) / max_expected",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "clamping": "max(0.0, min(max_expected, score))",
+        "normalization": "clamped / max_expected",
+        "location": "aggregation.py:1487",
+        "result_range": "[0, 1]"
+      },
+      "recommendation": "Normalización correcta con clamping preventivo."
+    },
+    {
+      "check_id": "SN-003",
+      "procedure_name": "area_score_normalization_usage",
+      "description": "normalize_scores() usado en AreaPolicyAggregator",
+      "passed": true,
+      "severity": "HIGH",
+      "details": {
+        "location": "aggregation.py:1613",
+        "purpose": "Normaliza dimension scores antes de agregación",
+        "method": "normalize_scores(area_dim_scores)",
+        "tracked_in_validation": true
+      },
+      "recommendation": "Uso correcto. Normalización apropiada antes de agregación."
+    }
+  ]
+}
