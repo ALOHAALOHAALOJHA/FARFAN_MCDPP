@@ -1018,7 +1018,8 @@ class Phase1SPCIngestionFullContract:
                         # Check for pattern matches
                         for pattern in signal_pack.patterns[:20]:  # Limit for performance
                             try:
-                                if re.search(pattern.lower(), para_lower, re.IGNORECASE):
+                                # Use pattern directly with IGNORECASE flag (more efficient)
+                                if re.search(pattern, para_lower, re.IGNORECASE):
                                     signal_boost += 2  # Significant boost for signal patterns
                                     break  # One match is enough per paragraph
                             except re.error:
