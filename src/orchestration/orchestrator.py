@@ -1341,12 +1341,16 @@ class Orchestrator:
     ) -> list[ScoredMicroQuestion]:
         """FASE 3: Transform Phase 2 results to scored results.
         
-        Extracts validation scores from Phase 2 evidence and transforms
+        Extracts scoring from EvidenceNexus outputs and transforms
         MicroQuestionRun objects to ScoredMicroQuestion objects ready for
         Phase 4 aggregation.
         
-        Phase 2 executors pre-compute validation scores, so Phase 3 performs
-        extraction and transformation rather than new computation.
+        Phase 2 uses EvidenceNexus which returns:
+        - overall_confidence (0.0-1.0) → score
+        - completeness (complete/partial/insufficient) → quality_level
+        
+        These nexus fields are now included in Phase 2 result_data and
+        accessible via MicroQuestionRun.metadata.
         """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[3]
@@ -1355,12 +1359,15 @@ class Orchestrator:
         
         scored_results: list[ScoredMicroQuestion] = []
         
-        logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results")
+        logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results using EvidenceNexus outputs")
         
         for idx, micro_result in enumerate(micro_results):
             self._ensure_not_aborted()
             
             try:
+                # Get metadata which should contain nexus fields from Phase 2
+                metadata = micro_result.metadata
+                
                 # Extract evidence (Evidence dataclass or dict)
                 evidence_obj = micro_result.evidence
                 if hasattr(evidence_obj, "__dict__"):
@@ -1370,14 +1377,21 @@ class Orchestrator:
                 else:
                     evidence = {}
                 
-                # Extract validation data
-                validation = evidence.get("validation", {})
-                score = validation.get("score", 0.0)
-                quality_level = validation.get("quality_level", "INSUFICIENTE")
+                # PRIMARY: Extract score from overall_confidence (EvidenceNexus output)
+                score = metadata.get("overall_confidence")
+                if score is None:
+                    # Fallback 1: Check validation.score (only set when validation fails)
+                    validation = evidence.get("validation", {})
+                    score = validation.get("score")
+                
+                if score is None:
+                    # Fallback 2: Use mean confidence from evidence elements
+                    conf_scores = evidence.get("confidence_scores", {})
+                    score = conf_scores.get("mean", 0.0)
                 
                 # Ensure score is float
                 try:
-                    score_float = float(score)
+                    score_float = float(score) if score is not None else 0.0
                 except (TypeError, ValueError):
                     logger.warning(
                         f"Invalid score type for question {micro_result.question_global}: "
@@ -1385,11 +1399,29 @@ class Orchestrator:
                     )
                     score_float = 0.0
                 
+                # PRIMARY: Map completeness to quality_level (EvidenceNexus output)
+                completeness = metadata.get("completeness")
+                if completeness:
+                    # Map EvidenceNexus completeness enum to quality level
+                    completeness_lower = str(completeness).lower()
+                    quality_mapping = {
+                        "complete": "EXCELENTE",
+                        "partial": "ACEPTABLE",
+                        "insufficient": "INSUFICIENTE",
+                        "not_applicable": "NO_APLICABLE",
+                    }
+                    quality_level = quality_mapping.get(completeness_lower, "INSUFICIENTE")
+                else:
+                    # Fallback: Check validation.quality_level (only set when validation fails)
+                    validation = evidence.get("validation", {})
+                    quality_level = validation.get("quality_level", "INSUFICIENTE")
+                
                 # Build scoring details
                 scoring_details = {
-                    "source": "phase2_validation",
-                    "method": "extract",
-                    "validation_passed": validation.get("passed", False),
+                    "source": "evidence_nexus",
+                    "method": "overall_confidence",
+                    "completeness": completeness,
+                    "calibrated_interval": metadata.get("calibrated_interval"),
                 }
                 
                 # Create ScoredMicroQuestion
@@ -1410,6 +1442,11 @@ class Orchestrator:
                 
                 instrumentation.increment(latency=0.0)
                 
+                logger.debug(
+                    f"Phase 3: Scored question {micro_result.question_global}: "
+                    f"score={score_float:.3f}, quality={quality_level}, completeness={completeness}"
+                )
+                
             except Exception as e:
                 logger.error(
                     f"Phase 3: Failed to score question {micro_result.question_global}: {e}",
@@ -1425,7 +1462,7 @@ class Orchestrator:
                     normalized_score=0.0,
                     quality_level="ERROR",
                     evidence=micro_result.evidence,
-                    scoring_details={"error": str(e)},
+                    scoring_details={"error": str(e), "source": "exception_recovery"},
                     metadata=micro_result.metadata,
                     error=f"Scoring error: {e}",
                 )
@@ -1434,7 +1471,8 @@ class Orchestrator:
                 instrumentation.increment(latency=0.0)
         
         logger.info(
-            f"Phase 3 complete: {len(scored_results)}/{len(micro_results)} results scored"
+            f"Phase 3 complete: {len(scored_results)}/{len(micro_results)} results scored. "
+            f"Using EvidenceNexus overall_confidence and completeness fields."
         )
         
         return scored_results

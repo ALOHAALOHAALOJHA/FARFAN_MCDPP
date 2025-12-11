@@ -1,7 +1,8 @@
 """Tests for Phase 3 scoring transformation logic.
 
-Validates that Phase 3 correctly extracts validation scores from Phase 2
-evidence and transforms MicroQuestionRun to ScoredMicroQuestion.
+Validates that Phase 3 correctly extracts EvidenceNexus outputs
+(overall_confidence, completeness) from Phase 2 results and transforms
+MicroQuestionRun to ScoredMicroQuestion.
 """
 
 import sys
@@ -14,6 +15,8 @@ repo_root = Path(__file__).parent.parent
 sys.path.insert(0, str(repo_root / "src"))
 
 from canonic_phases.Phase_three.scoring import (
+    extract_score_from_nexus,
+    map_completeness_to_quality,
     extract_score_from_evidence,
     extract_quality_level,
     transform_micro_result_to_scored,
@@ -27,6 +30,7 @@ class MockEvidence:
     elements: list[Any] = field(default_factory=list)
     raw_results: dict[str, Any] = field(default_factory=dict)
     validation: dict[str, Any] = field(default_factory=dict)
+    confidence_scores: dict[str, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -40,131 +44,121 @@ class MockMicroQuestionRun:
     error: str | None = None
 
 
-def test_extract_score_from_evidence_valid():
-    """Test extracting valid score from evidence."""
-    evidence = {
-        "validation": {
-            "score": 0.85,
-            "quality_level": "EXCELENTE"
-        }
+def test_extract_score_from_nexus_with_overall_confidence():
+    """Test extracting score from overall_confidence (primary path)."""
+    result_data = {
+        "overall_confidence": 0.85,
+        "completeness": "complete"
     }
     
-    score = extract_score_from_evidence(evidence)
+    score = extract_score_from_nexus(result_data)
     assert score == 0.85, f"Expected 0.85, got {score}"
-    print("✓ extract_score_from_evidence with valid score")
+    print("✓ extract_score_from_nexus with overall_confidence")
 
 
-def test_extract_score_from_evidence_none():
-    """Test extracting score when evidence is None."""
-    score = extract_score_from_evidence(None)
-    assert score == 0.0, f"Expected 0.0 for None evidence, got {score}"
-    print("✓ extract_score_from_evidence with None evidence")
-
-
-def test_extract_score_from_evidence_missing():
-    """Test extracting score when validation is missing."""
-    evidence = {"other_data": "value"}
-    
-    score = extract_score_from_evidence(evidence)
-    assert score == 0.0, f"Expected 0.0 for missing validation, got {score}"
-    print("✓ extract_score_from_evidence with missing validation")
-
-
-def test_extract_quality_level_valid():
-    """Test extracting valid quality level."""
-    evidence = {
+def test_extract_score_from_nexus_fallback_validation():
+    """Test extracting score from validation.score (fallback)."""
+    result_data = {
         "validation": {
-            "score": 0.85,
-            "quality_level": "EXCELENTE"
+            "score": 0.0,
+            "quality_level": "FAILED_VALIDATION"
         }
     }
     
-    quality = extract_quality_level(evidence)
+    score = extract_score_from_nexus(result_data)
+    assert score == 0.0, f"Expected 0.0, got {score}"
+    print("✓ extract_score_from_nexus with validation fallback")
+
+
+def test_extract_score_from_nexus_fallback_confidence_mean():
+    """Test extracting score from evidence confidence_scores.mean."""
+    result_data = {
+        "evidence": {
+            "confidence_scores": {
+                "mean": 0.72,
+                "min": 0.5,
+                "max": 0.9
+            }
+        }
+    }
+    
+    score = extract_score_from_nexus(result_data)
+    assert score == 0.72, f"Expected 0.72, got {score}"
+    print("✓ extract_score_from_nexus with confidence_scores fallback")
+
+
+def test_map_completeness_to_quality_complete():
+    """Test mapping complete → EXCELENTE."""
+    quality = map_completeness_to_quality("complete")
     assert quality == "EXCELENTE", f"Expected EXCELENTE, got {quality}"
-    print("✓ extract_quality_level with valid quality")
+    print("✓ map_completeness_to_quality: complete → EXCELENTE")
+
+
+def test_map_completeness_to_quality_partial():
+    """Test mapping partial → ACEPTABLE."""
+    quality = map_completeness_to_quality("partial")
+    assert quality == "ACEPTABLE", f"Expected ACEPTABLE, got {quality}"
+    print("✓ map_completeness_to_quality: partial → ACEPTABLE")
+
+
+def test_map_completeness_to_quality_insufficient():
+    """Test mapping insufficient → INSUFICIENTE."""
+    quality = map_completeness_to_quality("insufficient")
+    assert quality == "INSUFICIENTE", f"Expected INSUFICIENTE, got {quality}"
+    print("✓ map_completeness_to_quality: insufficient → INSUFICIENTE")
+
+
+def test_map_completeness_to_quality_not_applicable():
+    """Test mapping not_applicable → NO_APLICABLE."""
+    quality = map_completeness_to_quality("not_applicable")
+    assert quality == "NO_APLICABLE", f"Expected NO_APLICABLE, got {quality}"
+    print("✓ map_completeness_to_quality: not_applicable → NO_APLICABLE")
+
+
+def test_extract_quality_level_with_completeness():
+    """Test extracting quality level from completeness (primary)."""
+    quality = extract_quality_level(None, completeness="complete")
+    assert quality == "EXCELENTE", f"Expected EXCELENTE, got {quality}"
+    print("✓ extract_quality_level with completeness")
+
+
+def test_extract_quality_level_fallback_validation():
+    """Test extracting quality level from validation (fallback)."""
+    evidence = {
+        "validation": {
+            "quality_level": "FAILED_VALIDATION"
+        }
+    }
+    
+    quality = extract_quality_level(evidence, completeness=None)
+    assert quality == "FAILED_VALIDATION", f"Expected FAILED_VALIDATION, got {quality}"
+    print("✓ extract_quality_level with validation fallback")
 
 
 def test_extract_quality_level_none():
-    """Test extracting quality level when evidence is None."""
-    quality = extract_quality_level(None)
+    """Test extracting quality level when nothing available."""
+    quality = extract_quality_level(None, completeness=None)
     assert quality == "INSUFICIENTE", f"Expected INSUFICIENTE for None, got {quality}"
-    print("✓ extract_quality_level with None evidence")
-
-
-def test_transform_micro_result_to_scored():
-    """Test full transformation from MicroQuestionRun to scored dict."""
-    evidence = MockEvidence(
-        modality="TYPE_A",
-        elements=[{"text": "test"}],
-        validation={
-            "score": 0.75,
-            "quality_level": "BUENO",
-            "passed": True
-        }
-    )
-    
-    micro_result = MockMicroQuestionRun(
-        question_id="D1-Q1",
-        question_global=1,
-        base_slot="D1-Q1",
-        metadata={"policy_area": "PA1", "dimension": "D1"},
-        evidence=evidence,
-        error=None
-    )
-    
-    scored_dict = transform_micro_result_to_scored(micro_result)
-    
-    assert scored_dict["question_id"] == "D1-Q1"
-    assert scored_dict["question_global"] == 1
-    assert scored_dict["base_slot"] == "D1-Q1"
-    assert scored_dict["score"] == 0.75
-    assert scored_dict["quality_level"] == "BUENO"
-    assert scored_dict["error"] is None
-    
-    print("✓ transform_micro_result_to_scored with valid data")
-
-
-def test_transform_micro_result_with_error():
-    """Test transformation when micro result has error."""
-    evidence = MockEvidence(
-        modality="TYPE_A",
-        validation={
-            "score": 0.0,
-            "quality_level": "ERROR"
-        }
-    )
-    
-    micro_result = MockMicroQuestionRun(
-        question_id="D1-Q2",
-        question_global=2,
-        base_slot="D1-Q2",
-        metadata={},
-        evidence=evidence,
-        error="Execution failed"
-    )
-    
-    scored_dict = transform_micro_result_to_scored(micro_result)
-    
-    assert scored_dict["error"] == "Execution failed"
-    assert scored_dict["score"] == 0.0
-    
-    print("✓ transform_micro_result_to_scored with error")
+    print("✓ extract_quality_level with None inputs")
 
 
 def run_all_tests():
     """Run all Phase 3 tests."""
-    print("\n=== Phase 3 Scoring Tests ===\n")
+    print("\n=== Phase 3 Scoring Tests (EvidenceNexus) ===\n")
     
     try:
-        test_extract_score_from_evidence_valid()
-        test_extract_score_from_evidence_none()
-        test_extract_score_from_evidence_missing()
-        test_extract_quality_level_valid()
+        test_extract_score_from_nexus_with_overall_confidence()
+        test_extract_score_from_nexus_fallback_validation()
+        test_extract_score_from_nexus_fallback_confidence_mean()
+        test_map_completeness_to_quality_complete()
+        test_map_completeness_to_quality_partial()
+        test_map_completeness_to_quality_insufficient()
+        test_map_completeness_to_quality_not_applicable()
+        test_extract_quality_level_with_completeness()
+        test_extract_quality_level_fallback_validation()
         test_extract_quality_level_none()
-        test_transform_micro_result_to_scored()
-        test_transform_micro_result_with_error()
         
-        print("\n✅ All Phase 3 tests passed!\n")
+        print("\n✅ All Phase 3 tests passed! (EvidenceNexus architecture validated)\n")
         return True
         
     except AssertionError as e:
