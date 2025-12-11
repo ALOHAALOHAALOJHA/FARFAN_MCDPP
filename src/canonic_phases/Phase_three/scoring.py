@@ -171,19 +171,22 @@ def extract_quality_level(evidence: dict[str, Any] | None, completeness: str | N
 def transform_micro_result_to_scored(
     micro_result: Any,
 ) -> dict[str, Any]:
-    """Transform MicroQuestionRun to ScoredMicroQuestion dict.
+    """DEPRECATED: Transform MicroQuestionRun to ScoredMicroQuestion dict.
     
-    Extracts:
-    - question_id, question_global, base_slot from micro_result
-    - score and quality_level from evidence.validation
-    - policy_area and dimension from metadata
-    - evidence dict for Phase 4 aggregation
+    NOTE: This function is deprecated and not used by the orchestrator.
+    The orchestrator._score_micro_results_async() performs the transformation
+    directly using extract_score_from_nexus() and map_completeness_to_quality().
+    
+    This function is kept for backward compatibility and testing purposes only.
     
     Args:
         micro_result: MicroQuestionRun from Phase 2
         
     Returns:
         Dict ready for ScoredMicroQuestion dataclass construction
+        
+    Deprecated:
+        Use orchestrator._score_micro_results_async() for production.
     """
     question_id = getattr(micro_result, "question_id", None)
     question_global = getattr(micro_result, "question_global", 0)
@@ -200,7 +203,8 @@ def transform_micro_result_to_scored(
     else:
         evidence = {}
     
-    # Extract score and quality from validation
+    # DEPRECATED: Extract score and quality from evidence (legacy fallback)
+    # Production code should use extract_score_from_nexus(metadata) instead
     score = extract_score_from_evidence(evidence)
     quality_level = extract_quality_level(evidence)
     
@@ -214,8 +218,8 @@ def transform_micro_result_to_scored(
         "quality_level": quality_level,
         "evidence": evidence_obj,  # Keep original Evidence object
         "scoring_details": {
-            "source": "phase2_validation",
-            "method": "extract",
+            "source": "legacy_fallback",
+            "method": "extract_from_evidence",
         },
         "metadata": metadata,
         "error": error,
