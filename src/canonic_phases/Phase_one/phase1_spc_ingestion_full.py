@@ -372,11 +372,35 @@ class Phase1SPCIngestionFullContract:
         self.invariant_checks: Dict[str, bool] = {}
         self.document_id: str = ""  # Set from CanonicalInput
         self.signal_registry = signal_registry  # DI: Injected from Factory via Orchestrator
+        self.signal_enricher: Optional[Any] = None  # Signal enrichment engine
         
     def _deterministic_serialize(self, output: Any) -> str:
-        """Helper to serialize output for hashing."""
-        # Simple string representation for now, can be improved
-        return str(output)
+        """Deterministic serialization for hashing and traceability.
+        
+        Converts output to a canonical string representation suitable for
+        SHA-256 hashing and execution trace recording. Handles complex types
+        including dataclasses, dicts, lists, and nested structures.
+        
+        Args:
+            output: Any Python object to serialize
+            
+        Returns:
+            Deterministic string representation
+        """
+        try:
+            # Attempt JSON serialization for maximum determinism
+            if hasattr(output, '__dict__'):
+                # Dataclass or object with __dict__
+                return json.dumps(output.__dict__, sort_keys=True, default=str, ensure_ascii=False)
+            elif isinstance(output, (dict, list, tuple, str, int, float, bool, type(None))):
+                # JSON-serializable types
+                return json.dumps(output, sort_keys=True, default=str, ensure_ascii=False)
+            else:
+                # Fallback to repr for complex types
+                return repr(output)
+        except (TypeError, ValueError):
+            # Last resort: string conversion
+            return str(output)
 
     def _validate_canonical_input(self, canonical_input: CanonicalInput):
         """
