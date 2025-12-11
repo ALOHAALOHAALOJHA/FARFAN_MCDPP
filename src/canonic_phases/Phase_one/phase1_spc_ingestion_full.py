@@ -351,15 +351,27 @@ class Phase1SPCIngestionFullContract:
     """
     CRITICAL EXECUTION CONTRACT - WEIGHT: 10000
     EVERY LINE IS MANDATORY.  NO SHORTCUTS. NO ASSUMPTIONS.
+    
+    QUESTIONNAIRE ACCESS POLICY:
+    - Phase 1 receives signal_registry via DI (NOT questionnaire file path)
+    - No direct questionnaire file access allowed
+    - Signal packs obtained from registry, not created empty
     """
     
-    def __init__(self):
+    def __init__(self, signal_registry: Optional[Any] = None):
+        """Initialize Phase 1 executor with signal registry dependency injection.
+        
+        Args:
+            signal_registry: QuestionnaireSignalRegistry from Factory (LEVEL 3 access)
+                            If None, falls back to creating default packs (degraded mode)
+        """
         self.MANDATORY_SUBPHASES = list(range(16))  # SP0 through SP15
         self.execution_trace: List[Tuple[str, str, str]] = []
         self.subphase_results: Dict[int, Any] = {}
         self.error_log: List[Dict[str, Any]] = []
         self.invariant_checks: Dict[str, bool] = {}
         self.document_id: str = ""  # Set from CanonicalInput
+        self.signal_registry = signal_registry  # DI: Injected from Factory via Orchestrator
         
     def _deterministic_serialize(self, output: Any) -> str:
         """Helper to serialize output for hashing."""
@@ -1819,6 +1831,7 @@ class Phase1SPCIngestionFullContract:
         
         # [EXEC-CPP-010/011] Build QualityMetrics - REAL CALCULATION via SISAS
         # NO HARDCODED VALUES - compute from actual signal quality
+        # ENFORCES QUESTIONNAIRE ACCESS POLICY: Use signal_registry from DI
         if SISAS_AVAILABLE and SignalPack is not None:
             # Build signal packs for each PA using SISAS infrastructure
             signal_packs: Dict[str, Any] = {}
@@ -1826,9 +1839,25 @@ class Phase1SPCIngestionFullContract:
                 # Use in-memory signal client for production
                 client = SignalClient(base_url="memory://")
                 
-                # Create and register default signal packs for each PA
+                # POLICY ENFORCEMENT: Get signal packs from registry (LEVEL 3 access)
+                # NOT create_default_signal_pack (which violates policy)
                 for pa_id in PADimGridSpecification.POLICY_AREAS:
-                    pack = create_default_signal_pack(pa_id)
+                    if self.signal_registry is not None:
+                        # CORRECT: Get pack from injected registry (Factory → Orchestrator → Phase 1)
+                        try:
+                            pack = self.signal_registry.get(pa_id)
+                            if pack is None:
+                                # Registry doesn't have this PA, create default as fallback
+                                logger.warning(f"Signal registry missing PA {pa_id}, using default pack")
+                                pack = create_default_signal_pack(pa_id)
+                        except Exception as e:
+                            logger.warning(f"Error getting signal pack for {pa_id}: {e}, using default")
+                            pack = create_default_signal_pack(pa_id)
+                    else:
+                        # DEGRADED MODE: No registry injected (should not happen in production)
+                        logger.warning(f"Phase 1 running without signal_registry (policy violation), using default packs")
+                        pack = create_default_signal_pack(pa_id)
+                    
                     client.register_memory_signal(pa_id, pack)
                     signal_packs[pa_id] = pack
                 
@@ -1941,14 +1970,36 @@ class Phase1SPCIngestionFullContract:
         logger.info(f"  ✓ execution_trace = 16 entries (SP0-SP15)")
         logger.info(f"  ✓ PA×DIM coverage = COMPLETE")
 
-def execute_phase_1_with_full_contract(canonical_input: CanonicalInput) -> CanonPolicyPackage:
+def execute_phase_1_with_full_contract(
+    canonical_input: CanonicalInput,
+    signal_registry: Optional[Any] = None
+) -> CanonPolicyPackage:
     """
     EXECUTE PHASE 1 WITH COMPLETE CONTRACT ENFORCEMENT
     THIS IS THE ONLY ACCEPTABLE WAY TO RUN PHASE 1
+    
+    QUESTIONNAIRE ACCESS POLICY ENFORCEMENT:
+    - Receives signal_registry via DI (Factory → Orchestrator → Phase 1)
+    - No direct file access to questionnaire_monolith.json
+    - Follows LEVEL 3 access pattern per factory.py architecture
+    
+    Args:
+        canonical_input: Validated input with PDF and questionnaire metadata
+        signal_registry: QuestionnaireSignalRegistry from Factory (injected via Orchestrator)
+                        If None, Phase 1 runs in degraded mode with default signal packs
+    
+    Returns:
+        CanonPolicyPackage with 60 chunks (PA×DIM coordinates)
     """
     try:
-        # INITIALIZE EXECUTOR WITH FULL TRACKING
-        executor = Phase1SPCIngestionFullContract()
+        # INITIALIZE EXECUTOR WITH SIGNAL REGISTRY (DI)
+        executor = Phase1SPCIngestionFullContract(signal_registry=signal_registry)
+        
+        # Log policy compliance
+        if signal_registry is not None:
+            logger.info("Phase 1 initialized with signal_registry (POLICY COMPLIANT)")
+        else:
+            logger.warning("Phase 1 initialized WITHOUT signal_registry (POLICY VIOLATION - degraded mode)")
         
         # RUN WITH COMPLETE VERIFICATION
         cpp = executor.run(canonical_input)

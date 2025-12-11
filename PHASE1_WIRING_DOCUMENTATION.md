@@ -1,11 +1,81 @@
 # Phase 1 Wiring Documentation
 
 **Fecha**: 2025-12-11  
-**Estado**: ✅ COMPLETADO Y VERIFICADO
+**Estado**: ✅ COMPLETADO Y VERIFICADO  
+**Última Actualización**: 2025-12-11 - Política de Acceso al Cuestionario Enforced
 
 ## Resumen Ejecutivo
 
 Se ha completado exitosamente la revisión y corrección del wiring entre FACTORY, ORCHESTRATOR y FASE 1. Todos los problemas identificados han sido corregidos y el flujo de datos está correctamente configurado.
+
+**NUEVO**: Se ha implementado la **Política de Acceso al Cuestionario** en Phase 1, siguiendo el mismo patrón de 3 niveles que Phase 2.
+
+## 🔐 POLÍTICA DE ACCESO AL CUESTIONARIO (ENFORCED)
+
+### Arquitectura de 3 Niveles
+
+```
+NIVEL 1: Acceso Total (ÚNICO PUNTO DE ENTRADA)
+  └─ CANONICAL_QUESTIONNAIRE_PATH
+     └─ canonic_questionnaire_central/questionnaire_monolith.json
+        └─ CONSUMIDOR ÚNICO: load_questionnaire()
+           └─ LLAMADO POR: AnalysisPipelineFactory (NADIE MÁS)
+
+NIVEL 2: Objeto Inmutable (CanonicalQuestionnaire)
+  └─ @dataclass(frozen=True)
+     └─ Propiedades: dimensions, policy_areas, micro_questions, etc.
+        └─ CONSUMIDORES: Orchestrator, MethodExecutor
+
+NIVEL 3: Signal Registry (Extracción Controlada)
+  └─ QuestionnaireSignalRegistry v2.0
+     └─ EnrichedSignalPack (por executor)
+        └─ CONSUMIDORES: Phase 1, Phase 2 Executors (30 total)
+```
+
+### ✅ Phase 1 AHORA ES POLICY COMPLIANT
+
+**Antes (VIOLACIÓN)**:
+```python
+# Phase 1 creaba signal packs vacíos
+pack = create_default_signal_pack(pa_id)  # ← patterns=[]
+```
+
+**Ahora (CORRECTO)**:
+```python
+# Phase 1 recibe signal_registry via DI
+def __init__(self, signal_registry: Optional[Any] = None):
+    self.signal_registry = signal_registry  # DI: From Factory
+
+# Y usa el registry para obtener packs
+pack = self.signal_registry.get(pa_id)  # ← patterns from questionnaire
+```
+
+### Flujo de Dependency Injection
+
+```
+AnalysisPipelineFactory
+  ├─ load_questionnaire() [NIVEL 1]
+  │   └─ questionnaire_monolith.json
+  │       └─ CanonicalQuestionnaire (frozen=True)
+  │
+  ├─ create_signal_registry(questionnaire) [NIVEL 2]
+  │   └─ QuestionnaireSignalRegistry v2.0
+  │
+  ├─ MethodExecutor(signal_registry=registry) [NIVEL 3]
+  │
+  └─ Orchestrator(
+        questionnaire=questionnaire,
+        method_executor=method_executor
+    )
+        └─ _ingest_document()
+            └─ execute_phase_1_with_full_contract(
+                  canonical_input,
+                  signal_registry=self.executor.signal_registry  # ✅ DI
+              )
+                  └─ Phase1SPCIngestionFullContract(
+                        signal_registry=signal_registry  # ✅ DI
+                    )
+```
 
 ## Arquitectura del Wiring
 
@@ -147,6 +217,97 @@ El método `_ingest_document` (Phase 1) es responsable de:
    - Cada chunk tiene policy_area y dimension
 
 ### Código de Wiring en Orchestrator
+
+**CON POLÍTICA DE ACCESO ENFORCED**:
+
+```python
+def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> Any:
+    """FASE 1: Ingest document using Phase 1 SPC pipeline.
+    
+    QUESTIONNAIRE ACCESS POLICY ENFORCEMENT:
+    - Phase 1 receives signal_registry via DI (not questionnaire file)
+    - Follows LEVEL 3 access: Factory → Orchestrator → Phase 1 → signal_registry
+    """
+    
+    # 1. Import Phase 1 components
+    from canonic_phases.Phase_one import (
+        CanonicalInput,
+        execute_phase_1_with_full_contract,
+        CanonPolicyPackage,
+    )
+    
+    # 2. Get questionnaire path from injected questionnaire
+    questionnaire_path = self._canonical_questionnaire.source_path
+    
+    # 3. Compute integrity hashes
+    pdf_sha256 = hashlib.sha256(pdf_path_obj.read_bytes()).hexdigest()
+    questionnaire_sha256 = hashlib.sha256(questionnaire_path.read_bytes()).hexdigest()
+    
+    # 4. Create CanonicalInput
+    canonical_input = CanonicalInput(
+        document_id=document_id,
+        pdf_path=pdf_path_obj,
+        questionnaire_path=questionnaire_path,
+        questionnaire_sha256=questionnaire_sha256,
+        # ... otros campos
+    )
+    
+    # 5. POLICY ENFORCEMENT: Pass signal_registry to Phase 1 (LEVEL 3 access)
+    # Factory → Orchestrator → Phase 1
+    signal_registry = self.executor.signal_registry
+    
+    if signal_registry is None:
+        logger.warning("⚠️  POLICY VIOLATION: Phase 1 will run in degraded mode")
+    else:
+        logger.info("✓ POLICY COMPLIANT: Passing signal_registry to Phase 1")
+    
+    # 6. Execute Phase 1 WITH signal_registry (DI)
+    canon_package = execute_phase_1_with_full_contract(
+        canonical_input,
+        signal_registry=signal_registry  # ✅ DI: Inject signal registry
+    )
+    
+    # 7. Validate output
+    assert len(canon_package.chunk_graph.chunks) == 60
+    
+    return canon_package
+```
+
+### Policy Enforcement Highlights
+
+✅ **ANTES (VIOLACIÓN)**:
+```python
+# Phase 1 NO recibía signal_registry
+execute_phase_1_with_full_contract(canonical_input)
+# ↓
+# Phase 1 creaba packs vacíos
+pack = create_default_signal_pack(pa_id)  # patterns=[]
+```
+
+✅ **AHORA (CORRECTO)**:
+```python
+# Phase 1 RECIBE signal_registry via DI
+execute_phase_1_with_full_contract(canonical_input, signal_registry)
+# ↓
+# Phase 1 usa registry para obtener packs reales
+pack = self.signal_registry.get(pa_id)  # patterns from questionnaire
+```
+
+### Logging de Policy Compliance
+
+El sistema ahora logea el cumplimiento de la política:
+
+```
+✓ POLICY COMPLIANT: Passing signal_registry to Phase 1 (DI chain: Factory → Orchestrator → Phase 1)
+Phase 1 initialized with signal_registry (POLICY COMPLIANT)
+```
+
+O en caso de violación (modo degradado):
+
+```
+⚠️  POLICY VIOLATION: signal_registry not available, Phase 1 will run in degraded mode
+Phase 1 initialized WITHOUT signal_registry (POLICY VIOLATION - degraded mode)
+```
 
 ```python
 def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> Any:

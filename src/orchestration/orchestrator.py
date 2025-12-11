@@ -1297,7 +1297,12 @@ class Orchestrator:
         }
     
     def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> Any:
-        """FASE 1: Ingest document using Phase 1 SPC pipeline."""
+        """FASE 1: Ingest document using Phase 1 SPC pipeline.
+        
+        QUESTIONNAIRE ACCESS POLICY ENFORCEMENT:
+        - Phase 1 receives signal_registry via DI (not questionnaire file)
+        - Follows LEVEL 3 access: Factory → Orchestrator → Phase 1 → signal_registry
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[1]
         start = time.perf_counter()
@@ -1346,8 +1351,20 @@ class Orchestrator:
                 validation_warnings=[],
             )
             
-            # Execute Phase 1 with full contract
-            canon_package = execute_phase_1_with_full_contract(canonical_input)
+            # POLICY ENFORCEMENT: Pass signal_registry to Phase 1 (LEVEL 3 access)
+            # Factory created signal_registry → injected to Orchestrator → passed to Phase 1
+            signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
+            
+            if signal_registry is None:
+                logger.warning("⚠️  POLICY VIOLATION: signal_registry not available, Phase 1 will run in degraded mode")
+            else:
+                logger.info("✓ POLICY COMPLIANT: Passing signal_registry to Phase 1 (DI chain: Factory → Orchestrator → Phase 1)")
+            
+            # Execute Phase 1 with full contract AND signal_registry
+            canon_package = execute_phase_1_with_full_contract(
+                canonical_input,
+                signal_registry=signal_registry  # DI: Inject signal registry
+            )
             
             # Validate output
             if not isinstance(canon_package, CanonPolicyPackage):
