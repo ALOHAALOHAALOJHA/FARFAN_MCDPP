@@ -1339,15 +1339,104 @@ class Orchestrator:
     async def _score_micro_results_async(
         self, micro_results: list[MicroQuestionRun], config: dict[str, Any]
     ) -> list[ScoredMicroQuestion]:
-        """FASE 3: Score results (STUB - requires your implementation)."""
+        """FASE 3: Transform Phase 2 results to scored results.
+        
+        Extracts validation scores from Phase 2 evidence and transforms
+        MicroQuestionRun objects to ScoredMicroQuestion objects ready for
+        Phase 4 aggregation.
+        
+        Phase 2 executors pre-compute validation scores, so Phase 3 performs
+        extraction and transformation rather than new computation.
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[3]
         
         instrumentation.start(items_total=len(micro_results))
         
-        logger.warning("Phase 3 stub - add your scoring logic here")
-        
         scored_results: list[ScoredMicroQuestion] = []
+        
+        logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results")
+        
+        for idx, micro_result in enumerate(micro_results):
+            self._ensure_not_aborted()
+            
+            try:
+                # Extract evidence (Evidence dataclass or dict)
+                evidence_obj = micro_result.evidence
+                if hasattr(evidence_obj, "__dict__"):
+                    evidence = evidence_obj.__dict__
+                elif isinstance(evidence_obj, dict):
+                    evidence = evidence_obj
+                else:
+                    evidence = {}
+                
+                # Extract validation data
+                validation = evidence.get("validation", {})
+                score = validation.get("score", 0.0)
+                quality_level = validation.get("quality_level", "INSUFICIENTE")
+                
+                # Ensure score is float
+                try:
+                    score_float = float(score)
+                except (TypeError, ValueError):
+                    logger.warning(
+                        f"Invalid score type for question {micro_result.question_global}: "
+                        f"{type(score)}. Defaulting to 0.0"
+                    )
+                    score_float = 0.0
+                
+                # Build scoring details
+                scoring_details = {
+                    "source": "phase2_validation",
+                    "method": "extract",
+                    "validation_passed": validation.get("passed", False),
+                }
+                
+                # Create ScoredMicroQuestion
+                scored = ScoredMicroQuestion(
+                    question_id=micro_result.question_id,
+                    question_global=micro_result.question_global,
+                    base_slot=micro_result.base_slot,
+                    score=score_float,
+                    normalized_score=score_float,  # Already normalized 0.0-1.0
+                    quality_level=quality_level,
+                    evidence=micro_result.evidence,
+                    scoring_details=scoring_details,
+                    metadata=micro_result.metadata,
+                    error=micro_result.error,
+                )
+                
+                scored_results.append(scored)
+                
+                instrumentation.increment(latency=0.0)
+                
+            except Exception as e:
+                logger.error(
+                    f"Phase 3: Failed to score question {micro_result.question_global}: {e}",
+                    exc_info=True
+                )
+                
+                # Create failed scored result
+                scored = ScoredMicroQuestion(
+                    question_id=micro_result.question_id,
+                    question_global=micro_result.question_global,
+                    base_slot=micro_result.base_slot,
+                    score=0.0,
+                    normalized_score=0.0,
+                    quality_level="ERROR",
+                    evidence=micro_result.evidence,
+                    scoring_details={"error": str(e)},
+                    metadata=micro_result.metadata,
+                    error=f"Scoring error: {e}",
+                )
+                
+                scored_results.append(scored)
+                instrumentation.increment(latency=0.0)
+        
+        logger.info(
+            f"Phase 3 complete: {len(scored_results)}/{len(micro_results)} results scored"
+        )
+        
         return scored_results
     
     async def _aggregate_dimensions_async(
