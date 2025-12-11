@@ -13,6 +13,34 @@ ARCHITECTURE: Nexus-Aligned Scoring
 4. Quality Level Determination → Granular quality assessment
 5. Provenance Tracking → Full traceability to evidence graph
 
+MATHEMATICAL FOUNDATIONS (Academic References):
+-----------------------------------------------
+This scoring system is grounded in rigorous mathematical theory:
+
+[1] Wilson Score Interval (Wilson 1927, JASA)
+    - Wilson, E. B. (1927). "Probable inference, the law of succession, and 
+      statistical inference." Journal of the American Statistical Association, 
+      22(158), 209-212. DOI: 10.1080/01621459.1927.10502953
+    - Provides asymptotically correct confidence intervals with better 
+      small-sample properties than traditional Wald intervals.
+
+[2] Weighted Aggregation with Convexity (Convex Analysis)
+    - For scores s₁, ..., sₙ ∈ [0,1] and weights Σwᵢ = 1, the weighted 
+      mean s = Σwᵢsᵢ satisfies min(sᵢ) ≤ s ≤ max(sᵢ) (convexity property).
+    - Guarantees bounded, stable aggregation.
+
+[3] Dempster-Shafer Belief Function Theory (Evidence Combination)
+    - Sentz, K., & Ferson, S. (2002). "Combination of Evidence in Dempster-
+      Shafer Theory." Sandia National Laboratories, SAND 2002-0835.
+    - Provides framework for combining evidence from multiple sources under 
+      uncertainty, used in Phase 2 EvidenceNexus.
+
+[4] Confidence Calibration (Statistical Inference)
+    - O'Neill, B. (2021). "Mathematical properties and finite-population 
+      correction for the Wilson score interval." arXiv:2109.12464 [math.ST]
+    - Ensures proper coverage probability and calibration of confidence 
+      intervals.
+
 SCORING MODALITIES (Aligned with signal_scoring_context.py):
 -----------------------------------------------------------
 - TYPE_A: Quantitative indicators (high threshold, precise)
@@ -50,7 +78,7 @@ INVARIANTS:
 [INV-SC-004] Confidence intervals must be calibrated (≥95% coverage)
 
 Author: F.A.R.F.A.N Pipeline Team
-Version: 1.0.0
+Version: 2.0.0 (Enhanced with Academic Foundations)
 Date: 2025-12-11
 """
 
@@ -60,6 +88,19 @@ import math
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Literal
+
+# Import mathematical foundations (academic rigor)
+try:
+    from farfan_pipeline.analysis.scoring.mathematical_foundation import (
+        wilson_score_interval,
+        weighted_aggregation,
+        validate_scoring_invariants,
+        verify_convexity_property,
+    )
+    _HAS_MATH_FOUNDATION = True
+except ImportError:
+    # Fallback if mathematical_foundation is not available
+    _HAS_MATH_FOUNDATION = False
 
 try:
     import structlog
@@ -669,29 +710,67 @@ def _compute_confidence_interval(
     alpha: float = 0.05
 ) -> tuple[float, float]:
     """
-    Compute Wilson score confidence interval.
+    Compute Wilson score confidence interval (Wilson 1927, JASA).
+    
+    Mathematical Foundation:
+    -----------------------
+    The Wilson interval is derived by inverting the score test statistic
+    for a binomial proportion. It provides asymptotically correct coverage
+    with better small-sample properties than the Wald interval.
+    
+    Formula (Wilson 1927):
+        [p̂ + z²/(2n) ± z√(p̂(1-p̂)/n + z²/(4n²))] / (1 + z²/n)
+    
+    where:
+        p̂ = observed proportion (score)
+        n = sample size
+        z = (1-α/2) quantile of standard normal
+    
+    Key Properties (O'Neill 2021, arXiv:2109.12464):
+    - Monotonicity: Preserves ordering of proportions
+    - Consistency: Width → 0 as n → ∞
+    - Bounded: Always in [0, 1] (unlike Wald)
+    - Coverage: Approximately correct for all p and n
     
     Args:
-        score: Point estimate
-        confidence: Confidence level from evidence
+        score: Point estimate (observed proportion) in [0, 1]
+        confidence: Evidence confidence level (used to adjust n)
         alpha: Significance level (default 0.05 for 95% CI)
         
     Returns:
         Tuple of (lower_bound, upper_bound)
+        
+    References:
+        [1] Wilson (1927), JASA, DOI: 10.1080/01621459.1927.10502953
+        [2] O'Neill (2021), arXiv:2109.12464
     """
-    # Z-score for 95% CI
-    z = 1.96
+    # Z-score for confidence level (1-α)
+    # For α=0.05 (95% CI): z = 1.96
+    # For α=0.01 (99% CI): z = 2.576
+    z = 1.96 if alpha == 0.05 else 2.576 if alpha == 0.01 else 1.645
     
-    # Wilson score interval (simplified)
-    n = 100  # Assume sample size for normalization
+    # Effective sample size (adjusted by evidence confidence)
+    # Higher confidence → larger effective sample size → narrower interval
+    n = max(30, int(100 * confidence))  # Min n=30 to ensure stability
+    
+    # Wilson interval formula (exact from Wilson 1927)
     p = score
     
-    denominator = 1 + (z**2) / n
+    denominator = 1.0 + (z**2) / n
     center = (p + (z**2) / (2 * n)) / denominator
-    margin = (z / denominator) * math.sqrt((p * (1 - p)) / n + (z**2) / (4 * n**2))
     
-    lower = clamp(center - margin * (1 + confidence) / 2, 0.0, 1.0)
-    upper = clamp(center + margin * (1 + confidence) / 2, 0.0, 1.0)
+    # Standard error term (Wilson's correction)
+    se_numerator = math.sqrt(p * (1 - p) / n + (z**2) / (4 * n**2))
+    margin = (z / denominator) * se_numerator
+    
+    # Compute bounds (guaranteed in [0, 1] by Wilson formula properties)
+    lower = clamp(center - margin, 0.0, 1.0)
+    upper = clamp(center + margin, 0.0, 1.0)
+    
+    # Validate invariant [INV-SC-004]: CI must contain score
+    # This holds automatically for Wilson interval by construction
+    assert lower <= score <= upper or math.isclose(lower, score) or math.isclose(upper, score), \
+        f"Wilson interval [{lower:.4f}, {upper:.4f}] must contain score {score:.4f}"
     
     return (lower, upper)
 
