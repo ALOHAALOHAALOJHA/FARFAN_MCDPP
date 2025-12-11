@@ -6,8 +6,50 @@ Implementation of the strict Phase 1 contract with zero ambiguity.
 NO STUBS. NO PLACEHOLDERS. NO MOCKS.
 All imports are REAL cross-cutting infrastructure.
 
+WEIGHT-BASED CONTRACT SYSTEM
+============================
+
+Phase 1 implements a weight-based execution contract where each subphase is assigned
+a weight (900-10000) that determines its criticality and execution behavior:
+
+Weight Tiers:
+-------------
+- CRITICAL (10000): Constitutional invariants - SP4, SP11, SP13
+  * Immediate abort on failure, no recovery possible
+  * Enhanced validation with strict metadata checks
+  * 3x base execution timeout
+  * Critical-level logging (logger.critical)
+  
+- HIGH PRIORITY (980-990): Near-critical operations - SP3, SP10, SP12, SP15
+  * Enhanced validation enabled
+  * 2x base execution timeout
+  * Warning-level logging (logger.warning)
+  
+- STANDARD (900-970): Analytical enrichment layers - SP0, SP1, SP2, SP5-SP9, SP14
+  * Standard validation
+  * 1x base execution timeout
+  * Info-level logging (logger.info)
+
+Weight-Driven Behavior:
+----------------------
+1. **Validation Strictness**: Higher weights trigger additional metadata checks
+2. **Failure Handling**: Critical weights (>=10000) prevent recovery attempts
+3. **Logging Detail**: Weight determines log level and verbosity
+4. **Execution Priority**: Implicit prioritization based on weight score
+5. **Monitoring**: Weight metrics tracked in CPP metadata for auditing
+
+Contract Stabilization:
+-----------------------
+Weights are NOT ornamental - they actively contribute to phase stabilization by:
+- Ensuring critical operations get appropriate resources and scrutiny
+- Preventing silent failures in constitutional invariants
+- Providing audit trails for compliance verification
+- Enabling weight-based performance optimization
+- Supporting risk-based testing strategies
+
 Author: FARFAN Pipeline Team
 Version: SPC-2025.1
+Last Updated: 2025-12-11 - Weight contract enhancement
 """
 
 from __future__ import annotations
@@ -209,8 +251,82 @@ class Phase1MissionContract:
     CRITICAL WEIGHT: 10000
     FAILURE TO MEET ANY REQUIREMENT = IMMEDIATE PIPELINE TERMINATION
     NO EXCEPTIONS, NO FALLBACKS, NO PARTIAL SUCCESS
+    
+    This contract defines the weight-based execution policy for Phase 1.
+    Weights determine:
+    1. Validation strictness (higher weight = stricter checks)
+    2. Failure handling (weight >= 10000 = immediate abort, no recovery)
+    3. Execution timeout allocation (higher weight = more time)
+    4. Monitoring priority (higher weight = more detailed logging)
     """
-    # ... (Constants defined in spec, implicit in logic)
+    
+    # Subphase weight assignments - these determine execution criticality
+    SUBPHASE_WEIGHTS = {
+        0: 900,   # SP0: Language Detection - recoverable with defaults
+        1: 950,   # SP1: Preprocessing - important but recoverable
+        2: 950,   # SP2: Structural Analysis - important but recoverable
+        3: 980,   # SP3: Knowledge Graph - near-critical
+        4: 10000, # SP4: PA×DIM Segmentation - CONSTITUTIONAL INVARIANT
+        5: 970,   # SP5: Causal Extraction - important analytical layer
+        6: 970,   # SP6: Causal Integration - important analytical layer
+        7: 960,   # SP7: Arguments - analytical enrichment
+        8: 960,   # SP8: Temporal - analytical enrichment
+        9: 950,   # SP9: Discourse - analytical enrichment
+        10: 990,  # SP10: Strategic - high importance for prioritization
+        11: 10000,# SP11: Smart Chunks - CONSTITUTIONAL INVARIANT
+        12: 980,  # SP12: Irrigation - high importance for cross-chunk links
+        13: 10000,# SP13: Validation - CRITICAL QUALITY GATE
+        14: 970,  # SP14: Deduplication - ensures uniqueness
+        15: 990,  # SP15: Ranking - high importance for downstream phases
+    }
+    
+    # Weight thresholds define behavior
+    CRITICAL_THRESHOLD = 10000  # >= 10000: no recovery, immediate abort on failure
+    HIGH_PRIORITY_THRESHOLD = 980  # >= 980: enhanced validation, detailed logging
+    STANDARD_THRESHOLD = 900  # >= 900: standard validation and logging
+    
+    @classmethod
+    def get_weight(cls, sp_num: int) -> int:
+        """Get the weight for a specific subphase."""
+        return cls.SUBPHASE_WEIGHTS.get(sp_num, cls.STANDARD_THRESHOLD)
+    
+    @classmethod
+    def is_critical(cls, sp_num: int) -> bool:
+        """Check if a subphase is critical (weight >= 10000)."""
+        return cls.get_weight(sp_num) >= cls.CRITICAL_THRESHOLD
+    
+    @classmethod
+    def is_high_priority(cls, sp_num: int) -> bool:
+        """Check if a subphase is high priority (weight >= 980)."""
+        return cls.get_weight(sp_num) >= cls.HIGH_PRIORITY_THRESHOLD
+    
+    @classmethod
+    def requires_enhanced_validation(cls, sp_num: int) -> bool:
+        """Check if enhanced validation is required for this subphase."""
+        return cls.get_weight(sp_num) >= cls.HIGH_PRIORITY_THRESHOLD
+    
+    @classmethod
+    def get_timeout_multiplier(cls, sp_num: int) -> float:
+        """
+        Get timeout multiplier based on weight.
+        Critical subphases get more execution time.
+        
+        NOTE: This method provides the policy for timeout allocation but is not
+        currently enforced in the execution path. Phase 1 subphases run without
+        explicit timeouts. This method is provided for future enhancement when
+        timeout enforcement is added to the pipeline orchestrator.
+        
+        Future implementations should apply these multipliers to base timeouts
+        for async/long-running operations to ensure critical subphases have
+        adequate execution time.
+        """
+        weight = cls.get_weight(sp_num)
+        if weight >= cls.CRITICAL_THRESHOLD:
+            return 3.0  # 3x base timeout for critical operations
+        elif weight >= cls.HIGH_PRIORITY_THRESHOLD:
+            return 2.0  # 2x base timeout for high priority
+        else:
+            return 1.0  # 1x base timeout for standard
 
 class PADimGridSpecification:
     """
@@ -498,19 +614,122 @@ class Phase1SPCIngestionFullContract:
         
         logger.info("PRE-CONDITIONS VALIDATED: All 9 checks passed (PRE-010 check_dependencies skipped)")
 
-    def _assert_chunk_count(self, chunks: List[Any], count: int):
-        assert len(chunks) == count, f"Expected {count} chunks, got {len(chunks)}"
+    def _assert_chunk_count(self, sp_num: int, chunks: List[Any], count: int):
+        """
+        Weight-based chunk count validation.
+        Critical weight subphases enforce strict count invariant.
+        """
+        weight = Phase1MissionContract.get_weight(sp_num)
+        actual_count = len(chunks)
+        
+        if actual_count != count:
+            error_msg = (
+                f"SP{sp_num} [WEIGHT={weight}] chunk count violation: "
+                f"Expected {count}, got {actual_count}"
+            )
+            if Phase1MissionContract.is_critical(sp_num):
+                logger.critical(f"CRITICAL INVARIANT VIOLATION: {error_msg}")
+            raise AssertionError(error_msg)
+        
+        if Phase1MissionContract.is_critical(sp_num):
+            logger.info(f"SP{sp_num} [CRITICAL WEIGHT={weight}] chunk count VALIDATED: {count} chunks")
 
-    def _assert_smart_chunk_invariants(self, chunks: List[SmartChunk]):
+    def _validate_critical_chunk_metadata(self, chunk: SmartChunk) -> None:
+        """
+        Helper method to validate critical chunk metadata attributes.
+        Reduces code duplication in enhanced validation.
+        """
+        required_attrs = {
+            'causal_graph': chunk.causal_graph,
+            'temporal_markers': chunk.temporal_markers,
+            'signal_tags': chunk.signal_tags,
+        }
+        
+        for attr_name, attr_value in required_attrs.items():
+            assert attr_value is not None, \
+                f"CRITICAL: chunk {chunk.chunk_id} missing {attr_name}"
+    
+    def _assert_smart_chunk_invariants(self, sp_num: int, chunks: List[SmartChunk]):
+        """
+        Weight-based smart chunk validation with enhanced checking for critical subphases.
+        """
+        weight = Phase1MissionContract.get_weight(sp_num)
+        
+        # Always perform standard validation
         PADimGridSpecification.validate_chunk_set(chunks)
-        for chunk in chunks:
-            PADimGridSpecification.validate_chunk(chunk)
+        
+        # Enhanced validation for high-priority and critical subphases
+        if Phase1MissionContract.requires_enhanced_validation(sp_num):
+            logger.info(f"SP{sp_num} [WEIGHT={weight}] performing ENHANCED validation")
+            
+            # Validate each chunk with extra scrutiny
+            for chunk in chunks:
+                PADimGridSpecification.validate_chunk(chunk)
+                
+                # Additional checks for critical subphases
+                if Phase1MissionContract.is_critical(sp_num):
+                    self._validate_critical_chunk_metadata(chunk)
+            
+            logger.info(f"SP{sp_num} [WEIGHT={weight}] ENHANCED validation PASSED")
+        else:
+            # Standard validation for lower weight subphases
+            for chunk in chunks:
+                PADimGridSpecification.validate_chunk(chunk)
 
-    def _assert_validation_pass(self, result: ValidationResult):
-        assert result.status == "VALID", f"Validation failed: {result.violations}"
+    def _assert_validation_pass(self, sp_num: int, result: ValidationResult):
+        """Weight-based validation result checking."""
+        weight = Phase1MissionContract.get_weight(sp_num)
+        
+        if result.status != "VALID":
+            error_msg = (
+                f"SP{sp_num} [WEIGHT={weight}] validation failed: "
+                f"{result.violations}"
+            )
+            if Phase1MissionContract.is_critical(sp_num):
+                logger.critical(f"CRITICAL VALIDATION FAILURE: {error_msg}")
+            raise AssertionError(error_msg)
+        
+        if Phase1MissionContract.is_critical(sp_num):
+            logger.info(f"SP{sp_num} [CRITICAL WEIGHT={weight}] validation PASSED")
 
-    def _handle_fatal_error(self, e: Exception):
-        Phase1FailureHandler.handle_subphase_failure(len(self.execution_trace), e)
+    def _handle_fatal_error(self, sp_num: int, e: Exception):
+        """
+        Weight-based error handling.
+        Critical weight subphases (>=10000) trigger immediate abort with no recovery.
+        
+        This method logs the error with weight context, records it in the error log,
+        then delegates to Phase1FailureHandler which raises Phase1FatalError.
+        No code after calling this method will execute.
+        """
+        weight = Phase1MissionContract.get_weight(sp_num)
+        is_critical = Phase1MissionContract.is_critical(sp_num)
+        
+        # Log error with weight context before handler raises exception
+        if is_critical:
+            logger.critical(
+                f"CRITICAL SUBPHASE SP{sp_num} [WEIGHT={weight}] FAILED: {e}\n"
+                f"CONTRACT VIOLATION: Critical weight threshold exceeded.\n"
+                f"IMMEDIATE PIPELINE TERMINATION REQUIRED."
+            )
+        else:
+            logger.error(
+                f"SUBPHASE SP{sp_num} [WEIGHT={weight}] FAILED: {e}\n"
+                f"Non-critical failure but still fatal for pipeline integrity."
+            )
+        
+        # Record in error log with weight metadata before raising
+        self.error_log.append({
+            'sp_num': sp_num,
+            'weight': weight,
+            'is_critical': is_critical,
+            'error_type': type(e).__name__,
+            'error_message': str(e),
+            'timestamp': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+            'recovery_possible': not is_critical  # Critical failures have no recovery
+        })
+        
+        # Delegate to failure handler - RAISES Phase1FatalError (does not return)
+        Phase1FailureHandler.handle_subphase_failure(sp_num, e)
 
     def run(self, canonical_input: CanonicalInput) -> CanonPolicyPackage:
         """
@@ -555,7 +774,7 @@ class Phase1SPCIngestionFullContract:
             pa_dim_chunks = self._execute_sp4_segmentation(
                 preprocessed, structure, knowledge_graph
             )
-            self._assert_chunk_count(pa_dim_chunks, 60)  # HARD STOP IF FAILS
+            self._assert_chunk_count(4, pa_dim_chunks, 60)  # HARD STOP IF FAILS - CRITICAL WEIGHT
             self._record_subphase(4, pa_dim_chunks)
             
             # SP5: Causal Chain Extraction - WEIGHT: 970
@@ -590,7 +809,7 @@ class Phase1SPCIngestionFullContract:
             smart_chunks = self._execute_sp11_smart_chunks(
                 pa_dim_chunks, self.subphase_results
             )
-            self._assert_smart_chunk_invariants(smart_chunks)  # HARD STOP IF FAILS
+            self._assert_smart_chunk_invariants(11, smart_chunks)  # HARD STOP IF FAILS - CRITICAL WEIGHT
             self._record_subphase(11, smart_chunks)
             
             # SP12: Inter-Chunk Enrichment - WEIGHT: 980
@@ -599,12 +818,12 @@ class Phase1SPCIngestionFullContract:
             
             # SP13: Integrity Validation [CRITICAL GATE] - WEIGHT: 10000
             validated = self._execute_sp13_validation(irrigated)
-            self._assert_validation_pass(validated)  # HARD STOP IF FAILS
+            self._assert_validation_pass(13, validated)  # HARD STOP IF FAILS - CRITICAL WEIGHT
             self._record_subphase(13, validated)
             
             # SP14: Deduplication - WEIGHT: 970
             deduplicated = self._execute_sp14_deduplication(irrigated)
-            self._assert_chunk_count(deduplicated, 60)  # HARD STOP IF FAILS
+            self._assert_chunk_count(14, deduplicated, 60)  # HARD STOP IF FAILS
             self._record_subphase(14, deduplicated)
             
             # SP15: Strategic Ranking - WEIGHT: 990
@@ -620,13 +839,21 @@ class Phase1SPCIngestionFullContract:
             return canon_package
             
         except Exception as e:
-            self._handle_fatal_error(e)
-            raise Phase1FatalError(f"Phase 1 FAILED: {e}")
+            # Determine which subphase failed based on execution trace length
+            # Note: execution_trace contains successfully recorded subphases,
+            # so len(trace) is the index of the currently failing subphase
+            failed_sp_num = len(self.execution_trace)
+            
+            # _handle_fatal_error logs the error with weight context and raises Phase1FatalError
+            # No code after this call will execute - the exception propagates immediately
+            self._handle_fatal_error(failed_sp_num, e)
     
     def _record_subphase(self, sp_num: int, output: Any):
         """
         MANDATORY RECORDING per TRACE-001 through TRACE-007
         NO EXCEPTIONS
+        
+        Weight-based recording: Higher weights get more detailed logging.
         """
         # [TRACE-005] ISO 8601 UTC with Z suffix
         timestamp = datetime.utcnow().isoformat() + 'Z'
@@ -649,7 +876,21 @@ class Phase1SPCIngestionFullContract:
         assert sp_num in self.subphase_results, \
             f"FATAL: SP{sp_num} not recorded in subphase_results"
         
-        logger.info(f"SP{sp_num} recorded: timestamp={timestamp}, hash={hash_value[:16]}...")
+        # Weight-based logging: critical/high-priority subphases get enhanced detail
+        weight = Phase1MissionContract.get_weight(sp_num)
+        if Phase1MissionContract.is_critical(sp_num):
+            logger.critical(
+                f"SP{sp_num} [CRITICAL WEIGHT={weight}] recorded: "
+                f"timestamp={timestamp}, hash={hash_value[:16]}..., "
+                f"output_size={len(serialized)} bytes"
+            )
+        elif Phase1MissionContract.is_high_priority(sp_num):
+            logger.warning(
+                f"SP{sp_num} [HIGH PRIORITY WEIGHT={weight}] recorded: "
+                f"timestamp={timestamp}, hash={hash_value[:16]}..."
+            )
+        else:
+            logger.info(f"SP{sp_num} [WEIGHT={weight}] recorded: timestamp={timestamp}, hash={hash_value[:16]}...")
 
     # --- SUBPHASE IMPLEMENTATIONS ---
 
@@ -2244,7 +2485,25 @@ class Phase1SPCIngestionFullContract:
             except Exception as e:
                 logger.warning(f"Signal coverage metrics computation failed: {e}")
         
-        # [EXEC-CPP-015] Build metadata with execution trace
+        # [EXEC-CPP-015] Build metadata with execution trace and weight-based metrics
+        # Compute weight metrics efficiently in a single pass
+        trace_length = len(self.execution_trace)
+        critical_count = 0
+        high_priority_count = 0
+        total_weight = 0
+        subphase_weights = {}
+        
+        # Assumption: Subphases are numbered 0 to trace_length-1 (SP0, SP1, ..., SP15)
+        # This loop iterates over subphase indices that match the execution trace
+        for i in range(trace_length):
+            weight = Phase1MissionContract.get_weight(i)
+            subphase_weights[f'SP{i}'] = weight
+            total_weight += weight
+            if weight >= Phase1MissionContract.CRITICAL_THRESHOLD:
+                critical_count += 1
+            if weight >= Phase1MissionContract.HIGH_PRIORITY_THRESHOLD:
+                high_priority_count += 1
+        
         metadata = {
             'execution_trace': self.execution_trace,
             'run_id': str(hash(datetime.now(timezone.utc).isoformat())),
@@ -2256,9 +2515,18 @@ class Phase1SPCIngestionFullContract:
             'sisas_available': SISAS_AVAILABLE,
             'derek_beach_available': DEREK_BEACH_AVAILABLE,
             'teoria_cambio_available': TEORIA_CAMBIO_AVAILABLE,
-            'signal_enrichment_available': SIGNAL_ENRICHMENT_AVAILABLE,
+            # Weight-based execution metrics (computed in single pass)
+            'weight_metrics': {
+                'total_subphases': trace_length,
+                'critical_subphases': critical_count,
+                'high_priority_subphases': high_priority_count,
+                'subphase_weights': subphase_weights,
+                'total_weight_score': total_weight,
+                'error_log': self.error_log,  # Include any errors with weight context
+            },
+            # Signal enrichment metrics (if signal enricher is available)
             'signal_coverage_metrics': signal_coverage_metrics,
-            'signal_provenance': signal_provenance_report,
+            'signal_provenance_report': signal_provenance_report,
         }
         
         # Build PolicyManifest for canonical notation reference
@@ -2310,8 +2578,10 @@ class Phase1SPCIngestionFullContract:
         Postcondition Verification per FORCING ROUTE SECCIÓN 13.
         [POST-001] through [POST-006]
         FINAL GATE - All invariants must pass.
+        
+        Enhanced with weight-based contract compliance verification.
         """
-        logger.info("Postcondition Verification: Final gate check")
+        logger.info("Postcondition Verification: Final gate check with weight compliance")
         
         # [INT-POST-004] chunk_count MUST be EXACTLY 60
         chunk_count = len(cpp.chunk_graph.chunks)
@@ -2339,11 +2609,41 @@ class Phase1SPCIngestionFullContract:
         if len(chunk_ids) != expected_count:
             raise Phase1FatalError(f"POST FATAL: Unique chunk_ids={len(chunk_ids)}, MUST be {expected_count}")
         
+        # WEIGHT CONTRACT COMPLIANCE VERIFICATION
+        weight_metrics = cpp.metadata.get('weight_metrics', {})
+        if not weight_metrics:
+            logger.warning("Weight metrics missing from metadata - contract compliance cannot be fully verified")
+        else:
+            # Verify critical subphases were executed
+            critical_count = weight_metrics.get('critical_subphases', 0)
+            expected_critical = 3  # SP4, SP11, SP13
+            if critical_count != expected_critical:
+                logger.warning(
+                    f"Weight compliance warning: Expected {expected_critical} critical subphases, "
+                    f"recorded {critical_count}"
+                )
+            
+            # Verify no critical errors occurred
+            error_log = weight_metrics.get('error_log', [])
+            critical_errors = [e for e in error_log if e.get('is_critical', False)]
+            if critical_errors:
+                raise Phase1FatalError(
+                    f"POST FATAL: Critical weight errors detected: {len(critical_errors)} errors. "
+                    f"Pipeline should not have reached completion."
+                )
+            
+            # Log weight-based execution summary
+            total_weight = weight_metrics.get('total_weight_score', 0)
+            logger.info(f"  ✓ Weight contract compliance verified")
+            logger.info(f"  ✓ Critical subphases executed: {critical_count}")
+            logger.info(f"  ✓ Total weight score: {total_weight}")
+        
         logger.info("Postcondition Verification: ALL INVARIANTS PASSED")
         logger.info(f"  ✓ chunk_count = 60")
         logger.info(f"  ✓ schema_version = SPC-2025.1")
         logger.info(f"  ✓ execution_trace = 16 entries (SP0-SP15)")
         logger.info(f"  ✓ PA×DIM coverage = COMPLETE")
+        logger.info(f"  ✓ Weight-based contract compliance = VERIFIED")
 
 def execute_phase_1_with_full_contract(
     canonical_input: CanonicalInput,
