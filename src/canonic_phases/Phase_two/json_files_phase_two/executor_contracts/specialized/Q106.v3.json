@@ -5,7 +5,7 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "b3f710d75a35f813be3eec8fbf6b89431cfa8ec11b0a4b25d8218d46ea55240c",
+    "contract_hash": "ff3baff6acf2c66f0b800272077ad2e454e685cdcdc5994bc0c364d0023fe799",
     "created_at": "2025-11-28T03:50:31.256212+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
@@ -251,8 +251,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "coverage_data",
+      "enrollment_rates",
+      "measurement_validity",
+      "outcome_indicators",
+      "quality_indicators"
+    ],
+    "optional_signals": [
+      "composite_metrics",
+      "dropout_rates",
+      "infrastructure_status",
+      "teacher_ratios",
+      "verification_sources"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

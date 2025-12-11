@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import pytest
 
-from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization import (
+from cross_cutting_infrastrucuture.capaz_calibration_parmetrization import (
     CalibrationContext,
     CalibrationEvidence,
     CalibrationOrchestrator,

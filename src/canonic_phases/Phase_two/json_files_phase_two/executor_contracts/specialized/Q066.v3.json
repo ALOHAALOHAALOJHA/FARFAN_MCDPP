@@ -5,7 +5,7 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "51ec2e64008a5b06071d3b0e42a331684b85b476a2bbdd42b1a3c27cee24718c",
+    "contract_hash": "5fc50b0bc3e3544be3ab4f38516eea6d4ccc96eda239869010e083eae3492569",
     "created_at": "2025-11-28T03:50:09.600821+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
@@ -167,8 +167,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "agricultural_policy",
+      "causal_chains",
+      "intervention_logic",
+      "land_tenure_data",
+      "rural_indicators"
+    ],
+    "optional_signals": [
+      "assumptions",
+      "infrastructure_gaps",
+      "market_access",
+      "subsidy_programs",
+      "theory_of_change"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

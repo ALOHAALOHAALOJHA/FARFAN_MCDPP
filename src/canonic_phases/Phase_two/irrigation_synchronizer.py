@@ -1290,7 +1290,32 @@ class IrrigationSynchronizer:
             raise
 
     def _build_with_legacy_chunks(self) -> ExecutionPlan:
-        """Build execution plan using legacy document_chunks list."""
+        """Build execution plan using legacy document_chunks list.
+        
+        DEPRECATED: This method is deprecated and will be removed in a future version.
+        All consumers should migrate to using PreprocessedDocument with ChunkMatrix validation.
+        The legacy mode lacks the robust validation and deterministic routing of ChunkMatrix.
+        """
+        import warnings
+        warnings.warn(
+            "Legacy chunk mode is deprecated and will be removed in a future version. "
+            "Please migrate to PreprocessedDocument with ChunkMatrix validation.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        
+        logger.warning(
+            json.dumps(
+                {
+                    "event": "legacy_chunk_mode_deprecated",
+                    "correlation_id": self.correlation_id,
+                    "message": "Legacy chunk mode will be removed in future version",
+                    "migration_guide": "Use PreprocessedDocument with ChunkMatrix",
+                    "timestamp": time.time()
+                }
+            )
+        )
+        
         logger.info(
             json.dumps(
                 {

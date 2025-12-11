@@ -5,7 +5,7 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "1a3717ed3b2d98d545f2567d9b78d92c51d4957b3d486f2ad4091dd7de476285",
+    "contract_hash": "a5c3fd2bd4620301ed7e4b132aa09f2cb9ece0305663d41757ce8dfbc8069b7f",
     "created_at": "2025-11-28T03:50:42.094801+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
@@ -159,8 +159,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "differential_needs",
+      "environmental_baseline",
+      "protection_areas",
+      "risk_zones",
+      "territorial_diagnosis"
+    ],
+    "optional_signals": [
+      "biodiversity",
+      "deforestation_rates",
+      "equity_considerations",
+      "participation_evidence",
+      "water_quality"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

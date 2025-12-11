@@ -5,7 +5,7 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "4709f4af212cfc986146cfb70449c23b509714692f6316062346f7c9b8533ea7",
+    "contract_hash": "58737f4437e05d28446a811f42559f79a5b8550e8d4a8737b9d06040619f72e5",
     "created_at": "2025-11-28T03:50:42.495872+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
@@ -247,8 +247,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "budget_allocation",
+      "crime_statistics",
+      "justice_access",
+      "product_targets",
+      "security_coverage"
+    ],
+    "optional_signals": [
+      "conflict_indicators",
+      "implementation_schedule",
+      "institutional_presence",
+      "responsible_entities",
+      "victimization_rates"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."

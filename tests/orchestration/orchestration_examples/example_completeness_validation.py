@@ -5,7 +5,7 @@ Demonstrates completeness validation ensuring all required layers are computed.
 """
 
 from pathlib import Path
-from src.orchestration.calibration_orchestrator import (
+from orchestration.calibration_orchestrator import (
     CalibrationOrchestrator,
     CalibrationSubject,
     EvidenceStore,

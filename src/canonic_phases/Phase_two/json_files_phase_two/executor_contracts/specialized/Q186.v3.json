@@ -5,7 +5,7 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "cf9bcc492e867601c6f645f528a806ef634290e03e6cbd749a8ba258cfa50091",
+    "contract_hash": "e307c4fe57d85634fbc7277fd4d344cb821f08f9cf6f7c12749244b68366a22f",
     "created_at": "2025-11-28T03:50:31.865376+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
@@ -167,8 +167,20 @@
     "validations": {}
   },
   "signal_requirements": {
-    "mandatory_signals": [],
-    "optional_signals": [],
+    "mandatory_signals": [
+      "causal_chains",
+      "economic_indicators",
+      "employment_data",
+      "intervention_logic",
+      "sectoral_distribution"
+    ],
+    "optional_signals": [
+      "assumptions",
+      "gdp_municipal",
+      "investment_flows",
+      "productivity_metrics",
+      "theory_of_change"
+    ],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
