@@ -22,8 +22,38 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional
 from pathlib import Path
+
+# Module-level constants for scoring and thresholds
+DIMENSIONS_PER_POLICY_AREA = 6
+BASE_ENTITY_IMPORTANCE = 0.3
+PATTERN_WEIGHT_FACTOR = 0.1
+INDICATOR_WEIGHT_FACTOR = 0.15
+ENTITY_WEIGHT_FACTOR = 0.1
+MAX_PATTERN_WEIGHT = 0.3
+MAX_INDICATOR_WEIGHT = 0.25
+MAX_ENTITY_WEIGHT = 0.15
+MAX_IMPORTANCE_SCORE = 0.95
+
+# Default causal patterns (module-level constant)
+DEFAULT_CAUSAL_PATTERNS = [
+    (r'\bcausa\w*\b', 'CAUSE', 0.8),
+    (r'\befecto\w*\b', 'EFFECT', 0.8),
+    (r'\b(?:por lo tanto|por ende|en consecuencia)\b', 'CONSEQUENCE', 0.7),
+    (r'\b(?:debido a|a causa de|producto de)\b', 'CAUSE_LINK', 0.75),
+    (r'\b(?:resulta en|conduce a|genera)\b', 'EFFECT_LINK', 0.75),
+    (r'\b(?:si|cuando).*(?:entonces|luego)\b', 'CONDITIONAL', 0.65),
+]
+
+# Base temporal patterns (module-level constant)
+BASE_TEMPORAL_PATTERNS = [
+    (r'\b(20\d{2})\b', 'YEAR', 0.9),
+    (r'\b(\d{1,2})[/-](\d{1,2})[/-](20\d{2})\b', 'DATE', 0.85),
+    (r'\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(20\d{2})\b', 'MONTH_YEAR', 0.8),
+    (r'\b(corto|mediano|largo)\s+plazo\b', 'HORIZON', 0.75),
+    (r'\bvigencia\s+(20\d{2})[-–](20\d{2})\b', 'PERIOD', 0.85),
+]
 
 try:
     import structlog
@@ -37,13 +67,9 @@ except ImportError:
 # Signal infrastructure imports
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
-        QuestionnaireSignalRegistry,
-        ChunkingSignalPack,
-        MicroAnsweringSignalPack,
         create_signal_registry,
     )
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
-        SignalPack,
         create_default_signal_pack,
     )
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_quality_metrics import (
@@ -54,8 +80,6 @@ try:
 except ImportError as e:
     logger.warning(f"SISAS not available: {e}")
     SISAS_AVAILABLE = False
-    QuestionnaireSignalRegistry = None
-    SignalPack = None
 
 
 @dataclass
@@ -108,20 +132,28 @@ class SignalEnricher:
     
     def _initialize_signal_registry(self, questionnaire_path: Path) -> None:
         """Initialize signal registry from questionnaire."""
-        if not SISAS_AVAILABLE or QuestionnaireSignalRegistry is None:
+        if not SISAS_AVAILABLE:
             logger.warning("SISAS not available, skipping signal registry initialization")
             return
         
         try:
-            # Create signal registry from questionnaire
-            self.context.signal_registry = create_signal_registry(questionnaire_path)
+            # Load questionnaire and create signal registry
+            # Note: create_signal_registry expects a loaded questionnaire object
+            # For now, we'll use a fallback approach with default signal packs
+            # A future enhancement would properly load the questionnaire first
             
             # Build signal packs for all policy areas
             for pa_num in range(1, 11):
                 pa_id = f"PA{pa_num:02d}"
                 try:
-                    # Try to get specific signal pack for this PA
-                    signal_pack = create_default_signal_pack(pa_id)
+                    # Get signal pack - try from registry first, fallback to default
+                    signal_pack = None
+                    if self.context.signal_registry and hasattr(self.context.signal_registry, "get_signal_pack"):
+                        signal_pack = self.context.signal_registry.get_signal_pack(pa_id)
+                    
+                    if signal_pack is None:
+                        signal_pack = create_default_signal_pack(pa_id)
+                    
                     self.context.signal_packs[pa_id] = signal_pack
                     
                     # Compute quality metrics
@@ -192,11 +224,11 @@ class SignalEnricher:
         if not signal_pack:
             return enrichment
         
-        # Match against signal patterns
+        # Match against signal patterns (use IGNORECASE flag, don't lowercase pattern)
         pattern_matches = 0
         for pattern in signal_pack.patterns:
             try:
-                if re.search(pattern.lower(), entity_lower, re.IGNORECASE):
+                if re.search(pattern, entity_lower, re.IGNORECASE):
                     pattern_matches += 1
                     enrichment['matched_patterns'].append(pattern[:50])
                     enrichment['signal_tags'].append(f"PATTERN:{pattern[:20]}")
@@ -219,13 +251,12 @@ class SignalEnricher:
                 enrichment['matched_entities'].append(sig_entity)
                 enrichment['signal_tags'].append(f"ENTITY:{sig_entity[:20]}")
         
-        # Calculate importance score based on matches
-        base_importance = 0.3
-        pattern_weight = min(0.3, pattern_matches * 0.1)
-        indicator_weight = min(0.25, indicator_matches * 0.15)
-        entity_weight = min(0.15, entity_matches * 0.1)
+        # Calculate importance score based on matches using module constants
+        pattern_weight = min(MAX_PATTERN_WEIGHT, pattern_matches * PATTERN_WEIGHT_FACTOR)
+        indicator_weight = min(MAX_INDICATOR_WEIGHT, indicator_matches * INDICATOR_WEIGHT_FACTOR)
+        entity_weight = min(MAX_ENTITY_WEIGHT, entity_matches * ENTITY_WEIGHT_FACTOR)
         
-        enrichment['signal_importance'] = min(0.95, base_importance + pattern_weight + indicator_weight + entity_weight)
+        enrichment['signal_importance'] = min(MAX_IMPORTANCE_SCORE, BASE_ENTITY_IMPORTANCE + pattern_weight + indicator_weight + entity_weight)
         
         # Track signal scores per type
         if pattern_matches > 0:
@@ -254,17 +285,7 @@ class SignalEnricher:
         """
         markers = []
         
-        # Default causal patterns
-        DEFAULT_CAUSAL_PATTERNS = [
-            (r'\bcausa\w*\b', 'CAUSE', 0.8),
-            (r'\befecto\w*\b', 'EFFECT', 0.8),
-            (r'\b(?:por lo tanto|por ende|en consecuencia)\b', 'CONSEQUENCE', 0.7),
-            (r'\b(?:debido a|a causa de|producto de)\b', 'CAUSE_LINK', 0.75),
-            (r'\b(?:resulta en|conduce a|genera)\b', 'EFFECT_LINK', 0.75),
-            (r'\b(?:si|cuando).*(?:entonces|luego)\b', 'CONDITIONAL', 0.65),
-        ]
-        
-        # Apply default patterns
+        # Apply default patterns (use module-level constant)
         for pattern, marker_type, confidence in DEFAULT_CAUSAL_PATTERNS:
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 markers.append({
@@ -406,16 +427,8 @@ class SignalEnricher:
         """
         markers = []
         
-        # Base temporal patterns
-        BASE_PATTERNS = [
-            (r'\b(20\d{2})\b', 'YEAR', 0.9),
-            (r'\b(\d{1,2})[/-](\d{1,2})[/-](20\d{2})\b', 'DATE', 0.85),
-            (r'\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(20\d{2})\b', 'MONTH_YEAR', 0.8),
-            (r'\b(corto|mediano|largo)\s+plazo\b', 'HORIZON', 0.75),
-            (r'\bvigencia\s+(20\d{2})[-–](20\d{2})\b', 'PERIOD', 0.85),
-        ]
-        
-        for pattern, marker_type, confidence in BASE_PATTERNS:
+        # Use module-level BASE_TEMPORAL_PATTERNS constant
+        for pattern, marker_type, confidence in BASE_TEMPORAL_PATTERNS:
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 markers.append({
                     'text': match.group(0),
@@ -514,7 +527,7 @@ class SignalEnricher:
             metrics['signal_density_by_pa'][pa] = {
                 'total_signals': data['count'],
                 'unique_signals': len(data['tags']),
-                'avg_per_chunk': data['count'] / 6,  # 6 dimensions per PA
+                'avg_per_chunk': data['count'] / DIMENSIONS_PER_POLICY_AREA,
             }
         
         # Quality tier classification

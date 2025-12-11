@@ -148,7 +148,6 @@ except ImportError as e:
 try:
     from canonic_phases.Phase_one.signal_enrichment import (
         SignalEnricher,
-        SignalEnrichmentContext,
         create_signal_enricher,
     )
     SIGNAL_ENRICHMENT_AVAILABLE = True
@@ -161,7 +160,6 @@ except ImportError as e:
     )
     SIGNAL_ENRICHMENT_AVAILABLE = False
     SignalEnricher = None
-    SignalEnrichmentContext = None
 
 # Structural Normalizer - REAL PATH (same directory)
 try:
@@ -171,6 +169,27 @@ except ImportError:
     STRUCTURAL_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
+
+# Signal enrichment constants
+MAX_SIGNAL_PATTERNS_PER_CHECK = 20
+SIGNAL_PATTERN_BOOST = 2
+SIGNAL_BOOST_COEFFICIENT = 0.15
+SIGNAL_BOOST_SUFFICIENCY_COEFFICIENT = 0.8
+DISCOURSE_SIGNAL_BOOST_INJUNCTIVE = 2
+DISCOURSE_SIGNAL_BOOST_ARGUMENTATIVE = 2
+DISCOURSE_SIGNAL_BOOST_EXPOSITORY = 1
+MAX_SIGNAL_PATTERNS_DISCOURSE = 15
+MIN_SIGNAL_SIMILARITY_THRESHOLD = 0.3
+MAX_SHARED_SIGNALS_DISPLAY = 5
+MAX_SIGNAL_SCORE_DIFFERENCE = 0.3
+MAX_IRRIGATION_LINKS_PER_CHUNK = 15
+MIN_SIGNAL_COVERAGE_THRESHOLD = 0.5
+SIGNAL_QUALITY_TIER_BOOSTS = {
+    'EXCELLENT': 0.15,
+    'GOOD': 0.10,
+    'ADEQUATE': 0.05,
+    'SPARSE': 0.0
+}
 
 class Phase1FatalError(Exception):
     """Fatal error in Phase 1 execution."""
@@ -1016,11 +1035,11 @@ class Phase1SPCIngestionFullContract:
                     if self.signal_enricher is not None and pa in self.signal_enricher.context.signal_packs:
                         signal_pack = self.signal_enricher.context.signal_packs[pa]
                         # Check for pattern matches
-                        for pattern in signal_pack.patterns[:20]:  # Limit for performance
+                        for pattern in signal_pack.patterns[:MAX_SIGNAL_PATTERNS_PER_CHECK]:
                             try:
                                 # Use pattern directly with IGNORECASE flag (more efficient)
                                 if re.search(pattern, para_lower, re.IGNORECASE):
-                                    signal_boost += 2  # Significant boost for signal patterns
+                                    signal_boost += SIGNAL_PATTERN_BOOST
                                     break  # One match is enough per paragraph
                             except re.error:
                                 continue
@@ -1352,12 +1371,12 @@ class Phase1SPCIngestionFullContract:
                         if ev.get('signal_score') is not None
                     ]
                     if evidence_signal_scores:
-                        signal_boost = sum(evidence_signal_scores) / len(evidence_signal_scores) * 0.15
+                        signal_boost = sum(evidence_signal_scores) / len(evidence_signal_scores) * SIGNAL_BOOST_COEFFICIENT
                 
                 # Heuristic for necessity/sufficiency based on evidence strength
                 # This follows Beach & Pedersen 2019 calibration guidelines
                 necessity = min(0.9, 0.3 + (evidence_count * 0.15) + signal_boost)
-                sufficiency = min(0.9, 0.3 + (claim_count * 0.1) + (evidence_count * 0.1) + signal_boost * 0.8)
+                sufficiency = min(0.9, 0.3 + (claim_count * 0.1) + (evidence_count * 0.1) + signal_boost * SIGNAL_BOOST_SUFFICIENCY_COEFFICIENT)
                 
                 # Use REAL BeachEvidentialTest.classify_test from derek_beach.py
                 test_type = BeachEvidentialTest.classify_test(necessity, sufficiency)
@@ -1533,17 +1552,17 @@ class Phase1SPCIngestionFullContract:
                 signal_pack = self.signal_enricher.context.signal_packs[pa_id]
                 
                 # Check for signal patterns that indicate specific discourse modes
-                for pattern in signal_pack.patterns[:15]:  # Limit for performance
+                for pattern in signal_pack.patterns[:MAX_SIGNAL_PATTERNS_DISCOURSE]:
                     pattern_lower = pattern.lower()
                     try:
                         if re.search(pattern, chunk_lower, re.IGNORECASE):
                             # Classify pattern-based discourse hints
                             if any(kw in pattern_lower for kw in ['debe', 'deberá', 'requiere', 'obligator']):
-                                mode_scores['injunctive'] = mode_scores.get('injunctive', 0) + 2
+                                mode_scores['injunctive'] = mode_scores.get('injunctive', 0) + DISCOURSE_SIGNAL_BOOST_INJUNCTIVE
                             elif any(kw in pattern_lower for kw in ['por tanto', 'debido', 'porque']):
-                                mode_scores['argumentative'] = mode_scores.get('argumentative', 0) + 2
+                                mode_scores['argumentative'] = mode_scores.get('argumentative', 0) + DISCOURSE_SIGNAL_BOOST_ARGUMENTATIVE
                             elif any(kw in pattern_lower for kw in ['define', 'consiste', 'significa']):
-                                mode_scores['expository'] = mode_scores.get('expository', 0) + 1
+                                mode_scores['expository'] = mode_scores.get('expository', 0) + DISCOURSE_SIGNAL_BOOST_EXPOSITORY
                     except re.error:
                         continue
             
@@ -1636,9 +1655,8 @@ class Phase1SPCIngestionFullContract:
                 pa_id = chunk.policy_area_id
                 if pa_id in self.signal_enricher.context.quality_metrics:
                     metrics = self.signal_enricher.context.quality_metrics[pa_id]
-                    # Boost based on signal quality tier
-                    tier_boosts = {'EXCELLENT': 0.15, 'GOOD': 0.10, 'ADEQUATE': 0.05, 'SPARSE': 0.0}
-                    signal_quality_boost = tier_boosts.get(metrics.coverage_tier, 0.0)
+                    # Boost based on signal quality tier using module constant
+                    signal_quality_boost = SIGNAL_QUALITY_TIER_BOOSTS.get(metrics.coverage_tier, 0.0)
             
             # Calculate weighted strategic priority
             strategic_priority = (
@@ -1812,12 +1830,12 @@ class Phase1SPCIngestionFullContract:
                             similarity = intersection / union if union > 0 else 0
                             
                             # Add link if similarity is significant
-                            if similarity >= 0.3:  # At least 30% overlap
+                            if similarity >= MIN_SIGNAL_SIMILARITY_THRESHOLD:
                                 links.append({
                                     'target': other.chunk_id,
                                     'type': 'signal_semantic_similarity',
                                     'strength': min(0.95, similarity),
-                                    'shared_signals': list(chunk_signal_tags & other_signal_tags)[:5]
+                                    'shared_signals': list(chunk_signal_tags & other_signal_tags)[:MAX_SHARED_SIGNALS_DISPLAY]
                                 })
                 
                 # Add signal-based score similarity links
@@ -1833,7 +1851,7 @@ class Phase1SPCIngestionFullContract:
                                 ) / len(common_signal_types)
                                 
                                 # Link if scores are similar (low difference)
-                                if avg_score_diff < 0.3:
+                                if avg_score_diff < MAX_SIGNAL_SCORE_DIFFERENCE:
                                     links.append({
                                         'target': other.chunk_id,
                                         'type': 'signal_score_similarity',
@@ -1841,9 +1859,9 @@ class Phase1SPCIngestionFullContract:
                                         'common_types': list(common_signal_types)
                                     })
             
-            # Sort links by strength and keep top 15
+            # Sort links by strength and keep top N (increased with signal links)
             links.sort(key=lambda x: x['strength'], reverse=True)
-            irrigation_map[chunk.chunk_id] = links[:15]  # Increased limit with signal links
+            irrigation_map[chunk.chunk_id] = links[:MAX_IRRIGATION_LINKS_PER_CHUNK]
         
         # Since SmartChunk is frozen, we return the original chunks
         # The irrigation links are tracked in metadata
@@ -1913,10 +1931,10 @@ class Phase1SPCIngestionFullContract:
                 signal_coverage = self.signal_enricher.compute_signal_coverage_metrics(chunks)
                 
                 # Quality gate: Check if signal coverage meets minimum thresholds
-                if signal_coverage['coverage_completeness'] < 0.5:
+                if signal_coverage['coverage_completeness'] < MIN_SIGNAL_COVERAGE_THRESHOLD:
                     violations.append(
                         f"Signal coverage too low: {signal_coverage['coverage_completeness']:.1%} "
-                        f"(minimum 50% required)"
+                        f"(minimum {MIN_SIGNAL_COVERAGE_THRESHOLD:.0%} required)"
                     )
                 
                 if signal_coverage['quality_tier'] == 'SPARSE':
