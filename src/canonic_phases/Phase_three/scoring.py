@@ -6,7 +6,8 @@ and maps policy areas/dimensions for hierarchical aggregation.
 
 Key Functions:
 - extract_score_from_evidence: Get validation score from Phase 2 evidence
-- transform_to_scored_result: Convert MicroQuestionRun to ScoredMicroQuestion
+- extract_quality_level: Get quality level from Phase 2 evidence
+- transform_micro_result_to_scored: Convert MicroQuestionRun to ScoredMicroQuestion
 """
 
 from __future__ import annotations
