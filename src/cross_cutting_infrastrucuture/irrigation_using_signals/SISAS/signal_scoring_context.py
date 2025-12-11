@@ -42,6 +42,20 @@ except ImportError:
 ScoringModality = Literal["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E", "TYPE_F"]
 
 
+# Adaptive threshold configuration constants
+COMPLEXITY_ADJUSTMENT_THRESHOLD = 0.7  # Threshold for high document complexity
+COMPLEXITY_ADJUSTMENT_VALUE = -0.1  # Adjustment for high complexity
+QUALITY_ADJUSTMENT_THRESHOLD = 0.8  # Threshold for high evidence quality
+QUALITY_ADJUSTMENT_VALUE = 0.1  # Adjustment for high quality
+MIN_ADAPTIVE_THRESHOLD = 0.3  # Minimum allowed threshold
+MAX_ADAPTIVE_THRESHOLD = 0.9  # Maximum allowed threshold
+
+# Default weights for fallback scoring
+DEFAULT_WEIGHT_ELEMENTS = 0.4
+DEFAULT_WEIGHT_SIMILARITY = 0.3
+DEFAULT_WEIGHT_PATTERNS = 0.3
+
+
 @dataclass(frozen=True)
 class ScoringModalityDefinition:
     """Definition of a scoring modality with thresholds and weights.
@@ -65,6 +79,39 @@ class ScoringModalityDefinition:
     weight_patterns: float
     failure_code: str | None
     
+    def _compute_weighted_mean(
+        self,
+        elements_score: float,
+        similarity_score: float,
+        patterns_score: float,
+        weight_elements: float,
+        weight_similarity: float,
+        weight_patterns: float
+    ) -> float:
+        """Helper to compute weighted mean score.
+        
+        Args:
+            elements_score: Score for elements found (0.0-1.0)
+            similarity_score: Semantic similarity score (0.0-1.0)
+            patterns_score: Pattern matching score (0.0-1.0)
+            weight_elements: Weight for elements
+            weight_similarity: Weight for similarity
+            weight_patterns: Weight for patterns
+            
+        Returns:
+            Weighted mean score
+        """
+        total_weight = weight_elements + weight_similarity + weight_patterns
+        if total_weight == 0:
+            return 0.0
+        
+        weighted_sum = (
+            elements_score * weight_elements +
+            similarity_score * weight_similarity +
+            patterns_score * weight_patterns
+        )
+        return weighted_sum / total_weight
+    
     def compute_score(
         self,
         elements_score: float,
@@ -82,16 +129,10 @@ class ScoringModalityDefinition:
             Weighted final score
         """
         if self.aggregation == "weighted_mean":
-            total_weight = self.weight_elements + self.weight_similarity + self.weight_patterns
-            if total_weight == 0:
-                return 0.0
-            
-            weighted_sum = (
-                elements_score * self.weight_elements +
-                similarity_score * self.weight_similarity +
-                patterns_score * self.weight_patterns
+            return self._compute_weighted_mean(
+                elements_score, similarity_score, patterns_score,
+                self.weight_elements, self.weight_similarity, self.weight_patterns
             )
-            return weighted_sum / total_weight
         
         elif self.aggregation == "max":
             return max(elements_score, similarity_score, patterns_score)
@@ -99,11 +140,10 @@ class ScoringModalityDefinition:
         elif self.aggregation == "min":
             return min(elements_score, similarity_score, patterns_score)
         
-        # Default: weighted mean
-        return (
-            elements_score * 0.4 +
-            similarity_score * 0.3 +
-            patterns_score * 0.3
+        # Default: use weighted mean with default weights
+        return self._compute_weighted_mean(
+            elements_score, similarity_score, patterns_score,
+            DEFAULT_WEIGHT_ELEMENTS, DEFAULT_WEIGHT_SIMILARITY, DEFAULT_WEIGHT_PATTERNS
         )
     
     def passes_threshold(self, score: float) -> bool:
@@ -151,16 +191,16 @@ class ScoringContext:
         """
         base_threshold = self.modality_definition.threshold
         
-        # Complexity adjustment: -0.1 for high complexity
-        complexity_adj = -0.1 if document_complexity > 0.7 else 0.0
+        # Complexity adjustment: lower threshold for high complexity
+        complexity_adj = COMPLEXITY_ADJUSTMENT_VALUE if document_complexity > COMPLEXITY_ADJUSTMENT_THRESHOLD else 0.0
         
-        # Quality adjustment: +0.1 for high quality
-        quality_adj = 0.1 if evidence_quality > 0.8 else 0.0
+        # Quality adjustment: raise threshold for high quality
+        quality_adj = QUALITY_ADJUSTMENT_VALUE if evidence_quality > QUALITY_ADJUSTMENT_THRESHOLD else 0.0
         
         adjusted = base_threshold + complexity_adj + quality_adj
         
         # Clamp to reasonable range
-        return max(0.3, min(0.9, adjusted))
+        return max(MIN_ADAPTIVE_THRESHOLD, min(MAX_ADAPTIVE_THRESHOLD, adjusted))
     
     def get_scoring_kwargs(self) -> dict[str, Any]:
         """Get kwargs for method execution with scoring context.

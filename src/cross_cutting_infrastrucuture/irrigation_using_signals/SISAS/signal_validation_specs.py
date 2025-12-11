@@ -49,6 +49,11 @@ ValidationType = Literal[
 ]
 
 
+# Default expected values for validation types
+DEFAULT_EXPECTED_INDICATORS = 3  # Default quantitative indicators expected
+DEFAULT_EXPECTED_KEYWORDS = 5  # Default keywords expected
+
+
 @dataclass(frozen=True)
 class ValidationSpec:
     """Specification for a single validation check.
@@ -72,6 +77,12 @@ class ValidationSpec:
     
     def __hash__(self) -> int:
         return hash(self.validation_type)
+    
+    def __eq__(self, other: object) -> bool:
+        """Check equality based on validation_type."""
+        if not isinstance(other, ValidationSpec):
+            return False
+        return self.validation_type == other.validation_type
 
 
 @dataclass(frozen=True)
@@ -341,7 +352,11 @@ def _extract_validation_value(
     elif validation_type == "buscar_indicadores_cuantitativos":
         # Check for quantitative indicators
         indicators = evidence.get("quantitative_indicators", [])
-        return min(len(indicators) / 3.0, 1.0)  # Expect at least 3
+        # Get expected count from criteria, or use default
+        expected_indicators = evidence.get("criteria", {}).get("expected_indicators", DEFAULT_EXPECTED_INDICATORS)
+        if expected_indicators <= 0:
+            return 1.0 if indicators else 0.0
+        return min(len(indicators) / float(expected_indicators), 1.0)
     
     elif validation_type == "cobertura":
         # Coverage score
@@ -368,7 +383,11 @@ def _extract_validation_value(
     elif validation_type == "monitoring_keywords":
         # Keywords monitoring
         keywords_found = evidence.get("keywords_found", [])
-        return min(len(keywords_found) / 5.0, 1.0)  # Expect at least 5
+        # Get expected count from criteria, or use default
+        expected_keywords = evidence.get("criteria", {}).get("expected_keywords", DEFAULT_EXPECTED_KEYWORDS)
+        if expected_keywords <= 0:
+            return 1.0 if keywords_found else 0.0
+        return min(len(keywords_found) / float(expected_keywords), 1.0)
     
     # Default
     return 0.5

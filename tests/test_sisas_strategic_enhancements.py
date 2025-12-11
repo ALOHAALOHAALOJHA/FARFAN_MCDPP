@@ -17,7 +17,6 @@ Date: 2025-12-11
 """
 
 import pytest
-from typing import Any
 
 from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_method_metadata import (
     MethodMetadata,
@@ -27,13 +26,11 @@ from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_method_
     get_adaptive_execution_plan,
 )
 from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_validation_specs import (
-    ValidationSpec,
     ValidationSpecifications,
     extract_validation_specifications,
 )
 from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_scoring_context import (
     ScoringModalityDefinition,
-    ScoringContext,
     extract_scoring_context,
     create_default_scoring_context,
 )
@@ -404,10 +401,58 @@ class TestEnhancementIntegration:
         
         validation_specs = extract_validation_specifications(question_data, "Q001")
         assert len(validation_specs.specs) > 0
+    
+    def test_scoring_context_with_mocked_definitions(self):
+        """Test scoring context extraction with mocked definitions."""
+        question_data = {
+            "question_id": "Q001",
+            "scoring_modality": "TYPE_A",
+            "policy_area_id": "PA01",
+            "dimension_id": "DIM01"
+        }
         
-        # Note: scoring context requires scoring_definitions
-        # semantic context requires semantic_layers
-        # These would be tested with full questionnaire in integration
+        scoring_definitions = {
+            "modality_definitions": {
+                "TYPE_A": {
+                    "description": "Weighted mean",
+                    "threshold": 0.5,
+                    "aggregation": "weighted_mean",
+                    "weight_elements": 0.4,
+                    "weight_similarity": 0.3,
+                    "weight_patterns": 0.3,
+                    "failure_code": "F-A-LOW"
+                }
+            }
+        }
+        
+        context = extract_scoring_context(question_data, scoring_definitions, "Q001")
+        assert context is not None
+        assert context.modality_definition.modality == "TYPE_A"
+    
+    def test_semantic_context_with_mocked_layers(self):
+        """Test semantic context extraction with mocked semantic layers."""
+        semantic_layers = {
+            "disambiguation": {
+                "confidence_threshold": 0.8,
+                "entity_linker": {
+                    "enabled": True,
+                    "confidence_threshold": 0.7,
+                    "context_window": 200,
+                    "fallback_strategy": "use_literal"
+                }
+            },
+            "embedding_strategy": {
+                "model": "all-MiniLM-L6-v2",
+                "dimension": 384,
+                "hybrid": False,
+                "strategy": "dense"
+            }
+        }
+        
+        context = extract_semantic_context(semantic_layers)
+        assert isinstance(context, SemanticContext)
+        assert context.entity_linking.enabled is True
+        assert len(context.disambiguation_rules) > 0
 
 
 if __name__ == "__main__":

@@ -41,6 +41,12 @@ except ImportError:
 MethodType = Literal["analysis", "extraction", "validation", "scoring"]
 
 
+# Adaptive execution thresholds
+HIGH_PRIORITY_THRESHOLD = 2  # Methods with priority <= 2 always execute
+VALIDATION_CONFIDENCE_THRESHOLD = 0.7  # Execute validation if confidence < this
+ANALYSIS_COMPLEXITY_THRESHOLD = 0.6  # Execute analysis if complexity > this
+
+
 @dataclass(frozen=True)
 class MethodMetadata:
     """Metadata for a single method in execution pipeline.
@@ -238,14 +244,14 @@ def should_execute_method(
         True if method should execute, False otherwise
     """
     # High priority methods always execute
-    if method_metadata.priority <= 2:
+    if method_metadata.priority <= HIGH_PRIORITY_THRESHOLD:
         return True
     
     # Type-specific adaptive logic
     if method_metadata.method_type == "validation":
         # Execute validation if confidence is low
         confidence = context.get("current_confidence", 1.0)
-        return confidence < 0.7
+        return confidence < VALIDATION_CONFIDENCE_THRESHOLD
     
     elif method_metadata.method_type == "scoring":
         # Execute scoring if evidence was found
@@ -255,7 +261,7 @@ def should_execute_method(
     elif method_metadata.method_type == "analysis":
         # Execute analysis if document complexity is high
         doc_complexity = context.get("document_complexity", 0.5)
-        return doc_complexity > 0.6
+        return doc_complexity > ANALYSIS_COMPLEXITY_THRESHOLD
     
     # Extraction methods always execute (critical path)
     return True

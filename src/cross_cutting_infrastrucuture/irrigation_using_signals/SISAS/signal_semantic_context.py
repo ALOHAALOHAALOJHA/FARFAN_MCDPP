@@ -28,6 +28,7 @@ Version: 1.0.0
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any, Literal
 
@@ -166,10 +167,13 @@ class SemanticContext:
         """
         result = pattern
         for term, rule in self.disambiguation_rules.items():
-            if term.lower() in pattern.lower():
+            # Use word boundary matching to avoid partial replacements
+            # Match whole words only (with word boundaries \b)
+            term_pattern = r'\b' + re.escape(term) + r'\b'
+            if re.search(term_pattern, pattern, re.IGNORECASE):
                 disambiguated = rule.disambiguate(context)
-                # Simple replacement - more sophisticated logic could be added
-                result = result.replace(term, disambiguated)
+                # Replace using regex with word boundaries
+                result = re.sub(term_pattern, disambiguated, result, flags=re.IGNORECASE)
         return result
     
     def should_use_hybrid_embedding(self) -> bool:
