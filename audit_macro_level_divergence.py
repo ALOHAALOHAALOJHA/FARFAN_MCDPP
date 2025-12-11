@@ -285,7 +285,9 @@ class MacroLevelAuditor:
             ))
         
         # Check for PA×DIM awareness
-        has_pa_dim = ("PA01" in source or "policy_area" in source) and ("DIM01" in source or "dimension" in source)
+        has_policy_areas = "PA01" in source or "policy_area" in source
+        has_dimensions = "DIM01" in source or "dimension" in source
+        has_pa_dim = has_policy_areas and has_dimensions
         audit.capabilities["pa_dim_awareness"] = (
             CapabilityStatus.PRESENT if has_pa_dim else CapabilityStatus.MISSING
         )
@@ -542,74 +544,84 @@ class MacroLevelAuditor:
         try:
             with open(questionnaire_path) as f:
                 questionnaire = json.load(f)
-            
-            # Check for macro question
-            blocks = questionnaire.get("blocks", {})
-            macro_question = blocks.get("macro_question", {})
-            
-            has_macro_q = bool(macro_question)
-            audit.capabilities["macro_question_defined"] = (
-                CapabilityStatus.PRESENT if has_macro_q else CapabilityStatus.MISSING
-            )
-            
-            if has_macro_q:
-                audit.findings.append(AuditFinding(
-                    capability="macro_question_defined",
-                    component="Questionnaire",
-                    severity=AuditSeverity.INFO,
-                    status=CapabilityStatus.PRESENT,
-                    description="Macro question is defined in questionnaire",
-                    evidence=[
-                        f"Question ID: {macro_question.get('question_id', 'N/A')}",
-                        f"Text: {macro_question.get('text', 'N/A')[:100]}..."
-                    ]
-                ))
-                
-                audit.metadata["macro_question"] = {
-                    "question_id": macro_question.get("question_id"),
-                    "type": macro_question.get("type"),
-                    "aggregation_method": macro_question.get("aggregation_method"),
-                    "scoring_modality": macro_question.get("scoring_modality"),
-                }
-                
-                # Check aggregation method
-                agg_method = macro_question.get("aggregation_method")
-                if agg_method == "holistic_assessment":
-                    audit.findings.append(AuditFinding(
-                        capability="holistic_aggregation",
-                        component="Questionnaire",
-                        severity=AuditSeverity.INFO,
-                        status=CapabilityStatus.PRESENT,
-                        description="Macro question uses holistic assessment",
-                        evidence=[f"aggregation_method: {agg_method}"]
-                    ))
-                else:
-                    audit.findings.append(AuditFinding(
-                        capability="holistic_aggregation",
-                        component="Questionnaire",
-                        severity=AuditSeverity.MEDIUM,
-                        status=CapabilityStatus.PARTIAL,
-                        description=f"Macro question uses {agg_method}, not holistic",
-                        recommendation="Consider holistic_assessment for macro evaluation"
-                    ))
-            else:
-                audit.findings.append(AuditFinding(
-                    capability="macro_question_defined",
-                    component="Questionnaire",
-                    severity=AuditSeverity.CRITICAL,
-                    status=CapabilityStatus.MISSING,
-                    description="No macro question defined in questionnaire",
-                    recommendation="Add macro_question to blocks with holistic assessment"
-                ))
-            
-        except Exception as e:
+        except FileNotFoundError:
+            audit.findings.append(AuditFinding(
+                capability="questionnaire_readable",
+                component="Questionnaire",
+                severity=AuditSeverity.CRITICAL,
+                status=CapabilityStatus.MISSING,
+                description="Questionnaire file not found",
+                recommendation="Create questionnaire_monolith.json"
+            ))
+            return audit
+        except json.JSONDecodeError as e:
             audit.findings.append(AuditFinding(
                 capability="questionnaire_parseable",
                 component="Questionnaire",
                 severity=AuditSeverity.CRITICAL,
                 status=CapabilityStatus.MISSING,
-                description=f"Cannot parse questionnaire: {str(e)}",
-                recommendation="Fix questionnaire JSON syntax"
+                description=f"Questionnaire has invalid JSON: {str(e)}",
+                recommendation="Fix JSON syntax in questionnaire_monolith.json"
+            ))
+            return audit
+        
+        # Check for macro question
+        blocks = questionnaire.get("blocks", {})
+        macro_question = blocks.get("macro_question", {})
+        
+        has_macro_q = bool(macro_question)
+        audit.capabilities["macro_question_defined"] = (
+            CapabilityStatus.PRESENT if has_macro_q else CapabilityStatus.MISSING
+        )
+        
+        if has_macro_q:
+            audit.findings.append(AuditFinding(
+                capability="macro_question_defined",
+                component="Questionnaire",
+                severity=AuditSeverity.INFO,
+                status=CapabilityStatus.PRESENT,
+                description="Macro question is defined in questionnaire",
+                evidence=[
+                    f"Question ID: {macro_question.get('question_id', 'N/A')}",
+                    f"Text: {macro_question.get('text', 'N/A')[:100]}..."
+                ]
+            ))
+            
+            audit.metadata["macro_question"] = {
+                "question_id": macro_question.get("question_id"),
+                "type": macro_question.get("type"),
+                "aggregation_method": macro_question.get("aggregation_method"),
+                "scoring_modality": macro_question.get("scoring_modality"),
+            }
+            
+            # Check aggregation method
+            agg_method = macro_question.get("aggregation_method")
+            if agg_method == "holistic_assessment":
+                audit.findings.append(AuditFinding(
+                    capability="holistic_aggregation",
+                    component="Questionnaire",
+                    severity=AuditSeverity.INFO,
+                    status=CapabilityStatus.PRESENT,
+                    description="Macro question uses holistic assessment",
+                    evidence=[f"aggregation_method: {agg_method}"]
+                ))
+            else:
+                audit.findings.append(AuditFinding(
+                    capability="holistic_aggregation",
+                    component="Questionnaire",
+                    severity=AuditSeverity.MEDIUM,
+                    status=CapabilityStatus.PARTIAL,
+                    description=f"Macro question uses {agg_method}, not holistic",
+                    recommendation="Consider holistic_assessment for macro evaluation"
+                ))
+        else:
+            audit.findings.append(AuditFinding(
+                capability="macro_question_defined",
+                component="Questionnaire",
+                severity=AuditSeverity.CRITICAL,
+                status=CapabilityStatus.MISSING,
+                description="No macro question defined in questionnaire",
+                recommendation="Add macro_question to blocks with holistic assessment"
             ))
         
         return audit
