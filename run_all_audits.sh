@@ -17,6 +17,7 @@ declare -a AUDITS=(
     "Evidence Flow:audit_evidence_flow_wiring.py:audit_evidence_flow_report.json"
     "Signal Sync:audit_signal_synchronization.py:audit_signal_sync_report.json"
     "Factory Pattern:audit_factory.py:audit_factory_report.json"
+    "Executor Methods:audit_executor_methods.py:audit_executor_methods_report.json"
 )
 
 # Array to store exit codes
@@ -90,6 +91,7 @@ if $ALL_PASSED; then
     done
     echo "  - AUDIT_REPORT_CONTRACTS_COMPLETENESS.md"
     echo "  - AUDIT_FACTORY_PATTERN.md"
+    echo "  - AUDIT_EXECUTOR_METHODS.md"
     echo ""
     exit 0
 else
