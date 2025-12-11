@@ -12,7 +12,6 @@ Version: 1.0.0
 import pytest
 import tempfile
 from pathlib import Path
-from typing import Dict, List
 
 # Phase 1 signal enrichment
 from canonic_phases.Phase_one.signal_enrichment import (
