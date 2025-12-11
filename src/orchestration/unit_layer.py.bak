@@ -12,11 +12,10 @@ Implements PDT (Plan de Desarrollo Territorial) structure analysis with:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, TypedDict
+from typing import TypedDict
 import math
 
-if TYPE_CHECKING:
-    from ..cross_cutting_infrastrucuture.capaz_calibration_parmetrization.pdt_structure import PDTStructure
+from ..cross_cutting_infrastrucuture.capaz_calibration_parmetrization.pdt_structure import PDTStructure
 
 
 class StructuralCompliance(TypedDict):
