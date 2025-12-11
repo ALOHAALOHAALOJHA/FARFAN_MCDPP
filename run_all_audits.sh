@@ -13,18 +13,30 @@ START_TIME=$(date +%s)
 
 # Run completeness audit
 echo "1. Running Completeness Audit..."
+if [ ! -f audit_contracts_completeness.py ]; then
+    echo "ERROR: audit_contracts_completeness.py not found!" >&2
+    exit 2
+fi
 python3 audit_contracts_completeness.py
 COMPLETENESS_EXIT=$?
 echo ""
 
 # Run wiring audit
 echo "2. Running Evidence Flow Wiring Audit..."
+if [ ! -f audit_evidence_flow_wiring.py ]; then
+    echo "ERROR: audit_evidence_flow_wiring.py not found!" >&2
+    exit 2
+fi
 python3 audit_evidence_flow_wiring.py
 WIRING_EXIT=$?
 echo ""
 
 # Run signal synchronization audit
 echo "3. Running Signal Synchronization Audit..."
+if [ ! -f audit_signal_synchronization.py ]; then
+    echo "ERROR: audit_signal_synchronization.py not found!" >&2
+    exit 2
+fi
 python3 audit_signal_synchronization.py
 SIGNAL_EXIT=$?
 echo ""
