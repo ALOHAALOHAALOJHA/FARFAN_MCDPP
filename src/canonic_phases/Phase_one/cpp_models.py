@@ -23,6 +23,16 @@ from datetime import datetime, timezone
 from enum import Enum, auto
 from typing import Any, Dict, List, Optional, Tuple
 
+# CANONICAL TYPE IMPORTS from farfan_pipeline.core.types
+# These provide the authoritative PolicyArea and DimensionCausal enums
+try:
+    from farfan_pipeline.core.types import PolicyArea, DimensionCausal
+    CANONICAL_TYPES_AVAILABLE = True
+except ImportError:
+    CANONICAL_TYPES_AVAILABLE = False
+    PolicyArea = None  # type: ignore
+    DimensionCausal = None  # type: ignore
+
 # REAL SISAS imports for quality metrics calculation
 try:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
@@ -89,6 +99,8 @@ class LegacyChunk:
         bytes_hash: SHA256 hash of text content (first 16 chars)
         policy_area_id: Policy area (PA01-PA10)
         dimension_id: Dimension (DIM01-DIM06)
+        policy_area: Optional PolicyArea enum for type-safe access
+        dimension: Optional DimensionCausal enum for type-safe access
     """
     id: str
     text: str
@@ -97,6 +109,8 @@ class LegacyChunk:
     bytes_hash: str
     policy_area_id: str
     dimension_id: str
+    policy_area: Optional[Any] = None  # PolicyArea enum when available
+    dimension: Optional[Any] = None  # DimensionCausal enum when available
     
     def __post_init__(self):
         # Validate policy_area_id format
@@ -108,6 +122,13 @@ class LegacyChunk:
         valid_dims = {f"DIM{i:02d}" for i in range(1, 7)}
         if self.dimension_id not in valid_dims:
             raise ValueError(f"Invalid dimension_id: {self.dimension_id}")
+        
+        # Validate enum types if provided and available
+        if CANONICAL_TYPES_AVAILABLE:
+            if self.policy_area is not None and not isinstance(self.policy_area, PolicyArea):
+                raise ValueError(f"policy_area must be PolicyArea enum, got {type(self.policy_area)}")
+            if self.dimension is not None and not isinstance(self.dimension, DimensionCausal):
+                raise ValueError(f"dimension must be DimensionCausal enum, got {type(self.dimension)}")
 
 
 @dataclass(frozen=True)

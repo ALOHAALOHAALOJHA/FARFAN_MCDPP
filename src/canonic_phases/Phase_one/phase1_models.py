@@ -13,6 +13,16 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 from enum import Enum
 
+# CANONICAL TYPE IMPORTS from farfan_pipeline.core.types
+# These provide the authoritative PolicyArea and DimensionCausal enums
+try:
+    from farfan_pipeline.core.types import PolicyArea, DimensionCausal
+    CANONICAL_TYPES_AVAILABLE = True
+except ImportError:
+    CANONICAL_TYPES_AVAILABLE = False
+    PolicyArea = None  # type: ignore
+    DimensionCausal = None  # type: ignore
+
 @dataclass
 class LanguageData:
     """
@@ -92,11 +102,16 @@ class CausalGraph:
 class Chunk:
     """
     Intermediate chunk representation (SP4-SP10).
+    Type-safe enum fields added for proper value aggregation in CPP production cycle.
     """
     chunk_id: str = ""
     policy_area_id: str = ""
     dimension_id: str = ""
     chunk_index: int = -1
+    
+    # Type-safe enum fields for value aggregation in CPP cycle
+    policy_area: Optional[Any] = None  # PolicyArea enum when available
+    dimension: Optional[Any] = None  # DimensionCausal enum when available
     
     text_spans: List[Tuple[int, int]] = field(default_factory=list)
     sentence_ids: List[int] = field(default_factory=list)
@@ -187,6 +202,8 @@ class SmartChunk:
     Final chunk representation (SP11-SP15).
     FOUNDATIONAL: chunk_id is PRIMARY identifier (PA##-DIM##)
     policy_area_id and dimension_id are AUTO-DERIVED from chunk_id
+    
+    Type-safe enum fields added for proper value aggregation in CPP production cycle.
     """
     chunk_id: str
     text: str = ""
@@ -196,6 +213,10 @@ class SmartChunk:
     
     policy_area_id: str = field(default="", init=False)
     dimension_id: str = field(default="", init=False)
+    
+    # Type-safe enum fields for value aggregation in CPP cycle
+    policy_area: Optional[Any] = field(default=None, init=False)  # PolicyArea enum when available
+    dimension: Optional[Any] = field(default=None, init=False)  # DimensionCausal enum when available
     
     causal_graph: CausalGraph = field(default_factory=CausalGraph)
     temporal_markers: Dict[str, Any] = field(default_factory=dict)
@@ -223,6 +244,30 @@ class SmartChunk:
         pa_part, dim_part = parts
         object.__setattr__(self, 'policy_area_id', pa_part)
         object.__setattr__(self, 'dimension_id', dim_part)
+        
+        # Convert string IDs to enum types when available for type-safe aggregation
+        if CANONICAL_TYPES_AVAILABLE and PolicyArea and DimensionCausal:
+            try:
+                # Map PA01-PA10 to PolicyArea enum
+                pa_enum = getattr(PolicyArea, pa_part, None)
+                if pa_enum:
+                    object.__setattr__(self, 'policy_area', pa_enum)
+                
+                # Map DIM01-DIM06 to DimensionCausal enum
+                dim_mapping = {
+                    'DIM01': DimensionCausal.DIM01_INSUMOS,
+                    'DIM02': DimensionCausal.DIM02_ACTIVIDADES,
+                    'DIM03': DimensionCausal.DIM03_PRODUCTOS,
+                    'DIM04': DimensionCausal.DIM04_RESULTADOS,
+                    'DIM05': DimensionCausal.DIM05_IMPACTOS,
+                    'DIM06': DimensionCausal.DIM06_CAUSALIDAD,
+                }
+                dim_enum = dim_mapping.get(dim_part)
+                if dim_enum:
+                    object.__setattr__(self, 'dimension', dim_enum)
+            except (AttributeError, KeyError):
+                # If enum conversion fails, keep as None (degraded mode)
+                pass
 
 @dataclass
 class ValidationResult:
