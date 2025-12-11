@@ -629,7 +629,7 @@ class Phase1SPCIngestionFullContract:
             'is_critical': is_critical,
             'error_type': type(e).__name__,
             'error_message': str(e),
-            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'timestamp': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
             'recovery_possible': not is_critical  # Critical failures have no recovery
         })
         
