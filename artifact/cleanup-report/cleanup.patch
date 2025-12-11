@@ -1,0 +1,179 @@
+diff --git a/src/_new_calibration_system/core/decorators.py b/src/_new_calibration_system/core/decorators.py
+index 6ff274a..89c466e 100644
+--- a/src/_new_calibration_system/core/decorators.py
++++ b/src/_new_calibration_system/core/decorators.py
+@@ -9,12 +9,14 @@ JOBFRONT 4 will implement full functionality.
+ # STUB - Implementation in JOBFRONT 4
+ 
+ from functools import wraps
+-from typing import Any, Callable, TypeVar
++from typing import Any, Callable, ParamSpec, TypeVar
+ 
++P = ParamSpec("P")
++R = TypeVar("R")
+ F = TypeVar("F", bound=Callable[..., Any])
+ 
+ 
+-def calibrated_method(method_id: str) -> Callable[[F], F]:
++def calibrated_method(method_id: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
+     """
+     OBLIGATORIO: Decorador que FUERZA anclaje al sistema central.
+     
+@@ -26,28 +28,28 @@ def calibrated_method(method_id: str) -> Callable[[F], F]:
+     3. Calibrate result via orchestrator
+     4. Validate and return
+     """
+-    def decorator(func: F) -> F:
++    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+         @wraps(func)
+-        def wrapper(*args: Any, **kwargs: Any) -> Any:
++        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+             # STUB - just pass through for now
+             return func(*args, **kwargs)
+-        return wrapper  # type: ignore[return-value]
++        return wrapper
+     return decorator
+ 
+ 
+ def calibration_required(
+     threshold: float = 0.7,
+     method_id: str | None = None,
+-) -> Callable[[F], F]:
++) -> Callable[[Callable[P, R]], Callable[P, R]]:
+     """
+     Decorator that enforces minimum calibration threshold.
+     
+     STUB - Will be implemented in JOBFRONT 4.
+     """
+-    def decorator(func: F) -> F:
++    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+         @wraps(func)
+-        def wrapper(*args: Any, **kwargs: Any) -> Any:
++        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+             # STUB - just pass through for now
+             return func(*args, **kwargs)
+-        return wrapper  # type: ignore[return-value]
++        return wrapper
+     return decorator
+diff --git a/src/canonic_phases/Phase_nine/report_assembly.py b/src/canonic_phases/Phase_nine/report_assembly.py
+index 158b675..c6cc7d2 100644
+--- a/src/canonic_phases/Phase_nine/report_assembly.py
++++ b/src/canonic_phases/Phase_nine/report_assembly.py
+@@ -30,7 +30,7 @@ import json
+ import logging
+ import uuid
+ from datetime import datetime, timezone
+-from typing import TYPE_CHECKING, Any
++from typing import TYPE_CHECKING, Any, Callable, ParamSpec, TypeVar
+ 
+ from pydantic import BaseModel, ConfigDict, Field, field_validator
+ # Calibration parameters - loaded at runtime if calibration system available
+@@ -43,8 +43,12 @@ except (ImportError, AttributeError):
+ # Calibrated method decorator stub (calibration system not available)
+ def calibrated_method(method_name: str):
+     """No-op decorator stub for compatibility when calibration system unavailable."""
+-    def decorator(func):
++    P = ParamSpec("P")
++    R = TypeVar("R")
++
++    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+         return func
++
+     return decorator
+ 
+ if TYPE_CHECKING:
+diff --git a/src/canonic_phases/Phase_one/structural.py b/src/canonic_phases/Phase_one/structural.py
+index ddb5ec9..ec619c8 100644
+--- a/src/canonic_phases/Phase_one/structural.py
++++ b/src/canonic_phases/Phase_one/structural.py
+@@ -4,15 +4,18 @@ Structural normalization with policy-awareness.
+ Segments documents into policy-aware units.
+ """
+ 
+-from typing import Any
++from typing import Any, Callable, ParamSpec, TypeVar
+ 
+ # Provide calibrated_method stub if not available
+ try:
+     from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.decorators import calibrated_method
+ except ImportError:
+     # Stub decorator that does nothing
+-    def calibrated_method(name: str):
+-        def decorator(func):
++    P = ParamSpec("P")
++    R = TypeVar("R")
++
++    def calibrated_method(name: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
++        def decorator(func: Callable[P, R]) -> Callable[P, R]:
+             return func
+         return decorator
+ 
+diff --git a/src/core/calibration/decorators.py b/src/core/calibration/decorators.py
+index 13a8d1c..3381559 100644
+--- a/src/core/calibration/decorators.py
++++ b/src/core/calibration/decorators.py
+@@ -6,14 +6,16 @@ from __future__ import annotations
+ 
+ import logging
+ from functools import wraps
+-from typing import Any, Callable, TypeVar
++from typing import Any, Callable, ParamSpec, TypeVar
+ 
+ logger = logging.getLogger(__name__)
+ 
++P = ParamSpec("P")
++R = TypeVar("R")
+ F = TypeVar("F", bound=Callable[..., Any])
+ 
+ 
+-def calibrated_method(method_id: str) -> Callable[[F], F]:
++def calibrated_method(method_id: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
+     """
+     OBLIGATORIO: Decorador que FUERZA anclaje al sistema central.
+     
+@@ -34,9 +36,9 @@ def calibrated_method(method_id: str) -> Callable[[F], F]:
+         def execute_d1q1(pdt: PDT) -> float:
+             return compute_score(pdt)
+     """
+-    def decorator(func: F) -> F:
++    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+         @wraps(func)
+-        def wrapper(*args: Any, **kwargs: Any) -> Any:
++        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+             from . import get_calibration_orchestrator, get_intrinsic_loader
+             
+             logger.debug(f"Calibrating method: {method_id}")
+@@ -71,7 +73,7 @@ def calibrated_method(method_id: str) -> Callable[[F], F]:
+             
+             return raw_result
+         
+-        return wrapper  # type: ignore[return-value]
++        return wrapper
+     
+     return decorator
+ 
+diff --git a/src/farfan_pipeline/core/calibration/decorators.py b/src/farfan_pipeline/core/calibration/decorators.py
+index ce70368..e1a8a42 100644
+--- a/src/farfan_pipeline/core/calibration/decorators.py
++++ b/src/farfan_pipeline/core/calibration/decorators.py
+@@ -2,11 +2,16 @@
+ Calibration Decorators - Stub for calibration system
+ """
+ 
+-from typing import Any, Callable
++from typing import Callable, ParamSpec, TypeVar
+ 
++P = ParamSpec("P")
++R = TypeVar("R")
+ 
+-def calibrated_method(method_id: str) -> Callable[[Any], Any]:
+-    """Decorator stub for calibrated methods"""
+-    def decorator(func: Any) -> Any:
++
++def calibrated_method(method_id: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
++    """Decorator stub for calibrated methods."""
++
++    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+         return func
++
+     return decorator

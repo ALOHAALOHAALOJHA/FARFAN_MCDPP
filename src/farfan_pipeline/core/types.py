@@ -1013,6 +1013,100 @@ class PreprocessedDocument:
 
     metadata: Dict[str, Any] = field(default_factory=dict)
 
+    @classmethod
+    def ensure(
+        cls, 
+        candidate: Any, 
+        document_id: str, 
+        use_spc_ingestion: bool = False
+    ) -> PreprocessedDocument:
+        """
+        Asegura que el objeto sea un PreprocessedDocument.
+        Si es un CanonPolicyPackage (Phase 1 Output), lo convierte.
+        
+        Args:
+            candidate: Objeto a validar/convertir (PreprocessedDocument o CanonPolicyPackage)
+            document_id: ID del documento
+            use_spc_ingestion: Flag indicando origen SPC
+            
+        Returns:
+            Instance válida de PreprocessedDocument
+            
+        Raises:
+            ValueError: Si el formato del candidato no es soportado.
+        """
+        if isinstance(candidate, cls):
+            return candidate
+            
+        # Detectar CanonPolicyPackage (Duck typing para evitar imports circulares)
+        if hasattr(candidate, "chunk_graph") and hasattr(candidate, "schema_version"):
+            return cls._from_canon_package(candidate, document_id)
+            
+        raise ValueError(f"Formato de documento no soportado: {type(candidate)}")
+
+    @classmethod
+    def _from_canon_package(cls, cpp: Any, document_id: str) -> PreprocessedDocument:
+        """Convierte CanonPolicyPackage a PreprocessedDocument."""
+        chunks: List[ChunkData] = []
+        
+        # Iterar sobre chunks del ChunkGraph
+        source_chunks = cpp.chunk_graph.chunks.values() if hasattr(cpp.chunk_graph, "chunks") else []
+        
+        for legacy_chunk in source_chunks:
+            # Resolver Enums
+            try:
+                pa = PolicyArea(legacy_chunk.policy_area_id)
+            except (ValueError, AttributeError):
+                pa = None
+                
+            try:
+                dim = DimensionCausal(legacy_chunk.dimension_id)
+            except (ValueError, AttributeError):
+                dim = None
+
+            # Construir Provenance
+            prov = Provenance(
+                source_file=document_id,
+                extraction_method="spc_ingestion_v1",
+                start_offset=legacy_chunk.text_span.start,
+                end_offset=legacy_chunk.text_span.end,
+                confidence_score=1.0, # Asumimos alta confianza de Phase 1
+                nivel_confianza=NivelConfianza.ALTA
+            )
+
+            # Construir ChunkData
+            chunk = ChunkData(
+                chunk_id=legacy_chunk.id,
+                text=legacy_chunk.text,
+                start_offset=legacy_chunk.text_span.start,
+                end_offset=legacy_chunk.text_span.end,
+                policy_area=pa,
+                dimension_causal=dim,
+                provenance=prov,
+                metadata={"resolution": str(legacy_chunk.resolution)}
+            )
+            chunks.append(chunk)
+
+        # Métricas de calidad
+        prov_completeness = 0.0
+        if cpp.quality_metrics:
+            prov_completeness = cpp.quality_metrics.provenance_completeness
+
+        # Crear instancia
+        doc = cls(
+            document_id=document_id,
+            source_path=f"spc://{document_id}", # Virtual path
+            municipio="Unknown", # Se llenará en fases posteriores o inferencia
+            chunks=chunks,
+            provenance_completeness=prov_completeness,
+            chunks_total=len(chunks),
+            chunks_with_provenance=len(chunks),
+            metadata=dict(cpp.metadata) if cpp.metadata else {}
+        )
+        
+        doc.validate_chunk_invariant()
+        return doc
+
     def compute_provenance_completeness(self) -> float:
         """Calcula métrica de completitud de provenance."""
         if not self.chunks:

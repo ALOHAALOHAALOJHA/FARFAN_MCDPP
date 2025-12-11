@@ -1,0 +1,66 @@
+{
+  "status": "aborted",
+  "branch": "chore/cleanup-20251210T170710Z-safe",
+  "commit": "",
+  "repository_summary": {
+    "languages_detected": ["Python"],
+    "build_tools": ["setuptools (pyproject.toml)"]
+  },
+  "checks": [
+    {
+      "name": "python -m compileall .",
+      "status": "passed",
+      "log": "artifact/cleanup-report/python-compileall.log"
+    },
+    {
+      "name": "mypy --ignore-missing-imports --strict src",
+      "status": "failed",
+      "log": "artifact/cleanup-report/mypy.log",
+      "details": "5126 strict errors remain (explicit Any, missing annotations, untyped calls/decorators, assignments, etc.)"
+    },
+    {
+      "name": "black --check --diff .",
+      "status": "failed",
+      "log": "artifact/cleanup-report/black-check.log",
+      "details": "PermissionError from multiprocessing.Manager listener in sandbox; formatter not applied"
+    },
+    {
+      "name": "ruff check .",
+      "status": "completed",
+      "log": "artifact/cleanup-report/ruff-check.log",
+      "details": "Report-only; many non-whitespace findings"
+    }
+  ],
+  "formatting_changes": [
+    {
+      "file": "scripts/compute_contract_hashes.py",
+      "change": "Trailing whitespace on blank non-string lines removed",
+      "verification": "Token sequence hash unchanged (whitespace-only)"
+    },
+    {
+      "file": "tests/validation/verify_calibration_implementation.py",
+      "change": "Trailing whitespace on blank non-string lines removed",
+      "verification": "Token sequence hash unchanged (whitespace-only)"
+    }
+  ],
+  "typing_changes": [
+    "src/farfan_pipeline/core/calibration/decorators.py",
+    "src/core/calibration/decorators.py",
+    "src/_new_calibration_system/core/decorators.py",
+    "src/canonic_phases/Phase_one/structural.py",
+    "src/canonic_phases/Phase_nine/report_assembly.py"
+  ],
+  "tests": {
+    "status": "not-run",
+    "reason": "Static checks failing; black blocked; adhering to safety rules"
+  },
+  "protected_files_detected": [
+    "src/orchestration/*",
+    "tests/orchestration/*"
+  ],
+  "artifacts": {
+    "logs_dir": "artifact/cleanup-report/",
+    "patch_file": "artifact/cleanup-report/cleanup.patch",
+    "summary": "artifact/cleanup-report/summary.md"
+  }
+}
