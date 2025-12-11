@@ -1,0 +1,178 @@
+{
+  "questionnaire_monolith": {
+    "file_size_kb": 2320.6572265625,
+    "line_count": 67355,
+    "top_level_keys": [
+      "canonical_notation",
+      "blocks",
+      "generated_at",
+      "integrity",
+      "observability",
+      "schema_version",
+      "version"
+    ],
+    "dimensions": 6,
+    "policy_areas": 10,
+    "blocks": [
+      "macro_question",
+      "meso_questions",
+      "micro_questions",
+      "niveles_abstraccion",
+      "scoring",
+      "semantic_layers"
+    ],
+    "micro_questions_count": 300,
+    "avg_patterns_per_question": 7.3566666666666665,
+    "avg_indicators_per_question": 0.5233333333333333,
+    "avg_methods_per_question": 11.6,
+    "avg_validations_per_question": 0.0,
+    "total_patterns": 2207,
+    "total_indicators": 157,
+    "meso_questions_count": 4,
+    "has_macro_question": true
+  },
+  "signal_registry": {
+    "registry_exists": true,
+    "loader_exists": true,
+    "factory_integration": true,
+    "blockers": [],
+    "has_create_function": true
+  },
+  "phase_consumption": {
+    "Phase_zero": {
+      "exists": true,
+      "files": 24,
+      "signal_usage": {
+        "signal_registry": [
+          "bootstrap.py"
+        ],
+        "signal_pack": [
+          "bootstrap.py"
+        ]
+      },
+      "has_signals": true
+    },
+    "Phase_one": {
+      "exists": true,
+      "files": 10,
+      "signal_usage": {
+        "signal_registry": [
+          "signal_enrichment.py",
+          "phase1_spc_ingestion_full.py"
+        ],
+        "signal_pack": [
+          "signal_enrichment.py",
+          "phase1_spc_ingestion_full.py",
+          "cpp_models.py"
+        ]
+      },
+      "has_signals": true
+    },
+    "Phase_two": {
+      "exists": true,
+      "files": 20,
+      "signal_usage": {
+        "signal_registry": [
+          "evidence_nexus.py",
+          "batch_executor.py",
+          "irrigation_synchronizer.py",
+          "base_executor_with_contract.py"
+        ],
+        "signal_pack": [
+          "evidence_nexus.py",
+          "base_executor_with_contract.py",
+          "__init__.py"
+        ]
+      },
+      "has_signals": true
+    },
+    "Phase_three": {
+      "exists": true,
+      "files": 3,
+      "signal_usage": {
+        "signal_registry": [
+          "signal_enriched_scoring.py"
+        ],
+        "signal_pack": [
+          "signal_enriched_scoring.py"
+        ],
+        "SignalEnrichedScorer": [
+          "signal_enriched_scoring.py"
+        ]
+      },
+      "has_signals": true
+    },
+    "Phase_four_five_six_seven": {
+      "exists": true,
+      "files": 6,
+      "signal_usage": {
+        "signal_registry": [
+          "signal_enriched_aggregation.py",
+          "aggregation.py"
+        ],
+        "signal_pack": [
+          "signal_enriched_aggregation.py"
+        ],
+        "SignalEnrichedAggregator": [
+          "signal_enriched_aggregation.py"
+        ]
+      },
+      "has_signals": true
+    },
+    "Phase_eight": {
+      "exists": true,
+      "files": 4,
+      "signal_usage": {
+        "signal_registry": [
+          "signal_enriched_recommendations.py"
+        ],
+        "signal_pack": [
+          "signal_enriched_recommendations.py"
+        ],
+        "SignalEnrichedRecommender": [
+          "signal_enriched_recommendations.py"
+        ]
+      },
+      "has_signals": true
+    },
+    "Phase_nine": {
+      "exists": true,
+      "files": 3,
+      "signal_usage": {
+        "signal_registry": [
+          "signal_enriched_reporting.py"
+        ],
+        "signal_pack": [
+          "signal_enriched_reporting.py"
+        ],
+        "SignalEnrichedReporter": [
+          "signal_enriched_reporting.py"
+        ]
+      },
+      "has_signals": true
+    }
+  },
+  "propagation_gaps": {
+    "gaps": [
+      "GAP: Phase 3 signal integration not found in orchestrator",
+      "GAP: Phase 4-7 signal integration not found in orchestrator"
+    ],
+    "recommendations": [
+      "CRITICAL: Integrate signal enhancement modules into orchestrator",
+      "ACTION: Add signal_registry parameter passing in orchestrator phase methods",
+      "ACTION: Instantiate Signal*Enriched classes in each phase"
+    ],
+    "Phase 3_module_exists": true,
+    "Phase 4-7_module_exists": true,
+    "Phase 8_module_exists": true,
+    "Phase 9_module_exists": true
+  },
+  "monolith_utilization": {
+    "utilization_rate": {},
+    "underutilized_fields": [
+      "niveles_abstraccion.macro",
+      "niveles_abstraccion.meso",
+      "niveles_abstraccion.micro"
+    ]
+  }
+}
