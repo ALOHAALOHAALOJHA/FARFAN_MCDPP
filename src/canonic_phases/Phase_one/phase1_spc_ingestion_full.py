@@ -144,6 +144,25 @@ except ImportError as e:
     ValidacionResultado = None
     AdvancedDAGValidator = None
 
+# Signal Enrichment Module - PRODUCTION (same directory)
+try:
+    from canonic_phases.Phase_one.signal_enrichment import (
+        SignalEnricher,
+        SignalEnrichmentContext,
+        create_signal_enricher,
+    )
+    SIGNAL_ENRICHMENT_AVAILABLE = True
+except ImportError as e:
+    import warnings
+    warnings.warn(
+        f"Signal enrichment module not available: {e}. "
+        "Signal-based analysis will be limited.",
+        ImportWarning
+    )
+    SIGNAL_ENRICHMENT_AVAILABLE = False
+    SignalEnricher = None
+    SignalEnrichmentContext = None
+
 # Structural Normalizer - REAL PATH (same directory)
 try:
     from canonic_phases.Phase_one.structural import StructuralNormalizer
@@ -360,6 +379,7 @@ class Phase1SPCIngestionFullContract:
         self.error_log: List[Dict[str, Any]] = []
         self.invariant_checks: Dict[str, bool] = {}
         self.document_id: str = ""  # Set from CanonicalInput
+        self.signal_enricher: Optional[Any] = None  # Signal enrichment engine
         
     def _deterministic_serialize(self, output: Any) -> str:
         """Helper to serialize output for hashing."""
@@ -438,6 +458,17 @@ class Phase1SPCIngestionFullContract:
         
         # PRE-EXECUTION VALIDATION
         self._validate_canonical_input(canonical_input)  # WEIGHT: 1000
+        
+        # INITIALIZE SIGNAL ENRICHER with questionnaire
+        if SIGNAL_ENRICHMENT_AVAILABLE and SignalEnricher is not None:
+            try:
+                self.signal_enricher = create_signal_enricher(canonical_input.questionnaire_path)
+                logger.info(f"Signal enricher initialized: {self.signal_enricher._initialized}")
+            except Exception as e:
+                logger.warning(f"Signal enricher initialization failed: {e}")
+                self.signal_enricher = None
+        else:
+            logger.warning("Signal enrichment not available, proceeding without signal enhancement")
         
         # SUBPHASE EXECUTION - EXACT ORDER MANDATORY
         try:
@@ -806,12 +837,28 @@ class Phase1SPCIngestionFullContract:
                             node_id = f"KG-{entity_type[:3]}-{entity_id_counter:04d}"
                             entity_id_counter += 1
                             
+                            # SIGNAL ENRICHMENT: Apply signal-based scoring to entity
+                            signal_data = {'signal_tags': [entity_type], 'signal_importance': 0.7}
+                            if self.signal_enricher is not None:
+                                # Try all policy areas and pick best match
+                                best_enrichment = signal_data
+                                best_score = 0.7
+                                for pa_num in range(1, 11):
+                                    pa_id = f"PA{pa_num:02d}"
+                                    enrichment = self.signal_enricher.enrich_entity_with_signals(
+                                        entity_text, entity_type, pa_id
+                                    )
+                                    if enrichment['signal_importance'] > best_score:
+                                        best_enrichment = enrichment
+                                        best_score = enrichment['signal_importance']
+                                signal_data = best_enrichment
+                            
                             nodes.append(KGNode(
                                 id=node_id,
                                 type=entity_type,
                                 text=entity_text,
-                                signal_tags=[entity_type],
-                                signal_importance=0.7,
+                                signal_tags=signal_data.get('signal_tags', [entity_type]),
+                                signal_importance=signal_data.get('signal_importance', 0.7),
                                 policy_area_relevance={}
                             ))
                 except re.error as e:
@@ -839,12 +886,27 @@ class Phase1SPCIngestionFullContract:
                         node_id = f"KG-{kg_type[:3]}-{entity_id_counter:04d}"
                         entity_id_counter += 1
                         
+                        # SIGNAL ENRICHMENT for spaCy entities
+                        signal_data = {'signal_tags': [ent.label_], 'signal_importance': 0.6}
+                        if self.signal_enricher is not None:
+                            best_enrichment = signal_data
+                            best_score = 0.6
+                            for pa_num in range(1, 11):
+                                pa_id = f"PA{pa_num:02d}"
+                                enrichment = self.signal_enricher.enrich_entity_with_signals(
+                                    ent.text[:200], kg_type, pa_id
+                                )
+                                if enrichment['signal_importance'] > best_score:
+                                    best_enrichment = enrichment
+                                    best_score = enrichment['signal_importance']
+                            signal_data = best_enrichment
+                        
                         nodes.append(KGNode(
                             id=node_id,
                             type=kg_type,
                             text=ent.text[:200],
-                            signal_tags=[ent.label_],
-                            signal_importance=0.6,
+                            signal_tags=signal_data.get('signal_tags', [ent.label_]),
+                            signal_importance=signal_data.get('signal_importance', 0.6),
                             policy_area_relevance={}
                         ))
             except Exception as e:
@@ -949,8 +1011,22 @@ class Phase1SPCIngestionFullContract:
                     pa_score = sum(1 for kw in pa_keywords if kw.lower() in para_lower)
                     dim_score = sum(1 for kw in dim_keywords if kw.lower() in para_lower)
                     
-                    if pa_score > 0 and dim_score > 0:
-                        relevant_paragraphs.append((para_idx, para, pa_score + dim_score))
+                    # SIGNAL ENRICHMENT: Boost scores with signal-based pattern matching
+                    signal_boost = 0
+                    if self.signal_enricher is not None and pa in self.signal_enricher.context.signal_packs:
+                        signal_pack = self.signal_enricher.context.signal_packs[pa]
+                        # Check for pattern matches
+                        for pattern in signal_pack.patterns[:20]:  # Limit for performance
+                            try:
+                                if re.search(pattern.lower(), para_lower, re.IGNORECASE):
+                                    signal_boost += 2  # Significant boost for signal patterns
+                                    break  # One match is enough per paragraph
+                            except re.error:
+                                continue
+                    
+                    total_score = pa_score + dim_score + signal_boost
+                    if total_score > 0:
+                        relevant_paragraphs.append((para_idx, para, total_score))
                 
                 # Sort by relevance score and take top matches
                 relevant_paragraphs.sort(key=lambda x: x[2], reverse=True)
@@ -1017,12 +1093,39 @@ class Phase1SPCIngestionFullContract:
         
         for chunk in chunks:
             chunk_text = chunk.segmentation_metadata.get('text', '') if hasattr(chunk, 'segmentation_metadata') else ''
+            pa_id = chunk.policy_area_id
+            
+            # SIGNAL ENRICHMENT: Extract causal markers with signal-driven detection
+            signal_markers = []
+            if self.signal_enricher is not None:
+                signal_markers = self.signal_enricher.extract_causal_markers_with_signals(
+                    chunk_text, pa_id
+                )
             
             # Extract causal relations from chunk text
             events = []
             causes = []
             effects = []
             
+            # Process signal-detected markers first (higher confidence)
+            for marker in signal_markers:
+                event_data = {
+                    'text': marker['text'],
+                    'marker_type': marker['type'],
+                    'confidence': marker['confidence'],
+                    'source': marker['source'],
+                    'chunk_id': chunk.chunk_id,
+                    'signal_enhanced': True,
+                }
+                
+                if marker['type'] in ['CAUSE', 'CAUSE_LINK']:
+                    causes.append(event_data)
+                elif marker['type'] in ['EFFECT', 'EFFECT_LINK', 'CONSEQUENCE']:
+                    effects.append(event_data)
+                else:
+                    events.append(event_data)
+            
+            # Fallback to keyword-based extraction
             for keyword in CAUSAL_KEYWORDS:
                 if keyword.lower() in chunk_text.lower():
                     # Find surrounding context
@@ -1032,7 +1135,8 @@ class Phase1SPCIngestionFullContract:
                         event_data = {
                             'text': match[:200],
                             'keyword': keyword,
-                            'chunk_id': chunk.chunk_id
+                            'chunk_id': chunk.chunk_id,
+                            'signal_enhanced': False,
                         }
                         
                         # Classify using REAL Beach test from methods_dispensary.derek_beach
@@ -1215,20 +1319,44 @@ class Phase1SPCIngestionFullContract:
                 for pattern in patterns:
                     matches = re.findall(rf'([^.]*{pattern}[^.]*)', chunk_text_lower)
                     for match in matches[:2]:
-                        chunk_arguments[arg_type + 's' if not arg_type.endswith('s') else arg_type].append({
+                        arg_entry = {
                             'text': match[:150],
-                            'pattern': pattern
-                        })
+                            'pattern': pattern,
+                            'signal_score': None,
+                        }
+                        
+                        # SIGNAL ENRICHMENT: Score argument strength with signals
+                        if self.signal_enricher is not None:
+                            pa_id = chunk.policy_area_id
+                            signal_score = self.signal_enricher.score_argument_with_signals(
+                                match[:150], arg_type, pa_id
+                            )
+                            arg_entry['signal_score'] = signal_score['final_score']
+                            arg_entry['signal_confidence'] = signal_score['confidence']
+                            arg_entry['supporting_signals'] = signal_score.get('supporting_signals', [])
+                        
+                        chunk_arguments[arg_type + 's' if not arg_type.endswith('s') else arg_type].append(arg_entry)
             
             # Classify using REAL Beach test taxonomy from methods_dispensary
             if DEREK_BEACH_AVAILABLE and BeachEvidentialTest is not None:
                 evidence_count = len(chunk_arguments['evidence'])
                 claim_count = len(chunk_arguments['claims'])
                 
+                # SIGNAL ENHANCEMENT: Boost necessity/sufficiency with signal scores
+                signal_boost = 0.0
+                if self.signal_enricher is not None:
+                    # Average signal scores from evidence
+                    evidence_signal_scores = [
+                        ev.get('signal_score', 0.0) for ev in chunk_arguments['evidence']
+                        if ev.get('signal_score') is not None
+                    ]
+                    if evidence_signal_scores:
+                        signal_boost = sum(evidence_signal_scores) / len(evidence_signal_scores) * 0.15
+                
                 # Heuristic for necessity/sufficiency based on evidence strength
                 # This follows Beach & Pedersen 2019 calibration guidelines
-                necessity = min(0.9, 0.3 + (evidence_count * 0.15))
-                sufficiency = min(0.9, 0.3 + (claim_count * 0.1) + (evidence_count * 0.1))
+                necessity = min(0.9, 0.3 + (evidence_count * 0.15) + signal_boost)
+                sufficiency = min(0.9, 0.3 + (claim_count * 0.1) + (evidence_count * 0.1) + signal_boost * 0.8)
                 
                 # Use REAL BeachEvidentialTest.classify_test from derek_beach.py
                 test_type = BeachEvidentialTest.classify_test(necessity, sufficiency)
@@ -1285,6 +1413,7 @@ class Phase1SPCIngestionFullContract:
         
         for chunk in chunks:
             chunk_text = chunk.segmentation_metadata.get('text', '') if hasattr(chunk, 'segmentation_metadata') else ''
+            pa_id = chunk.policy_area_id
             
             temporal_markers = {
                 'years': [],
@@ -1292,10 +1421,33 @@ class Phase1SPCIngestionFullContract:
                 'horizons': [],
                 'phases': [],
                 'verb_sequence': [],
-                'temporal_order': 0
+                'temporal_order': 0,
+                'signal_enhanced_markers': []
             }
             
-            # Extract temporal markers
+            # SIGNAL ENRICHMENT: Extract temporal markers with signal patterns
+            if self.signal_enricher is not None:
+                signal_temporal_markers = self.signal_enricher.extract_temporal_markers_with_signals(
+                    chunk_text, pa_id
+                )
+                temporal_markers['signal_enhanced_markers'] = signal_temporal_markers
+                
+                # Merge signal markers into main categories
+                for marker in signal_temporal_markers:
+                    if marker['type'] == 'YEAR':
+                        try:
+                            year_val = int(re.search(r'20\d{2}', marker['text']).group(0))
+                            temporal_markers['years'].append(year_val)
+                        except:
+                            pass
+                    elif marker['type'] in ['DATE', 'MONTH_YEAR']:
+                        temporal_markers['dates'].append(marker['text'])
+                    elif marker['type'] == 'HORIZON':
+                        temporal_markers['horizons'].append(marker['text'])
+                    elif marker['type'] in ['PERIOD', 'SIGNAL_TEMPORAL']:
+                        temporal_markers['phases'].append(marker['text'])
+            
+            # Extract temporal markers with base patterns
             for pattern, marker_type in TEMPORAL_PATTERNS:
                 matches = re.findall(pattern, chunk_text, re.IGNORECASE)
                 for match in matches:
@@ -1861,6 +2013,22 @@ class Phase1SPCIngestionFullContract:
         integrity_index = IntegrityIndex.compute(chunk_graph.chunks)
         logger.info(f"CPP: Computed IntegrityIndex - blake2b_root={integrity_index.blake2b_root[:32]}...")
         
+        # SIGNAL COVERAGE METRICS: Compute comprehensive signal enrichment metrics
+        signal_coverage_metrics = {}
+        signal_provenance_report = {}
+        if self.signal_enricher is not None:
+            try:
+                signal_coverage_metrics = self.signal_enricher.compute_signal_coverage_metrics(ranked)
+                signal_provenance_report = self.signal_enricher.get_provenance_report()
+                logger.info(
+                    f"Signal enrichment metrics: "
+                    f"coverage={signal_coverage_metrics['coverage_completeness']:.2%}, "
+                    f"quality_tier={signal_coverage_metrics['quality_tier']}, "
+                    f"avg_tags_per_chunk={signal_coverage_metrics['avg_signal_tags_per_chunk']:.1f}"
+                )
+            except Exception as e:
+                logger.warning(f"Signal coverage metrics computation failed: {e}")
+        
         # [EXEC-CPP-015] Build metadata with execution trace
         metadata = {
             'execution_trace': self.execution_trace,
@@ -1873,6 +2041,9 @@ class Phase1SPCIngestionFullContract:
             'sisas_available': SISAS_AVAILABLE,
             'derek_beach_available': DEREK_BEACH_AVAILABLE,
             'teoria_cambio_available': TEORIA_CAMBIO_AVAILABLE,
+            'signal_enrichment_available': SIGNAL_ENRICHMENT_AVAILABLE,
+            'signal_coverage_metrics': signal_coverage_metrics,
+            'signal_provenance': signal_provenance_report,
         }
         
         # Build PolicyManifest for canonical notation reference
