@@ -1439,8 +1439,9 @@ class Phase1SPCIngestionFullContract:
                         try:
                             year_val = int(re.search(r'20\d{2}', marker['text']).group(0))
                             temporal_markers['years'].append(year_val)
-                        except:
-                            pass
+                        except (AttributeError, ValueError, TypeError):
+                            # If year extraction fails (e.g., no match or invalid int), skip this marker
+                            logging.debug(f"Failed to extract year from marker text: {marker['text']!r}")
                     elif marker['type'] in ['DATE', 'MONTH_YEAR']:
                         temporal_markers['dates'].append(marker['text'])
                     elif marker['type'] == 'HORIZON':
