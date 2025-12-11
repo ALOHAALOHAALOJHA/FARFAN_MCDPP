@@ -542,6 +542,21 @@ class Phase1SPCIngestionFullContract:
         if Phase1MissionContract.is_critical(sp_num):
             logger.info(f"SP{sp_num} [CRITICAL WEIGHT={weight}] chunk count VALIDATED: {count} chunks")
 
+    def _validate_critical_chunk_metadata(self, chunk: SmartChunk) -> None:
+        """
+        Helper method to validate critical chunk metadata attributes.
+        Reduces code duplication in enhanced validation.
+        """
+        required_attrs = {
+            'causal_graph': chunk.causal_graph,
+            'temporal_markers': chunk.temporal_markers,
+            'signal_tags': chunk.signal_tags,
+        }
+        
+        for attr_name, attr_value in required_attrs.items():
+            assert attr_value is not None, \
+                f"CRITICAL: chunk {chunk.chunk_id} missing {attr_name}"
+    
     def _assert_smart_chunk_invariants(self, sp_num: int, chunks: List[SmartChunk]):
         """
         Weight-based smart chunk validation with enhanced checking for critical subphases.
@@ -561,13 +576,7 @@ class Phase1SPCIngestionFullContract:
                 
                 # Additional checks for critical subphases
                 if Phase1MissionContract.is_critical(sp_num):
-                    # Verify all required metadata is populated
-                    assert chunk.causal_graph is not None, \
-                        f"CRITICAL: chunk {chunk.chunk_id} missing causal_graph"
-                    assert chunk.temporal_markers is not None, \
-                        f"CRITICAL: chunk {chunk.chunk_id} missing temporal_markers"
-                    assert chunk.signal_tags is not None, \
-                        f"CRITICAL: chunk {chunk.chunk_id} missing signal_tags"
+                    self._validate_critical_chunk_metadata(chunk)
             
             logger.info(f"SP{sp_num} [WEIGHT={weight}] ENHANCED validation PASSED")
         else:
@@ -2086,6 +2095,22 @@ class Phase1SPCIngestionFullContract:
         logger.info(f"CPP: Computed IntegrityIndex - blake2b_root={integrity_index.blake2b_root[:32]}...")
         
         # [EXEC-CPP-015] Build metadata with execution trace and weight-based metrics
+        # Compute weight metrics efficiently in a single pass
+        trace_length = len(self.execution_trace)
+        critical_count = 0
+        high_priority_count = 0
+        total_weight = 0
+        subphase_weights = {}
+        
+        for i in range(trace_length):
+            weight = Phase1MissionContract.get_weight(i)
+            subphase_weights[f'SP{i}'] = weight
+            total_weight += weight
+            if Phase1MissionContract.is_critical(i):
+                critical_count += 1
+            if Phase1MissionContract.is_high_priority(i):
+                high_priority_count += 1
+        
         metadata = {
             'execution_trace': self.execution_trace,
             'run_id': str(hash(datetime.now(timezone.utc).isoformat())),
@@ -2097,17 +2122,13 @@ class Phase1SPCIngestionFullContract:
             'sisas_available': SISAS_AVAILABLE,
             'derek_beach_available': DEREK_BEACH_AVAILABLE,
             'teoria_cambio_available': TEORIA_CAMBIO_AVAILABLE,
-            # Weight-based execution metrics
+            # Weight-based execution metrics (computed in single pass)
             'weight_metrics': {
-                'total_subphases': len(self.execution_trace),
-                'critical_subphases': sum(1 for i in range(len(self.execution_trace)) 
-                                         if Phase1MissionContract.is_critical(i)),
-                'high_priority_subphases': sum(1 for i in range(len(self.execution_trace)) 
-                                               if Phase1MissionContract.is_high_priority(i)),
-                'subphase_weights': {f'SP{i}': Phase1MissionContract.get_weight(i) 
-                                     for i in range(len(self.execution_trace))},
-                'total_weight_score': sum(Phase1MissionContract.get_weight(i) 
-                                         for i in range(len(self.execution_trace))),
+                'total_subphases': trace_length,
+                'critical_subphases': critical_count,
+                'high_priority_subphases': high_priority_count,
+                'subphase_weights': subphase_weights,
+                'total_weight_score': total_weight,
                 'error_log': self.error_log,  # Include any errors with weight context
             },
         }
