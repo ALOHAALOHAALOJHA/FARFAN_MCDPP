@@ -85,11 +85,17 @@ def resolve_workspace_path(
     project_root: Path = PROJECT_ROOT,
     rules_dir: Path = RULES_DIR,
     module_dir: Path = _CORE_MODULE_DIR,
+    require_exists: bool = True,
 ) -> Path:
-    """Resolve repository-relative paths deterministically."""
+    """Resolve repository-relative paths deterministically.
+    
+    If require_exists is True and no candidate exists, raises FileNotFoundError.
+    """
     path_obj = Path(path)
     
     if path_obj.is_absolute():
+        if require_exists and not path_obj.exists():
+            raise FileNotFoundError(f"Path not found: {path_obj}")
         return path_obj
     
     sanitized = safe_join(project_root, *path_obj.parts)
@@ -106,6 +112,8 @@ def resolve_workspace_path(
         if candidate.exists():
             return candidate
     
+    if require_exists:
+        raise FileNotFoundError(f"Path not found in workspace: {path_obj}")
     return sanitized
 
 
