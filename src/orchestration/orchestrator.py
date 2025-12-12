@@ -26,10 +26,7 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from pathlib import Path
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
-
-if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
+from typing import Any, Callable, TypeVar, ParamSpec, TypedDict, Protocol
 
 from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 from canonic_phases.Phase_zero.paths import safe_join
@@ -61,6 +58,11 @@ from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
+
+class QuestionnaireAccess(Protocol):
+    """Minimal questionnaire contract needed by the orchestrator."""
+    data: dict[str, Any]
+    source_path: str | Path | None
 
 logger = logging.getLogger(__name__)
 _CORE_MODULE_DIR = Path(__file__).resolve().parent
@@ -131,6 +133,36 @@ def _normalize_monolith_for_hash(monolith: dict | MappingProxyType) -> dict:
         raise RuntimeError(f"Monolith normalization failed: {exc}") from exc
     
     return normalized
+
+
+def _validate_questionnaire_structure(monolith_data: dict[str, Any]) -> None:
+    """Validate questionnaire structure (dimensions and policy areas)."""
+    if not isinstance(monolith_data, dict):
+        raise TypeError(f"Questionnaire must be a dict, got {type(monolith_data)}")
+    
+    if "canonical_notation" not in monolith_data:
+        raise ValueError("Questionnaire missing 'canonical_notation'")
+    
+    canonical_notation = monolith_data["canonical_notation"]
+    if "dimensions" not in canonical_notation:
+        raise ValueError("Questionnaire missing 'canonical_notation.dimensions'")
+    dimensions = canonical_notation["dimensions"]
+    if not isinstance(dimensions, dict):
+        raise TypeError("Dimensions must be a dict")
+    expected_dims = ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05", "DIM06"]
+    for dim_id in expected_dims:
+        if dim_id not in dimensions:
+            raise ValueError(f"Missing dimension: {dim_id}")
+    
+    if "policy_areas" not in canonical_notation:
+        raise ValueError("Questionnaire missing 'canonical_notation.policy_areas'")
+    policy_areas = canonical_notation["policy_areas"]
+    if not isinstance(policy_areas, dict):
+        raise TypeError("Policy areas must be a dict")
+    expected_pas = [f"PA{i:02d}" for i in range(1, 11)]
+    for pa_id in expected_pas:
+        if pa_id not in policy_areas:
+            raise ValueError(f"Missing policy area: {pa_id}")
 
 
 # ============================================================================
@@ -882,7 +914,7 @@ class Orchestrator:
     def __init__(
         self,
         method_executor: MethodExecutor,
-        questionnaire: CanonicalQuestionnaire,
+        questionnaire: QuestionnaireAccess,
         executor_config: ExecutorConfig,
         calibration_orchestrator: Any | None = None,
         resource_limits: ResourceLimits | None = None,
@@ -891,8 +923,6 @@ class Orchestrator:
         processor_bundle: Any | None = None,
     ) -> None:
         """Initialize orchestrator."""
-        from orchestration.factory import _validate_questionnaire_structure
-        
         validate_phase_definitions(self.FASES, self.__class__)
         
         self.executor = method_executor

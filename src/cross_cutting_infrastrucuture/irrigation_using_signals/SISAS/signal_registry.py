@@ -29,7 +29,7 @@ import time
 from collections import defaultdict
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, Protocol
 
 try:
     import blake3
@@ -73,8 +73,18 @@ except ImportError:
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
+class QuestionnaireAccess(Protocol):
+    """Minimal questionnaire contract for signal registry consumption."""
+    data: dict[str, Any]
+    sha256: str
+    version: str
+    
+    @property
+    def micro_questions(self) -> list[dict[str, Any]]:
+        ...
+    
+    def __iter__(self) -> Any:  # pragma: no cover - structural only
+        ...
 
 
 # ============================================================================
@@ -484,14 +494,13 @@ class QuestionnaireSignalRegistry:
     Thread Safety: Single-threaded (use locks for multi-threaded access)
     
     Example:
-        >>> from orchestration.factory import CanonicalQuestionnaire, load_questionnaire
-        >>> canonical = load_questionnaire()
-        >>> registry = QuestionnaireSignalRegistry(canonical)
+        >>> # Provide any QuestionnaireAccess implementation
+        >>> registry = QuestionnaireSignalRegistry(my_questionnaire)
         >>> signals = registry.get_micro_answering_signals("Q001")
         >>> print(f"Patterns: {len(signals.question_patterns['Q001'])}")
     """
 
-    def __init__(self, questionnaire: CanonicalQuestionnaire) -> None:
+    def __init__(self, questionnaire: QuestionnaireAccess) -> None:
         """Initialize signal registry.
         
         Args:
@@ -1290,7 +1299,7 @@ class QuestionnaireSignalRegistry:
 
 
 def create_signal_registry(
-    questionnaire: CanonicalQuestionnaire,
+    questionnaire: QuestionnaireAccess,
 ) -> QuestionnaireSignalRegistry:
     """Factory function to create signal registry.
     
@@ -1303,9 +1312,7 @@ def create_signal_registry(
         Initialized signal registry
     
     Example:
-        >>> from orchestration.factory import CanonicalQuestionnaire, load_questionnaire
-        >>> canonical = load_questionnaire()
-        >>> registry = create_signal_registry(canonical)
+        >>> registry = create_signal_registry(my_questionnaire)
         >>> signals = registry.get_chunking_signals()
         >>> print(f"Patterns: {len(signals.section_detection_patterns)}")
     """

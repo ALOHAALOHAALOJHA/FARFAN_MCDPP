@@ -2,25 +2,6 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
-
-# Core orchestration - REAL PATH: orchestration.orchestrator
-from orchestration.orchestrator import (
-    AbortRequested,
-    AbortSignal,
-    Evidence,
-    MethodExecutor,
-    MicroQuestionRun,
-    Orchestrator,
-    PhaseInstrumentation,
-    PhaseResult,
-    ResourceLimits,
-    ScoredMicroQuestion,
-)
-
 # NEW: Evidence processing - REAL PATH: canonic_phases.Phase_two.evidence_nexus
 # Replaces evidence_assembler, evidence_validator, evidence_registry
 from canonic_phases.Phase_two.evidence_nexus import (
@@ -96,17 +77,6 @@ __all__ = [
     # NEW: Narrative synthesis (Carver)
     "DoctoralCarverSynthesizer",
     "CarverAnswer",
-    # Orchestration core
-    "Orchestrator",
-    "MethodExecutor",
-    "Evidence",
-    "AbortSignal",
-    "AbortRequested",
-    "ResourceLimits",
-    "PhaseInstrumentation",
-    "PhaseResult",
-    "MicroQuestionRun",
-    "ScoredMicroQuestion",
     # Resource management
     "AdaptiveResourceManager",
     "CircuitBreaker",

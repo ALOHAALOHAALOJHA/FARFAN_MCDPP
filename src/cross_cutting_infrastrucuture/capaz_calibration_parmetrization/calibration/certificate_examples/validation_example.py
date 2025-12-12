@@ -8,7 +8,15 @@ Demonstrates validation, analysis, and comparison of calibration certificates.
 from pathlib import Path
 import sys
 
-sys.path.append(str(Path(__file__).parent.parent))
+try:
+    from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+except ImportError:
+    PROJECT_ROOT = Path(__file__).resolve().parents[4]
+
+src_root = PROJECT_ROOT / "src"
+src_root_str = str(src_root)
+if src_root_str not in sys.path:
+    sys.path.append(src_root_str)
 
 from certificate_generator import CertificateGenerator
 from certificate_validator import (

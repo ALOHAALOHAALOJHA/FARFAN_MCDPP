@@ -13,7 +13,15 @@ Usage:
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+try:
+    from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+except ImportError:
+    PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
+src_root = PROJECT_ROOT / "src"
+src_root_str = str(src_root)
+if src_root_str not in sys.path:
+    sys.path.insert(0, src_root_str)
 
 from canonic_phases.Phase_four_five_six_seven.choquet_aggregator import (
     ChoquetAggregator,

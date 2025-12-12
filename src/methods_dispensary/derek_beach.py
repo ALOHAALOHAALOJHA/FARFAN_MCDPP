@@ -93,6 +93,53 @@ TestType = Literal["hoop_test", "smoking_gun", "doubly_decisive", "straw_in_wind
 DynamicsType = Literal["suma", "decreciente", "constante", "indefinido"]
 
 # ============================================================================
+# INDICATOR EXTRACTION CONFIG - Canonical Structure from PDT Analysis
+# ============================================================================
+# Based on empirical analysis of 3 Colombian PDTs:
+# - Plan 1 (Timbiquí 2012-2015): Narrative tables, no structured codes
+# - Plan 2 (Florencia 2024-2027): MGA 9-digit codes (210201400)
+# - Plan 3 (Caloto 2024-2027): Narrative tables, no structured codes
+
+INDICATOR_EXTRACTION_CONFIG = {
+    # Markers that signal indicator content in text
+    "indicator_markers": [
+        r"[Ii]ndicador(?:\s+de)?\s+(?:producto|resultado|gestión)",
+        r"[Mm]eta\s+(?:del\s+)?(?:cuatrienio|periodo|producto)",
+        r"[Ll]ínea\s+[Bb]ase",
+        r"[Uu]nidad\s+de\s+[Mm]edida",
+    ],
+    
+    # Valid measurement units in Colombian PDTs
+    "valid_units": [
+        "número", "porcentaje", "%", "unidad", "unidades",
+        "personas", "familias", "viviendas", "kilómetros", "km",
+        "hectáreas", "ha", "metros", "m", "pesos", "$",
+        "beneficiarios", "capacitaciones", "jornadas", "talleres"
+    ],
+    
+    # Indicator name length constraints (characters)
+    "min_indicator_name_length": 20,
+    "max_indicator_name_length": 200,
+    
+    # Pattern for MGA codes (optional - only some PDTs have them)
+    "mga_code_pattern": r"\((\d{9})\)",
+    
+    # Pattern for numeric values (meta, línea base)
+    "numeric_value_pattern": r"(\d+(?:[.,]\d+)?)",
+    
+    # Context window around matches (characters)
+    "context_window": 500,
+    
+    # Goal type prefixes mapping to NodeType
+    "goal_type_prefixes": {
+        "MP": "producto",
+        "MR": "resultado", 
+        "MI": "impacto",
+        "MG": "programa",  # Meta de Gestión
+    }
+}
+
+# ============================================================================
 # BEACH THEORETICAL PRIMITIVES - Added to existing code
 # ============================================================================
 
@@ -999,44 +1046,93 @@ class CausalExtractor:
 
     @calibrated_method("farfan_core.analysis.derek_beach.CausalExtractor._extract_goals")
     def _extract_goals(self, text: str) -> list[MetaNode]:
-        """Extract all goals from text"""
+        """
+        Extract all goals/indicators from PDT text.
+        
+        Uses INDICATOR_EXTRACTION_CONFIG canonical patterns derived from
+        empirical analysis of Colombian PDTs (Timbiquí, Florencia, Caloto).
+        
+        Detection strategy (multi-pattern):
+        1. MGA codes: (210201400) - 9 digit codes in parentheses
+        2. Indicator markers: "Indicador de producto", "Meta del cuatrienio"
+        3. Goal prefixes: MP-, MR-, MI-, MG- (if present)
+        """
         goals = []
-        goal_pattern = re.compile(
-            self.config.get('patterns.goal_codes', r'[MP][RIP]-\d{3}'),
-            re.IGNORECASE
-        )
-
-        for match in goal_pattern.finditer(text):
-            goal_id = match.group().upper()
-            context_start = max(0, match.start() - 500)
-            context_end = min(len(text), match.end() + 500)
+        context_window = INDICATOR_EXTRACTION_CONFIG["context_window"]
+        
+        # Strategy 1: MGA codes (Florencia-style PDTs)
+        mga_pattern = re.compile(INDICATOR_EXTRACTION_CONFIG["mga_code_pattern"])
+        for match in mga_pattern.finditer(text):
+            goal_id = f"MGA-{match.group(1)}"
+            context_start = max(0, match.start() - context_window)
+            context_end = min(len(text), match.end() + context_window)
             context = text[context_start:context_end]
-
+            
             goal = self._parse_goal_context(goal_id, context)
             if goal:
                 goals.append(goal)
                 self.nodes[goal.id] = goal
+        
+        # Strategy 2: Indicator markers (narrative-style PDTs)
+        for marker_pattern in INDICATOR_EXTRACTION_CONFIG["indicator_markers"]:
+            marker_re = re.compile(marker_pattern, re.IGNORECASE)
+            for match in marker_re.finditer(text):
+                # Generate synthetic ID based on position
+                goal_id = f"IND-{match.start():06d}"
+                context_start = max(0, match.start() - context_window)
+                context_end = min(len(text), match.end() + context_window)
+                context = text[context_start:context_end]
+                
+                goal = self._parse_goal_context(goal_id, context)
+                if goal and goal.id not in self.nodes:
+                    goals.append(goal)
+                    self.nodes[goal.id] = goal
+        
+        # Strategy 3: Traditional prefixes (MP-001, MR-002 style)
+        prefix_pattern = re.compile(r'[MP][RGIP]-\d{3}', re.IGNORECASE)
+        for match in prefix_pattern.finditer(text):
+            goal_id = match.group().upper()
+            if goal_id not in self.nodes:
+                context_start = max(0, match.start() - context_window)
+                context_end = min(len(text), match.end() + context_window)
+                context = text[context_start:context_end]
+                
+                goal = self._parse_goal_context(goal_id, context)
+                if goal:
+                    goals.append(goal)
+                    self.nodes[goal.id] = goal
 
         self.logger.info(f"Metas extraídas: {len(goals)}")
         return goals
 
     @calibrated_method("farfan_core.analysis.derek_beach.CausalExtractor._parse_goal_context")
     def _parse_goal_context(self, goal_id: str, context: str) -> MetaNode | None:
-        """Parse goal context to extract structured information"""
-        # Determine goal type
-        if goal_id.startswith('MP'):
-            node_type = 'producto'
-        elif goal_id.startswith('MR'):
-            node_type = 'resultado'
-        elif goal_id.startswith('MI'):
-            node_type = 'impacto'
-        else:
-            node_type = 'programa'
+        """
+        Parse goal context to extract structured information.
+        
+        Uses INDICATOR_EXTRACTION_CONFIG for type mapping and numeric patterns.
+        """
+        # Determine goal type using canonical prefix mapping
+        node_type = 'programa'  # default
+        goal_type_prefixes = INDICATOR_EXTRACTION_CONFIG["goal_type_prefixes"]
+        
+        for prefix, gtype in goal_type_prefixes.items():
+            if goal_id.upper().startswith(prefix):
+                node_type = gtype
+                break
+        
+        # For MGA and IND codes, infer type from context keywords
+        if goal_id.startswith('MGA-') or goal_id.startswith('IND-'):
+            context_lower = context.lower()
+            if 'producto' in context_lower or 'indicador de producto' in context_lower:
+                node_type = 'producto'
+            elif 'resultado' in context_lower or 'indicador de resultado' in context_lower:
+                node_type = 'resultado'
+            elif 'impacto' in context_lower:
+                node_type = 'impacto'
 
-        # Extract numerical values
-        numeric_pattern = re.compile(
-            self.config.get('patterns.numeric_formats', r'[\d,]+(?:\.\d+)?%?')
-        )
+        # Extract numerical values using canonical pattern
+        numeric_pattern = re.compile(INDICATOR_EXTRACTION_CONFIG["numeric_value_pattern"])
         numbers = numeric_pattern.findall(context)
 
         # Process with spaCy

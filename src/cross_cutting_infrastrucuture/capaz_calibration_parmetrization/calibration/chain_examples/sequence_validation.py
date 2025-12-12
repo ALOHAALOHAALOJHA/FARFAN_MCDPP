@@ -8,7 +8,15 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+try:
+    from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+except ImportError:
+    PROJECT_ROOT = Path(__file__).resolve().parents[4]
+
+src_root = PROJECT_ROOT / "src"
+src_root_str = str(src_root)
+if src_root_str not in sys.path:
+    sys.path.insert(0, src_root_str)
 
 from COHORT_2024_chain_layer import ChainLayerEvaluator
 
