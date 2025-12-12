@@ -27,8 +27,18 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, TypeVar
-from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.parameter_loader import get_parameter_loader
-from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
+
+# Calibration removed - stub placeholders
+def get_parameter_loader() -> Any:
+    """Stub: Calibration parameter loader removed."""
+    return None
+
+def calibrated_method(method_path: str) -> Any:
+    """Stub decorator: Calibration removed."""
+    def decorator(func: Any) -> Any:
+        return func
+    return decorator
+
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 # SOTA imports

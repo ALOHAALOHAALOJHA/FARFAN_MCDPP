@@ -5,7 +5,7 @@ CRITICAL SEPARATION:
 - This file contains ONLY runtime parameters (timeout, retry, etc.)
 - NO calibration values (quality scores, fusion weights) are stored here
 - Calibration data (WHAT quality) is loaded from:
-  * src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_intrinsic_calibration.json
+  * src/cross_cutting_infrastructure/capaz_calibration_parmetrization/calibration/COHORT_2024_intrinsic_calibration.json
   * canonic_questionnaire_central/questionnaire_monolith.json
 
 Loading hierarchy (highest to lowest priority):

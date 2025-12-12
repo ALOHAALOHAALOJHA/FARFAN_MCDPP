@@ -217,7 +217,7 @@ class Phase1CircuitBreaker:
         
         # Check optional but important dependencies
         optional_deps = [
-            ('cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry', 
+            ('cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry', 
              'SISAS', 'Signal enrichment system'),
             ('methods_dispensary.derek_beach', 'derek_beach', 'Causal analysis'),
             ('methods_dispensary.teoria_cambio', 'teoria_cambio', 'DAG validation'),

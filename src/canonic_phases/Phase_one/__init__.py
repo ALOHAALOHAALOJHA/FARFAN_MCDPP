@@ -13,7 +13,7 @@ Phase 1: SPC Ingestion (CanonicalInput → CanonPolicyPackage)
 CANONICAL SOURCES:
 - Policy Areas: canonic_questionnaire_central/questionnaire_monolith.json → canonical_notation.policy_areas
 - Dimensions: canonic_questionnaire_central/questionnaire_monolith.json → canonical_notation.dimensions
-- Signals: src/cross_cutting_infrastrucuture/irrigation_using_signals/SISAS/
+- Signals: src/cross_cutting_infrastructure/irrigation_using_signals/SISAS/
 
 INVARIANTS:
 - chunk_count == 60
