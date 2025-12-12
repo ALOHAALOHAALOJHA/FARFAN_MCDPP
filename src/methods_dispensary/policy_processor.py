@@ -34,8 +34,6 @@ import numpy as np
 from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return
 
 from farfan_pipeline.analysis.financiero_viabilidad_tablas import PDETAnalysisException, QualityScore
-from farfan_pipeline.core.parameters import ParameterLoaderV2
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 from farfan_pipeline.core.ports import (
     PortDocumentLoader,
     PortMunicipalOntology,
@@ -73,11 +71,11 @@ class _FallbackBayesianCalculator:
     """Fallback Bayesian calculator when advanced module is unavailable."""
 
     def __init__(self) -> None:
-        self.prior_alpha = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackBayesianCalculator.__init__", "auto_param_L64_31", 1.0)
-        self.prior_beta = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackBayesianCalculator.__init__", "auto_param_L65_30", 1.0)
+        self.prior_alpha = 1.0
+        self.prior_beta = 1.0
 
     def calculate_posterior(
-        self, evidence_strength: float, observations: int, domain_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackBayesianCalculator.__init__", "auto_param_L68_86", 1.0)
+        self, evidence_strength: float, observations: int, domain_weight: float = 1.0
     ) -> float:
         alpha_post = self.prior_alpha + evidence_strength * observations * domain_weight
         beta_post = self.prior_beta + (1 - evidence_strength) * observations * domain_weight
@@ -87,7 +85,7 @@ class _FallbackBayesianCalculator:
 class _FallbackTemporalVerifier:
     """Fallback temporal verifier providing graceful degradation."""
 
-    @calibrated_method("farfan_core.processing.policy_processor._FallbackTemporalVerifier.verify_temporal_consistency")
+    
     def verify_temporal_consistency(self, statements: list[Any]) -> tuple[bool, list[dict[str, Any]]]:
         return True, []
 
@@ -112,7 +110,7 @@ class _FallbackContradictionDetector:
             "knowledge_graph_stats": {"nodes": 0, "edges": 0, "components": 0},
         }
 
-    @calibrated_method("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements")
+    
     def _extract_policy_statements(self, text: str, dimension: Any) -> list[Any]:
         return []
 
@@ -294,31 +292,31 @@ class ProcessorConfig:
 
     preserve_document_structure: bool = True
     enable_semantic_tagging: bool = True
-    confidence_threshold: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L301_34", 0.65)
+    confidence_threshold: float = 0.65
     context_window_chars: int = 400
     max_evidence_per_pattern: int = 5
     enable_bayesian_scoring: bool = True
     utf8_normalization_form: str = "NFC"
 
     # Advanced controls
-    entropy_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L308_28", 0.3)
-    proximity_decay_rate: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L309_34", 0.15)
+    entropy_weight: float = 0.3
+    proximity_decay_rate: float = 0.15
     min_sentence_length: int = 20
     max_sentence_length: int = 500
-    bayesian_prior_confidence: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L312_39", 0.5)
-    bayesian_entropy_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L313_37", 0.3)
+    bayesian_prior_confidence: float = 0.5
+    bayesian_entropy_weight: float = 0.3
     minimum_dimension_scores: dict[str, float] = field(
         default_factory=lambda: {
-            "D1": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L316_18", 0.50),
-            "D2": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L317_18", 0.50),
-            "D3": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L318_18", 0.50),
-            "D4": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L319_18", 0.50),
-            "D5": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L320_18", 0.50),
-            "D6": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L321_18", 0.50),
+            "D1": 0.50,
+            "D2": 0.50,
+            "D3": 0.50,
+            "D4": 0.50,
+            "D5": 0.50,
+            "D6": 0.50,
         }
     )
     critical_dimension_overrides: dict[str, float] = field(
-        default_factory=lambda: {"D1": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L325_39", 0.55), "D6": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L325_51", 0.55)}
+        default_factory=lambda: {"D1": 0.55, "D6": 0.55}
     )
     differential_focus_indicators: tuple[str, ...] = (
         "enfoque diferencial",
@@ -356,26 +354,26 @@ class ProcessorConfig:
             normalized[canonical] = value
         return cls(**normalized)
 
-    @calibrated_method("farfan_core.processing.policy_processor.ProcessorConfig.validate")
+    
     def validate(self) -> None:
         """Validate configuration parameters."""
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L366_15", 0.0) <= self.confidence_threshold <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L366_51", 1.0):
+        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L366_15", 0.0) <= self.confidence_threshold <= 1.0:
             raise ValueError("confidence_threshold must be in [0, 1]")
         if self.context_window_chars < 100:
             raise ValueError("context_window_chars must be >= 100")
         if self.entropy_weight < 0 or self.entropy_weight > 1:
             raise ValueError("entropy_weight must be in [0, 1]")
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L372_15", 0.0) <= self.bayesian_prior_confidence <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L372_56", 1.0):
+        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L372_15", 0.0) <= self.bayesian_prior_confidence <= 1.0:
             raise ValueError("bayesian_prior_confidence must be in [0, 1]")
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L374_15", 0.0) <= self.bayesian_entropy_weight <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L374_54", 1.0):
+        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L374_15", 0.0) <= self.bayesian_entropy_weight <= 1.0:
             raise ValueError("bayesian_entropy_weight must be in [0, 1]")
         for dimension, threshold in self.minimum_dimension_scores.items():
-            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L377_19", 0.0) <= threshold <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L377_39", 1.0):
+            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L377_19", 0.0) <= threshold <= 1.0:
                 raise ValueError(
                     f"minimum_dimension_scores[{dimension}] must be in [0, 1]"
                 )
         for dimension, threshold in self.critical_dimension_overrides.items():
-            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L382_19", 0.0) <= threshold <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L382_39", 1.0):
+            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L382_19", 0.0) <= threshold <= 1.0:
                 raise ValueError(
                     f"critical_dimension_overrides[{dimension}] must be in [0, 1]"
                 )
@@ -394,8 +392,8 @@ class BayesianEvidenceScorer:
 
     def __init__(
         self,
-        prior_confidence: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L401_34", 0.5),
-        entropy_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L402_32", 0.3),
+        prior_confidence: float = 0.5,
+        entropy_weight: float = 0.3,
         calibration: dict[str, Any] | None = None,
     ) -> None:
         self.prior = prior_confidence
@@ -404,18 +402,18 @@ class BayesianEvidenceScorer:
         self.calibration = calibration or {}
 
         # Defaults that can be overridden by calibration manifests
-        self.epsilon_clip: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L411_35", 0.02)
-        self.duplicate_gamma: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L412_38", 1.0)
-        self.cross_type_floor: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L413_39", 0.0)
+        self.epsilon_clip: float = 0.02
+        self.duplicate_gamma: float = 1.0
+        self.cross_type_floor: float = 0.0
         self.source_quality_weights: dict[str, float] = {}
         self.sector_multipliers: dict[str, float] = {}
-        self.sector_default: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L416_37", 1.0)
+        self.sector_default: float = 1.0
         self.municipio_multipliers: dict[str, float] = {}
-        self.municipio_default: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L418_40", 1.0)
+        self.municipio_default: float = 1.0
 
         self._configure_from_calibration()
 
-    @calibrated_method("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration")
+    
     def _configure_from_calibration(self) -> None:
         config = self.calibration.get("bayesian_inference_robust") if isinstance(self.calibration, dict) else {}
         if not isinstance(config, dict):
@@ -428,9 +426,9 @@ class BayesianEvidenceScorer:
                 self.epsilon_clip = float(stability.get("epsilon_clip", self.epsilon_clip))
                 self.duplicate_gamma = float(stability.get("duplicate_gamma", self.duplicate_gamma))
                 self.cross_type_floor = float(stability.get("cross_type_floor", self.cross_type_floor))
-                self.epsilon_clip = min(max(self.epsilon_clip, ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L435_63", 0.0)), ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L435_69", 0.45))
-                self.duplicate_gamma = max(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L436_43", 0.0), self.duplicate_gamma)
-                self.cross_type_floor = max(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L437_44", 0.0), min(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L437_53", 1.0), self.cross_type_floor))
+                self.epsilon_clip = min(max(self.epsilon_clip, 0.0), 0.45)
+                self.duplicate_gamma = max(0.0, self.duplicate_gamma)
+                self.cross_type_floor = max(0.0, min(1.0, self.cross_type_floor))
 
             weights = evidence_cfg.get("source_quality_weights", {})
             if isinstance(weights, dict):
@@ -443,17 +441,17 @@ class BayesianEvidenceScorer:
                 sector = hierarchy.get("sector_multipliers", {})
                 if isinstance(sector, dict):
                     self.sector_multipliers = {str(k).lower(): float(v) for k, v in sector.items() if isinstance(v, (int, float))}
-                    self.sector_default = float(self.sector_multipliers.get("default", ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L450_87", 1.0)))
+                    self.sector_default = float(self.sector_multipliers.get("default", 1.0))
                 muni = hierarchy.get("municipio_tamano_multipliers", {})
                 if isinstance(muni, dict):
                     self.municipio_multipliers = {str(k).lower(): float(v) for k, v in muni.items() if isinstance(v, (int, float))}
-                    self.municipio_default = float(self.municipio_multipliers.get("default", ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L454_93", 1.0)))
+                    self.municipio_default = float(self.municipio_multipliers.get("default", 1.0))
 
     def compute_evidence_score(
         self,
         matches: list[str],
         total_corpus_size: int,
-        pattern_specificity: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L460_37", 0.8),
+        pattern_specificity: float = 0.8,
         **kwargs: Any
     ) -> float:
         """
@@ -469,7 +467,7 @@ class BayesianEvidenceScorer:
             Calibrated confidence score in [0, 1]
         """
         if not matches:
-            return ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L476_19", 0.0)
+            return 0.0
 
         # Term frequency normalization
         tf = len(matches) / max(1, total_corpus_size / 1000)
@@ -482,10 +480,10 @@ class BayesianEvidenceScorer:
 
         # Bayesian update
         clip_low = self.epsilon_clip
-        clip_high = ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L489_20", 1.0) - self.epsilon_clip
+        clip_high = 1.0 - self.epsilon_clip
         pattern_specificity = max(clip_low, min(clip_high, pattern_specificity))
 
-        likelihood = min(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L492_25", 1.0), tf * pattern_specificity)
+        likelihood = min(1.0, tf * pattern_specificity)
         posterior = (likelihood * self.prior) / (
             (likelihood * self.prior) + ((1 - likelihood) * (1 - self.prior))
         )
@@ -503,7 +501,7 @@ class BayesianEvidenceScorer:
         if self.source_quality_weights:
             source_quality = kwargs.get("source_quality")
             if source_quality is not None:
-                weight = self._lookup_weight(self.source_quality_weights, source_quality, default=ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L510_98", 1.0))
+                weight = self._lookup_weight(self.source_quality_weights, source_quality, default=1.0)
                 final_score *= weight
 
         # Context multipliers (sector / municipality)
@@ -515,7 +513,7 @@ class BayesianEvidenceScorer:
         if self.municipio_multipliers:
             final_score *= self._lookup_weight(self.municipio_multipliers, municipio, default=self.municipio_default)
 
-        return np.clip(final_score, ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L522_36", 0.0), ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L522_41", 1.0))
+        return np.clip(final_score, 0.0, 1.0)
 
     @staticmethod
     def _calculate_shannon_entropy(values: np.ndarray, **kwargs: Any) -> float:
@@ -529,7 +527,7 @@ class BayesianEvidenceScorer:
             Normalized Shannon entropy
         """
         if len(values) < 2:
-            return ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L536_19", 0.0)
+            return 0.0
 
         # Discrete probability distribution
         hist, _ = np.histogram(values, bins=min(10, len(values)))
@@ -537,12 +535,12 @@ class BayesianEvidenceScorer:
         prob = prob[prob > 0]  # Remove zeros
 
         entropy = -np.sum(prob * np.log2(prob))
-        max_entropy = np.log2(len(prob)) if len(prob) > 1 else ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L544_63", 1.0)
+        max_entropy = np.log2(len(prob)) if len(prob) > 1 else 1.0
 
-        return entropy / max_entropy if max_entropy > 0 else ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L546_61", 0.0)
+        return entropy / max_entropy if max_entropy > 0 else 0.0
 
     @staticmethod
-    def _lookup_weight(mapping: dict[str, float], key: Any, default: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L549_77", 1.0)) -> float:
+    def _lookup_weight(mapping: dict[str, float], key: Any, default: float = 1.0) -> float:
         if not mapping:
             return default
         if key is None:
@@ -575,12 +573,12 @@ class PolicyTextProcessor:
             r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ])|(?<=\n\n)"
         )
 
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyTextProcessor.normalize_unicode")
+    
     def normalize_unicode(self, text: str) -> str:
         """Apply canonical Unicode normalization (NFC/NFKC)."""
         return unicodedata.normalize(self.config.utf8_normalization_form, text)
 
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyTextProcessor.segment_into_sentences")
+    
     def segment_into_sentences(self, text: str, **kwargs: Any) -> list[str]:
         """
         Segment text into sentences with context-aware boundary detection.
@@ -630,7 +628,7 @@ class PolicyTextProcessor:
         return text[start:end].strip()
 
     @lru_cache(maxsize=256)
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyTextProcessor.compile_pattern")
+    
     def compile_pattern(self, pattern_str: str) -> re.Pattern:
         """Cache and compile regex patterns for performance."""
         return re.compile(pattern_str, re.IGNORECASE | re.UNICODE)
@@ -646,11 +644,11 @@ class EvidenceBundle:
     dimension: CausalDimension
     category: str
     matches: list[str] = field(default_factory=list)
-    confidence: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.PolicyTextProcessor.compile_pattern", "auto_param_L653_24", 0.0)
+    confidence: float = 0.0
     context_windows: list[str] = field(default_factory=list)
     match_positions: list[int] = field(default_factory=list)
 
-    @calibrated_method("farfan_core.processing.policy_processor.EvidenceBundle.to_dict")
+    
     def to_dict(self) -> dict[str, Any]:
         return {
             "dimension": self.dimension.value,
@@ -756,7 +754,7 @@ class IndustrialPolicyProcessor:
         # Processing statistics
         self.statistics: dict[str, Any] = defaultdict(int)
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._load_questionnaire")
+    
     def _load_questionnaire(self) -> dict[str, Any]:
         """
         LEGACY: Questionnaire loading disabled.
@@ -770,7 +768,7 @@ class IndustrialPolicyProcessor:
         )
         return {"questions": []}
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._compile_pattern_registry")
+    
     def _compile_pattern_registry(self) -> dict[CausalDimension, dict[str, list[re.Pattern]]]:
         """Compile all causal patterns into efficient regex objects."""
         registry = {}
@@ -782,7 +780,7 @@ class IndustrialPolicyProcessor:
                 ]
         return registry
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._build_point_patterns")
+    
     def _build_point_patterns(self) -> None:
         """
         LEGACY: Pattern building from questionnaire disabled.
@@ -828,7 +826,7 @@ class IndustrialPolicyProcessor:
 
         logger.info(f"Compiled patterns for {len(self.point_patterns)} policy points")
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process")
+    
     def process(self, raw_text: str, **kwargs: Any) -> dict[str, Any]:
         """
         Execute comprehensive policy plan analysis.
@@ -1019,8 +1017,8 @@ class IndustrialPolicyProcessor:
 
         domain_weights = {
             CausalDimension.D1_INSUMOS: 1.1,
-            CausalDimension.D2_ACTIVIDADES: ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1000_44", 1.0),
-            CausalDimension.D3_PRODUCTOS: ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1001_42", 1.0),
+            CausalDimension.D2_ACTIVIDADES: 1.0,
+            CausalDimension.D3_PRODUCTOS: 1.0,
             CausalDimension.D4_RESULTADOS: 1.1,
             CausalDimension.D5_IMPACTOS: 1.15,
             CausalDimension.D6_CAUSALIDAD: 1.2,
@@ -1062,12 +1060,12 @@ class IndustrialPolicyProcessor:
             }
 
             coherence_metrics = report.get("coherence_metrics", {})
-            coherence_score = float(coherence_metrics.get("coherence_score", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1043_77", 0.0)))
+            coherence_score = float(coherence_metrics.get("coherence_score", 0.0))
             observations = max(1, len(statements))
             posterior = self.confidence_calculator.calculate_posterior(
-                evidence_strength=max(coherence_score, ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1046_55", 0.01)),
+                evidence_strength=max(coherence_score, 0.01),
                 observations=observations,
-                domain_weight=domain_weights.get(dimension, ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1048_60", 1.0)),
+                domain_weight=domain_weights.get(dimension, 1.0),
             )
             bayesian_scores[dimension.value] = float(posterior)
 
@@ -1081,11 +1079,11 @@ class IndustrialPolicyProcessor:
                     if ctype:
                         keywords.append(ctype)
 
-                severity = 1 - coherence_score if coherence_score else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1062_71", 0.5)
+                severity = 1 - coherence_score if coherence_score else 0.5
                 critical_links[dimension.value] = {
-                    "criticality_score": round(min(ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1064_51", 1.0), max(ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1064_60", 0.0), severity)), 4),
+                    "criticality_score": round(min(1.0, max(0.0, severity)), 4),
                     "text_analysis": {
-                        "sentiment": "negative" if coherence_score < ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1066_69", 0.5) else "neutral",
+                        "sentiment": "negative" if coherence_score < 0.5 else "neutral",
                         "keywords": keywords,
                         "word_count": len(text.split()),
                     },
@@ -1119,28 +1117,28 @@ class IndustrialPolicyProcessor:
 
         bayesian_scores = contradiction_bundle.get("bayesian_scores", {})
         bayesian_values = list(bayesian_scores.values())
-        overall_score = float(np.mean(bayesian_values)) if bayesian_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1100_80", 0.0)
+        overall_score = float(np.mean(bayesian_values)) if bayesian_values else 0.0
 
         def _dimension_confidence(key: CausalDimension) -> float:
             return float(
-                dimension_analysis.get(key.value, {}).get("dimension_confidence", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1104_82", 0.0))
+                dimension_analysis.get(key.value, {}).get("dimension_confidence", 0.0)
             )
 
         temporal_flags = contradiction_bundle.get("temporal_assessments", {})
         temporal_values = [
-            ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1109_12", 1.0) if assessment.get("is_consistent", True) else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1109_62", 0.0)
+            1.0 if assessment.get("is_consistent", True) else 0.0
             for assessment in temporal_flags.values()
         ]
         temporal_consistency = (
-            float(np.mean(temporal_values)) if temporal_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1113_68", 1.0)
+            float(np.mean(temporal_values)) if temporal_values else 1.0
         )
 
         reports = contradiction_bundle.get("reports", {})
         coherence_scores = [
-            float(report.get("coherence_metrics", {}).get("coherence_score", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1118_77", 0.0)))
+            float(report.get("coherence_metrics", {}).get("coherence_score", 0.0))
             for report in reports.values()
         ]
-        causal_coherence = float(np.mean(coherence_scores)) if coherence_scores else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1121_85", 0.0)
+        causal_coherence = float(np.mean(coherence_scores)) if coherence_scores else 0.0
 
         objective_alignment = float(
             reports.get(
@@ -1148,18 +1146,18 @@ class IndustrialPolicyProcessor:
                 {},
             )
             .get("coherence_metrics", {})
-            .get("objective_alignment", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1129_40", 0.0))
+            .get("objective_alignment", 0.0)
         )
 
         confidence_interval = (
-            float(min(bayesian_values)) if bayesian_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1133_64", 0.0),
-            float(max(bayesian_values)) if bayesian_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1134_64", 0.0),
+            float(min(bayesian_values)) if bayesian_values else 0.0,
+            float(max(bayesian_values)) if bayesian_values else 0.0,
         )
 
         evidence = {
             "bayesian_scores": bayesian_scores,
             "dimension_confidences": {
-                key: value.get("dimension_confidence", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1140_55", 0.0))
+                key: value.get("dimension_confidence", 0.0)
                 for key, value in dimension_analysis.items()
             },
             "performance_metrics": performance_analysis.get("value_chain_metrics", {}),
@@ -1202,7 +1200,7 @@ class IndustrialPolicyProcessor:
 
                 if matches:
                     confidence = self._compute_evidence_confidence(
-                        matches, len(text), pattern_specificity=ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1183_64", 0.85)
+                        matches, len(text), pattern_specificity=0.85
                     )
 
                     if confidence >= self.config.confidence_threshold:
@@ -1258,7 +1256,7 @@ class IndustrialPolicyProcessor:
 
                 if matches:
                     confidence = self.scorer.compute_evidence_score(
-                        matches, len(text), pattern_specificity=ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1239_64", 0.80)
+                        matches, len(text), pattern_specificity=0.80
                     )
                     category_results[category] = {
                         "match_count": len(matches),
@@ -1272,7 +1270,7 @@ class IndustrialPolicyProcessor:
                 "dimension_confidence": round(
                     np.mean([c["confidence"] for c in category_results.values()])
                     if category_results
-                    else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1253_25", 0.0),
+                    else 0.0,
                     4,
                 ),
             }
@@ -1318,9 +1316,9 @@ class IndustrialPolicyProcessor:
             for dim_data in dimension_analysis.values()
             if dim_data.get("dimension_confidence", 0) > 0
         ]
-        return round(np.mean(confidences), 4) if confidences else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1299_66", 0.0)
+        return round(np.mean(confidences), 4) if confidences else 0.0
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._empty_result")
+    
     def _empty_result(self) -> dict[str, Any]:
         """Return structure for failed/empty processing."""
         return {
@@ -1331,7 +1329,7 @@ class IndustrialPolicyProcessor:
                 "character_count": 0,
                 "sentence_count": 0,
                 "point_coverage": 0,
-                "avg_confidence": ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._empty_result", "auto_param_L1312_34", 0.0),
+                "avg_confidence": 0.0,
             },
             "processing_status": "failed",
             "error": "Insufficient input for analysis",
@@ -1366,7 +1364,7 @@ class AdvancedTextSanitizer:
             "citation": ("__CITE_START__", "__CITE_END__"),
         }
 
-    @calibrated_method("farfan_core.processing.policy_processor.AdvancedTextSanitizer.sanitize")
+    
     def sanitize(self, raw_text: str) -> str:
         """
         Execute comprehensive text sanitization pipeline.
@@ -1404,7 +1402,7 @@ class AdvancedTextSanitizer:
 
         return text.strip()
 
-    @calibrated_method("farfan_core.processing.policy_processor.AdvancedTextSanitizer._protect_structure")
+    
     def _protect_structure(self, text: str) -> str:
         """Mark structural elements for protection during sanitization."""
         protected = text
@@ -1436,7 +1434,7 @@ class AdvancedTextSanitizer:
 
         return protected
 
-    @calibrated_method("farfan_core.processing.policy_processor.AdvancedTextSanitizer._restore_structure")
+    
     def _restore_structure(self, text: str) -> str:
         """Remove protection markers after sanitization."""
         restored = text
@@ -1596,7 +1594,7 @@ class PolicyAnalysisPipeline:
         logger.info(f"Analysis complete: {results['processing_status']}")
         return results
 
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_text")
+    
     def analyze_text(self, raw_text: str) -> dict[str, Any]:
         """
         Execute analysis pipeline on raw text input.
@@ -1617,7 +1615,7 @@ class PolicyAnalysisPipeline:
 def create_policy_processor(
     preserve_structure: bool = True,
     enable_semantic_tagging: bool = True,
-    confidence_threshold: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_text", "auto_param_L1595_34", 0.65),
+    confidence_threshold: float = 0.65,
     **kwargs: Any,
 ) -> PolicyAnalysisPipeline:
     """
@@ -1659,7 +1657,7 @@ def main() -> None:
         "-t",
         "--threshold",
         type=float,
-        default=ParameterLoaderV2.get("farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_text", "auto_param_L1637_16", 0.65),
+        default=0.65,
         help="Confidence threshold (0-1)",
     )
     parser.add_argument(

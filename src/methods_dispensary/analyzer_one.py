@@ -30,7 +30,6 @@ from typing import (
 )
 
 # from farfan_pipeline import get_parameter_loader  # CALIBRATION DISABLED
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:
     from farfan_pipeline.utils.method_config_loader import MethodConfigLoader
@@ -93,8 +92,8 @@ class MunicipalOntology:
                 outcomes=["shared_territorial_vision", "prioritized_problems"],
                 bottlenecks=["data_availability", "technical_capacity_gaps", "time_constraints"],
                 lead_time_days=90,
-                conversion_rates={"diagnosis_to_strategy": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L95_59", 0.75)},
-                capacity_constraints={"technical_staff": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L96_57", 0.8), "financial_resources": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L96_85", 0.6)}
+                conversion_rates={"diagnosis_to_strategy": 0.75},
+                capacity_constraints={"technical_staff": 0.8, "financial_resources": 0.6}
             ),
             "strategic_planning": ValueChainLink(
                 name="strategic_planning",
@@ -104,8 +103,8 @@ class MunicipalOntology:
                 outcomes=["strategic_alignment", "resource_optimization", "implementation_readiness"],
                 bottlenecks=["political_changes", "resource_constraints", "coordination_failures"],
                 lead_time_days=120,
-                conversion_rates={"strategy_to_programs": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L106_58", 0.80)},
-                capacity_constraints={"planning_expertise": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L107_60", 0.7), "resources": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L107_78", 0.8)}
+                conversion_rates={"strategy_to_programs": 0.80},
+                capacity_constraints={"planning_expertise": 0.7, "resources": 0.8}
             ),
             "implementation": ValueChainLink(
                 name="implementation",
@@ -115,8 +114,8 @@ class MunicipalOntology:
                 outcomes=["improved_living_conditions", "enhanced_capabilities", "social_cohesion"],
                 bottlenecks=["budget_execution", "capacity_constraints", "coordination_failures"],
                 lead_time_days=365,
-                conversion_rates={"inputs_to_outputs": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L117_55", 0.75)},
-                capacity_constraints={"implementation_capacity": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L118_65", 0.65), "coordination": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L118_87", 0.60)}
+                conversion_rates={"inputs_to_outputs": 0.75},
+                capacity_constraints={"implementation_capacity": 0.65, "coordination": 0.60}
             )
         }
 
@@ -182,7 +181,7 @@ class SemanticAnalyzer:
         # Use defaults if not provided
         self.max_features = max_features if max_features is not None else 1000
         self.ngram_range = ngram_range if ngram_range is not None else (1, 3)
-        self.similarity_threshold = similarity_threshold if similarity_threshold is not None else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L184_98", 0.3)
+        self.similarity_threshold = similarity_threshold if similarity_threshold is not None else 0.3
 
         if TfidfVectorizer is not None:
             self.vectorizer = TfidfVectorizer(
@@ -193,7 +192,7 @@ class SemanticAnalyzer:
         else:
             self.vectorizer = None
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer.extract_semantic_cube")
+    
     def extract_semantic_cube(self, document_segments: list[str]) -> dict[str, Any]:
         """Extract multidimensional semantic cube from document segments."""
 
@@ -259,14 +258,14 @@ class SemanticAnalyzer:
                     semantic_cube["measures"]["coherence_scores"]
                 ) / len(semantic_cube["measures"]["coherence_scores"])
         else:
-            semantic_cube["measures"]["overall_coherence"] = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer.extract_semantic_cube", "auto_param_L261_61", 0.0)
+            semantic_cube["measures"]["overall_coherence"] = 0.0
 
         semantic_cube["measures"]["semantic_complexity"] = self._calculate_semantic_complexity(semantic_cube)
 
         logger.info(f"Extracted semantic cube from {len(document_segments)} segments")
         return semantic_cube
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._empty_semantic_cube")
+    
     def _empty_semantic_cube(self) -> dict[str, Any]:
         """Return empty semantic cube structure."""
         return {
@@ -278,8 +277,8 @@ class SemanticAnalyzer:
             "measures": {
                 "semantic_density": [],
                 "coherence_scores": [],
-                "overall_coherence": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._empty_semantic_cube", "auto_param_L280_37", 0.0),
-                "semantic_complexity": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._empty_semantic_cube", "auto_param_L281_39", 0.0)
+                "overall_coherence": 0.0,
+                "semantic_complexity": 0.0
             },
             "metadata": {
                 "extraction_timestamp": datetime.now().isoformat(),
@@ -288,7 +287,7 @@ class SemanticAnalyzer:
             }
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._vectorize_segments")
+    
     def _vectorize_segments(self, segments: list[str]) -> np.ndarray:
         """Vectorize document segments using TF-IDF."""
         if self.vectorizer is not None:
@@ -302,9 +301,9 @@ class SemanticAnalyzer:
             return np.zeros((len(segments), 100))
         else:
             # Return list of lists if numpy is not available
-            return [[ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._vectorize_segments", "auto_param_L304_21", 0.0)] * 100 for _ in range(len(segments))]
+            return [[0.0] * 100 for _ in range(len(segments))]
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment")
+    
     def _process_segment(self, segment: str, idx: int, vector) -> dict[str, Any]:
         """Process individual segment and extract features."""
 
@@ -323,10 +322,10 @@ class SemanticAnalyzer:
             sentences = [s.strip() for s in re.split(r'[.!?]+', segment) if len(s.strip()) > 10]
 
         # Calculate semantic density (simplified)
-        semantic_density = len(set(words)) / len(words) if words else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment", "auto_param_L325_70", 0.0)
+        semantic_density = len(set(words)) / len(words) if words else 0.0
 
         # Calculate coherence score (simplified)
-        coherence_score = min(ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment", "auto_param_L328_30", 1.0), len(sentences) / 10) if sentences else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment", "auto_param_L328_74", 0.0)
+        coherence_score = min(1.0, len(sentences) / 10) if sentences else 0.0
 
         # Convert vector to list if it's a numpy array
         if np is not None and isinstance(vector, np.ndarray):
@@ -342,14 +341,14 @@ class SemanticAnalyzer:
             "coherence_score": coherence_score
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link")
+    
     def _classify_value_chain_link(self, segment: str) -> dict[str, float]:
         """Classify segment by value chain link using keyword matching."""
         link_scores = {}
         segment_lower = segment.lower()
 
         for link_name, link_obj in self.ontology.value_chain_links.items():
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link", "score", 0.0) # Refactored
+            score = 0.0 # Refactored
             total_keywords = 0
 
             # Check all link components
@@ -359,46 +358,46 @@ class SemanticAnalyzer:
             for keyword in all_keywords:
                 total_keywords += 1
                 if keyword.lower().replace("_", " ") in segment_lower:
-                    score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link", "auto_param_L361_29", 1.0)
+                    score += 1.0
 
             # Normalize score
-            link_scores[link_name] = score / total_keywords if total_keywords > 0 else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link", "auto_param_L364_87", 0.0)
+            link_scores[link_name] = score / total_keywords if total_keywords > 0 else 0.0
 
         return link_scores
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain")
+    
     def _classify_policy_domain(self, segment: str) -> dict[str, float]:
         """Classify segment by policy domain using keyword matching."""
         domain_scores = {}
         segment_lower = segment.lower()
 
         for domain, keywords in self.ontology.policy_domains.items():
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain", "score", 0.0) # Refactored
+            score = 0.0 # Refactored
             for keyword in keywords:
                 if keyword.lower() in segment_lower:
-                    score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain", "auto_param_L378_29", 1.0)
+                    score += 1.0
 
-            domain_scores[domain] = score / len(keywords) if keywords else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain", "auto_param_L380_75", 0.0)
+            domain_scores[domain] = score / len(keywords) if keywords else 0.0
 
         return domain_scores
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes")
+    
     def _classify_cross_cutting_themes(self, segment: str) -> dict[str, float]:
         """Classify segment by cross-cutting themes."""
         theme_scores = {}
         segment_lower = segment.lower()
 
         for theme, keywords in self.ontology.cross_cutting_themes.items():
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes", "score", 0.0) # Refactored
+            score = 0.0 # Refactored
             for keyword in keywords:
                 if keyword.lower().replace("_", " ") in segment_lower:
-                    score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes", "auto_param_L394_29", 1.0)
+                    score += 1.0
 
-            theme_scores[theme] = score / len(keywords) if keywords else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes", "auto_param_L396_73", 0.0)
+            theme_scores[theme] = score / len(keywords) if keywords else 0.0
 
         return theme_scores
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._calculate_semantic_complexity")
+    
     def _calculate_semantic_complexity(self, semantic_cube: dict[str, Any]) -> float:
         """Calculate semantic complexity of the cube."""
 
@@ -410,7 +409,7 @@ class SemanticAnalyzer:
 
         # Normalize complexity
         max_expected_concepts = 20
-        return min(ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._calculate_semantic_complexity", "auto_param_L412_19", 1.0), len(unique_concepts) / max_expected_concepts)
+        return min(1.0, len(unique_concepts) / max_expected_concepts)
 
 # ---------------------------------------------------------------------------
 # 3. PERFORMANCE ANALYZER
@@ -422,11 +421,11 @@ class PerformanceAnalyzer:
     def __init__(self, ontology: MunicipalOntology) -> None:
         self.ontology = ontology
         if IsolationForest is not None:
-            self.bottleneck_detector = IsolationForest(contamination=ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer.__init__", "auto_param_L424_69", 0.1), random_state=RANDOM_SEED)
+            self.bottleneck_detector = IsolationForest(contamination=0.1, random_state=RANDOM_SEED)
         else:
             self.bottleneck_detector = None
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer.analyze_performance")
+    
     def analyze_performance(self, semantic_cube: dict[str, Any]) -> dict[str, Any]:
         """Analyze performance indicators across value chain links."""
 
@@ -458,15 +457,15 @@ class PerformanceAnalyzer:
         logger.info(f"Performance analysis completed for {len(performance_analysis['value_chain_metrics'])} links")
         return performance_analysis
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics")
+    
     def _calculate_throughput_metrics(self, segments: list[dict], link_config: ValueChainLink) -> dict[str, Any]:
         """Calculate throughput metrics for a value chain link."""
 
         if not segments:
             return {
-                "throughput": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics", "auto_param_L466_30", 0.0),
-                "efficiency_score": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics", "auto_param_L467_36", 0.0),
-                "capacity_utilization": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics", "auto_param_L468_40", 0.0)
+                "throughput": 0.0,
+                "efficiency_score": 0.0,
+                "capacity_utilization": 0.0
             }
 
         # Calculate semantic throughput
@@ -497,7 +496,7 @@ class PerformanceAnalyzer:
             "segment_count": len(segments)
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks")
+    
     def _detect_bottlenecks(self, segments: list[dict], link_config: ValueChainLink) -> dict[str, Any]:
         """Detect bottlenecks in value chain link."""
 
@@ -508,15 +507,15 @@ class PerformanceAnalyzer:
 
         # Analyze capacity constraints
         for constraint_type, constraint_value in link_config.capacity_constraints.items():
-            if constraint_value < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L510_34", 0.7):
+            if constraint_value < 0.7:
                 bottleneck_analysis["capacity_constraints"][constraint_type] = {
                     "current_capacity": constraint_value,
-                    "severity": "high" if constraint_value < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L513_61", 0.5) else "medium"
+                    "severity": "high" if constraint_value < 0.5 else "medium"
                 }
 
         # Calculate bottleneck scores
         for bottleneck_type in link_config.bottlenecks:
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "score", 0.0) # Refactored
+            score = 0.0 # Refactored
             if segments:
                 # Count mentions of bottleneck in segments
                 mentions = sum(
@@ -527,12 +526,12 @@ class PerformanceAnalyzer:
 
             bottleneck_analysis["bottleneck_scores"][bottleneck_type] = {
                 "score": score,
-                "severity": "high" if score > ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L529_46", 0.2) else "medium" if score > ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L529_75", 0.1) else "low"
+                "severity": "high" if score > 0.2 else "medium" if score > 0.1 else "low"
             }
 
         return bottleneck_analysis
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions")
+    
     def _calculate_loss_functions(self, metrics: dict[str, Any], link_config: ValueChainLink) -> dict[str, Any]:
         """Calculate operational loss functions."""
 
@@ -542,7 +541,7 @@ class PerformanceAnalyzer:
         throughput_loss = throughput_gap ** 2
 
         # Efficiency loss (exponential)
-        target_efficiency = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "target_efficiency", 0.8) # Refactored
+        target_efficiency = 0.8 # Refactored
         efficiency_gap = max(0, target_efficiency - metrics["efficiency_score"])
 
         if np is not None:
@@ -554,11 +553,11 @@ class PerformanceAnalyzer:
         # Time loss (linear)
         baseline_time = link_config.lead_time_days
         capacity_utilization = metrics["capacity_utilization"]
-        time_multiplier = 1 + (1 - capacity_utilization) * ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L556_59", 0.5)
+        time_multiplier = 1 + (1 - capacity_utilization) * 0.5
         time_loss = baseline_time * (time_multiplier - 1)
 
         # Composite loss
-        composite_loss = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L560_25", 0.4) * throughput_loss + ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L560_49", 0.4) * efficiency_loss + ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L560_73", 0.2) * time_loss
+        composite_loss = 0.4 * throughput_loss + 0.4 * efficiency_loss + 0.2 * time_loss
 
         return {
             "throughput_loss": float(throughput_loss),
@@ -567,14 +566,14 @@ class PerformanceAnalyzer:
             "composite_loss": float(composite_loss)
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._generate_recommendations")
+    
     def _generate_recommendations(self, performance_analysis: dict[str, Any]) -> list[dict[str, Any]]:
         """Generate optimization recommendations."""
 
         recommendations = []
 
         for link_name, metrics in performance_analysis["value_chain_metrics"].items():
-            if metrics["efficiency_score"] < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._generate_recommendations", "auto_param_L576_45", 0.5):
+            if metrics["efficiency_score"] < 0.5:
                 recommendations.append({
                     "link": link_name,
                     "type": "efficiency_improvement",
@@ -616,7 +615,7 @@ class TextMiningEngine:
                 except:
                     logger.warning("Could not download NLTK stopwords. Using empty set.")
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine.diagnose_critical_links")
+    
     def diagnose_critical_links(self, semantic_cube: dict[str, Any],
                                 performance_analysis: dict[str, Any]) -> dict[str, Any]:
         """Diagnose critical value chain links."""
@@ -653,35 +652,35 @@ class TextMiningEngine:
         logger.info(f"Diagnosed {len(critical_links)} critical links")
         return diagnosis_results
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links")
+    
     def _identify_critical_links(self, performance_analysis: dict[str, Any]) -> dict[str, float]:
         """Identify critical links based on performance metrics."""
 
         critical_links = {}
 
         for link_name, metrics in performance_analysis["value_chain_metrics"].items():
-            criticality_score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "criticality_score", 0.0) # Refactored
+            criticality_score = 0.0 # Refactored
 
             # Low efficiency indicates criticality
-            if metrics["efficiency_score"] < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L665_45", 0.5):
-                criticality_score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L666_37", 0.4)
+            if metrics["efficiency_score"] < 0.5:
+                criticality_score += 0.4
 
             # Low throughput indicates criticality
             if metrics["throughput"] < 20:
-                criticality_score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L670_37", 0.3)
+                criticality_score += 0.3
 
             # High loss functions indicate criticality
             if link_name in performance_analysis["operational_loss_functions"]:
                 loss = performance_analysis["operational_loss_functions"][link_name]["composite_loss"]
-                normalized_loss = min(ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L675_38", 1.0), loss / 100)
-                criticality_score += normalized_loss * ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L676_55", 0.3)
+                normalized_loss = min(1.0, loss / 100)
+                criticality_score += normalized_loss * 0.3
 
-            if criticality_score > ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L678_35", 0.4):
+            if criticality_score > 0.4:
                 critical_links[link_name] = criticality_score
 
         return critical_links
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._analyze_link_text")
+    
     def _analyze_link_text(self, segments: list[dict]) -> dict[str, Any]:
         """Analyze text content for a link."""
 
@@ -719,7 +718,7 @@ class TextMiningEngine:
             "negative_indicators": negative_count
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._assess_risks")
+    
     def _assess_risks(self, segments: list[dict], text_analysis: dict[str, Any]) -> dict[str, Any]:
         """Assess risks for a value chain link."""
 
@@ -748,7 +747,7 @@ class TextMiningEngine:
 
         return risk_assessment
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._generate_interventions")
+    
     def _generate_interventions(self, link_name: str, risk_assessment: dict[str, Any],
                                 text_analysis: dict[str, Any]) -> list[dict[str, str]]:
         """Generate intervention recommendations."""
@@ -793,7 +792,7 @@ class MunicipalAnalyzer:
 
         logger.info("MunicipalAnalyzer initialized successfully")
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer.analyze_document")
+    
     def analyze_document(self, document_path: str) -> dict[str, Any]:
         """Perform comprehensive analysis of a municipal document."""
 
@@ -836,7 +835,7 @@ class MunicipalAnalyzer:
             logger.error(f"Analysis failed: {str(e)}")
             raise
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer._load_document")
+    
     def _load_document(self, document_path: str) -> list[str]:
         """Load and segment document."""
 
@@ -857,7 +856,7 @@ class MunicipalAnalyzer:
 
         return segments[:100]  # Limit for processing efficiency
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer._generate_summary")
+    
     def _generate_summary(self, semantic_cube: dict[str, Any],
                           performance_analysis: dict[str, Any],
                           critical_diagnosis: dict[str, Any]) -> dict[str, Any]:
@@ -881,7 +880,7 @@ class MunicipalAnalyzer:
                     for metrics in performance_analysis["value_chain_metrics"].values()
                 ) / len(performance_analysis["value_chain_metrics"])
         else:
-            avg_efficiency = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer._generate_summary", "avg_efficiency", 0.0) # Refactored
+            avg_efficiency = 0.0 # Refactored
 
         # Critical links count
         critical_links_count = len(critical_diagnosis["critical_links"])
@@ -1079,7 +1078,7 @@ class CanonicalQuestionSegmenter:
             rubric_path=rubric_path,
         )
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.CanonicalQuestionSegmenter.segment_plan")
+    
     def segment_plan(self, plan_text: str) -> dict[str, Any]:
         """Segment *plan_text* and emit evidence manifests per canonical contract."""
 
@@ -1125,7 +1124,7 @@ class CanonicalQuestionSegmenter:
             "total_contracts": total_contracts,
             "covered_contracts": matched_contracts,
             "coverage_ratio": (
-                matched_contracts / total_contracts if total_contracts else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.CanonicalQuestionSegmenter.segment_plan", "auto_param_L1127_76", 0.0)
+                matched_contracts / total_contracts if total_contracts else 0.0
             ),
             "total_segments": len(normalized_segments),
             "input_sha256": hashlib.sha256(normalized_text.encode("utf-8")).hexdigest(),
@@ -1730,7 +1729,7 @@ class ConfigurationManager:
         self.config_path = config_path or "analyzer_config.json"
         self.config = self.load_config()
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.ConfigurationManager.load_config")
+    
     def load_config(self) -> dict[str, Any]:
         """Load configuration from file or create default."""
 
@@ -1741,8 +1740,8 @@ class ConfigurationManager:
                 "segmentation_method": "sentence"
             },
             "analysis": {
-                "criticality_threshold": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.ConfigurationManager.load_config", "auto_param_L1743_41", 0.4),
-                "efficiency_threshold": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.ConfigurationManager.load_config", "auto_param_L1744_40", 0.5),
+                "criticality_threshold": 0.4,
+                "efficiency_threshold": 0.5,
                 "throughput_threshold": 20
             },
             "export": {
@@ -1768,7 +1767,7 @@ class ConfigurationManager:
 
         return default_config
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.ConfigurationManager.save_config")
+    
     def save_config(self) -> None:
         """Save current configuration to file."""
         # Delegate to factory for I/O operation
@@ -1785,7 +1784,7 @@ class BatchProcessor:
     def __init__(self, analyzer: MunicipalAnalyzer) -> None:
         self.analyzer = analyzer
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.BatchProcessor.process_directory")
+    
     def process_directory(self, directory_path: str, pattern: str = "*.txt") -> dict[str, Any]:
         """Process all files matching pattern in directory."""
 
@@ -1809,7 +1808,7 @@ class BatchProcessor:
 
         return results
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.BatchProcessor.export_batch_results")
+    
     def export_batch_results(self, batch_results: dict[str, Any], output_dir: str) -> None:
         """Export batch processing results."""
 
@@ -1832,7 +1831,7 @@ class BatchProcessor:
         # Create batch summary
         self._create_batch_summary(batch_results, output_path)
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.BatchProcessor._create_batch_summary")
+    
     def _create_batch_summary(self, batch_results: dict[str, Any], output_path: Path) -> None:
         """Create summary of batch processing results."""
 
