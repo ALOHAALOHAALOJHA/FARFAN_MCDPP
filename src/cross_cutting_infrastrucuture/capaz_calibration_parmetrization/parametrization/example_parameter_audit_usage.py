@@ -279,21 +279,19 @@ def example_8_programmatic_fix_suggestions():
         
         if v.category == "weight":
             print("   Fix:")
-            print("   1. Add to COHORT_2024_fusion_weights.json or COHORT_2024_intrinsic_calibration.json")
+            print("   1. Add to COHORT_2024_fusion_weights.json or appropriate JSON config")
             print("   2. Replace with:")
-            print(f"      from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.parameter_loader import get_parameter_loader")
-            print(f"      loader = get_parameter_loader()")
-            print(f"      {v.variable_name} = loader.get('component.{v.variable_name}', {v.hardcoded_value})")
+            print(f"      {v.variable_name} = config.get('component.{v.variable_name}', {v.hardcoded_value})")
         
         elif v.category == "score":
             print("   Fix:")
-            print("   1. Add to COHORT_2024_intrinsic_calibration.json or COHORT_2024_runtime_layers.json")
+            print("   1. Add to COHORT_2024_runtime_layers.json or appropriate JSON config")
             print("   2. Replace with:")
             print(f"      {v.variable_name} = config.get('{v.variable_name}', {v.hardcoded_value})")
         
         elif v.category == "threshold":
             print("   Fix:")
-            print("   1. Add to COHORT_2024_intrinsic_calibration.json under appropriate component")
+            print("   1. Add to appropriate JSON config under appropriate component")
             print("   2. Replace with:")
             print(f"      {v.variable_name} = config.get('thresholds.{v.variable_name}', {v.hardcoded_value})")
         
