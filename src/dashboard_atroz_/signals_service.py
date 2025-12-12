@@ -29,7 +29,6 @@ from sse_starlette.sse import EventSourceResponse
 
 from orchestration.factory import load_questionnaire
 from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
