@@ -1,0 +1,2366 @@
+{
+  "AdaptivePriorCalculator._add_ood_noise": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q025"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "AdaptivePriorCalculator._adjust_domain_weights": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdaptivePriorCalculator._perturb_evidence": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q023"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "AdaptivePriorCalculator.calculate_likelihood_adaptativo": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q010",
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "AdaptivePriorCalculator.generate_traceability_record": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q011",
+      "Q013",
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "AdaptivePriorCalculator.sensitivity_analysis": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q009",
+      "Q018",
+      "Q024"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM04",
+      "DIM05"
+    ]
+  },
+  "AdaptivePriorCalculator.validate_quality_criteria": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q020",
+      "Q025",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM04",
+      "DIM05",
+      "DIM06"
+    ]
+  },
+  "AdvancedDAGValidator._calculate_bayesian_posterior": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator._calculate_confidence_interval": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator._calculate_node_importance": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q029"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "AdvancedDAGValidator._calculate_statistical_power": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q018"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM04"
+    ]
+  },
+  "AdvancedDAGValidator._create_empty_result": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator._generate_subgraph": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator._get_node_validator": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator._initialize_rng": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator._is_acyclic": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator._perform_sensitivity_analysis_internal": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q017"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "AdvancedDAGValidator.add_edge": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator.add_node": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "AdvancedDAGValidator.calculate_acyclicity_pvalue": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "AdvancedDAGValidator.export_nodes": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "AdvancedDAGValidator.get_graph_stats": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "BayesFactorTable.get_bayes_factor": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q017",
+      "Q029"
+    ],
+    "dimensions": [
+      "DIM04",
+      "DIM06"
+    ]
+  },
+  "BayesianConfidenceCalculator.calculate_posterior": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q002"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "BayesianCounterfactualAuditor._create_default_equations": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q008"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "BayesianCounterfactualAuditor._evaluate_counterfactual": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "BayesianCounterfactualAuditor._evaluate_factual": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "BayesianCounterfactualAuditor._test_effect_stability": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q002",
+      "Q024",
+      "Q027"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM05",
+      "DIM06"
+    ]
+  },
+  "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q003",
+      "Q009",
+      "Q019",
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM02",
+      "DIM04",
+      "DIM05"
+    ]
+  },
+  "BayesianCounterfactualAuditor.construct_scm": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q008",
+      "Q017",
+      "Q021"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM04",
+      "DIM05"
+    ]
+  },
+  "BayesianCounterfactualAuditor.counterfactual_query": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q002"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "BayesianCounterfactualAuditor.refutation_and_sanity_checks": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q009",
+      "Q015",
+      "Q024"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "BayesianMechanismInference._aggregate_bayesian_confidence": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q018",
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM04",
+      "DIM05"
+    ]
+  },
+  "BayesianMechanismInference._calculate_coherence_factor": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q010",
+      "Q025",
+      "Q027"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM05",
+      "DIM06"
+    ]
+  },
+  "BayesianMechanismInference._detect_gaps": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q002"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "BayesianMechanismInference._generate_necessity_remediation": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "BayesianMechanismInference._infer_activity_sequence": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "BayesianMechanismInference._infer_mechanism_type": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q007"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "BayesianMechanismInference._infer_single_mechanism": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q007"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "BayesianMechanismInference._log_refactored_components": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "BayesianMechanismInference._quantify_uncertainty": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q023"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "BayesianMechanismInference._test_necessity": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q007",
+      "Q012",
+      "Q014",
+      "Q027"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "BayesianMechanismInference._test_sufficiency": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q007",
+      "Q012",
+      "Q027"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "BayesianMechanismInference.infer_mechanisms": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q007",
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "BayesianNumericalAnalyzer.compare_policies": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "BayesianNumericalAnalyzer.evaluate_policy_metric": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "BeachEvidentialTest.apply_test_logic": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q011",
+      "Q027"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "BeachEvidentialTest.classify_test": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q007"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "CDAFFramework._extract_feedback_from_audit": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q029"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "CDAFFramework._generate_dnp_report": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q020"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "CDAFFramework._validate_dnp_compliance": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q020"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "CausalExtractor._assess_financial_consistency": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "CausalExtractor._assess_temporal_coherence": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q005",
+      "Q021",
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM05",
+      "DIM06"
+    ]
+  },
+  "CausalExtractor._build_type_hierarchy": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "CausalExtractor._calculate_composite_likelihood": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q008",
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM04"
+    ]
+  },
+  "CausalExtractor._calculate_language_specificity": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q016",
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM04",
+      "DIM06"
+    ]
+  },
+  "CausalExtractor._calculate_semantic_distance": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q016",
+      "Q023"
+    ],
+    "dimensions": [
+      "DIM04",
+      "DIM05"
+    ]
+  },
+  "CausalExtractor._calculate_textual_proximity": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "CausalExtractor._calculate_type_transition_prior": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q008",
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "CausalExtractor._check_structural_violation": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "CausalExtractor._classify_goal_type": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "CausalExtractor._extract_causal_links": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q008"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "CausalExtractor._extract_goals": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q001",
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM04"
+    ]
+  },
+  "CausalExtractor._initialize_prior": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q008"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "CausalExtractor._parse_goal_context": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q001",
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM04"
+    ]
+  },
+  "CausalExtractor.extract_causal_hierarchy": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q007",
+      "Q017",
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM04",
+      "DIM06"
+    ]
+  },
+  "CausalInferenceSetup._get_dynamics_pattern": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "CausalInferenceSetup.assign_probative_value": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q011"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "CausalInferenceSetup.identify_failure_points": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q005",
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM06"
+    ]
+  },
+  "ConfigLoader._load_uncertainty_history": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q029"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "ConfigLoader._save_prior_history": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q029"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "ConfigLoader.check_uncertainty_reduction_criterion": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q029"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "ConfigLoader.update_priors_from_feedback": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q029"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "FinancialAuditor._calculate_sufficiency": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q003",
+      "Q012",
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "FinancialAuditor._detect_allocation_gaps": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q002",
+      "Q019"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM04"
+    ]
+  },
+  "FinancialAuditor._match_goal_to_budget": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q003",
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03"
+    ]
+  },
+  "FinancialAuditor._match_program_to_node": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q003",
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03"
+    ]
+  },
+  "FinancialAuditor._parse_amount": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "FinancialAuditor._perform_counterfactual_budget_check": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q003"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "FinancialAuditor._process_financial_table": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q003",
+      "Q006"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM02"
+    ]
+  },
+  "FinancialAuditor.trace_financial_allocation": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q003"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "HierarchicalGenerativeModel._ablation_analysis": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q025"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "HierarchicalGenerativeModel._calculate_ess": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q014",
+      "Q018",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM04",
+      "DIM06"
+    ]
+  },
+  "HierarchicalGenerativeModel._calculate_likelihood": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "HierarchicalGenerativeModel._calculate_r_hat": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q014",
+      "Q018",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM04",
+      "DIM06"
+    ]
+  },
+  "HierarchicalGenerativeModel._calculate_waic_difference": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q025"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "HierarchicalGenerativeModel._generate_independence_tests": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q017"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "HierarchicalGenerativeModel.posterior_predictive_check": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q025"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "HierarchicalGenerativeModel.verify_conditional_independence": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q017"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "IndustrialGradeValidator._benchmark_operation": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "IndustrialGradeValidator._log_metric": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialGradeValidator.execute_suite": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "IndustrialGradeValidator.run_performance_benchmarks": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialGradeValidator.validate_causal_categories": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialGradeValidator.validate_connection_matrix": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q027"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "IndustrialGradeValidator.validate_engine_readiness": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "IndustrialPolicyProcessor._analyze_causal_dimensions": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q005",
+      "Q007",
+      "Q020"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM02",
+      "DIM04"
+    ]
+  },
+  "IndustrialPolicyProcessor._build_point_patterns": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialPolicyProcessor._calculate_quality_score": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q011",
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialPolicyProcessor._compile_pattern_registry": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialPolicyProcessor._compute_avg_confidence": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "IndustrialPolicyProcessor._compute_evidence_confidence": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q013",
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "IndustrialPolicyProcessor._construct_evidence_bundle": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "IndustrialPolicyProcessor._empty_result": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialPolicyProcessor._extract_metadata": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q005",
+      "Q011"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03"
+    ]
+  },
+  "IndustrialPolicyProcessor._extract_point_evidence": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "IndustrialPolicyProcessor._load_questionnaire": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "IndustrialPolicyProcessor._match_patterns_in_sentences": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "IndustrialPolicyProcessor.export_results": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "IndustrialPolicyProcessor.process": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "MechanismPartExtractor._calculate_ea_confidence": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q004"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "MechanismPartExtractor._normalize_entity": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q004"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "MechanismPartExtractor._validate_entity_activity": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q004"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "MechanismPartExtractor.extract_entity_activity": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q004"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "OperationalizationAuditor._audit_direct_evidence": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q002"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "OperationalizationAuditor._audit_systemic_risk": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q002",
+      "Q009",
+      "Q024"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM02",
+      "DIM05"
+    ]
+  },
+  "OperationalizationAuditor._generate_optimal_remediations": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q019"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "OperationalizationAuditor._get_remediation_text": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q019"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "OperationalizationAuditor.audit_evidence_traceability": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q004",
+      "Q011"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03"
+    ]
+  },
+  "OperationalizationAuditor.audit_sequence_logic": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q010"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._analyze_funding_sources": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q003"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._assess_financial_sustainability": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._bayesian_risk_inference": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q009"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._break_cycles": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q024"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._classify_entity_type": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q004"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._classify_tables": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q003",
+      "Q006"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM02"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._clean_dataframe": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q006"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._compute_e_value": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q009",
+      "Q022",
+      "Q025"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._compute_robustness_value": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q009",
+      "Q018",
+      "Q022",
+      "Q025"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM04",
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._consolidate_entities": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q004",
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._deduplicate_tables": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q006",
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._effect_to_dict": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._entity_to_dict": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._estimate_effect_bayesian": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q018"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._estimate_score_confidence": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._extract_budget_for_pillar": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q003"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._extract_entities_ner": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q004",
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._extract_entities_syntax": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q004",
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._extract_financial_amounts": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._extract_from_budget_table": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._find_mediator_mentions": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q021",
+      "Q023"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._find_outcome_mentions": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._generate_optimal_remediations": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q002"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._generate_recommendations": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q012",
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._generate_scenario_narrative": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q021"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._get_prior_effect": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q018"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._get_spanish_stopwords": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._identify_causal_edges": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q008"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._identify_causal_nodes": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._identify_confounders": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._identify_funding_source": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q003"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._indicator_to_dict": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._interpret_overall_quality": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._interpret_risk": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q009",
+      "Q012",
+      "Q024"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._interpret_sensitivity": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q009",
+      "Q022",
+      "Q024"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._is_likely_header": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q006"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._quality_to_dict": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._refine_edge_probabilities": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q008",
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._scenario_to_dict": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._score_causal_coherence": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q010",
+      "Q020"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._score_entity_specificity": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q004"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._score_financial_component": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q003"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._score_indicators": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q011",
+      "Q012",
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._score_pdet_alignment": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q020"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._score_responsibility_clarity": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._score_temporal_consistency": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer._simulate_intervention": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q002",
+      "Q015",
+      "Q021"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q003",
+      "Q012",
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.calculate_quality_score": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.construct_causal_dag": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q007",
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.estimate_causal_effects": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.export_causal_network": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.generate_counterfactuals": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q015",
+      "Q021"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.generate_executive_report": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.identify_responsible_entities": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q004",
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03"
+    ]
+  },
+  "PDETMunicipalPlanAnalyzer.sensitivity_analysis": {
+    "file": "financiero_viabilidad_tablas copy.py",
+    "questions": [
+      "Q009"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PDFProcessor.extract_tables": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q006"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PerformanceAnalyzer._calculate_loss_functions": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PerformanceAnalyzer._generate_recommendations": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PerformanceAnalyzer.analyze_performance": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q002",
+      "Q014",
+      "Q016",
+      "Q028"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03",
+      "DIM04",
+      "DIM06"
+    ]
+  },
+  "PolicyAnalysisEmbedder._apply_mmr": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PolicyAnalysisEmbedder._compute_overall_confidence": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q022",
+      "Q027"
+    ],
+    "dimensions": [
+      "DIM05",
+      "DIM06"
+    ]
+  },
+  "PolicyAnalysisEmbedder._embed_texts": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyAnalysisEmbedder._extract_numerical_values": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyAnalysisEmbedder._filter_by_pdq": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyAnalysisEmbedder._generate_query_from_pdq": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q013",
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "PolicyAnalysisEmbedder.compare_policy_interventions": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q015"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyAnalysisEmbedder.generate_pdq_report": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PolicyAnalysisEmbedder.get_diagnostics": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q022",
+      "Q023"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyAnalysisEmbedder.process_document": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q013",
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "PolicyAnalysisEmbedder.semantic_search": {
+    "file": "embedding_policy.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "PolicyContradictionDetector._calculate_coherence_metrics": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q010"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PolicyContradictionDetector._calculate_graph_fragmentation": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q010"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PolicyContradictionDetector._calculate_numerical_divergence": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q002"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PolicyContradictionDetector._calculate_objective_alignment": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q010",
+      "Q019"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM04"
+    ]
+  },
+  "PolicyContradictionDetector._detect_logical_incompatibilities": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q010"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "PolicyContradictionDetector._detect_numerical_inconsistencies": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q002"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PolicyContradictionDetector._extract_quantitative_claims": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PolicyContradictionDetector._generate_resolution_recommendations": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q019"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PolicyContradictionDetector._identify_affected_sections": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q019"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "PolicyContradictionDetector._parse_number": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PolicyContradictionDetector._statistical_significance_test": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "PolicyTextProcessor.compile_pattern": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyTextProcessor.extract_contextual_window": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyTextProcessor.normalize_unicode": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "PolicyTextProcessor.segment_into_sentences": {
+    "file": "policy_processor.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "ReportingEngine._calculate_quality_score": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q022"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "ReportingEngine.generate_accountability_matrix": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q006",
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "ReportingEngine.generate_causal_diagram": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "ReportingEngine.generate_causal_model_json": {
+    "file": "derek_beach.py",
+    "questions": [
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "SemanticAnalyzer._calculate_semantic_complexity": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "SemanticAnalyzer._classify_cross_cutting_themes": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "SemanticAnalyzer._classify_policy_domain": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "SemanticAnalyzer._classify_value_chain_link": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "SemanticAnalyzer._empty_semantic_cube": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "SemanticAnalyzer._process_segment": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "SemanticAnalyzer._vectorize_segments": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q013"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "SemanticAnalyzer.extract_semantic_cube": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q008",
+      "Q023"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM05"
+    ]
+  },
+  "SemanticProcessor._detect_pdm_structure": {
+    "file": "semantic_chunking_policy.py",
+    "questions": [
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "SemanticProcessor._detect_table": {
+    "file": "semantic_chunking_policy.py",
+    "questions": [
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "SemanticProcessor.chunk_text": {
+    "file": "semantic_chunking_policy.py",
+    "questions": [
+      "Q001",
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM06"
+    ]
+  },
+  "SemanticProcessor.embed_single": {
+    "file": "semantic_chunking_policy.py",
+    "questions": [
+      "Q001"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "TemporalLogicVerifier._check_deadline_constraints": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q005"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "TemporalLogicVerifier._classify_temporal_type": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "TemporalLogicVerifier._extract_resources": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "TemporalLogicVerifier._parse_temporal_marker": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q016"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "TemporalLogicVerifier.verify_temporal_consistency": {
+    "file": "contradiction_deteccion.py",
+    "questions": [
+      "Q005"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "TeoriaCambio._encontrar_caminos_completos": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q017"
+    ],
+    "dimensions": [
+      "DIM04"
+    ]
+  },
+  "TeoriaCambio._es_conexion_valida": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q007"
+    ],
+    "dimensions": [
+      "DIM02"
+    ]
+  },
+  "TeoriaCambio._extraer_categorias": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q014"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "TeoriaCambio._generar_sugerencias_internas": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q012"
+    ],
+    "dimensions": [
+      "DIM03"
+    ]
+  },
+  "TeoriaCambio._validar_orden_causal": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q015",
+      "Q021"
+    ],
+    "dimensions": [
+      "DIM03",
+      "DIM05"
+    ]
+  },
+  "TeoriaCambio.construir_grafo_causal": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q007",
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM02",
+      "DIM06"
+    ]
+  },
+  "TeoriaCambio.export_nodes": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM06"
+    ]
+  },
+  "TeoriaCambio.validacion_completa": {
+    "file": "teoria_cambio.py",
+    "questions": [
+      "Q017",
+      "Q026"
+    ],
+    "dimensions": [
+      "DIM04",
+      "DIM06"
+    ]
+  },
+  "TextMiningEngine._analyze_link_text": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q001",
+      "Q005"
+    ],
+    "dimensions": [
+      "DIM01"
+    ]
+  },
+  "TextMiningEngine._generate_interventions": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q021"
+    ],
+    "dimensions": [
+      "DIM05"
+    ]
+  },
+  "TextMiningEngine.diagnose_critical_links": {
+    "file": "analyzer_one.py",
+    "questions": [
+      "Q001",
+      "Q011",
+      "Q030"
+    ],
+    "dimensions": [
+      "DIM01",
+      "DIM03",
+      "DIM06"
+    ]
+  }
+}

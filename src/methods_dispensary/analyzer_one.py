@@ -67,238 +67,9 @@ except ImportError as e:
 # 1. CORE DATA STRUCTURES
 # ---------------------------------------------------------------------------
 
-# ==========================================================================
-# DATOS HARDCODEADOS - COPIADOS TEXTUALMENTE DE questionnaire_monolith.json
-# Fuente: canonic_questionnaire_central/questionnaire_monolith.json
-# ==========================================================================
-
-# De: canonical_notation.dimensions
-CANONICAL_DIMENSIONS: dict[str, dict[str, str]] = {
-    "DIM01": {"name": "INSUMOS", "label": "Diagnóstico y Recursos"},
-    "DIM02": {"name": "ACTIVIDADES", "label": "Diseño de Intervención"},
-    "DIM03": {"name": "PRODUCTOS", "label": "Productos y Outputs"},
-    "DIM04": {"name": "RESULTADOS", "label": "Resultados y Outcomes"},
-    "DIM05": {"name": "IMPACTOS", "label": "Impactos de Largo Plazo"},
-    "DIM06": {"name": "CAUSALIDAD", "label": "Teoría de Cambio"},
-}
-
-# De: blocks.micro_questions[:30] - primeras 30 preguntas (6 dimensiones × 5 variables)
-# Cada entrada contiene: dimension_id, question_id, cluster_id, membership_criteria
-# membership_criteria = expected_elements[].type del JSON
-CANONICAL_VARIABLES: dict[str, dict[str, Any]] = {
-    "D1-Q1": {
-        "dimension_id": "DIM01",
-        "question_id": "Q001",
-        "cluster_id": "CL02",
-        "membership_criteria": ["cobertura_territorial_especificada", "fuentes_oficiales", "indicadores_cuantitativos", "series_temporales_años"],
-    },
-    "D1-Q2": {
-        "dimension_id": "DIM01",
-        "question_id": "Q002",
-        "cluster_id": "CL02",
-        "membership_criteria": ["cuantificacion_brecha", "sesgos_reconocidos", "vacios_explicitos"],
-    },
-    "D1-Q3": {
-        "dimension_id": "DIM01",
-        "question_id": "Q003",
-        "cluster_id": "CL02",
-        "membership_criteria": ["asignacion_explicita", "suficiencia_justificada", "trazabilidad_ppi_bpin"],
-    },
-    "D1-Q4": {
-        "dimension_id": "DIM01",
-        "question_id": "Q004",
-        "cluster_id": "CL02",
-        "membership_criteria": ["cuellos_botella", "datos_sistemas", "gobernanza", "procesos", "talento_humano"],
-    },
-    "D1-Q5": {
-        "dimension_id": "DIM01",
-        "question_id": "Q005",
-        "cluster_id": "CL02",
-        "membership_criteria": ["coherencia_demostrada", "restricciones_legales", "restricciones_presupuestales", "restricciones_temporales"],
-    },
-    "D2-Q1": {
-        "dimension_id": "DIM02",
-        "question_id": "Q006",
-        "cluster_id": "CL02",
-        "membership_criteria": ["columna_costo", "columna_cronograma", "columna_producto", "columna_responsable", "formato_tabular"],
-    },
-    "D2-Q2": {
-        "dimension_id": "DIM02",
-        "question_id": "Q007",
-        "cluster_id": "CL02",
-        "membership_criteria": ["instrumento_especificado", "logica_causal_explicita", "poblacion_objetivo_definida"],
-    },
-    "D2-Q3": {
-        "dimension_id": "DIM02",
-        "question_id": "Q008",
-        "cluster_id": "CL02",
-        "membership_criteria": ["aborda_causa_raiz", "vinculo_diagnostico_actividad"],
-    },
-    "D2-Q4": {
-        "dimension_id": "DIM02",
-        "question_id": "Q009",
-        "cluster_id": "CL02",
-        "membership_criteria": ["mitigacion_propuesta", "riesgos_identificados"],
-    },
-    "D2-Q5": {
-        "dimension_id": "DIM02",
-        "question_id": "Q010",
-        "cluster_id": "CL02",
-        "membership_criteria": ["complementariedad_explicita", "secuenciacion_logica"],
-    },
-    "D3-Q1": {
-        "dimension_id": "DIM03",
-        "question_id": "Q011",
-        "cluster_id": "CL02",
-        "membership_criteria": ["fuente_verificacion", "linea_base_producto", "meta_cuantitativa"],
-    },
-    "D3-Q2": {
-        "dimension_id": "DIM03",
-        "question_id": "Q012",
-        "cluster_id": "CL02",
-        "membership_criteria": ["dosificacion_definida", "proporcionalidad_meta_brecha"],
-    },
-    "D3-Q3": {
-        "dimension_id": "DIM03",
-        "question_id": "Q013",
-        "cluster_id": "CL02",
-        "membership_criteria": ["trazabilidad_organizacional", "trazabilidad_presupuestal"],
-    },
-    "D3-Q4": {
-        "dimension_id": "DIM03",
-        "question_id": "Q014",
-        "cluster_id": "CL02",
-        "membership_criteria": ["coherencia_recursos", "factibilidad_tecnica", "realismo_plazos"],
-    },
-    "D3-Q5": {
-        "dimension_id": "DIM03",
-        "question_id": "Q015",
-        "cluster_id": "CL02",
-        "membership_criteria": ["conexion_producto_resultado", "mecanismo_causal_explicito"],
-    },
-    "D4-Q1": {
-        "dimension_id": "DIM04",
-        "question_id": "Q016",
-        "cluster_id": "CL02",
-        "membership_criteria": ["horizonte_temporal", "linea_base_resultado", "meta_resultado", "metrica_outcome"],
-    },
-    "D4-Q2": {
-        "dimension_id": "DIM04",
-        "question_id": "Q017",
-        "cluster_id": "CL02",
-        "membership_criteria": ["cadena_causal_explicita", "condiciones_habilitantes", "supuestos_identificados"],
-    },
-    "D4-Q3": {
-        "dimension_id": "DIM04",
-        "question_id": "Q018",
-        "cluster_id": "CL02",
-        "membership_criteria": ["evidencia_comparada", "justificacion_capacidad", "justificacion_recursos"],
-    },
-    "D4-Q4": {
-        "dimension_id": "DIM04",
-        "question_id": "Q019",
-        "cluster_id": "CL02",
-        "membership_criteria": ["criterios_exito_definidos", "vinculo_resultado_problema"],
-    },
-    "D4-Q5": {
-        "dimension_id": "DIM04",
-        "question_id": "Q020",
-        "cluster_id": "CL02",
-        "membership_criteria": ["alineacion_ods", "alineacion_pnd"],
-    },
-    "D5-Q1": {
-        "dimension_id": "DIM05",
-        "question_id": "Q021",
-        "cluster_id": "CL02",
-        "membership_criteria": ["impacto_definido", "rezago_temporal", "ruta_transmision"],
-    },
-    "D5-Q2": {
-        "dimension_id": "DIM05",
-        "question_id": "Q022",
-        "cluster_id": "CL02",
-        "membership_criteria": ["justifica_validez", "usa_indices_compuestos", "usa_proxies"],
-    },
-    "D5-Q3": {
-        "dimension_id": "DIM05",
-        "question_id": "Q023",
-        "cluster_id": "CL02",
-        "membership_criteria": ["documenta_validez", "proxy_para_intangibles", "reconoce_limitaciones"],
-    },
-    "D5-Q4": {
-        "dimension_id": "DIM05",
-        "question_id": "Q024",
-        "cluster_id": "CL02",
-        "membership_criteria": ["alineacion_marcos", "riesgos_sistemicos"],
-    },
-    "D5-Q5": {
-        "dimension_id": "DIM05",
-        "question_id": "Q025",
-        "cluster_id": "CL02",
-        "membership_criteria": ["analisis_realismo", "efectos_no_deseados", "hipotesis_limite"],
-    },
-    "D6-Q1": {
-        "dimension_id": "DIM06",
-        "question_id": "Q026",
-        "cluster_id": "CL02",
-        "membership_criteria": ["diagrama_causal", "supuestos_verificables", "teoria_cambio_explicita"],
-    },
-    "D6-Q2": {
-        "dimension_id": "DIM06",
-        "question_id": "Q027",
-        "cluster_id": "CL02",
-        "membership_criteria": ["evita_saltos_logicos", "proporcionalidad_eslabones"],
-    },
-    "D6-Q3": {
-        "dimension_id": "DIM06",
-        "question_id": "Q028",
-        "cluster_id": "CL02",
-        "membership_criteria": ["propone_pilotos_o_pruebas", "reconoce_inconsistencias"],
-    },
-    "D6-Q4": {
-        "dimension_id": "DIM06",
-        "question_id": "Q029",
-        "cluster_id": "CL02",
-        "membership_criteria": ["ciclos_aprendizaje", "mecanismos_correccion", "sistema_monitoreo"],
-    },
-    "D6-Q5": {
-        "dimension_id": "DIM06",
-        "question_id": "Q030",
-        "cluster_id": "CL02",
-        "membership_criteria": ["analisis_contextual", "enfoque_diferencial"],
-    },
-}
-
-
-@dataclass
-class DimensionContract:
-    """Contrato canónico para una dimensión analítica (DIM01-DIM06)."""
-    dimension_id: str      # DIM01, DIM02, ..., DIM06
-    name: str              # DIAGNÓSTICO, PRODUCTOS, etc.
-    label: str             # D, P, R, O, I, C
-    variables: list[str]   # Lista de slots (D1-Q1, D1-Q2, ...)
-
-
-@dataclass
-class VariableContract:
-    """Contrato canónico para una variable analítica.
-    
-    Campos copiados de questionnaire_monolith.json:
-    - slot: base_slot (D1-Q1, D2-Q3, etc.)
-    - dimension_id: DIM01-DIM06
-    - question_id: Q001-Q030
-    - cluster_id: CL01-CL04
-    - membership_criteria: expected_elements[].type
-    """
-    slot: str
-    dimension_id: str
-    question_id: str
-    cluster_id: str
-    membership_criteria: list[str]
-
-
 @dataclass
 class ValueChainLink:
-    """Represents a link in the municipal development value chain (LEGACY - mantener compatibilidad)."""
+    """Represents a link in the municipal development value chain."""
     name: str
     instruments: list[str]
     mediators: list[str]
@@ -309,156 +80,59 @@ class ValueChainLink:
     conversion_rates: dict[str, float]
     capacity_constraints: dict[str, float]
 
-
 class MunicipalOntology:
-    """Ontología municipal cargada dinámicamente desde questionnaire_monolith.json.
-    
-    Estructura canónica:
-    - 6 Dimensiones (DIM01-DIM06)
-    - 5 Variables por dimensión (D*-Q1 a D*-Q5)
-    - 30 Variables analíticas totales
-    - Cada variable tiene criterios de membresía (expected_elements[].type)
-    """
+    """Core ontology for municipal development domains."""
 
     def __init__(self) -> None:
-        # Estructuras canónicas (desde constantes HARDCODEADAS)
-        self.dimensions: dict[str, DimensionContract] = {}
-        self.variables: dict[str, VariableContract] = {}
-        self.variables_by_dimension: dict[str, list[VariableContract]] = defaultdict(list)
-        
-        # Cargar estructura canónica desde constantes
-        self._load_canonical_structure()
-        
-        # LEGACY: Mantener compatibilidad con código existente
-        self._build_legacy_structures()
-
-    def _load_canonical_structure(self) -> None:
-        """Carga dimensiones y variables desde constantes HARDCODEADAS.
-        
-        Los datos vienen de CANONICAL_DIMENSIONS y CANONICAL_VARIABLES,
-        que son copia textual de questionnaire_monolith.json.
-        """
-        # Cargar dimensiones desde CANONICAL_DIMENSIONS (hardcodeado)
-        for dim_id, dim_data in CANONICAL_DIMENSIONS.items():
-            self.dimensions[dim_id] = DimensionContract(
-                dimension_id=dim_id,
-                name=dim_data["name"],
-                label=dim_data["label"],
-                variables=[],
-            )
-        
-        # Cargar variables desde CANONICAL_VARIABLES (hardcodeado)
-        for slot, var_data in CANONICAL_VARIABLES.items():
-            dim_id = var_data["dimension_id"]
-            
-            variable = VariableContract(
-                slot=slot,
-                dimension_id=dim_id,
-                question_id=var_data["question_id"],
-                cluster_id=var_data["cluster_id"],
-                membership_criteria=var_data["membership_criteria"],
-            )
-            
-            self.variables[slot] = variable
-            self.variables_by_dimension[dim_id].append(variable)
-            
-            # Agregar slot a la dimensión
-            if dim_id in self.dimensions:
-                self.dimensions[dim_id].variables.append(slot)
-        
-        logger.info(f"Loaded {len(self.dimensions)} dimensions, {len(self.variables)} variables from hardcoded constants")
-
-    def _load_fallback_structure(self) -> None:
-        """Estructura de respaldo si no se encuentra el JSON."""
-        # Dimensiones mínimas
-        for i, (code, name, label) in enumerate([
-            ("DIM01", "DIAGNÓSTICO", "D"),
-            ("DIM02", "PRODUCTOS", "P"),
-            ("DIM03", "RESULTADOS", "R"),
-            ("DIM04", "OBJETIVOS", "O"),
-            ("DIM05", "IMPACTOS", "I"),
-            ("DIM06", "CAUSALIDAD", "C"),
-        ], 1):
-            self.dimensions[code] = DimensionContract(
-                dimension_id=code,
-                name=name,
-                label=label,
-                variables=[f"D{i}-Q{j}" for j in range(1, 6)],
-            )
-        logger.warning("Using fallback canonical structure")
-
-    def _build_legacy_structures(self) -> None:
-        """Construye estructuras legacy para compatibilidad con código existente."""
-        # Mapear dimensiones a value_chain_links (aproximación)
         self.value_chain_links = {
-            "diagnostic_planning": self._build_legacy_link("DIM01", "diagnostic_planning", 90),
-            "strategic_planning": self._build_legacy_link("DIM04", "strategic_planning", 120),
-            "implementation": self._build_legacy_link("DIM02", "implementation", 365),
+            "diagnostic_planning": ValueChainLink(
+                name="diagnostic_planning",
+                instruments=["territorial_diagnosis", "stakeholder_mapping", "needs_assessment"],
+                mediators=["technical_capacity", "participatory_processes", "information_systems"],
+                outputs=["diagnostic_report", "territorial_profile", "stakeholder_matrix"],
+                outcomes=["shared_territorial_vision", "prioritized_problems"],
+                bottlenecks=["data_availability", "technical_capacity_gaps", "time_constraints"],
+                lead_time_days=90,
+                conversion_rates={"diagnosis_to_strategy": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L95_59", 0.75)},
+                capacity_constraints={"technical_staff": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L96_57", 0.8), "financial_resources": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L96_85", 0.6)}
+            ),
+            "strategic_planning": ValueChainLink(
+                name="strategic_planning",
+                instruments=["strategic_framework", "theory_of_change", "results_matrix"],
+                mediators=["planning_methodology", "stakeholder_participation", "technical_assistance"],
+                outputs=["development_plan", "sector_strategies", "investment_plan"],
+                outcomes=["strategic_alignment", "resource_optimization", "implementation_readiness"],
+                bottlenecks=["political_changes", "resource_constraints", "coordination_failures"],
+                lead_time_days=120,
+                conversion_rates={"strategy_to_programs": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L106_58", 0.80)},
+                capacity_constraints={"planning_expertise": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L107_60", 0.7), "resources": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L107_78", 0.8)}
+            ),
+            "implementation": ValueChainLink(
+                name="implementation",
+                instruments=["project_management", "service_delivery", "capacity_building"],
+                mediators=["administrative_systems", "human_resources", "quality_control"],
+                outputs=["services_delivered", "capacities_developed", "results_achieved"],
+                outcomes=["improved_living_conditions", "enhanced_capabilities", "social_cohesion"],
+                bottlenecks=["budget_execution", "capacity_constraints", "coordination_failures"],
+                lead_time_days=365,
+                conversion_rates={"inputs_to_outputs": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L117_55", 0.75)},
+                capacity_constraints={"implementation_capacity": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L118_65", 0.65), "coordination": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L118_87", 0.60)}
+            )
         }
-        
-        # Policy domains desde dimensiones
+
         self.policy_domains = {
-            "diagnostic": self._get_criteria_for_dimension("DIM01"),
-            "products": self._get_criteria_for_dimension("DIM02"),
-            "results": self._get_criteria_for_dimension("DIM03"),
-            "objectives": self._get_criteria_for_dimension("DIM04"),
-            "impacts": self._get_criteria_for_dimension("DIM05"),
-            "causality": self._get_criteria_for_dimension("DIM06"),
+            "economic_development": ["competitiveness", "entrepreneurship", "employment"],
+            "social_development": ["education", "health", "housing"],
+            "territorial_development": ["land_use", "infrastructure", "connectivity"],
+            "institutional_development": ["governance", "transparency", "capacity_building"]
         }
-        
-        # Cross-cutting themes (derivados de patrones comunes)
+
         self.cross_cutting_themes = {
-            "governance": ["gobernanza", "transparencia", "participacion"],
-            "equity": ["enfoque_diferencial", "inclusion", "equidad"],
-            "sustainability": ["sostenibilidad", "ambiental", "climatico"],
-            "causality": ["teoria_cambio", "cadena_causal", "supuestos"],
+            "governance": ["transparency", "accountability", "participation"],
+            "equity": ["gender_equality", "social_inclusion", "poverty_reduction"],
+            "sustainability": ["environmental_protection", "climate_adaptation"],
+            "innovation": ["digital_transformation", "process_innovation"]
         }
-
-    def _build_legacy_link(self, dim_id: str, name: str, lead_time: int) -> ValueChainLink:
-        """Construye un ValueChainLink legacy desde variables canónicas."""
-        variables = self.variables_by_dimension.get(dim_id, [])
-        
-        # Extraer criterios de membresía como instruments/outputs
-        all_criteria = []
-        for var in variables:
-            all_criteria.extend(var.membership_criteria)
-        
-        return ValueChainLink(
-            name=name,
-            instruments=all_criteria[:3] if len(all_criteria) >= 3 else all_criteria,
-            mediators=all_criteria[3:6] if len(all_criteria) >= 6 else [],
-            outputs=all_criteria[6:9] if len(all_criteria) >= 9 else [],
-            outcomes=all_criteria[9:12] if len(all_criteria) >= 12 else [],
-            bottlenecks=[],
-            lead_time_days=lead_time,
-            conversion_rates={"default": 0.75},
-            capacity_constraints={"default": 0.7},
-        )
-
-    def _get_criteria_for_dimension(self, dim_id: str) -> list[str]:
-        """Obtiene todos los criterios de membresía para una dimensión."""
-        criteria = []
-        for var in self.variables_by_dimension.get(dim_id, []):
-            criteria.extend(var.membership_criteria)
-        return criteria[:10]  # Limitar a 10 para compatibilidad
-
-    def get_variable(self, slot: str) -> VariableContract | None:
-        """Obtiene una variable por su slot (D1-Q1, etc.)."""
-        return self.variables.get(slot)
-
-    def get_dimension(self, dim_id: str) -> DimensionContract | None:
-        """Obtiene una dimensión por su ID (DIM01, etc.)."""
-        return self.dimensions.get(dim_id)
-
-    def get_membership_criteria(self, slot: str) -> list[str]:
-        """Obtiene los criterios de membresía para una variable."""
-        var = self.variables.get(slot)
-        return var.membership_criteria if var else []
-
-    def get_patterns(self, slot: str) -> list[str]:
-        """Obtiene los patrones regex para una variable."""
-        var = self.variables.get(slot)
-        return var.patterns if var else []
 
 # ---------------------------------------------------------------------------
 # 2. SEMANTIC ANALYSIS ENGINE

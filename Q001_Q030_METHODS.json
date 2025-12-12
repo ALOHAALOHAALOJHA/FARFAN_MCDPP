@@ -1,0 +1,530 @@
+{
+  "Q001": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "TextMiningEngine.diagnose_critical_links",
+      "TextMiningEngine._analyze_link_text",
+      "IndustrialPolicyProcessor.process",
+      "IndustrialPolicyProcessor._match_patterns_in_sentences",
+      "IndustrialPolicyProcessor._extract_point_evidence",
+      "CausalExtractor._extract_goals",
+      "CausalExtractor._parse_goal_context",
+      "FinancialAuditor._parse_amount",
+      "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+      "PDETMunicipalPlanAnalyzer._extract_from_budget_table",
+      "PolicyContradictionDetector._extract_quantitative_claims",
+      "PolicyContradictionDetector._parse_number",
+      "PolicyContradictionDetector._statistical_significance_test",
+      "BayesianNumericalAnalyzer.evaluate_policy_metric",
+      "BayesianNumericalAnalyzer.compare_policies",
+      "SemanticProcessor.chunk_text",
+      "SemanticProcessor.embed_single"
+    ]
+  },
+  "Q002": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "OperationalizationAuditor._audit_direct_evidence",
+      "OperationalizationAuditor._audit_systemic_risk",
+      "FinancialAuditor._detect_allocation_gaps",
+      "BayesianMechanismInference._detect_gaps",
+      "PDETMunicipalPlanAnalyzer._generate_optimal_remediations",
+      "PDETMunicipalPlanAnalyzer._simulate_intervention",
+      "BayesianCounterfactualAuditor.counterfactual_query",
+      "BayesianCounterfactualAuditor._test_effect_stability",
+      "PolicyContradictionDetector._detect_numerical_inconsistencies",
+      "PolicyContradictionDetector._calculate_numerical_divergence",
+      "BayesianConfidenceCalculator.calculate_posterior",
+      "PerformanceAnalyzer.analyze_performance"
+    ]
+  },
+  "Q003": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "FinancialAuditor.trace_financial_allocation",
+      "FinancialAuditor._process_financial_table",
+      "FinancialAuditor._match_program_to_node",
+      "FinancialAuditor._match_goal_to_budget",
+      "FinancialAuditor._perform_counterfactual_budget_check",
+      "FinancialAuditor._calculate_sufficiency",
+      "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility",
+      "PDETMunicipalPlanAnalyzer._extract_budget_for_pillar",
+      "PDETMunicipalPlanAnalyzer._identify_funding_source",
+      "PDETMunicipalPlanAnalyzer._classify_tables",
+      "PDETMunicipalPlanAnalyzer._analyze_funding_sources",
+      "PDETMunicipalPlanAnalyzer._score_financial_component",
+      "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize"
+    ]
+  },
+  "Q004": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer.identify_responsible_entities",
+      "PDETMunicipalPlanAnalyzer._extract_entities_ner",
+      "PDETMunicipalPlanAnalyzer._extract_entities_syntax",
+      "PDETMunicipalPlanAnalyzer._classify_entity_type",
+      "PDETMunicipalPlanAnalyzer._score_entity_specificity",
+      "PDETMunicipalPlanAnalyzer._consolidate_entities",
+      "MechanismPartExtractor.extract_entity_activity",
+      "MechanismPartExtractor._normalize_entity",
+      "MechanismPartExtractor._validate_entity_activity",
+      "MechanismPartExtractor._calculate_ea_confidence",
+      "OperationalizationAuditor.audit_evidence_traceability"
+    ]
+  },
+  "Q005": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "TemporalLogicVerifier._check_deadline_constraints",
+      "TemporalLogicVerifier.verify_temporal_consistency",
+      "CausalInferenceSetup.identify_failure_points",
+      "CausalExtractor._assess_temporal_coherence",
+      "TextMiningEngine._analyze_link_text",
+      "IndustrialPolicyProcessor._analyze_causal_dimensions",
+      "IndustrialPolicyProcessor._extract_metadata"
+    ]
+  },
+  "Q006": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDFProcessor.extract_tables",
+      "FinancialAuditor._process_financial_table",
+      "PDETMunicipalPlanAnalyzer._deduplicate_tables",
+      "PDETMunicipalPlanAnalyzer._classify_tables",
+      "PDETMunicipalPlanAnalyzer._is_likely_header",
+      "PDETMunicipalPlanAnalyzer._clean_dataframe",
+      "ReportingEngine.generate_accountability_matrix"
+    ]
+  },
+  "Q007": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "BayesianMechanismInference.infer_mechanisms",
+      "BayesianMechanismInference._infer_single_mechanism",
+      "BayesianMechanismInference._infer_mechanism_type",
+      "BayesianMechanismInference._test_sufficiency",
+      "BayesianMechanismInference._test_necessity",
+      "CausalExtractor.extract_causal_hierarchy",
+      "TeoriaCambio.construir_grafo_causal",
+      "TeoriaCambio._es_conexion_valida",
+      "PDETMunicipalPlanAnalyzer.construct_causal_dag",
+      "BeachEvidentialTest.classify_test",
+      "IndustrialPolicyProcessor._analyze_causal_dimensions"
+    ]
+  },
+  "Q008": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "CausalExtractor._extract_causal_links",
+      "CausalExtractor._calculate_composite_likelihood",
+      "CausalExtractor._initialize_prior",
+      "CausalExtractor._calculate_type_transition_prior",
+      "PDETMunicipalPlanAnalyzer._identify_causal_edges",
+      "PDETMunicipalPlanAnalyzer._refine_edge_probabilities",
+      "BayesianCounterfactualAuditor.construct_scm",
+      "BayesianCounterfactualAuditor._create_default_equations",
+      "SemanticAnalyzer.extract_semantic_cube"
+    ]
+  },
+  "Q009": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer._bayesian_risk_inference",
+      "PDETMunicipalPlanAnalyzer.sensitivity_analysis",
+      "PDETMunicipalPlanAnalyzer._interpret_risk",
+      "PDETMunicipalPlanAnalyzer._compute_robustness_value",
+      "PDETMunicipalPlanAnalyzer._compute_e_value",
+      "PDETMunicipalPlanAnalyzer._interpret_sensitivity",
+      "OperationalizationAuditor._audit_systemic_risk",
+      "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize",
+      "BayesianCounterfactualAuditor.refutation_and_sanity_checks",
+      "AdaptivePriorCalculator.sensitivity_analysis"
+    ]
+  },
+  "Q010": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PolicyContradictionDetector._detect_logical_incompatibilities",
+      "PolicyContradictionDetector._calculate_coherence_metrics",
+      "PolicyContradictionDetector._calculate_objective_alignment",
+      "PolicyContradictionDetector._calculate_graph_fragmentation",
+      "OperationalizationAuditor.audit_sequence_logic",
+      "BayesianMechanismInference._calculate_coherence_factor",
+      "PDETMunicipalPlanAnalyzer._score_causal_coherence",
+      "AdaptivePriorCalculator.calculate_likelihood_adaptativo"
+    ]
+  },
+  "Q011": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer._score_indicators",
+      "OperationalizationAuditor.audit_evidence_traceability",
+      "CausalInferenceSetup.assign_probative_value",
+      "BeachEvidentialTest.apply_test_logic",
+      "TextMiningEngine.diagnose_critical_links",
+      "IndustrialPolicyProcessor._extract_metadata",
+      "IndustrialPolicyProcessor._calculate_quality_score",
+      "AdaptivePriorCalculator.generate_traceability_record"
+    ]
+  },
+  "Q012": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "AdvancedDAGValidator._calculate_bayesian_posterior",
+      "AdvancedDAGValidator._calculate_confidence_interval",
+      "AdaptivePriorCalculator._adjust_domain_weights",
+      "PDETMunicipalPlanAnalyzer._get_spanish_stopwords",
+      "BayesianMechanismInference._log_refactored_components",
+      "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility",
+      "PDETMunicipalPlanAnalyzer._score_indicators",
+      "PDETMunicipalPlanAnalyzer._interpret_risk",
+      "FinancialAuditor._calculate_sufficiency",
+      "BayesianMechanismInference._test_sufficiency",
+      "BayesianMechanismInference._test_necessity",
+      "PDETMunicipalPlanAnalyzer._assess_financial_sustainability",
+      "AdaptivePriorCalculator.calculate_likelihood_adaptativo",
+      "IndustrialPolicyProcessor._calculate_quality_score",
+      "TeoriaCambio._generar_sugerencias_internas",
+      "PDETMunicipalPlanAnalyzer._deduplicate_tables",
+      "PDETMunicipalPlanAnalyzer._indicator_to_dict",
+      "PDETMunicipalPlanAnalyzer._generate_recommendations",
+      "IndustrialPolicyProcessor._compile_pattern_registry",
+      "IndustrialPolicyProcessor._build_point_patterns",
+      "IndustrialPolicyProcessor._empty_result"
+    ]
+  },
+  "Q013": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "FinancialAuditor._match_program_to_node",
+      "FinancialAuditor._match_goal_to_budget",
+      "PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables",
+      "PDETMunicipalPlanAnalyzer._consolidate_entities",
+      "PDETMunicipalPlanAnalyzer.identify_responsible_entities",
+      "PDETMunicipalPlanAnalyzer._score_responsibility_clarity",
+      "PolicyAnalysisEmbedder.process_document",
+      "PolicyAnalysisEmbedder._generate_query_from_pdq",
+      "PolicyAnalysisEmbedder.semantic_search",
+      "PolicyAnalysisEmbedder._apply_mmr",
+      "SemanticAnalyzer._empty_semantic_cube",
+      "SemanticAnalyzer._classify_policy_domain",
+      "SemanticAnalyzer._classify_cross_cutting_themes",
+      "SemanticAnalyzer._classify_value_chain_link",
+      "SemanticAnalyzer._vectorize_segments",
+      "SemanticAnalyzer._process_segment",
+      "SemanticAnalyzer._calculate_semantic_complexity",
+      "IndustrialPolicyProcessor._compute_evidence_confidence",
+      "PDETMunicipalPlanAnalyzer._entity_to_dict",
+      "AdaptivePriorCalculator.generate_traceability_record",
+      "PolicyAnalysisEmbedder.generate_pdq_report",
+      "ReportingEngine.generate_accountability_matrix"
+    ]
+  },
+  "Q014": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "AdvancedDAGValidator.calculate_acyclicity_pvalue",
+      "AdvancedDAGValidator._is_acyclic",
+      "AdvancedDAGValidator.get_graph_stats",
+      "AdvancedDAGValidator._calculate_node_importance",
+      "AdvancedDAGValidator._generate_subgraph",
+      "AdvancedDAGValidator.add_node",
+      "AdvancedDAGValidator.add_edge",
+      "AdvancedDAGValidator.export_nodes",
+      "AdvancedDAGValidator._initialize_rng",
+      "AdvancedDAGValidator._calculate_statistical_power",
+      "AdvancedDAGValidator._get_node_validator",
+      "AdvancedDAGValidator._create_empty_result",
+      "BayesianMechanismInference._test_necessity",
+      "IndustrialGradeValidator.execute_suite",
+      "IndustrialGradeValidator.validate_connection_matrix",
+      "IndustrialGradeValidator.run_performance_benchmarks",
+      "IndustrialGradeValidator._benchmark_operation",
+      "IndustrialGradeValidator._log_metric",
+      "IndustrialGradeValidator.validate_engine_readiness",
+      "PerformanceAnalyzer.analyze_performance",
+      "PerformanceAnalyzer._calculate_loss_functions",
+      "HierarchicalGenerativeModel._calculate_likelihood",
+      "HierarchicalGenerativeModel._calculate_ess",
+      "HierarchicalGenerativeModel._calculate_r_hat",
+      "IndustrialGradeValidator.validate_causal_categories",
+      "TeoriaCambio._extraer_categorias"
+    ]
+  },
+  "Q015": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer._identify_confounders",
+      "PDETMunicipalPlanAnalyzer._effect_to_dict",
+      "PDETMunicipalPlanAnalyzer._scenario_to_dict",
+      "PDETMunicipalPlanAnalyzer._simulate_intervention",
+      "PDETMunicipalPlanAnalyzer._generate_recommendations",
+      "PDETMunicipalPlanAnalyzer._identify_causal_nodes",
+      "BayesianCounterfactualAuditor._evaluate_factual",
+      "BayesianCounterfactualAuditor._evaluate_counterfactual",
+      "CausalExtractor._assess_financial_consistency",
+      "BayesianMechanismInference._infer_activity_sequence",
+      "BayesianMechanismInference._generate_necessity_remediation",
+      "BayesianCounterfactualAuditor.refutation_and_sanity_checks",
+      "IndustrialPolicyProcessor._load_questionnaire",
+      "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility",
+      "PDETMunicipalPlanAnalyzer.construct_causal_dag",
+      "PDETMunicipalPlanAnalyzer.estimate_causal_effects",
+      "PDETMunicipalPlanAnalyzer.generate_counterfactuals",
+      "CausalExtractor._build_type_hierarchy",
+      "CausalExtractor._check_structural_violation",
+      "CausalExtractor._calculate_type_transition_prior",
+      "CausalExtractor._calculate_textual_proximity",
+      "TeoriaCambio._validar_orden_causal",
+      "PDETMunicipalPlanAnalyzer._refine_edge_probabilities",
+      "PolicyAnalysisEmbedder.compare_policy_interventions",
+      "BayesianMechanismInference.infer_mechanisms"
+    ]
+  },
+  "Q016": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer._extract_entities_syntax",
+      "PDETMunicipalPlanAnalyzer._extract_entities_ner",
+      "CausalExtractor._calculate_language_specificity",
+      "CausalExtractor._calculate_composite_likelihood",
+      "CausalExtractor._calculate_semantic_distance",
+      "TemporalLogicVerifier._classify_temporal_type",
+      "PDETMunicipalPlanAnalyzer._score_indicators",
+      "PDETMunicipalPlanAnalyzer._find_outcome_mentions",
+      "PDETMunicipalPlanAnalyzer._score_temporal_consistency",
+      "CausalExtractor._extract_goals",
+      "CausalExtractor._parse_goal_context",
+      "CausalExtractor._classify_goal_type",
+      "TemporalLogicVerifier._parse_temporal_marker",
+      "TemporalLogicVerifier._extract_resources",
+      "PerformanceAnalyzer.analyze_performance",
+      "PerformanceAnalyzer._generate_recommendations"
+    ]
+  },
+  "Q017": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "TeoriaCambio._encontrar_caminos_completos",
+      "TeoriaCambio.validacion_completa",
+      "CausalExtractor.extract_causal_hierarchy",
+      "HierarchicalGenerativeModel.verify_conditional_independence",
+      "HierarchicalGenerativeModel._generate_independence_tests",
+      "BayesianCounterfactualAuditor.construct_scm",
+      "AdvancedDAGValidator._perform_sensitivity_analysis_internal",
+      "BayesFactorTable.get_bayes_factor"
+    ]
+  },
+  "Q018": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer._get_prior_effect",
+      "PDETMunicipalPlanAnalyzer._estimate_effect_bayesian",
+      "PDETMunicipalPlanAnalyzer._compute_robustness_value",
+      "AdaptivePriorCalculator.sensitivity_analysis",
+      "HierarchicalGenerativeModel._calculate_r_hat",
+      "HierarchicalGenerativeModel._calculate_ess",
+      "AdvancedDAGValidator._calculate_statistical_power",
+      "BayesianMechanismInference._aggregate_bayesian_confidence"
+    ]
+  },
+  "Q019": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PolicyContradictionDetector._calculate_objective_alignment",
+      "PolicyContradictionDetector._identify_affected_sections",
+      "PolicyContradictionDetector._generate_resolution_recommendations",
+      "OperationalizationAuditor._generate_optimal_remediations",
+      "OperationalizationAuditor._get_remediation_text",
+      "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize",
+      "FinancialAuditor._detect_allocation_gaps"
+    ]
+  },
+  "Q020": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer._score_pdet_alignment",
+      "PDETMunicipalPlanAnalyzer._score_causal_coherence",
+      "CDAFFramework._validate_dnp_compliance",
+      "CDAFFramework._generate_dnp_report",
+      "IndustrialPolicyProcessor._analyze_causal_dimensions",
+      "AdaptivePriorCalculator.validate_quality_criteria"
+    ]
+  },
+  "Q021": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer.generate_counterfactuals",
+      "PDETMunicipalPlanAnalyzer._simulate_intervention",
+      "PDETMunicipalPlanAnalyzer._generate_scenario_narrative",
+      "PDETMunicipalPlanAnalyzer._find_mediator_mentions",
+      "TeoriaCambio._validar_orden_causal",
+      "CausalExtractor._assess_temporal_coherence",
+      "TextMiningEngine._generate_interventions",
+      "BayesianCounterfactualAuditor.construct_scm"
+    ]
+  },
+  "Q022": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "PDETMunicipalPlanAnalyzer.calculate_quality_score",
+      "PDETMunicipalPlanAnalyzer._estimate_score_confidence",
+      "PDETMunicipalPlanAnalyzer._compute_e_value",
+      "PDETMunicipalPlanAnalyzer._compute_robustness_value",
+      "PDETMunicipalPlanAnalyzer._interpret_sensitivity",
+      "ReportingEngine._calculate_quality_score",
+      "BayesianMechanismInference._aggregate_bayesian_confidence",
+      "PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency",
+      "PolicyAnalysisEmbedder.get_diagnostics",
+      "PolicyAnalysisEmbedder.process_document",
+      "PolicyAnalysisEmbedder._generate_query_from_pdq",
+      "PolicyAnalysisEmbedder._filter_by_pdq",
+      "PolicyAnalysisEmbedder._extract_numerical_values",
+      "PolicyAnalysisEmbedder._embed_texts",
+      "PolicyAnalysisEmbedder._compute_overall_confidence",
+      "FinancialAuditor._calculate_sufficiency",
+      "PDETMunicipalPlanAnalyzer._interpret_overall_quality",
+      "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize",
+      "PolicyTextProcessor.normalize_unicode",
+      "PolicyTextProcessor.segment_into_sentences",
+      "IndustrialPolicyProcessor._compute_evidence_confidence",
+      "IndustrialPolicyProcessor._compute_avg_confidence",
+      "PDETMunicipalPlanAnalyzer._quality_to_dict",
+      "IndustrialPolicyProcessor._construct_evidence_bundle",
+      "PolicyTextProcessor.compile_pattern",
+      "PolicyTextProcessor.extract_contextual_window",
+      "PDETMunicipalPlanAnalyzer.generate_executive_report",
+      "IndustrialPolicyProcessor.export_results"
+    ]
+  },
+  "Q023": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "CausalExtractor._calculate_semantic_distance",
+      "SemanticAnalyzer.extract_semantic_cube",
+      "BayesianMechanismInference._quantify_uncertainty",
+      "PDETMunicipalPlanAnalyzer._find_mediator_mentions",
+      "PolicyAnalysisEmbedder.get_diagnostics",
+      "AdaptivePriorCalculator._perturb_evidence"
+    ]
+  },
+  "Q024": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "OperationalizationAuditor._audit_systemic_risk",
+      "BayesianCounterfactualAuditor.refutation_and_sanity_checks",
+      "BayesianCounterfactualAuditor._test_effect_stability",
+      "PDETMunicipalPlanAnalyzer._interpret_risk",
+      "PDETMunicipalPlanAnalyzer._interpret_sensitivity",
+      "PDETMunicipalPlanAnalyzer._break_cycles",
+      "AdaptivePriorCalculator.sensitivity_analysis"
+    ]
+  },
+  "Q025": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "HierarchicalGenerativeModel.posterior_predictive_check",
+      "HierarchicalGenerativeModel._ablation_analysis",
+      "HierarchicalGenerativeModel._calculate_waic_difference",
+      "AdaptivePriorCalculator._add_ood_noise",
+      "AdaptivePriorCalculator.validate_quality_criteria",
+      "PDETMunicipalPlanAnalyzer._compute_e_value",
+      "PDETMunicipalPlanAnalyzer._compute_robustness_value",
+      "BayesianMechanismInference._calculate_coherence_factor"
+    ]
+  },
+  "Q026": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "TeoriaCambio.construir_grafo_causal",
+      "TeoriaCambio.validacion_completa",
+      "TeoriaCambio.export_nodes",
+      "ReportingEngine.generate_causal_diagram",
+      "ReportingEngine.generate_causal_model_json",
+      "AdvancedDAGValidator.export_nodes",
+      "PDETMunicipalPlanAnalyzer.export_causal_network",
+      "CausalExtractor.extract_causal_hierarchy"
+    ]
+  },
+  "Q027": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "BeachEvidentialTest.apply_test_logic",
+      "BayesianMechanismInference._test_necessity",
+      "BayesianMechanismInference._test_sufficiency",
+      "BayesianMechanismInference._calculate_coherence_factor",
+      "BayesianCounterfactualAuditor._test_effect_stability",
+      "IndustrialGradeValidator.validate_connection_matrix",
+      "PolicyAnalysisEmbedder._compute_overall_confidence"
+    ]
+  },
+  "Q028": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "IndustrialGradeValidator.execute_suite",
+      "IndustrialGradeValidator.validate_engine_readiness",
+      "IndustrialGradeValidator._benchmark_operation",
+      "AdaptivePriorCalculator.validate_quality_criteria",
+      "HierarchicalGenerativeModel._calculate_r_hat",
+      "HierarchicalGenerativeModel._calculate_ess",
+      "AdvancedDAGValidator.calculate_acyclicity_pvalue",
+      "PerformanceAnalyzer.analyze_performance"
+    ]
+  },
+  "Q029": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "ConfigLoader.update_priors_from_feedback",
+      "ConfigLoader.check_uncertainty_reduction_criterion",
+      "ConfigLoader._save_prior_history",
+      "ConfigLoader._load_uncertainty_history",
+      "CDAFFramework._extract_feedback_from_audit",
+      "AdvancedDAGValidator._calculate_node_importance",
+      "BayesFactorTable.get_bayes_factor"
+    ]
+  },
+  "Q030": {
+    "base_slot": "",
+    "dimension_id": "",
+    "methods": [
+      "CausalExtractor._calculate_language_specificity",
+      "CausalExtractor._assess_temporal_coherence",
+      "TextMiningEngine.diagnose_critical_links",
+      "CausalInferenceSetup.identify_failure_points",
+      "CausalInferenceSetup._get_dynamics_pattern",
+      "SemanticProcessor.chunk_text",
+      "SemanticProcessor._detect_pdm_structure",
+      "SemanticProcessor._detect_table",
+      "AdaptivePriorCalculator.generate_traceability_record"
+    ]
+  }
+}
