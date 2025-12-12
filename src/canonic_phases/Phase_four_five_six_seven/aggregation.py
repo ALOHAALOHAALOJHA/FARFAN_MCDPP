@@ -100,7 +100,8 @@ class AggregationSettings:
         
         try:
             # Get assembly signals from registry
-            assembly_pack = registry.get_assembly_signals(level)
+            # Note: Using "meso" as the canonical level for aggregation assembly signals
+            assembly_pack = registry.get_assembly_signals("meso")
             source_hash = getattr(assembly_pack, 'source_hash', None)
             
             # Extract weights from assembly pack

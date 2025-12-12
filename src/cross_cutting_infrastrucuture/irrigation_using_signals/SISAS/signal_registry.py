@@ -488,7 +488,8 @@ class QuestionnaireSignalRegistry:
         >>> canonical = load_questionnaire()
         >>> registry = QuestionnaireSignalRegistry(canonical)
         >>> signals = registry.get_micro_answering_signals("Q001")
-        >>> print(f"Patterns: {len(signals.question_patterns['Q001'])}")
+        >>> qid = "Q001"
+        >>> print(f"Patterns: {len(signals.question_patterns[qid])}")
     """
 
     def __init__(self, questionnaire: CanonicalQuestionnaire) -> None:

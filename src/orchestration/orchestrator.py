@@ -1446,12 +1446,24 @@ class Orchestrator:
         
         scored_results: list[ScoredMicroQuestion] = []
         
+        # Get signal registry for scoring signals if available
+        signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
+        
         logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results using EvidenceNexus outputs")
         
         for idx, micro_result in enumerate(micro_results):
             self._ensure_not_aborted()
             
             try:
+                # Get scoring signals from registry if available
+                scoring_signals = None
+                if signal_registry is not None:
+                    try:
+                        scoring_signals = signal_registry.get_scoring_signals(micro_result.question_id)
+                        logger.debug(f"Phase 3: Retrieved scoring signals for {micro_result.question_id}")
+                    except Exception as e:
+                        logger.warning(f"Phase 3: Could not retrieve scoring signals for {micro_result.question_id}: {e}")
+                
                 # Get metadata which should contain nexus fields from Phase 2
                 metadata = micro_result.metadata
                 
@@ -1503,13 +1515,21 @@ class Orchestrator:
                     validation = evidence.get("validation", {})
                     quality_level = validation.get("quality_level", "INSUFICIENTE")
                 
-                # Build scoring details
+                # Build scoring details with signal enrichment
                 scoring_details = {
                     "source": "evidence_nexus",
                     "method": "overall_confidence",
                     "completeness": completeness,
                     "calibrated_interval": metadata.get("calibrated_interval"),
                 }
+                
+                # Add signal enrichment metadata if available
+                if scoring_signals is not None:
+                    scoring_details["signal_enrichment"] = {
+                        "modality": scoring_signals.question_modalities.get(micro_result.question_id),
+                        "source_hash": getattr(scoring_signals, 'source_hash', None),
+                        "signal_source": "sisas_registry"
+                    }
                 
                 # Create ScoredMicroQuestion
                 scored = ScoredMicroQuestion(
