@@ -458,6 +458,127 @@ class RegistryMetrics:
 
 
 # ============================================================================
+# CIRCUIT BREAKER PATTERN
+# ============================================================================
+
+
+class CircuitState:
+    """Circuit breaker states."""
+    CLOSED = "closed"  # Normal operation
+    OPEN = "open"      # Failing, reject requests
+    HALF_OPEN = "half_open"  # Testing recovery
+
+
+@dataclass
+class CircuitBreakerConfig:
+    """Configuration for circuit breaker."""
+    failure_threshold: int = 5  # Failures before opening circuit
+    recovery_timeout: float = 60.0  # Seconds before attempting recovery
+    success_threshold: int = 2  # Successes in half-open before closing
+
+
+@dataclass
+class CircuitBreaker:
+    """Circuit breaker for graceful degradation.
+    
+    Implements the circuit breaker pattern to prevent cascading failures
+    when the signal registry encounters repeated errors.
+    
+    States:
+    - CLOSED: Normal operation, all requests pass through
+    - OPEN: Failing state, requests fail fast without attempting operation
+    - HALF_OPEN: Testing state, limited requests allowed to test recovery
+    
+    Example:
+        >>> breaker = CircuitBreaker()
+        >>> if breaker.is_available():
+        ...     try:
+        ...         result = do_operation()
+        ...         breaker.record_success()
+        ...     except Exception as e:
+        ...         breaker.record_failure()
+        ...         raise
+    """
+    config: CircuitBreakerConfig = field(default_factory=CircuitBreakerConfig)
+    state: str = field(default=CircuitState.CLOSED)
+    failure_count: int = 0
+    success_count: int = 0
+    last_failure_time: float = 0.0
+    last_state_change: float = field(default_factory=time.time)
+    
+    def is_available(self) -> bool:
+        """Check if circuit breaker allows requests.
+        
+        Returns:
+            True if requests are allowed, False if circuit is open
+        """
+        if self.state == CircuitState.CLOSED:
+            return True
+        
+        if self.state == CircuitState.OPEN:
+            # Check if recovery timeout has elapsed
+            if time.time() - self.last_failure_time >= self.config.recovery_timeout:
+                logger.info("circuit_breaker_half_open", message="Attempting recovery")
+                self.state = CircuitState.HALF_OPEN
+                self.success_count = 0
+                self.last_state_change = time.time()
+                return True
+            return False
+        
+        # HALF_OPEN: Allow limited requests
+        return True
+    
+    def record_success(self) -> None:
+        """Record successful operation."""
+        if self.state == CircuitState.HALF_OPEN:
+            self.success_count += 1
+            if self.success_count >= self.config.success_threshold:
+                logger.info("circuit_breaker_closed", message="Circuit recovered")
+                self.state = CircuitState.CLOSED
+                self.failure_count = 0
+                self.success_count = 0
+                self.last_state_change = time.time()
+        elif self.state == CircuitState.CLOSED:
+            # Reset failure count on success
+            self.failure_count = 0
+    
+    def record_failure(self) -> None:
+        """Record failed operation."""
+        self.last_failure_time = time.time()
+        
+        if self.state == CircuitState.HALF_OPEN:
+            # Failed during recovery, reopen circuit
+            logger.warning("circuit_breaker_reopened", message="Recovery failed")
+            self.state = CircuitState.OPEN
+            self.failure_count = 0
+            self.success_count = 0
+            self.last_state_change = time.time()
+        elif self.state == CircuitState.CLOSED:
+            self.failure_count += 1
+            if self.failure_count >= self.config.failure_threshold:
+                logger.error(
+                    "circuit_breaker_opened",
+                    message=f"Circuit opened after {self.failure_count} failures"
+                )
+                self.state = CircuitState.OPEN
+                self.last_state_change = time.time()
+    
+    def get_status(self) -> dict[str, Any]:
+        """Get circuit breaker status for monitoring.
+        
+        Returns:
+            Dictionary with current state and metrics
+        """
+        return {
+            "state": self.state,
+            "failure_count": self.failure_count,
+            "success_count": self.success_count,
+            "time_since_last_failure": time.time() - self.last_failure_time if self.last_failure_time > 0 else None,
+            "time_in_current_state": time.time() - self.last_state_change,
+        }
+
+
+# ============================================================================
 # CONTENT-ADDRESSED SIGNAL REGISTRY
 # ============================================================================
 
@@ -510,6 +631,9 @@ class QuestionnaireSignalRegistry:
         
         # Metrics
         self._metrics = RegistryMetrics()
+        
+        # Circuit breaker for graceful degradation
+        self._circuit_breaker = CircuitBreaker()
         
         # Valid assembly levels (for validation)
         self._valid_assembly_levels = self._extract_valid_assembly_levels()
@@ -716,8 +840,15 @@ class QuestionnaireSignalRegistry:
         
         Raises:
             InvalidLevelError: If level not found
-            SignalExtractionError: If signal extraction fails
+            SignalExtractionError: If signal extraction fails or circuit breaker is open
         """
+        # Circuit breaker check
+        if not self._circuit_breaker.is_available():
+            raise SignalExtractionError(
+                "assembly",
+                f"Circuit breaker is {self._circuit_breaker.state}, rejecting request"
+            )
+        
         # Validate level
         if level not in self._valid_assembly_levels:
             raise InvalidLevelError(level, self._valid_assembly_levels)
@@ -747,10 +878,15 @@ class QuestionnaireSignalRegistry:
                     cluster_count=len(pack.cluster_policy_areas),
                 )
                 
+                # Record success for circuit breaker
+                self._circuit_breaker.record_success()
+                
                 return pack
 
             except Exception as e:
                 self._metrics.errors += 1
+                # Record failure for circuit breaker
+                self._circuit_breaker.record_failure()
                 span.record_exception(e)
                 logger.error(
                     "assembly_signals_failed",
@@ -1209,7 +1345,40 @@ class QuestionnaireSignalRegistry:
             "source_hash": self._source_hash[:16],
             "questionnaire_version": self._questionnaire.version,
             "last_cache_clear": self._metrics.last_cache_clear,
+            "circuit_breaker": self._circuit_breaker.get_status(),
         }
+    
+    def health_check(self) -> dict[str, Any]:
+        """Perform health check on signal registry.
+        
+        Returns:
+            Dictionary with health status and diagnostics
+        """
+        breaker_status = self._circuit_breaker.get_status()
+        is_healthy = breaker_status["state"] != CircuitState.OPEN
+        
+        return {
+            "healthy": is_healthy,
+            "status": "healthy" if is_healthy else "degraded",
+            "circuit_breaker": breaker_status,
+            "metrics": {
+                "hit_rate": self._metrics.hit_rate,
+                "error_count": self._metrics.errors,
+                "total_requests": self._metrics.total_requests,
+            },
+            "timestamp": time.time(),
+        }
+    
+    def reset_circuit_breaker(self) -> None:
+        """Manually reset circuit breaker to closed state.
+        
+        Use with caution - only for administrative recovery.
+        """
+        logger.warning("circuit_breaker_manual_reset", message="Circuit breaker manually reset")
+        self._circuit_breaker.state = CircuitState.CLOSED
+        self._circuit_breaker.failure_count = 0
+        self._circuit_breaker.success_count = 0
+        self._circuit_breaker.last_state_change = time.time()
 
     def clear_cache(self) -> None:
         """Clear all caches (for testing or hot-reload)."""
