@@ -856,6 +856,30 @@ VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
     }
 }
 
+ALL_BASE_SLOTS: tuple[str, ...] = tuple(
+    slot
+    for dim_id in sorted(VALUE_CHAIN_DIMENSIONS)
+    for slot in VALUE_CHAIN_DIMENSIONS[dim_id]["base_slots"]
+)
+
+SLOT_TO_DIMENSION_ID: dict[str, str] = {
+    slot: dim_id
+    for dim_id, dim_config in VALUE_CHAIN_DIMENSIONS.items()
+    for slot in dim_config["base_slots"]
+}
+
+SLOT_TO_KEYWORDS_GENERAL: dict[str, list[str]] = {
+    slot: dim_config["keywords_general"]
+    for dim_id, dim_config in VALUE_CHAIN_DIMENSIONS.items()
+    for slot in dim_config["base_slots"]
+}
+
+SLOT_TO_EXPECTED_ELEMENTS: dict[str, list[str]] = {
+    var_config["slot"]: var_config["expected_elements"]
+    for dim_config in VALUE_CHAIN_DIMENSIONS.values()
+    for var_config in dim_config["analytical_variables"].values()
+}
+
 # ---------------------------------------------------------------------------
 # 1. CORE DATA STRUCTURES
 # ---------------------------------------------------------------------------
@@ -1077,6 +1101,7 @@ class SemanticAnalyzer:
         self._patterns_resolved = self._load_json(CG_ROOT / "pattern_registry_resolved.json")
         self._calibration = self._load_json(CAL_ROOT / "analyzer_one_calibration.json")
         self._thresholds = self._calibration.get("thresholds", {})
+        self._slot_thresholds = {slot: self._get_slot_threshold(slot) for slot in ALL_BASE_SLOTS}
 
         vec_cfg = self._calibration.get("vectorizer", {})
         self.max_features = vec_cfg.get("max_features")
@@ -1103,11 +1128,11 @@ class SemanticAnalyzer:
         segment_vectors = self._vectorize_segments(document_segments)
 
         # Initialize semantic cube with 2 dimensions only:
-        # - value_chain_dimensions (DIM01-DIM06)
+        # - base_slots (D1-Q1..D6-Q5)
         # - policy_domains (PA01-PA10)
         semantic_cube = {
             "dimensions": {
-                "value_chain_dimensions": defaultdict(list),
+                "base_slots": {slot: [] for slot in ALL_BASE_SLOTS},
                 "policy_domains": defaultdict(list)
             },
             "measures": {
@@ -1126,17 +1151,20 @@ class SemanticAnalyzer:
         for idx, segment in enumerate(document_segments):
             segment_data = self._process_segment(segment, idx, segment_vectors[idx])
 
-            # Classify by value chain dimensions (DIM01-DIM06)
-            link_scores = self._classify_value_chain_link(segment)
-            for dim_id, score in link_scores.items():
-                if score > self.similarity_threshold:
-                    semantic_cube["dimensions"]["value_chain_dimensions"][dim_id].append(segment_data)
-
             # Classify by policy domains (PA01-PA10)
             domain_scores = self._classify_policy_domain(segment)
+            selected_policy_area = self._select_policy_area(domain_scores)
+            segment_data["policy_area_id"] = selected_policy_area
+            segment_data["expected_elements_signals"] = {}
+
             for domain, score in domain_scores.items():
-                if score > self.similarity_threshold:
+                if score > 0.0:
                     semantic_cube["dimensions"]["policy_domains"][domain].append(segment_data)
+
+            slot_scores = self._score_base_slots(segment, selected_policy_area, segment_data)
+            for slot, score in slot_scores.items():
+                if score >= self._slot_thresholds[slot]:
+                    semantic_cube["dimensions"]["base_slots"][slot].append(segment_data)
 
             # Add measures
             semantic_cube["measures"]["semantic_density"].append(segment_data["semantic_density"])
@@ -1170,12 +1198,12 @@ class SemanticAnalyzer:
         """Return empty semantic cube structure.
         
         Dimensions:
-        - value_chain_dimensions: DIM01-DIM06 (6 analytical dimensions)
+        - base_slots: D1-Q1..D6-Q5 (30 analytical base slots)
         - policy_domains: PA01-PA10 (10 policy areas)
         """
         return {
             "dimensions": {
-                "value_chain_dimensions": {},
+                "base_slots": {slot: [] for slot in ALL_BASE_SLOTS},
                 "policy_domains": {}
             },
             "measures": {
@@ -1246,80 +1274,73 @@ class SemanticAnalyzer:
         }
 
     
-    def _classify_value_chain_link(
+    def _select_policy_area(self, domain_scores: dict[str, float]) -> str | None:
+        if not domain_scores:
+            return None
+        max_score = max(domain_scores.values())
+        if max_score <= 0.0:
+            return None
+        best_policy_areas = sorted(
+            policy_area_id for policy_area_id, score in domain_scores.items() if score == max_score
+        )
+        return best_policy_areas[0] if best_policy_areas else None
+
+    def _get_slot_threshold(self, slot: str) -> float:
+        entry = self._thresholds.get(slot)
+        threshold_value: Any
+        if isinstance(entry, dict):
+            threshold_value = entry.get("threshold")
+        else:
+            threshold_value = entry
+        if not isinstance(threshold_value, (int, float)):
+            raise KeyError(f"Missing similarity threshold for slot: {slot}")
+        threshold = float(threshold_value)
+        if not 0.0 <= threshold <= 1.0:
+            raise ValueError(f"Invalid similarity threshold for slot {slot}: {threshold}")
+        return threshold
+
+    def _keyword_score(self, segment_lower: str, keywords: list[str]) -> float:
+        if not keywords:
+            return 0.0
+        match_count = sum(1 for keyword in keywords if keyword.lower() in segment_lower)
+        return match_count / len(keywords)
+
+    def _score_d3_q3_expected_elements(self, segment: str, policy_area_id: str) -> dict[str, float]:
+        patterns_config = PATTERNS_D3_Q3_BY_POLICY_AREA.get(policy_area_id)
+        if not patterns_config:
+            return {}
+        scores: dict[str, float] = {}
+        for element_type in ["trazabilidad_organizacional", "trazabilidad_presupuestal"]:
+            patterns = patterns_config.get(element_type, [])
+            if not patterns:
+                scores[element_type] = 0.0
+                continue
+            match_count = sum(1 for p in patterns if re.search(p, segment, re.IGNORECASE))
+            scores[element_type] = min(1.0, match_count / max(1, len(patterns)))
+        return scores
+
+    def _score_base_slots(
         self,
         segment: str,
-        policy_area_id: str | None = None
+        policy_area_id: str | None,
+        segment_data: dict[str, Any],
     ) -> dict[str, float]:
-        """
-        Classify segment by value chain dimension (DIM01-DIM06).
-        
-        Two modes:
-        1. If policy_area_id provided: Uses PATTERNS_D3_Q3_BY_POLICY_AREA for 
-           trazabilidad scoring (D3-Q3 slot specific)
-        2. If policy_area_id is None: Uses VALUE_CHAIN_DIMENSIONS keywords to
-           classify segment by analytical dimension (DIM01-DIM06)
-        
-        Args:
-            segment: Text segment to classify
-            policy_area_id: Optional. If provided, uses D3-Q3 patterns for that PA.
-        
-        Returns:
-            dict with scores:
-            - If policy_area_id: {"trazabilidad_organizacional": float, 
-                                  "trazabilidad_presupuestal": float}
-            - If None: {"DIM01": float, "DIM02": float, ..., "DIM06": float}
-        """
-        # MODE 1: Policy Area-specific classification for D3-Q3 slot
-        if policy_area_id is not None:
-            patterns_config = PATTERNS_D3_Q3_BY_POLICY_AREA.get(policy_area_id)
-            if not patterns_config:
-                raise ValueError(
-                    f"Policy area {policy_area_id} no tiene configuración para D3-Q3. "
-                    f"Valid options: {list(PATTERNS_D3_Q3_BY_POLICY_AREA.keys())}"
-                )
-            
-            scores: dict[str, float] = {}
-            for element_type in ["trazabilidad_organizacional", "trazabilidad_presupuestal"]:
-                patterns = patterns_config.get(element_type, [])
-                if not patterns:
-                    scores[element_type] = 0.0
-                    continue
-                
-                match_count = sum(
-                    1 for p in patterns
-                    if re.search(p, segment, re.IGNORECASE)
-                )
-                scores[element_type] = min(1.0, match_count / max(1, len(patterns)))
-            
-            return scores
-        
-        # MODE 2: Classify by analytical dimensions (DIM01-DIM06)
-        dimension_scores: dict[str, float] = {}
         segment_lower = segment.lower()
+        d3_q3_signals: dict[str, float] = {}
+        if policy_area_id is not None:
+            d3_q3_signals = self._score_d3_q3_expected_elements(segment, policy_area_id)
+        if d3_q3_signals:
+            segment_data["expected_elements_signals"]["D3-Q3"] = d3_q3_signals
 
-        for dim_id, keywords in self.ontology.value_chain_dimensions.items():
-            if not keywords:
-                dimension_scores[dim_id] = 0.0
-                continue
-            
-            match_count = 0
-            for keyword in keywords:
-                if keyword.lower() in segment_lower:
-                    match_count += 1
-
-            dimension_scores[dim_id] = match_count / len(keywords)
-
-        # Contract assertion: verify output keys are DIM01-DIM06
-        expected_keys = {f"DIM0{i}" for i in range(1, 7)}
-        actual_keys = set(dimension_scores.keys())
-        if actual_keys != expected_keys:
-            logger.error(
-                f"_classify_value_chain_link output key mismatch. "
-                f"Expected: {expected_keys}, Got: {actual_keys}"
-            )
-
-        return dimension_scores
+        slot_scores: dict[str, float] = {}
+        for slot in ALL_BASE_SLOTS:
+            keywords_general = SLOT_TO_KEYWORDS_GENERAL.get(slot, [])
+            keyword_score = self._keyword_score(segment_lower, keywords_general)
+            expected_score = 0.0
+            if slot == "D3-Q3" and d3_q3_signals:
+                expected_score = sum(d3_q3_signals.values()) / len(d3_q3_signals)
+            slot_scores[slot] = min(1.0, keyword_score + expected_score)
+        return slot_scores
 
     
     def _classify_policy_domain(self, segment: str) -> dict[str, float]:
@@ -1376,8 +1397,9 @@ class SemanticAnalyzer:
         # Count unique concepts across dimensions
         unique_concepts = set()
         for dimension_data in semantic_cube["dimensions"].values():
-            for category in dimension_data:
-                unique_concepts.add(category)
+            for category, segments in dimension_data.items():
+                if segments:
+                    unique_concepts.add(category)
 
         # Normalize complexity
         max_expected_concepts = 20
@@ -1399,7 +1421,7 @@ class PerformanceAnalyzer:
 
     
     def analyze_performance(self, semantic_cube: dict[str, Any]) -> dict[str, Any]:
-        """Analyze performance indicators across value chain links."""
+        """Analyze performance indicators across canonical base slots."""
 
         performance_analysis = {
             "value_chain_metrics": {},
@@ -1408,39 +1430,54 @@ class PerformanceAnalyzer:
             "optimization_recommendations": []
         }
 
-        # Analyze each value chain link
-        for link_name, link_config in self.ontology.value_chain_links.items():
-            link_segments = semantic_cube["dimensions"]["value_chain_links"].get(link_name, [])
+        for dim_id, dim in VALUE_CHAIN_DIMENSIONS.items():
+            for var_name, var in dim["analytical_variables"].items():
+                slot = var["slot"]
+                expected_elements = var.get("expected_elements", [])
+                slot_segments = semantic_cube["dimensions"]["base_slots"][slot]
 
-            # Calculate metrics
-            metrics = self._calculate_throughput_metrics(link_segments, link_config)
-            bottlenecks = self._detect_bottlenecks(link_segments, link_config)
-            loss_functions = self._calculate_loss_functions(metrics, link_config)
+                metrics = self._calculate_throughput_metrics(slot, slot_segments, expected_elements)
+                bottlenecks = self._detect_bottlenecks(slot, slot_segments, expected_elements)
+                loss_functions = self._calculate_loss_functions(metrics)
 
-            performance_analysis["value_chain_metrics"][link_name] = metrics
-            performance_analysis["bottleneck_analysis"][link_name] = bottlenecks
-            performance_analysis["operational_loss_functions"][link_name] = loss_functions
+                performance_analysis["value_chain_metrics"][slot] = {
+                    **metrics,
+                    "dimension_id": dim_id,
+                    "analytical_variable": var_name,
+                    "base_slot": slot,
+                }
+                performance_analysis["bottleneck_analysis"][slot] = bottlenecks
+                performance_analysis["operational_loss_functions"][slot] = loss_functions
 
         # Generate recommendations
         performance_analysis["optimization_recommendations"] = self._generate_recommendations(
             performance_analysis
         )
 
-        logger.info(f"Performance analysis completed for {len(performance_analysis['value_chain_metrics'])} links")
+        logger.info(
+            f"Performance analysis completed for {len(performance_analysis['value_chain_metrics'])} base slots"
+        )
         return performance_analysis
 
     
-    def _calculate_throughput_metrics(self, segments: list[dict], link_config: ValueChainLink) -> dict[str, Any]:
-        """Calculate throughput metrics for a value chain link."""
+    def _calculate_throughput_metrics(
+        self,
+        slot: str,
+        segments: list[dict[str, Any]],
+        expected_elements: list[str],
+    ) -> dict[str, Any]:
+        """Calculate throughput metrics for a base slot."""
 
         if not segments:
             return {
                 "throughput": 0.0,
                 "efficiency_score": 0.0,
-                "capacity_utilization": 0.0
+                "capacity_utilization": 0.0,
+                "segment_count": 0,
+                "expected_elements_coverage": 0.0,
+                "expected_elements_detail": {},
             }
 
-        # Calculate semantic throughput
         total_semantic_content = sum(seg["semantic_density"] for seg in segments)
 
         if np is not None:
@@ -1448,63 +1485,70 @@ class PerformanceAnalyzer:
         else:
             avg_coherence = sum(seg["coherence_score"] for seg in segments) / len(segments)
 
-        # Capacity utilization
         theoretical_max_segments = 50
         capacity_utilization = len(segments) / theoretical_max_segments
 
         # Efficiency score
         efficiency_score = (total_semantic_content / len(segments)) * avg_coherence
 
-        # Throughput calculation
-        if np is not None:
-            throughput = len(segments) * avg_coherence * np.mean(list(link_config.conversion_rates.values()))
+        coverage_detail: dict[str, float] = {}
+        if expected_elements:
+            for element in expected_elements:
+                present = sum(
+                    1
+                    for seg in segments
+                    if seg.get("expected_elements_signals", {}).get(slot, {}).get(element, 0.0) > 0.0
+                )
+                coverage_detail[element] = present / len(segments)
+            expected_elements_coverage = sum(coverage_detail.values()) / len(expected_elements)
         else:
-            throughput = len(segments) * avg_coherence * sum(link_config.conversion_rates.values()) / len(link_config.conversion_rates)
+            expected_elements_coverage = 0.0
+
+        throughput = len(segments) * avg_coherence
 
         return {
             "throughput": float(throughput),
             "efficiency_score": float(efficiency_score),
             "capacity_utilization": float(capacity_utilization),
-            "segment_count": len(segments)
+            "segment_count": len(segments),
+            "expected_elements_coverage": float(expected_elements_coverage),
+            "expected_elements_detail": coverage_detail,
         }
 
     
-    def _detect_bottlenecks(self, segments: list[dict], link_config: ValueChainLink) -> dict[str, Any]:
-        """Detect bottlenecks in value chain link."""
+    def _detect_bottlenecks(
+        self,
+        slot: str,
+        segments: list[dict[str, Any]],
+        expected_elements: list[str],
+    ) -> dict[str, Any]:
+        """Detect bottlenecks in a base slot."""
 
         bottleneck_analysis = {
             "capacity_constraints": {},
             "bottleneck_scores": {}
         }
 
-        # Analyze capacity constraints
-        for constraint_type, constraint_value in link_config.capacity_constraints.items():
-            if constraint_value < 0.7:
-                bottleneck_analysis["capacity_constraints"][constraint_type] = {
-                    "current_capacity": constraint_value,
-                    "severity": "high" if constraint_value < 0.5 else "medium"
-                }
-
-        # Calculate bottleneck scores
-        for bottleneck_type in link_config.bottlenecks:
-            score = 0.0 # Refactored
-            if segments:
-                # Count mentions of bottleneck in segments
-                mentions = sum(
-                    1 for seg in segments
-                    if bottleneck_type.replace("_", " ").lower() in seg["text"].lower()
+        if expected_elements and segments:
+            missing = [
+                element
+                for element in expected_elements
+                if all(
+                    seg.get("expected_elements_signals", {}).get(slot, {}).get(element, 0.0) <= 0.0
+                    for seg in segments
                 )
-                score = mentions / len(segments)
-
-            bottleneck_analysis["bottleneck_scores"][bottleneck_type] = {
-                "score": score,
-                "severity": "high" if score > 0.2 else "medium" if score > 0.1 else "low"
+            ]
+            missing_ratio = len(missing) / len(expected_elements)
+            bottleneck_analysis["bottleneck_scores"]["expected_elements_missing"] = {
+                "score": missing_ratio,
+                "severity": "high" if missing_ratio > 0.5 else "medium" if missing_ratio > 0.2 else "low",
+                "missing": missing,
             }
 
         return bottleneck_analysis
 
     
-    def _calculate_loss_functions(self, metrics: dict[str, Any], link_config: ValueChainLink) -> dict[str, Any]:
+    def _calculate_loss_functions(self, metrics: dict[str, Any]) -> dict[str, Any]:
         """Calculate operational loss functions."""
 
         # Throughput loss (quadratic)
@@ -1522,11 +1566,8 @@ class PerformanceAnalyzer:
             # Approximate exponential function
             efficiency_loss = (1 + efficiency_gap) ** 2 - 1
 
-        # Time loss (linear)
-        baseline_time = link_config.lead_time_days
         capacity_utilization = metrics["capacity_utilization"]
-        time_multiplier = 1 + (1 - capacity_utilization) * 0.5
-        time_loss = baseline_time * (time_multiplier - 1)
+        time_loss = max(0.0, (1 - capacity_utilization) * 10.0)
 
         # Composite loss
         composite_loss = 0.4 * throughput_loss + 0.4 * efficiency_loss + 0.2 * time_loss
@@ -1590,7 +1631,7 @@ class TextMiningEngine:
     
     def diagnose_critical_links(self, semantic_cube: dict[str, Any],
                                 performance_analysis: dict[str, Any]) -> dict[str, Any]:
-        """Diagnose critical value chain links."""
+        """Diagnose critical base slots."""
 
         diagnosis_results = {
             "critical_links": {},
@@ -1601,25 +1642,24 @@ class TextMiningEngine:
         # Identify critical links
         critical_links = self._identify_critical_links(performance_analysis)
 
-        # Analyze each critical link
-        for link_name, criticality_score in critical_links.items():
-            link_segments = semantic_cube["dimensions"]["value_chain_links"].get(link_name, [])
+        for slot, criticality_score in critical_links.items():
+            slot_segments = semantic_cube["dimensions"]["base_slots"][slot]
 
             # Text analysis
-            text_analysis = self._analyze_link_text(link_segments)
+            text_analysis = self._analyze_link_text(slot_segments)
 
             # Risk assessment
-            risk_assessment = self._assess_risks(link_segments, text_analysis)
+            risk_assessment = self._assess_risks(slot_segments, text_analysis)
 
             # Intervention recommendations
-            interventions = self._generate_interventions(link_name, risk_assessment, text_analysis)
+            interventions = self._generate_interventions(slot, risk_assessment, text_analysis)
 
-            diagnosis_results["critical_links"][link_name] = {
+            diagnosis_results["critical_links"][slot] = {
                 "criticality_score": criticality_score,
                 "text_analysis": text_analysis
             }
-            diagnosis_results["risk_assessment"][link_name] = risk_assessment
-            diagnosis_results["intervention_recommendations"][link_name] = interventions
+            diagnosis_results["risk_assessment"][slot] = risk_assessment
+            diagnosis_results["intervention_recommendations"][slot] = interventions
 
         logger.info(f"Diagnosed {len(critical_links)} critical links")
         return diagnosis_results
@@ -1836,7 +1876,7 @@ class MunicipalAnalyzer:
 
         # Count dimensions
         total_segments = semantic_cube["metadata"]["total_segments"]
-        value_chain_coverage = len(semantic_cube["dimensions"]["value_chain_links"])
+        base_slots_covered = sum(1 for segments in semantic_cube["dimensions"]["base_slots"].values() if segments)
         policy_domain_coverage = len(semantic_cube["dimensions"]["policy_domains"])
 
         # Performance summary
@@ -1860,7 +1900,7 @@ class MunicipalAnalyzer:
         return {
             "document_coverage": {
                 "total_segments_analyzed": total_segments,
-                "value_chain_links_identified": value_chain_coverage,
+                "base_slots_covered": base_slots_covered,
                 "policy_domains_covered": policy_domain_coverage
             },
             "performance_summary": {
@@ -1930,9 +1970,10 @@ def example_usage():
         print(f"- Overall coherence: {cube['measures']['overall_coherence']:.2f}")
         print(f"- Semantic complexity: {cube['measures']['semantic_complexity']:.2f}")
 
-        print("\nValue Chain Links Identified:")
-        for link, segments in cube['dimensions']['value_chain_links'].items():
-            print(f"  - {link}: {len(segments)} segments")
+        print("\nBase Slots Covered:")
+        for slot, segments in cube["dimensions"]["base_slots"].items():
+            if segments:
+                print(f"  - {slot}: {len(segments)} segments")
 
         print("\nPolicy Domains Covered:")
         for domain, segments in cube['dimensions']['policy_domains'].items():
@@ -2634,7 +2675,7 @@ class ResultsExporter:
 
             doc_coverage = summary.get('document_coverage', {})
             lines.append(f"Segments Analyzed: {doc_coverage.get('total_segments_analyzed', 0)}\n")
-            lines.append(f"Value Chain Links: {doc_coverage.get('value_chain_links_identified', 0)}\n")
+            lines.append(f"Base Slots Covered: {doc_coverage.get('base_slots_covered', 0)}\n")
             lines.append(f"Policy Domains: {doc_coverage.get('policy_domains_covered', 0)}\n")
 
             perf_summary = summary.get('performance_summary', {})
