@@ -588,7 +588,7 @@ class SemanticChunkingProducer:
     Provides public API methods for orchestrator integration without exposing
     internal implementation details or summarization logic.
 
-    Version: ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.PolicyDocumentAnalyzer.analyze", "auto_param_L595_13", 1.0).0
+    Version: 1.0
     Producer Type: Semantic Analysis / Chunking
     """
 

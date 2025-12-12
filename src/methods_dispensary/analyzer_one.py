@@ -62,6 +62,747 @@ except ImportError as e:
     sent_tokenize = None
     stopwords = None
 
+# =============================================================================
+# CANONICAL POLICY AREAS (PA01-PA10)
+# Source: questionnaire_monolith.json canonical_notation.policy_areas
+# =============================================================================
+
+POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
+    "PA01": {
+        "id": "PA01",
+        "legacy_id": "P1",
+        "name": "Derechos de las mujeres e igualdad de género",
+        "cluster_id": "CL02",
+        "keywords": [
+            "género", "mujer", "mujeres", "igualdad de género", "equidad de género",
+            "enfoque de género", "perspectiva de género", "transversalización de género",
+            "brecha de género", "disparidad de género", "discriminación de género",
+            "violencia basada en género", "VBG", "violencia de género",
+            "violencia intrafamiliar", "VIF", "violencia doméstica",
+            "violencia sexual", "violencia física", "violencia psicológica",
+            "violencia económica", "violencia patrimonial",
+            "feminicidio", "femicidio", "tentativa de feminicidio",
+            "acoso sexual", "acoso laboral", "hostigamiento",
+            "violencia obstétrica", "violencia institucional",
+            "trata de personas", "explotación sexual",
+            "Secretaría de la Mujer", "Consejería de la Mujer",
+            "Comisaría de Familia", "comisarías",
+            "Ley 1257", "Ley 1719", "Ley 1761", "Ley Rosa Elvira Cely",
+            "medidas de protección", "orden de protección",
+            "ruta de atención", "protocolo de atención",
+            "casas de refugio", "casas de acogida",
+            "brecha salarial", "equidad salarial", "igualdad salarial",
+            "trabajo no remunerado", "carga de cuidado",
+            "economía del cuidado", "trabajo del cuidado",
+            "licencia de maternidad", "lactancia materna",
+            "emprendimiento femenino", "empresarias",
+            "empoderamiento económico", "autonomía económica",
+            "participación política de las mujeres",
+            "liderazgo femenino", "lideresas", "lideresa",
+            "cuotas de género", "paridad", "equidad electoral",
+            "violencia política", "violencia política contra las mujeres",
+            "representación femenina", "concejalas", "diputadas",
+            "salud sexual", "salud reproductiva", "SSR",
+            "derechos reproductivos", "planificación familiar",
+            "embarazo adolescente", "maternidad temprana",
+            "anticoncepción", "anticonceptivos",
+            "mortalidad materna", "morbilidad materna",
+            "mujeres rurales", "mujeres campesinas",
+            "mujeres indígenas", "mujeres afrodescendientes",
+            "mujeres víctimas", "mujeres desplazadas",
+            "mujeres cabeza de familia", "jefatura femenina",
+            "adultas mayores", "niñas", "adolescentes mujeres",
+            "mujeres con discapacidad",
+            "mujeres LGBTI", "mujeres trans",
+            "educación con enfoque de género",
+            "estereotipos de género", "roles de género",
+            "masculinidades", "nuevas masculinidades",
+            "cultura machista", "patriarcado",
+            "coeducación", "educación no sexista"
+        ]
+    },
+    "PA02": {
+        "id": "PA02",
+        "legacy_id": "P2",
+        "name": "Prevención de la violencia y protección frente al conflicto",
+        "cluster_id": "CL01",
+        "keywords": [
+            "conflicto armado", "conflicto interno",
+            "grupos armados organizados", "GAO",
+            "grupos delictivos organizados", "GDO",
+            "grupos armados ilegales", "GAI",
+            "disidencias", "disidencias FARC",
+            "ELN", "Ejército de Liberación Nacional",
+            "paramilitares", "paramilitarismo",
+            "bandas criminales", "BACRIM",
+            "narcotráfico", "cultivos ilícitos",
+            "violencia", "inseguridad", "criminalidad",
+            "homicidios", "asesinatos", "muertes violentas",
+            "secuestro", "extorsión", "amenazas",
+            "desaparición forzada", "desaparecidos",
+            "reclutamiento forzado", "uso de menores",
+            "minas antipersonal", "MAP", "MUSE",
+            "artefactos explosivos improvisados", "AEI",
+            "confinamiento", "restricción a la movilidad",
+            "protección", "medidas de protección",
+            "prevención", "prevención temprana",
+            "alertas tempranas", "SAT",
+            "sistema de alertas tempranas",
+            "nota de seguimiento", "informe de riesgo",
+            "análisis de riesgo", "escenarios de riesgo",
+            "Defensoría del Pueblo",
+            "Policía Nacional", "Ejército Nacional",
+            "Fuerza Pública", "fuerzas militares",
+            "Fiscalía", "Procuraduría",
+            "Personería", "personero",
+            "inspección de policía", "inspectores",
+            "convivencia", "convivencia ciudadana",
+            "seguridad ciudadana", "seguridad comunitaria",
+            "espacio público", "recuperación del espacio público",
+            "pandillas", "pandillismo", "delincuencia juvenil",
+            "consumo de sustancias", "expendio de drogas",
+            "riñas", "lesiones personales",
+            "plan de seguridad", "estrategia de seguridad",
+            "consejos de seguridad", "CONSEA",
+            "frentes de seguridad", "red de cooperantes",
+            "cámaras de seguridad", "videovigilancia",
+            "CAI", "comando de atención inmediata",
+            "cuadrantes de policía",
+            "desmovilizados", "excombatientes",
+            "reintegración", "reincorporación",
+            "DDR", "desarme desmovilización reintegración",
+            "derechos humanos", "DDHH",
+            "derecho internacional humanitario", "DIH",
+            "crímenes de guerra", "crímenes de lesa humanidad",
+            "justicia transicional", "JEP"
+        ]
+    },
+    "PA03": {
+        "id": "PA03",
+        "legacy_id": "P3",
+        "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "cluster_id": "CL01",
+        "keywords": [
+            "ambiente", "medio ambiente", "ambiental",
+            "sostenibilidad", "sostenibilidad ambiental",
+            "desarrollo sostenible", "sustentabilidad",
+            "ecología", "ecosistemas", "biodiversidad",
+            "conservación", "preservación",
+            "educación ambiental", "conciencia ambiental",
+            "cambio climático", "calentamiento global",
+            "gases de efecto invernadero", "GEI",
+            "mitigación", "adaptación climática",
+            "variabilidad climática", "fenómenos climáticos",
+            "huella de carbono", "carbono neutralidad",
+            "energías renovables", "energía limpia",
+            "recurso hídrico", "agua", "fuentes hídricas",
+            "cuencas", "microcuencas", "acuíferos",
+            "quebradas", "ríos", "humedales",
+            "contaminación del agua", "calidad del agua",
+            "acueducto", "alcantarillado", "saneamiento básico",
+            "PSMV", "plan de saneamiento y manejo de vertimientos",
+            "suelo", "erosión", "degradación del suelo",
+            "deforestación", "tala", "reforestación",
+            "bosques", "páramos", "selva",
+            "áreas protegidas", "reservas naturales",
+            "parques naturales", "zonas de reserva",
+            "ecosistemas estratégicos",
+            "residuos sólidos", "basuras", "desechos",
+            "PGIRS", "plan de gestión integral de residuos",
+            "reciclaje", "separación en la fuente",
+            "relleno sanitario", "botadero",
+            "contaminación", "contaminación ambiental",
+            "contaminación del aire", "calidad del aire",
+            "gestión del riesgo", "gestión de riesgo de desastres",
+            "desastres", "emergencias", "calamidad",
+            "prevención de desastres", "preparación",
+            "atención de emergencias", "respuesta",
+            "inundaciones", "desbordamientos", "crecientes",
+            "deslizamientos", "remoción en masa", "avalanchas",
+            "incendios forestales", "quemas",
+            "sequía", "desertificación",
+            "vendavales", "vientos fuertes",
+            "sismos", "terremotos",
+            "Fenómeno del Niño", "Fenómeno de la Niña",
+            "CAR", "corporación autónoma regional",
+            "autoridad ambiental", "ANLA",
+            "IDEAM", "CMGRD", "UNGRD",
+            "Bomberos", "Cruz Roja", "Defensa Civil",
+            "ordenamiento territorial", "POT", "PBOT", "EOT",
+            "POMCA", "zonificación ambiental",
+            "licencia ambiental", "permiso ambiental",
+            "fauna", "flora", "especies nativas",
+            "minería", "minería ilegal", "extracción"
+        ]
+    },
+    "PA04": {
+        "id": "PA04",
+        "legacy_id": "P4",
+        "name": "Derechos económicos, sociales y culturales",
+        "cluster_id": "CL03",
+        "keywords": [
+            "DESC", "derechos económicos", "derechos sociales",
+            "derechos culturales", "pacto DESC",
+            "derechos fundamentales", "mínimo vital",
+            "dignidad humana", "calidad de vida",
+            "empleo", "trabajo", "desempleo",
+            "generación de empleo", "oportunidades laborales",
+            "trabajo decente", "formalización laboral",
+            "informalidad", "subempleo",
+            "salario", "salario mínimo", "remuneración",
+            "seguridad social", "EPS", "ARL",
+            "SENA", "emprendimiento",
+            "vivienda", "vivienda digna", "derecho a la vivienda",
+            "vivienda de interés social", "VIS",
+            "vivienda de interés prioritario", "VIP",
+            "mejoramiento de vivienda", "subsidio de vivienda",
+            "hacinamiento", "servicios públicos",
+            "salud", "derecho a la salud", "sistema de salud",
+            "EPS", "IPS", "régimen contributivo", "régimen subsidiado",
+            "SISBÉN", "afiliación al sistema",
+            "hospital", "centro de salud", "puesto de salud",
+            "ESE", "empresa social del estado",
+            "Secretaría de Salud", "salud mental",
+            "vacunación", "desnutrición", "malnutrición",
+            "mortalidad infantil", "mortalidad materna",
+            "educación", "derecho a la educación",
+            "acceso a la educación", "cobertura educativa",
+            "calidad educativa", "educación inicial",
+            "educación básica", "primaria", "secundaria",
+            "educación media", "bachillerato",
+            "educación superior", "universidad",
+            "Secretaría de Educación", "docentes", "maestros",
+            "deserción escolar", "abandono escolar",
+            "PAE", "programa de alimentación escolar",
+            "transporte escolar", "infraestructura educativa",
+            "analfabetismo", "alfabetización",
+            "cultura", "derechos culturales",
+            "patrimonio cultural", "identidad cultural",
+            "biblioteca", "casa de la cultura", "museo",
+            "Secretaría de Cultura", "artistas",
+            "deporte", "recreación", "actividad física",
+            "escenarios deportivos", "polideportivo", "parques",
+            "alimentación", "seguridad alimentaria",
+            "soberanía alimentaria", "banco de alimentos",
+            "primera infancia", "niños y niñas",
+            "adultos mayores", "tercera edad",
+            "personas con discapacidad", "PcD",
+            "familias en acción", "jóvenes en acción",
+            "transferencias monetarias", "subsidios",
+            "infraestructura social", "espacio público",
+            "vías", "carreteras", "transporte público",
+            "desarrollo comunitario", "JAC", "juntas de acción comunal"
+        ]
+    },
+    "PA05": {
+        "id": "PA05",
+        "legacy_id": "P5",
+        "name": "Derechos de las víctimas y construcción de paz",
+        "cluster_id": "CL02",
+        "keywords": [
+            "víctimas", "víctima", "población víctima",
+            "hechos victimizantes", "hecho victimizante",
+            "RUV", "registro único de víctimas",
+            "UARIV", "unidad de víctimas", "Ley 1448",
+            "Enlace de Víctimas", "enlace municipal",
+            "desplazamiento forzado", "desplazamiento",
+            "desplazados", "población desplazada",
+            "confinamiento", "despojo", "despojo de tierras",
+            "abandono forzado", "homicidio", "masacre",
+            "desaparición forzada", "desaparecidos",
+            "secuestro", "tortura", "violencia sexual",
+            "minas antipersonal", "reclutamiento forzado",
+            "amenazas", "atentados", "actos terroristas",
+            "verdad", "derecho a la verdad",
+            "justicia", "derecho a la justicia",
+            "reparación", "reparación integral",
+            "indemnización", "compensación",
+            "garantías de no repetición",
+            "memoria histórica", "dignificación",
+            "restitución", "restitución de tierras",
+            "URT", "unidad de restitución de tierras",
+            "retornos", "retorno de población",
+            "reubicaciones", "reasentamientos",
+            "atención humanitaria", "ayuda humanitaria",
+            "PAU", "punto de atención",
+            "SNARIV", "sistema nacional de atención",
+            "paz", "construcción de paz", "cultura de paz",
+            "acuerdo de paz", "proceso de paz",
+            "posconflicto", "posacuerdo",
+            "reconciliación", "tejido social",
+            "PDET", "programas de desarrollo territorial",
+            "PAT", "territorios PDET", "municipios PDET",
+            "reforma rural integral", "RRI",
+            "ART", "agencia de renovación del territorio",
+            "ZOMAC", "zonas más afectadas por el conflicto",
+            "justicia transicional", "JEP",
+            "comisión de la verdad", "UBPD",
+            "excombatientes", "FARC", "reincorporación",
+            "ETCR", "ARN", "proyectos productivos",
+            "mesas de participación", "organizaciones de víctimas",
+            "reparación colectiva", "PIRC",
+            "FONSET", "cooperación internacional",
+            "OIM", "ACNUR", "PMA"
+        ]
+    },
+    "PA06": {
+        "id": "PA06",
+        "legacy_id": "P6",
+        "name": "Derecho al buen futuro de la niñez, adolescencia, juventud",
+        "cluster_id": "CL02",
+        "keywords": [
+            "niñez", "niños", "niñas", "niño", "niña",
+            "primera infancia", "infancia",
+            "adolescencia", "adolescentes", "adolescente",
+            "juventud", "jóvenes", "joven",
+            "menores de edad", "menores",
+            "código de infancia y adolescencia",
+            "Ley 1098", "Ley 1804",
+            "política de infancia", "política pública de juventud",
+            "interés superior del niño", "derechos de los niños",
+            "desarrollo integral", "enfoque de derechos",
+            "ICBF", "instituto colombiano de bienestar familiar",
+            "defensor de familia", "Comisaría de Familia",
+            "SNBF", "sistema nacional de bienestar familiar",
+            "Consejería de Juventud", "plataforma de juventud",
+            "De Cero a Siempre", "CDI", "centro de desarrollo infantil",
+            "hogar comunitario", "hogar infantil", "jardín infantil",
+            "madres comunitarias", "atención integral",
+            "educación inicial", "nutrición infantil",
+            "restablecimiento de derechos", "PARD",
+            "vulneración de derechos", "hogar sustituto",
+            "adopción", "protección de niños",
+            "entornos protectores", "maltrato infantil",
+            "trabajo infantil", "explotación infantil",
+            "ESCNNA", "reclutamiento", "consumo de SPA",
+            "SRPA", "sistema de responsabilidad penal adolescente",
+            "justicia juvenil", "sanciones pedagógicas",
+            "CAE", "centro de atención especializada",
+            "educación para niños", "permanencia escolar",
+            "deserción", "ludotecas", "estimulación temprana",
+            "salud infantil", "vacunación", "crecimiento y desarrollo",
+            "lactancia materna", "obesidad infantil",
+            "embarazo adolescente", "prevención del embarazo",
+            "participación juvenil", "consejos de juventud", "CMJ",
+            "organizaciones juveniles", "liderazgo juvenil",
+            "empleo juvenil", "primer empleo",
+            "emprendimiento juvenil", "Jóvenes en Acción",
+            "casas de juventud", "parques infantiles",
+            "prevención del suicidio", "bullying", "acoso escolar",
+            "proyecto de vida", "habilidades para la vida",
+            "niños víctimas", "niños con discapacidad",
+            "familia", "pautas de crianza", "crianza positiva",
+            "escuela de padres", "custodia", "cuota alimentaria"
+        ]
+    },
+    "PA07": {
+        "id": "PA07",
+        "legacy_id": "P7",
+        "name": "Tierras y territorios",
+        "cluster_id": "CL01",
+        "keywords": [
+            "tierras", "tierra", "territorio", "territorial",
+            "tenencia de la tierra", "propiedad",
+            "baldíos", "adjudicación", "titulación",
+            "formalización", "formalización de la propiedad",
+            "escrituración", "registro de instrumentos públicos",
+            "catastro", "catastro multipropósito",
+            "actualización catastral", "avalúo catastral",
+            "IGAC", "Sistema de Información Geográfica", "SIG",
+            "ordenamiento territorial", "OT",
+            "POT", "plan de ordenamiento territorial",
+            "PBOT", "EOT", "revisión del POT",
+            "uso del suelo", "clasificación del suelo",
+            "suelo urbano", "suelo rural", "suelo de expansión",
+            "perímetro urbano", "zonificación",
+            "zonas de riesgo", "zonas de protección ambiental",
+            "desarrollo rural", "reforma rural integral", "RRI",
+            "economía campesina", "agricultura familiar",
+            "campesinos", "pequeños productores",
+            "Unidad Agrícola Familiar", "UAF",
+            "UMATA", "asistencia técnica agropecuaria",
+            "extensión rural", "secretaría de agricultura",
+            "Agencia de Desarrollo Rural", "ADR",
+            "restitución de tierras", "URT",
+            "acceso a la tierra", "fondo de tierras",
+            "conflictos de uso del suelo", "ocupación irregular",
+            "legalización de barrios", "mejoramiento integral de barrios",
+            "vías terciarias", "caminos veredales",
+            "electrificación rural", "acueductos veredales",
+            "conectividad rural", "infraestructura productiva",
+            "territorios étnicos", "resguardos indígenas",
+            "territorios colectivos", "consejos comunitarios",
+            "consulta previa", "autonomía territorial",
+            "títulos mineros", "concesiones",
+            "licencias de urbanismo", "licencias de construcción",
+            "impuesto predial", "valorización",
+            "movilidad", "conectividad vial", "transporte público",
+            "espacio público", "parques", "zonas verdes"
+        ]
+    },
+    "PA08": {
+        "id": "PA08",
+        "legacy_id": "P8",
+        "name": "Líderes y defensores de derechos humanos",
+        "cluster_id": "CL03",
+        "keywords": [
+            "líderes sociales", "liderazgo social",
+            "líderes comunitarios", "líderes comunales",
+            "lideresas", "líder",
+            "defensores de derechos humanos", "defensores",
+            "defensoras", "activistas",
+            "líderes ambientales", "ambientalistas",
+            "líderes campesinos", "líderes rurales",
+            "líderes indígenas", "autoridades indígenas",
+            "líderes afrodescendientes",
+            "líderes de víctimas", "líderes sindicales",
+            "periodistas", "comunicadores sociales",
+            "JAC", "juntas de acción comunal",
+            "presidentes de JAC", "dignatarios",
+            "gestores de paz", "liderazgo territorial",
+            "amenazas", "amenazas de muerte",
+            "intimidación", "hostigamiento",
+            "riesgo", "situación de riesgo",
+            "riesgo extraordinario", "riesgo extremo",
+            "asesinatos de líderes", "homicidios",
+            "masacres", "atentados", "agresiones",
+            "desplazamiento forzado", "exilio",
+            "estigmatización", "señalamientos",
+            "criminalización de la protesta",
+            "protección", "esquemas de protección",
+            "medidas de protección", "UNP",
+            "escoltas", "vehículos blindados",
+            "botón de pánico", "reubicación temporal",
+            "análisis de riesgo", "CERREM",
+            "prevención", "alertas tempranas", "SAT",
+            "planes de prevención", "autoprotección",
+            "garantías", "Mesa de Garantías",
+            "Decreto 660", "protocolo de protección",
+            "Fiscalía", "Unidad Especial de Investigación",
+            "impunidad", "organizaciones de derechos humanos",
+            "participación política", "movilización social",
+            "protesta social", "manifestaciones",
+            "libertad de expresión", "libertad de prensa"
+        ]
+    },
+    "PA09": {
+        "id": "PA09",
+        "legacy_id": "P9",
+        "name": "Crisis de derechos de personas privadas de la libertad",
+        "cluster_id": "CL04",
+        "keywords": [
+            "privados de libertad", "PPL",
+            "personas privadas de la libertad",
+            "internos", "reclusos", "presos",
+            "población carcelaria", "población penitenciaria",
+            "condenados", "sindicados", "preventivos",
+            "prisión domiciliaria", "detención domiciliaria",
+            "sistema penitenciario", "cárceles", "cárcel", "prisión",
+            "ERON", "establecimiento penitenciario",
+            "penitenciaría", "centro de reclusión",
+            "pabellones", "patios", "celdas",
+            "INPEC", "instituto nacional penitenciario",
+            "guardias penitenciarios", "dragoneantes",
+            "custodia", "vigilancia",
+            "hacinamiento", "sobrepoblación", "sobrecupo",
+            "cupos carcelarios", "crisis carcelaria",
+            "infraestructura carcelaria", "construcción de cárceles",
+            "condiciones de reclusión", "condiciones inhumanas",
+            "trato cruel", "dignidad",
+            "alimentación carcelaria", "agua potable",
+            "servicios sanitarios", "higiene",
+            "salud en cárceles", "atención médica",
+            "medicamentos", "tuberculosis", "VIH",
+            "salud mental", "adicciones",
+            "muertes en custodia", "fallecimientos",
+            "seguridad carcelaria", "motines", "riñas",
+            "violencia entre internos", "extorsión",
+            "corrupción carcelaria",
+            "resocialización", "reinserción social",
+            "tratamiento penitenciario", "trabajo penitenciario",
+            "educación carcelaria", "talleres",
+            "redención de pena", "descuentos",
+            "visitas", "visitas familiares", "visitas íntimas",
+            "comunicación", "contacto con la familia",
+            "defensa pública", "defensoría",
+            "jueces de ejecución", "hábeas corpus",
+            "medidas alternativas", "penas alternativas",
+            "libertad condicional", "casa por cárcel",
+            "brazalete electrónico", "monitoreo electrónico",
+            "beneficios judiciales", "permisos de salida",
+            "mujeres privadas de libertad", "madres en prisión",
+            "niños en prisión", "jóvenes privados de libertad",
+            "estado de cosas inconstitucional", "ECI",
+            "Sentencia T-388", "tutelas",
+            "Defensoría del Pueblo", "Procuraduría",
+            "reincidencia", "reingreso"
+        ]
+    },
+    "PA10": {
+        "id": "PA10",
+        "legacy_id": "P10",
+        "name": "Migración transfronteriza",
+        "cluster_id": "CL04",
+        "keywords": [
+            "migración", "migrantes", "migrante",
+            "inmigrantes", "inmigración",
+            "población migrante", "flujo migratorio",
+            "migración venezolana", "venezolanos",
+            "refugiados", "solicitantes de refugio",
+            "solicitantes de asilo", "asilo",
+            "movilidad humana",
+            "regular", "irregular", "situación migratoria",
+            "indocumentados", "sin documentos",
+            "PEP", "permiso especial de permanencia",
+            "PPT", "permiso por protección temporal",
+            "TMF", "tarjeta de movilidad fronteriza",
+            "regularización", "regularización migratoria",
+            "cédula de extranjería", "visa", "pasaporte",
+            "RUMV", "registro único de migrantes",
+            "Migración Colombia", "Cancillería",
+            "RAMV", "Gerencia de Frontera",
+            "frontera", "zona de frontera",
+            "municipios fronterizos", "Venezuela",
+            "Cúcuta", "La Guajira", "Arauca", "Norte de Santander",
+            "pasos fronterizos", "trochas", "pasos irregulares",
+            "control fronterizo", "cierre de frontera",
+            "crisis humanitaria", "emergencia humanitaria",
+            "asistencia humanitaria", "albergues",
+            "integración", "integración social",
+            "inclusión", "cohesión social",
+            "comunidades de acogida", "xenofobia",
+            "acceso a salud", "acceso a educación",
+            "acceso al trabajo", "empleo formal",
+            "explotación laboral", "trabajo informal",
+            "salud de migrantes", "vacunación",
+            "desnutrición", "salud mental",
+            "educación de migrantes", "niños migrantes",
+            "cupos escolares", "matrícula",
+            "vivienda", "hacinamiento",
+            "menores no acompañados", "mujeres migrantes",
+            "trata de personas", "tráfico de migrantes",
+            "protección internacional", "refugio",
+            "CONARE", "protección temporal",
+            "retorno voluntario", "deportación",
+            "reunificación familiar",
+            "gestión migratoria", "política migratoria",
+            "ACNUR", "OIM", "UNICEF", "Cruz Roja"
+        ]
+    }
+}
+
+# =============================================================================
+# CANONICAL CROSS-CUTTING THEMES / ENFOQUES TRANSVERSALES (ET01-ET10)
+# Source: Colombian PDT normative framework (Ley 152/1994, DNP guidelines)
+# =============================================================================
+
+CROSS_CUTTING_THEMES_CANONICAL: dict[str, dict[str, Any]] = {
+    "ET01": {
+        "id": "ET01",
+        "name": "Enfoque de Género",
+        "keywords": [
+            "enfoque de género", "perspectiva de género", "transversalización de género",
+            "equidad de género", "igualdad de género", "mainstreaming de género",
+            "análisis de género", "brechas de género", "indicadores de género",
+            "presupuestos sensibles al género", "PSG",
+            "política de género", "plan de igualdad",
+            "comité de género", "instancia de género",
+            "mujeres", "niñas", "lideresas", "mujeres rurales",
+            "mujeres víctimas", "mujeres cabeza de familia",
+            "violencia de género", "VBG", "feminicidio",
+            "brecha salarial", "trabajo no remunerado",
+            "economía del cuidado", "participación política de mujeres"
+        ]
+    },
+    "ET02": {
+        "id": "ET02",
+        "name": "Enfoque Diferencial Étnico",
+        "keywords": [
+            "pueblos indígenas", "comunidades indígenas", "resguardos",
+            "cabildos", "autoridades tradicionales", "usos y costumbres",
+            "comunidades negras", "afrodescendientes", "afrocolombianos",
+            "consejos comunitarios", "territorios colectivos",
+            "pueblo ROM", "gitanos", "kumpanias",
+            "raizales", "palenqueros",
+            "consulta previa", "consentimiento previo libre e informado",
+            "CPLI", "derecho propio", "jurisdicción especial indígena",
+            "autonomía territorial", "autogobierno",
+            "planes de vida", "planes de etnodesarrollo",
+            "enfoque étnico", "enfoque diferencial étnico",
+            "capítulo étnico", "salvaguardas étnicas",
+            "protocolos de consulta", "acuerdos étnicos"
+        ]
+    },
+    "ET03": {
+        "id": "ET03",
+        "name": "Enfoque de Derechos Humanos",
+        "keywords": [
+            "derechos humanos", "DDHH", "derechos fundamentales",
+            "enfoque de derechos", "enfoque basado en derechos",
+            "EBDH", "titulares de derechos", "obligados",
+            "derechos civiles", "derechos políticos",
+            "derechos económicos", "derechos sociales", "derechos culturales",
+            "DESC", "derecho a la vida", "derecho a la integridad",
+            "derecho a la libertad", "derecho al debido proceso",
+            "derecho internacional humanitario", "DIH",
+            "principio de distinción", "principio de proporcionalidad",
+            "protección de civiles", "personas protegidas",
+            "plan de derechos humanos", "política de DDHH",
+            "comité de derechos humanos", "personería",
+            "defensoría", "Defensoría del Pueblo"
+        ]
+    },
+    "ET04": {
+        "id": "ET04",
+        "name": "Enfoque Territorial",
+        "keywords": [
+            "enfoque territorial", "desarrollo territorial",
+            "ordenamiento territorial", "planificación territorial",
+            "vocación territorial", "potencialidades territoriales",
+            "dinámicas territoriales", "configuración territorial",
+            "urbano", "rural", "urbano-rural",
+            "cabecera municipal", "centros poblados", "zona rural dispersa",
+            "veredas", "corregimientos", "comunas",
+            "subregiones", "provincias", "regiones",
+            "POT", "PBOT", "EOT",
+            "planes parciales", "UPR", "unidades de planificación rural",
+            "modelo de ocupación territorial", "MOT"
+        ]
+    },
+    "ET05": {
+        "id": "ET05",
+        "name": "Enfoque de Curso de Vida",
+        "keywords": [
+            "curso de vida", "ciclo vital", "ciclo de vida",
+            "trayectorias vitales", "transiciones",
+            "primera infancia", "0 a 5 años",
+            "infancia", "niñez", "6 a 11 años",
+            "adolescencia", "12 a 17 años",
+            "juventud", "14 a 28 años", "jóvenes",
+            "adultez", "adultos",
+            "vejez", "envejecimiento", "adulto mayor",
+            "persona mayor", "tercera edad",
+            "intergeneracional", "solidaridad intergeneracional",
+            "relevo generacional", "transmisión de saberes"
+        ]
+    },
+    "ET06": {
+        "id": "ET06",
+        "name": "Enfoque de Discapacidad",
+        "keywords": [
+            "discapacidad", "personas con discapacidad", "PcD",
+            "diversidad funcional", "capacidades diferentes",
+            "enfoque diferencial de discapacidad",
+            "modelo social de discapacidad",
+            "convención sobre discapacidad", "CDPD",
+            "discapacidad física", "discapacidad sensorial",
+            "discapacidad visual", "discapacidad auditiva",
+            "discapacidad cognitiva", "discapacidad intelectual",
+            "discapacidad psicosocial", "discapacidad múltiple",
+            "accesibilidad", "diseño universal",
+            "ajustes razonables", "apoyos",
+            "lengua de señas", "braille",
+            "comunicación aumentativa", "tecnologías de apoyo",
+            "RLCPD", "registro de localización",
+            "certificación de discapacidad",
+            "comité de discapacidad", "política de discapacidad"
+        ]
+    },
+    "ET07": {
+        "id": "ET07",
+        "name": "Enfoque Ambiental/Sostenibilidad",
+        "keywords": [
+            "sostenibilidad", "desarrollo sostenible",
+            "ODS", "objetivos de desarrollo sostenible",
+            "sostenibilidad ambiental", "sustentabilidad",
+            "cambio climático", "mitigación", "adaptación",
+            "resiliencia climática", "huella de carbono",
+            "carbono neutralidad", "transición energética",
+            "conservación", "biodiversidad", "ecosistemas",
+            "áreas protegidas", "servicios ecosistémicos",
+            "recursos naturales", "recurso hídrico",
+            "gestión ambiental", "impacto ambiental",
+            "licencia ambiental", "plan de manejo ambiental",
+            "evaluación ambiental estratégica", "EAE"
+        ]
+    },
+    "ET08": {
+        "id": "ET08",
+        "name": "Enfoque de construcción de paz territorial",
+        "keywords": [
+            "construcción de paz", "cultura de paz",
+            "paz territorial", "paz con legalidad",
+            "acuerdo de paz", "implementación del acuerdo",
+            "posconflicto", "posacuerdo",
+            "reconciliación", "convivencia pacífica",
+            "tejido social", "cohesión social",
+            "diálogo", "resolución de conflictos",
+            "mediación", "justicia restaurativa",
+            "verdad", "justicia", "reparación",
+            "garantías de no repetición", "memoria histórica",
+            "reincorporación", "reintegración",
+            "excombatientes", "PDET", "RRI"
+        ]
+    },
+    "ET09": {
+        "id": "ET09",
+        "name": "Enfoque Diferencial - Población Privada de la Libertad",
+        "keywords": [
+            "personas privadas de la libertad", "PPL",
+            "población privada de libertad",
+            "población carcelaria", "población penitenciaria",
+            "cárceles", "centros penitenciarios",
+            "establecimientos de reclusión", "ERON",
+            "INPEC", "Instituto Nacional Penitenciario",
+            "reclusos", "internos", "detenidos",
+            "prisión", "reclusión", "privación de libertad",
+            "hacinamiento carcelario",
+            "reinserción social", "resocialización",
+            "política penitenciaria", "sistema penitenciario",
+            "derechos de personas privadas de libertad",
+            "centros de detención transitoria",
+            "medidas de aseguramiento",
+            "condiciones de reclusión",
+            "atención en salud en prisiones",
+            "educación en establecimientos penitenciarios",
+            "trabajo penitenciario",
+            "beneficios administrativos", "redención de pena"
+        ]
+    },
+    "ET10": {
+        "id": "ET10",
+        "name": "Enfoque Diferencial - Población Migrante",
+        "keywords": [
+            "población migrante", "migrantes",
+            "migración", "movilidad humana",
+            "migrantes venezolanos", "venezolanos",
+            "refugiados", "solicitantes de asilo",
+            "desplazamiento transfronterizo",
+            "migración irregular", "migración regular",
+            "estatuto temporal de protección", "ETPV",
+            "permiso especial de permanencia", "PEP",
+            "permiso por protección temporal", "PPT",
+            "regularización migratoria",
+            "Migración Colombia",
+            "frontera", "zona de frontera",
+            "tránsito migratorio", "flujo migratorio",
+            "retorno", "retornados",
+            "integración social", "integración socioeconómica",
+            "xenofobia", "discriminación a migrantes",
+            "documento de identidad migrante",
+            "acceso a servicios para migrantes",
+            "educación para migrantes",
+            "salud para migrantes",
+            "empleabilidad migrante",
+            "niños, niñas y adolescentes migrantes",
+            "familias migrantes",
+            "atención humanitaria a migrantes",
+            "CONPES migratorio",
+            "política migratoria"
+        ]
+    }
+}
+
 # ---------------------------------------------------------------------------
 # 1. CORE DATA STRUCTURES
 # ---------------------------------------------------------------------------
@@ -120,22 +861,182 @@ class MunicipalOntology:
         }
 
         self.policy_domains = {
-            "economic_development": ["competitiveness", "entrepreneurship", "employment"],
-            "social_development": ["education", "health", "housing"],
-            "territorial_development": ["land_use", "infrastructure", "connectivity"],
-            "institutional_development": ["governance", "transparency", "capacity_building"]
+            pa_id: pa_config["keywords"]
+            for pa_id, pa_config in POLICY_AREAS_CANONICAL.items()
         }
 
         self.cross_cutting_themes = {
-            "governance": ["transparency", "accountability", "participation"],
-            "equity": ["gender_equality", "social_inclusion", "poverty_reduction"],
-            "sustainability": ["environmental_protection", "climate_adaptation"],
-            "innovation": ["digital_transformation", "process_innovation"]
+            et_id: et_config["keywords"]
+            for et_id, et_config in CROSS_CUTTING_THEMES_CANONICAL.items()
         }
 
 # ---------------------------------------------------------------------------
 # 2. SEMANTIC ANALYSIS ENGINE
 # ---------------------------------------------------------------------------
+
+# =============================================================================
+# CANONICAL PATTERNS FOR SLOT D3-Q3 (Trazabilidad Presupuestal/Organizacional)
+# Maps to Q013, Q043, Q073, Q103, Q133, Q163, Q193, Q223, Q253, Q283
+# One per Policy Area (PA01-PA10)
+# =============================================================================
+
+PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
+    "PA01": {  # Género
+        "question_id": "Q013",
+        "question_text": "¿Los productos de género tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de la Mujer|Oficina de la Mujer|Secretaría de Desarrollo Social",
+            r"articulado con la Comisaría de Familia",
+            r"corresponsabilidad de|en alianza con"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión asociado",
+            r"programa del PPI|línea de inversión",
+            r"recursos del proyecto|presupuesto del producto"
+        ]
+    },
+    "PA02": {  # Violencia/Conflicto
+        "question_id": "Q073",
+        "question_text": "¿Los productos de protección tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Enlace de Víctimas|Personería Municipal",
+            r"articulado con la Defensoría del Pueblo|Policía Nacional",
+            r"corresponsabilidad de|en alianza con"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para la paz",
+            r"programa del PPI|línea de inversión en víctimas",
+            r"recursos del proyecto|presupuesto para prevención"
+        ]
+    },
+    "PA03": {  # Ambiente
+        "question_id": "Q103",
+        "question_text": "¿Los productos ambientales tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Ambiente|Planeación|Infraestructura",
+            r"articulado con la CAR|CMGRD",
+            r"convenio con|contrato de obra No\."
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para gestión del riesgo",
+            r"programa del PPI|línea de inversión en sostenibilidad ambiental",
+            r"recursos del proyecto|presupuesto de la obra"
+        ]
+    },
+    "PA04": {  # DESC (Derechos Económicos, Sociales y Culturales)
+        "question_id": "Q133",
+        "question_text": "¿Los productos sociales tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Educación|Secretaría de Salud|Oficina de Vivienda",
+            r"articulado con la ESE Hospital|ICBF",
+            r"convenio con|contrato de obra No\."
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para educación|salud|vivienda",
+            r"programa del PPI|línea de inversión en desarrollo social",
+            r"recursos del proyecto|presupuesto del PAE"
+        ]
+    },
+    "PA05": {  # Víctimas/Paz
+        "question_id": "Q163",
+        "question_text": "¿Los productos para víctimas tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Enlace Municipal de Víctimas|Secretaría de Gobierno",
+            r"articulado con la Personería|UARIV territorial",
+            r"convenio con|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para la paz y reconciliación",
+            r"programa del PPI|línea de inversión en víctimas",
+            r"recursos del FONSET|presupuesto para el PAT"
+        ]
+    },
+    "PA06": {  # Niñez/Juventud
+        "question_id": "Q193",
+        "question_text": "¿Los productos para niñez y juventud tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Desarrollo Social|Educación|Salud",
+            r"articulado con el ICBF|Comisaría de Familia",
+            r"convenio con|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para primera infancia",
+            r"programa del PPI|línea de inversión en juventud",
+            r"recursos del SGP para educación|presupuesto del PAE"
+        ]
+    },
+    "PA07": {  # Tierras
+        "question_id": "Q223",
+        "question_text": "¿Los productos de tierras tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Planeación|Infraestructura|UMATA",
+            r"articulado con el IGAC|convenio con INVIAS|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para catastro multipropósito",
+            r"programa del PPI|línea de inversión en desarrollo rural",
+            r"recursos del proyecto|presupuesto para la red vial"
+        ]
+    },
+    "PA08": {  # Líderes DDHH
+        "question_id": "Q253",
+        "question_text": "¿Los productos de protección de líderes tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Despacho del Alcalde|Personería Municipal",
+            r"articulado con la UNP|en alianza con plataformas de DDHH",
+            r"convenio con|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para garantías y DDHH",
+            r"programa del PPI|línea de inversión en seguridad y convivencia",
+            r"recursos del proyecto|presupuesto para la Mesa de Garantías"
+        ]
+    },
+    "PA09": {  # PPL (Personas Privadas de Libertad)
+        "question_id": "Q283",
+        "question_text": "¿Los productos para PPL tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Secretaría de Salud|Personería Municipal",
+            r"articulado con el INPEC|convenio con la ESE del municipio",
+            r"contrato de obra No\.|contrato de suministro de alimentos"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para infraestructura carcelaria",
+            r"programa del PPI|línea de inversión en seguridad y justicia",
+            r"recursos del proyecto|presupuesto para atención a PPL"
+        ]
+    },
+    "PA10": {  # Migración
+        "question_id": "Q043",
+        "question_text": "¿Los productos para migración tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Desarrollo Social|Enlace de Migración",
+            r"articulado con la Personería|operado por un socio de la cooperación \(ONG\)",
+            r"convenio con|contrato de suministro"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para atención a población migrante",
+            r"programa del PPI|línea de inversión en integración",
+            r"recursos del proyecto|presupuesto para el PAO"
+        ]
+    }
+}
+
+# Expected elements common to all Policy Areas for D3-Q3
+EXPECTED_ELEMENTS_D3_Q3: list[dict[str, Any]] = [
+    {"type": "trazabilidad_organizacional", "required": True},
+    {"type": "trazabilidad_presupuestal", "required": True}
+]
+
+# Scoring configuration for D3-Q3 slot
+SCORING_CONFIG_D3_Q3: dict[str, Any] = {
+    "scoring_modality": "TYPE_A",
+    "modality_behavior": "count_and_scale",
+    "aggregation": "presence_threshold",
+    "threshold": 0.7,
+    "scale": [0, 1, 2, 3]
+}
+
 
 class SemanticAnalyzer:
     """Advanced semantic analysis for municipal documents."""
@@ -342,13 +1243,60 @@ class SemanticAnalyzer:
         }
 
     
-    def _classify_value_chain_link(self, segment: str) -> dict[str, float]:
-        """Classify segment by value chain link using keyword matching."""
-        link_scores = {}
+    def _classify_value_chain_link(
+        self,
+        segment: str,
+        policy_area_id: str | None = None
+    ) -> dict[str, float]:
+        """
+        Classify segment by value chain link using canonical patterns.
+        
+        Refactored for SLOT D3-Q3: Trazabilidad Presupuestal y Organizacional.
+        Maps to questions Q013, Q043, Q073, Q103, Q133, Q163, Q193, Q223, Q253, Q283
+        (one per Policy Area PA01-PA10).
+        
+        Args:
+            segment: Text segment to classify
+            policy_area_id: Canonical policy area code (PA01-PA10). If None, uses
+                           legacy ontology-based classification for backward compatibility.
+        
+        Returns:
+            dict with scores per expected_element:
+            - If policy_area_id provided: {"trazabilidad_organizacional": float, 
+                                           "trazabilidad_presupuestal": float}
+            - If policy_area_id is None: legacy format with ontology link scores
+        """
+        # NEW: Policy Area-specific classification for D3-Q3 slot
+        if policy_area_id is not None:
+            patterns_config = PATTERNS_D3_Q3_BY_POLICY_AREA.get(policy_area_id)
+            if not patterns_config:
+                raise ValueError(
+                    f"Policy area {policy_area_id} no tiene configuración para D3-Q3. "
+                    f"Valid options: {list(PATTERNS_D3_Q3_BY_POLICY_AREA.keys())}"
+                )
+            
+            scores: dict[str, float] = {}
+            for element_type in ["trazabilidad_organizacional", "trazabilidad_presupuestal"]:
+                patterns = patterns_config.get(element_type, [])
+                if not patterns:
+                    scores[element_type] = 0.0
+                    continue
+                
+                match_count = sum(
+                    1 for p in patterns
+                    if re.search(p, segment, re.IGNORECASE)
+                )
+                # Normalize: proportion of patterns matched
+                scores[element_type] = min(1.0, match_count / max(1, len(patterns)))
+            
+            return scores
+        
+        # LEGACY: Ontology-based classification for backward compatibility
+        link_scores: dict[str, float] = {}
         segment_lower = segment.lower()
 
         for link_name, link_obj in self.ontology.value_chain_links.items():
-            score = 0.0 # Refactored
+            score = 0.0
             total_keywords = 0
 
             # Check all link components
@@ -367,33 +1315,96 @@ class SemanticAnalyzer:
 
     
     def _classify_policy_domain(self, segment: str) -> dict[str, float]:
-        """Classify segment by policy domain using keyword matching."""
-        domain_scores = {}
+        """
+        Classify segment by Policy Area (PA01-PA10) using keyword matching.
+        
+        Refactored per questionnaire_monolith.json canonical notation.
+        
+        Args:
+            segment: Text segment to classify
+            
+        Returns:
+            dict[str, float]: Score per Policy Area.
+                Keys: PA01, PA02, PA03, PA04, PA05, PA06, PA07, PA08, PA09, PA10
+                Values: Normalized score [0.0-1.0] based on keyword matches
+                
+        Contract:
+            - Output keys MUST be exactly: {PA01, PA02, PA03, PA04, PA05, PA06, PA07, PA08, PA09, PA10}
+            - Output keys MUST NOT be: {economic_development, social_development, 
+              territorial_development, institutional_development}
+            - Scoring: count(matched_keywords) / len(total_keywords_for_PA)
+        """
+        policy_area_scores: dict[str, float] = {}
         segment_lower = segment.lower()
 
-        for domain, keywords in self.ontology.policy_domains.items():
-            score = 0.0 # Refactored
+        for pa_id, keywords in self.ontology.policy_domains.items():
+            if not keywords:
+                policy_area_scores[pa_id] = 0.0
+                continue
+                
+            match_count = 0
             for keyword in keywords:
-                if keyword.lower() in segment_lower:
-                    score += 1.0
+                keyword_lower = keyword.lower()
+                if keyword_lower in segment_lower:
+                    match_count += 1
 
-            domain_scores[domain] = score / len(keywords) if keywords else 0.0
+            policy_area_scores[pa_id] = match_count / len(keywords)
 
-        return domain_scores
+        # Contract assertion: verify output keys
+        expected_keys = {f"PA{i:02d}" for i in range(1, 11)}
+        actual_keys = set(policy_area_scores.keys())
+        if actual_keys != expected_keys:
+            logger.error(
+                f"_classify_policy_domain output key mismatch. "
+                f"Expected: {expected_keys}, Got: {actual_keys}"
+            )
+
+        return policy_area_scores
 
     
     def _classify_cross_cutting_themes(self, segment: str) -> dict[str, float]:
-        """Classify segment by cross-cutting themes."""
-        theme_scores = {}
+        """
+        Classify segment by Cross-Cutting Themes / Enfoques Transversales (ET01-ET10).
+        
+        Refactored per Colombian PDT normative framework (Ley 152/1994, DNP guidelines).
+        
+        Args:
+            segment: Text segment to classify
+            
+        Returns:
+            dict[str, float]: Score per Enfoque Transversal.
+                Keys: ET01, ET02, ET03, ET04, ET05, ET06, ET07, ET08, ET09, ET10
+                Values: Normalized score [0.0-1.0] based on keyword matches
+                
+        Contract:
+            - Output keys MUST be exactly: {ET01, ET02, ET03, ET04, ET05, ET06, ET07, ET08, ET09, ET10}
+            - Output keys MUST NOT be: {governance, equity, sustainability, innovation}
+            - Scoring: count(matched_keywords) / len(total_keywords_for_ET)
+        """
+        theme_scores: dict[str, float] = {}
         segment_lower = segment.lower()
 
-        for theme, keywords in self.ontology.cross_cutting_themes.items():
-            score = 0.0 # Refactored
+        for et_id, keywords in self.ontology.cross_cutting_themes.items():
+            if not keywords:
+                theme_scores[et_id] = 0.0
+                continue
+                
+            match_count = 0
             for keyword in keywords:
-                if keyword.lower().replace("_", " ") in segment_lower:
-                    score += 1.0
+                keyword_lower = keyword.lower()
+                if keyword_lower in segment_lower:
+                    match_count += 1
 
-            theme_scores[theme] = score / len(keywords) if keywords else 0.0
+            theme_scores[et_id] = match_count / len(keywords)
+
+        # Contract assertion: verify output keys
+        expected_keys = {f"ET{i:02d}" for i in range(1, 11)}
+        actual_keys = set(theme_scores.keys())
+        if actual_keys != expected_keys:
+            logger.error(
+                f"_classify_cross_cutting_themes output key mismatch. "
+                f"Expected: {expected_keys}, Got: {actual_keys}"
+            )
 
         return theme_scores
 

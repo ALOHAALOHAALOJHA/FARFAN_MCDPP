@@ -506,7 +506,7 @@ class BayesianNumericalAnalyzer:
         Initialize Bayesian analyzer.
 
         Args:
-            prior_strength: Prior belief strength (ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L510_51", 1.0) = weak, 1ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L510_64", 0.0) = strong)
+            prior_strength: Prior belief strength (1.0 = weak, 10.0 = strong)
         """
         self.prior_strength = prior_strength
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -1626,7 +1626,7 @@ class EmbeddingPolicyProducer:
     Provides public API methods for orchestrator integration without exposing
     internal implementation details or summarization logic.
 
-    Version: ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.get_diagnostics", "auto_param_L1630_13", 1.0).0
+    Version: 1.0
     Producer Type: Embedding / Semantic Search
     """
 

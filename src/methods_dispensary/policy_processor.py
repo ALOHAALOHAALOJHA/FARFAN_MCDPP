@@ -357,23 +357,23 @@ class ProcessorConfig:
     
     def validate(self) -> None:
         """Validate configuration parameters."""
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L366_15", 0.0) <= self.confidence_threshold <= 1.0:
+        if not 0.0 <= self.confidence_threshold <= 1.0:
             raise ValueError("confidence_threshold must be in [0, 1]")
         if self.context_window_chars < 100:
             raise ValueError("context_window_chars must be >= 100")
         if self.entropy_weight < 0 or self.entropy_weight > 1:
             raise ValueError("entropy_weight must be in [0, 1]")
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L372_15", 0.0) <= self.bayesian_prior_confidence <= 1.0:
+        if not 0.0 <= self.bayesian_prior_confidence <= 1.0:
             raise ValueError("bayesian_prior_confidence must be in [0, 1]")
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L374_15", 0.0) <= self.bayesian_entropy_weight <= 1.0:
+        if not 0.0 <= self.bayesian_entropy_weight <= 1.0:
             raise ValueError("bayesian_entropy_weight must be in [0, 1]")
         for dimension, threshold in self.minimum_dimension_scores.items():
-            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L377_19", 0.0) <= threshold <= 1.0:
+            if not 0.0 <= threshold <= 1.0:
                 raise ValueError(
                     f"minimum_dimension_scores[{dimension}] must be in [0, 1]"
                 )
         for dimension, threshold in self.critical_dimension_overrides.items():
-            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L382_19", 0.0) <= threshold <= 1.0:
+            if not 0.0 <= threshold <= 1.0:
                 raise ValueError(
                     f"critical_dimension_overrides[{dimension}] must be in [0, 1]"
                 )

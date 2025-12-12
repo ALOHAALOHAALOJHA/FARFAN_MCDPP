@@ -1620,7 +1620,7 @@ class PDETMunicipalPlanAnalyzer:
     def _compute_robustness_value(self, effect: CausalEffect, dag: CausalDAG) -> float:
         """
         Robustness Value: percentil de la distribución posterior que cruza cero
-        Valores altos (>ParameterLoaderV2.get("farfan_core.analysis.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer._compute_robustness_value", "auto_param_L1625_24", 0.95)) indican alta robustez
+        Valores altos (>0.95) indican alta robustez
         """
         ci_lower, ci_upper = effect.credible_interval_95
 
