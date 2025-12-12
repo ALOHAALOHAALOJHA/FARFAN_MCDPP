@@ -55,7 +55,7 @@ from canonic_phases.Phase_two.arg_router import (
     ArgumentValidationError,
     ExtendedArgRouter,
 )
-from canonic_phases.Phase_two.class_registry import ClassRegistryError
+from orchestration.class_registry import ClassRegistryError
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
@@ -703,7 +703,7 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
         
         try:
-            from canonic_phases.Phase_two.class_registry import build_class_registry
+            from orchestration.class_registry import build_class_registry
             registry = build_class_registry()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True

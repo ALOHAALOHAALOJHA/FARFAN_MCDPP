@@ -1,0 +1,1618 @@
+{
+  "AdaptivePriorCalculator._add_ood_noise": {
+      "module": "methods_dispensary/derek_beach.py",
+      "required_params": [
+        "evidence_dict"
+      ],
+      "line": 5026,
+      "doc": ""
+  },
+  "AdaptivePriorCalculator._adjust_domain_weights": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdaptivePriorCalculator._perturb_evidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdaptivePriorCalculator.calculate_likelihood_adaptativo": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "evidence_dict"
+    ],
+    "line": 4829,
+    "doc": "PROMPT I-1: Calcula likelihood adaptativo con BF y dominios"
+  },
+  "AdaptivePriorCalculator.generate_traceability_record": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "evidence_dict",
+      "test_type",
+      "result"
+    ],
+    "line": 5039,
+    "doc": "PROMPT I-3: Trazabilidad y reproducibilidad"
+  },
+  "AdaptivePriorCalculator.sensitivity_analysis": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "evidence_dict"
+    ],
+    "line": 4924,
+    "doc": "PROMPT I-2: Sensibilidad, OOD y ablation evidencial"
+  },
+  "AdaptivePriorCalculator.validate_quality_criteria": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "validation_samples"
+    ],
+    "line": 5104,
+    "doc": "Valida criterios de calidad en conjunto de validación sintética"
+  },
+  "AdvancedDAGValidator._calculate_bayesian_posterior": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._calculate_confidence_interval": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._calculate_node_importance": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._calculate_statistical_power": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._create_empty_result": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._generate_subgraph": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._get_node_validator": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._initialize_rng": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._is_acyclic": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator._perform_sensitivity_analysis_internal": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "AdvancedDAGValidator.add_edge": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [
+      "from_node",
+      "to_node"
+    ],
+    "line": 657,
+    "doc": "Agrega una arista dirigida con peso opcional."
+  },
+  "AdvancedDAGValidator.add_node": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [
+      "name"
+    ],
+    "line": 642,
+    "doc": "Agrega un nodo enriquecido al grafo."
+  },
+  "AdvancedDAGValidator.calculate_acyclicity_pvalue": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [
+      "plan_name",
+      "iterations"
+    ],
+    "line": 742,
+    "doc": "Cálculo avanzado de p-value con un marco estadístico completo."
+  },
+  "AdvancedDAGValidator.export_nodes": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 817,
+    "doc": "Serializa los nodos del grafo y opcionalmente valida contra JSON Schema."
+  },
+  "AdvancedDAGValidator.get_graph_stats": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 1029,
+    "doc": "Obtiene estadísticas estructurales del grafo."
+  },
+  "BayesFactorTable.get_bayes_factor": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "cls",
+      "test_type"
+    ],
+    "line": 4778,
+    "doc": "Obtiene BF medio para tipo de test"
+  },
+  "BayesianConfidenceCalculator.calculate_posterior": {
+    "module": "methods_dispensary/contradiction_deteccion.py",
+    "required_params": [
+      "evidence_strength",
+      "observations"
+    ],
+    "line": 117,
+    "doc": "Calculate posterior probability using Bayesian inference."
+  },
+  "BayesianCounterfactualAuditor._create_default_equations": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianCounterfactualAuditor._evaluate_counterfactual": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianCounterfactualAuditor._evaluate_factual": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianCounterfactualAuditor._test_effect_stability": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "omission_score",
+      "insufficiency_score",
+      "unnecessity_score",
+      "causal_effect"
+    ],
+    "line": 6016,
+    "doc": "PROMPT III-2: Riesgo sistémico y priorización con incertidumbre"
+  },
+  "BayesianCounterfactualAuditor.construct_scm": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "dag"
+    ],
+    "line": 5760,
+    "doc": "PROMPT III-1: Construcción de SCM"
+  },
+  "BayesianCounterfactualAuditor.counterfactual_query": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "intervention",
+      "target"
+    ],
+    "line": 5827,
+    "doc": "PROMPT III-1: Queries gemelas (omission, sufficiency, necessity)"
+  },
+  "BayesianCounterfactualAuditor.refutation_and_sanity_checks": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "dag",
+      "target",
+      "treatment"
+    ],
+    "line": 6127,
+    "doc": "PROMPT III-3: Refutación, negativos y cordura do(.)"
+  },
+  "BayesianMechanismInference._aggregate_bayesian_confidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._calculate_coherence_factor": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._detect_gaps": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._generate_necessity_remediation": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._infer_activity_sequence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._infer_mechanism_type": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._infer_single_mechanism": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._log_refactored_components": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._quantify_uncertainty": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._test_necessity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference._test_sufficiency": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "BayesianMechanismInference.infer_mechanisms": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "nodes",
+      "text"
+    ],
+    "line": 3030,
+    "doc": "Infer latent causal mechanisms using hierarchical Bayesian modeling"
+  },
+  "BayesianNumericalAnalyzer.compare_policies": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [
+      "policy_a_values",
+      "policy_b_values"
+    ],
+    "line": 726,
+    "doc": "Bayesian comparison of two policy metrics."
+  },
+  "BayesianNumericalAnalyzer.evaluate_policy_metric": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [
+      "observed_values"
+    ],
+    "line": 517,
+    "doc": "Bayesian evaluation of policy metric with uncertainty quantification."
+  },
+  "BeachEvidentialTest.apply_test_logic": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "test_type",
+      "evidence_found",
+      "prior",
+      "bayes_factor"
+    ],
+    "line": 149,
+    "doc": "Apply Beach test-specific logic to Bayesian updating."
+  },
+  "BeachEvidentialTest.classify_test": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "necessity",
+      "sufficiency"
+    ],
+    "line": 128,
+    "doc": "Classify evidential test type based on necessity and sufficiency."
+  },
+  "CDAFFramework._extract_feedback_from_audit": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CDAFFramework._generate_dnp_report": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CDAFFramework._validate_dnp_compliance": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._assess_financial_consistency": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._assess_temporal_coherence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._build_type_hierarchy": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._calculate_composite_likelihood": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._calculate_language_specificity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._calculate_semantic_distance": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._calculate_textual_proximity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._calculate_type_transition_prior": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._check_structural_violation": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._classify_goal_type": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._extract_causal_links": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._extract_goals": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._initialize_prior": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor._parse_goal_context": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalExtractor.extract_causal_hierarchy": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "text"
+    ],
+    "line": 981,
+    "doc": "Extract complete causal hierarchy from text"
+  },
+  "CausalInferenceSetup._get_dynamics_pattern": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "CausalInferenceSetup.assign_probative_value": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "nodes"
+    ],
+    "line": 3619,
+    "doc": "Assign probative test types to nodes"
+  },
+  "CausalInferenceSetup.identify_failure_points": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "graph",
+      "text"
+    ],
+    "line": 3679,
+    "doc": "Identify single points of failure in causal chain"
+  },
+  "ConfigLoader._load_uncertainty_history": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "ConfigLoader._save_prior_history": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "ConfigLoader.check_uncertainty_reduction_criterion": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "current_uncertainty"
+    ],
+    "line": 808,
+    "doc": "Check if mean mechanism_type uncertainty has decreased ≥5% over 10 iterations"
+  },
+  "ConfigLoader.update_priors_from_feedback": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "feedback_data"
+    ],
+    "line": 621,
+    "doc": "Self-reflective loop: Update priors based on audit feedback"
+  },
+  "EvidenceAssembler.assemble": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor._calculate_sufficiency": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor._detect_allocation_gaps": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor._match_goal_to_budget": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor._match_program_to_node": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor._parse_amount": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor._perform_counterfactual_budget_check": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor._process_financial_table": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "FinancialAuditor.trace_financial_allocation": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "tables",
+      "nodes"
+    ],
+    "line": 1923,
+    "doc": "Trace financial allocations to programs/goals"
+  },
+  "HierarchicalGenerativeModel._ablation_analysis": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "HierarchicalGenerativeModel._calculate_ess": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "HierarchicalGenerativeModel._calculate_likelihood": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "HierarchicalGenerativeModel._calculate_r_hat": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "HierarchicalGenerativeModel._calculate_waic_difference": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "HierarchicalGenerativeModel._generate_independence_tests": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "HierarchicalGenerativeModel.posterior_predictive_check": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "posterior_samples",
+      "observed_data"
+    ],
+    "line": 5511,
+    "doc": "PROMPT II-2: Posterior Predictive Checks + Ablation"
+  },
+  "HierarchicalGenerativeModel.verify_conditional_independence": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "dag"
+    ],
+    "line": 5603,
+    "doc": "PROMPT II-3: Independencias y parsimonia"
+  },
+  "IndustrialGradeValidator._benchmark_operation": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialGradeValidator._log_metric": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialGradeValidator.execute_suite": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 1135,
+    "doc": "Ejecuta la suite completa de validación industrial."
+  },
+  "IndustrialGradeValidator.run_performance_benchmarks": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 1235,
+    "doc": "Ejecuta benchmarks de rendimiento para las operaciones críticas del motor."
+  },
+  "IndustrialGradeValidator.validate_causal_categories": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 1192,
+    "doc": "Valida la completitud y el orden axiomático de las categorías causales."
+  },
+  "IndustrialGradeValidator.validate_connection_matrix": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 1212,
+    "doc": "Valida la matriz de transiciones causales."
+  },
+  "IndustrialGradeValidator.validate_engine_readiness": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 1170,
+    "doc": "Valida la disponibilidad y tiempo de instanciación de los motores de análisis."
+  },
+  "IndustrialPolicyProcessor._analyze_causal_dimensions": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._build_point_patterns": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._calculate_quality_score": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._compile_pattern_registry": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._compute_avg_confidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._compute_evidence_confidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._construct_evidence_bundle": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._empty_result": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._extract_metadata": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._extract_point_evidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._load_questionnaire": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor._match_patterns_in_sentences": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "IndustrialPolicyProcessor.export_results": {
+    "module": "methods_dispensary/policy_processor.py",
+    "required_params": [
+      "results",
+      "output_path"
+    ],
+    "line": 1340,
+    "doc": "Export analysis results to JSON with formatted output."
+  },
+  "IndustrialPolicyProcessor.process": {
+    "module": "methods_dispensary/policy_processor.py",
+    "required_params": [
+      "raw_text"
+    ],
+    "line": 832,
+    "doc": "Execute comprehensive policy plan analysis."
+  },
+  "MechanismPartExtractor._calculate_ea_confidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "MechanismPartExtractor._normalize_entity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "MechanismPartExtractor._validate_entity_activity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "MechanismPartExtractor.extract_entity_activity": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "text"
+    ],
+    "line": 1763,
+    "doc": "Extract Entity-Activity tuple from text"
+  },
+  "OperationalizationAuditor._audit_direct_evidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "OperationalizationAuditor._audit_systemic_risk": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "OperationalizationAuditor._generate_optimal_remediations": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "OperationalizationAuditor._get_remediation_text": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "OperationalizationAuditor.audit_evidence_traceability": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "nodes"
+    ],
+    "line": 2298,
+    "doc": "Audit evidence traceability for all nodes"
+  },
+  "OperationalizationAuditor.audit_sequence_logic": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "graph"
+    ],
+    "line": 2429,
+    "doc": "Audit logical sequence of activities"
+  },
+  "PDETMunicipalPlanAnalyzer._analyze_funding_sources": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._assess_financial_sustainability": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._bayesian_risk_inference": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._break_cycles": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._classify_entity_type": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._classify_tables": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._clean_dataframe": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._compute_e_value": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._compute_robustness_value": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._consolidate_entities": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._deduplicate_tables": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._effect_to_dict": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._entity_to_dict": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._estimate_effect_bayesian": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._estimate_score_confidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._extract_budget_for_pillar": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._extract_entities_ner": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._extract_entities_syntax": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._extract_financial_amounts": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._extract_from_budget_table": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._find_mediator_mentions": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._find_outcome_mentions": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._generate_optimal_remediations": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._generate_recommendations": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._generate_scenario_narrative": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._get_prior_effect": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._get_spanish_stopwords": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._identify_causal_edges": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._identify_causal_nodes": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._identify_confounders": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._identify_funding_source": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._indicator_to_dict": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._interpret_overall_quality": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._interpret_risk": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._interpret_sensitivity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._is_likely_header": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._quality_to_dict": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._refine_edge_probabilities": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._scenario_to_dict": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._score_causal_coherence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._score_entity_specificity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._score_financial_component": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._score_indicators": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._score_pdet_alignment": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._score_responsibility_clarity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._score_temporal_consistency": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer._simulate_intervention": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "tables",
+      "text"
+    ],
+    "line": 544,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer.calculate_quality_score": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "text",
+      "tables",
+      "financial_analysis",
+      "responsible_entities",
+      "causal_dag",
+      "causal_effects"
+    ],
+    "line": 1657,
+    "doc": "Puntaje bayesiano integral de calidad del PDM"
+  },
+  "PDETMunicipalPlanAnalyzer.construct_causal_dag": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "text",
+      "tables",
+      "financial_analysis"
+    ],
+    "line": 955,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer.estimate_causal_effects": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "dag",
+      "text",
+      "financial_analysis"
+    ],
+    "line": 1282,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer.export_causal_network": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "dag",
+      "output_path"
+    ],
+    "line": 1883,
+    "doc": "Exporta el DAG causal en formato GraphML para Gephi/Cytoscape"
+  },
+  "PDETMunicipalPlanAnalyzer.generate_counterfactuals": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "dag",
+      "causal_effects",
+      "financial_analysis"
+    ],
+    "line": 1421,
+    "doc": "Genera escenarios contrafactuales usando el framework de Pearl (2009)"
+  },
+  "PDETMunicipalPlanAnalyzer.generate_executive_report": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "analysis_results"
+    ],
+    "line": 1901,
+    "doc": "Genera reporte ejecutivo en Markdown"
+  },
+  "PDETMunicipalPlanAnalyzer.identify_responsible_entities": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "text",
+      "tables"
+    ],
+    "line": 779,
+    "doc": ""
+  },
+  "PDETMunicipalPlanAnalyzer.sensitivity_analysis": {
+    "module": "methods_dispensary/financiero_viabilidad_tablas copy.py",
+    "required_params": [
+      "causal_effects",
+      "dag"
+    ],
+    "line": 1580,
+    "doc": "Análisis de sensibilidad para supuestos de identificación causal"
+  },
+  "PDFProcessor.extract_tables": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [],
+    "line": 918,
+    "doc": "Extract tables from PDF"
+  },
+  "PerformanceAnalyzer._calculate_loss_functions": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PerformanceAnalyzer._generate_recommendations": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PerformanceAnalyzer.analyze_performance": {
+    "module": "methods_dispensary/analyzer_one.py",
+    "required_params": [
+      "semantic_cube"
+    ],
+    "line": 430,
+    "doc": "Analyze performance indicators across value chain links."
+  },
+  "PolicyAnalysisEmbedder._apply_mmr": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyAnalysisEmbedder._compute_overall_confidence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyAnalysisEmbedder._embed_texts": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyAnalysisEmbedder._extract_numerical_values": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyAnalysisEmbedder._filter_by_pdq": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyAnalysisEmbedder._generate_query_from_pdq": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyAnalysisEmbedder.compare_policy_interventions": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [
+      "intervention_a_chunks",
+      "intervention_b_chunks",
+      "pdq_context"
+    ],
+    "line": 1154,
+    "doc": "Bayesian comparison of two policy interventions."
+  },
+  "PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [
+      "chunks",
+      "pdq_context"
+    ],
+    "line": 1102,
+    "doc": "Bayesian evaluation of numerical consistency for policy metric."
+  },
+  "PolicyAnalysisEmbedder.generate_pdq_report": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [
+      "document_chunks",
+      "target_pdq"
+    ],
+    "line": 1174,
+    "doc": "Generate comprehensive analytical report for P-D-Q question."
+  },
+  "PolicyAnalysisEmbedder.get_diagnostics": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [],
+    "line": 1546,
+    "doc": "Get system diagnostics and performance metrics."
+  },
+  "PolicyAnalysisEmbedder.process_document": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [
+      "document_text",
+      "document_metadata"
+    ],
+    "line": 984,
+    "doc": "Process complete PDM document into semantic chunks with embeddings."
+  },
+  "PolicyAnalysisEmbedder.semantic_search": {
+    "module": "methods_dispensary/embedding_policy.py",
+    "required_params": [
+      "query",
+      "document_chunks"
+    ],
+    "line": 1032,
+    "doc": "Advanced semantic search with P-D-Q filtering and reranking."
+  },
+  "PolicyContradictionDetector._calculate_coherence_metrics": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._calculate_graph_fragmentation": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._calculate_numerical_divergence": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._calculate_objective_alignment": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._detect_logical_incompatibilities": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._detect_numerical_inconsistencies": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._extract_quantitative_claims": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._generate_resolution_recommendations": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._identify_affected_sections": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._parse_number": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyContradictionDetector._statistical_significance_test": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "PolicyTextProcessor.compile_pattern": {
+    "module": "methods_dispensary/policy_processor.py",
+    "required_params": [
+      "pattern_str"
+    ],
+    "line": 634,
+    "doc": "Cache and compile regex patterns for performance."
+  },
+  "PolicyTextProcessor.extract_contextual_window": {
+    "module": "methods_dispensary/policy_processor.py",
+    "required_params": [
+      "text",
+      "match_position",
+      "window_size"
+    ],
+    "line": 617,
+    "doc": "Extract semantically coherent context window around a match."
+  },
+  "PolicyTextProcessor.normalize_unicode": {
+    "module": "methods_dispensary/policy_processor.py",
+    "required_params": [
+      "text"
+    ],
+    "line": 579,
+    "doc": "Apply canonical Unicode normalization (NFC/NFKC)."
+  },
+  "PolicyTextProcessor.segment_into_sentences": {
+    "module": "methods_dispensary/policy_processor.py",
+    "required_params": [
+      "text"
+    ],
+    "line": 584,
+    "doc": "Segment text into sentences with context-aware boundary detection."
+  },
+  "ReportingEngine._calculate_quality_score": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "ReportingEngine.generate_accountability_matrix": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "graph",
+      "policy_code"
+    ],
+    "line": 3894,
+    "doc": "Generate accountability matrix in Markdown"
+  },
+  "ReportingEngine.generate_causal_diagram": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "graph",
+      "policy_code"
+    ],
+    "line": 3806,
+    "doc": "Generate causal diagram visualization"
+  },
+  "ReportingEngine.generate_causal_model_json": {
+    "module": "methods_dispensary/derek_beach.py",
+    "required_params": [
+      "graph",
+      "nodes",
+      "policy_code"
+    ],
+    "line": 4056,
+    "doc": "Generate structured JSON export of causal model"
+  },
+  "SemanticAnalyzer._calculate_semantic_complexity": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticAnalyzer._classify_cross_cutting_themes": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticAnalyzer._classify_policy_domain": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticAnalyzer._classify_value_chain_link": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticAnalyzer._empty_semantic_cube": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticAnalyzer._process_segment": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticAnalyzer._vectorize_segments": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticAnalyzer.extract_semantic_cube": {
+    "module": "methods_dispensary/analyzer_one.py",
+    "required_params": [
+      "document_segments"
+    ],
+    "line": 197,
+    "doc": "Extract multidimensional semantic cube from document segments."
+  },
+  "SemanticProcessor._detect_pdm_structure": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticProcessor._detect_table": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "SemanticProcessor.chunk_text": {
+    "module": "methods_dispensary/semantic_chunking_policy.py",
+    "required_params": [
+      "text"
+    ],
+    "line": 174,
+    "doc": "Policy-aware semantic chunking:"
+  },
+  "SemanticProcessor.embed_single": {
+    "module": "methods_dispensary/semantic_chunking_policy.py",
+    "required_params": [
+      "text"
+    ],
+    "line": 292,
+    "doc": "Single text embedding"
+  },
+  "TemporalLogicVerifier._check_deadline_constraints": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TemporalLogicVerifier._classify_temporal_type": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TemporalLogicVerifier._extract_resources": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TemporalLogicVerifier._parse_temporal_marker": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TemporalLogicVerifier.verify_temporal_consistency": {
+    "module": "methods_dispensary/contradiction_deteccion.py",
+    "required_params": [
+      "statements"
+    ],
+    "line": 168,
+    "doc": "Verify temporal consistency between policy statements."
+  },
+  "TeoriaCambio._encontrar_caminos_completos": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TeoriaCambio._es_conexion_valida": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TeoriaCambio._extraer_categorias": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TeoriaCambio._generar_sugerencias_internas": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TeoriaCambio._validar_orden_causal": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TeoriaCambio.construir_grafo_causal": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [],
+    "line": 327,
+    "doc": "Construye y cachea el grafo causal canónico."
+  },
+  "TeoriaCambio.export_nodes": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TeoriaCambio.validacion_completa": {
+    "module": "methods_dispensary/teoria_cambio.py",
+    "required_params": [
+      "grafo"
+    ],
+    "line": 468,
+    "doc": "Ejecuta una validación estructural exhaustiva de la teoría de cambio."
+  },
+  "TextMiningEngine._analyze_link_text": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TextMiningEngine._generate_interventions": {
+    "module": null,
+    "required_params": [],
+    "line": null,
+    "doc": ""
+  },
+  "TextMiningEngine.diagnose_critical_links": {
+    "module": "methods_dispensary/analyzer_one.py",
+    "required_params": [
+      "semantic_cube",
+      "performance_analysis"
+    ],
+    "line": 620,
+    "doc": "Diagnose critical value chain links."
+  }
+}

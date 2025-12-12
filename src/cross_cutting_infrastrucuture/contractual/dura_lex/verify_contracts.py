@@ -64,7 +64,7 @@ def verify_all_contracts(
     if class_registry is None:
         logger.info("Building class registry...")
         try:
-            from canonic_phases.Phase_two.class_registry import (
+            from orchestration.class_registry import (
                 build_class_registry,
             )
             class_registry = build_class_registry()
@@ -140,7 +140,7 @@ def main() -> int:
     try:
         class_registry = None
         if not args.no_class_registry:
-            from canonic_phases.Phase_two.class_registry import (
+            from orchestration.class_registry import (
                 build_class_registry,
             )
             class_registry = build_class_registry()

@@ -24,7 +24,7 @@ import structlog
 from farfan_pipeline.config.paths import CONFIG_DIR, DATA_DIR
 from orchestration.factory import CanonicalQuestionnaire
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
-from canonic_phases.Phase_two.class_registry import build_class_registry
+from orchestration.class_registry import build_class_registry
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from orchestration.factory import CoreModuleFactory
 from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (

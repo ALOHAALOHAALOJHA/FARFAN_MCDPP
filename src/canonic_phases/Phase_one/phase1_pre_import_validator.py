@@ -27,6 +27,8 @@ import sys
 import logging
 from typing import List, Tuple, Optional
 
+from orchestration.method_registry import MethodRegistry, MethodRegistryError
+
 logger = logging.getLogger(__name__)
 
 
@@ -36,6 +38,7 @@ class PreImportValidator:
     def __init__(self):
         self.missing_deps: List[Tuple[str, str]] = []
         self.available_deps: List[str] = []
+        self.method_registry = MethodRegistry()
     
     def validate_all(self) -> bool:
         """
@@ -78,6 +81,9 @@ class PreImportValidator:
         
         # farfan_pipeline core modules
         self._check_farfan_modules()
+
+        # Registry-based reachability of dispensary entrypoints
+        self._check_registry_entrypoints()
         
         return len(self.missing_deps) == 0
     
@@ -120,6 +126,24 @@ class PreImportValidator:
                 self.available_deps.append(module_name)
             except ImportError:
                 self.missing_deps.append((module_name, fix_cmd))
+
+    def _check_registry_entrypoints(self) -> None:
+        """Verify dispensary access through MethodRegistry (no direct imports)."""
+        try:
+            classify = self.method_registry.get_method("BeachEvidentialTest", "classify_test")
+            if not callable(classify):
+                raise MethodRegistryError("BeachEvidentialTest.classify_test not callable")
+
+            tc_cls = self.method_registry._load_class("TeoriaCambio")
+            if not hasattr(tc_cls, "validacion_completa"):
+                raise MethodRegistryError("TeoriaCambio missing validacion_completa")
+
+            self.available_deps.append("methods_dispensary via MethodRegistry")
+        except MethodRegistryError as exc:
+            self.missing_deps.append((
+                "methods_dispensary via MethodRegistry",
+                f"Resolve registry path/dependencies before instantiation: {exc}"
+            ))
     
     def report(self) -> None:
         """Print validation report."""
@@ -151,13 +175,15 @@ def validate_derek_beach_dependencies() -> bool:
     Returns:
         True if all dependencies available, False otherwise
     
-    Usage:
+    Usage (registry-first):
+        from orchestration.method_registry import MethodRegistry
         from canonic_phases.Phase_one.phase1_pre_import_validator import validate_derek_beach_dependencies
         
+        registry = MethodRegistry()
         if validate_derek_beach_dependencies():
-            from methods_dispensary.derek_beach import BeachEvidentialTest
+            beach_classify = registry.get_method("BeachEvidentialTest", "classify_test")
         else:
-            logger.error("Cannot import derek_beach - missing dependencies")
+            logger.error("Cannot resolve BeachEvidentialTest via registry")
     """
     validator = PreImportValidator()
     success = validator.validate_all()

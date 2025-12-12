@@ -116,7 +116,7 @@ from typing import Any
 
 # Phase 2 orchestration components
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
-from canonic_phases.Phase_two.class_registry import build_class_registry, get_class_paths
+from orchestration.class_registry import build_class_registry, get_class_paths
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
 

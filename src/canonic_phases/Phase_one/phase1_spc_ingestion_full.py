@@ -174,6 +174,7 @@ def _get_teoria_cambio_class():
 
 
 BEACH_CLASSIFY = _get_beach_classifier()
+DEREK_BEACH_AVAILABLE = BEACH_CLASSIFY is not None
 TEORIA_CAMBIO_CLASS = _get_teoria_cambio_class()
 TEORIA_CAMBIO_AVAILABLE = TEORIA_CAMBIO_CLASS is not None
 
@@ -1444,16 +1445,14 @@ class Phase1SPCIngestionFullContract:
                             'signal_enhanced': False,
                         }
                         
-                        # Classify using REAL Beach test from methods_dispensary.derek_beach
-                        if DEREK_BEACH_AVAILABLE and BeachEvidentialTest is not None:
-                            # Determine necessity/sufficiency heuristically per Beach & Pedersen 2019
+                        # Classify using REAL Beach test resolved via registry
+                        if BEACH_CLASSIFY is not None:
                             necessity = 0.7 if keyword in ['debe', 'requiere', 'necesita'] else 0.4
                             sufficiency = 0.7 if keyword in ['garantiza', 'asegura', 'produce'] else 0.4
-                            test_type = BeachEvidentialTest.classify_test(necessity, sufficiency)
+                            test_type = BEACH_CLASSIFY(necessity, sufficiency)
                             event_data['test_type'] = test_type
                             event_data['beach_method'] = 'PRODUCTION'
                         else:
-                            # No stub - mark as unavailable
                             event_data['test_type'] = 'UNAVAILABLE'
                             event_data['beach_method'] = 'DEREK_BEACH_UNAVAILABLE'
                         
@@ -1537,9 +1536,9 @@ class Phase1SPCIngestionFullContract:
         validation_result = None
         teoria_cambio_metadata = {'available': TEORIA_CAMBIO_AVAILABLE, 'method': 'UNAVAILABLE'}
         
-        if TEORIA_CAMBIO_AVAILABLE and TeoriaCambio is not None and cross_chunk_links:
+        if TEORIA_CAMBIO_AVAILABLE and TEORIA_CAMBIO_CLASS is not None and cross_chunk_links:
             try:
-                tc = TeoriaCambio()
+            tc = TEORIA_CAMBIO_CLASS()
                 # Build DAG for validation following causal hierarchy:
                 # Insumos → Procesos → Productos → Resultados → Causalidad
                 for link in cross_chunk_links[:20]:  # Limit for performance
@@ -1643,7 +1642,7 @@ class Phase1SPCIngestionFullContract:
                         chunk_arguments[arg_type + 's' if not arg_type.endswith('s') else arg_type].append(arg_entry)
             
             # Classify using REAL Beach test taxonomy from methods_dispensary
-            if DEREK_BEACH_AVAILABLE and BeachEvidentialTest is not None:
+            if BEACH_CLASSIFY is not None:
                 evidence_count = len(chunk_arguments['evidence'])
                 claim_count = len(chunk_arguments['claims'])
                 
@@ -1664,7 +1663,7 @@ class Phase1SPCIngestionFullContract:
                 sufficiency = min(0.9, 0.3 + (claim_count * 0.1) + (evidence_count * 0.1) + signal_boost * SIGNAL_BOOST_SUFFICIENCY_COEFFICIENT)
                 
                 # Use REAL BeachEvidentialTest.classify_test from derek_beach.py
-                test_type = BeachEvidentialTest.classify_test(necessity, sufficiency)
+                test_type = BEACH_CLASSIFY(necessity, sufficiency)
                 chunk_arguments['test_classification'] = {
                     'type': test_type,
                     'necessity': necessity,

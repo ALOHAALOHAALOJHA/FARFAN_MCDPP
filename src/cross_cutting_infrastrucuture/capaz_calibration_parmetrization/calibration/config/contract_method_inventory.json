@@ -1,0 +1,2534 @@
+[
+  {
+    "class": "PerformanceAnalyzer",
+    "method": "_calculate_loss_functions",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Calculate operational loss functions.",
+    "params": [
+      "metrics",
+      "link_config"
+    ]
+  },
+  {
+    "class": "PerformanceAnalyzer",
+    "method": "_generate_recommendations",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Generate optimization recommendations.",
+    "params": [
+      "performance_analysis"
+    ]
+  },
+  {
+    "class": "PerformanceAnalyzer",
+    "method": "analyze_performance",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Analyze performance indicators across value chain links.",
+    "params": [
+      "semantic_cube"
+    ]
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "_calculate_semantic_complexity",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Calculate semantic complexity of the cube.",
+    "params": [
+      "semantic_cube"
+    ]
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "_classify_cross_cutting_themes",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Classify segment by cross-cutting themes.",
+    "params": [
+      "segment"
+    ]
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "_classify_policy_domain",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Classify segment by policy domain using keyword matching.",
+    "params": [
+      "segment"
+    ]
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "_classify_value_chain_link",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Classify segment by value chain link using keyword matching.",
+    "params": [
+      "segment"
+    ]
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "_empty_semantic_cube",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Return empty semantic cube structure.",
+    "params": []
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "_process_segment",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Process individual segment and extract features.",
+    "params": [
+      "segment",
+      "idx",
+      "vector"
+    ]
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "_vectorize_segments",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Vectorize document segments using TF-IDF.",
+    "params": [
+      "segments"
+    ]
+  },
+  {
+    "class": "SemanticAnalyzer",
+    "method": "extract_semantic_cube",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Extract multidimensional semantic cube from document segments.",
+    "params": [
+      "document_segments"
+    ]
+  },
+  {
+    "class": "TextMiningEngine",
+    "method": "_analyze_link_text",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Analyze text content for a link.",
+    "params": [
+      "segments"
+    ]
+  },
+  {
+    "class": "TextMiningEngine",
+    "method": "_generate_interventions",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Generate intervention recommendations.",
+    "params": [
+      "link_name",
+      "risk_assessment",
+      "text_analysis"
+    ]
+  },
+  {
+    "class": "TextMiningEngine",
+    "method": "diagnose_critical_links",
+    "module": "analyzer_one",
+    "file": "methods_dispensary/analyzer_one.py",
+    "description": "Diagnose critical value chain links.",
+    "params": [
+      "semantic_cube",
+      "performance_analysis"
+    ]
+  },
+  {
+    "class": "BayesianConfidenceCalculator",
+    "method": "calculate_posterior",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Calculate posterior probability using Bayesian inference.",
+    "params": [
+      "evidence_strength",
+      "observations",
+      "domain_weight"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_calculate_coherence_metrics",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Calcula métricas avanzadas de coherencia del documento",
+    "params": [
+      "contradictions",
+      "statements",
+      "text"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_calculate_graph_fragmentation",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Calcula fragmentación del grafo de conocimiento",
+    "params": []
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_calculate_numerical_divergence",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Calcula divergencia entre valores numéricos",
+    "params": [
+      "claim_a",
+      "claim_b"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_calculate_objective_alignment",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Calcula alineación entre objetivos declarados",
+    "params": [
+      "statements"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_detect_logical_incompatibilities",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Detecta incompatibilidades lógicas usando razonamiento en grafo",
+    "params": [
+      "statements"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_detect_numerical_inconsistencies",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Detecta inconsistencias numéricas con análisis estadístico",
+    "params": [
+      "statements"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_extract_quantitative_claims",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Extrae afirmaciones cuantitativas estructuradas",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_generate_resolution_recommendations",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Genera recomendaciones específicas para resolver contradicciones",
+    "params": [
+      "contradictions"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_identify_affected_sections",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Identifica secciones del plan afectadas por contradicciones",
+    "params": [
+      "conflicts"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_parse_number",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Parsea número desde texto",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "PolicyContradictionDetector",
+    "method": "_statistical_significance_test",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Realiza test de significancia estadística",
+    "params": [
+      "claim_a",
+      "claim_b"
+    ]
+  },
+  {
+    "class": "TemporalLogicVerifier",
+    "method": "_check_deadline_constraints",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Verifica violaciones de restricciones de plazo",
+    "params": [
+      "timeline"
+    ]
+  },
+  {
+    "class": "TemporalLogicVerifier",
+    "method": "_classify_temporal_type",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Clasifica el tipo de marcador temporal",
+    "params": [
+      "marker"
+    ]
+  },
+  {
+    "class": "TemporalLogicVerifier",
+    "method": "_extract_resources",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Extrae recursos mencionados en el texto",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "TemporalLogicVerifier",
+    "method": "_parse_temporal_marker",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Parse temporal marker to numeric timestamp.",
+    "params": [
+      "marker"
+    ]
+  },
+  {
+    "class": "TemporalLogicVerifier",
+    "method": "verify_temporal_consistency",
+    "module": "contradiction_deteccion",
+    "file": "methods_dispensary/contradiction_deteccion.py",
+    "description": "Verify temporal consistency between policy statements.",
+    "params": [
+      "statements"
+    ]
+  },
+  {
+    "class": "AdaptivePriorCalculator",
+    "method": "_add_ood_noise",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Genera set OOD con ruido semántico y tablas malformadas",
+    "params": [
+      "evidence_dict"
+    ]
+  },
+  {
+    "class": "AdaptivePriorCalculator",
+    "method": "_adjust_domain_weights",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Ajusta pesos si falta dominio: baja a 0 y reparte",
+    "params": [
+      "domain_scores"
+    ]
+  },
+  {
+    "class": "AdaptivePriorCalculator",
+    "method": "_perturb_evidence",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Perturba un dominio específico",
+    "params": [
+      "evidence_dict",
+      "domain",
+      "perturbation"
+    ]
+  },
+  {
+    "class": "AdaptivePriorCalculator",
+    "method": "calculate_likelihood_adaptativo",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT I-1: Calcula likelihood adaptativo con BF y dominios",
+    "params": [
+      "evidence_dict",
+      "test_type"
+    ]
+  },
+  {
+    "class": "AdaptivePriorCalculator",
+    "method": "generate_traceability_record",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT I-3: Trazabilidad y reproducibilidad",
+    "params": [
+      "evidence_dict",
+      "test_type",
+      "result",
+      "seed"
+    ]
+  },
+  {
+    "class": "AdaptivePriorCalculator",
+    "method": "sensitivity_analysis",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT I-2: Sensibilidad, OOD y ablation evidencial",
+    "params": [
+      "evidence_dict",
+      "test_type",
+      "perturbation"
+    ]
+  },
+  {
+    "class": "AdaptivePriorCalculator",
+    "method": "validate_quality_criteria",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Valida criterios de calidad en conjunto de validación sintética",
+    "params": [
+      "validation_samples"
+    ]
+  },
+  {
+    "class": "BayesFactorTable",
+    "method": "get_bayes_factor",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Obtiene BF medio para tipo de test",
+    "params": [
+      "test_type"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "_create_default_equations",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Crea ecuaciones estructurales lineales por defecto",
+    "params": [
+      "dag"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "_evaluate_counterfactual",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Evalúa P(target | do(intervention), evidence) con DAG mutilado",
+    "params": [
+      "target",
+      "intervention",
+      "evidence"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "_evaluate_factual",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Evalúa P(target | evidence) propagando hacia adelante en DAG",
+    "params": [
+      "target",
+      "evidence"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "_test_effect_stability",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Testa estabilidad al variar priors/ecuaciones ±10%",
+    "params": [
+      "intervention",
+      "target",
+      "evidence",
+      "n_perturbations"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "aggregate_risk_and_prioritize",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT III-2: Riesgo sistémico y priorización con incertidumbre",
+    "params": [
+      "omission_score",
+      "insufficiency_score",
+      "unnecessity_score",
+      "causal_effect",
+      "feasibility",
+      "cost"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "construct_scm",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT III-1: Construcción de SCM",
+    "params": [
+      "dag",
+      "structural_equations"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "counterfactual_query",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT III-1: Queries gemelas (omission, sufficiency, necessity)",
+    "params": [
+      "intervention",
+      "target",
+      "evidence"
+    ]
+  },
+  {
+    "class": "BayesianCounterfactualAuditor",
+    "method": "refutation_and_sanity_checks",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT III-3: Refutación, negativos y cordura do(.)",
+    "params": [
+      "dag",
+      "target",
+      "treatment",
+      "confounders"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_aggregate_bayesian_confidence",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Aggregate multiple Bayesian confidence values.",
+    "params": [
+      "confidences"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_calculate_coherence_factor",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate mechanism coherence score",
+    "params": [
+      "node",
+      "observations",
+      "all_nodes"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_detect_gaps",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Detect documentation gaps based on uncertainty",
+    "params": [
+      "node",
+      "observations",
+      "uncertainty"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_generate_necessity_remediation",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Generate remediation text for failed necessity test",
+    "params": [
+      "node_id",
+      "missing_components"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_infer_activity_sequence",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Infer activity sequence parameters",
+    "params": [
+      "observations",
+      "mechanism_type_posterior"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_infer_mechanism_type",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Infer mechanism type using Bayesian updating",
+    "params": [
+      "observations"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_infer_single_mechanism",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Infer mechanism for a single product node",
+    "params": [
+      "node",
+      "text",
+      "all_nodes"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_log_refactored_components",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Log status of refactored Bayesian components (F1.2)",
+    "params": []
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_quantify_uncertainty",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Quantify epistemic uncertainty",
+    "params": [
+      "mechanism_type_posterior",
+      "sequence_posterior",
+      "coherence_score"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_test_necessity",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "AUDIT POINT 2.2: Mechanism Necessity Hoop Test",
+    "params": [
+      "node",
+      "observations"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "_test_sufficiency",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Test if mechanism is sufficient to produce the outcome",
+    "params": [
+      "node",
+      "observations"
+    ]
+  },
+  {
+    "class": "BayesianMechanismInference",
+    "method": "infer_mechanisms",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Infer latent causal mechanisms using hierarchical Bayesian modeling",
+    "params": [
+      "nodes",
+      "text"
+    ]
+  },
+  {
+    "class": "BeachEvidentialTest",
+    "method": "apply_test_logic",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Apply Beach test-specific logic to Bayesian updating.",
+    "params": [
+      "evidence_found",
+      "prior",
+      "bayes_factor"
+    ]
+  },
+  {
+    "class": "BeachEvidentialTest",
+    "method": "classify_test",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Classify evidential test type based on necessity and sufficiency.",
+    "params": [
+      "sufficiency"
+    ]
+  },
+  {
+    "class": "CDAFFramework",
+    "method": "_extract_feedback_from_audit",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Extract feedback data from audit results for self-reflective prior updating",
+    "params": [
+      "inferred_mechanisms",
+      "counterfactual_audit",
+      "audit_results"
+    ]
+  },
+  {
+    "class": "CDAFFramework",
+    "method": "_generate_dnp_report",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Generate comprehensive DNP compliance report",
+    "params": [
+      "dnp_results",
+      "policy_code"
+    ]
+  },
+  {
+    "class": "CDAFFramework",
+    "method": "_validate_dnp_compliance",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Validate DNP compliance for all nodes/projects",
+    "params": [
+      "nodes",
+      "graph",
+      "policy_code"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_assess_financial_consistency",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Assess financial alignment between connected nodes",
+    "params": [
+      "source",
+      "target"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_assess_temporal_coherence",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Assess temporal coherence based on verb sequences",
+    "params": [
+      "source",
+      "target"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_build_type_hierarchy",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Build hierarchy based on goal types",
+    "params": []
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_calculate_composite_likelihood",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate composite likelihood from multiple evidence components",
+    "params": [
+      "evidence"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_calculate_language_specificity",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Assess specificity of causal language (epistemic certainty)",
+    "params": [
+      "keyword",
+      "policy_area",
+      "context"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_calculate_semantic_distance",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate semantic distance between nodes using spaCy embeddings",
+    "params": [
+      "source",
+      "target"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_calculate_textual_proximity",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate how often node IDs appear together in text windows",
+    "params": [
+      "source",
+      "target",
+      "text"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_calculate_type_transition_prior",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate prior based on historical transition frequencies between goal types",
+    "params": [
+      "source",
+      "target"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_check_structural_violation",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "AUDIT POINT 2.1: Structural Veto (D6-Q2)",
+    "params": [
+      "source",
+      "target"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_classify_goal_type",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Classify the type of a goal based on its text.",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_extract_causal_links",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "AGUJA I: El Prior Informado Adaptativo",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_extract_goals",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Extract all goals from text",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_initialize_prior",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Initialize prior distribution for causal link",
+    "params": [
+      "source",
+      "target"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "_parse_goal_context",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Parse goal context to extract structured information",
+    "params": [
+      "goal_id",
+      "context"
+    ]
+  },
+  {
+    "class": "CausalExtractor",
+    "method": "extract_causal_hierarchy",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Extract complete causal hierarchy from text",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "CausalInferenceSetup",
+    "method": "_get_dynamics_pattern",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Get the pattern associated with a dynamics type.",
+    "params": [
+      "dynamics_type"
+    ]
+  },
+  {
+    "class": "CausalInferenceSetup",
+    "method": "assign_probative_value",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Assign probative test types to nodes",
+    "params": [
+      "nodes"
+    ]
+  },
+  {
+    "class": "CausalInferenceSetup",
+    "method": "identify_failure_points",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Identify single points of failure in causal chain",
+    "params": [
+      "graph",
+      "text"
+    ]
+  },
+  {
+    "class": "ConfigLoader",
+    "method": "_load_uncertainty_history",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Load historical uncertainty measurements",
+    "params": []
+  },
+  {
+    "class": "ConfigLoader",
+    "method": "_save_prior_history",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Save prior history for learning across documents",
+    "params": [
+      "feedback_data",
+      "uncertainty_reduction"
+    ]
+  },
+  {
+    "class": "ConfigLoader",
+    "method": "check_uncertainty_reduction_criterion",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Check if mean mechanism_type uncertainty has decreased ≥5% over 10 iterations",
+    "params": [
+      "current_uncertainty"
+    ]
+  },
+  {
+    "class": "ConfigLoader",
+    "method": "update_priors_from_feedback",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Self-reflective loop: Update priors based on audit feedback",
+    "params": [
+      "feedback_data"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "_calculate_sufficiency",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate if financial allocation is sufficient for target.",
+    "params": [
+      "allocation",
+      "target"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "_detect_allocation_gaps",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Detect gaps in financial allocations.",
+    "params": [
+      "nodes"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "_match_goal_to_budget",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Match a goal to budget entries.",
+    "params": [
+      "goal_text",
+      "budget_entries"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "_match_program_to_node",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Match program ID to existing node using fuzzy matching",
+    "params": [
+      "program_id",
+      "nodes"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "_parse_amount",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Parse monetary amount from various formats",
+    "params": [
+      "value"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "_perform_counterfactual_budget_check",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Harmonic Front 3 - Enhancement 5: Counterfactual Sufficiency Test for D3-Q3",
+    "params": [
+      "nodes",
+      "graph"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "_process_financial_table",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Process a single financial table",
+    "params": [
+      "table",
+      "nodes"
+    ]
+  },
+  {
+    "class": "FinancialAuditor",
+    "method": "trace_financial_allocation",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Trace financial allocations to programs/goals",
+    "params": [
+      "tables",
+      "nodes",
+      "graph"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "_ablation_analysis",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Mide caída en coherence al quitar pasos de secuencia",
+    "params": [
+      "posterior_samples",
+      "observed_data"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "_calculate_ess",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calcula Effective Sample Size (simplificado)",
+    "params": [
+      "samples"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "_calculate_likelihood",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calcula likelihood de observations dado mechanism_type",
+    "params": [
+      "mechanism_type",
+      "observations"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "_calculate_r_hat",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calcula Gelman-Rubin R-hat para diagnóstico de convergencia",
+    "params": [
+      "chains"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "_calculate_waic_difference",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calcula ΔWAIC = WAIC_hierarchical - WAIC_null (simplificado)",
+    "params": [
+      "dag"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "_generate_independence_tests",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Genera tests de independencia automáticamente desde DAG",
+    "params": [
+      "dag",
+      "n_tests"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "posterior_predictive_check",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT II-2: Posterior Predictive Checks + Ablation",
+    "params": [
+      "posterior_samples",
+      "observed_data"
+    ]
+  },
+  {
+    "class": "HierarchicalGenerativeModel",
+    "method": "verify_conditional_independence",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "PROMPT II-3: Independencias y parsimonia",
+    "params": [
+      "dag",
+      "independence_tests"
+    ]
+  },
+  {
+    "class": "MechanismPartExtractor",
+    "method": "_calculate_ea_confidence",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate confidence for an entity-activity pair.",
+    "params": [
+      "entity",
+      "activity",
+      "context"
+    ]
+  },
+  {
+    "class": "MechanismPartExtractor",
+    "method": "_normalize_entity",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Normalize entity name using aliases",
+    "params": [
+      "entity"
+    ]
+  },
+  {
+    "class": "MechanismPartExtractor",
+    "method": "_validate_entity_activity",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Validate that an entity-activity pair makes sense.",
+    "params": [
+      "entity",
+      "activity"
+    ]
+  },
+  {
+    "class": "MechanismPartExtractor",
+    "method": "extract_entity_activity",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Extract Entity-Activity tuple from text",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "OperationalizationAuditor",
+    "method": "_audit_direct_evidence",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Layer 1: Audit direct evidence of required components",
+    "params": [
+      "nodes",
+      "scm_dag",
+      "historical_data"
+    ]
+  },
+  {
+    "class": "OperationalizationAuditor",
+    "method": "_audit_systemic_risk",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "AUDIT POINT 2.3: Policy Alignment Dual Constraint",
+    "params": [
+      "nodes",
+      "graph",
+      "direct_evidence",
+      "causal_implications",
+      "pdet_alignment"
+    ]
+  },
+  {
+    "class": "OperationalizationAuditor",
+    "method": "_generate_optimal_remediations",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Generate prioritized remediation recommendations",
+    "params": [
+      "direct_evidence",
+      "causal_implications",
+      "systemic_risk"
+    ]
+  },
+  {
+    "class": "OperationalizationAuditor",
+    "method": "_get_remediation_text",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Get specific remediation text for an omission",
+    "params": [
+      "omission",
+      "node_id"
+    ]
+  },
+  {
+    "class": "OperationalizationAuditor",
+    "method": "audit_evidence_traceability",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Audit evidence traceability for all nodes",
+    "params": [
+      "nodes"
+    ]
+  },
+  {
+    "class": "OperationalizationAuditor",
+    "method": "audit_sequence_logic",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Audit logical sequence of activities",
+    "params": [
+      "graph"
+    ]
+  },
+  {
+    "class": "PDFProcessor",
+    "method": "extract_tables",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Extract tables from PDF",
+    "params": []
+  },
+  {
+    "class": "ReportingEngine",
+    "method": "_calculate_quality_score",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Calculate overall quality score (0-100)",
+    "params": [
+      "traceability",
+      "financial",
+      "logic",
+      "ea"
+    ]
+  },
+  {
+    "class": "ReportingEngine",
+    "method": "generate_accountability_matrix",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Generate accountability matrix in Markdown",
+    "params": [
+      "graph",
+      "policy_code"
+    ]
+  },
+  {
+    "class": "ReportingEngine",
+    "method": "generate_causal_diagram",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Generate causal diagram visualization",
+    "params": [
+      "graph",
+      "policy_code"
+    ]
+  },
+  {
+    "class": "ReportingEngine",
+    "method": "generate_causal_model_json",
+    "module": "derek_beach",
+    "file": "methods_dispensary/derek_beach.py",
+    "description": "Generate structured JSON export of causal model",
+    "params": [
+      "graph",
+      "nodes",
+      "policy_code"
+    ]
+  },
+  {
+    "class": "BayesianNumericalAnalyzer",
+    "method": "compare_policies",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Bayesian comparison of two policy metrics.",
+    "params": [
+      "policy_a_values",
+      "policy_b_values"
+    ]
+  },
+  {
+    "class": "BayesianNumericalAnalyzer",
+    "method": "evaluate_policy_metric",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Bayesian evaluation of policy metric with uncertainty quantification.",
+    "params": [
+      "observed_values",
+      "n_posterior_samples"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "_apply_mmr",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Apply Maximal Marginal Relevance for diversification.",
+    "params": [
+      "ranked_results"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "_compute_overall_confidence",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Compute overall confidence score combining semantic and numerical evidence.",
+    "params": [
+      "relevant_chunks",
+      "numerical_eval"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "_embed_texts",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Generate embeddings with caching and retry logic.",
+    "params": [
+      "texts"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "_extract_numerical_values",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Extract numerical values from chunks using advanced patterns.",
+    "params": [
+      "chunks"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "_filter_by_pdq",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Filter chunks by P-D-Q context.",
+    "params": [
+      "chunks",
+      "pdq_filter"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "_generate_query_from_pdq",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Generate search query from P-D-Q identifier.",
+    "params": [
+      "pdq"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "compare_policy_interventions",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Bayesian comparison of two policy interventions.",
+    "params": [
+      "intervention_a_chunks",
+      "intervention_b_chunks",
+      "pdq_context"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "evaluate_policy_numerical_consistency",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Bayesian evaluation of numerical consistency for policy metric.",
+    "params": [
+      "chunks",
+      "pdq_context"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "generate_pdq_report",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Generate comprehensive analytical report for P-D-Q question.",
+    "params": [
+      "document_chunks",
+      "target_pdq"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "get_diagnostics",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Get system diagnostics and performance metrics.",
+    "params": []
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "process_document",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Process complete PDM document into semantic chunks with embeddings.",
+    "params": [
+      "document_text",
+      "document_metadata"
+    ]
+  },
+  {
+    "class": "PolicyAnalysisEmbedder",
+    "method": "semantic_search",
+    "module": "embedding_policy",
+    "file": "methods_dispensary/embedding_policy.py",
+    "description": "Advanced semantic search with P-D-Q filtering and reranking.",
+    "params": [
+      "query",
+      "document_chunks",
+      "pdq_filter",
+      "use_reranking"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_analyze_funding_sources",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "indicators",
+      "tables"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_assess_financial_sustainability",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "indicators",
+      "funding_sources"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_bayesian_risk_inference",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "indicators",
+      "funding_sources",
+      "sustainability"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_break_cycles",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "G"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_classify_entity_type",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "name"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_classify_tables",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "tables"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_clean_dataframe",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "df"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_compute_e_value",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "E-value: mínima fuerza de confounding no observado para anular el efecto",
+    "params": [
+      "effect"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_compute_robustness_value",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Robustness Value: percentil de la distribución posterior que cruza cero",
+    "params": [
+      "effect",
+      "dag"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_consolidate_entities",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "entities"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_deduplicate_tables",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "tables"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_effect_to_dict",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Convierte CausalEffect a diccionario",
+    "params": [
+      "effect"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_entity_to_dict",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Convierte ResponsibleEntity a diccionario",
+    "params": [
+      "entity"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_estimate_effect_bayesian",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "treatment",
+      "outcome",
+      "dag",
+      "financial_analysis"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_estimate_score_confidence",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Estima intervalo de confianza para el score usando bootstrap",
+    "params": [
+      "scores",
+      "weights"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_extract_budget_for_pillar",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "pillar",
+      "text",
+      "financial_analysis"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_extract_entities_ner",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_extract_entities_syntax",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_extract_financial_amounts",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text",
+      "tables"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_extract_from_budget_table",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "df"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_extract_from_responsibility_tables",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "tables"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_find_mediator_mentions",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text",
+      "mediator"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_find_outcome_mentions",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text",
+      "outcome"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_generate_optimal_remediations",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Generate optimal remediations for identified gaps.",
+    "params": [
+      "gaps"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_generate_recommendations",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Genera recomendaciones específicas basadas en el análisis",
+    "params": [
+      "analysis_results"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_generate_scenario_narrative",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Genera narrativa interpretable del escenario contrafactual",
+    "params": [
+      "description",
+      "intervention",
+      "predicted_outcomes",
+      "probabilities"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_get_prior_effect",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Priors informados basados en meta-análisis de programas PDET",
+    "params": [
+      "treatment",
+      "outcome"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_get_spanish_stopwords",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": []
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_identify_causal_edges",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text",
+      "nodes"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_identify_causal_nodes",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text",
+      "tables",
+      "financial_analysis"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_identify_confounders",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Identifica confounders usando d-separation (Pearl, 2009)",
+    "params": [
+      "treatment",
+      "outcome",
+      "dag"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_identify_funding_source",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "context"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_indicator_to_dict",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "ind"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_interpret_overall_quality",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Interpretación del score global",
+    "params": [
+      "score"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_interpret_risk",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "risk"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_interpret_sensitivity",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Interpretación de resultados de sensibilidad",
+    "params": [
+      "e_value",
+      "robustness"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_is_likely_header",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Determine if a DataFrame row is likely a header row based on linguistic analysis.",
+    "params": [
+      "row"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_quality_to_dict",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Convierte QualityScore a diccionario",
+    "params": [
+      "quality"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_refine_edge_probabilities",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "edges",
+      "text",
+      "nodes"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_scenario_to_dict",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Convierte CounterfactualScenario a diccionario",
+    "params": [
+      "scenario"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_score_causal_coherence",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Score coherencia causal del plan (0-10)",
+    "params": [
+      "dag",
+      "effects"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_score_entity_specificity",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "entities",
+      "full_text"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_score_financial_component",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Score componente financiero (0-10)",
+    "params": [
+      "financial_analysis"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_score_indicators",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Score calidad de indicadores (0-10)",
+    "params": [
+      "tables",
+      "text"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_score_pdet_alignment",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Score alineación con pilares PDET (0-10)",
+    "params": [
+      "text",
+      "tables",
+      "dag"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_score_responsibility_clarity",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Score claridad de responsables (0-10)",
+    "params": [
+      "entities"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_score_temporal_consistency",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Score consistencia temporal (0-10)",
+    "params": [
+      "text",
+      "tables"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "_simulate_intervention",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Simula intervención usando do-calculus (Pearl, 2009)",
+    "params": [
+      "intervention",
+      "dag",
+      "causal_effects",
+      "description"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "analyze_financial_feasibility",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "tables",
+      "text"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "calculate_quality_score",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Puntaje bayesiano integral de calidad del PDM",
+    "params": [
+      "text",
+      "tables",
+      "financial_analysis",
+      "responsible_entities",
+      "causal_dag",
+      "causal_effects"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "construct_causal_dag",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text",
+      "tables",
+      "financial_analysis"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "estimate_causal_effects",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "dag",
+      "text",
+      "financial_analysis"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "export_causal_network",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Exporta el DAG causal en formato GraphML para Gephi/Cytoscape",
+    "params": [
+      "dag",
+      "output_path"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "generate_counterfactuals",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Genera escenarios contrafactuales usando el framework de Pearl (2009)",
+    "params": [
+      "dag",
+      "causal_effects",
+      "financial_analysis"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "generate_executive_report",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Genera reporte ejecutivo en Markdown",
+    "params": [
+      "analysis_results"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "identify_responsible_entities",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Sin descripción",
+    "params": [
+      "text",
+      "tables"
+    ]
+  },
+  {
+    "class": "PDETMunicipalPlanAnalyzer",
+    "method": "sensitivity_analysis",
+    "module": "financiero_viabilidad_tablas",
+    "file": "methods_dispensary/financiero_viabilidad_tablas.py",
+    "description": "Análisis de sensibilidad para supuestos de identificación causal",
+    "params": [
+      "causal_effects",
+      "dag"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_analyze_causal_dimensions",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Perform global analysis of causal dimensions across entire document.",
+    "params": [
+      "text",
+      "sentences"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_build_point_patterns",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "LEGACY: Pattern building from questionnaire disabled.",
+    "params": []
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_calculate_quality_score",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Aggregate key indicators into a structured QualityScore dataclass.",
+    "params": [
+      "dimension_analysis",
+      "contradiction_bundle",
+      "performance_analysis"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_compile_pattern_registry",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Compile all causal patterns into efficient regex objects.",
+    "params": []
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_compute_avg_confidence",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Calculate average confidence across all dimensions.",
+    "params": []
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_compute_evidence_confidence",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Calculate confidence score for evidence based on pattern matches and contextual factors.",
+    "params": [
+      "matches",
+      "text_length",
+      "pattern_specificity"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_construct_evidence_bundle",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Assemble evidence bundle from matched patterns and computed confidence.",
+    "params": [
+      "dimension",
+      "category",
+      "matches",
+      "positions",
+      "confidence"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_empty_result",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Return structure for failed/empty processing.",
+    "params": []
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_extract_metadata",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Extract key metadata from policy document header.",
+    "params": []
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_extract_point_evidence",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Extract evidence for a specific policy point across all dimensions.",
+    "params": [
+      "text",
+      "sentences",
+      "point_code"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_load_questionnaire",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "LEGACY: Questionnaire loading disabled.",
+    "params": []
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "_match_patterns_in_sentences",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Execute pattern matching across relevant sentences and collect matches with positions.",
+    "params": [
+      "compiled_patterns",
+      "relevant_sentences"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "export_results",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Export analysis results to JSON with formatted output.",
+    "params": [
+      "results",
+      "output_path"
+    ]
+  },
+  {
+    "class": "IndustrialPolicyProcessor",
+    "method": "process",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Execute comprehensive policy plan analysis.",
+    "params": [
+      "raw_text"
+    ]
+  },
+  {
+    "class": "PolicyTextProcessor",
+    "method": "compile_pattern",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Cache and compile regex patterns for performance.",
+    "params": [
+      "pattern_str"
+    ]
+  },
+  {
+    "class": "PolicyTextProcessor",
+    "method": "extract_contextual_window",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Extract semantically coherent context window around a match.",
+    "params": [
+      "text",
+      "match_position",
+      "window_size"
+    ]
+  },
+  {
+    "class": "PolicyTextProcessor",
+    "method": "normalize_unicode",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Apply canonical Unicode normalization (NFC/NFKC).",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "PolicyTextProcessor",
+    "method": "segment_into_sentences",
+    "module": "policy_processor",
+    "file": "methods_dispensary/policy_processor.py",
+    "description": "Segment text into sentences with context-aware boundary detection.",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "SemanticProcessor",
+    "method": "_detect_pdm_structure",
+    "module": "semantic_chunking_policy",
+    "file": "methods_dispensary/semantic_chunking_policy.py",
+    "description": "Detect PDM sections using Colombian policy document patterns",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "SemanticProcessor",
+    "method": "_detect_table",
+    "module": "semantic_chunking_policy",
+    "file": "methods_dispensary/semantic_chunking_policy.py",
+    "description": "Detect if chunk contains tabular data",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "SemanticProcessor",
+    "method": "chunk_text",
+    "module": "semantic_chunking_policy",
+    "file": "methods_dispensary/semantic_chunking_policy.py",
+    "description": "Policy-aware semantic chunking:",
+    "params": [
+      "text",
+      "preserve_structure"
+    ]
+  },
+  {
+    "class": "SemanticProcessor",
+    "method": "embed_single",
+    "module": "semantic_chunking_policy",
+    "file": "methods_dispensary/semantic_chunking_policy.py",
+    "description": "Single text embedding",
+    "params": [
+      "text"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_calculate_bayesian_posterior",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Calcula la probabilidad posterior Bayesiana simple.",
+    "params": [
+      "prior"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_calculate_confidence_interval",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Calcula el intervalo de confianza de Wilson.",
+    "params": [
+      "n",
+      "conf"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_calculate_node_importance",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Calcula una métrica de importancia para cada nodo.",
+    "params": []
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_calculate_statistical_power",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Calcula el poder estadístico a posteriori.",
+    "params": [
+      "n",
+      "alpha"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_create_empty_result",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Crea un resultado vacío para grafos sin nodos.",
+    "params": [
+      "plan_name",
+      "seed",
+      "timestamp"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_generate_subgraph",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Genera un subgrafo aleatorio del grafo principal.",
+    "params": []
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_get_node_validator",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Obtiene (y cachea) el validador JSON Schema para nodos avanzados.",
+    "params": [
+      "schema_path"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_initialize_rng",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Inicializa el generador de números aleatorios con una semilla determinista.",
+    "params": [
+      "plan_name",
+      "salt"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_is_acyclic",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Detección de ciclos mediante el algoritmo de Kahn (ordenación topológica).",
+    "params": []
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "_perform_sensitivity_analysis_internal",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Análisis de sensibilidad interno optimizado para evitar cálculos redundantes.",
+    "params": [
+      "plan_name",
+      "base_p_value",
+      "iterations"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "add_edge",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Agrega una arista dirigida con peso opcional.",
+    "params": [
+      "from_node",
+      "to_node",
+      "weight"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "add_node",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Agrega un nodo enriquecido al grafo.",
+    "params": [
+      "name",
+      "dependencies",
+      "role",
+      "metadata"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "calculate_acyclicity_pvalue",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Cálculo avanzado de p-value con un marco estadístico completo.",
+    "params": [
+      "plan_name",
+      "iterations"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "export_nodes",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Serializa los nodos del grafo y opcionalmente valida contra JSON Schema.",
+    "params": [
+      "validate",
+      "schema_path"
+    ]
+  },
+  {
+    "class": "AdvancedDAGValidator",
+    "method": "get_graph_stats",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Obtiene estadísticas estructurales del grafo.",
+    "params": []
+  },
+  {
+    "class": "IndustrialGradeValidator",
+    "method": "_benchmark_operation",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Mide el tiempo de ejecución de una operación y registra la métrica.",
+    "params": [
+      "operation_name",
+      "callable_obj",
+      "threshold"
+    ]
+  },
+  {
+    "class": "IndustrialGradeValidator",
+    "method": "_log_metric",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Registra y reporta una métrica de validación.",
+    "params": [
+      "name",
+      "value",
+      "unit",
+      "threshold"
+    ]
+  },
+  {
+    "class": "IndustrialGradeValidator",
+    "method": "execute_suite",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Ejecuta la suite completa de validación industrial.",
+    "params": []
+  },
+  {
+    "class": "IndustrialGradeValidator",
+    "method": "run_performance_benchmarks",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Ejecuta benchmarks de rendimiento para las operaciones críticas del motor.",
+    "params": []
+  },
+  {
+    "class": "IndustrialGradeValidator",
+    "method": "validate_causal_categories",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Valida la completitud y el orden axiomático de las categorías causales.",
+    "params": []
+  },
+  {
+    "class": "IndustrialGradeValidator",
+    "method": "validate_connection_matrix",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Valida la matriz de transiciones causales.",
+    "params": []
+  },
+  {
+    "class": "IndustrialGradeValidator",
+    "method": "validate_engine_readiness",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Valida la disponibilidad y tiempo de instanciación de los motores de análisis.",
+    "params": []
+  },
+  {
+    "class": "TeoriaCambio",
+    "method": "_encontrar_caminos_completos",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Encuentra todos los caminos simples desde nodos INSUMOS a CAUSALIDAD.",
+    "params": []
+  },
+  {
+    "class": "TeoriaCambio",
+    "method": "_es_conexion_valida",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Verifica la validez de una conexión causal según la jerarquía estructural.",
+    "params": [
+      "destino"
+    ]
+  },
+  {
+    "class": "TeoriaCambio",
+    "method": "_extraer_categorias",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Extrae el conjunto de categorías presentes en el grafo.",
+    "params": []
+  },
+  {
+    "class": "TeoriaCambio",
+    "method": "_generar_sugerencias_internas",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Genera un listado de sugerencias accionables basadas en los resultados.",
+    "params": []
+  },
+  {
+    "class": "TeoriaCambio",
+    "method": "_validar_orden_causal",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Identifica las aristas que violan el orden causal axiomático.",
+    "params": []
+  },
+  {
+    "class": "TeoriaCambio",
+    "method": "construir_grafo_causal",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Construye y cachea el grafo causal canónico.",
+    "params": []
+  },
+  {
+    "class": "TeoriaCambio",
+    "method": "validacion_completa",
+    "module": "teoria_cambio",
+    "file": "methods_dispensary/teoria_cambio.py",
+    "description": "Ejecuta una validación estructural exhaustiva de la teoría de cambio.",
+    "params": [
+      "grafo"
+    ]
+  }
+]

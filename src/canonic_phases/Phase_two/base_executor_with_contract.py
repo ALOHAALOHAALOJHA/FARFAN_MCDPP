@@ -118,7 +118,7 @@ class BaseExecutorWithContract(ABC):
 
         if class_registry is None:
             try:
-                from canonic_phases.Phase_two.class_registry import (
+                from orchestration.class_registry import (
                     build_class_registry,
                 )
                 class_registry = build_class_registry()
