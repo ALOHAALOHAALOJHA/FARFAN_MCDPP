@@ -30,7 +30,6 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 # ============================================================================
 # DOMAIN-SPECIFIC EXCEPTIONS
