@@ -1,5 +1,6 @@
 # Python virtual environments
 farfan-env/
+farfan-env-old/
 .venv/
 venv/
 env/
