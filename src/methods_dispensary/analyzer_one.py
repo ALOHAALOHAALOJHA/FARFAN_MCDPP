@@ -25,7 +25,10 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List
+
+from src.calibration.analyzer_one_calibrator import run_pipeline as calibration_run_pipeline
+from src.ontology.canonical_value_chain import VALUE_CHAIN_DIMENSIONS
 
 # from farfan_pipeline import get_parameter_loader  # CALIBRATION DISABLED
 # MethodConfigLoader removed - parameters now hardcoded with justification
@@ -35,6 +38,11 @@ warnings.filterwarnings('ignore')
 # Constants
 SAMPLE_MUNICIPAL_PLAN = "sample_municipal_plan.txt"
 RANDOM_SEED = 42
+
+# Canonical artifacts
+CANONICAL_ROOT = Path("artifacts/plan1")
+CG_ROOT = CANONICAL_ROOT / "canonical_ground_truth"
+CAL_ROOT = CANONICAL_ROOT / "calibration"
 
 # Logging setup
 logging.basicConfig(level=logging.INFO)
@@ -1064,10 +1072,16 @@ class SemanticAnalyzer:
         """
         self.ontology = ontology
 
-        # Hardcoded parameters - justified from questionnaire_monolith.json analysis
-        self.max_features = 2500  # 1,646 monolith terms + 1,000 PA keywords × 1.2
-        self.ngram_range = (1, 3)  # Unigrams to trigrams for Spanish policy terms
-        self.similarity_threshold = 0.3  # Permissive initial detection threshold
+        # Load calibration artifacts (data-driven, no defaults)
+        self._monolith_index = self._load_json(CG_ROOT / "monolith_index.json")
+        self._patterns_resolved = self._load_json(CG_ROOT / "pattern_registry_resolved.json")
+        self._calibration = self._load_json(CAL_ROOT / "analyzer_one_calibration.json")
+        self._thresholds = self._calibration.get("thresholds", {})
+
+        vec_cfg = self._calibration.get("vectorizer", {})
+        self.max_features = vec_cfg.get("max_features")
+        self.ngram_range = tuple(vec_cfg.get("ngram_range", (1, 3)))
+        self.similarity_threshold = None  # base-slot specific thresholds are used
 
         if TfidfVectorizer is not None:
             self.vectorizer = TfidfVectorizer(
@@ -1145,6 +1159,11 @@ class SemanticAnalyzer:
 
         logger.info(f"Extracted semantic cube from {len(document_segments)} segments")
         return semantic_cube
+
+    def _load_json(self, path: Path) -> dict[str, Any]:
+        if not path.exists():
+            raise FileNotFoundError(f"Required artifact missing: {path}")
+        return json.loads(path.read_text())
 
     
     def _empty_semantic_cube(self) -> dict[str, Any]:
