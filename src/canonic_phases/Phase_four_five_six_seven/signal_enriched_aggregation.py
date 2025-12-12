@@ -44,8 +44,23 @@ CV_CONVERGENCE_THRESHOLD = 0.15  # Coefficient of variation for convergence
 CV_MODERATE_THRESHOLD = 0.40  # CV threshold for moderate dispersion
 CV_HIGH_THRESHOLD = 0.60  # CV threshold for high dispersion
 
-# Representative question placeholder (to be replaced by actual logic)
-REPRESENTATIVE_QUESTION_PLACEHOLDER = "Q001"
+# Utility: Select a representative question for a given dimension from the signal registry
+def get_representative_question_for_dimension(
+    dimension_id: str,
+    signal_registry: "QuestionnaireSignalRegistry" | None,
+) -> str | None:
+    """
+    Returns a representative question ID for the given dimension, or None if not found.
+    Selection strategy: first question found for the dimension in the registry.
+    """
+    if signal_registry is None:
+        logger.warning("Signal registry is None; cannot select representative question for dimension '%s'.", dimension_id)
+        return None
+    questions = signal_registry.get_questions_for_dimension(dimension_id)
+    if not questions:
+        logger.warning("No questions found for dimension '%s' in signal registry.", dimension_id)
+        return None
+    return questions[0]
 
 __all__ = [
     "SignalEnrichedAggregator",
