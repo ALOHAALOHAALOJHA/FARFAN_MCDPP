@@ -23,7 +23,6 @@ from hashlib import sha256
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

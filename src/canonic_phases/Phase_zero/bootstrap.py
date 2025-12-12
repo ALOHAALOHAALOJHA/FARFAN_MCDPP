@@ -228,14 +228,9 @@ class QuestionnaireResourceProvider:
             return ""
         return self._canonical.sha256
 
-try:  # Optional dependency: calibration orchestrator
-    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.orchestrator import CalibrationOrchestrator as _CalibrationOrchestrator
-    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.config import DEFAULT_CALIBRATION_CONFIG as _DEFAULT_CALIBRATION_CONFIG
-    _HAS_CALIBRATION = True
-except Exception:  # pragma: no cover - only during stripped installs
-    _CalibrationOrchestrator = None  # type: ignore[assignment]
-    _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
-    _HAS_CALIBRATION = False
+_CalibrationOrchestrator = None  # type: ignore[assignment]
+_DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
+_HAS_CALIBRATION = False
 
 from orchestration.wiring.errors import MissingDependencyError, WiringInitializationError
 from orchestration.wiring.feature_flags import WiringFeatureFlags
