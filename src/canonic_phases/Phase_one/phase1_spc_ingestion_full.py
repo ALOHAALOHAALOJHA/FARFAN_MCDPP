@@ -86,6 +86,13 @@ from canonic_phases.Phase_one.cpp_models import (
     ChunkResolution,
 )
 
+# Circuit Breaker for Aggressively Preventive Failure Protection
+from canonic_phases.Phase_one.phase1_circuit_breaker import (
+    get_circuit_breaker,
+    run_preflight_check,
+    ensure_can_execute,
+    SubphaseCheckpoint,
+)
 # CANONICAL TYPE IMPORTS from farfan_pipeline.core.types for type-safe aggregation
 try:
     from farfan_pipeline.core.types import PolicyArea, DimensionCausal
@@ -517,6 +524,7 @@ class Phase1SPCIngestionFullContract:
         self.error_log: List[Dict[str, Any]] = []
         self.invariant_checks: Dict[str, bool] = {}
         self.document_id: str = ""  # Set from CanonicalInput
+        self.checkpoint_validator = SubphaseCheckpoint()  # Checkpoint validator
         self.signal_registry = signal_registry  # DI: Injected from Factory via Orchestrator
         self.signal_enricher: Optional[Any] = None  # Signal enrichment engine
         
@@ -717,7 +725,37 @@ class Phase1SPCIngestionFullContract:
     def run(self, canonical_input: CanonicalInput) -> CanonPolicyPackage:
         """
         CRITICAL PATH - NO DEVIATIONS ALLOWED
+        
+        This method includes AGGRESSIVELY PREVENTIVE CHECKS:
+        1. Circuit breaker pre-flight validation
+        2. Exhaustive input validation
+        3. Checkpoint validation at each subphase
+        4. Constitutional invariant enforcement
         """
+        # CIRCUIT BREAKER: Pre-flight checks MUST pass before execution
+        logger.info("=" * 80)
+        logger.info("PHASE 1: Running Circuit Breaker Pre-flight Checks")
+        logger.info("=" * 80)
+        
+        preflight_result = run_preflight_check()
+        
+        if not preflight_result.passed:
+            # Print diagnostic report
+            circuit_breaker = get_circuit_breaker()
+            diagnostic_report = circuit_breaker.get_diagnostic_report()
+            logger.critical(diagnostic_report)
+            
+            raise Phase1FatalError(
+                f"Phase 1 pre-flight checks FAILED. {len(preflight_result.critical_failures)} "
+                f"critical failures detected. Circuit breaker is OPEN. "
+                f"Execution cannot proceed. See diagnostic report above."
+            )
+        
+        logger.info("✓ Circuit Breaker: All pre-flight checks PASSED")
+        logger.info("✓ Dependencies: All critical dependencies available")
+        logger.info("✓ Resources: Sufficient memory and disk space")
+        logger.info("=" * 80)
+        
         # CAPTURE document_id FROM INPUT
         self.document_id = canonical_input.document_id
         
@@ -757,6 +795,26 @@ class Phase1SPCIngestionFullContract:
             pa_dim_chunks = self._execute_sp4_segmentation(
                 preprocessed, structure, knowledge_graph
             )
+            self._assert_chunk_count(pa_dim_chunks, 60)  # HARD STOP IF FAILS
+            
+            # CHECKPOINT: Validate SP4 output (constitutional invariant)
+            checkpoint_passed, checkpoint_errors = self.checkpoint_validator.validate_checkpoint(
+                subphase_num=4,
+                output=pa_dim_chunks,
+                expected_type=list,
+                validators=[
+                    lambda x: (len(x) == 60, f"Must have exactly 60 chunks, got {len(x)}"),
+                    lambda x: (all(isinstance(c, Chunk) for c in x), "All items must be Chunk instances"),
+                    lambda x: (len(set(c.chunk_id for c in x)) == 60, "All chunk_ids must be unique"),
+                ]
+            )
+            if not checkpoint_passed:
+                raise Phase1FatalError(
+                    f"SP4 CHECKPOINT FAILED: Constitutional invariant violated.\n"
+                    f"Errors: {checkpoint_errors}"
+                )
+            logger.info("✓ SP4 CHECKPOINT PASSED: 60 unique chunks generated")
+            
             self._assert_chunk_count(4, pa_dim_chunks, 60)  # HARD STOP IF FAILS - CRITICAL WEIGHT
             self._record_subphase(4, pa_dim_chunks)
             
@@ -792,6 +850,28 @@ class Phase1SPCIngestionFullContract:
             smart_chunks = self._execute_sp11_smart_chunks(
                 pa_dim_chunks, self.subphase_results
             )
+            self._assert_smart_chunk_invariants(smart_chunks)  # HARD STOP IF FAILS
+            
+            # CHECKPOINT: Validate SP11 output (constitutional invariant)
+            checkpoint_passed, checkpoint_errors = self.checkpoint_validator.validate_checkpoint(
+                subphase_num=11,
+                output=smart_chunks,
+                expected_type=list,
+                validators=[
+                    lambda x: (len(x) == 60, f"Must have exactly 60 SmartChunks, got {len(x)}"),
+                    lambda x: (all(isinstance(c, SmartChunk) for c in x), "All items must be SmartChunk instances"),
+                    lambda x: (len(set(c.chunk_id for c in x)) == 60, "All chunk_ids must be unique"),
+                    lambda x: (all(hasattr(c, 'causal_graph') for c in x), "All chunks must have causal_graph"),
+                    lambda x: (all(hasattr(c, 'temporal_markers') for c in x), "All chunks must have temporal_markers"),
+                ]
+            )
+            if not checkpoint_passed:
+                raise Phase1FatalError(
+                    f"SP11 CHECKPOINT FAILED: Constitutional invariant violated.\n"
+                    f"Errors: {checkpoint_errors}"
+                )
+            logger.info("✓ SP11 CHECKPOINT PASSED: 60 enriched SmartChunks generated")
+            
             self._assert_smart_chunk_invariants(11, smart_chunks)  # HARD STOP IF FAILS - CRITICAL WEIGHT
             self._record_subphase(11, smart_chunks)
             
@@ -801,6 +881,26 @@ class Phase1SPCIngestionFullContract:
             
             # SP13: Integrity Validation [CRITICAL GATE] - WEIGHT: 10000
             validated = self._execute_sp13_validation(irrigated)
+            self._assert_validation_pass(validated)  # HARD STOP IF FAILS
+            
+            # CHECKPOINT: Validate SP13 output (validation gate)
+            checkpoint_passed, checkpoint_errors = self.checkpoint_validator.validate_checkpoint(
+                subphase_num=13,
+                output=validated,
+                expected_type=ValidationResult,
+                validators=[
+                    lambda x: (x.status == "VALID", f"Validation status must be VALID, got {x.status}"),
+                    lambda x: (x.chunk_count == 60, f"chunk_count must be 60, got {x.chunk_count}"),
+                    lambda x: (len(x.violations) == 0, f"Must have zero violations, got {len(x.violations)}"),
+                ]
+            )
+            if not checkpoint_passed:
+                raise Phase1FatalError(
+                    f"SP13 CHECKPOINT FAILED: Validation gate not passed.\n"
+                    f"Errors: {checkpoint_errors}"
+                )
+            logger.info("✓ SP13 CHECKPOINT PASSED: All integrity checks validated")
+            
             self._assert_validation_pass(13, validated)  # HARD STOP IF FAILS - CRITICAL WEIGHT
             self._record_subphase(13, validated)
             
@@ -2657,19 +2757,44 @@ def execute_phase_1_with_full_contract(
         else:
             logger.warning("Phase 1 initialized WITHOUT signal_registry (POLICY VIOLATION - degraded mode)")
         
-        # RUN WITH COMPLETE VERIFICATION
+        # RUN WITH COMPLETE VERIFICATION (includes pre-flight checks)
         cpp = executor.run(canonical_input)
         
         # VALIDATE FINAL STATE
         if not Phase1FailureHandler.validate_final_state(cpp):
             raise Phase1FatalError("Final validation failed")
         
+        # SHOW CHECKPOINT SUMMARY
+        if executor.checkpoint_validator.checkpoints:
+            logger.info("=" * 80)
+            logger.info("CHECKPOINT SUMMARY:")
+            for sp_num, checkpoint in executor.checkpoint_validator.checkpoints.items():
+                status = "✓ PASS" if checkpoint['passed'] else "✗ FAIL"
+                logger.info(f"  SP{sp_num}: {status}")
+            logger.info("=" * 80)
+        
         # SUCCESS - RETURN CPP
-        print(f"PHASE 1 COMPLETED: {len(cpp.chunk_graph.chunks)} chunks, "
-              f"{len(executor.execution_trace)} subphases")
+        print(f"✓ PHASE 1 COMPLETED SUCCESSFULLY:")
+        print(f"  - {len(cpp.chunk_graph.chunks)} chunks generated")
+        print(f"  - {len(executor.execution_trace)} subphases executed")
+        print(f"  - {len(executor.checkpoint_validator.checkpoints)} checkpoints validated")
+        print(f"  - Circuit breaker: CLOSED (all systems operational)")
         return cpp
         
-    except Exception as e:
-        # NO RECOVERY - FAIL LOUD
-        print(f"PHASE 1 FATAL ERROR: {e}")
+    except Phase1FatalError as e:
+        # PHASE 1 SPECIFIC ERROR - Already logged and diagnosed
+        print(f"✗ PHASE 1 FATAL ERROR: {e}")
+        logger.critical(f"Phase 1 failed with fatal error: {e}")
         raise
+
+    except Exception as e:
+        # UNEXPECTED ERROR - Log with full context
+        print(f"✗ PHASE 1 UNEXPECTED ERROR: {e}")
+        logger.critical(f"Phase 1 failed with unexpected error: {e}", exc_info=True)
+
+        # Print diagnostic report if available
+        circuit_breaker = get_circuit_breaker()
+        if circuit_breaker.last_check:
+            print("\n" + circuit_breaker.get_diagnostic_report())
+
+        raise Phase1FatalError(f"Unexpected error in Phase 1: {e}") from e
