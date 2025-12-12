@@ -14,7 +14,6 @@ Version: 1.0.0
 """
 
 import pytest
-from typing import Any
 
 
 # Phase 3 Tests
