@@ -7,7 +7,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.irrigation_synchronizer import (
+    from canonic_phases.Phase_two.irrigation_synchronizer import (
         ChunkRoutingResult,
     )
 

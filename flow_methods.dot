@@ -1,0 +1,88 @@
+digraph G {
+  rankdir=LR;
+  graph [splines=true, bgcolor="#0a0f1a", color="#00d1ff", fontcolor="#e6f7ff", fontsize=12];
+  node [shape=box, style=filled, penwidth=1.4, fontname="Helvetica", fontsize=12];
+  edge [color="#66e0ff", penwidth=1.2, fontcolor="#a0f0ff", fontsize=10];
+
+  subgraph cluster_inputs {
+    label="Contracts";
+    color="#00d1ff";
+    style=dashed;
+    contracts [label="300 executor contracts\n(method_binding)\nQ001..Q300", shape=box, fillcolor="#0f1f33"];
+  }
+
+  subgraph cluster_dims {
+    label="Dimensions";
+    color="#9a6bff";
+    style=dashed;
+    dim01 [label="DIM01", fillcolor="#1a1333"];
+    dim04 [label="DIM04", fillcolor="#1a1333"];
+  }
+
+  subgraph cluster_factory {
+    label="Factory / Registry";
+    color="#00ffaa";
+    style=dashed;
+    factory [label="Executor Factory\nvalidate & wire", fillcolor="#0f3322"];
+    registry [label="MethodRegistry\nclass_registry", fillcolor="#0f3322"];
+    loader [label="Lazy Loader\nmethods_dispensary.*", fillcolor="#0f3322"];
+  }
+
+  subgraph cluster_methods {
+    label="Methods (samples)";
+    color="#00ffaa";
+    style=dashed;
+    m1 [label="TextMiningEngine.diagnose_critical_links\n(f=30)", fillcolor="#102b3d"];
+    m2 [label="PDETMunicipalPlanAnalyzer._compute_robustness_value\n(f=40)", fillcolor="#102b3d"];
+    m3 [label="AdaptivePriorCalculator.validate_quality_criteria\n(f=30)", fillcolor="#102b3d"];
+    m4 [label="BayesianMechanismInference._test_necessity\n(f=40)", fillcolor="#102b3d"];
+    m5 [label="BeachEvidentialTest.apply_test_logic\n(f=20)", fillcolor="#102b3d"];
+    m6 [label="TeoriaCambio.construir_grafo_causal\n(f=20)", fillcolor="#102b3d"];
+  }
+
+  subgraph cluster_exec {
+    label="Executor";
+    color="#ffcc00";
+    style=dashed;
+    exec [label="Phase 2 Executor\n(orchestrator)", fillcolor="#332b0f"];
+  }
+
+  subgraph cluster_outputs {
+    label="Outputs";
+    color="#00ff99";
+    style=dashed;
+    out [label="Scores / Evidence / DAG checks", fillcolor="#0f3322"];
+  }
+
+  contracts -> factory [label="parse bindings"];
+  factory -> registry [label="resolve class_name"];
+  registry -> loader [label="map to module"];
+  loader -> registry [label="import & cache", dir=back, arrowtail=normal, arrowhead=none, color="#55ffaa"];
+  registry -> exec [label="bind methods"];
+
+  contracts -> dim01 [style=dotted, color="#9a6bff", label="Q001"];
+  contracts -> dim04 [style=dotted, color="#9a6bff", label="Q170"];
+
+  dim01 -> m1 [label="evidence"];
+  dim01 -> m3 [label="bayes quality"];
+  dim04 -> m2 [label="PDET robustness"];
+  dim04 -> m4 [label="necessity test"];
+  dim04 -> m5 [label="Beach taxonomy"];
+  dim04 -> m6 [label="DAG build"];
+
+  registry -> m1 [style=dashed];
+  registry -> m2 [style=dashed];
+  registry -> m3 [style=dashed];
+  registry -> m4 [style=dashed];
+  registry -> m5 [style=dashed];
+  registry -> m6 [style=dashed];
+
+  m1 -> exec;
+  m2 -> exec;
+  m3 -> exec;
+  m4 -> exec;
+  m5 -> exec;
+  m6 -> exec;
+
+  exec -> out [label="results"];
+}

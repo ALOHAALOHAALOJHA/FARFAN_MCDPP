@@ -1,0 +1,113 @@
+{
+  "phase0_modules": [
+    "runtime_config",
+    "bootstrap",
+    "schema_monitor",
+    "signature_validator",
+    "paths",
+    "determinism",
+    "deterministic_execution",
+    "json_logger",
+    "determinism_helpers",
+    "main",
+    "runtime_error_fixes",
+    "hash_utils",
+    "seed_factory",
+    "exit_gates",
+    "boot_checks",
+    "verified_pipeline_runner",
+    "coverage_gate",
+    "domain_errors"
+  ],
+  "orchestrator_phase0_method": "_load_configuration",
+  "wiring_points": [
+    {
+      "source_module": "Phase_zero",
+      "source_class": null,
+      "source_method": null,
+      "target_module": "orchestrator",
+      "target_class": "Orchestrator",
+      "target_method": null,
+      "data_type": "PROJECT_ROOT",
+      "line_number": 34,
+      "severity": "info"
+    },
+    {
+      "source_module": "Phase_zero",
+      "source_class": null,
+      "source_method": null,
+      "target_module": "orchestrator",
+      "target_class": "Orchestrator",
+      "target_method": null,
+      "data_type": "safe_join",
+      "line_number": 35,
+      "severity": "info"
+    },
+    {
+      "source_module": "Phase_zero",
+      "source_class": null,
+      "source_method": null,
+      "target_module": "orchestrator",
+      "target_class": "Orchestrator",
+      "target_method": null,
+      "data_type": "PROJECT_ROOT",
+      "line_number": 1326,
+      "severity": "info"
+    }
+  ],
+  "runtime_config_usage": [],
+  "factory_integration": {
+    "phase_zero_imports": [],
+    "uses_runtime_config": false,
+    "references_bootstrap": false
+  },
+  "exit_gates": [
+    {
+      "file": "exit_gates.py",
+      "functions": [
+        "check_bootstrap_gate",
+        "check_input_verification_gate",
+        "check_boot_checks_gate",
+        "check_determinism_gate",
+        "check_all_gates",
+        "get_gate_summary"
+      ]
+    },
+    {
+      "file": "main.py",
+      "gate_checks": [
+        {
+          "line": 477,
+          "context": "# STRICT PHASE 0 EXIT GATE: Input Verification"
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "severity": "warning",
+      "category": "missing_runtime_config",
+      "message": "RuntimeConfig not used in orchestrator"
+    },
+    {
+      "severity": "warning",
+      "category": "missing_parameter",
+      "message": "Orchestrator.__init__ does not accept runtime_config"
+    },
+    {
+      "severity": "warning",
+      "category": "missing_integration",
+      "message": "Orchestrator does not import Phase_zero bootstrap components"
+    },
+    {
+      "severity": "critical",
+      "category": "missing_runtime_config",
+      "message": "RuntimeConfig not propagated to orchestrator"
+    }
+  ],
+  "recommendations": [
+    "Add runtime_config parameter to Orchestrator.__init__ for phase execution control",
+    "Factory should load RuntimeConfig and pass to orchestrator during initialization",
+    "Orchestrator._load_configuration should validate Phase 0 bootstrap completion"
+  ]
+}

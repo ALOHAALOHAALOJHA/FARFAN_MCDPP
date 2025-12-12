@@ -1,0 +1,258 @@
+{
+  "audit_name": "Cluster Question Answering Capability Audit",
+  "timestamp": 1765434058.33034,
+  "total_checks": 21,
+  "passed": 21,
+  "failed": 0,
+  "critical_failures": 0,
+  "warnings": 0,
+  "overall_status": "PASS",
+  "sections": {
+    "A_need_identification": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "critical": 0,
+      "warnings": 0
+    },
+    "B_input_generation": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "critical": 0,
+      "warnings": 0
+    },
+    "C_response_structuring": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "critical": 0,
+      "warnings": 0
+    }
+  },
+  "detailed_results": [
+    {
+      "section": "A.1",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Questionnaire monolith loaded successfully",
+      "details": {
+        "path": "/home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/canonic_questionnaire_central/questionnaire_monolith.json"
+      }
+    },
+    {
+      "section": "A.2",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "All 4 clusters defined correctly (CL01-CL04)",
+      "details": {
+        "clusters": [
+          "CL01",
+          "CL02",
+          "CL03",
+          "CL04"
+        ]
+      }
+    },
+    {
+      "section": "A.3",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Cluster CL01 mapped to 3 policy areas",
+      "details": {
+        "cluster_id": "CL01",
+        "policy_areas": [
+          "PA02",
+          "PA03",
+          "PA07"
+        ]
+      }
+    },
+    {
+      "section": "A.3",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Cluster CL02 mapped to 3 policy areas",
+      "details": {
+        "cluster_id": "CL02",
+        "policy_areas": [
+          "PA01",
+          "PA05",
+          "PA06"
+        ]
+      }
+    },
+    {
+      "section": "A.3",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Cluster CL03 mapped to 2 policy areas",
+      "details": {
+        "cluster_id": "CL03",
+        "policy_areas": [
+          "PA04",
+          "PA08"
+        ]
+      }
+    },
+    {
+      "section": "A.3",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Cluster CL04 mapped to 2 policy areas",
+      "details": {
+        "cluster_id": "CL04",
+        "policy_areas": [
+          "PA09",
+          "PA10"
+        ]
+      }
+    },
+    {
+      "section": "A.4",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "All 4 MESO questions found",
+      "details": {
+        "count": 4
+      }
+    },
+    {
+      "section": "A.5",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "MESO question for CL01: '¿Cómo se integran las políticas en el cluster Seguridad y Pa...'",
+      "details": {
+        "cluster_id": "CL01",
+        "text": "¿Cómo se integran las políticas en el cluster Seguridad y Pa"
+      }
+    },
+    {
+      "section": "A.5",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "MESO question for CL02: '¿Cómo se integran las políticas en el cluster Grupos Poblaci...'",
+      "details": {
+        "cluster_id": "CL02",
+        "text": "¿Cómo se integran las políticas en el cluster Grupos Poblaci"
+      }
+    },
+    {
+      "section": "A.5",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "MESO question for CL03: '¿Cómo se integran las políticas en el cluster Territorio-Amb...'",
+      "details": {
+        "cluster_id": "CL03",
+        "text": "¿Cómo se integran las políticas en el cluster Territorio-Amb"
+      }
+    },
+    {
+      "section": "A.5",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "MESO question for CL04: '¿Cómo se integran las políticas en el cluster Derechos Socia...'",
+      "details": {
+        "cluster_id": "CL04",
+        "text": "¿Cómo se integran las políticas en el cluster Derechos Socia"
+      }
+    },
+    {
+      "section": "B.1",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "All 300 Phase 2 executor contracts present",
+      "details": {
+        "count": 300
+      }
+    },
+    {
+      "section": "B.2",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Sample contracts have policy_area_id and dimension_id",
+      "details": {
+        "sampled": 10,
+        "valid": 10
+      }
+    },
+    {
+      "section": "B.3",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "ClusterAggregator class with aggregate_cluster method found",
+      "details": {
+        "has_class": true,
+        "has_method": true,
+        "has_score": true
+      }
+    },
+    {
+      "section": "B.4",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Complete aggregation hierarchy present (Dimension → Area → Cluster → Macro)",
+      "details": {
+        "dimension": true,
+        "area": true,
+        "cluster": true,
+        "macro": true
+      }
+    },
+    {
+      "section": "C.2",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "CarverAnswer dataclass found for structured responses",
+      "details": {
+        "present": true
+      }
+    },
+    {
+      "section": "C.3",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "ContractInterpreter found for semantic extraction",
+      "details": {
+        "present": true
+      }
+    },
+    {
+      "section": "C.4",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "EvidenceAnalyzer found for evidence analysis",
+      "details": {
+        "present": true,
+        "component": "EvidenceAnalyzer"
+      }
+    },
+    {
+      "section": "C.5",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "GapAnalyzer found for gap identification",
+      "details": {
+        "present": true
+      }
+    },
+    {
+      "section": "C.6",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Bayesian confidence quantification found",
+      "details": {
+        "present": true
+      }
+    },
+    {
+      "section": "C.7",
+      "passed": true,
+      "severity": "PASSED",
+      "message": "Response rendering capability found",
+      "details": {
+        "present": true
+      }
+    }
+  ]
+}

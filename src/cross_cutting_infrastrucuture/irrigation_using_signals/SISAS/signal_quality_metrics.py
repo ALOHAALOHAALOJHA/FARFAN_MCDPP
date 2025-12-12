@@ -5,14 +5,14 @@ specifically designed to detect and measure PA07-PA10 coverage gaps.
 
 Key Features:
 - Pattern density metrics (patterns per policy area)
-- Threshold calibration tracking (min_confidence, min_evidence)
+- Threshold tracking (min_confidence, min_evidence)
 - Entity coverage analysis (institutional completeness)
 - Temporal freshness monitoring (TTL, valid_from/valid_to)
 - Coverage gap detection (PA07-PA10 vs PA01-PA06 comparison)
 
 SOTA Requirements:
 - Observability for PA coverage gaps
-- Quality gates for calibration drift
+- Quality gates for threshold drift
 - Metrics for intelligent fallback fusion
 """
 
@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.signals import SignalPack
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalPack
 
 try:
     import structlog
@@ -279,7 +279,7 @@ def analyze_coverage_gaps(
         recommendations.append("Consider cross-PA pattern sharing for common terms")
 
     if threshold_delta > 0.05:
-        recommendations.append("Recalibrate confidence thresholds for consistency")
+        recommendations.append("Review confidence thresholds for consistency")
 
     # Identify specific low-coverage PAs
     sparse_pas = [
@@ -356,7 +356,7 @@ def generate_quality_report(
         "all_pas_have_patterns": all(m.pattern_count > 0 for m in metrics_by_pa.values()),
         "all_pas_high_quality": len(high_quality_pas) == len(metrics_by_pa),
         "no_critical_gaps": gap_analysis.gap_severity not in ("CRITICAL",),
-        "thresholds_calibrated": abs(gap_analysis.threshold_delta) < 0.10,
+        "thresholds_consistent": abs(gap_analysis.threshold_delta) < 0.10,
     }
 
     quality_gates["all_gates_passed"] = all(quality_gates.values())

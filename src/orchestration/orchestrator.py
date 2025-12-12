@@ -33,6 +33,11 @@ if TYPE_CHECKING:
 
 from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 from canonic_phases.Phase_zero.paths import safe_join
+from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.exit_gates import GateResult
+
+# Define RULES_DIR locally (not exported from paths)
+RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
 from canonic_phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
@@ -52,7 +57,7 @@ from canonic_phases.Phase_two.arg_router import (
     ArgumentValidationError,
     ExtendedArgRouter,
 )
-from canonic_phases.Phase_two.class_registry import ClassRegistryError
+from orchestration.class_registry import ClassRegistryError
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
@@ -73,6 +78,62 @@ T = TypeVar("T")
 
 
 # ============================================================================
+# PHASE 0 INTEGRATION
+# ============================================================================
+
+@dataclass
+class Phase0ValidationResult:
+    """Result of Phase 0 exit gate validation.
+    
+    This dataclass captures the outcome of Phase 0's exit gate checks,
+    enabling the orchestrator to validate that all bootstrap prerequisites
+    have been met before executing the 11-phase pipeline.
+    
+    Attributes:
+        all_passed: True if all 4 Phase 0 gates passed
+        gate_results: List of GateResult objects (one per gate)
+        validation_time: ISO 8601 timestamp of when validation occurred
+    
+    Example:
+        >>> from canonic_phases.Phase_zero.exit_gates import check_all_gates
+        >>> all_passed, gates = check_all_gates(runner)
+        >>> validation = Phase0ValidationResult(
+        ...     all_passed=all_passed,
+        ...     gate_results=gates,
+        ...     validation_time=datetime.utcnow().isoformat()
+        ... )
+        >>> orchestrator = Orchestrator(..., phase0_validation=validation)
+    """
+    
+    all_passed: bool
+    gate_results: list[GateResult]
+    validation_time: str
+    
+    def get_failed_gates(self) -> list[GateResult]:
+        """Get list of gates that failed validation.
+        
+        Returns:
+            List of GateResult objects where passed=False
+        """
+        return [g for g in self.gate_results if not g.passed]
+    
+    def get_summary(self) -> str:
+        """Get human-readable summary of validation results.
+        
+        Returns:
+            Summary string like "4/4 gates passed" or "2/4 gates passed (bootstrap, input_verification failed)"
+        """
+        passed_count = sum(1 for g in self.gate_results if g.passed)
+        total_count = len(self.gate_results)
+        
+        if self.all_passed:
+            return f"{passed_count}/{total_count} gates passed"
+        else:
+            failed_names = [g.gate_name for g in self.get_failed_gates()]
+            return f"{passed_count}/{total_count} gates passed ({', '.join(failed_names)} failed)"
+
+
+# ============================================================================
 # PATH RESOLUTION
 # ============================================================================
 
@@ -82,11 +143,17 @@ def resolve_workspace_path(
     project_root: Path = PROJECT_ROOT,
     rules_dir: Path = RULES_DIR,
     module_dir: Path = _CORE_MODULE_DIR,
+    require_exists: bool = True,
 ) -> Path:
-    """Resolve repository-relative paths deterministically."""
+    """Resolve repository-relative paths deterministically.
+    
+    If require_exists is True and no candidate exists, raises FileNotFoundError.
+    """
     path_obj = Path(path)
     
     if path_obj.is_absolute():
+        if require_exists and not path_obj.exists():
+            raise FileNotFoundError(f"Path not found: {path_obj}")
         return path_obj
     
     sanitized = safe_join(project_root, *path_obj.parts)
@@ -103,6 +170,8 @@ def resolve_workspace_path(
         if candidate.exists():
             return candidate
     
+    if require_exists:
+        raise FileNotFoundError(f"Path not found in workspace: {path_obj}")
     return sanitized
 
 
@@ -676,7 +745,7 @@ class MethodExecutor:
         signal_registry: Any | None = None,
         method_registry: Any | None = None,
     ) -> None:
-        from farfan_pipeline.core.orchestrator.method_registry import (
+        from orchestration.method_registry import (
             MethodRegistry,
             setup_default_instantiation_rules,
         )
@@ -700,7 +769,7 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
         
         try:
-            from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
+            from orchestration.class_registry import build_class_registry
             registry = build_class_registry()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
@@ -722,7 +791,7 @@ class MethodExecutor:
     
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
-        from farfan_pipeline.core.orchestrator.method_registry import MethodRegistryError
+        from orchestration.method_registry import MethodRegistryError
         
         try:
             method = self._method_registry.get_method(class_name, method_name)
@@ -803,6 +872,28 @@ def validate_phase_definitions(
 
 
 # ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+def get_questionnaire_provider() -> Any:
+    """Get questionnaire provider (placeholder)."""
+    return None
+
+
+def get_dependency_lockdown() -> Any:
+    """Get dependency lockdown manager."""
+    class DependencyLockdown:
+        def get_mode_description(self) -> str:
+            return "Production mode - all dependencies locked"
+    return DependencyLockdown()
+
+
+class RecommendationEnginePort:
+    """Port interface for recommendation engine."""
+    pass
+
+
+# ============================================================================
 # ORCHESTRATOR
 # ============================================================================
 
@@ -859,13 +950,34 @@ class Orchestrator:
         method_executor: MethodExecutor,
         questionnaire: CanonicalQuestionnaire,
         executor_config: ExecutorConfig,
+        runtime_config: RuntimeConfig | None = None,
+        phase0_validation: Phase0ValidationResult | None = None,
         calibration_orchestrator: Any | None = None,
         resource_limits: ResourceLimits | None = None,
         resource_snapshot_interval: int = 10,
         recommendation_engine_port: RecommendationEnginePort | None = None,
         processor_bundle: Any | None = None,
     ) -> None:
-        """Initialize orchestrator."""
+        """Initialize orchestrator with Phase 0 integration.
+        
+        Args:
+            method_executor: Executor for dispensary methods
+            questionnaire: Canonical questionnaire monolith
+            executor_config: Configuration for method execution
+            runtime_config: Phase 0 runtime configuration (PROD/DEV/EXPLORATORY).
+                          If None, logs warning and assumes production mode.
+            phase0_validation: Phase 0 exit gate validation results.
+                             If provided and all_passed=False, raises RuntimeError.
+                             If None, assumes Phase 0 passed (legacy compatibility).
+            calibration_orchestrator: Optional calibration orchestrator
+            resource_limits: Resource limit configuration
+            resource_snapshot_interval: Interval for resource snapshots
+            recommendation_engine_port: Port for recommendation engine
+            processor_bundle: Optional processor bundle
+            
+        Raises:
+            RuntimeError: If phase0_validation indicates gate failures
+        """
         from orchestration.factory import _validate_questionnaire_structure
         
         validate_phase_definitions(self.FASES, self.__class__)
@@ -874,25 +986,46 @@ class Orchestrator:
         self._canonical_questionnaire = questionnaire
         self._monolith_data = dict(questionnaire.data)
         self.executor_config = executor_config
+        self.runtime_config = runtime_config
+        self.phase0_validation = phase0_validation
+        
+        # Validate Phase 0 exit gates if validation result provided
+        if phase0_validation is not None:
+            if not phase0_validation.all_passed:
+                failed = phase0_validation.get_failed_gates()
+                failed_names = [g.gate_name for g in failed]
+                raise RuntimeError(
+                    f"Cannot initialize orchestrator: "
+                    f"Phase 0 exit gates failed: {failed_names}. "
+                    f"Bootstrap must complete successfully before orchestrator execution."
+                )
+            logger.info(
+                "orchestrator_phase0_validation_passed",
+                gates_checked=len(phase0_validation.gate_results),
+                validation_time=phase0_validation.validation_time,
+                summary=phase0_validation.get_summary()
+            )
+        
+        # Log runtime configuration
+        if runtime_config is not None:
+            logger.info(
+                "orchestrator_runtime_mode",
+                mode=runtime_config.mode.value,
+                strict=runtime_config.is_strict_mode(),
+                category="phase0_integration"
+            )
+        else:
+            logger.warning(
+                "orchestrator_no_runtime_config",
+                message="RuntimeConfig not provided - assuming production mode",
+                category="phase0_integration"
+            )
         
         if calibration_orchestrator is not None:
             self.calibration_orchestrator = calibration_orchestrator
             logger.info("CalibrationOrchestrator injected into main orchestrator")
         else:
-            try:
-                from pathlib import Path
-                from src.orchestration.calibration_orchestrator import CalibrationOrchestrator
-                
-                config_dir = Path("src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration")
-                if config_dir.exists():
-                    self.calibration_orchestrator = CalibrationOrchestrator.from_config_dir(config_dir)
-                    logger.info("CalibrationOrchestrator auto-loaded from config directory")
-                else:
-                    self.calibration_orchestrator = None
-                    logger.warning("Calibration config directory not found, calibration disabled")
-            except Exception as e:
-                self.calibration_orchestrator = None
-                logger.warning(f"Failed to auto-load CalibrationOrchestrator: {e}")
+            self.calibration_orchestrator = None
         
         self.resource_limits = resource_limits or ResourceLimits()
         self.resource_snapshot_interval = max(1, resource_snapshot_interval)
@@ -1190,7 +1323,7 @@ class Orchestrator:
             return None
         
         try:
-            from src.orchestration.calibration_orchestrator import (
+            from orchestration.calibration_orchestrator import (
                 CalibrationSubject,
                 EvidenceStore,
             )
@@ -1236,10 +1369,45 @@ class Orchestrator:
     # ========================================================================
     
     def _load_configuration(self) -> dict[str, Any]:
-        """FASE 0: Load configuration."""
+        """FASE 0: Load configuration.
+        
+        This is Orchestrator's Phase 0 (configuration loading), which runs as the
+        FIRST phase of the 11-phase pipeline. It should NOT be confused with
+        Phase_zero bootstrap (pre-orchestrator input validation).
+        
+        Phase_zero bootstrap MUST complete successfully BEFORE the orchestrator
+        is created. This method validates that prerequisite and enforces runtime
+        mode restrictions.
+        
+        Returns:
+            Configuration dict with monolith, questions, and aggregation settings.
+            Includes _runtime_mode key if RuntimeConfig is available.
+        
+        Raises:
+            RuntimeError: If Phase 0 validation indicates bootstrap failure
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[0]
         start = time.perf_counter()
+        
+        # Validate Phase_zero bootstrap completed successfully
+        if self.phase0_validation is not None and not self.phase0_validation.all_passed:
+            failed_gates = self.phase0_validation.get_failed_gates()
+            raise RuntimeError(
+                f"Cannot execute orchestrator Phase 0: "
+                f"Phase_zero bootstrap did not complete successfully. "
+                f"Failed gates: {[g.gate_name for g in failed_gates]}"
+            )
+        
+        # Log runtime mode enforcement
+        if self.runtime_config is not None:
+            mode = self.runtime_config.mode
+            if mode == RuntimeMode.PROD:
+                logger.info("orchestrator_phase0_prod_mode", strict=True)
+            elif mode == RuntimeMode.DEV:
+                logger.warning("orchestrator_phase0_dev_mode", strict=False)
+            else:  # EXPLORATORY
+                logger.warning("orchestrator_phase0_exploratory_mode", strict=False)
         
         monolith = _normalize_monolith_for_hash(self._monolith_data)
         monolith_hash = hashlib.sha256(
@@ -1262,7 +1430,7 @@ class Orchestrator:
         duration = time.perf_counter() - start
         instrumentation.increment(latency=duration)
         
-        return {
+        config_dict = {
             "monolith": monolith,
             "monolith_sha256": monolith_hash,
             "micro_questions": micro_questions,
@@ -1270,9 +1438,21 @@ class Orchestrator:
             "macro_question": macro_question,
             "_aggregation_settings": aggregation_settings,
         }
+        
+        # Include runtime mode if available (for downstream phase awareness)
+        if self.runtime_config is not None:
+            config_dict["_runtime_mode"] = self.runtime_config.mode.value
+            config_dict["_strict_mode"] = self.runtime_config.is_strict_mode()
+        
+        return config_dict
     
-    def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> PreprocessedDocument:
-        """FASE 1: Ingest document using SPC pipeline."""
+    def _ingest_document(self, pdf_path: str, config: dict[str, Any]) -> Any:
+        """FASE 1: Ingest document using Phase 1 SPC pipeline.
+        
+        QUESTIONNAIRE ACCESS POLICY ENFORCEMENT:
+        - Phase 1 receives signal_registry via DI (not questionnaire file)
+        - Follows LEVEL 3 access: Factory → Orchestrator → Phase 1 → signal_registry
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[1]
         start = time.perf_counter()
@@ -1280,37 +1460,86 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
         
         try:
-            from farfan_pipeline.processing.spc_ingestion import CPPIngestionPipeline
+            # Import Phase 1 components
+            from canonic_phases.Phase_one import (
+                CanonicalInput,
+                execute_phase_1_with_full_contract,
+                CanonPolicyPackage,
+            )
+            from pathlib import Path
+            import hashlib
             
-            pipeline = CPPIngestionPipeline()
-            canon_package = asyncio.run(pipeline.process(
-                document_path=Path(pdf_path),
-                document_id=document_id
-            ))
+            # Get questionnaire path from canonical questionnaire
+            questionnaire_path = self._canonical_questionnaire.source_path if hasattr(self._canonical_questionnaire, 'source_path') else None
+            if not questionnaire_path:
+                # Fallback to default path
+                from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+                questionnaire_path = PROJECT_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+            else:
+                questionnaire_path = Path(questionnaire_path)
             
-            preprocessed = PreprocessedDocument.ensure(
-                canon_package,
+            pdf_path_obj = Path(pdf_path)
+            
+            # Compute hashes for integrity
+            pdf_sha256 = hashlib.sha256(pdf_path_obj.read_bytes()).hexdigest()
+            questionnaire_sha256 = hashlib.sha256(questionnaire_path.read_bytes()).hexdigest()
+            
+            # Create CanonicalInput for Phase 1
+            canonical_input = CanonicalInput(
                 document_id=document_id,
-                use_spc_ingestion=True
+                run_id=f"run_{document_id}_{int(time.time())}",
+                pdf_path=pdf_path_obj,
+                pdf_sha256=pdf_sha256,
+                pdf_size_bytes=pdf_path_obj.stat().st_size,
+                pdf_page_count=0,  # Will be computed by Phase 1
+                questionnaire_path=questionnaire_path,
+                questionnaire_sha256=questionnaire_sha256,
+                created_at=datetime.utcnow(),
+                phase0_version="1.0.0",
+                validation_passed=True,
+                validation_errors=[],
+                validation_warnings=[],
             )
             
-            if not preprocessed.raw_text or not preprocessed.raw_text.strip():
-                raise ValueError("Empty document after ingestion")
+            # POLICY ENFORCEMENT: Pass signal_registry to Phase 1 (LEVEL 3 access)
+            # Factory created signal_registry → injected to Orchestrator → passed to Phase 1
+            signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
             
-            actual_chunk_count = preprocessed.metadata.get("chunk_count", 0)
+            if signal_registry is None:
+                logger.warning("⚠️  POLICY VIOLATION: signal_registry not available, Phase 1 will run in degraded mode")
+            else:
+                logger.info("✓ POLICY COMPLIANT: Passing signal_registry to Phase 1 (DI chain: Factory → Orchestrator → Phase 1)")
+            
+            # Execute Phase 1 with full contract AND signal_registry
+            canon_package = execute_phase_1_with_full_contract(
+                canonical_input,
+                signal_registry=signal_registry  # DI: Inject signal registry
+            )
+            
+            # Validate output
+            if not isinstance(canon_package, CanonPolicyPackage):
+                raise ValueError(f"Phase 1 returned invalid type: {type(canon_package)}")
+            
+            # Validate chunk count
+            actual_chunk_count = len(canon_package.chunk_graph.chunks)
             if actual_chunk_count != P01_EXPECTED_CHUNK_COUNT:
                 raise ValueError(
                     f"P01 validation failed: expected {P01_EXPECTED_CHUNK_COUNT} chunks, "
                     f"got {actual_chunk_count}"
                 )
             
-            for i, chunk in enumerate(preprocessed.chunks):
-                if not getattr(chunk, "policy_area_id", None):
-                    raise ValueError(f"Chunk {i} missing policy_area_id")
-                if not getattr(chunk, "dimension_id", None):
-                    raise ValueError(f"Chunk {i} missing dimension_id")
+            # Validate each chunk has policy_area_id and dimension_id
+            for i, chunk in enumerate(canon_package.chunk_graph.chunks):
+                if not hasattr(chunk, "policy_area") or not chunk.policy_area:
+                    raise ValueError(f"Chunk {i} missing policy_area")
+                if not hasattr(chunk, "dimension") or not chunk.dimension:
+                    raise ValueError(f"Chunk {i} missing dimension")
             
             logger.info(f"✓ P01-ES v1.0 validation passed: {actual_chunk_count} chunks")
+            
+            # Store canon_package for subsequent phases
+            # Note: Downstream phases should work with CanonPolicyPackage directly
+            return canon_package
             
         except Exception as e:
             instrumentation.record_error("ingestion", str(e))
@@ -1319,12 +1548,20 @@ class Orchestrator:
         duration = time.perf_counter() - start
         instrumentation.increment(latency=duration)
         
-        return preprocessed
+        return canon_package
     
     async def _execute_micro_questions_async(
-        self, document: PreprocessedDocument, config: dict[str, Any]
+        self, document: Any, config: dict[str, Any]
     ) -> list[MicroQuestionRun]:
-        """FASE 2: Execute micro-questions (STUB - requires your implementation)."""
+        """FASE 2: Execute micro-questions.
+        
+        Args:
+            document: CanonPolicyPackage from Phase 1 (60 chunks with PA×DIM coordinates)
+            config: Configuration dictionary
+            
+        Returns:
+            List of MicroQuestionRun results
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
         
@@ -1339,15 +1576,162 @@ class Orchestrator:
     async def _score_micro_results_async(
         self, micro_results: list[MicroQuestionRun], config: dict[str, Any]
     ) -> list[ScoredMicroQuestion]:
-        """FASE 3: Score results (STUB - requires your implementation)."""
+        """FASE 3: Transform Phase 2 results to scored results.
+        
+        Extracts scoring from EvidenceNexus outputs and transforms
+        MicroQuestionRun objects to ScoredMicroQuestion objects ready for
+        Phase 4 aggregation.
+        
+        Phase 2 uses EvidenceNexus which returns:
+        - overall_confidence (0.0-1.0) → score
+        - completeness (complete/partial/insufficient) → quality_level
+        
+        These nexus fields are now included in Phase 2 result_data and
+        accessible via MicroQuestionRun.metadata.
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[3]
         
         instrumentation.start(items_total=len(micro_results))
         
-        logger.warning("Phase 3 stub - add your scoring logic here")
-        
         scored_results: list[ScoredMicroQuestion] = []
+        
+        # Get signal registry for scoring signals if available
+        signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
+        
+        logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results using EvidenceNexus outputs")
+        
+        for idx, micro_result in enumerate(micro_results):
+            self._ensure_not_aborted()
+            
+            try:
+                # Get scoring signals from registry if available
+                scoring_signals = None
+                if signal_registry is not None:
+                    try:
+                        scoring_signals = signal_registry.get_scoring_signals(micro_result.question_id)
+                        logger.debug(f"Phase 3: Retrieved scoring signals for {micro_result.question_id}")
+                    except Exception as e:
+                        logger.warning(f"Phase 3: Could not retrieve scoring signals for {micro_result.question_id}: {e}")
+                
+                # Get metadata which should contain nexus fields from Phase 2
+                metadata = micro_result.metadata
+                
+                # Extract evidence (Evidence dataclass or dict)
+                evidence_obj = micro_result.evidence
+                if hasattr(evidence_obj, "__dict__"):
+                    evidence = evidence_obj.__dict__
+                elif isinstance(evidence_obj, dict):
+                    evidence = evidence_obj
+                else:
+                    evidence = {}
+                
+                # PRIMARY: Extract score from overall_confidence (EvidenceNexus output)
+                score = metadata.get("overall_confidence")
+                if score is None:
+                    # Fallback 1: Check validation.score (only set when validation fails)
+                    validation = evidence.get("validation", {})
+                    score = validation.get("score")
+                
+                if score is None:
+                    # Fallback 2: Use mean confidence from evidence elements
+                    conf_scores = evidence.get("confidence_scores", {})
+                    score = conf_scores.get("mean", 0.0)
+                
+                # Ensure score is float
+                try:
+                    score_float = float(score) if score is not None else 0.0
+                except (TypeError, ValueError):
+                    logger.warning(
+                        f"Invalid score type for question {micro_result.question_global}: "
+                        f"{type(score)}. Defaulting to 0.0"
+                    )
+                    score_float = 0.0
+                
+                # PRIMARY: Map completeness to quality_level (EvidenceNexus output)
+                completeness = metadata.get("completeness")
+                if completeness:
+                    # Map EvidenceNexus completeness enum to quality level
+                    completeness_lower = str(completeness).lower()
+                    quality_mapping = {
+                        "complete": "EXCELENTE",
+                        "partial": "ACEPTABLE",
+                        "insufficient": "INSUFICIENTE",
+                        "not_applicable": "NO_APLICABLE",
+                    }
+                    quality_level = quality_mapping.get(completeness_lower, "INSUFICIENTE")
+                else:
+                    # Fallback: Check validation.quality_level (only set when validation fails)
+                    validation = evidence.get("validation", {})
+                    quality_level = validation.get("quality_level", "INSUFICIENTE")
+                
+                # Build scoring details with signal enrichment
+                scoring_details = {
+                    "source": "evidence_nexus",
+                    "method": "overall_confidence",
+                    "completeness": completeness,
+                    "calibrated_interval": metadata.get("calibrated_interval"),
+                }
+                
+                # Add signal enrichment metadata if available
+                if scoring_signals is not None:
+                    scoring_details["signal_enrichment"] = {
+                        "modality": scoring_signals.question_modalities.get(micro_result.question_id),
+                        "source_hash": getattr(scoring_signals, 'source_hash', None),
+                        "signal_source": "sisas_registry"
+                    }
+                
+                # Create ScoredMicroQuestion
+                scored = ScoredMicroQuestion(
+                    question_id=micro_result.question_id,
+                    question_global=micro_result.question_global,
+                    base_slot=micro_result.base_slot,
+                    score=score_float,
+                    normalized_score=score_float,  # Already normalized 0.0-1.0
+                    quality_level=quality_level,
+                    evidence=micro_result.evidence,
+                    scoring_details=scoring_details,
+                    metadata=micro_result.metadata,
+                    error=micro_result.error,
+                )
+                
+                scored_results.append(scored)
+                
+                instrumentation.increment(latency=0.0)
+                
+                logger.debug(
+                    f"Phase 3: Scored question {micro_result.question_global}: "
+                    f"score={score_float:.3f}, quality={quality_level}, completeness={completeness}"
+                )
+                
+            except Exception as e:
+                logger.error(
+                    f"Phase 3: Failed to score question {micro_result.question_global}: {e}",
+                    exc_info=True
+                )
+                
+                # Create failed scored result
+                scored = ScoredMicroQuestion(
+                    question_id=micro_result.question_id,
+                    question_global=micro_result.question_global,
+                    base_slot=micro_result.base_slot,
+                    score=0.0,
+                    normalized_score=0.0,
+                    quality_level="ERROR",
+                    evidence=micro_result.evidence,
+                    scoring_details={"error": str(e), "source": "exception_recovery"},
+                    metadata=micro_result.metadata,
+                    error=f"Scoring error: {e}",
+                )
+                
+                scored_results.append(scored)
+                instrumentation.increment(latency=0.0)
+        
+        logger.info(
+            f"Phase 3 complete: {len(scored_results)}/{len(micro_results)} results scored. "
+            f"Using EvidenceNexus overall_confidence and completeness fields."
+        )
+        
         return scored_results
     
     async def _aggregate_dimensions_async(

@@ -30,7 +30,6 @@ from typing import (
 )
 
 # from farfan_pipeline import get_parameter_loader  # CALIBRATION DISABLED
-from farfan_pipeline.core.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:
     from farfan_pipeline.utils.method_config_loader import MethodConfigLoader
@@ -63,6 +62,549 @@ except ImportError as e:
     sent_tokenize = None
     stopwords = None
 
+# =============================================================================
+# CANONICAL POLICY AREAS (PA01-PA10)
+# Source: questionnaire_monolith.json canonical_notation.policy_areas
+# =============================================================================
+
+POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
+    "PA01": {
+        "id": "PA01",
+        "legacy_id": "P1",
+        "name": "Derechos de las mujeres e igualdad de género",
+        "cluster_id": "CL02",
+        "keywords": [
+            "género", "mujer", "mujeres", "igualdad de género", "equidad de género",
+            "enfoque de género", "perspectiva de género", "transversalización de género",
+            "brecha de género", "disparidad de género", "discriminación de género",
+            "violencia basada en género", "VBG", "violencia de género",
+            "violencia intrafamiliar", "VIF", "violencia doméstica",
+            "violencia sexual", "violencia física", "violencia psicológica",
+            "violencia económica", "violencia patrimonial",
+            "feminicidio", "femicidio", "tentativa de feminicidio",
+            "acoso sexual", "acoso laboral", "hostigamiento",
+            "violencia obstétrica", "violencia institucional",
+            "trata de personas", "explotación sexual",
+            "Secretaría de la Mujer", "Consejería de la Mujer",
+            "Comisaría de Familia", "comisarías",
+            "Ley 1257", "Ley 1719", "Ley 1761", "Ley Rosa Elvira Cely",
+            "medidas de protección", "orden de protección",
+            "ruta de atención", "protocolo de atención",
+            "casas de refugio", "casas de acogida",
+            "brecha salarial", "equidad salarial", "igualdad salarial",
+            "trabajo no remunerado", "carga de cuidado",
+            "economía del cuidado", "trabajo del cuidado",
+            "licencia de maternidad", "lactancia materna",
+            "emprendimiento femenino", "empresarias",
+            "empoderamiento económico", "autonomía económica",
+            "participación política de las mujeres",
+            "liderazgo femenino", "lideresas", "lideresa",
+            "cuotas de género", "paridad", "equidad electoral",
+            "violencia política", "violencia política contra las mujeres",
+            "representación femenina", "concejalas", "diputadas",
+            "salud sexual", "salud reproductiva", "SSR",
+            "derechos reproductivos", "planificación familiar",
+            "embarazo adolescente", "maternidad temprana",
+            "anticoncepción", "anticonceptivos",
+            "mortalidad materna", "morbilidad materna",
+            "mujeres rurales", "mujeres campesinas",
+            "mujeres indígenas", "mujeres afrodescendientes",
+            "mujeres víctimas", "mujeres desplazadas",
+            "mujeres cabeza de familia", "jefatura femenina",
+            "adultas mayores", "niñas", "adolescentes mujeres",
+            "mujeres con discapacidad",
+            "mujeres LGBTI", "mujeres trans",
+            "educación con enfoque de género",
+            "estereotipos de género", "roles de género",
+            "masculinidades", "nuevas masculinidades",
+            "cultura machista", "patriarcado",
+            "coeducación", "educación no sexista",
+            # From ET01 - Enfoque de Género transversal
+            "mainstreaming de género", "análisis de género", "indicadores de género",
+            "presupuestos sensibles al género", "PSG",
+            "política de género", "plan de igualdad",
+            "comité de género", "instancia de género",
+            "madres", "gestantes", "lactantes", "cuidadoras"
+        ]
+    },
+    "PA02": {
+        "id": "PA02",
+        "legacy_id": "P2",
+        "name": "Prevención de la violencia y protección frente al conflicto",
+        "cluster_id": "CL01",
+        "keywords": [
+            "conflicto armado", "conflicto interno",
+            "grupos armados organizados", "GAO",
+            "grupos delictivos organizados", "GDO",
+            "grupos armados ilegales", "GAI",
+            "disidencias", "disidencias FARC",
+            "ELN", "Ejército de Liberación Nacional",
+            "paramilitares", "paramilitarismo",
+            "bandas criminales", "BACRIM",
+            "narcotráfico", "cultivos ilícitos",
+            "violencia", "inseguridad", "criminalidad",
+            "homicidios", "asesinatos", "muertes violentas",
+            "secuestro", "extorsión", "amenazas",
+            "desaparición forzada", "desaparecidos",
+            "reclutamiento forzado", "uso de menores",
+            "minas antipersonal", "MAP", "MUSE",
+            "artefactos explosivos improvisados", "AEI",
+            "confinamiento", "restricción a la movilidad",
+            "protección", "medidas de protección",
+            "prevención", "prevención temprana",
+            "alertas tempranas", "SAT",
+            "sistema de alertas tempranas",
+            "nota de seguimiento", "informe de riesgo",
+            "análisis de riesgo", "escenarios de riesgo",
+            "Defensoría del Pueblo",
+            "Policía Nacional", "Ejército Nacional",
+            "Fuerza Pública", "fuerzas militares",
+            "Fiscalía", "Procuraduría",
+            "Personería", "personero",
+            "inspección de policía", "inspectores",
+            "convivencia", "convivencia ciudadana",
+            "seguridad ciudadana", "seguridad comunitaria",
+            "espacio público", "recuperación del espacio público",
+            "pandillas", "pandillismo", "delincuencia juvenil",
+            "consumo de sustancias", "expendio de drogas",
+            "riñas", "lesiones personales",
+            "plan de seguridad", "estrategia de seguridad",
+            "consejos de seguridad", "CONSEA",
+            "frentes de seguridad", "red de cooperantes",
+            "cámaras de seguridad", "videovigilancia",
+            "CAI", "comando de atención inmediata",
+            "cuadrantes de policía",
+            "desmovilizados", "excombatientes",
+            "reintegración", "reincorporación",
+            "DDR", "desarme desmovilización reintegración",
+            "derechos humanos", "DDHH",
+            "derecho internacional humanitario", "DIH",
+            "crímenes de guerra", "crímenes de lesa humanidad",
+            "justicia transicional", "JEP"
+        ]
+    },
+    "PA03": {
+        "id": "PA03",
+        "legacy_id": "P3",
+        "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "cluster_id": "CL01",
+        "keywords": [
+            "ambiente", "medio ambiente", "ambiental",
+            "sostenibilidad", "sostenibilidad ambiental",
+            "desarrollo sostenible", "sustentabilidad",
+            "ecología", "ecosistemas", "biodiversidad",
+            "conservación", "preservación",
+            "educación ambiental", "conciencia ambiental",
+            "cambio climático", "calentamiento global",
+            "gases de efecto invernadero", "GEI",
+            "mitigación", "adaptación climática",
+            "variabilidad climática", "fenómenos climáticos",
+            "huella de carbono", "carbono neutralidad",
+            "energías renovables", "energía limpia",
+            "recurso hídrico", "agua", "fuentes hídricas",
+            "cuencas", "microcuencas", "acuíferos",
+            "quebradas", "ríos", "humedales",
+            "contaminación del agua", "calidad del agua",
+            "acueducto", "alcantarillado", "saneamiento básico",
+            "PSMV", "plan de saneamiento y manejo de vertimientos",
+            "suelo", "erosión", "degradación del suelo",
+            "deforestación", "tala", "reforestación",
+            "bosques", "páramos", "selva",
+            "áreas protegidas", "reservas naturales",
+            "parques naturales", "zonas de reserva",
+            "ecosistemas estratégicos",
+            "residuos sólidos", "basuras", "desechos",
+            "PGIRS", "plan de gestión integral de residuos",
+            "reciclaje", "separación en la fuente",
+            "relleno sanitario", "botadero",
+            "contaminación", "contaminación ambiental",
+            "contaminación del aire", "calidad del aire",
+            "gestión del riesgo", "gestión de riesgo de desastres",
+            "desastres", "emergencias", "calamidad",
+            "prevención de desastres", "preparación",
+            "atención de emergencias", "respuesta",
+            "inundaciones", "desbordamientos", "crecientes",
+            "deslizamientos", "remoción en masa", "avalanchas",
+            "incendios forestales", "quemas",
+            "sequía", "desertificación",
+            "vendavales", "vientos fuertes",
+            "sismos", "terremotos",
+            "Fenómeno del Niño", "Fenómeno de la Niña",
+            "CAR", "corporación autónoma regional",
+            "autoridad ambiental", "ANLA",
+            "IDEAM", "CMGRD", "UNGRD",
+            "Bomberos", "Cruz Roja", "Defensa Civil",
+            "ordenamiento territorial", "POT", "PBOT", "EOT",
+            "POMCA", "zonificación ambiental",
+            "licencia ambiental", "permiso ambiental",
+            "fauna", "flora", "especies nativas",
+            "minería", "minería ilegal", "extracción"
+        ]
+    },
+    "PA04": {
+        "id": "PA04",
+        "legacy_id": "P4",
+        "name": "Derechos económicos, sociales y culturales",
+        "cluster_id": "CL03",
+        "keywords": [
+            "DESC", "derechos económicos", "derechos sociales",
+            "derechos culturales", "pacto DESC",
+            "derechos fundamentales", "mínimo vital",
+            "dignidad humana", "calidad de vida",
+            "empleo", "trabajo", "desempleo",
+            "generación de empleo", "oportunidades laborales",
+            "trabajo decente", "formalización laboral",
+            "informalidad", "subempleo",
+            "salario", "salario mínimo", "remuneración",
+            "seguridad social", "EPS", "ARL",
+            "SENA", "emprendimiento",
+            "vivienda", "vivienda digna", "derecho a la vivienda",
+            "vivienda de interés social", "VIS",
+            "vivienda de interés prioritario", "VIP",
+            "mejoramiento de vivienda", "subsidio de vivienda",
+            "hacinamiento", "servicios públicos",
+            "salud", "derecho a la salud", "sistema de salud",
+            "EPS", "IPS", "régimen contributivo", "régimen subsidiado",
+            "SISBÉN", "afiliación al sistema",
+            "hospital", "centro de salud", "puesto de salud",
+            "ESE", "empresa social del estado",
+            "Secretaría de Salud", "salud mental",
+            "vacunación", "desnutrición", "malnutrición",
+            "mortalidad infantil", "mortalidad materna",
+            "educación", "derecho a la educación",
+            "acceso a la educación", "cobertura educativa",
+            "calidad educativa", "educación inicial",
+            "educación básica", "primaria", "secundaria",
+            "educación media", "bachillerato",
+            "educación superior", "universidad",
+            "Secretaría de Educación", "docentes", "maestros",
+            "deserción escolar", "abandono escolar",
+            "PAE", "programa de alimentación escolar",
+            "transporte escolar", "infraestructura educativa",
+            "analfabetismo", "alfabetización",
+            "cultura", "derechos culturales",
+            "patrimonio cultural", "identidad cultural",
+            "biblioteca", "casa de la cultura", "museo",
+            "Secretaría de Cultura", "artistas",
+            "deporte", "recreación", "actividad física",
+            "escenarios deportivos", "polideportivo", "parques",
+            "alimentación", "seguridad alimentaria",
+            "soberanía alimentaria", "banco de alimentos",
+            "primera infancia", "niños y niñas",
+            "adultos mayores", "tercera edad",
+            "personas con discapacidad", "PcD",
+            "familias en acción", "jóvenes en acción",
+            "transferencias monetarias", "subsidios",
+            "infraestructura social", "espacio público",
+            "vías", "carreteras", "transporte público",
+            "desarrollo comunitario", "JAC", "juntas de acción comunal"
+        ]
+    },
+    "PA05": {
+        "id": "PA05",
+        "legacy_id": "P5",
+        "name": "Derechos de las víctimas y construcción de paz",
+        "cluster_id": "CL02",
+        "keywords": [
+            "víctimas", "víctima", "población víctima",
+            "hechos victimizantes", "hecho victimizante",
+            "RUV", "registro único de víctimas",
+            "UARIV", "unidad de víctimas", "Ley 1448",
+            "Enlace de Víctimas", "enlace municipal",
+            "desplazamiento forzado", "desplazamiento",
+            "desplazados", "población desplazada",
+            "confinamiento", "despojo", "despojo de tierras",
+            "abandono forzado", "homicidio", "masacre",
+            "desaparición forzada", "desaparecidos",
+            "secuestro", "tortura", "violencia sexual",
+            "minas antipersonal", "reclutamiento forzado",
+            "amenazas", "atentados", "actos terroristas",
+            "verdad", "derecho a la verdad",
+            "justicia", "derecho a la justicia",
+            "reparación", "reparación integral",
+            "indemnización", "compensación",
+            "garantías de no repetición",
+            "memoria histórica", "dignificación",
+            "restitución", "restitución de tierras",
+            "URT", "unidad de restitución de tierras",
+            "retornos", "retorno de población",
+            "reubicaciones", "reasentamientos",
+            "atención humanitaria", "ayuda humanitaria",
+            "PAU", "punto de atención",
+            "SNARIV", "sistema nacional de atención",
+            "paz", "construcción de paz", "cultura de paz",
+            "acuerdo de paz", "proceso de paz",
+            "posconflicto", "posacuerdo",
+            "reconciliación", "tejido social",
+            "PDET", "programas de desarrollo territorial",
+            "PAT", "territorios PDET", "municipios PDET",
+            "reforma rural integral", "RRI",
+            "ART", "agencia de renovación del territorio",
+            "ZOMAC", "zonas más afectadas por el conflicto",
+            "justicia transicional", "JEP",
+            "comisión de la verdad", "UBPD",
+            "excombatientes", "FARC", "reincorporación",
+            "ETCR", "ARN", "proyectos productivos",
+            "mesas de participación", "organizaciones de víctimas",
+            "reparación colectiva", "PIRC",
+            "FONSET", "cooperación internacional",
+            "OIM", "ACNUR", "PMA"
+        ]
+    },
+    "PA06": {
+        "id": "PA06",
+        "legacy_id": "P6",
+        "name": "Derecho al buen futuro de la niñez, adolescencia, juventud",
+        "cluster_id": "CL02",
+        "keywords": [
+            "niñez", "niños", "niñas", "niño", "niña",
+            "primera infancia", "infancia",
+            "adolescencia", "adolescentes", "adolescente",
+            "juventud", "jóvenes", "joven",
+            "menores de edad", "menores",
+            "código de infancia y adolescencia",
+            "Ley 1098", "Ley 1804",
+            "política de infancia", "política pública de juventud",
+            "interés superior del niño", "derechos de los niños",
+            "desarrollo integral", "enfoque de derechos",
+            "ICBF", "instituto colombiano de bienestar familiar",
+            "defensor de familia", "Comisaría de Familia",
+            "SNBF", "sistema nacional de bienestar familiar",
+            "Consejería de Juventud", "plataforma de juventud",
+            "De Cero a Siempre", "CDI", "centro de desarrollo infantil",
+            "hogar comunitario", "hogar infantil", "jardín infantil",
+            "madres comunitarias", "atención integral",
+            "educación inicial", "nutrición infantil",
+            "restablecimiento de derechos", "PARD",
+            "vulneración de derechos", "hogar sustituto",
+            "adopción", "protección de niños",
+            "entornos protectores", "maltrato infantil",
+            "trabajo infantil", "explotación infantil",
+            "ESCNNA", "reclutamiento", "consumo de SPA",
+            "SRPA", "sistema de responsabilidad penal adolescente",
+            "justicia juvenil", "sanciones pedagógicas",
+            "CAE", "centro de atención especializada",
+            "educación para niños", "permanencia escolar",
+            "deserción", "ludotecas", "estimulación temprana",
+            "salud infantil", "vacunación", "crecimiento y desarrollo",
+            "lactancia materna", "obesidad infantil",
+            "embarazo adolescente", "prevención del embarazo",
+            "participación juvenil", "consejos de juventud", "CMJ",
+            "organizaciones juveniles", "liderazgo juvenil",
+            "empleo juvenil", "primer empleo",
+            "emprendimiento juvenil", "Jóvenes en Acción",
+            "casas de juventud", "parques infantiles",
+            "prevención del suicidio", "bullying", "acoso escolar",
+            "proyecto de vida", "habilidades para la vida",
+            "niños víctimas", "niños con discapacidad",
+            "familia", "pautas de crianza", "crianza positiva",
+            "escuela de padres", "custodia", "cuota alimentaria"
+        ]
+    },
+    "PA07": {
+        "id": "PA07",
+        "legacy_id": "P7",
+        "name": "Tierras y territorios",
+        "cluster_id": "CL01",
+        "keywords": [
+            "tierras", "tierra", "territorio", "territorial",
+            "tenencia de la tierra", "propiedad",
+            "baldíos", "adjudicación", "titulación",
+            "formalización", "formalización de la propiedad",
+            "escrituración", "registro de instrumentos públicos",
+            "catastro", "catastro multipropósito",
+            "actualización catastral", "avalúo catastral",
+            "IGAC", "Sistema de Información Geográfica", "SIG",
+            "ordenamiento territorial", "OT",
+            "POT", "plan de ordenamiento territorial",
+            "PBOT", "EOT", "revisión del POT",
+            "uso del suelo", "clasificación del suelo",
+            "suelo urbano", "suelo rural", "suelo de expansión",
+            "perímetro urbano", "zonificación",
+            "zonas de riesgo", "zonas de protección ambiental",
+            "desarrollo rural", "reforma rural integral", "RRI",
+            "economía campesina", "agricultura familiar",
+            "campesinos", "pequeños productores",
+            "Unidad Agrícola Familiar", "UAF",
+            "UMATA", "asistencia técnica agropecuaria",
+            "extensión rural", "secretaría de agricultura",
+            "Agencia de Desarrollo Rural", "ADR",
+            "restitución de tierras", "URT",
+            "acceso a la tierra", "fondo de tierras",
+            "conflictos de uso del suelo", "ocupación irregular",
+            "legalización de barrios", "mejoramiento integral de barrios",
+            "vías terciarias", "caminos veredales",
+            "electrificación rural", "acueductos veredales",
+            "conectividad rural", "infraestructura productiva",
+            "territorios étnicos", "resguardos indígenas",
+            "territorios colectivos", "consejos comunitarios",
+            "consulta previa", "autonomía territorial",
+            "títulos mineros", "concesiones",
+            "licencias de urbanismo", "licencias de construcción",
+            "impuesto predial", "valorización",
+            "movilidad", "conectividad vial", "transporte público",
+            "espacio público", "parques", "zonas verdes"
+        ]
+    },
+    "PA08": {
+        "id": "PA08",
+        "legacy_id": "P8",
+        "name": "Líderes y defensores de derechos humanos",
+        "cluster_id": "CL03",
+        "keywords": [
+            "líderes sociales", "liderazgo social",
+            "líderes comunitarios", "líderes comunales",
+            "lideresas", "líder",
+            "defensores de derechos humanos", "defensores",
+            "defensoras", "activistas",
+            "líderes ambientales", "ambientalistas",
+            "líderes campesinos", "líderes rurales",
+            "líderes indígenas", "autoridades indígenas",
+            "líderes afrodescendientes",
+            "líderes de víctimas", "líderes sindicales",
+            "periodistas", "comunicadores sociales",
+            "JAC", "juntas de acción comunal",
+            "presidentes de JAC", "dignatarios",
+            "gestores de paz", "liderazgo territorial",
+            "amenazas", "amenazas de muerte",
+            "intimidación", "hostigamiento",
+            "riesgo", "situación de riesgo",
+            "riesgo extraordinario", "riesgo extremo",
+            "asesinatos de líderes", "homicidios",
+            "masacres", "atentados", "agresiones",
+            "desplazamiento forzado", "exilio",
+            "estigmatización", "señalamientos",
+            "criminalización de la protesta",
+            "protección", "esquemas de protección",
+            "medidas de protección", "UNP",
+            "escoltas", "vehículos blindados",
+            "botón de pánico", "reubicación temporal",
+            "análisis de riesgo", "CERREM",
+            "prevención", "alertas tempranas", "SAT",
+            "planes de prevención", "autoprotección",
+            "garantías", "Mesa de Garantías",
+            "Decreto 660", "protocolo de protección",
+            "Fiscalía", "Unidad Especial de Investigación",
+            "impunidad", "organizaciones de derechos humanos",
+            "participación política", "movilización social",
+            "protesta social", "manifestaciones",
+            "libertad de expresión", "libertad de prensa"
+        ]
+    },
+    "PA09": {
+        "id": "PA09",
+        "legacy_id": "P9",
+        "name": "Crisis de derechos de personas privadas de la libertad",
+        "cluster_id": "CL04",
+        "keywords": [
+            "privados de libertad", "PPL",
+            "personas privadas de la libertad",
+            "internos", "reclusos", "presos",
+            "población carcelaria", "población penitenciaria",
+            "condenados", "sindicados", "preventivos",
+            "prisión domiciliaria", "detención domiciliaria",
+            "sistema penitenciario", "cárceles", "cárcel", "prisión",
+            "ERON", "establecimiento penitenciario",
+            "penitenciaría", "centro de reclusión",
+            "pabellones", "patios", "celdas",
+            "INPEC", "instituto nacional penitenciario",
+            "guardias penitenciarios", "dragoneantes",
+            "custodia", "vigilancia",
+            "hacinamiento", "sobrepoblación", "sobrecupo",
+            "cupos carcelarios", "crisis carcelaria",
+            "infraestructura carcelaria", "construcción de cárceles",
+            "condiciones de reclusión", "condiciones inhumanas",
+            "trato cruel", "dignidad",
+            "alimentación carcelaria", "agua potable",
+            "servicios sanitarios", "higiene",
+            "salud en cárceles", "atención médica",
+            "medicamentos", "tuberculosis", "VIH",
+            "salud mental", "adicciones",
+            "muertes en custodia", "fallecimientos",
+            "seguridad carcelaria", "motines", "riñas",
+            "violencia entre internos", "extorsión",
+            "corrupción carcelaria",
+            "resocialización", "reinserción social",
+            "tratamiento penitenciario", "trabajo penitenciario",
+            "educación carcelaria", "talleres",
+            "redención de pena", "descuentos",
+            "visitas", "visitas familiares", "visitas íntimas",
+            "comunicación", "contacto con la familia",
+            "defensa pública", "defensoría",
+            "jueces de ejecución", "hábeas corpus",
+            "medidas alternativas", "penas alternativas",
+            "libertad condicional", "casa por cárcel",
+            "brazalete electrónico", "monitoreo electrónico",
+            "beneficios judiciales", "permisos de salida",
+            "mujeres privadas de libertad", "madres en prisión",
+            "niños en prisión", "jóvenes privados de libertad",
+            "estado de cosas inconstitucional", "ECI",
+            "Sentencia T-388", "tutelas",
+            "Defensoría del Pueblo", "Procuraduría",
+            "reincidencia", "reingreso",
+            # From ET09 - Enfoque Diferencial PPL
+            "centros de detención transitoria", "medidas de aseguramiento",
+            "Instituto Nacional Penitenciario", "establecimientos de reclusión"
+        ]
+    },
+    "PA10": {
+        "id": "PA10",
+        "legacy_id": "P10",
+        "name": "Migración transfronteriza",
+        "cluster_id": "CL04",
+        "keywords": [
+            "migración", "migrantes", "migrante",
+            "inmigrantes", "inmigración",
+            "población migrante", "flujo migratorio",
+            "migración venezolana", "venezolanos",
+            "refugiados", "solicitantes de refugio",
+            "solicitantes de asilo", "asilo",
+            "movilidad humana",
+            "regular", "irregular", "situación migratoria",
+            "indocumentados", "sin documentos",
+            "PEP", "permiso especial de permanencia",
+            "PPT", "permiso por protección temporal",
+            "TMF", "tarjeta de movilidad fronteriza",
+            "regularización", "regularización migratoria",
+            "cédula de extranjería", "visa", "pasaporte",
+            "RUMV", "registro único de migrantes",
+            "Migración Colombia", "Cancillería",
+            "RAMV", "Gerencia de Frontera",
+            "frontera", "zona de frontera",
+            "municipios fronterizos", "Venezuela",
+            "Cúcuta", "La Guajira", "Arauca", "Norte de Santander",
+            "pasos fronterizos", "trochas", "pasos irregulares",
+            "control fronterizo", "cierre de frontera",
+            "crisis humanitaria", "emergencia humanitaria",
+            "asistencia humanitaria", "albergues",
+            "integración", "integración social",
+            "inclusión", "cohesión social",
+            "comunidades de acogida", "xenofobia",
+            "acceso a salud", "acceso a educación",
+            "acceso al trabajo", "empleo formal",
+            "explotación laboral", "trabajo informal",
+            "salud de migrantes", "vacunación",
+            "desnutrición", "salud mental",
+            "educación de migrantes", "niños migrantes",
+            "cupos escolares", "matrícula",
+            "vivienda", "hacinamiento",
+            "menores no acompañados", "mujeres migrantes",
+            "trata de personas", "tráfico de migrantes",
+            "protección internacional", "refugio",
+            "CONARE", "protección temporal",
+            "retorno voluntario", "deportación",
+            "reunificación familiar",
+            "gestión migratoria", "política migratoria",
+            "ACNUR", "OIM", "UNICEF", "Cruz Roja",
+            # From ET10 - Enfoque Diferencial Migración
+            "ETPV", "estatuto temporal de protección",
+            "CONPES migratorio", "desplazamiento transfronterizo",
+            "documento de identidad migrante", "empleabilidad migrante",
+            "niños, niñas y adolescentes migrantes", "familias migrantes"
+        ]
+    }
+}
+
 # ---------------------------------------------------------------------------
 # 1. CORE DATA STRUCTURES
 # ---------------------------------------------------------------------------
@@ -93,8 +635,8 @@ class MunicipalOntology:
                 outcomes=["shared_territorial_vision", "prioritized_problems"],
                 bottlenecks=["data_availability", "technical_capacity_gaps", "time_constraints"],
                 lead_time_days=90,
-                conversion_rates={"diagnosis_to_strategy": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L95_59", 0.75)},
-                capacity_constraints={"technical_staff": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L96_57", 0.8), "financial_resources": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L96_85", 0.6)}
+                conversion_rates={"diagnosis_to_strategy": 0.75},
+                capacity_constraints={"technical_staff": 0.8, "financial_resources": 0.6}
             ),
             "strategic_planning": ValueChainLink(
                 name="strategic_planning",
@@ -104,8 +646,8 @@ class MunicipalOntology:
                 outcomes=["strategic_alignment", "resource_optimization", "implementation_readiness"],
                 bottlenecks=["political_changes", "resource_constraints", "coordination_failures"],
                 lead_time_days=120,
-                conversion_rates={"strategy_to_programs": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L106_58", 0.80)},
-                capacity_constraints={"planning_expertise": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L107_60", 0.7), "resources": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L107_78", 0.8)}
+                conversion_rates={"strategy_to_programs": 0.80},
+                capacity_constraints={"planning_expertise": 0.7, "resources": 0.8}
             ),
             "implementation": ValueChainLink(
                 name="implementation",
@@ -115,28 +657,183 @@ class MunicipalOntology:
                 outcomes=["improved_living_conditions", "enhanced_capabilities", "social_cohesion"],
                 bottlenecks=["budget_execution", "capacity_constraints", "coordination_failures"],
                 lead_time_days=365,
-                conversion_rates={"inputs_to_outputs": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L117_55", 0.75)},
-                capacity_constraints={"implementation_capacity": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L118_65", 0.65), "coordination": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L118_87", 0.60)}
+                conversion_rates={"inputs_to_outputs": 0.75},
+                capacity_constraints={"implementation_capacity": 0.65, "coordination": 0.60}
             )
         }
 
         self.policy_domains = {
-            "economic_development": ["competitiveness", "entrepreneurship", "employment"],
-            "social_development": ["education", "health", "housing"],
-            "territorial_development": ["land_use", "infrastructure", "connectivity"],
-            "institutional_development": ["governance", "transparency", "capacity_building"]
-        }
-
-        self.cross_cutting_themes = {
-            "governance": ["transparency", "accountability", "participation"],
-            "equity": ["gender_equality", "social_inclusion", "poverty_reduction"],
-            "sustainability": ["environmental_protection", "climate_adaptation"],
-            "innovation": ["digital_transformation", "process_innovation"]
+            pa_id: pa_config["keywords"]
+            for pa_id, pa_config in POLICY_AREAS_CANONICAL.items()
         }
 
 # ---------------------------------------------------------------------------
 # 2. SEMANTIC ANALYSIS ENGINE
 # ---------------------------------------------------------------------------
+
+# =============================================================================
+# CANONICAL PATTERNS FOR SLOT D3-Q3 (Trazabilidad Presupuestal/Organizacional)
+# Maps to Q013, Q043, Q073, Q103, Q133, Q163, Q193, Q223, Q253, Q283
+# One per Policy Area (PA01-PA10)
+# =============================================================================
+
+PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
+    "PA01": {  # Género
+        "question_id": "Q013",
+        "question_text": "¿Los productos de género tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de la Mujer|Oficina de la Mujer|Secretaría de Desarrollo Social",
+            r"articulado con la Comisaría de Familia",
+            r"corresponsabilidad de|en alianza con"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión asociado",
+            r"programa del PPI|línea de inversión",
+            r"recursos del proyecto|presupuesto del producto"
+        ]
+    },
+    "PA02": {  # Violencia/Conflicto
+        "question_id": "Q073",
+        "question_text": "¿Los productos de protección tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Enlace de Víctimas|Personería Municipal",
+            r"articulado con la Defensoría del Pueblo|Policía Nacional",
+            r"corresponsabilidad de|en alianza con"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para la paz",
+            r"programa del PPI|línea de inversión en víctimas",
+            r"recursos del proyecto|presupuesto para prevención"
+        ]
+    },
+    "PA03": {  # Ambiente
+        "question_id": "Q103",
+        "question_text": "¿Los productos ambientales tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Ambiente|Planeación|Infraestructura",
+            r"articulado con la CAR|CMGRD",
+            r"convenio con|contrato de obra No\."
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para gestión del riesgo",
+            r"programa del PPI|línea de inversión en sostenibilidad ambiental",
+            r"recursos del proyecto|presupuesto de la obra"
+        ]
+    },
+    "PA04": {  # DESC (Derechos Económicos, Sociales y Culturales)
+        "question_id": "Q133",
+        "question_text": "¿Los productos sociales tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Educación|Secretaría de Salud|Oficina de Vivienda",
+            r"articulado con la ESE Hospital|ICBF",
+            r"convenio con|contrato de obra No\."
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para educación|salud|vivienda",
+            r"programa del PPI|línea de inversión en desarrollo social",
+            r"recursos del proyecto|presupuesto del PAE"
+        ]
+    },
+    "PA05": {  # Víctimas/Paz
+        "question_id": "Q163",
+        "question_text": "¿Los productos para víctimas tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Enlace Municipal de Víctimas|Secretaría de Gobierno",
+            r"articulado con la Personería|UARIV territorial",
+            r"convenio con|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para la paz y reconciliación",
+            r"programa del PPI|línea de inversión en víctimas",
+            r"recursos del FONSET|presupuesto para el PAT"
+        ]
+    },
+    "PA06": {  # Niñez/Juventud
+        "question_id": "Q193",
+        "question_text": "¿Los productos para niñez y juventud tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Desarrollo Social|Educación|Salud",
+            r"articulado con el ICBF|Comisaría de Familia",
+            r"convenio con|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para primera infancia",
+            r"programa del PPI|línea de inversión en juventud",
+            r"recursos del SGP para educación|presupuesto del PAE"
+        ]
+    },
+    "PA07": {  # Tierras
+        "question_id": "Q223",
+        "question_text": "¿Los productos de tierras tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Planeación|Infraestructura|UMATA",
+            r"articulado con el IGAC|convenio con INVIAS|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para catastro multipropósito",
+            r"programa del PPI|línea de inversión en desarrollo rural",
+            r"recursos del proyecto|presupuesto para la red vial"
+        ]
+    },
+    "PA08": {  # Líderes DDHH
+        "question_id": "Q253",
+        "question_text": "¿Los productos de protección de líderes tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Despacho del Alcalde|Personería Municipal",
+            r"articulado con la UNP|en alianza con plataformas de DDHH",
+            r"convenio con|operado por"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para garantías y DDHH",
+            r"programa del PPI|línea de inversión en seguridad y convivencia",
+            r"recursos del proyecto|presupuesto para la Mesa de Garantías"
+        ]
+    },
+    "PA09": {  # PPL (Personas Privadas de Libertad)
+        "question_id": "Q283",
+        "question_text": "¿Los productos para PPL tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Secretaría de Salud|Personería Municipal",
+            r"articulado con el INPEC|convenio con la ESE del municipio",
+            r"contrato de obra No\.|contrato de suministro de alimentos"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para infraestructura carcelaria",
+            r"programa del PPI|línea de inversión en seguridad y justicia",
+            r"recursos del proyecto|presupuesto para atención a PPL"
+        ]
+    },
+    "PA10": {  # Migración
+        "question_id": "Q043",
+        "question_text": "¿Los productos para migración tienen trazabilidad presupuestal y organizacional?",
+        "trazabilidad_organizacional": [
+            r"Secretaría de Gobierno|Desarrollo Social|Enlace de Migración",
+            r"articulado con la Personería|operado por un socio de la cooperación \(ONG\)",
+            r"convenio con|contrato de suministro"
+        ],
+        "trazabilidad_presupuestal": [
+            r"código BPIN|proyecto de inversión para atención a población migrante",
+            r"programa del PPI|línea de inversión en integración",
+            r"recursos del proyecto|presupuesto para el PAO"
+        ]
+    }
+}
+
+# Expected elements common to all Policy Areas for D3-Q3
+EXPECTED_ELEMENTS_D3_Q3: list[dict[str, Any]] = [
+    {"type": "trazabilidad_organizacional", "required": True},
+    {"type": "trazabilidad_presupuestal", "required": True}
+]
+
+# Scoring configuration for D3-Q3 slot
+SCORING_CONFIG_D3_Q3: dict[str, Any] = {
+    "scoring_modality": "TYPE_A",
+    "modality_behavior": "count_and_scale",
+    "aggregation": "presence_threshold",
+    "threshold": 0.7,
+    "scale": [0, 1, 2, 3]
+}
+
 
 class SemanticAnalyzer:
     """Advanced semantic analysis for municipal documents."""
@@ -182,7 +879,7 @@ class SemanticAnalyzer:
         # Use defaults if not provided
         self.max_features = max_features if max_features is not None else 1000
         self.ngram_range = ngram_range if ngram_range is not None else (1, 3)
-        self.similarity_threshold = similarity_threshold if similarity_threshold is not None else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalOntology.__init__", "auto_param_L184_98", 0.3)
+        self.similarity_threshold = similarity_threshold if similarity_threshold is not None else 0.3
 
         if TfidfVectorizer is not None:
             self.vectorizer = TfidfVectorizer(
@@ -193,7 +890,7 @@ class SemanticAnalyzer:
         else:
             self.vectorizer = None
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer.extract_semantic_cube")
+    
     def extract_semantic_cube(self, document_segments: list[str]) -> dict[str, Any]:
         """Extract multidimensional semantic cube from document segments."""
 
@@ -207,8 +904,7 @@ class SemanticAnalyzer:
         semantic_cube = {
             "dimensions": {
                 "value_chain_links": defaultdict(list),
-                "policy_domains": defaultdict(list),
-                "cross_cutting_themes": defaultdict(list)
+                "policy_domains": defaultdict(list)
             },
             "measures": {
                 "semantic_density": [],
@@ -232,17 +928,11 @@ class SemanticAnalyzer:
                 if score > self.similarity_threshold:  # Configurable threshold for inclusion
                     semantic_cube["dimensions"]["value_chain_links"][link].append(segment_data)
 
-            # Classify by policy domains
+            # Classify by policy domains (PA01-PA10)
             domain_scores = self._classify_policy_domain(segment)
             for domain, score in domain_scores.items():
                 if score > self.similarity_threshold:
                     semantic_cube["dimensions"]["policy_domains"][domain].append(segment_data)
-
-            # Extract cross-cutting themes
-            theme_scores = self._classify_cross_cutting_themes(segment)
-            for theme, score in theme_scores.items():
-                if score > self.similarity_threshold:
-                    semantic_cube["dimensions"]["cross_cutting_themes"][theme].append(segment_data)
 
             # Add measures
             semantic_cube["measures"]["semantic_density"].append(segment_data["semantic_density"])
@@ -259,14 +949,14 @@ class SemanticAnalyzer:
                     semantic_cube["measures"]["coherence_scores"]
                 ) / len(semantic_cube["measures"]["coherence_scores"])
         else:
-            semantic_cube["measures"]["overall_coherence"] = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer.extract_semantic_cube", "auto_param_L261_61", 0.0)
+            semantic_cube["measures"]["overall_coherence"] = 0.0
 
         semantic_cube["measures"]["semantic_complexity"] = self._calculate_semantic_complexity(semantic_cube)
 
         logger.info(f"Extracted semantic cube from {len(document_segments)} segments")
         return semantic_cube
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._empty_semantic_cube")
+    
     def _empty_semantic_cube(self) -> dict[str, Any]:
         """Return empty semantic cube structure."""
         return {
@@ -278,8 +968,8 @@ class SemanticAnalyzer:
             "measures": {
                 "semantic_density": [],
                 "coherence_scores": [],
-                "overall_coherence": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._empty_semantic_cube", "auto_param_L280_37", 0.0),
-                "semantic_complexity": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._empty_semantic_cube", "auto_param_L281_39", 0.0)
+                "overall_coherence": 0.0,
+                "semantic_complexity": 0.0
             },
             "metadata": {
                 "extraction_timestamp": datetime.now().isoformat(),
@@ -288,7 +978,7 @@ class SemanticAnalyzer:
             }
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._vectorize_segments")
+    
     def _vectorize_segments(self, segments: list[str]) -> np.ndarray:
         """Vectorize document segments using TF-IDF."""
         if self.vectorizer is not None:
@@ -302,9 +992,9 @@ class SemanticAnalyzer:
             return np.zeros((len(segments), 100))
         else:
             # Return list of lists if numpy is not available
-            return [[ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._vectorize_segments", "auto_param_L304_21", 0.0)] * 100 for _ in range(len(segments))]
+            return [[0.0] * 100 for _ in range(len(segments))]
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment")
+    
     def _process_segment(self, segment: str, idx: int, vector) -> dict[str, Any]:
         """Process individual segment and extract features."""
 
@@ -323,10 +1013,10 @@ class SemanticAnalyzer:
             sentences = [s.strip() for s in re.split(r'[.!?]+', segment) if len(s.strip()) > 10]
 
         # Calculate semantic density (simplified)
-        semantic_density = len(set(words)) / len(words) if words else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment", "auto_param_L325_70", 0.0)
+        semantic_density = len(set(words)) / len(words) if words else 0.0
 
         # Calculate coherence score (simplified)
-        coherence_score = min(ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment", "auto_param_L328_30", 1.0), len(sentences) / 10) if sentences else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._process_segment", "auto_param_L328_74", 0.0)
+        coherence_score = min(1.0, len(sentences) / 10) if sentences else 0.0
 
         # Convert vector to list if it's a numpy array
         if np is not None and isinstance(vector, np.ndarray):
@@ -342,14 +1032,61 @@ class SemanticAnalyzer:
             "coherence_score": coherence_score
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link")
-    def _classify_value_chain_link(self, segment: str) -> dict[str, float]:
-        """Classify segment by value chain link using keyword matching."""
-        link_scores = {}
+    
+    def _classify_value_chain_link(
+        self,
+        segment: str,
+        policy_area_id: str | None = None
+    ) -> dict[str, float]:
+        """
+        Classify segment by value chain link using canonical patterns.
+        
+        Refactored for SLOT D3-Q3: Trazabilidad Presupuestal y Organizacional.
+        Maps to questions Q013, Q043, Q073, Q103, Q133, Q163, Q193, Q223, Q253, Q283
+        (one per Policy Area PA01-PA10).
+        
+        Args:
+            segment: Text segment to classify
+            policy_area_id: Canonical policy area code (PA01-PA10). If None, uses
+                           legacy ontology-based classification for backward compatibility.
+        
+        Returns:
+            dict with scores per expected_element:
+            - If policy_area_id provided: {"trazabilidad_organizacional": float, 
+                                           "trazabilidad_presupuestal": float}
+            - If policy_area_id is None: legacy format with ontology link scores
+        """
+        # NEW: Policy Area-specific classification for D3-Q3 slot
+        if policy_area_id is not None:
+            patterns_config = PATTERNS_D3_Q3_BY_POLICY_AREA.get(policy_area_id)
+            if not patterns_config:
+                raise ValueError(
+                    f"Policy area {policy_area_id} no tiene configuración para D3-Q3. "
+                    f"Valid options: {list(PATTERNS_D3_Q3_BY_POLICY_AREA.keys())}"
+                )
+            
+            scores: dict[str, float] = {}
+            for element_type in ["trazabilidad_organizacional", "trazabilidad_presupuestal"]:
+                patterns = patterns_config.get(element_type, [])
+                if not patterns:
+                    scores[element_type] = 0.0
+                    continue
+                
+                match_count = sum(
+                    1 for p in patterns
+                    if re.search(p, segment, re.IGNORECASE)
+                )
+                # Normalize: proportion of patterns matched
+                scores[element_type] = min(1.0, match_count / max(1, len(patterns)))
+            
+            return scores
+        
+        # LEGACY: Ontology-based classification for backward compatibility
+        link_scores: dict[str, float] = {}
         segment_lower = segment.lower()
 
         for link_name, link_obj in self.ontology.value_chain_links.items():
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link", "score", 0.0) # Refactored
+            score = 0.0
             total_keywords = 0
 
             # Check all link components
@@ -359,46 +1096,109 @@ class SemanticAnalyzer:
             for keyword in all_keywords:
                 total_keywords += 1
                 if keyword.lower().replace("_", " ") in segment_lower:
-                    score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link", "auto_param_L361_29", 1.0)
+                    score += 1.0
 
             # Normalize score
-            link_scores[link_name] = score / total_keywords if total_keywords > 0 else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_value_chain_link", "auto_param_L364_87", 0.0)
+            link_scores[link_name] = score / total_keywords if total_keywords > 0 else 0.0
 
         return link_scores
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain")
+    
     def _classify_policy_domain(self, segment: str) -> dict[str, float]:
-        """Classify segment by policy domain using keyword matching."""
-        domain_scores = {}
+        """
+        Classify segment by Policy Area (PA01-PA10) using keyword matching.
+        
+        Refactored per questionnaire_monolith.json canonical notation.
+        
+        Args:
+            segment: Text segment to classify
+            
+        Returns:
+            dict[str, float]: Score per Policy Area.
+                Keys: PA01, PA02, PA03, PA04, PA05, PA06, PA07, PA08, PA09, PA10
+                Values: Normalized score [0.0-1.0] based on keyword matches
+                
+        Contract:
+            - Output keys MUST be exactly: {PA01, PA02, PA03, PA04, PA05, PA06, PA07, PA08, PA09, PA10}
+            - Output keys MUST NOT be: {economic_development, social_development, 
+              territorial_development, institutional_development}
+            - Scoring: count(matched_keywords) / len(total_keywords_for_PA)
+        """
+        policy_area_scores: dict[str, float] = {}
         segment_lower = segment.lower()
 
-        for domain, keywords in self.ontology.policy_domains.items():
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain", "score", 0.0) # Refactored
+        for pa_id, keywords in self.ontology.policy_domains.items():
+            if not keywords:
+                policy_area_scores[pa_id] = 0.0
+                continue
+                
+            match_count = 0
             for keyword in keywords:
-                if keyword.lower() in segment_lower:
-                    score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain", "auto_param_L378_29", 1.0)
+                keyword_lower = keyword.lower()
+                if keyword_lower in segment_lower:
+                    match_count += 1
 
-            domain_scores[domain] = score / len(keywords) if keywords else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_policy_domain", "auto_param_L380_75", 0.0)
+            policy_area_scores[pa_id] = match_count / len(keywords)
 
-        return domain_scores
+        # Contract assertion: verify output keys
+        expected_keys = {f"PA{i:02d}" for i in range(1, 11)}
+        actual_keys = set(policy_area_scores.keys())
+        if actual_keys != expected_keys:
+            logger.error(
+                f"_classify_policy_domain output key mismatch. "
+                f"Expected: {expected_keys}, Got: {actual_keys}"
+            )
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes")
+        return policy_area_scores
+
+    
     def _classify_cross_cutting_themes(self, segment: str) -> dict[str, float]:
-        """Classify segment by cross-cutting themes."""
-        theme_scores = {}
+        """
+        Classify segment by Cross-Cutting Themes / Enfoques Transversales (ET01-ET10).
+        
+        Refactored per Colombian PDT normative framework (Ley 152/1994, DNP guidelines).
+        
+        Args:
+            segment: Text segment to classify
+            
+        Returns:
+            dict[str, float]: Score per Enfoque Transversal.
+                Keys: ET01, ET02, ET03, ET04, ET05, ET06, ET07, ET08, ET09, ET10
+                Values: Normalized score [0.0-1.0] based on keyword matches
+                
+        Contract:
+            - Output keys MUST be exactly: {ET01, ET02, ET03, ET04, ET05, ET06, ET07, ET08, ET09, ET10}
+            - Output keys MUST NOT be: {governance, equity, sustainability, innovation}
+            - Scoring: count(matched_keywords) / len(total_keywords_for_ET)
+        """
+        theme_scores: dict[str, float] = {}
         segment_lower = segment.lower()
 
-        for theme, keywords in self.ontology.cross_cutting_themes.items():
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes", "score", 0.0) # Refactored
+        for et_id, keywords in self.ontology.cross_cutting_themes.items():
+            if not keywords:
+                theme_scores[et_id] = 0.0
+                continue
+                
+            match_count = 0
             for keyword in keywords:
-                if keyword.lower().replace("_", " ") in segment_lower:
-                    score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes", "auto_param_L394_29", 1.0)
+                keyword_lower = keyword.lower()
+                if keyword_lower in segment_lower:
+                    match_count += 1
 
-            theme_scores[theme] = score / len(keywords) if keywords else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._classify_cross_cutting_themes", "auto_param_L396_73", 0.0)
+            theme_scores[et_id] = match_count / len(keywords)
+
+        # Contract assertion: verify output keys
+        expected_keys = {f"ET{i:02d}" for i in range(1, 11)}
+        actual_keys = set(theme_scores.keys())
+        if actual_keys != expected_keys:
+            logger.error(
+                f"_classify_cross_cutting_themes output key mismatch. "
+                f"Expected: {expected_keys}, Got: {actual_keys}"
+            )
 
         return theme_scores
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._calculate_semantic_complexity")
+    
     def _calculate_semantic_complexity(self, semantic_cube: dict[str, Any]) -> float:
         """Calculate semantic complexity of the cube."""
 
@@ -410,7 +1210,7 @@ class SemanticAnalyzer:
 
         # Normalize complexity
         max_expected_concepts = 20
-        return min(ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.SemanticAnalyzer._calculate_semantic_complexity", "auto_param_L412_19", 1.0), len(unique_concepts) / max_expected_concepts)
+        return min(1.0, len(unique_concepts) / max_expected_concepts)
 
 # ---------------------------------------------------------------------------
 # 3. PERFORMANCE ANALYZER
@@ -422,11 +1222,11 @@ class PerformanceAnalyzer:
     def __init__(self, ontology: MunicipalOntology) -> None:
         self.ontology = ontology
         if IsolationForest is not None:
-            self.bottleneck_detector = IsolationForest(contamination=ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer.__init__", "auto_param_L424_69", 0.1), random_state=RANDOM_SEED)
+            self.bottleneck_detector = IsolationForest(contamination=0.1, random_state=RANDOM_SEED)
         else:
             self.bottleneck_detector = None
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer.analyze_performance")
+    
     def analyze_performance(self, semantic_cube: dict[str, Any]) -> dict[str, Any]:
         """Analyze performance indicators across value chain links."""
 
@@ -458,15 +1258,15 @@ class PerformanceAnalyzer:
         logger.info(f"Performance analysis completed for {len(performance_analysis['value_chain_metrics'])} links")
         return performance_analysis
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics")
+    
     def _calculate_throughput_metrics(self, segments: list[dict], link_config: ValueChainLink) -> dict[str, Any]:
         """Calculate throughput metrics for a value chain link."""
 
         if not segments:
             return {
-                "throughput": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics", "auto_param_L466_30", 0.0),
-                "efficiency_score": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics", "auto_param_L467_36", 0.0),
-                "capacity_utilization": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_throughput_metrics", "auto_param_L468_40", 0.0)
+                "throughput": 0.0,
+                "efficiency_score": 0.0,
+                "capacity_utilization": 0.0
             }
 
         # Calculate semantic throughput
@@ -497,7 +1297,7 @@ class PerformanceAnalyzer:
             "segment_count": len(segments)
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks")
+    
     def _detect_bottlenecks(self, segments: list[dict], link_config: ValueChainLink) -> dict[str, Any]:
         """Detect bottlenecks in value chain link."""
 
@@ -508,15 +1308,15 @@ class PerformanceAnalyzer:
 
         # Analyze capacity constraints
         for constraint_type, constraint_value in link_config.capacity_constraints.items():
-            if constraint_value < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L510_34", 0.7):
+            if constraint_value < 0.7:
                 bottleneck_analysis["capacity_constraints"][constraint_type] = {
                     "current_capacity": constraint_value,
-                    "severity": "high" if constraint_value < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L513_61", 0.5) else "medium"
+                    "severity": "high" if constraint_value < 0.5 else "medium"
                 }
 
         # Calculate bottleneck scores
         for bottleneck_type in link_config.bottlenecks:
-            score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "score", 0.0) # Refactored
+            score = 0.0 # Refactored
             if segments:
                 # Count mentions of bottleneck in segments
                 mentions = sum(
@@ -527,12 +1327,12 @@ class PerformanceAnalyzer:
 
             bottleneck_analysis["bottleneck_scores"][bottleneck_type] = {
                 "score": score,
-                "severity": "high" if score > ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L529_46", 0.2) else "medium" if score > ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._detect_bottlenecks", "auto_param_L529_75", 0.1) else "low"
+                "severity": "high" if score > 0.2 else "medium" if score > 0.1 else "low"
             }
 
         return bottleneck_analysis
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions")
+    
     def _calculate_loss_functions(self, metrics: dict[str, Any], link_config: ValueChainLink) -> dict[str, Any]:
         """Calculate operational loss functions."""
 
@@ -542,7 +1342,7 @@ class PerformanceAnalyzer:
         throughput_loss = throughput_gap ** 2
 
         # Efficiency loss (exponential)
-        target_efficiency = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "target_efficiency", 0.8) # Refactored
+        target_efficiency = 0.8 # Refactored
         efficiency_gap = max(0, target_efficiency - metrics["efficiency_score"])
 
         if np is not None:
@@ -554,11 +1354,11 @@ class PerformanceAnalyzer:
         # Time loss (linear)
         baseline_time = link_config.lead_time_days
         capacity_utilization = metrics["capacity_utilization"]
-        time_multiplier = 1 + (1 - capacity_utilization) * ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L556_59", 0.5)
+        time_multiplier = 1 + (1 - capacity_utilization) * 0.5
         time_loss = baseline_time * (time_multiplier - 1)
 
         # Composite loss
-        composite_loss = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L560_25", 0.4) * throughput_loss + ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L560_49", 0.4) * efficiency_loss + ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._calculate_loss_functions", "auto_param_L560_73", 0.2) * time_loss
+        composite_loss = 0.4 * throughput_loss + 0.4 * efficiency_loss + 0.2 * time_loss
 
         return {
             "throughput_loss": float(throughput_loss),
@@ -567,14 +1367,14 @@ class PerformanceAnalyzer:
             "composite_loss": float(composite_loss)
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._generate_recommendations")
+    
     def _generate_recommendations(self, performance_analysis: dict[str, Any]) -> list[dict[str, Any]]:
         """Generate optimization recommendations."""
 
         recommendations = []
 
         for link_name, metrics in performance_analysis["value_chain_metrics"].items():
-            if metrics["efficiency_score"] < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.PerformanceAnalyzer._generate_recommendations", "auto_param_L576_45", 0.5):
+            if metrics["efficiency_score"] < 0.5:
                 recommendations.append({
                     "link": link_name,
                     "type": "efficiency_improvement",
@@ -616,7 +1416,7 @@ class TextMiningEngine:
                 except:
                     logger.warning("Could not download NLTK stopwords. Using empty set.")
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine.diagnose_critical_links")
+    
     def diagnose_critical_links(self, semantic_cube: dict[str, Any],
                                 performance_analysis: dict[str, Any]) -> dict[str, Any]:
         """Diagnose critical value chain links."""
@@ -653,35 +1453,35 @@ class TextMiningEngine:
         logger.info(f"Diagnosed {len(critical_links)} critical links")
         return diagnosis_results
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links")
+    
     def _identify_critical_links(self, performance_analysis: dict[str, Any]) -> dict[str, float]:
         """Identify critical links based on performance metrics."""
 
         critical_links = {}
 
         for link_name, metrics in performance_analysis["value_chain_metrics"].items():
-            criticality_score = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "criticality_score", 0.0) # Refactored
+            criticality_score = 0.0 # Refactored
 
             # Low efficiency indicates criticality
-            if metrics["efficiency_score"] < ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L665_45", 0.5):
-                criticality_score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L666_37", 0.4)
+            if metrics["efficiency_score"] < 0.5:
+                criticality_score += 0.4
 
             # Low throughput indicates criticality
             if metrics["throughput"] < 20:
-                criticality_score += ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L670_37", 0.3)
+                criticality_score += 0.3
 
             # High loss functions indicate criticality
             if link_name in performance_analysis["operational_loss_functions"]:
                 loss = performance_analysis["operational_loss_functions"][link_name]["composite_loss"]
-                normalized_loss = min(ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L675_38", 1.0), loss / 100)
-                criticality_score += normalized_loss * ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L676_55", 0.3)
+                normalized_loss = min(1.0, loss / 100)
+                criticality_score += normalized_loss * 0.3
 
-            if criticality_score > ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.TextMiningEngine._identify_critical_links", "auto_param_L678_35", 0.4):
+            if criticality_score > 0.4:
                 critical_links[link_name] = criticality_score
 
         return critical_links
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._analyze_link_text")
+    
     def _analyze_link_text(self, segments: list[dict]) -> dict[str, Any]:
         """Analyze text content for a link."""
 
@@ -719,7 +1519,7 @@ class TextMiningEngine:
             "negative_indicators": negative_count
         }
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._assess_risks")
+    
     def _assess_risks(self, segments: list[dict], text_analysis: dict[str, Any]) -> dict[str, Any]:
         """Assess risks for a value chain link."""
 
@@ -748,7 +1548,7 @@ class TextMiningEngine:
 
         return risk_assessment
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.TextMiningEngine._generate_interventions")
+    
     def _generate_interventions(self, link_name: str, risk_assessment: dict[str, Any],
                                 text_analysis: dict[str, Any]) -> list[dict[str, str]]:
         """Generate intervention recommendations."""
@@ -793,7 +1593,7 @@ class MunicipalAnalyzer:
 
         logger.info("MunicipalAnalyzer initialized successfully")
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer.analyze_document")
+    
     def analyze_document(self, document_path: str) -> dict[str, Any]:
         """Perform comprehensive analysis of a municipal document."""
 
@@ -836,7 +1636,7 @@ class MunicipalAnalyzer:
             logger.error(f"Analysis failed: {str(e)}")
             raise
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer._load_document")
+    
     def _load_document(self, document_path: str) -> list[str]:
         """Load and segment document."""
 
@@ -857,7 +1657,7 @@ class MunicipalAnalyzer:
 
         return segments[:100]  # Limit for processing efficiency
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer._generate_summary")
+    
     def _generate_summary(self, semantic_cube: dict[str, Any],
                           performance_analysis: dict[str, Any],
                           critical_diagnosis: dict[str, Any]) -> dict[str, Any]:
@@ -881,7 +1681,7 @@ class MunicipalAnalyzer:
                     for metrics in performance_analysis["value_chain_metrics"].values()
                 ) / len(performance_analysis["value_chain_metrics"])
         else:
-            avg_efficiency = ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.MunicipalAnalyzer._generate_summary", "avg_efficiency", 0.0) # Refactored
+            avg_efficiency = 0.0 # Refactored
 
         # Critical links count
         critical_links_count = len(critical_diagnosis["critical_links"])
@@ -1079,7 +1879,7 @@ class CanonicalQuestionSegmenter:
             rubric_path=rubric_path,
         )
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.CanonicalQuestionSegmenter.segment_plan")
+    
     def segment_plan(self, plan_text: str) -> dict[str, Any]:
         """Segment *plan_text* and emit evidence manifests per canonical contract."""
 
@@ -1125,7 +1925,7 @@ class CanonicalQuestionSegmenter:
             "total_contracts": total_contracts,
             "covered_contracts": matched_contracts,
             "coverage_ratio": (
-                matched_contracts / total_contracts if total_contracts else ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.CanonicalQuestionSegmenter.segment_plan", "auto_param_L1127_76", 0.0)
+                matched_contracts / total_contracts if total_contracts else 0.0
             ),
             "total_segments": len(normalized_segments),
             "input_sha256": hashlib.sha256(normalized_text.encode("utf-8")).hexdigest(),
@@ -1730,7 +2530,7 @@ class ConfigurationManager:
         self.config_path = config_path or "analyzer_config.json"
         self.config = self.load_config()
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.ConfigurationManager.load_config")
+    
     def load_config(self) -> dict[str, Any]:
         """Load configuration from file or create default."""
 
@@ -1741,8 +2541,8 @@ class ConfigurationManager:
                 "segmentation_method": "sentence"
             },
             "analysis": {
-                "criticality_threshold": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.ConfigurationManager.load_config", "auto_param_L1743_41", 0.4),
-                "efficiency_threshold": ParameterLoaderV2.get("farfan_core.analysis.Analyzer_one.ConfigurationManager.load_config", "auto_param_L1744_40", 0.5),
+                "criticality_threshold": 0.4,
+                "efficiency_threshold": 0.5,
                 "throughput_threshold": 20
             },
             "export": {
@@ -1768,7 +2568,7 @@ class ConfigurationManager:
 
         return default_config
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.ConfigurationManager.save_config")
+    
     def save_config(self) -> None:
         """Save current configuration to file."""
         # Delegate to factory for I/O operation
@@ -1785,7 +2585,7 @@ class BatchProcessor:
     def __init__(self, analyzer: MunicipalAnalyzer) -> None:
         self.analyzer = analyzer
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.BatchProcessor.process_directory")
+    
     def process_directory(self, directory_path: str, pattern: str = "*.txt") -> dict[str, Any]:
         """Process all files matching pattern in directory."""
 
@@ -1809,7 +2609,7 @@ class BatchProcessor:
 
         return results
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.BatchProcessor.export_batch_results")
+    
     def export_batch_results(self, batch_results: dict[str, Any], output_dir: str) -> None:
         """Export batch processing results."""
 
@@ -1832,7 +2632,7 @@ class BatchProcessor:
         # Create batch summary
         self._create_batch_summary(batch_results, output_path)
 
-    @calibrated_method("farfan_core.analysis.Analyzer_one.BatchProcessor._create_batch_summary")
+    
     def _create_batch_summary(self, batch_results: dict[str, Any], output_path: Path) -> None:
         """Create summary of batch processing results."""
 

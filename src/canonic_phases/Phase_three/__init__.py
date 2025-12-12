@@ -1,47 +1,12 @@
-"""Scoring module package.
+"""Phase 3 - Scoring Module
 
-This package provides backward compatibility for code that imports
-scoring classes from farfan_core.scoring.
+This module handles transformation of Phase 2 execution results
+into scored results ready for Phase 4 aggregation.
+
+Key Functions:
+- Extract validation scores from Phase 2 evidence
+- Transform MicroQuestionRun to ScoredMicroQuestion
+- Map policy areas and dimensions for aggregation
 """
 
-from farfan_pipeline.analysis.scoring.scoring import (
-    EvidenceStructureError,
-    ModalityConfig,
-    ModalityValidationError,
-    QualityLevel,
-    ScoredResult,
-    ScoringError,
-    ScoringModality,
-    ScoringValidator,
-    apply_rounding,
-    apply_scoring,
-    clamp,
-    determine_quality_level,
-    score_type_a,
-    score_type_b,
-    score_type_c,
-    score_type_d,
-    score_type_e,
-    score_type_f,
-)
-
-__all__ = [
-    "EvidenceStructureError",
-    "ModalityConfig",
-    "ModalityValidationError",
-    "QualityLevel",
-    "ScoredResult",
-    "ScoringError",
-    "ScoringModality",
-    "ScoringValidator",
-    "apply_rounding",
-    "apply_scoring",
-    "clamp",
-    "determine_quality_level",
-    "score_type_a",
-    "score_type_b",
-    "score_type_c",
-    "score_type_d",
-    "score_type_e",
-    "score_type_f",
-]
+__all__ = []

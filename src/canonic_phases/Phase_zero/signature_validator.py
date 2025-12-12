@@ -22,7 +22,6 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Any, TypeVar, get_type_hints
-from farfan_pipeline.core.calibration.decorators import calibrated_method
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +44,6 @@ class FunctionSignature:
     signature_hash: str
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
 
-    @calibrated_method("farfan_core.utils.signature_validator.FunctionSignature.to_dict")
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
@@ -60,14 +58,12 @@ class SignatureRegistry:
         self.signatures: dict[str, FunctionSignature] = {}
         self.load()
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureRegistry.compute_signature_hash")
     def compute_signature_hash(self, func: Callable) -> str:
         """Compute a hash of the function's signature"""
         sig = inspect.signature(func)
         sig_str = str(sig)
         return hashlib.sha256(sig_str.encode()).hexdigest()[:16]
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureRegistry.register_function")
     def register_function(self, func: Callable) -> FunctionSignature:
         """Register a function's signature"""
         sig = inspect.signature(func)
@@ -116,20 +112,17 @@ class SignatureRegistry:
 
         return func_sig
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureRegistry._get_function_key")
     def _get_function_key(self, module: str, class_name: str | None, func_name: str) -> str:
         """Generate a unique key for a function"""
         if class_name:
             return f"{module}.{class_name}.{func_name}"
         return f"{module}.{func_name}"
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureRegistry.get_signature")
     def get_signature(self, module: str, class_name: str | None, func_name: str) -> FunctionSignature | None:
         """Retrieve a stored signature"""
         key = self._get_function_key(module, class_name, func_name)
         return self.signatures.get(key)
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureRegistry.has_signature_changed")
     def has_signature_changed(self, func: Callable) -> tuple[bool, FunctionSignature | None, FunctionSignature | None]:
         """Check if a function's signature has changed from the registered version"""
         module = func.__module__ if hasattr(func, '__module__') else 'unknown'
@@ -146,7 +139,6 @@ class SignatureRegistry:
 
         return changed, old_sig, new_sig
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureRegistry.save")
     def save(self) -> None:
         """Save registry to disk"""
         self.registry_path.parent.mkdir(parents=True, exist_ok=True)
@@ -161,7 +153,6 @@ class SignatureRegistry:
 
         logger.info(f"Saved {len(self.signatures)} signatures to {self.registry_path}")
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureRegistry.load")
     def load(self) -> None:
         """Load registry from disk"""
         if not self.registry_path.exists():
@@ -282,7 +273,6 @@ class SignatureAuditor:
         self.mismatches: list[SignatureMismatch] = []
         self.call_graph: dict[str, list[tuple[str, int, list[str], dict[str, str]]]] = {}
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureAuditor.audit_module")
     def audit_module(self, module_path: Path) -> list[SignatureMismatch]:
         """
         Audit a Python module for signature mismatches
@@ -325,7 +315,6 @@ class SignatureAuditor:
             logger.error(f"Failed to audit {module_path}: {e}")
             return []
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureAuditor._extract_function_definitions")
     def _extract_function_definitions(self, tree: ast.AST, module_name: str) -> dict[str, ast.FunctionDef]:
         """Extract all function definitions from AST"""
         functions = {}
@@ -338,7 +327,6 @@ class SignatureAuditor:
 
         return functions
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureAuditor._extract_function_calls")
     def _extract_function_calls(self, tree: ast.AST, module_name: str) -> list[tuple[str, int, ast.Call]]:
         """Extract all function calls from AST"""
         calls = []
@@ -370,7 +358,6 @@ class SignatureAuditor:
 
         return mismatches
 
-    @calibrated_method("farfan_core.utils.signature_validator.SignatureAuditor.export_report")
     def export_report(self, output_path: Path) -> None:
         """Export audit report to JSON"""
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -485,3 +472,6 @@ def audit_project_signatures(project_root: Path, output_path: Path | None = None
 
 # Note: Main entry point removed to maintain I/O boundary separation.
 # For CLI usage, see examples/ directory or create a dedicated CLI script.
+ipt.
+ CLI script.
+cript.

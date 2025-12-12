@@ -1,0 +1,114 @@
+{
+  "audit_timestamp": "2025-12-11T13:38:10Z",
+  "total_checks": 6,
+  "passed_checks": 5,
+  "failed_checks": 1,
+  "critical_errors": [
+    "Found 9 unauthorized load_questionnaire() calls"
+  ],
+  "warnings": [
+    "Missing dispensary files: executors_methods.json"
+  ],
+  "checks": {
+    "factory_file_exists": {
+      "status": "PASSED",
+      "message": "Factory file exists at /home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/src/orchestration/factory.py",
+      "file_size": 64391,
+      "line_count": 1587
+    },
+    "factory_structure": {
+      "status": "PASSED",
+      "message": "All required classes and functions present",
+      "classes_found": 11,
+      "functions_found": 32,
+      "classes": [
+        "CanonicalQuestionnaire",
+        "QuestionnaireLoadError",
+        "QuestionnaireIntegrityError",
+        "FactoryError",
+        "QuestionnaireValidationError",
+        "IntegrityError",
+        "RegistryConstructionError",
+        "ExecutorConstructionError",
+        "SingletonViolationError",
+        "ProcessorBundle"
+      ],
+      "functions": [
+        "load_validation_constants",
+        "load_questionnaire",
+        "create_analysis_pipeline",
+        "create_minimal_pipeline",
+        "validate_factory_singleton",
+        "validate_bundle",
+        "get_bundle_info",
+        "check_legacy_signal_loader_deleted",
+        "verify_single_questionnaire_load_point",
+        "get_method_dispensary_info",
+        "validate_method_dispensary_pattern",
+        "_validate_questionnaire_structure",
+        "dimensions",
+        "policy_areas",
+        "micro_questions"
+      ]
+    },
+    "legacy_signal_loader_deleted": {
+      "status": "PASSED",
+      "message": "No legacy signal_loader.py found - correctly deleted",
+      "checked_paths": [
+        "/home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/src/farfan_pipeline/core/orchestrator/signal_loader.py",
+        "/home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/src/orchestration/signal_loader.py",
+        "/home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/src/signal_loader.py"
+      ]
+    },
+    "single_questionnaire_load_point": {
+      "status": "FAILED",
+      "message": "Found unauthorized load_questionnaire() calls",
+      "problematic_matches": [
+        "tests/test_phase2_sisas_checklist.py:            questionnaire = load_questionnaire()",
+        "tests/test_phase2_sisas_checklist.py:            questionnaire = load_questionnaire()",
+        "tests/test_phase2_sisas_checklist.py:            questionnaire = load_questionnaire()",
+        "src/canonic_phases/Phase_zero/bootstrap.py:        DEBE ser llamado por Factory despu\u00e9s de load_questionnaire().",
+        "src/orchestration/factory.py:   - load_questionnaire() called ONCE by factory only (singleton + integrity hash)",
+        "src/orchestration/factory.py:   - Search codebase: NO other load_questionnaire() calls should exist",
+        "src/orchestration/factory.py:    PROHIBIDO: Instanciar directamente, usar load_questionnaire()",
+        "src/orchestration/factory.py:            SingletonViolationError: If load_questionnaire() already called.",
+        "src/orchestration/factory.py:            questionnaire = load_questionnaire(self._questionnaire_path)"
+      ]
+    },
+    "dispensary_files": {
+      "status": "WARNING",
+      "message": "1 dispensary files not found",
+      "existing_files": [
+        "class_registry.py",
+        "arg_router.py"
+      ],
+      "missing_files": [
+        "executors_methods.json"
+      ]
+    },
+    "factory_documentation": {
+      "status": "PASSED",
+      "message": "Factory has comprehensive documentation",
+      "total_lines": 1587,
+      "comment_lines": 98,
+      "docstring_pairs": 44,
+      "documentation_ratio": 0.083,
+      "doc_markers": {
+        "module_docstring": true,
+        "factory_pattern": true,
+        "dependency_injection": true,
+        "singleton_pattern": true,
+        "method_dispensary": true
+      }
+    }
+  },
+  "summary": {
+    "total_checks": 6,
+    "passed": 5,
+    "failed": 1,
+    "pass_rate": 83.3,
+    "critical_errors_count": 1,
+    "warnings_count": 1,
+    "overall_status": "FAILED"
+  }
+}

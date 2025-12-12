@@ -5,19 +5,19 @@ Provides orchestration capabilities including method registry, signature validat
 layer evaluation, and resource management for the F.A.R.F.A.N. pipeline.
 """
 
-from src.orchestration.meta_layer import (
+from orchestration.meta_layer import (
     MetaLayerConfig,
     MetaLayerEvaluator,
     create_default_config as create_default_meta_config
 )
 
-from src.orchestration.congruence_layer import (
+from orchestration.congruence_layer import (
     CongruenceLayerConfig,
     CongruenceLayerEvaluator,
     create_default_congruence_config
 )
 
-from src.orchestration.chain_layer import (
+from orchestration.chain_layer import (
     ChainLayerConfig,
     ChainLayerEvaluator,
     create_default_chain_config

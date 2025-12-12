@@ -116,7 +116,7 @@ from typing import Any
 
 # Phase 2 orchestration components
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
-from canonic_phases.Phase_two.class_registry import build_class_registry, get_class_paths
+from orchestration.class_registry import build_class_registry, get_class_paths
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
 
@@ -1341,7 +1341,7 @@ def check_legacy_signal_loader_deleted() -> dict[str, Any]:
         dict with check results.
     """
     try:
-        import farfan_pipeline.core.orchestrator.signal_loader
+        import cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_loader
         return {
             "legacy_loader_deleted": False,
             "error": "signal_loader.py still exists - must be deleted per architecture requirements",
@@ -1537,3 +1537,51 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         )
 
     return validation_results
+
+
+def _validate_questionnaire_structure(monolith_data: dict[str, Any]) -> None:
+    """Validate questionnaire structure.
+    
+    Args:
+        monolith_data: Questionnaire data dictionary
+        
+    Raises:
+        ValueError: If questionnaire structure is invalid
+        TypeError: If questionnaire data types are incorrect
+    """
+    if not isinstance(monolith_data, dict):
+        raise TypeError(f"Questionnaire must be a dict, got {type(monolith_data)}")
+    
+    # Validate canonical_notation exists
+    if "canonical_notation" not in monolith_data:
+        raise ValueError("Questionnaire missing 'canonical_notation'")
+    
+    canonical_notation = monolith_data["canonical_notation"]
+    
+    # Validate dimensions
+    if "dimensions" not in canonical_notation:
+        raise ValueError("Questionnaire missing 'canonical_notation.dimensions'")
+    
+    dimensions = canonical_notation["dimensions"]
+    if not isinstance(dimensions, dict):
+        raise TypeError("Dimensions must be a dict")
+    
+    expected_dims = ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05", "DIM06"]
+    for dim_id in expected_dims:
+        if dim_id not in dimensions:
+            raise ValueError(f"Missing dimension: {dim_id}")
+    
+    # Validate policy areas
+    if "policy_areas" not in canonical_notation:
+        raise ValueError("Questionnaire missing 'canonical_notation.policy_areas'")
+    
+    policy_areas = canonical_notation["policy_areas"]
+    if not isinstance(policy_areas, dict):
+        raise TypeError("Policy areas must be a dict")
+    
+    expected_pas = [f"PA{i:02d}" for i in range(1, 11)]
+    for pa_id in expected_pas:
+        if pa_id not in policy_areas:
+            raise ValueError(f"Missing policy area: {pa_id}")
+    
+    logger.info("Questionnaire structure validation passed")

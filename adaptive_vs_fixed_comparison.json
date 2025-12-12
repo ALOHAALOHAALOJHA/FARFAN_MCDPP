@@ -1,0 +1,113 @@
+{
+  "summary": {
+    "total_scenarios": 6,
+    "expectations_met": 6,
+    "expectation_rate": 1.0,
+    "avg_convergence_improvement": 0.005706631817577801,
+    "avg_dispersion_improvement": -0.40156878230173665
+  },
+  "detailed_results": [
+    {
+      "scenario": "Perfect Convergence",
+      "scores": [
+        2.5,
+        2.5,
+        2.5,
+        2.5
+      ],
+      "cv": 0.0,
+      "dispersion_index": 0.0,
+      "old_penalty_factor": 1.0,
+      "old_score": 2.5,
+      "new_penalty_factor": 1.0,
+      "new_score": 2.5,
+      "score_improvement": 0.0,
+      "expectation_met": true
+    },
+    {
+      "scenario": "Mild Convergence",
+      "scores": [
+        2.3,
+        2.4,
+        2.5,
+        2.6
+      ],
+      "cv": 0.045634040357138604,
+      "dispersion_index": 0.10000000000000009,
+      "old_penalty_factor": 0.988819660112501,
+      "old_score": 2.4226081672756274,
+      "new_penalty_factor": 0.9934781350656257,
+      "new_score": 2.434021430910783,
+      "score_improvement": 0.011413263635155602,
+      "expectation_met": true
+    },
+    {
+      "scenario": "High Dispersion",
+      "scores": [
+        0.5,
+        1.5,
+        2.5,
+        3.0
+      ],
+      "cv": 0.5120763831912405,
+      "dispersion_index": 0.8333333333333334,
+      "old_penalty_factor": 0.9039856781516424,
+      "old_score": 1.6949731465343296,
+      "new_penalty_factor": 0.7899686709567177,
+      "new_score": 1.4811912580438458,
+      "score_improvement": -0.21378188849048385,
+      "expectation_met": true
+    },
+    {
+      "scenario": "Extreme Dispersion",
+      "scores": [
+        0.0,
+        1.0,
+        2.0,
+        3.0
+      ],
+      "cv": 0.7453559924999299,
+      "dispersion_index": 1.0,
+      "old_penalty_factor": 0.8881966011250105,
+      "old_score": 1.3322949016875159,
+      "new_penalty_factor": 0.5,
+      "new_score": 0.75,
+      "score_improvement": -0.5822949016875159,
+      "expectation_met": true
+    },
+    {
+      "scenario": "Bimodal Distribution",
+      "scores": [
+        0.5,
+        0.8,
+        2.8,
+        3.0
+      ],
+      "cv": 0.6378586971393945,
+      "dispersion_index": 0.8333333333333334,
+      "old_penalty_factor": 0.8867800812577575,
+      "old_score": 1.5740346442325195,
+      "new_penalty_factor": 0.6565662464818643,
+      "new_score": 1.1654050875053092,
+      "score_improvement": -0.40862955672721024,
+      "expectation_met": true
+    },
+    {
+      "scenario": "Mostly Good with One Weak",
+      "scores": [
+        2.5,
+        2.6,
+        2.7,
+        1.2
+      ],
+      "cv": 0.27125679146074894,
+      "dispersion_index": 0.5000000000000001,
+      "old_penalty_factor": 0.9389672219213315,
+      "old_score": 2.112676249322996,
+      "new_penalty_factor": 0.9287950922415534,
+      "new_score": 2.089788957543495,
+      "score_improvement": -0.022887291779500885,
+      "expectation_met": true
+    }
+  ]
+}
