@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalPack
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalPack
 
 try:
     import structlog

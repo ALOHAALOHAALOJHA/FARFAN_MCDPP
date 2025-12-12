@@ -28,7 +28,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from sse_starlette.sse import EventSourceResponse
 
 from orchestration.factory import load_questionnaire
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator

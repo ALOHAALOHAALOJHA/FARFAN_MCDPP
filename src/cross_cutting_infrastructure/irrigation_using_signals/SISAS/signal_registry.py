@@ -72,7 +72,7 @@ except ImportError:
     logger = logging.getLogger(__name__)  # type: ignore
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-from cross_cutting_infrastrucuture.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
+from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
 
 
 # ============================================================================

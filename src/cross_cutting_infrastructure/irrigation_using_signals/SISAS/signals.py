@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any, Literal, Protocol
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_resolution import Signal
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_resolution import Signal
 
 
 class ChunkProtocol(Protocol):
@@ -494,7 +494,7 @@ class SignalRegistry:
             )
             return self._chunk_cache[chunk_id]
 
-        from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_resolution import Signal
+        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_resolution import Signal
 
         signals: list[Signal] = []
         for signal_type in required_types:

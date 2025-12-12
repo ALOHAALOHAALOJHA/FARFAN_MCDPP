@@ -124,19 +124,19 @@ except ImportError:
 # SISAS Signal Infrastructure - REAL PATH (PRODUCTION)
 # This is the CANONICAL source for all signal extraction in the pipeline
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
         ChunkingSignalPack,
         MicroAnsweringSignalPack,
         create_signal_registry,
     )
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
         SignalPack,
         SignalRegistry,
         SignalClient,
         create_default_signal_pack,
     )
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_quality_metrics import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
         SignalQualityMetrics,
         compute_signal_quality_metrics,
         analyze_coverage_gaps,

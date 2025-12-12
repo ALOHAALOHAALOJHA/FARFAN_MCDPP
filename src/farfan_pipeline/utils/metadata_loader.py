@@ -13,7 +13,7 @@ import yaml
 
 from farfan_pipeline.utils.paths import proj_root
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
+from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 try:
     import jsonschema

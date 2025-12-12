@@ -128,11 +128,11 @@ from orchestration.method_registry import (
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
@@ -1341,7 +1341,7 @@ def check_legacy_signal_loader_deleted() -> dict[str, Any]:
         dict with check results.
     """
     try:
-        import cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_loader
+        import cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader
         return {
             "legacy_loader_deleted": False,
             "error": "signal_loader.py still exists - must be deleted per architecture requirements",

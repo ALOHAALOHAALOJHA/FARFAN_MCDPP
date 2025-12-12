@@ -33,26 +33,26 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_method_metadata import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_method_metadata import (
     MethodExecutionMetadata,
     extract_method_metadata,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_validation_specs import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_validation_specs import (
     ValidationSpecifications,
     extract_validation_specifications,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_scoring_context import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_scoring_context import (
     ScoringContext,
     extract_scoring_context,
     create_default_scoring_context,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_semantic_context import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_semantic_context import (
     SemanticContext,
     extract_semantic_context,
 )
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.ports import QuestionnairePort
+    from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort
 
 try:
     import structlog

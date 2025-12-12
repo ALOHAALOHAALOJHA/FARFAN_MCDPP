@@ -1,0 +1,14 @@
+rules:
+  - id: fix-cross-cutting-infrastructure-import-typo
+    patterns:
+      - pattern-either:
+          - pattern: from cross_cutting_infrastrucuture import $IMPORT
+          - pattern: from cross_cutting_infrastrucuture.$SUBMOD import $IMPORT
+          - pattern: import cross_cutting_infrastrucuture
+          - pattern: import cross_cutting_infrastrucuture.$SUBMOD
+    fix-regex:
+      regex: 'cross_cutting_infrastrucuture'
+      replacement: 'cross_cutting_infrastructure'
+    languages: [python]
+    message: Fix typo - cross_cutting_infrastrucuture should be cross_cutting_infrastructure
+    severity: ERROR

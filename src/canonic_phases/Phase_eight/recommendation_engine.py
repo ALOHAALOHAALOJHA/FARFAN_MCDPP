@@ -28,7 +28,7 @@ from typing import Any
 
 import jsonschema
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
+from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 
 logger = logging.getLogger(__name__)
 

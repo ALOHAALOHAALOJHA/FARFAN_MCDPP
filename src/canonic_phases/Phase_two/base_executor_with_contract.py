@@ -698,7 +698,7 @@ class BaseExecutorWithContract(ABC):
             signal_pack = enriched_pack.base_pack  # Maintain compatibility
 
             # Create document context from available metadata
-            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
                 create_document_context,
             )
 
@@ -764,7 +764,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -890,7 +890,7 @@ class BaseExecutorWithContract(ABC):
             }
 
             # Validate with contracts (REFACTORING #4: contract validation)
-            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -928,7 +928,7 @@ class BaseExecutorWithContract(ABC):
                 }
         elif self._use_validation_orchestrator:
             # Even without enriched pack, use validation orchestrator with basic validation
-            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -1112,7 +1112,7 @@ class BaseExecutorWithContract(ABC):
                 
                 if self.calibration_orchestrator:
                     try:
-                        from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                        from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                             MethodBelowThresholdError,
                         )
                         
@@ -1212,7 +1212,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -1303,7 +1303,7 @@ class BaseExecutorWithContract(ABC):
         # CONTRACT VALIDATION with ValidationOrchestrator
         contract_validation = None
         if self._use_validation_orchestrator:
-            from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 

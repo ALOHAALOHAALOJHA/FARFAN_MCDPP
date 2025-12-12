@@ -27,13 +27,13 @@ from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from orchestration.factory import CoreModuleFactory
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
     InMemorySignalSource,
     SignalClient,
     SignalPack,
     SignalRegistry,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_consumption import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     AccessLevel,
     get_access_audit,
 )

@@ -473,7 +473,7 @@ def finalize_precision_tracking_session(
     """
     from datetime import datetime, timezone
 
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
         generate_precision_improvement_report,
     )
 
@@ -551,7 +551,7 @@ def compare_precision_across_policy_areas(
         >>> comparison = compare_precision_across_policy_areas(packs)
         >>> print(comparison['rankings']['by_target_achievement'])
     """
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
         generate_precision_improvement_report,
     )
 

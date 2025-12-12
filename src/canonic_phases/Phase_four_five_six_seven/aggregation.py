@@ -27,8 +27,8 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, TypeVar
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.parameter_loader import get_parameter_loader
-from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
+from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.parameter_loader import get_parameter_loader
+from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 # SOTA imports
@@ -48,7 +48,7 @@ from farfan_pipeline.processing.choquet_adapter import (
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
 
 T = TypeVar('T')
 

@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalRegistry
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalRegistry
 
 from typing import TYPE_CHECKING
 
@@ -87,7 +87,7 @@ except ImportError as e:
         pass
 
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
         SignalRegistry as _SignalRegistry,
     )
 except ImportError:

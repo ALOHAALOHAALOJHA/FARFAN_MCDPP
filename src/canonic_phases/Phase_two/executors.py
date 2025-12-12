@@ -39,7 +39,7 @@ from orchestration.memory_safety import (
 from farfan_pipeline.processing.policy_processor import CausalDimension
 
 try:
-    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
         CalibrationOrchestrator,
         MethodBelowThresholdError,
     )

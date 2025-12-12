@@ -22,7 +22,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
-from cross_cutting_infrastrucuture.contractual.dura_lex.aggregation_contract import (
+from cross_cutting_infrastructure.contractual.dura_lex.aggregation_contract import (
     create_aggregation_contract,
     AggregationContractViolation,
 )

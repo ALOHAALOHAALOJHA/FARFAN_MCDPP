@@ -66,13 +66,13 @@ except ImportError:
 
 # Signal infrastructure imports
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         create_signal_registry,
     )
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
         create_default_signal_pack,
     )
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_quality_metrics import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
         compute_signal_quality_metrics,
         analyze_coverage_gaps,
     )
