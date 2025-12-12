@@ -1538,7 +1538,7 @@ class Phase1SPCIngestionFullContract:
         
         if TEORIA_CAMBIO_AVAILABLE and TEORIA_CAMBIO_CLASS is not None and cross_chunk_links:
             try:
-            tc = TEORIA_CAMBIO_CLASS()
+                tc = TEORIA_CAMBIO_CLASS()
                 # Build DAG for validation following causal hierarchy:
                 # Insumos → Procesos → Productos → Resultados → Causalidad
                 for link in cross_chunk_links[:20]:  # Limit for performance
@@ -2673,4 +2673,3 @@ def execute_phase_1_with_full_contract(
         # NO RECOVERY - FAIL LOUD
         print(f"PHASE 1 FATAL ERROR: {e}")
         raise
-

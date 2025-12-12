@@ -16,10 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
+from typing import Any
 
 try:
     import blake3
@@ -34,15 +31,9 @@ except ImportError:
     import logging
     logger = logging.getLogger(__name__)
 
-# Nivel 1: Acceso al cuestionario canónico (desde Factory)
-from orchestration.factory import (
-    CanonicalQuestionnaire,
-    load_questionnaire,
-    CANONICAL_QUESTIONNAIRE_PATH,
-)
-
 from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_consumption import SignalManifest, generate_signal_manifests
 from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalPack
+from cross_cutting_infrastrucuture.irrigation_using_signals.ports import QuestionnairePort
 
 
 def compute_fingerprint(content: str | bytes) -> str:
@@ -215,7 +206,7 @@ def build_signal_pack_from_monolith(
     policy_area: str,
     monolith: dict[str, Any] | None = None,
     *,
-    questionnaire: CanonicalQuestionnaire | None = None,
+    questionnaire: QuestionnairePort | None = None,
 ) -> SignalPack:
     """
     Build SignalPack for a specific policy area from questionnaire monolith.
@@ -225,8 +216,8 @@ def build_signal_pack_from_monolith(
 
     Args:
         policy_area: Policy area code (PA01-PA10)
-        monolith: DEPRECATED - Optional pre-loaded monolith data (use questionnaire parameter instead)
-        questionnaire: Optional CanonicalQuestionnaire instance (recommended, loads from canonical if None)
+        monolith: Optional pre-loaded monolith data
+        questionnaire: Optional questionnaire port exposing .data/.sha256/.version
 
     Returns:
         SignalPack object with extracted patterns
@@ -240,24 +231,12 @@ def build_signal_pack_from_monolith(
     """
 
 
-    # Handle legacy monolith parameter
     if monolith is not None:
-        import warnings
-        warnings.warn(
-            "build_signal_pack_from_monolith: 'monolith' parameter is DEPRECATED. "
-            "Use 'questionnaire' parameter with CanonicalQuestionnaire instead.",
-            DeprecationWarning,
-            stacklevel=2
-        )
-        # Use legacy monolith if provided
         monolith_data = monolith
-    elif questionnaire is not None:
-        # Use canonical questionnaire (preferred)
+    elif questionnaire is not None and hasattr(questionnaire, "data"):
         monolith_data = dict(questionnaire.data)
     else:
-        # Load from canonical loader
-        canonical = load_questionnaire()
-        monolith_data = dict(canonical.data)
+        raise ValueError("Questionnaire data is required to build signal packs")
 
     # Extract patterns by policy area
     patterns_by_pa = extract_patterns_by_policy_area(monolith_data)
@@ -340,14 +319,14 @@ def build_signal_pack_from_monolith(
 def build_all_signal_packs(
     monolith: dict[str, Any] | None = None,
     *,
-    questionnaire: CanonicalQuestionnaire | None = None,
+    questionnaire: QuestionnairePort | None = None,
 ) -> dict[str, SignalPack]:
     """
     Build SignalPacks for all policy areas.
 
     Args:
-        monolith: DEPRECATED - Optional pre-loaded monolith data (use questionnaire parameter instead)
-        questionnaire: Optional CanonicalQuestionnaire instance (recommended, loads from canonical if None)
+        monolith: Optional pre-loaded monolith data
+        questionnaire: Optional questionnaire port exposing .data
 
     Returns:
         Dict mapping policy_area_id to SignalPack
@@ -360,18 +339,8 @@ def build_all_signal_packs(
     """
 
 
-    # Handle legacy monolith parameter and ensure questionnaire is loaded only once
-    if monolith is not None:
-        import warnings
-        warnings.warn(
-            "build_all_signal_packs: 'monolith' parameter is DEPRECATED. "
-            "Use 'questionnaire' parameter with CanonicalQuestionnaire instead.",
-            DeprecationWarning,
-            stacklevel=2
-        )
-    elif questionnaire is None:
-        # Load questionnaire once to avoid redundant I/O in loop
-        questionnaire = load_questionnaire()
+    if monolith is None and questionnaire is None:
+        raise ValueError("Questionnaire data is required to build signal packs")
 
     policy_areas = [f"PA{i:02d}" for i in range(1, 11)]
 
@@ -393,14 +362,14 @@ def build_all_signal_packs(
 def build_signal_manifests(
     monolith: dict[str, Any] | None = None,
     *,
-    questionnaire: CanonicalQuestionnaire | None = None,
+    questionnaire: QuestionnairePort | None = None,
 ) -> dict[str, SignalManifest]:
     """
     Build signal manifests with Merkle roots for verification.
 
     Args:
-        monolith: DEPRECATED - Optional pre-loaded monolith data (use questionnaire parameter instead)
-        questionnaire: Optional CanonicalQuestionnaire instance (recommended, loads from canonical if None)
+        monolith: Optional pre-loaded monolith data
+        questionnaire: Optional questionnaire port exposing .data
 
     Returns:
         Dict mapping policy_area_id to SignalManifest
@@ -413,27 +382,14 @@ def build_signal_manifests(
     """
 
 
-    # Handle legacy monolith parameter
     if monolith is not None:
-        import warnings
-        warnings.warn(
-            "build_signal_manifests: 'monolith' parameter is DEPRECATED. "
-            "Use 'questionnaire' parameter with CanonicalQuestionnaire instead.",
-            DeprecationWarning,
-            stacklevel=2
-        )
         monolith_data = monolith
     elif questionnaire is not None:
-        # Use canonical questionnaire (preferred)
         monolith_data = dict(questionnaire.data)
     else:
-        # Load from canonical loader
-        canonical = load_questionnaire()
-        monolith_data = dict(canonical.data)
-
-    # Always use canonical path
-    monolith_path = CANONICAL_QUESTIONNAIRE_PATH
-    manifests = generate_signal_manifests(monolith_data, monolith_path)
+        raise ValueError("Questionnaire data is required to build signal manifests")
+    
+    manifests = generate_signal_manifests(monolith_data, None)
 
     logger.info(
         "signal_manifests_built",

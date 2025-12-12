@@ -45,19 +45,6 @@ class BaseExecutorWithContract(ABC):
         enriched_packs: dict[str, Any] | None = None,
         validation_orchestrator: Any | None = None,
     ) -> None:
-        try:
-            from orchestration.orchestrator import (
-                MethodExecutor as _MethodExecutor,
-            )
-        except Exception as exc:  # pragma: no cover - defensive guard
-            raise RuntimeError(
-                "Failed to import MethodExecutor for BaseExecutorWithContract invariants. "
-                "Ensure farfan_core.core.orchestrator.core is importable before constructing contract executors."
-            ) from exc
-        if not isinstance(method_executor, _MethodExecutor):
-            raise RuntimeError(
-                "A valid MethodExecutor instance is required for contract executors."
-            )
         self.method_executor = method_executor
         self.signal_registry = signal_registry
         self.config = config

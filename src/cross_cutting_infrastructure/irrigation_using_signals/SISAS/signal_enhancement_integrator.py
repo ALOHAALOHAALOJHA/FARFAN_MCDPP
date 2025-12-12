@@ -52,7 +52,7 @@ from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_semanti
 )
 
 if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
+    from cross_cutting_infrastrucuture.irrigation_using_signals.ports import QuestionnairePort
 
 try:
     import structlog
@@ -74,7 +74,7 @@ class SignalEnhancementIntegrator:
         scoring_definitions: Global scoring modality definitions
     """
     
-    def __init__(self, questionnaire: CanonicalQuestionnaire) -> None:
+    def __init__(self, questionnaire: QuestionnairePort) -> None:
         """Initialize integrator with questionnaire.
         
         Args:
@@ -306,7 +306,7 @@ class SignalEnhancementIntegrator:
 
 
 def create_enhancement_integrator(
-    questionnaire: CanonicalQuestionnaire
+    questionnaire: QuestionnairePort
 ) -> SignalEnhancementIntegrator:
     """Factory function to create enhancement integrator.
     

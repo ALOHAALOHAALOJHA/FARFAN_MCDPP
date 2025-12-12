@@ -33,7 +33,10 @@ from typing import TYPE_CHECKING, Any, Protocol
 if TYPE_CHECKING:
     from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalRegistry
 
-from orchestration.task_planner import ExecutableTask
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from orchestration.task_planner import ExecutableTask
 from canonic_phases.Phase_two.phase6_validation import (
     validate_phase6_schema_compatibility,
 )

@@ -7,9 +7,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from canonic_phases.Phase_two.irrigation_synchronizer import (
-        ChunkRoutingResult,
-    )
+    from canonic_phases.Phase_two.irrigation_synchronizer import ChunkRoutingResult
 
 logger = logging.getLogger(__name__)
 

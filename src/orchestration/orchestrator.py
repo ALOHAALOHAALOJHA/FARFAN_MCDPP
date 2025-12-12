@@ -1317,13 +1317,21 @@ class Orchestrator:
             # Get questionnaire path from canonical questionnaire
             questionnaire_path = self._canonical_questionnaire.source_path if hasattr(self._canonical_questionnaire, 'source_path') else None
             if not questionnaire_path:
-                # Fallback to default path
-                from canonic_phases.Phase_zero.paths import PROJECT_ROOT
-                questionnaire_path = PROJECT_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+                questionnaire_path = resolve_workspace_path(
+                    "canonic_questionnaire_central/questionnaire_monolith.json",
+                    require_exists=True,
+                )
             else:
                 questionnaire_path = Path(questionnaire_path)
+                if not questionnaire_path.exists():
+                    questionnaire_path = resolve_workspace_path(
+                        str(questionnaire_path),
+                        require_exists=True,
+                    )
             
             pdf_path_obj = Path(pdf_path)
+            if not pdf_path_obj.exists():
+                raise FileNotFoundError(f"PDF not found: {pdf_path}")
             
             # Compute hashes for integrity
             pdf_sha256 = hashlib.sha256(pdf_path_obj.read_bytes()).hexdigest()

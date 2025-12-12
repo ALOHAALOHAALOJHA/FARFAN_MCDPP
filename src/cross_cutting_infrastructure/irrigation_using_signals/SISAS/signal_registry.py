@@ -7,7 +7,7 @@ consumption tracking and lazy loading. This module is the CANONICAL source
 for all signal extraction in the Farfan Pipeline.
 
 Architecture:
-    CanonicalQuestionnaire → QuestionnaireSignalRegistry → SignalPacks → Executors
+    QuestionnairePort → QuestionnaireSignalRegistry → SignalPacks → Components
 
 Key Features:
 - Full metadata extraction (100% Intelligence Utilization)
@@ -27,7 +27,7 @@ from __future__ import annotations
 import hashlib
 import time
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Literal
 
@@ -72,9 +72,7 @@ except ImportError:
     logger = logging.getLogger(__name__)  # type: ignore
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-
-if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
+from cross_cutting_infrastrucuture.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
 
 
 # ============================================================================
@@ -600,20 +598,18 @@ class QuestionnaireSignalRegistry:
     - Immutable signal packs (frozen models)
     
     Architecture:
-        CanonicalQuestionnaire → Registry → SignalPacks → Components
+        QuestionnairePort → Registry → SignalPacks → Components
     
     Thread Safety: Single-threaded (use locks for multi-threaded access)
     
     Example:
-        >>> from orchestration.factory import CanonicalQuestionnaire, load_questionnaire
-        >>> canonical = load_questionnaire()
-        >>> registry = QuestionnaireSignalRegistry(canonical)
+        >>> registry = QuestionnaireSignalRegistry(my_questionnaire)
         >>> signals = registry.get_micro_answering_signals("Q001")
         >>> qid = "Q001"
         >>> print(f"Patterns: {len(signals.question_patterns[qid])}")
     """
 
-    def __init__(self, questionnaire: CanonicalQuestionnaire) -> None:
+    def __init__(self, questionnaire: QuestionnairePort) -> None:
         """Initialize signal registry.
         
         Args:
@@ -1460,7 +1456,7 @@ class QuestionnaireSignalRegistry:
 
 
 def create_signal_registry(
-    questionnaire: CanonicalQuestionnaire,
+    questionnaire: QuestionnairePort,
 ) -> QuestionnaireSignalRegistry:
     """Factory function to create signal registry.
     
@@ -1473,9 +1469,7 @@ def create_signal_registry(
         Initialized signal registry
     
     Example:
-        >>> from orchestration.factory import CanonicalQuestionnaire, load_questionnaire
-        >>> canonical = load_questionnaire()
-        >>> registry = create_signal_registry(canonical)
+        >>> registry = create_signal_registry(my_questionnaire)
         >>> signals = registry.get_chunking_signals()
         >>> print(f"Patterns: {len(signals.section_detection_patterns)}")
     """

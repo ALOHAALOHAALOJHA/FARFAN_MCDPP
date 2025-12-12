@@ -25,7 +25,10 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from farfan_pipeline.core.canonical_notation import CanonicalDimension, get_dimension_info
-from orchestration.orchestrator import MethodExecutor
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from orchestration.orchestrator import MethodExecutor
 from orchestration.factory import build_processor
 from orchestration.memory_safety import (
     MemorySafetyGuard,

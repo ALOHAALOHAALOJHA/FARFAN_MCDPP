@@ -472,6 +472,3 @@ def audit_project_signatures(project_root: Path, output_path: Path | None = None
 
 # Note: Main entry point removed to maintain I/O boundary separation.
 # For CLI usage, see examples/ directory or create a dedicated CLI script.
-ipt.
- CLI script.
-cript.

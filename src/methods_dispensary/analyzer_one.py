@@ -17,6 +17,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import math
 import re
 import time
 import warnings
@@ -24,15 +25,10 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import (
-    TYPE_CHECKING,
-    Any,
-)
+from typing import Any
 
 # from farfan_pipeline import get_parameter_loader  # CALIBRATION DISABLED
-
-if TYPE_CHECKING:
-    from farfan_pipeline.utils.method_config_loader import MethodConfigLoader
+# MethodConfigLoader removed - parameters now hardcoded with justification
 
 warnings.filterwarnings('ignore')
 
@@ -605,63 +601,273 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     }
 }
 
+# =============================================================================
+# CANONICAL VALUE CHAIN DIMENSIONS (DIM01-DIM06)
+# Source: questionnaire_monolith.json canonical_notation.dimensions
+# Structure: 3 levels
+#   Level 1: Dimension (DIM01-DIM06)
+#   Level 2: Analytical variables (compress 5 questions per dimension)
+#   Level 3: Expected words (general + by Policy Area)
+# =============================================================================
+
+VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
+    "DIM01": {
+        "code": "DIM01",
+        "name": "INSUMOS",
+        "label": "Diagnóstico y Recursos",
+        "base_slots": ["D1-Q1", "D1-Q2", "D1-Q3", "D1-Q4", "D1-Q5"],
+        "analytical_variables": {
+            "linea_base_diagnostico": {
+                "slot": "D1-Q1",
+                "expected_elements": ["cobertura_territorial_especificada", "fuentes_oficiales", 
+                                     "indicadores_cuantitativos", "series_temporales_años"]
+            },
+            "dimensionamiento_brecha": {
+                "slot": "D1-Q2", 
+                "expected_elements": ["brecha_cuantificada", "limitaciones_datos", "subregistro"]
+            },
+            "asignacion_recursos": {
+                "slot": "D1-Q3",
+                "expected_elements": ["asignacion_explicita", "suficiencia_justificada", "trazabilidad_ppi_bpin"]
+            },
+            "capacidad_institucional": {
+                "slot": "D1-Q4",
+                "expected_elements": ["cuellos_botella", "datos_sistemas", "gobernanza", 
+                                     "procesos", "talento_humano"]
+            },
+            "marco_restricciones": {
+                "slot": "D1-Q5",
+                "expected_elements": ["coherencia_demostrada", "restricciones_legales",
+                                     "restricciones_presupuestales", "restricciones_temporales"]
+            }
+        },
+        "keywords_general": [
+            "línea base", "año base", "situación inicial", "diagnóstico",
+            "DANE", "Medicina Legal", "Fiscalía", "Policía Nacional", "SIVIGILA", "SISPRO",
+            "brecha", "déficit", "rezago", "subregistro", "cifra negra",
+            "recursos", "presupuesto", "PPI", "BPIN", "asignación", "millones",
+            "capacidad instalada", "talento humano", "personal idóneo",
+            "cuello de botella", "limitación institucional", "barrera",
+            "marco legal", "Ley", "Decreto", "competencias", "restricción"
+        ]
+    },
+    "DIM02": {
+        "code": "DIM02",
+        "name": "ACTIVIDADES",
+        "label": "Diseño de Intervención",
+        "base_slots": ["D2-Q1", "D2-Q2", "D2-Q3", "D2-Q4", "D2-Q5"],
+        "analytical_variables": {
+            "estructura_operativa": {
+                "slot": "D2-Q1",
+                "expected_elements": ["columna_costo", "columna_cronograma", "columna_producto",
+                                     "columna_responsable", "formato_tabular"]
+            },
+            "diseño_intervencion": {
+                "slot": "D2-Q2",
+                "expected_elements": ["instrumento_especificado", "logica_causal_explicita",
+                                     "poblacion_objetivo_definida"]
+            },
+            "pertinencia_causal": {
+                "slot": "D2-Q3",
+                "expected_elements": ["aborda_causa_raiz", "vinculo_diagnostico_actividad"]
+            },
+            "gestion_riesgos": {
+                "slot": "D2-Q4",
+                "expected_elements": ["mitigacion_propuesta", "riesgos_identificados"]
+            },
+            "articulacion_actividades": {
+                "slot": "D2-Q5",
+                "expected_elements": ["complementariedad_explicita", "secuenciacion_logica"]
+            }
+        },
+        "keywords_general": [
+            "matriz operativa", "plan de acción", "cronograma", "responsable",
+            "actividad", "intervención", "programa", "proyecto", "estrategia",
+            "población objetivo", "beneficiarios", "focalización",
+            "causa raíz", "árbol de problemas", "teoría de cambio",
+            "riesgo", "mitigación", "contingencia",
+            "articulación", "complementariedad", "secuencia", "etapa", "fase"
+        ]
+    },
+    "DIM03": {
+        "code": "DIM03",
+        "name": "PRODUCTOS",
+        "label": "Productos y Outputs",
+        "base_slots": ["D3-Q1", "D3-Q2", "D3-Q3", "D3-Q4", "D3-Q5"],
+        "analytical_variables": {
+            "indicadores_producto": {
+                "slot": "D3-Q1",
+                "expected_elements": ["fuente_verificacion", "linea_base_producto", "meta_cuantitativa"]
+            },
+            "dosificacion_metas": {
+                "slot": "D3-Q2",
+                "expected_elements": ["dosificacion_definida", "proporcionalidad_meta_brecha"]
+            },
+            "trazabilidad": {
+                "slot": "D3-Q3",
+                "expected_elements": ["trazabilidad_organizacional", "trazabilidad_presupuestal"]
+            },
+            "factibilidad": {
+                "slot": "D3-Q4",
+                "expected_elements": ["coherencia_recursos", "factibilidad_tecnica", "realismo_plazos"]
+            },
+            "conexion_resultados": {
+                "slot": "D3-Q5",
+                "expected_elements": ["conexion_producto_resultado", "mecanismo_causal_explicito"]
+            }
+        },
+        "keywords_general": [
+            "producto", "output", "entregable", "bien", "servicio",
+            "indicador de producto", "meta de producto", "MP-",
+            "línea base", "meta cuatrienio", "fuente de verificación",
+            "dosificación", "programación anual", "avance",
+            "responsable", "secretaría", "dependencia", "entidad",
+            "código BPIN", "proyecto de inversión", "PPI",
+            "factible", "viable", "realista", "coherente",
+            "genera", "produce", "contribuye a"
+        ]
+    },
+    "DIM04": {
+        "code": "DIM04",
+        "name": "RESULTADOS",
+        "label": "Resultados y Outcomes",
+        "base_slots": ["D4-Q1", "D4-Q2", "D4-Q3", "D4-Q4", "D4-Q5"],
+        "analytical_variables": {
+            "indicadores_resultado": {
+                "slot": "D4-Q1",
+                "expected_elements": ["horizonte_temporal", "linea_base_resultado",
+                                     "meta_resultado", "metrica_outcome"]
+            },
+            "cadena_causal": {
+                "slot": "D4-Q2",
+                "expected_elements": ["cadena_causal_explicita", "condiciones_habilitantes",
+                                     "supuestos_identificados"]
+            },
+            "alcanzabilidad": {
+                "slot": "D4-Q3",
+                "expected_elements": ["evidencia_comparada", "justificacion_capacidad",
+                                     "justificacion_recursos"]
+            },
+            "coherencia_problematica": {
+                "slot": "D4-Q4",
+                "expected_elements": ["criterios_exito_definidos", "vinculo_resultado_problema"]
+            },
+            "alineacion_estrategica": {
+                "slot": "D4-Q5",
+                "expected_elements": ["alineacion_ods", "alineacion_pnd"]
+            }
+        },
+        "keywords_general": [
+            "resultado", "outcome", "efecto", "cambio", "transformación",
+            "indicador de resultado", "meta de resultado", "MR-",
+            "reducción", "incremento", "mejora", "disminución",
+            "tasa", "porcentaje", "índice", "cobertura",
+            "supuesto", "condición", "factor externo",
+            "evidencia", "buena práctica", "caso exitoso",
+            "ODS", "objetivo de desarrollo sostenible", "PND",
+            "plan nacional de desarrollo", "política nacional"
+        ]
+    },
+    "DIM05": {
+        "code": "DIM05",
+        "name": "IMPACTOS",
+        "label": "Impactos de Largo Plazo",
+        "base_slots": ["D5-Q1", "D5-Q2", "D5-Q3", "D5-Q4", "D5-Q5"],
+        "analytical_variables": {
+            "impacto_esperado": {
+                "slot": "D5-Q1",
+                "expected_elements": ["impacto_definido", "rezago_temporal", "ruta_transmision"]
+            },
+            "medicion_impacto": {
+                "slot": "D5-Q2",
+                "expected_elements": ["justifica_validez", "usa_indices_compuestos", "usa_proxies"]
+            },
+            "limitaciones_medicion": {
+                "slot": "D5-Q3",
+                "expected_elements": ["documenta_validez", "proxy_para_intangibles",
+                                     "reconoce_limitaciones"]
+            },
+            "riesgos_sistemicos": {
+                "slot": "D5-Q4",
+                "expected_elements": ["alineacion_marcos", "riesgos_sistemicos"]
+            },
+            "realismo_impacto": {
+                "slot": "D5-Q5",
+                "expected_elements": ["analisis_realismo", "efectos_no_deseados", "hipotesis_limite"]
+            }
+        },
+        "keywords_general": [
+            "impacto", "efecto de largo plazo", "transformación estructural",
+            "indicador de impacto", "meta de impacto", "MI-",
+            "bienestar", "calidad de vida", "desarrollo humano",
+            "índice", "índice de desarrollo", "IDH", "IPM",
+            "pobreza", "desigualdad", "Gini", "NBI",
+            "sostenibilidad", "perdurabilidad", "irreversibilidad",
+            "proxy", "aproximación", "medición indirecta",
+            "riesgo sistémico", "efecto no deseado", "externalidad"
+        ]
+    },
+    "DIM06": {
+        "code": "DIM06",
+        "name": "CAUSALIDAD",
+        "label": "Teoría de Cambio",
+        "base_slots": ["D6-Q1", "D6-Q2", "D6-Q3", "D6-Q4", "D6-Q5"],
+        "analytical_variables": {
+            "teoria_cambio": {
+                "slot": "D6-Q1",
+                "expected_elements": ["diagrama_causal", "supuestos_verificables",
+                                     "teoria_cambio_explicita"]
+            },
+            "coherencia_logica": {
+                "slot": "D6-Q2",
+                "expected_elements": ["evita_saltos_logicos", "proporcionalidad_eslabones"]
+            },
+            "testabilidad": {
+                "slot": "D6-Q3",
+                "expected_elements": ["propone_pilotos_o_pruebas", "reconoce_inconsistencias"]
+            },
+            "adaptabilidad": {
+                "slot": "D6-Q4",
+                "expected_elements": ["ciclos_aprendizaje", "mecanismos_correccion", "sistema_monitoreo"]
+            },
+            "contextualidad": {
+                "slot": "D6-Q5",
+                "expected_elements": ["analisis_contextual", "enfoque_diferencial"]
+            }
+        },
+        "keywords_general": [
+            "teoría de cambio", "marco lógico", "cadena de valor",
+            "si-entonces", "porque", "genera", "produce", "causa",
+            "mecanismo causal", "vínculo causal", "conexión lógica",
+            "supuesto", "hipótesis", "condición", "premisa",
+            "eslabón", "nivel", "secuencia causal",
+            "piloto", "prueba", "validación", "verificación",
+            "monitoreo", "seguimiento", "evaluación", "ajuste",
+            "contexto", "territorio", "enfoque diferencial", "particularidad"
+        ]
+    }
+}
+
 # ---------------------------------------------------------------------------
 # 1. CORE DATA STRUCTURES
 # ---------------------------------------------------------------------------
 
-@dataclass
-class ValueChainLink:
-    """Represents a link in the municipal development value chain."""
-    name: str
-    instruments: list[str]
-    mediators: list[str]
-    outputs: list[str]
-    outcomes: list[str]
-    bottlenecks: list[str]
-    lead_time_days: float
-    conversion_rates: dict[str, float]
-    capacity_constraints: dict[str, float]
-
 class MunicipalOntology:
-    """Core ontology for municipal development domains."""
+    """Core ontology for municipal development domains.
+    
+    Uses canonical structures from questionnaire_monolith.json:
+    - VALUE_CHAIN_DIMENSIONS: 6 analytical dimensions (DIM01-DIM06)
+    - POLICY_AREAS_CANONICAL: 10 policy areas (PA01-PA10)
+    """
 
     def __init__(self) -> None:
-        self.value_chain_links = {
-            "diagnostic_planning": ValueChainLink(
-                name="diagnostic_planning",
-                instruments=["territorial_diagnosis", "stakeholder_mapping", "needs_assessment"],
-                mediators=["technical_capacity", "participatory_processes", "information_systems"],
-                outputs=["diagnostic_report", "territorial_profile", "stakeholder_matrix"],
-                outcomes=["shared_territorial_vision", "prioritized_problems"],
-                bottlenecks=["data_availability", "technical_capacity_gaps", "time_constraints"],
-                lead_time_days=90,
-                conversion_rates={"diagnosis_to_strategy": 0.75},
-                capacity_constraints={"technical_staff": 0.8, "financial_resources": 0.6}
-            ),
-            "strategic_planning": ValueChainLink(
-                name="strategic_planning",
-                instruments=["strategic_framework", "theory_of_change", "results_matrix"],
-                mediators=["planning_methodology", "stakeholder_participation", "technical_assistance"],
-                outputs=["development_plan", "sector_strategies", "investment_plan"],
-                outcomes=["strategic_alignment", "resource_optimization", "implementation_readiness"],
-                bottlenecks=["political_changes", "resource_constraints", "coordination_failures"],
-                lead_time_days=120,
-                conversion_rates={"strategy_to_programs": 0.80},
-                capacity_constraints={"planning_expertise": 0.7, "resources": 0.8}
-            ),
-            "implementation": ValueChainLink(
-                name="implementation",
-                instruments=["project_management", "service_delivery", "capacity_building"],
-                mediators=["administrative_systems", "human_resources", "quality_control"],
-                outputs=["services_delivered", "capacities_developed", "results_achieved"],
-                outcomes=["improved_living_conditions", "enhanced_capabilities", "social_cohesion"],
-                bottlenecks=["budget_execution", "capacity_constraints", "coordination_failures"],
-                lead_time_days=365,
-                conversion_rates={"inputs_to_outputs": 0.75},
-                capacity_constraints={"implementation_capacity": 0.65, "coordination": 0.60}
-            )
+        # Value chain dimensions (DIM01-DIM06) with keywords
+        self.value_chain_dimensions = {
+            dim_id: dim_config["keywords_general"]
+            for dim_id, dim_config in VALUE_CHAIN_DIMENSIONS.items()
         }
-
+        
+        # Policy areas (PA01-PA10) with keywords
         self.policy_domains = {
             pa_id: pa_config["keywords"]
             for pa_id, pa_config in POLICY_AREAS_CANONICAL.items()
@@ -840,51 +1046,33 @@ class SemanticAnalyzer:
 
     def __init__(
         self,
-        ontology: MunicipalOntology,
-        config_loader: MethodConfigLoader | None = None,
-        max_features: int | None = None,
-        ngram_range: tuple[int, int] | None = None,
-        similarity_threshold: float | None = None
+        ontology: MunicipalOntology
     ) -> None:
         """
         Initialize SemanticAnalyzer.
 
         Args:
             ontology: Municipal ontology for semantic classification
-            config_loader: Optional MethodConfigLoader for canonical parameter access
-            max_features: TF-IDF max features (overrides config_loader)
-            ngram_range: N-gram range for feature extraction (overrides config_loader)
-            similarity_threshold: Similarity threshold for concept detection (overrides config_loader)
+            
+        Parameters (hardcoded, justified):
+            max_features: 2500 - Based on 1,646 unique terms in questionnaire_monolith.json
+                          + ~1,000 policy area keywords × 1.2 safety margin
+            ngram_range: (1, 3) - Captures unigrams, bigrams, trigrams for Spanish
+                         policy vocabulary (e.g., "desarrollo sostenible", "primera infancia")
+            similarity_threshold: 0.3 - Permissive threshold for initial detection;
+                                  final scoring uses stricter thresholds (0.55-0.85)
         """
         self.ontology = ontology
 
-        # Load parameters from canonical JSON if config_loader provided
-        if config_loader is not None:
-            try:
-                if max_features is None:
-                    max_features = config_loader.get_method_parameter(
-                        "ANLZ.SA.extract_cube_v1", "max_features"
-                    )
-                if ngram_range is None:
-                    ngram_range = tuple(config_loader.get_method_parameter(
-                        "ANLZ.SA.extract_cube_v1", "ngram_range"
-                    ))
-                if similarity_threshold is None:
-                    similarity_threshold = config_loader.get_method_parameter(
-                        "ANLZ.SA.extract_cube_v1", "similarity_threshold"
-                    )
-            except (KeyError, AttributeError) as e:
-                logger.warning(f"Failed to load parameters from config_loader: {e}. Using defaults.")
-
-        # Use defaults if not provided
-        self.max_features = max_features if max_features is not None else 1000
-        self.ngram_range = ngram_range if ngram_range is not None else (1, 3)
-        self.similarity_threshold = similarity_threshold if similarity_threshold is not None else 0.3
+        # Hardcoded parameters - justified from questionnaire_monolith.json analysis
+        self.max_features = 2500  # 1,646 monolith terms + 1,000 PA keywords × 1.2
+        self.ngram_range = (1, 3)  # Unigrams to trigrams for Spanish policy terms
+        self.similarity_threshold = 0.3  # Permissive initial detection threshold
 
         if TfidfVectorizer is not None:
             self.vectorizer = TfidfVectorizer(
                 max_features=self.max_features,
-                stop_words='english',
+                stop_words=None,  # Spanish text - no English stopwords
                 ngram_range=self.ngram_range
             )
         else:
@@ -900,10 +1088,12 @@ class SemanticAnalyzer:
         # Vectorize segments
         segment_vectors = self._vectorize_segments(document_segments)
 
-        # Initialize semantic cube
+        # Initialize semantic cube with 2 dimensions only:
+        # - value_chain_dimensions (DIM01-DIM06)
+        # - policy_domains (PA01-PA10)
         semantic_cube = {
             "dimensions": {
-                "value_chain_links": defaultdict(list),
+                "value_chain_dimensions": defaultdict(list),
                 "policy_domains": defaultdict(list)
             },
             "measures": {
@@ -922,11 +1112,11 @@ class SemanticAnalyzer:
         for idx, segment in enumerate(document_segments):
             segment_data = self._process_segment(segment, idx, segment_vectors[idx])
 
-            # Classify by value chain links
+            # Classify by value chain dimensions (DIM01-DIM06)
             link_scores = self._classify_value_chain_link(segment)
-            for link, score in link_scores.items():
-                if score > self.similarity_threshold:  # Configurable threshold for inclusion
-                    semantic_cube["dimensions"]["value_chain_links"][link].append(segment_data)
+            for dim_id, score in link_scores.items():
+                if score > self.similarity_threshold:
+                    semantic_cube["dimensions"]["value_chain_dimensions"][dim_id].append(segment_data)
 
             # Classify by policy domains (PA01-PA10)
             domain_scores = self._classify_policy_domain(segment)
@@ -958,12 +1148,16 @@ class SemanticAnalyzer:
 
     
     def _empty_semantic_cube(self) -> dict[str, Any]:
-        """Return empty semantic cube structure."""
+        """Return empty semantic cube structure.
+        
+        Dimensions:
+        - value_chain_dimensions: DIM01-DIM06 (6 analytical dimensions)
+        - policy_domains: PA01-PA10 (10 policy areas)
+        """
         return {
             "dimensions": {
-                "value_chain_links": {},
-                "policy_domains": {},
-                "cross_cutting_themes": {}
+                "value_chain_dimensions": {},
+                "policy_domains": {}
             },
             "measures": {
                 "semantic_density": [],
@@ -1039,24 +1233,25 @@ class SemanticAnalyzer:
         policy_area_id: str | None = None
     ) -> dict[str, float]:
         """
-        Classify segment by value chain link using canonical patterns.
+        Classify segment by value chain dimension (DIM01-DIM06).
         
-        Refactored for SLOT D3-Q3: Trazabilidad Presupuestal y Organizacional.
-        Maps to questions Q013, Q043, Q073, Q103, Q133, Q163, Q193, Q223, Q253, Q283
-        (one per Policy Area PA01-PA10).
+        Two modes:
+        1. If policy_area_id provided: Uses PATTERNS_D3_Q3_BY_POLICY_AREA for 
+           trazabilidad scoring (D3-Q3 slot specific)
+        2. If policy_area_id is None: Uses VALUE_CHAIN_DIMENSIONS keywords to
+           classify segment by analytical dimension (DIM01-DIM06)
         
         Args:
             segment: Text segment to classify
-            policy_area_id: Canonical policy area code (PA01-PA10). If None, uses
-                           legacy ontology-based classification for backward compatibility.
+            policy_area_id: Optional. If provided, uses D3-Q3 patterns for that PA.
         
         Returns:
-            dict with scores per expected_element:
-            - If policy_area_id provided: {"trazabilidad_organizacional": float, 
-                                           "trazabilidad_presupuestal": float}
-            - If policy_area_id is None: legacy format with ontology link scores
+            dict with scores:
+            - If policy_area_id: {"trazabilidad_organizacional": float, 
+                                  "trazabilidad_presupuestal": float}
+            - If None: {"DIM01": float, "DIM02": float, ..., "DIM06": float}
         """
-        # NEW: Policy Area-specific classification for D3-Q3 slot
+        # MODE 1: Policy Area-specific classification for D3-Q3 slot
         if policy_area_id is not None:
             patterns_config = PATTERNS_D3_Q3_BY_POLICY_AREA.get(policy_area_id)
             if not patterns_config:
@@ -1076,32 +1271,36 @@ class SemanticAnalyzer:
                     1 for p in patterns
                     if re.search(p, segment, re.IGNORECASE)
                 )
-                # Normalize: proportion of patterns matched
                 scores[element_type] = min(1.0, match_count / max(1, len(patterns)))
             
             return scores
         
-        # LEGACY: Ontology-based classification for backward compatibility
-        link_scores: dict[str, float] = {}
+        # MODE 2: Classify by analytical dimensions (DIM01-DIM06)
+        dimension_scores: dict[str, float] = {}
         segment_lower = segment.lower()
 
-        for link_name, link_obj in self.ontology.value_chain_links.items():
-            score = 0.0
-            total_keywords = 0
+        for dim_id, keywords in self.ontology.value_chain_dimensions.items():
+            if not keywords:
+                dimension_scores[dim_id] = 0.0
+                continue
+            
+            match_count = 0
+            for keyword in keywords:
+                if keyword.lower() in segment_lower:
+                    match_count += 1
 
-            # Check all link components
-            all_keywords = (link_obj.instruments + link_obj.mediators +
-                            link_obj.outputs + link_obj.outcomes)
+            dimension_scores[dim_id] = match_count / len(keywords)
 
-            for keyword in all_keywords:
-                total_keywords += 1
-                if keyword.lower().replace("_", " ") in segment_lower:
-                    score += 1.0
+        # Contract assertion: verify output keys are DIM01-DIM06
+        expected_keys = {f"DIM0{i}" for i in range(1, 7)}
+        actual_keys = set(dimension_scores.keys())
+        if actual_keys != expected_keys:
+            logger.error(
+                f"_classify_value_chain_link output key mismatch. "
+                f"Expected: {expected_keys}, Got: {actual_keys}"
+            )
 
-            # Normalize score
-            link_scores[link_name] = score / total_keywords if total_keywords > 0 else 0.0
-
-        return link_scores
+        return dimension_scores
 
     
     def _classify_policy_domain(self, segment: str) -> dict[str, float]:
@@ -1150,53 +1349,6 @@ class SemanticAnalyzer:
             )
 
         return policy_area_scores
-
-    
-    def _classify_cross_cutting_themes(self, segment: str) -> dict[str, float]:
-        """
-        Classify segment by Cross-Cutting Themes / Enfoques Transversales (ET01-ET10).
-        
-        Refactored per Colombian PDT normative framework (Ley 152/1994, DNP guidelines).
-        
-        Args:
-            segment: Text segment to classify
-            
-        Returns:
-            dict[str, float]: Score per Enfoque Transversal.
-                Keys: ET01, ET02, ET03, ET04, ET05, ET06, ET07, ET08, ET09, ET10
-                Values: Normalized score [0.0-1.0] based on keyword matches
-                
-        Contract:
-            - Output keys MUST be exactly: {ET01, ET02, ET03, ET04, ET05, ET06, ET07, ET08, ET09, ET10}
-            - Output keys MUST NOT be: {governance, equity, sustainability, innovation}
-            - Scoring: count(matched_keywords) / len(total_keywords_for_ET)
-        """
-        theme_scores: dict[str, float] = {}
-        segment_lower = segment.lower()
-
-        for et_id, keywords in self.ontology.cross_cutting_themes.items():
-            if not keywords:
-                theme_scores[et_id] = 0.0
-                continue
-                
-            match_count = 0
-            for keyword in keywords:
-                keyword_lower = keyword.lower()
-                if keyword_lower in segment_lower:
-                    match_count += 1
-
-            theme_scores[et_id] = match_count / len(keywords)
-
-        # Contract assertion: verify output keys
-        expected_keys = {f"ET{i:02d}" for i in range(1, 11)}
-        actual_keys = set(theme_scores.keys())
-        if actual_keys != expected_keys:
-            logger.error(
-                f"_classify_cross_cutting_themes output key mismatch. "
-                f"Expected: {expected_keys}, Got: {actual_keys}"
-            )
-
-        return theme_scores
 
     
     def _calculate_semantic_complexity(self, semantic_cube: dict[str, Any]) -> float:
