@@ -118,7 +118,13 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
             "estereotipos de género", "roles de género",
             "masculinidades", "nuevas masculinidades",
             "cultura machista", "patriarcado",
-            "coeducación", "educación no sexista"
+            "coeducación", "educación no sexista",
+            # From ET01 - Enfoque de Género transversal
+            "mainstreaming de género", "análisis de género", "indicadores de género",
+            "presupuestos sensibles al género", "PSG",
+            "política de género", "plan de igualdad",
+            "comité de género", "instancia de género",
+            "madres", "gestantes", "lactantes", "cuidadoras"
         ]
     },
     "PA02": {
@@ -535,7 +541,10 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
             "estado de cosas inconstitucional", "ECI",
             "Sentencia T-388", "tutelas",
             "Defensoría del Pueblo", "Procuraduría",
-            "reincidencia", "reingreso"
+            "reincidencia", "reingreso",
+            # From ET09 - Enfoque Diferencial PPL
+            "centros de detención transitoria", "medidas de aseguramiento",
+            "Instituto Nacional Penitenciario", "establecimientos de reclusión"
         ]
     },
     "PA10": {
@@ -586,219 +595,12 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
             "retorno voluntario", "deportación",
             "reunificación familiar",
             "gestión migratoria", "política migratoria",
-            "ACNUR", "OIM", "UNICEF", "Cruz Roja"
-        ]
-    }
-}
-
-# =============================================================================
-# CANONICAL CROSS-CUTTING THEMES / ENFOQUES TRANSVERSALES (ET01-ET10)
-# Source: Colombian PDT normative framework (Ley 152/1994, DNP guidelines)
-# =============================================================================
-
-CROSS_CUTTING_THEMES_CANONICAL: dict[str, dict[str, Any]] = {
-    "ET01": {
-        "id": "ET01",
-        "name": "Enfoque de Género",
-        "keywords": [
-            "enfoque de género", "perspectiva de género", "transversalización de género",
-            "equidad de género", "igualdad de género", "mainstreaming de género",
-            "análisis de género", "brechas de género", "indicadores de género",
-            "presupuestos sensibles al género", "PSG",
-            "política de género", "plan de igualdad",
-            "comité de género", "instancia de género",
-            "mujeres", "niñas", "lideresas", "mujeres rurales",
-            "mujeres víctimas", "mujeres cabeza de familia",
-            "violencia de género", "VBG", "feminicidio",
-            "brecha salarial", "trabajo no remunerado",
-            "economía del cuidado", "participación política de mujeres"
-        ]
-    },
-    "ET02": {
-        "id": "ET02",
-        "name": "Enfoque Diferencial Étnico",
-        "keywords": [
-            "pueblos indígenas", "comunidades indígenas", "resguardos",
-            "cabildos", "autoridades tradicionales", "usos y costumbres",
-            "comunidades negras", "afrodescendientes", "afrocolombianos",
-            "consejos comunitarios", "territorios colectivos",
-            "pueblo ROM", "gitanos", "kumpanias",
-            "raizales", "palenqueros",
-            "consulta previa", "consentimiento previo libre e informado",
-            "CPLI", "derecho propio", "jurisdicción especial indígena",
-            "autonomía territorial", "autogobierno",
-            "planes de vida", "planes de etnodesarrollo",
-            "enfoque étnico", "enfoque diferencial étnico",
-            "capítulo étnico", "salvaguardas étnicas",
-            "protocolos de consulta", "acuerdos étnicos"
-        ]
-    },
-    "ET03": {
-        "id": "ET03",
-        "name": "Enfoque de Derechos Humanos",
-        "keywords": [
-            "derechos humanos", "DDHH", "derechos fundamentales",
-            "enfoque de derechos", "enfoque basado en derechos",
-            "EBDH", "titulares de derechos", "obligados",
-            "derechos civiles", "derechos políticos",
-            "derechos económicos", "derechos sociales", "derechos culturales",
-            "DESC", "derecho a la vida", "derecho a la integridad",
-            "derecho a la libertad", "derecho al debido proceso",
-            "derecho internacional humanitario", "DIH",
-            "principio de distinción", "principio de proporcionalidad",
-            "protección de civiles", "personas protegidas",
-            "plan de derechos humanos", "política de DDHH",
-            "comité de derechos humanos", "personería",
-            "defensoría", "Defensoría del Pueblo"
-        ]
-    },
-    "ET04": {
-        "id": "ET04",
-        "name": "Enfoque Territorial",
-        "keywords": [
-            "enfoque territorial", "desarrollo territorial",
-            "ordenamiento territorial", "planificación territorial",
-            "vocación territorial", "potencialidades territoriales",
-            "dinámicas territoriales", "configuración territorial",
-            "urbano", "rural", "urbano-rural",
-            "cabecera municipal", "centros poblados", "zona rural dispersa",
-            "veredas", "corregimientos", "comunas",
-            "subregiones", "provincias", "regiones",
-            "POT", "PBOT", "EOT",
-            "planes parciales", "UPR", "unidades de planificación rural",
-            "modelo de ocupación territorial", "MOT"
-        ]
-    },
-    "ET05": {
-        "id": "ET05",
-        "name": "Enfoque de Curso de Vida",
-        "keywords": [
-            "curso de vida", "ciclo vital", "ciclo de vida",
-            "trayectorias vitales", "transiciones",
-            "primera infancia", "0 a 5 años",
-            "infancia", "niñez", "6 a 11 años",
-            "adolescencia", "12 a 17 años",
-            "juventud", "14 a 28 años", "jóvenes",
-            "adultez", "adultos",
-            "vejez", "envejecimiento", "adulto mayor",
-            "persona mayor", "tercera edad",
-            "intergeneracional", "solidaridad intergeneracional",
-            "relevo generacional", "transmisión de saberes"
-        ]
-    },
-    "ET06": {
-        "id": "ET06",
-        "name": "Enfoque de Discapacidad",
-        "keywords": [
-            "discapacidad", "personas con discapacidad", "PcD",
-            "diversidad funcional", "capacidades diferentes",
-            "enfoque diferencial de discapacidad",
-            "modelo social de discapacidad",
-            "convención sobre discapacidad", "CDPD",
-            "discapacidad física", "discapacidad sensorial",
-            "discapacidad visual", "discapacidad auditiva",
-            "discapacidad cognitiva", "discapacidad intelectual",
-            "discapacidad psicosocial", "discapacidad múltiple",
-            "accesibilidad", "diseño universal",
-            "ajustes razonables", "apoyos",
-            "lengua de señas", "braille",
-            "comunicación aumentativa", "tecnologías de apoyo",
-            "RLCPD", "registro de localización",
-            "certificación de discapacidad",
-            "comité de discapacidad", "política de discapacidad"
-        ]
-    },
-    "ET07": {
-        "id": "ET07",
-        "name": "Enfoque Ambiental/Sostenibilidad",
-        "keywords": [
-            "sostenibilidad", "desarrollo sostenible",
-            "ODS", "objetivos de desarrollo sostenible",
-            "sostenibilidad ambiental", "sustentabilidad",
-            "cambio climático", "mitigación", "adaptación",
-            "resiliencia climática", "huella de carbono",
-            "carbono neutralidad", "transición energética",
-            "conservación", "biodiversidad", "ecosistemas",
-            "áreas protegidas", "servicios ecosistémicos",
-            "recursos naturales", "recurso hídrico",
-            "gestión ambiental", "impacto ambiental",
-            "licencia ambiental", "plan de manejo ambiental",
-            "evaluación ambiental estratégica", "EAE"
-        ]
-    },
-    "ET08": {
-        "id": "ET08",
-        "name": "Enfoque de construcción de paz territorial",
-        "keywords": [
-            "construcción de paz", "cultura de paz",
-            "paz territorial", "paz con legalidad",
-            "acuerdo de paz", "implementación del acuerdo",
-            "posconflicto", "posacuerdo",
-            "reconciliación", "convivencia pacífica",
-            "tejido social", "cohesión social",
-            "diálogo", "resolución de conflictos",
-            "mediación", "justicia restaurativa",
-            "verdad", "justicia", "reparación",
-            "garantías de no repetición", "memoria histórica",
-            "reincorporación", "reintegración",
-            "excombatientes", "PDET", "RRI"
-        ]
-    },
-    "ET09": {
-        "id": "ET09",
-        "name": "Enfoque Diferencial - Población Privada de la Libertad",
-        "keywords": [
-            "personas privadas de la libertad", "PPL",
-            "población privada de libertad",
-            "población carcelaria", "población penitenciaria",
-            "cárceles", "centros penitenciarios",
-            "establecimientos de reclusión", "ERON",
-            "INPEC", "Instituto Nacional Penitenciario",
-            "reclusos", "internos", "detenidos",
-            "prisión", "reclusión", "privación de libertad",
-            "hacinamiento carcelario",
-            "reinserción social", "resocialización",
-            "política penitenciaria", "sistema penitenciario",
-            "derechos de personas privadas de libertad",
-            "centros de detención transitoria",
-            "medidas de aseguramiento",
-            "condiciones de reclusión",
-            "atención en salud en prisiones",
-            "educación en establecimientos penitenciarios",
-            "trabajo penitenciario",
-            "beneficios administrativos", "redención de pena"
-        ]
-    },
-    "ET10": {
-        "id": "ET10",
-        "name": "Enfoque Diferencial - Población Migrante",
-        "keywords": [
-            "población migrante", "migrantes",
-            "migración", "movilidad humana",
-            "migrantes venezolanos", "venezolanos",
-            "refugiados", "solicitantes de asilo",
-            "desplazamiento transfronterizo",
-            "migración irregular", "migración regular",
-            "estatuto temporal de protección", "ETPV",
-            "permiso especial de permanencia", "PEP",
-            "permiso por protección temporal", "PPT",
-            "regularización migratoria",
-            "Migración Colombia",
-            "frontera", "zona de frontera",
-            "tránsito migratorio", "flujo migratorio",
-            "retorno", "retornados",
-            "integración social", "integración socioeconómica",
-            "xenofobia", "discriminación a migrantes",
-            "documento de identidad migrante",
-            "acceso a servicios para migrantes",
-            "educación para migrantes",
-            "salud para migrantes",
-            "empleabilidad migrante",
-            "niños, niñas y adolescentes migrantes",
-            "familias migrantes",
-            "atención humanitaria a migrantes",
-            "CONPES migratorio",
-            "política migratoria"
+            "ACNUR", "OIM", "UNICEF", "Cruz Roja",
+            # From ET10 - Enfoque Diferencial Migración
+            "ETPV", "estatuto temporal de protección",
+            "CONPES migratorio", "desplazamiento transfronterizo",
+            "documento de identidad migrante", "empleabilidad migrante",
+            "niños, niñas y adolescentes migrantes", "familias migrantes"
         ]
     }
 }
@@ -863,11 +665,6 @@ class MunicipalOntology:
         self.policy_domains = {
             pa_id: pa_config["keywords"]
             for pa_id, pa_config in POLICY_AREAS_CANONICAL.items()
-        }
-
-        self.cross_cutting_themes = {
-            et_id: et_config["keywords"]
-            for et_id, et_config in CROSS_CUTTING_THEMES_CANONICAL.items()
         }
 
 # ---------------------------------------------------------------------------
@@ -1107,8 +904,7 @@ class SemanticAnalyzer:
         semantic_cube = {
             "dimensions": {
                 "value_chain_links": defaultdict(list),
-                "policy_domains": defaultdict(list),
-                "cross_cutting_themes": defaultdict(list)
+                "policy_domains": defaultdict(list)
             },
             "measures": {
                 "semantic_density": [],
@@ -1132,17 +928,11 @@ class SemanticAnalyzer:
                 if score > self.similarity_threshold:  # Configurable threshold for inclusion
                     semantic_cube["dimensions"]["value_chain_links"][link].append(segment_data)
 
-            # Classify by policy domains
+            # Classify by policy domains (PA01-PA10)
             domain_scores = self._classify_policy_domain(segment)
             for domain, score in domain_scores.items():
                 if score > self.similarity_threshold:
                     semantic_cube["dimensions"]["policy_domains"][domain].append(segment_data)
-
-            # Extract cross-cutting themes
-            theme_scores = self._classify_cross_cutting_themes(segment)
-            for theme, score in theme_scores.items():
-                if score > self.similarity_threshold:
-                    semantic_cube["dimensions"]["cross_cutting_themes"][theme].append(segment_data)
 
             # Add measures
             semantic_cube["measures"]["semantic_density"].append(segment_data["semantic_density"])

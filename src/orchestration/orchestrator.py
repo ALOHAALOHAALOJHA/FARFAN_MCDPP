@@ -904,20 +904,7 @@ class Orchestrator:
             self.calibration_orchestrator = calibration_orchestrator
             logger.info("CalibrationOrchestrator injected into main orchestrator")
         else:
-            try:
-                from pathlib import Path
-                from orchestration.calibration_orchestrator import CalibrationOrchestrator
-                
-                config_dir = Path("src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration")
-                if config_dir.exists():
-                    self.calibration_orchestrator = CalibrationOrchestrator.from_config_dir(config_dir)
-                    logger.info("CalibrationOrchestrator auto-loaded from config directory")
-                else:
-                    self.calibration_orchestrator = None
-                    logger.warning("Calibration config directory not found, calibration disabled")
-            except Exception as e:
-                self.calibration_orchestrator = None
-                logger.warning(f"Failed to auto-load CalibrationOrchestrator: {e}")
+            self.calibration_orchestrator = None
         
         self.resource_limits = resource_limits or ResourceLimits()
         self.resource_snapshot_interval = max(1, resource_snapshot_interval)
