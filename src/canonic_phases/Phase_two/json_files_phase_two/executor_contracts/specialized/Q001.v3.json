@@ -379,9 +379,9 @@
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
-    "module": "farfan_core.core.orchestrator.evidence_assembler",
-    "class_name": "EvidenceAssembler",
-    "method_name": "assemble",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "process",
     "output_schema": {
       "type": "object",
       "required": [
@@ -430,7 +430,7 @@
           "bayesian_analysis.policy_metrics"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "EvidenceNexus aggregates evidence nodes into graph structure from 17 method invocations"
       },
       {
         "target": "confidence_scores",
@@ -482,12 +482,12 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q271"
+          "const": "Q001"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 271
+          "const": 1
         },
         "policy_area_id": {
           "type": [
@@ -495,7 +495,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [
@@ -503,7 +503,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM01"
         },
         "cluster_id": {
           "type": [
@@ -511,14 +511,14 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL02"
         },
         "evidence": {
           "type": [
             "object",
             "null"
           ],
-          "description": "Objeto de evidencia ensamblado por el EvidenceAssembler; debe cumplir evidence_assembly.output_schema.",
+          "description": "Objeto de evidencia procesado por EvidenceNexus con estructura de grafo y campos legacy-compatible; incluye elements, by_type, confidence_scores, graph_hash.",
           "additionalProperties": true
         },
         "validation": {
@@ -1677,12 +1677,13 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure after Nexus processes method outputs: evidence graph, validation report, synthesized narrative, and legacy-compatible evidence dict",
     "assembly_flow": {
       "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
-      "step_2_evidence_assembly": "EvidenceAssembler merges outputs according to assembly_rules",
-      "step_3_validation": "EvidenceValidator checks against validation_rules",
-      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
+      "step_2_evidence_nexus": "EvidenceNexus builds evidence graph, infers relationships, validates consistency",
+      "step_3_validation": "ValidationEngine runs graph-theoretic validation, checks completeness",
+      "step_4_carver_synthesis": "DoctoralCarverSynthesizer generates PhD-level narrative from evidence graph",
+      "step_5_output_generation": "Phase2QuestionResult with evidence (legacy), synthesized_answer, human_readable_output, graph_statistics"
     },
     "evidence_structure_schema": {
       "type": "object",
@@ -1690,7 +1691,7 @@
       "properties": {
         "elements_found": {
           "type": "array",
-          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
+          "description": "Evidence nodes aggregated by EvidenceNexus graph from 17 method outputs",
           "items": {
             "type": "object",
             "properties": {
