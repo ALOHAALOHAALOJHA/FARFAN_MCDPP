@@ -94,6 +94,13 @@ MICRO_LEVELS = {
     "INSUFICIENTE": 0.00
 }
 
+ALIGNMENT_THRESHOLD = 0.625
+RISK_THRESHOLDS = {
+    "excellent": 0.15,
+    "good": 0.30,
+    "acceptable": 0.45
+}
+
 CANON_POLICY_AREAS = {
     "PA01": {
         "name": "Derechos de las mujeres e igualdad de género",
@@ -4031,7 +4038,7 @@ class OperationalizationAuditor:
         # If pdet_alignment ≤ 0.60, apply 1.2× multiplier to risk_score
         # This enforces integration between D4-Q5 (Alineación) and D5-Q4 (Riesgos Sistémicos)
         alignment_penalty_applied = False
-        alignment_threshold = 0.6 # Refactored
+        alignment_threshold = ALIGNMENT_THRESHOLD # Refactored using canonical constant
         alignment_multiplier = 1.2
 
         if pdet_alignment is not None and pdet_alignment <= alignment_threshold:
@@ -4056,9 +4063,10 @@ class OperationalizationAuditor:
         # D5-Q4 quality criteria check (AUDIT POINT 2.3)
         # Excellent requires risk_score < 0.10 (matching ODS benchmarks per UN 2020)
         d5_q4_quality = 'insuficiente'
-        risk_threshold_excellent = 0.1 # Refactored
-        risk_threshold_good = 0.2 # Refactored
-        risk_threshold_acceptable = 0.35 # Refactored
+        # Updated using canonical constants (Step 4)
+        risk_threshold_excellent = RISK_THRESHOLDS["excellent"]
+        risk_threshold_good = RISK_THRESHOLDS["good"]
+        risk_threshold_acceptable = RISK_THRESHOLDS["acceptable"]
 
         if risk_score < risk_threshold_excellent:
             d5_q4_quality = 'excelente'
