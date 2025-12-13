@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any
 
 from jsonschema import Draft7Validator
 
-from farfan_pipeline.config.paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 # NEW: Replace legacy evidence modules with EvidenceNexus and Carver
 from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
 from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer

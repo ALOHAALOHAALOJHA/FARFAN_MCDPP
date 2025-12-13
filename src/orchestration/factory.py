@@ -112,7 +112,7 @@ from pathlib import Path
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
@@ -121,7 +121,8 @@ from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
 
 # Core orchestration
-from orchestration.orchestrator import MethodExecutor, Orchestrator
+if TYPE_CHECKING:
+    from orchestration.orchestrator import MethodExecutor, Orchestrator
 from orchestration.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
@@ -904,6 +905,8 @@ class AnalysisPipelineFactory:
 
             # Step 4: Build method executor WITH signal registry injected
             # This is the CORE integration point - executors call methods through this
+            # Local import to avoid circular dependency
+            from orchestration.orchestrator import MethodExecutor
             method_executor = MethodExecutor(
                 method_registry=method_registry,
                 arg_router=arg_router,
@@ -1059,6 +1062,8 @@ class AnalysisPipelineFactory:
 
         try:
             # Build orchestrator with FULL dependency injection
+            # Local import to avoid circular dependency
+            from orchestration.orchestrator import Orchestrator
             orchestrator = Orchestrator(
                 questionnaire=self._canonical_questionnaire,  # DI: inject questionnaire object
                 method_executor=self._method_executor,  # DI: inject method executor
@@ -1539,49 +1544,5 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     return validation_results
 
 
-def _validate_questionnaire_structure(monolith_data: dict[str, Any]) -> None:
-    """Validate questionnaire structure.
-    
-    Args:
-        monolith_data: Questionnaire data dictionary
-        
-    Raises:
-        ValueError: If questionnaire structure is invalid
-        TypeError: If questionnaire data types are incorrect
-    """
-    if not isinstance(monolith_data, dict):
-        raise TypeError(f"Questionnaire must be a dict, got {type(monolith_data)}")
-    
-    # Validate canonical_notation exists
-    if "canonical_notation" not in monolith_data:
-        raise ValueError("Questionnaire missing 'canonical_notation'")
-    
-    canonical_notation = monolith_data["canonical_notation"]
-    
-    # Validate dimensions
-    if "dimensions" not in canonical_notation:
-        raise ValueError("Questionnaire missing 'canonical_notation.dimensions'")
-    
-    dimensions = canonical_notation["dimensions"]
-    if not isinstance(dimensions, dict):
-        raise TypeError("Dimensions must be a dict")
-    
-    expected_dims = ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05", "DIM06"]
-    for dim_id in expected_dims:
-        if dim_id not in dimensions:
-            raise ValueError(f"Missing dimension: {dim_id}")
-    
-    # Validate policy areas
-    if "policy_areas" not in canonical_notation:
-        raise ValueError("Questionnaire missing 'canonical_notation.policy_areas'")
-    
-    policy_areas = canonical_notation["policy_areas"]
-    if not isinstance(policy_areas, dict):
-        raise TypeError("Policy areas must be a dict")
-    
-    expected_pas = [f"PA{i:02d}" for i in range(1, 11)]
-    for pa_id in expected_pas:
-        if pa_id not in policy_areas:
-            raise ValueError(f"Missing policy area: {pa_id}")
-    
-    logger.info("Questionnaire structure validation passed")
+# _validate_questionnaire_structure moved to orchestration.questionnaire_validation
+# to break import cycle between factory and orchestrator.

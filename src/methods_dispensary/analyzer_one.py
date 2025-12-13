@@ -27,12 +27,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
-from src.calibration.analyzer_one_calibrator import run_pipeline as calibration_run_pipeline
-from src.ontology.canonical_value_chain import VALUE_CHAIN_DIMENSIONS
-
-# from farfan_pipeline import get_parameter_loader  # CALIBRATION DISABLED
-# MethodConfigLoader removed - parameters now hardcoded with justification
-
 warnings.filterwarnings('ignore')
 
 # Constants
@@ -48,21 +42,35 @@ CAL_ROOT = CANONICAL_ROOT / "calibration"
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Missing imports for sklearn, nltk, numpy, pandas
 try:
     import numpy as np
+except ImportError as e:
+    logger.warning(f"Missing dependency: {e}")
+    np = None
+
+try:
     import pandas as pd
-    from nltk.corpus import stopwords
-    from nltk.tokenize import sent_tokenize
+except ImportError as e:
+    logger.warning(f"Missing dependency: {e}")
+    pd = None
+
+try:
     from sklearn.ensemble import IsolationForest
+except ImportError as e:
+    logger.warning(f"Missing dependency: {e}")
+    IsolationForest = None
+
+try:
     from sklearn.feature_extraction.text import TfidfVectorizer
 except ImportError as e:
     logger.warning(f"Missing dependency: {e}")
-    # Provide fallbacks
     TfidfVectorizer = None
-    IsolationForest = None
-    np = None
-    pd = None
+
+try:
+    from nltk.corpus import stopwords
+    from nltk.tokenize import sent_tokenize
+except ImportError as e:
+    logger.warning(f"Missing dependency: {e}")
     sent_tokenize = None
     stopwords = None
 
@@ -1085,27 +1093,24 @@ class SemanticAnalyzer:
 
         Args:
             ontology: Municipal ontology for semantic classification
-            
-        Parameters (hardcoded, justified):
-            max_features: 2500 - Based on 1,646 unique terms in questionnaire_monolith.json
-                          + ~1,000 policy area keywords × 1.2 safety margin
-            ngram_range: (1, 3) - Captures unigrams, bigrams, trigrams for Spanish
-                         policy vocabulary (e.g., "desarrollo sostenible", "primera infancia")
-            similarity_threshold: 0.3 - Permissive threshold for initial detection;
-                                  final scoring uses stricter thresholds (0.55-0.85)
+
+        Parameters:
+            - Derived from `artifacts/plan1/calibration/analyzer_one_calibration.json`
+            - No defaults (hard-fail if calibration is missing)
         """
         self.ontology = ontology
 
         # Load calibration artifacts (data-driven, no defaults)
         self._monolith_index = self._load_json(CG_ROOT / "monolith_index.json")
         self._patterns_resolved = self._load_json(CG_ROOT / "pattern_registry_resolved.json")
-        self._calibration = self._load_json(CAL_ROOT / "analyzer_one_calibration.json")
-        self._thresholds = self._calibration.get("thresholds", {})
+        calib = self._load_json(Path("artifacts/plan1/calibration/analyzer_one_calibration.json"))
+        self._calibration = calib
+        self.thresholds_by_base_slot = calib["thresholds_by_base_slot"]
         self._slot_thresholds = {slot: self._get_slot_threshold(slot) for slot in ALL_BASE_SLOTS}
+        self._unit_of_analysis_stats = self._load_unit_of_analysis_stats(Path("pdt_analysis_report.json"))
 
-        vec_cfg = self._calibration.get("vectorizer", {})
-        self.max_features = vec_cfg.get("max_features")
-        self.ngram_range = tuple(vec_cfg.get("ngram_range", (1, 3)))
+        self.max_features = calib["max_features"]
+        self.ngram_range = tuple(calib["ngram_range"])
         self.similarity_threshold = None  # base-slot specific thresholds are used
 
         if TfidfVectorizer is not None:
@@ -1116,6 +1121,74 @@ class SemanticAnalyzer:
             )
         else:
             self.vectorizer = None
+
+    def _load_unit_of_analysis_stats(self, report_path: Path) -> dict[str, int]:
+        if not report_path.exists():
+            raise FileNotFoundError(f"Required unit-of-analysis report missing: {report_path}")
+        report = json.loads(report_path.read_text())
+        return self._compute_unit_of_analysis_natural_blocks(report)
+
+    def _compute_unit_of_analysis_natural_blocks(self, report: dict[str, Any]) -> dict[str, int]:
+        unit_report = report.get("reporte_unit_of_analysis", {})
+        sections = unit_report.get("secciones", [])
+
+        section_ii = next((sec for sec in sections if sec.get("id") == "II"), {})
+        headers_examples_count = 0
+        for punto in section_ii.get("puntos", []) or []:
+            for row in punto.get("tabla_formatos", []) or []:
+                examples = row.get("ejemplos_contenido_localizacion")
+                if not isinstance(examples, str) or not examples.strip():
+                    continue
+                headers_examples_count += sum(
+                    1 for item in re.split(r"[,\n;]+", examples) if item.strip()
+                )
+
+        section_vi = next((sec for sec in sections if sec.get("id") == "VI"), {})
+        table_types_count = 0
+        for part in section_vi.get("partes", []) or []:
+            if isinstance(part, dict):
+                for key, value in part.items():
+                    if key.startswith("tabla_") and isinstance(value, dict):
+                        table_types_count += 1
+                for subpart in part.get("subpartes", []) or []:
+                    if isinstance(subpart, dict) and isinstance(subpart.get("tabla"), dict):
+                        table_types_count += 1
+
+        section_iii = next((sec for sec in sections if sec.get("id") == "III"), {})
+        causal_patterns_count = 0
+        dimensiones = section_iii.get("dimensiones_causales", {})
+        if isinstance(dimensiones, dict):
+            for dim_data in dimensiones.values():
+                if not isinstance(dim_data, dict):
+                    continue
+                for value in dim_data.values():
+                    if isinstance(value, str) and value.strip():
+                        causal_patterns_count += 1
+                    elif isinstance(value, list):
+                        causal_patterns_count += sum(
+                            1 for item in value if isinstance(item, str) and item.strip()
+                        )
+
+        natural_blocks_total = headers_examples_count + table_types_count + causal_patterns_count
+        return {
+            "headers_examples_count": headers_examples_count,
+            "table_types_count": table_types_count,
+            "causal_patterns_count": causal_patterns_count,
+            "natural_blocks_total": natural_blocks_total,
+        }
+
+    def _build_segmentation_metadata(self, total_segments: int) -> dict[str, Any]:
+        base_slots_count = len(ALL_BASE_SLOTS)
+        theoretical_max_segments = (
+            int(math.ceil(total_segments / base_slots_count)) if total_segments > 0 else 0
+        )
+        return {
+            "base_slots_count": base_slots_count,
+            "theoretical_max_segments_per_slot": theoretical_max_segments,
+            "expected_segment_budget_by_slot": {slot: theoretical_max_segments for slot in ALL_BASE_SLOTS},
+            "unit_of_analysis_natural_blocks": self._unit_of_analysis_stats,
+            "unit_of_analysis_source_path": "pdt_analysis_report.json",
+        }
 
     
     def extract_semantic_cube(self, document_segments: list[str]) -> dict[str, Any]:
@@ -1143,7 +1216,8 @@ class SemanticAnalyzer:
             "metadata": {
                 "extraction_timestamp": datetime.now().isoformat(),
                 "total_segments": len(document_segments),
-                "processing_parameters": {}
+                "processing_parameters": {},
+                "segmentation": self._build_segmentation_metadata(len(document_segments)),
             }
         }
 
@@ -1215,25 +1289,32 @@ class SemanticAnalyzer:
             "metadata": {
                 "extraction_timestamp": datetime.now().isoformat(),
                 "total_segments": 0,
-                "processing_parameters": {}
+                "processing_parameters": {},
+                "segmentation": self._build_segmentation_metadata(0),
             }
         }
 
     
     def _vectorize_segments(self, segments: list[str]) -> np.ndarray:
         """Vectorize document segments using TF-IDF."""
-        if self.vectorizer is not None:
-            try:
-                return self.vectorizer.fit_transform(segments).toarray()
-            except Exception as e:
-                logger.warning(f"Vectorization failed: {e}")
-
-        # Fallback
-        if np is not None:
-            return np.zeros((len(segments), 100))
-        else:
-            # Return list of lists if numpy is not available
-            return [[0.0] * 100 for _ in range(len(segments))]
+        calibration_path = CAL_ROOT / "analyzer_one_calibration.json"
+        generation_cmd = "PYTHONPATH=src python -m calibration.analyzer_one_calibrator"
+        if self.vectorizer is None:
+            raise RuntimeError(
+                "TF-IDF vectorizer unavailable; aborting (no silent fallback). "
+                "Exception: RuntimeError: vectorizer is None. "
+                f"Expected calibration artifact: {calibration_path}. "
+                f"Generate calibration via: {generation_cmd}"
+            )
+        try:
+            return self.vectorizer.fit_transform(segments).toarray()
+        except Exception as exc:
+            raise RuntimeError(
+                "TF-IDF vectorization failed; aborting (no silent fallback). "
+                f"Exception: {type(exc).__name__}: {exc}. "
+                f"Expected calibration artifact: {calibration_path}. "
+                f"Generate calibration via: {generation_cmd}"
+            ) from exc
 
     
     def _process_segment(self, segment: str, idx: int, vector) -> dict[str, Any]:
@@ -1286,12 +1367,9 @@ class SemanticAnalyzer:
         return best_policy_areas[0] if best_policy_areas else None
 
     def _get_slot_threshold(self, slot: str) -> float:
-        entry = self._thresholds.get(slot)
-        threshold_value: Any
-        if isinstance(entry, dict):
-            threshold_value = entry.get("threshold")
-        else:
-            threshold_value = entry
+        if not isinstance(self.thresholds_by_base_slot, dict):
+            raise TypeError("Calibration error: thresholds_by_base_slot must be a dict")
+        threshold_value = self.thresholds_by_base_slot.get(slot)
         if not isinstance(threshold_value, (int, float)):
             raise KeyError(f"Missing similarity threshold for slot: {slot}")
         threshold = float(threshold_value)
@@ -1341,6 +1419,34 @@ class SemanticAnalyzer:
                 expected_score = sum(d3_q3_signals.values()) / len(d3_q3_signals)
             slot_scores[slot] = min(1.0, keyword_score + expected_score)
         return slot_scores
+
+    def _classify_value_chain_link(self, segment: str) -> dict[str, Any]:
+        domain_scores = self._classify_policy_domain(segment)
+        policy_area_id = self._select_policy_area(domain_scores)
+        segment_data: dict[str, Any] = {"expected_elements_signals": {}}
+        slot_scores = self._score_base_slots(segment, policy_area_id, segment_data)
+        matched_slots = sorted(
+            slot for slot, score in slot_scores.items() if score >= self._slot_thresholds[slot]
+        )
+        best_slot: str | None = None
+        best_score = 0.0
+        if slot_scores:
+            best_score = max(slot_scores.values())
+            if best_score > 0.0:
+                best_slots = sorted(slot for slot, score in slot_scores.items() if score == best_score)
+                best_slot = best_slots[0] if best_slots else None
+        return {
+            "best_slot": best_slot,
+            "best_score": best_score,
+            "matched_slots": matched_slots,
+            "slot_scores": slot_scores,
+            "policy_area_id": policy_area_id,
+            "expected_elements_signals": segment_data["expected_elements_signals"],
+        }
+
+    def _classify_cross_cutting_themes(self, segment: str) -> dict[str, float]:
+        _ = segment
+        return {}
 
     
     def _classify_policy_domain(self, segment: str) -> dict[str, float]:
@@ -1427,8 +1533,22 @@ class PerformanceAnalyzer:
             "value_chain_metrics": {},
             "bottleneck_analysis": {},
             "operational_loss_functions": {},
-            "optimization_recommendations": []
+            "optimization_recommendations": [],
+            "benchmarks": {},
         }
+
+        segmentation = semantic_cube.get("metadata", {}).get("segmentation", {})
+        theoretical_max_segments = segmentation.get("theoretical_max_segments_per_slot")
+        if not isinstance(theoretical_max_segments, int):
+            total_segments = semantic_cube.get("metadata", {}).get("total_segments", 0)
+            if not isinstance(total_segments, int):
+                raise TypeError("semantic_cube.metadata.total_segments must be an int")
+            theoretical_max_segments = (
+                int(math.ceil(total_segments / len(ALL_BASE_SLOTS))) if total_segments > 0 else 0
+            )
+
+        efficiency_scores: list[float] = []
+        throughputs: list[float] = []
 
         for dim_id, dim in VALUE_CHAIN_DIMENSIONS.items():
             for var_name, var in dim["analytical_variables"].items():
@@ -1436,9 +1556,12 @@ class PerformanceAnalyzer:
                 expected_elements = var.get("expected_elements", [])
                 slot_segments = semantic_cube["dimensions"]["base_slots"][slot]
 
-                metrics = self._calculate_throughput_metrics(slot, slot_segments, expected_elements)
+                metrics = self._calculate_throughput_metrics(
+                    slot, slot_segments, expected_elements, theoretical_max_segments
+                )
                 bottlenecks = self._detect_bottlenecks(slot, slot_segments, expected_elements)
-                loss_functions = self._calculate_loss_functions(metrics)
+                efficiency_scores.append(float(metrics["efficiency_score"]))
+                throughputs.append(float(metrics["throughput"]))
 
                 performance_analysis["value_chain_metrics"][slot] = {
                     **metrics,
@@ -1447,7 +1570,19 @@ class PerformanceAnalyzer:
                     "base_slot": slot,
                 }
                 performance_analysis["bottleneck_analysis"][slot] = bottlenecks
-                performance_analysis["operational_loss_functions"][slot] = loss_functions
+
+        target_efficiency = self._percentile(efficiency_scores, 75.0)
+        target_throughput = self._percentile(throughputs, 75.0)
+        performance_analysis["benchmarks"] = {
+            "target_efficiency": target_efficiency,
+            "target_throughput": target_throughput,
+            "percentile": 75.0,
+        }
+
+        for slot, metrics in performance_analysis["value_chain_metrics"].items():
+            performance_analysis["operational_loss_functions"][slot] = self._calculate_loss_functions(
+                metrics, target_throughput=target_throughput, target_efficiency=target_efficiency
+            )
 
         # Generate recommendations
         performance_analysis["optimization_recommendations"] = self._generate_recommendations(
@@ -1465,6 +1600,7 @@ class PerformanceAnalyzer:
         slot: str,
         segments: list[dict[str, Any]],
         expected_elements: list[str],
+        theoretical_max_segments: int,
     ) -> dict[str, Any]:
         """Calculate throughput metrics for a base slot."""
 
@@ -1485,7 +1621,10 @@ class PerformanceAnalyzer:
         else:
             avg_coherence = sum(seg["coherence_score"] for seg in segments) / len(segments)
 
-        theoretical_max_segments = 50
+        if theoretical_max_segments <= 0:
+            raise ValueError(
+                f"Invalid theoretical_max_segments derived for slot {slot}: {theoretical_max_segments}"
+            )
         capacity_utilization = len(segments) / theoretical_max_segments
 
         # Efficiency score
@@ -1548,16 +1687,20 @@ class PerformanceAnalyzer:
         return bottleneck_analysis
 
     
-    def _calculate_loss_functions(self, metrics: dict[str, Any]) -> dict[str, Any]:
+    def _calculate_loss_functions(
+        self,
+        metrics: dict[str, Any],
+        *,
+        target_throughput: float,
+        target_efficiency: float,
+    ) -> dict[str, Any]:
         """Calculate operational loss functions."""
 
         # Throughput loss (quadratic)
-        target_throughput = 5.0
         throughput_gap = max(0, target_throughput - metrics["throughput"])
         throughput_loss = throughput_gap ** 2
 
         # Efficiency loss (exponential)
-        target_efficiency = 0.8 # Refactored
         efficiency_gap = max(0, target_efficiency - metrics["efficiency_score"])
 
         if np is not None:
@@ -1578,6 +1721,23 @@ class PerformanceAnalyzer:
             "time_loss": float(time_loss),
             "composite_loss": float(composite_loss)
         }
+
+    @staticmethod
+    def _percentile(values: list[float], percentile: float) -> float:
+        if not values:
+            return 0.0
+        if not 0.0 <= percentile <= 100.0:
+            raise ValueError(f"Invalid percentile: {percentile}")
+        sorted_values = sorted(values)
+        if len(sorted_values) == 1:
+            return float(sorted_values[0])
+        rank = (len(sorted_values) - 1) * (percentile / 100.0)
+        lo = int(math.floor(rank))
+        hi = int(math.ceil(rank))
+        if lo == hi:
+            return float(sorted_values[lo])
+        fraction = rank - lo
+        return float(sorted_values[lo] + (sorted_values[hi] - sorted_values[lo]) * fraction)
 
     
     def _generate_recommendations(self, performance_analysis: dict[str, Any]) -> list[dict[str, Any]]:

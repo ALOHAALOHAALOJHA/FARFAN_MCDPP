@@ -978,7 +978,7 @@ class Orchestrator:
         Raises:
             RuntimeError: If phase0_validation indicates gate failures
         """
-        from orchestration.factory import _validate_questionnaire_structure
+        from orchestration.questionnaire_validation import _validate_questionnaire_structure
         
         validate_phase_definitions(self.FASES, self.__class__)
         

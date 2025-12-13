@@ -42,7 +42,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import farfan_pipeline
-from farfan_pipeline.config.paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 
 if os.environ.get("PIPELINE_DEBUG"):
     print(f"DEBUG: farfan_pipeline loaded from {farfan_pipeline.__file__}", flush=True)
@@ -139,7 +139,7 @@ class VerifiedPipelineRunner:
 
         # Set questionnaire path (explicit input, SIN_CARRETA compliance)
         if questionnaire_path is None:
-            from farfan_pipeline.config.paths import QUESTIONNAIRE_FILE
+            from canonic_phases.Phase_zero.paths import QUESTIONNAIRE_FILE
 
             questionnaire_path = QUESTIONNAIRE_FILE
 

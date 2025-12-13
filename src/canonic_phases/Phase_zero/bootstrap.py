@@ -21,7 +21,7 @@ from typing import Any
 
 import structlog
 
-from farfan_pipeline.config.paths import CONFIG_DIR, DATA_DIR
+from canonic_phases.Phase_zero.paths import CONFIG_DIR, DATA_DIR
 from orchestration.factory import CanonicalQuestionnaire
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry

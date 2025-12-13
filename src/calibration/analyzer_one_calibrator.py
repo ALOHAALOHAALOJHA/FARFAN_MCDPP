@@ -16,7 +16,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from src.ontology.canonical_value_chain import VALUE_CHAIN_DIMENSIONS
+from ontology.canonical_value_chain import VALUE_CHAIN_DIMENSIONS
 
 
 ARTIFACT_ROOT = Path("artifacts/plan1")
@@ -38,7 +38,17 @@ def load_json(path: Path) -> Any:
 
 
 def resolve_patterns(monolith: Dict[str, Any], registry: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    registry_index = {item["id"]: item for item in registry.get("patterns", [])}
+    patterns_source: List[Dict[str, Any]]
+    if isinstance(registry, list):
+        patterns_source = registry
+    elif isinstance(registry, dict):
+        patterns_source = registry.get("patterns", [])
+    else:
+        raise TypeError(f"Unsupported pattern registry type: {type(registry).__name__}")
+
+    registry_index = {
+        (item.get("id") or item.get("pattern_id")): item for item in patterns_source if isinstance(item, dict)
+    }
     resolved: List[Dict[str, Any]] = []
     missing: List[str] = []
     pattern_usage = defaultdict(int)
@@ -54,7 +64,7 @@ def resolve_patterns(monolith: Dict[str, Any], registry: Dict[str, Any]) -> Tupl
                 resolved.append(
                     {
                         "pattern_ref": pattern_ref,
-                        "pattern_id_source": src.get("id"),
+                        "pattern_id_source": src.get("id") or src.get("pattern_id"),
                         "pattern_resolved": src.get("pattern"),
                         "match_type": src.get("match_type"),
                         "usage_count": src.get("usage_count", 0),
@@ -126,28 +136,38 @@ def compute_vocab_tokens(monolith_index: Dict[str, Any], unit_index: Dict[str, A
     tokens: List[str] = []
     for expected_list in monolith_index["expected_elements_by_base_slot"].values():
         for elem in expected_list:
-            tokens.extend(re.findall(r"[\\wáéíóúñ]+", elem.lower()))
+            elem_text: str | None = None
+            if isinstance(elem, str):
+                elem_text = elem
+            elif isinstance(elem, dict):
+                elem_type = elem.get("type")
+                if isinstance(elem_type, str):
+                    elem_text = elem_type
+            if elem_text:
+                tokens.extend(re.findall(r"[\wáéíóúñ]+", elem_text.lower()))
     for qids in monolith_index["questions_by_base_slot"].values():
         for qid in qids:
             pass  # no text content available here
     for header in unit_index.get("section_headers", []):
-        tokens.extend(re.findall(r"[\\wáéíóúñ]+", header.lower()))
+        tokens.extend(re.findall(r"[\wáéíóúñ]+", header.lower()))
     for cols in unit_index.get("table_columns", {}).values():
         for col in cols:
-            tokens.extend(re.findall(r"[\\wáéíóúñ]+", col.lower()))
+            tokens.extend(re.findall(r"[\wáéíóúñ]+", col.lower()))
     for conn in unit_index.get("causal_connectors", []):
-        tokens.extend(re.findall(r"[\\wáéíóúñ]+", conn.lower()))
+        tokens.extend(re.findall(r"[\wáéíóúñ]+", conn.lower()))
     for tmp in unit_index.get("temporal_expressions", []):
-        tokens.extend(re.findall(r"[\\wáéíóúñ]+", tmp.lower()))
+        tokens.extend(re.findall(r"[\wáéíóúñ]+", tmp.lower()))
     for dim in VALUE_CHAIN_DIMENSIONS.values():
         for kw in dim.get("keywords_general", []):
-            tokens.extend(re.findall(r"[\\wáéíóúñ]+", kw.lower()))
+            tokens.extend(re.findall(r"[\wáéíóúñ]+", kw.lower()))
     return tokens
 
 
 def compute_vectorizer_params(tokens: List[str]) -> Dict[str, Any]:
     vocab = set(tokens)
     vocab_size = len(vocab)
+    if vocab_size == 0:
+        raise ValueError("Calibration failed: empty token vocabulary derived from repo data")
     alpha = 1 + (0 / vocab_size if vocab_size else 0)
     max_features = math.ceil(alpha * vocab_size) if vocab_size else 0
     phrase_lengths: List[int] = []
@@ -208,6 +228,35 @@ def calibrate_thresholds(monolith: Dict[str, Any], monolith_index: Dict[str, Any
     return thresholds
 
 
+def _expected_base_slots() -> List[str]:
+    return [
+        slot
+        for dim_id in sorted(VALUE_CHAIN_DIMENSIONS)
+        for slot in VALUE_CHAIN_DIMENSIONS[dim_id]["base_slots"]
+    ]
+
+
+def _build_thresholds_by_base_slot(thresholds_detail: Dict[str, Any]) -> Dict[str, float]:
+    expected = _expected_base_slots()
+    missing = [slot for slot in expected if slot not in thresholds_detail]
+    if missing:
+        raise KeyError(f"Missing thresholds for base slots: {missing}")
+
+    thresholds_by_slot: Dict[str, float] = {}
+    for slot in expected:
+        entry = thresholds_detail[slot]
+        if not isinstance(entry, dict) or not entry.get("success"):
+            raise ValueError(f"Threshold calibration failed for slot {slot}: {entry}")
+        raw = entry.get("threshold")
+        if not isinstance(raw, (int, float)):
+            raise TypeError(f"Invalid threshold type for slot {slot}: {type(raw).__name__}")
+        value = float(raw)
+        if not 0.0 <= value <= 1.0:
+            raise ValueError(f"Invalid threshold range for slot {slot}: {value}")
+        thresholds_by_slot[slot] = value
+    return thresholds_by_slot
+
+
 def write_json(path: Path, payload: Dict[str, Any]) -> None:
     _ensure_dir(path.parent)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -234,15 +283,19 @@ def run_pipeline(
 
     tokens = compute_vocab_tokens(monolith_index, unit_index if isinstance(unit_index, dict) else {})
     vec_params = compute_vectorizer_params(tokens)
-    thresholds = calibrate_thresholds(monolith, monolith_index, vec_params)
+    thresholds_detail = calibrate_thresholds(monolith, monolith_index, vec_params)
+    thresholds_by_base_slot = _build_thresholds_by_base_slot(thresholds_detail)
     calibration = {
         "inputs": {
             "monolith_hash": _sha256_file(monolith_path),
             "pattern_registry_hash": _sha256_file(registry_path),
             "pdt_analysis_report_hash": _sha256_file(pdt_report_path) if pdt_report_path.exists() else None,
         },
+        "max_features": vec_params["max_features"],
+        "ngram_range": vec_params["ngram_range"],
+        "thresholds_by_base_slot": thresholds_by_base_slot,
         "vectorizer": vec_params,
-        "thresholds": thresholds,
+        "thresholds_detail_by_base_slot": thresholds_detail,
     }
     write_json(CAL_ROOT / "analyzer_one_calibration.json", calibration)
     value_chain_quant = {
