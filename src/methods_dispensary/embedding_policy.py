@@ -58,23 +58,21 @@ MODEL_PARAPHRASE_MULTILINGUAL = "sentence-transformers/paraphrase-multilingual-m
 
 class PolicyDomain(Enum):
     """
-    Colombian PDM policy areas (PA01-PA10) per canonical notation.
+    Policy areas (PA01-PA10) per canonical notation.
 
-    Values are loaded from questionnaire_monolith.json canonical_notation.
-    Use CanonicalPolicyArea from farfan_core.core.canonical_notation for dynamic access.
+    Values are aligned with questionnaire_monolith.json canonical_notation.policy_areas.
     """
 
-    # Legacy IDs mapped to canonical codes for backward compatibility
-    P1 = "PA01"  # Derechos de las mujeres e igualdad de género
-    P2 = "PA02"  # Prevención de la violencia y protección frente al conflicto
-    P3 = "PA03"  # Ambiente sano, cambio climático, prevención y atención a desastres
-    P4 = "PA04"  # Derechos económicos, sociales y culturales
-    P5 = "PA05"  # Derechos de las víctimas y construcción de paz
-    P6 = "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud
-    P7 = "PA07"  # Tierras y territorios
-    P8 = "PA08"  # Líderes y defensores de derechos humanos
-    P9 = "PA09"  # Crisis de derechos de personas privadas de la libertad
-    P10 = "PA10"  # Migración transfronteriza
+    PA01 = "PA01"  # Derechos de las mujeres e igualdad de género
+    PA02 = "PA02"  # Prevención de la violencia y protección frente al conflicto armado
+    PA03 = "PA03"  # Ambiente sano, cambio climático, prevención y atención a desastres
+    PA04 = "PA04"  # Derechos económicos, sociales y culturales
+    PA05 = "PA05"  # Derechos de las víctimas y construcción de paz
+    PA06 = "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud
+    PA07 = "PA07"  # Tierras y territorios
+    PA08 = "PA08"  # Líderes y defensores de derechos humanos
+    PA09 = "PA09"  # Crisis de derechos de personas privadas de la libertad
+    PA10 = "PA10"  # Migración transfronteriza
 
 class AnalyticalDimension(Enum):
     """
@@ -92,13 +90,13 @@ class AnalyticalDimension(Enum):
     D6 = "DIM06"  # CAUSALIDAD - Teoría de Cambio
 
 class PDQIdentifier(TypedDict):
-    """Canonical P-D-Q identifier structure."""
+    """Canonical identifier structure for policy, dimension, and question."""
 
-    question_unique_id: str  # P#-D#-Q#
-    policy: str  # P#
-    dimension: str  # D#
-    question: int  # Q#
-    rubric_key: str  # D#-Q#
+    question_unique_id: str  # PAxx-DIMxx-Qnnn
+    policy: str  # PAxx
+    dimension: str  # DIMxx
+    question: int  # Numeric question index
+    rubric_key: str  # DIMxx-Qnnn
 
 class PosteriorSampleRecord(TypedDict):
     """Serializable posterior sample used by downstream Bayesian consumers."""
@@ -1917,17 +1915,17 @@ def example_pdm_analysis() -> None:
     chunks = embedder.process_document(pdm_document, metadata)
     print(f"   Generated {len(chunks)} semantic chunks")
 
-    # Define P-D-Q query
+    # Define policy-dimension-question query
     pdq_query = PDQIdentifier(
-        question_unique_id="P1-D1-Q3",
-        policy="P1",
-        dimension="D1",
+        question_unique_id="PA01-DIM01-Q003",
+        policy="PA01",
+        dimension="DIM01",
         question=3,
-        rubric_key="D1-Q3",
+        rubric_key="DIM01-Q003",
     )
 
-    print(f"\n2. ANALYZING P-D-Q: {pdq_query['question_unique_id']}")
-    print(f"   Policy: {PolicyDomain.P1.value}")
+    print(f"\n2. ANALYZING PA-DIM-Q: {pdq_query['question_unique_id']}")
+    print(f"   Policy: {PolicyDomain.PA01.value}")
     print(f"   Dimension: {AnalyticalDimension.D1.value}")
 
     # Generate comprehensive report

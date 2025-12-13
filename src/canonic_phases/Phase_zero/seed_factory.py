@@ -186,8 +186,8 @@ def create_deterministic_seed(
     Example:
         >>> seed = create_deterministic_seed(
         ...     "run-001",
-        ...     question_id="P1-D1-Q001",
-        ...     policy_area="P1"
+        ...     question_id="Q001",
+        ...     policy_area_id="PA01"
         ... )
     """
     factory = SeedFactory()

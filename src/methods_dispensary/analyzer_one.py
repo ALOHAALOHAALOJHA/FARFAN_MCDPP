@@ -82,7 +82,6 @@ except ImportError as e:
 POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     "PA01": {
         "id": "PA01",
-        "legacy_id": "P1",
         "name": "Derechos de las mujeres e igualdad de género",
         "cluster_id": "CL02",
         "keywords": [
@@ -141,7 +140,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA02": {
         "id": "PA02",
-        "legacy_id": "P2",
         "name": "Prevención de la violencia y protección frente al conflicto",
         "cluster_id": "CL01",
         "keywords": [
@@ -197,7 +195,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA03": {
         "id": "PA03",
-        "legacy_id": "P3",
         "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
         "cluster_id": "CL01",
         "keywords": [
@@ -255,7 +252,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA04": {
         "id": "PA04",
-        "legacy_id": "P4",
         "name": "Derechos económicos, sociales y culturales",
         "cluster_id": "CL03",
         "keywords": [
@@ -314,7 +310,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA05": {
         "id": "PA05",
-        "legacy_id": "P5",
         "name": "Derechos de las víctimas y construcción de paz",
         "cluster_id": "CL02",
         "keywords": [
@@ -365,7 +360,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA06": {
         "id": "PA06",
-        "legacy_id": "P6",
         "name": "Derecho al buen futuro de la niñez, adolescencia, juventud",
         "cluster_id": "CL02",
         "keywords": [
@@ -415,7 +409,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA07": {
         "id": "PA07",
-        "legacy_id": "P7",
         "name": "Tierras y territorios",
         "cluster_id": "CL01",
         "keywords": [
@@ -460,7 +453,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA08": {
         "id": "PA08",
-        "legacy_id": "P8",
         "name": "Líderes y defensores de derechos humanos",
         "cluster_id": "CL03",
         "keywords": [
@@ -505,7 +497,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA09": {
         "id": "PA09",
-        "legacy_id": "P9",
         "name": "Crisis de derechos de personas privadas de la libertad",
         "cluster_id": "CL04",
         "keywords": [
@@ -561,7 +552,6 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     },
     "PA10": {
         "id": "PA10",
-        "legacy_id": "P10",
         "name": "Migración transfronteriza",
         "cluster_id": "CL04",
         "keywords": [
@@ -2713,7 +2703,7 @@ class DocumentProcessor:
 
     @staticmethod
     def _default_policy_area_id(legacy_policy_area: str) -> str:
-        """Convert legacy policy-area code (e.g., P1) into canonical PAxx format."""
+        """Convert legacy policy-area code into canonical PAxx format."""
 
         if isinstance(legacy_policy_area, str) and legacy_policy_area.startswith("P"):
             try:

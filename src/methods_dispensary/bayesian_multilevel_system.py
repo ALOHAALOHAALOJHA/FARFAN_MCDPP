@@ -722,7 +722,7 @@ class BayesianRollUp:
 @dataclass
 class ContradictionDetection:
     """Detected contradiction between levels"""
-    level_a: str  # e.g., "micro:P1-D1-Q1"
+    level_a: str  # e.g., "micro:Q001"
     level_b: str  # e.g., "meso:CL01"
     score_a: float
     score_b: float

@@ -130,21 +130,35 @@ class PolicyArea(Enum):
     Enfoque de derechos humanos en contexto colombiano y PDET.
     """
     PA01 = "PA01"  # Derechos de las mujeres e igualdad de género
-    PA02 = "PA02"  # Prevención de la violencia y protección frente al conflicto
-    PA03 = "PA03"  # Ambiente sano, cambio climático, prevención de desastres
-    PA04 = "PA04"  # Derechos económicos, sociales y culturales (DESC)
+    PA02 = "PA02"  # Prevención de la violencia y protección frente al conflicto armado
+    PA03 = "PA03"  # Ambiente sano, cambio climático, prevención y atención a desastres
+    PA04 = "PA04"  # Derechos económicos, sociales y culturales
     PA05 = "PA05"  # Derechos de las víctimas y construcción de paz
-    PA06 = "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud
-    PA07 = "PA07"  # Tierras y territorios (Reforma Rural Integral - RRI)
-    PA08 = "PA08"  # Líderes y defensores de derechos humanos
+    PA06 = "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores
+    PA07 = "PA07"  # Tierras y territorios
+    PA08 = "PA08"  # Líderes y lideresas, defensores y defensoras de derechos humanos
     PA09 = "PA09"  # Crisis de derechos de personas privadas de la libertad
-    PA10 = "PA10"  # Enfoque étnico-diferencial (indígenas, afro, comunidades)
+    PA10 = "PA10"  # Migración transfronteriza
 
     @classmethod
     def from_legacy(cls, legacy_id: str) -> "PolicyArea":
-        """Convierte P1-P10 a PA01-PA10."""
-        mapping = {f"P{i}": getattr(cls, f"PA{i:02d}") for i in range(1, 11)}
-        return mapping.get(legacy_id, cls.PA01)
+        """Convert legacy policy area id into canonical PolicyArea."""
+        from farfan_pipeline.core.policy_area_canonicalization import (
+            canonicalize_policy_area_id,
+            is_legacy_policy_area_id,
+        )
+
+        if not is_legacy_policy_area_id(legacy_id):
+            raise ValueError("Invalid legacy policy area id")
+
+        return cls(canonicalize_policy_area_id(legacy_id))
+
+    @classmethod
+    def canonicalize(cls, policy_area_id: str) -> "PolicyArea":
+        """Parse legacy or canonical id into canonical PolicyArea."""
+        from farfan_pipeline.core.policy_area_canonicalization import canonicalize_policy_area_id
+
+        return cls(canonicalize_policy_area_id(policy_area_id))
 
 
 class MarcadorContextual(Enum):

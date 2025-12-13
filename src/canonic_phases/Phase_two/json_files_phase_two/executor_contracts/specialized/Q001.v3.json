@@ -375,8 +375,8 @@
       "territorial_scope"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -454,16 +454,24 @@
       {
         "target": "evidence_graph",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "text_mining.diagnose_critical_links",
+          "text_mining.analyze_link_text",
+          "industrial_policy.process",
+          "industrial_policy.extract_point_evidence",
+          "causal_extraction.extract_goals",
+          "causal_extraction.parse_goal_context",
+          "financial_audit.parse_amount",
+          "pdet_analysis.extract_financial_amounts",
+          "pdet_analysis.extract_from_budget_table",
+          "contradiction_detection.extract_quantitative_claims",
+          "contradiction_detection.parse_number",
+          "bayesian_analysis.evaluate_policy_metric",
+          "bayesian_analysis.compare_policies",
+          "semantic_processing.chunk_text",
+          "semantic_processing.embed_single"
         ],
         "merge_strategy": "graph_construction",
-        "description": "EvidenceNexus transforms method outputs into EvidenceNode objects with SHA-256 hashing and builds causal evidence graph"
+        "description": "EvidenceNexus transforms ALL 17 method outputs into EvidenceNode objects with SHA-256 hashing and builds causal evidence graph"
       },
       {
         "target": "relationships",
@@ -1599,7 +1607,7 @@
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
           "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceAssembler. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
+          "evidence_fusion": "Evidence from all 17 methods is transformed into EvidenceNode objects by EvidenceNexus. Overlapping evidence (same content hash) is deduplicated via SHA-256. Belief masses are combined via Dempster-Shafer fusion, confidence intervals via belief propagation.",
           "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
           "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
           "trade_offs": [
@@ -1970,7 +1978,7 @@
           "type": "fuentes_oficiales",
           "value": "DANE",
           "confidence": 0.95,
-          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
+          "source_method": "industrial_policy.extract_point_evidence",
           "source_sentence": "según datos de DANE para el año 2022",
           "sentence_id": 45,
           "position": {
@@ -1985,7 +1993,7 @@
           "normalized_value": 12.3,
           "unit": "%",
           "confidence": 0.89,
-          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
+          "source_method": "contradiction_detection.extract_quantitative_claims",
           "bayesian_posterior": {
             "mean": 0.123,
             "ci_95": [
@@ -2004,14 +2012,14 @@
             2022
           ],
           "confidence": 0.92,
-          "source_method": "TextMiningEngine.diagnose_critical_links"
+          "source_method": "text_mining.diagnose_critical_links"
         },
         {
           "element_id": "E-004",
           "type": "cobertura_territorial_especificada",
           "coverage": "municipal - zona rural y urbana",
           "confidence": 0.88,
-          "source_method": "CausalExtractor._parse_goal_context"
+          "source_method": "causal_extraction.parse_goal_context"
         }
       ],
       "elements_summary": {

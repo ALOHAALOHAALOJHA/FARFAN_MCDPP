@@ -230,8 +230,8 @@
       "territorial_scope"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
   },
   "evidence_assembly": {
     "module": "farfan_core.core.orchestrator.evidence_assembler",
@@ -276,16 +276,21 @@
       {
         "target": "elements_found",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "operationalizationauditor.audit_direct_evidence",
+          "operationalizationauditor.audit_systemic_risk",
+          "financial_audit.detect_allocation_gaps",
+          "bayesianmechanisminference.detect_gaps",
+          "pdet_analysis.generate_optimal_remediations",
+          "pdet_analysis.simulate_intervention",
+          "bayesiancounterfactualauditor.counterfactual_query",
+          "bayesiancounterfactualauditor.test_effect_stability",
+          "contradiction_detection.detect_numerical_inconsistencies",
+          "contradiction_detection.calculate_numerical_divergence",
+          "bayesianconfidencecalculator.calculate_posterior",
+          "performanceanalyzer.analyze_performance"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine all evidence elements from 12 method invocations"
       },
       {
         "target": "confidence_scores",
@@ -300,12 +305,12 @@
       {
         "target": "pattern_matches",
         "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
+          "operationalizationauditor.patterns",
+          "contradiction_detection.patterns"
         ],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from text mining methods"
+        "description": "Combine pattern matches from analysis methods"
       },
       {
         "target": "metadata",
@@ -313,7 +318,7 @@
           "*.metadata"
         ],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from all 12 methods for full traceability"
       }
     ]
   },
@@ -337,12 +342,12 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q272"
+          "const": "Q002"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 272
+          "const": 2
         },
         "policy_area_id": {
           "type": [
@@ -350,7 +355,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [
@@ -358,7 +363,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM01"
         },
         "cluster_id": {
           "type": [
@@ -411,8 +416,8 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Análisis D1-Q2: Cuantificación de Brecha de Género y Vacíos de Datos",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la cuantificación de brecha de género y el reconocimiento de vacíos de datos, identificando **{evidence.elements_found_count}** elementos de evidencia. Q002 evalúa si el texto dimensiona el problema cuantificando déficits y limitaciones de información.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
@@ -1087,10 +1092,12 @@
         "must_contain": {
           "count": 1,
           "elements": [
-            "cobertura_territorial_especificada"
+            "cuantificacion_brecha",
+            "sesgos_reconocidos",
+            "vacios_explicitos"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "description": "Required elements aligned with question_context.expected_elements for D1-Q2"
       },
       {
         "field": "elements_found",
@@ -1110,12 +1117,12 @@
           },
           {
             "elements": [
-              "series_temporales_años"
+              "cobertura_territorial_especificada"
             ],
-            "minimum": 3
+            "minimum": 1
           }
         ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "description": "Recommended elements for comprehensive D1-Q2 evidence (non-blocking)"
       }
     ]
   },

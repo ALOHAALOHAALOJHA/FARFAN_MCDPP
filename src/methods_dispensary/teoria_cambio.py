@@ -1155,7 +1155,7 @@ class IndustrialGradeValidator:
 
 def create_policy_theory_of_change_graph() -> AdvancedDAGValidator:
     """
-    Construye un grafo causal de demostración alineado con la política P1:
+    Construye un grafo causal de demostración alineado con el área PA01:
     "Derechos de las mujeres e igualdad de género".
     """
     validator = AdvancedDAGValidator(graph_type=GraphType.THEORY_OF_CHANGE)
@@ -1184,7 +1184,7 @@ def create_policy_theory_of_change_graph() -> AdvancedDAGValidator:
         role="causalidad",
     )
 
-    LOGGER.info("Grafo de demostración para la política 'P1' construido.")
+    LOGGER.info("Grafo de demostración para el área 'PA01' construido.")
     return validator
 
 

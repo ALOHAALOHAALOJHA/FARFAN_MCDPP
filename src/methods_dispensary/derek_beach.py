@@ -1363,7 +1363,7 @@ class CausalExtractor:
 
         Harmonic Front 3 - Enhancement 4: Language Specificity Assessment
         Enhanced to check policy-specific vocabulary (patrones_verificacion) for current
-        Policy Area (P1–P10), not just generic causal keywords.
+        Policy Area (PA01–PA10), not just generic causal keywords.
 
         For D6-Q5 (Contextual/Differential Focus): rewards use of specialized terminology
         that anchors intervention in social/cultural context (e.g., "catastro multipropósito",
@@ -1390,49 +1390,106 @@ class CausalExtractor:
         # HARMONIC FRONT 3 - Enhancement 4: Policy-specific vocabulary boost
         # Check for specialized terminology per policy area
         policy_area_vocabulary = {
-            'P1': [  # Ordenamiento Territorial
-                'catastro multipropósito', 'pot', 'pbot', 'eot', 'uaf', 'suelo de protección',
-                'zonificación', 'uso del suelo', 'densificación', 'expansión urbana'
+            "PA01": [
+                "violencia basada en género",
+                "feminicidio",
+                "brecha salarial",
+                "economía del cuidado",
+                "comisaría de familia",
+                "casa de refugio",
+                "ruta de atención",
+                "secretaría de la mujer",
             ],
-            'P2': [  # Víctimas y Paz
-                'reparación integral', 'restitución de tierras', 'víctimas del conflicto',
-                'desplazamiento forzado', 'despojo', 'acción integral', 'enfoque diferencial étnico',
-                'construcción de paz', 'reconciliación', 'memoria histórica'
+            "PA02": [
+                "conflicto armado",
+                "alertas tempranas",
+                "defensoría del pueblo",
+                "reclutamiento forzado",
+                "minas antipersonal",
+                "grupos armados",
+                "extorsión",
+                "desaparición forzada",
             ],
-            'P3': [  # Desarrollo Rural
-                'mujeres rurales', 'extensión agropecuaria', 'asistencia técnica rural',
-                'adecuación de tierras', 'comercialización campesina', 'economía campesina',
-                'soberanía alimentaria', 'fondo de tierras'
+            "PA03": [
+                "páramos",
+                "humedales",
+                "áreas protegidas",
+                "servicios ecosistémicos",
+                "restauración ecológica",
+                "cambio climático",
+                "mitigación",
+                "adaptación climática",
             ],
-            'P4': [  # Grupos Étnicos
-                'guardia indígena', 'guardia cimarrona', 'territorios colectivos',
-                'autoridades ancestrales', 'consulta previa', 'consentimiento libre',
-                'medicina tradicional', 'sistema de salud propio indígena', 'jurisdicción especial indígena'
+            "PA04": [
+                "vías terciarias",
+                "conectividad digital",
+                "internet rural",
+                "electrificación rural",
+                "atención primaria",
+                "vivienda de interés social",
+                "microcrédito",
+                "empleo",
             ],
-            'P5': [  # Infraestructura y Conectividad
-                'terciarias', 'vías terciarias', 'transporte intermodal', 'último kilómetro',
-                'conectividad digital', 'internet rural', 'electrificación rural'
+            "PA05": [
+                "reparación integral",
+                "restitución de tierras",
+                "víctimas del conflicto",
+                "desplazamiento forzado",
+                "memoria histórica",
+                "construcción de paz",
+                "reconciliación",
+                "ley 1448",
             ],
-            'P6': [  # Salud Rural
-                'red hospitalaria', 'atención primaria', 'promotores de salud',
-                'prevención de enfermedades tropicales', 'saneamiento básico', 'agua segura'
+            "PA06": [
+                "primera infancia",
+                "niñez",
+                "adolescencia",
+                "juventud",
+                "entornos protectores",
+                "embarazo adolescente",
+                "nutrición",
+                "protección integral",
             ],
-            'P7': [  # Educación Rural
-                'escuela nueva', 'modelos flexibles', 'post-primaria rural',
-                'educación propia', 'alfabetización', 'deserción escolar rural'
+            "PA07": [
+                "catastro multipropósito",
+                "titulación predial",
+                "uso del suelo",
+                "zonificación",
+                "pot",
+                "pbot",
+                "eot",
+                "territorios colectivos",
             ],
-            'P8': [  # Vivienda y Habitabilidad
-                'mejoramiento de vivienda rural', 'materiales locales', 'construcción sostenible',
-                'vivienda de interés social rural', 'titulación predial'
+            "PA08": [
+                "líder social",
+                "lideresa",
+                "defensor de derechos humanos",
+                "amenazas",
+                "unidad nacional de protección",
+                "medidas de protección",
+                "protección colectiva",
+                "alerta temprana",
             ],
-            'P9': [  # Medio Ambiente
-                'páramos', 'humedales', 'áreas protegidas', 'corredores biológicos',
-                'servicios ecosistémicos', 'pago por servicios ambientales', 'restauración ecológica'
+            "PA09": [
+                "personas privadas de la libertad",
+                "cárcel",
+                "hacinamiento",
+                "inpec",
+                "resocialización",
+                "condiciones de reclusión",
+                "derecho penitenciario",
+                "centro carcelario",
             ],
-            'P10': [  # Reactivación Económica
-                'encadenamientos productivos', 'economía solidaria', 'cooperativas',
-                'microcrédito', 'emprendimiento asociativo', 'fondo rotatorio'
-            ]
+            "PA10": [
+                "migración",
+                "migrante",
+                "frontera",
+                "regularización",
+                "permiso por protección temporal",
+                "refugio",
+                "tránsito",
+                "integración socioeconómica",
+            ],
         }
 
         # General contextual/differential focus vocabulary (D6-Q5)
@@ -6261,7 +6318,7 @@ def main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Ejemplo de uso:
-  python cdaf_framework.py documento.pdf --output-dir resultados/ --policy-code P1
+  python cdaf_framework.py documento.pdf --output-dir resultados/ --policy-code PA01
 
 Configuración:
   El framework busca config.yaml en el directorio actual.
@@ -6286,7 +6343,7 @@ Configuración:
         "--policy-code",
         type=str,
         required=True,
-        help="Código de política para nombrar los artefactos (ej: P1, PDT_2024)"
+        help="Código para nombrar artefactos (ej: PA01, PDT_2024)"
     )
 
     parser.add_argument(
@@ -6311,6 +6368,12 @@ Configuración:
 
     args = parser.parse_args()
 
+    from farfan_pipeline.core.policy_area_canonicalization import (
+        canonicalize_policy_area_id,
+        is_canonical_policy_area_id,
+        is_legacy_policy_area_id,
+    )
+
     # Validate inputs
     if not args.pdf_path.exists():
         print(f"ERROR: Archivo PDF no encontrado: {args.pdf_path}")
@@ -6329,7 +6392,11 @@ Configuración:
         return 1
 
     # Process document
-    success = framework.process_document(args.pdf_path, args.policy_code)
+    policy_code = args.policy_code
+    if is_legacy_policy_area_id(policy_code) or is_canonical_policy_area_id(policy_code):
+        policy_code = canonicalize_policy_area_id(policy_code)
+
+    success = framework.process_document(args.pdf_path, policy_code)
 
     return 0 if success else 1
 
