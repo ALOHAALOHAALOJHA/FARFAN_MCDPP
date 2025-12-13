@@ -77,8 +77,802 @@ logging.basicConfig(
 )
 
 # ============================================================================
-# CONSTANTS
+# CANONICAL CONSTANTS FROM GUIDES
 # ============================================================================
+
+MICRO_LEVELS = {
+    "EXCELENTE": 0.85,
+    "BUENO": 0.70,
+    "ACEPTABLE": 0.55,
+    "INSUFICIENTE": 0.00
+}
+
+CANON_POLICY_AREAS = {
+    "PA01": {
+        "name": "Derechos de las mujeres e igualdad de género",
+        "legacy": "P1",
+        "keywords": [
+            # Core concepts
+            "género", "mujer", "mujeres", "igualdad de género", "equidad de género",
+            # Violence and protection
+            "violencia basada en género", "VBG", "feminicidio", "violencia intrafamiliar",
+            "violencia sexual", "violencia económica", "violencia psicológica",
+            # Economic rights
+            "brecha salarial", "participación laboral", "emprendimiento femenino",
+            "economía del cuidado", "trabajo no remunerado",
+            # Political participation
+            "participación política", "liderazgo femenino", "paridad", "cuotas de género",
+            # Health and rights
+            "salud sexual y reproductiva", "derechos reproductivos", "mortalidad materna",
+            # Data sources
+            "DANE", "Medicina Legal", "SIVIGILA", "SISPRO", "Fiscalía"
+        ]
+    },
+    "PA02": {
+        "name": "Prevención de la violencia y protección frente al conflicto",
+        "legacy": "P2",
+        "keywords": [
+            # Conflict and violence
+            "conflicto armado", "violencia", "prevención", "protección",
+            # Human rights violations
+            "derechos humanos", "DIH", "derecho internacional humanitario",
+            "violaciones a derechos humanos", "crímenes de guerra",
+            # Early warning
+            "alertas tempranas", "SAT", "sistema de alertas", "riesgo",
+            # Armed groups
+            "grupos armados", "desmovilización", "reintegración",
+            # Protection mechanisms
+            "medidas de protección", "rutas de protección", "UNP",
+            # Victims
+            "víctimas", "afectados", "población vulnerable"
+        ]
+    },
+    "PA03": {
+        "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "legacy": "P3",
+        "keywords": [
+            # Environmental rights
+            "ambiente sano", "medio ambiente", "ambiental", "sostenible", "sostenibilidad",
+            # Climate change
+            "cambio climático", "adaptación climática", "mitigación", "emisiones",
+            "gases de efecto invernadero", "carbono neutral",
+            # Ecosystems
+            "ecosistemas", "biodiversidad", "conservación", "áreas protegidas",
+            "páramos", "humedales", "bosques",
+            # Disasters
+            "desastres", "gestión del riesgo", "prevención de desastres",
+            "atención de emergencias", "resiliencia",
+            # Water and resources
+            "recursos hídricos", "cuencas", "agua potable", "saneamiento básico",
+            # Institutions
+            "CAR", "CRC", "Corporación Autónoma Regional", "IDEAM", "MinAmbiente"
+        ]
+    },
+    "PA04": {
+        "name": "Derechos económicos, sociales y culturales",
+        "legacy": "P4",
+        "keywords": [
+            # Economic rights
+            "derechos económicos", "DESC", "desarrollo económico", "empleo", "trabajo decente",
+            # Infrastructure
+            "infraestructura", "vías", "conectividad", "transporte", "movilidad",
+            # Basic services
+            "servicios básicos", "acueducto", "alcantarillado", "energía eléctrica",
+            "gas natural", "telecomunicaciones", "internet",
+            # Social rights
+            "salud", "educación", "vivienda", "seguridad social",
+            # Cultural rights
+            "cultura", "patrimonio cultural", "identidad cultural", "diversidad cultural",
+            # Food security
+            "seguridad alimentaria", "soberanía alimentaria", "nutrición",
+            # Institutions
+            "MinSalud", "MinEducación", "MinVivienda", "MinTransporte"
+        ]
+    },
+    "PA05": {
+        "name": "Derechos de las víctimas y construcción de paz",
+        "legacy": "P5",
+        "keywords": [
+            # Victims' rights
+            "víctimas", "derechos de las víctimas", "reparación", "indemnización",
+            "restitución", "rehabilitación", "satisfacción", "garantías de no repetición",
+            # Peacebuilding
+            "construcción de paz", "paz territorial", "reconciliación", "convivencia",
+            "perdón", "memoria histórica",
+            # Truth and justice
+            "verdad", "justicia", "justicia transicional", "JEP",
+            "Jurisdicción Especial para la Paz", "CEV", "Comisión de la Verdad",
+            # Conflict resolution
+            "resolución de conflictos", "diálogo", "mediación", "conciliación",
+            # Reintegration
+            "reintegración", "desmovilización", "excombatientes", "DDR",
+            # Institutions
+            "Unidad de Víctimas", "UARIV", "Fiscalía", "Defensoría del Pueblo"
+        ]
+    },
+    "PA06": {
+        "name": "Derecho al buen futuro de la niñez, adolescencia, juventud",
+        "legacy": "P6",
+        "keywords": [
+            # Children and adolescents
+            "niñez", "niños", "niñas", "adolescencia", "adolescentes",
+            "primera infancia", "infancia",
+            # Youth
+            "juventud", "jóvenes", "adolescentes y jóvenes",
+            # Protection
+            "protección integral", "derechos de la niñez", "interés superior del niño",
+            "prevención de violencia", "abuso infantil", "explotación sexual",
+            # Development
+            "desarrollo integral", "educación", "salud infantil", "nutrición infantil",
+            "estimulación temprana", "desarrollo cognitivo",
+            # Participation
+            "participación juvenil", "consejos de juventud", "voz de los jóvenes",
+            # Opportunities
+            "oportunidades", "empleabilidad juvenil", "emprendimiento juvenil",
+            # Institutions
+            "ICBF", "Instituto Colombiano de Bienestar Familiar", "Comisarías de Familia"
+        ]
+    },
+    "PA07": {
+        "name": "Tierras y territorios",
+        "legacy": "P7",
+        "keywords": [
+            # Land rights
+            "tierras", "territorio", "territorial", "ordenamiento territorial",
+            "uso del suelo", "tenencia de la tierra", "propiedad rural",
+            # Planning
+            "POT", "Plan de Ordenamiento Territorial", "PBOT", "EOT",
+            "zonificación", "usos del suelo", "clasificación del suelo",
+            # Cadastre
+            "catastro", "gestión catastral", "actualización catastral", "avalúo catastral",
+            # Land restitution
+            "restitución de tierras", "despojo", "abandono forzado",
+            "Unidad de Restitución de Tierras",
+            # Rural development
+            "desarrollo rural", "reforma agraria", "acceso a tierras",
+            "formalización de la propiedad",
+            # Indigenous and afro territories
+            "territorios étnicos", "resguardos indígenas", "territorios colectivos",
+            "consulta previa", "autonomía territorial",
+            # Institutions
+            "ANT", "Agencia Nacional de Tierras", "IGAC", "Superintendencia de Notariado"
+        ]
+    },
+    "PA08": {
+        "name": "Líderes y defensores de derechos humanos",
+        "legacy": "P8",
+        "keywords": [
+            # Leaders and defenders
+            "líderes sociales", "liderazgo social", "defensores de derechos humanos",
+            "defensores", "activistas", "líderes comunitarios",
+            # Protection
+            "protección", "medidas de protección", "esquemas de seguridad",
+            "rutas de protección", "UNP", "Unidad Nacional de Protección",
+            # Threats and violence
+            "amenazas", "asesinatos", "homicidios", "agresiones", "intimidación",
+            "hostigamiento", "estigmatización",
+            # Types of defenders
+            "líderes ambientales", "líderes indígenas", "líderes afrodescendientes",
+            "líderes campesinos", "defensores de tierras", "defensores de mujeres",
+            # Prevention
+            "prevención", "alertas tempranas", "análisis de riesgo", "mapeo de riesgos",
+            # Justice
+            "investigación", "judicialización", "impunidad", "Fiscalía", "garantías"
+        ]
+    },
+    "PA09": {
+        "name": "Crisis de derechos de personas privadas de la libertad",
+        "legacy": "P9",
+        "keywords": [
+            # Prison population
+            "población privada de la libertad", "PPL", "personas privadas",
+            "reclusos", "internos", "detenidos",
+            # Facilities
+            "cárcel", "centro penitenciario", "establecimiento carcelario",
+            "INPEC", "Instituto Nacional Penitenciario y Carcelario",
+            # Crisis
+            "hacinamiento", "sobrepoblación carcelaria", "crisis carcelaria",
+            "condiciones inhumanas", "violación de derechos",
+            # Rights
+            "derechos humanos", "dignidad humana", "salud en prisión",
+            "alimentación", "visitas", "comunicación",
+            # Reintegration
+            "resocialización", "rehabilitación", "reinserción social",
+            "programas de tratamiento", "educación en prisión", "trabajo penitenciario",
+            # Justice
+            "justicia", "debido proceso", "medidas alternativas", "prisión domiciliaria",
+            # Institutions
+            "Defensoría del Pueblo", "Procuraduría", "Corte Constitucional"
+        ]
+    },
+    "PA10": {
+        "name": "Migración transfronteriza",
+        "legacy": "P10",
+        "keywords": [
+            # Migration
+            "migración", "migrante", "migrantes", "migración transfronteriza",
+            "flujos migratorios", "movilidad humana",
+            # Refugees and asylum
+            "refugiado", "refugiados", "solicitantes de asilo", "protección internacional",
+            "estatuto de refugiado",
+            # Venezuelan migration
+            "migración venezolana", "venezolanos", "éxodo venezolano",
+            # Border
+            "frontera", "zona de frontera", "paso fronterizo", "control migratorio",
+            # Regularization
+            "regularización", "documentación", "permisos", "PPT", "Permiso de Permanencia",
+            "PEP", "Permiso Especial de Permanencia", "TMF",
+            # Integration
+            "integración", "inclusión social", "acceso a servicios", "derechos de migrantes",
+            # Humanitarian
+            "crisis humanitaria", "asistencia humanitaria", "albergues", "atención humanitaria",
+            # Institutions
+            "Migración Colombia", "ACNUR", "OIM", "Organización Internacional para las Migraciones"
+        ]
+    }
+}
+
+PDT_PATTERNS = {
+    # ============================================================================
+    # SECTION DELIMITERS - Hierarchical structure patterns
+    # ============================================================================
+    "section_delimiters": re.compile(
+        r'^(?:'
+        # Major titles (H1)
+        r'CAPÍTULO\s+[IVX\d]+(?:\.|:)?\s*[A-ZÁÉÍÓÚÑ]|'
+        r'TÍTULO\s+[IVX\d]+(?:\.|:)?\s*[A-ZÁÉÍÓÚÑ]|'
+        r'PARTE\s+[IVX\d]+(?:\.|:)?\s*[A-ZÁÉÍÓÚÑ]|'
+        # Strategic lines (H2/H3)
+        r'Línea\s+[Ee]stratégica\s*[IVX\d]*(?:\.|:)?|'
+        r'Eje\s+[Ee]stratégico\s*[IVX\d]*(?:\.|:)?|'
+        r'Pilar\s*[IVX\d]*(?:\.|:)?|'
+        # Sectoral components (H3/H4)
+        r'Sector:\s*[\w\s]+|'
+        r'Programa:\s*[\w\s]+|'
+        # Numbered sections
+        r'\#{3,5}\s*\d+\.\d+|'  # Markdown headers
+        r'\d+\.\d+\.?\s+[A-ZÁÉÍÓÚÑ]|'  # Decimal numbering
+        r'\d+\.\s+[A-ZÁÉÍÓÚÑ]'  # Simple numbering
+        r')',
+        re.MULTILINE | re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # PRODUCT AND PROJECT CODES - MGA, BPIN, sectoral codes
+    # ============================================================================
+    "product_codes": re.compile(
+        r'(?:'
+        r'\b\d{7}\b|'  # 7-digit product codes
+        r'Cód\.\s*(?:Producto|Programa|indicador):\s*[\w\-]+|'
+        r'BPIN\s*:\s*\d{10,13}|'  # BPIN codes
+        r'Código\s+(?:MGA|de\s+Producto):\s*\d+|'
+        r'\b[MP][RIP]-\d{3}\b'  # Meta/Programa codes
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # INDICATOR MATRIX HEADERS - Planning matrices
+    # ============================================================================
+    "indicator_matrix_headers": re.compile(
+        r'(?:'
+        r'Línea\s+Estratégica|'
+        r'Cód\.\s*Programa|'
+        r'Cód\.\s*Producto|'
+        r'Cód\.\s*indicador|'
+        r'Programas\s+presupuestales|'
+        r'Indicadores?\s+(?:de\s+)?producto|'
+        r'Indicadores?\s+(?:de\s+)?resultado|'
+        r'Unidad\s+de\s+medida|'
+        r'Línea\s+base|'
+        r'Año\s+línea\s+base|'
+        r'Meta\s+(?:Total\s+)?(?:Cuatrienio|202[4-7])|'
+        r'Meta\s+de\s+(?:Producto|Resultado|Bienestar)|'
+        r'Fuente\s+de\s+información|'
+        r'Metas\s+de\s+producto'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # PPI (PLAN PLURIANUAL DE INVERSIONES) HEADERS
+    # ============================================================================
+    "ppi_headers": re.compile(
+        r'(?:'
+        r'TOTAL\s+202[4-7]|'
+        r'Costo\s+Total\s+Cuatrienio|'
+        r'Valor\s+total\s+inversión|'
+        r'Vigencia\s+202[4-7]|'
+        # Funding sources
+        r'SGP|Sistema\s+General\s+de\s+Participaciones|'
+        r'SGR|Sistema\s+General\s+de\s+Regalías|'
+        r'Regalías|'
+        r'Recursos\s+Propios|'
+        r'Otras\s+Fuentes|'
+        r'Fondo\s+subregional|'
+        r'Cooperación\s+internacional|'
+        # Financial categories
+        r'Gestión\s+e\s+inversión|'
+        r'Plan\s+Plurianual\s+de\s+Inversiones|'
+        r'PPI|POAI'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # CAUSAL CHAIN VOCABULARY - Theory of change language
+    # ============================================================================
+    "causal_connectors": re.compile(
+        r'(?:'
+        # Purpose connectors
+        r'con\s+el\s+fin\s+de|a\s+través\s+de|mediante|para\s+lograr|'
+        r'con\s+el\s+propósito\s+de|con\s+el\s+objetivo\s+de|'
+        # Causal connectors
+        r'contribuye\s+al\s+logro|cierre\s+de\s+brechas|permite|'
+        r'genera|produce|resulta\s+en|'
+        r'gracias\s+a|como\s+resultado\s+de|debido\s+a|porque|'
+        r'por\s+medio\s+de|permitirá|contribuirá\s+a|'
+        # Implementation verbs
+        r'implementar|realizar|desarrollar|adelantar|ejecutar|'
+        r'contempla\s+actividades|'
+        # Transformation language
+        r'transformación|desarrollo|mejora|cambio|efecto|impacto'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # DIAGNOSTIC PATTERNS - Problem identification
+    # ============================================================================
+    "diagnostic_markers": re.compile(
+        r'(?:'
+        r'diagnóstico|caracterización|análisis\s+situacional|'
+        r'línea\s+base|año\s+base|situación\s+inicial|'
+        r'brecha|déficit|rezago|carencia|limitación|'
+        r'problemática|necesidad|'
+        r'Ejes\s+problemáticos|Problemáticas\s+priorizadas|'
+        r'brechas\s+territoriales|'
+        r'ausencia\s+de|falta\s+de|desactualizado'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # STRATEGIC PATTERNS - Decision and planning language
+    # ============================================================================
+    "strategic_markers": re.compile(
+        r'(?:'
+        r'Parte\s+Estratégica|Componente\s+estratégico|'
+        r'objetivos?|metas?|indicadores?|'
+        r'apuestas|priorización|'
+        r'definición\s+de\s+los\s+objetivos|'
+        r'alternativas\s+de\s+solución|'
+        r'se\s+abordaran\s+en\s+el\s+presente\s+cuatrienio|'
+        r'grandes\s+apuestas'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # LEGAL REFERENCES - Colombian legal framework
+    # ============================================================================
+    "legal_references": re.compile(
+        r'(?:'
+        r'Ley\s+\d+\s+de\s+\d{4}|'
+        r'DECRETO\s+\d+\s+DE\s+\d{4}|'
+        r'Resolución\s+\d+\s+de\s+\d{4}|'
+        r'Acuerdo\s+(?:Municipal\s+)?(?:No\s+)?\d+\s+de\s+\d{4}|'
+        r'Constitución\s+Política|'
+        r'Art\.\s*\d+|Artículo\s+\d+|'
+        r'Circular\s+conjunta\s+[\d\-]+|'
+        r'Estatuto\s+Orgánico'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # TEMPORAL EXPRESSIONS - Time references
+    # ============================================================================
+    "temporal_expressions": re.compile(
+        r'(?:'
+        # Periods
+        r'cuatrienio|202[4-7]|vigencia\s+202[4-7]|'
+        r'período\s+de\s+cuatro\s+años|'
+        r'corto\s+plazo|mediano\s+plazo|largo\s+plazo|'
+        # Dates
+        r'\d{1,2}\s+de\s+(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)|'
+        r'\d{2}-\d{2}-\d{4}|'
+        # Fiscal references
+        r'Marco\s+Fiscal\s+de\s+Mediano\s+Plazo|MFMP|'
+        r'POAI|Plan\s+Operativo\s+Anual|'
+        r'año\s+fiscal|'
+        # Historical references
+        r'serie\s+histórica|evolución\s+20\d{2}-20\d{2}|'
+        r'tendencia\s+de\s+los\s+últimos|'
+        r'vigencia\s+anterior|cuatrienio\s+anterior'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # TERRITORIAL REFERENCES - Geographic scope
+    # ============================================================================
+    "territorial_references": re.compile(
+        r'(?:'
+        # Administrative levels
+        r'Municipio\s+de\s+[\w\s]+|'
+        r'Departamento\s+del\s+Cauca|Gobernación\s+de\s+Cauca|'
+        # Territorial types
+        r'territorio|urbano|rural|'
+        r'cabecera\s+(?:urbana|municipal)|'
+        r'corregimiento|vereda|'
+        r'centro\s+poblado|'
+        # Regional groupings
+        r'región\s+(?:Norte|Sur|Centro)\s+del\s+Cauca|'
+        r'Alto\s+Patía|'
+        r'subregión|'
+        # Special zones
+        r'PDET|Programas\s+de\s+Desarrollo\s+con\s+Enfoque\s+Territorial|'
+        r'zonas?\s+PDET|'
+        r'municipios\s+más\s+afectados\s+por\s+el\s+conflicto|'
+        # Ethnic territories
+        r'Consejo\s+Comunitario|'
+        r'resguardo\s+indígena|'
+        r'territorios?\s+(?:étnicos?|colectivos?)'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # INSTITUTIONAL ENTITIES - Colombian institutions
+    # ============================================================================
+    "institutional_entities": re.compile(
+        r'(?:'
+        # National entities
+        r'DNP|Departamento\s+Nacional\s+de\s+Planeación|'
+        r'DANE|Departamento\s+Administrativo\s+Nacional\s+de\s+Estadística|'
+        r'Ministerio\s+de\s+(?:Salud|Educación|Vivienda|Transporte|Ambiente)|'
+        r'Min(?:Salud|Educación|Vivienda|Transporte|Ambiente)|'
+        r'Fiscalía|JEP|UBPD|UARIV|'
+        r'Banco\s+de\s+la\s+República|'
+        r'ANT|Agencia\s+Nacional\s+de\s+Tierras|'
+        r'IGAC|'
+        # Departmental
+        r'Gobernación|'
+        r'CAR|CRC|Corporación\s+Autónoma\s+Regional|'
+        # Municipal
+        r'Alcaldía|Administración\s+Municipal|'
+        r'Secretaría\s+de\s+(?:Planeación|Hacienda|Gobierno|Salud|Educación)|'
+        r'Consejo\s+Municipal|'
+        r'Comisaría\s+de\s+Familia|'
+        # Civil society
+        r'Junta\s+de\s+Acción\s+Comunal|JAC|'
+        r'Mesa\s+de\s+participación'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # FINANCIAL PATTERNS - Budget and costs
+    # ============================================================================
+    "financial_patterns": re.compile(
+        r'(?:'
+        # Currency amounts
+        r'\$\s*[\d,\.]+(?:\s*(?:millones?|COP))?|'
+        r'[\d,\.]+\s*(?:millones?|COP)|'
+        # Financial terms
+        r'presupuesto|inversión|costo|valor|monto|'
+        r'recursos?\s+(?:propios|financieros)|'
+        r'asignación\s+de\s+recursos|'
+        r'fuentes?\s+de\s+financiación|'
+        r'cofinanciación|'
+        # Funding mechanisms
+        r'crédito|cooperación|transferencia'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # MEASUREMENT UNITS - Indicators and metrics
+    # ============================================================================
+    "measurement_units": re.compile(
+        r'(?:'
+        # Rates and percentages
+        r'\d+(?:\.\d+)?%|'
+        r'\d+\s*por\s+(?:cada\s+)?(?:100\.000|100|mil)|'
+        r'tasa\s+de|índice\s+de|razón\s+de|'
+        # Quantities
+        r'número\s+de|cantidad\s+de|'
+        r'kilómetros?|metros?|hectáreas?|'
+        r'personas?|hogares?|familias?|'
+        r'unidades?\s+productivas?|'
+        r'documentos?\s+elaborados?|'
+        r'campañas?\s+implementadas?|'
+        # Coverage
+        r'cobertura|tasa\s+de\s+cobertura|'
+        r'población\s+beneficiada|'
+        r'beneficiarios?'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # PEACE AND CONFLICT PATTERNS - PDET, RRI, victims
+    # ============================================================================
+    "peace_patterns": re.compile(
+        r'(?:'
+        r'construcción\s+de\s+paz|paz\s+territorial|'
+        r'Reforma\s+Rural\s+Integral|RRI|'
+        r'Plan\s+Marco\s+de\s+Implementación|PMI|'
+        r'PDET|PATR|'
+        r'víctimas?|reparación|restitución|'
+        r'conflicto\s+armado|'
+        r'desmovilización|reintegración|DDR|'
+        r'excombatientes?|'
+        r'memoria\s+histórica|verdad|justicia\s+transicional|'
+        r'reconciliación|convivencia'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # PLANNING METHODOLOGY - DNP frameworks
+    # ============================================================================
+    "methodology_patterns": re.compile(
+        r'(?:'
+        r'Metodología\s+General\s+Ajustada|MGA|'
+        r'cadena\s+de\s+valor|'
+        r'Matriz\s+Causal|'
+        r'eslabones?\s+(?:clave\s+)?de\s+la\s+cadena|'
+        r'SisPT|Sistema\s+de\s+Planificación\s+Territorial|'
+        r'TerriData|'
+        r'Catálogo\s+de\s+Productos|'
+        r'coherencia\s+entre\s+diagnóstico\s+y\s+propuesta|'
+        r'articulación\s+lógica'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # SECTORAL PATTERNS - Key policy sectors
+    # ============================================================================
+    "sectoral_patterns": re.compile(
+        r'(?:'
+        # Social sectors
+        r'Salud\s+Pública|Protección\s+Social|'
+        r'Educación|Primera\s+Infancia|'
+        r'Vivienda|Agua\s+Potable|Saneamiento\s+Básico|'
+        # Economic sectors
+        r'Agricultura|Desarrollo\s+Rural|'
+        r'Infraestructura|Vías|Transporte|'
+        r'Empleo|Trabajo\s+Decente|'
+        # Environmental
+        r'Medio\s+Ambiente|Gestión\s+Ambiental|'
+        r'Cambio\s+Climático|'
+        r'Gestión\s+del\s+Riesgo|'
+        # Justice and governance
+        r'Justicia|Seguridad|Convivencia|'
+        r'Fortalecimiento\s+Institucional|'
+        r'Participación\s+Ciudadana'
+        r')',
+        re.IGNORECASE
+    ),
+    
+    # ============================================================================
+    # TRANSITION PHRASES - Content flow markers
+    # ============================================================================
+    "transition_phrases": re.compile(
+        r'(?:'
+        r'se\s+(?:describe|presenta|enuncia)n?\s+a\s+continuación|'
+        r'dando\s+continuidad\s+al\s+proceso|'
+        r'a\s+continuación\s+se\s+(?:dan?\s+a\s+conocer|presenta)|'
+        r'por\s+lo\s+tanto|'
+        r'en\s+este\s+sentido|'
+        r'de\s+esta\s+manera|'
+        r'así\s+mismo|'
+        r'la\s+tabla\s+siguiente\s+presenta|'
+        r'se\s+presenta\s+de\s+forma\s+detallada'
+        r')',
+        re.IGNORECASE
+    )
+}
+
+# ============================================================================
+# CAUSAL CHAIN VOCABULARY - Exhaustive 5-Link Value Chain (DNP Methodology)
+# ============================================================================
+# Based on DNP/SisPT territorial planning methodology and MGA framework
+# Organized by: Insumos → Actividades → Productos → Resultados → Impactos
+# 
+# NOTE: Causal connectors (con el fin de, a través de, etc.) are in 
+# PDT_PATTERNS["causal_connectors"] as regex. This list contains only
+# dimension-specific vocabulary for each value chain link.
+# ============================================================================
+
+CAUSAL_CHAIN_VOCABULARY = [
+    # ========================================================================
+    # 1. INSUMOS (INPUT) - Recursos iniciales movilizados
+    # ========================================================================
+    # Financial Resources
+    "recursos financieros", "fondos", "apropiaciones", "recursos propios",
+    "recursos tributarios", "recursos no tributarios",
+    "SGP", "Sistema General de Participaciones",
+    "SGR", "Sistema General de Regalías",
+    "asignaciones directas", "inversión local", "inversión regional",
+    "cofinanciación", "cooperación", "crédito", "obras por impuestos",
+    "Plan Plurianual de Inversiones", "PPI",
+    "matriz de costeo", "ingresos proyectados",
+    "Marco Fiscal de Mediano Plazo", "MFMP",
+    
+    # Human Resources
+    "recursos humanos", "personal de planta", "personal técnico",
+    "personal especializado", "personal capacitado",
+    "talento humano", "MIPG",
+    "estructura administrativa", "diagnóstico institucional",
+    "requerimientos de personal", "capacidad institucional",
+    
+    # Material and Capital Resources
+    "recursos materiales", "recursos de capital",
+    "infraestructura existente", "equipos", "tecnología",
+    "TIC", "sistemas de información", "terrenos",
+    "inventario de equipamientos", "dotación",
+    "infraestructura precaria", "necesidades de mejora",
+    
+    # ========================================================================
+    # 2. ACTIVIDADES (PROCESS) - Procesos y operaciones
+    # ========================================================================
+    # Process Types
+    "procesos", "operaciones", "actividades",
+    "talleres", "foros", "jornadas",
+    "implementación de estrategias", "seguimiento",
+    "articulación interinstitucional", "coordinación",
+    "diseño de rutas", "formulación de políticas",
+    "reuniones", "mesas de diálogo", "estudios",
+    
+    # Action Verbs (specific to activities, not general connectors)
+    "gestión de proyectos", "fortalecer", "apoyo", "asistencia",
+    
+    # Documentation
+    "cronogramas", "fechas de inicio", "fechas de fin",
+    "avance físico", "avance financiero",
+    "reportes de supervisión", "desarrollo de procesos",
+    "Plan Operativo Anual de Inversiones", "POAI",
+    "Plan de Acción Institucional", "PAI",
+    
+    # ========================================================================
+    # 3. PRODUCTOS (OUTPUT) - Bienes y servicios entregados
+    # ========================================================================
+    # Tangible Goods
+    "bienes tangibles", "infraestructura construida",
+    "hospitales construidos", "placa huella construida",
+    "dotaciones entregadas", "ambientes de aprendizaje dotados",
+    "bancos de maquinaria dotados", "equipamiento instalado",
+    "viviendas construidas", "viviendas mejoradas",
+    "hogares beneficiados",
+    
+    # Intangible Services/Products
+    "servicios", "productos intangibles",
+    "asistencia técnica brindada", "capacitaciones realizadas",
+    "personas capacitadas", "documentos elaborados",
+    "plan formulado", "casos atendidos",
+    "personas asistidas", "lineamientos técnicos",
+    
+    # Measurement
+    "Código MGA", "código de producto",
+    "indicador de producto", "unidad de medida",
+    "metas de producto", "número", "porcentaje",
+    "matriz de metas", "componente estratégico",
+    "Catálogo de Productos",
+    
+    # ========================================================================
+    # 4. RESULTADOS (OUTCOME) - Efectos directos sobre población objetivo
+    # ========================================================================
+    # Social Improvements
+    "mejoras en indicadores sociales",
+    "tasa de cobertura incrementada",
+    "reducción de la tasa de deserción",
+    "reducción de la pobreza multidimensional", "IPM",
+    "aumento de la percepción de seguridad",
+    "reducción de la informalidad",
+    "tasa de mortalidad infantil",
+    "tasa bruta de natalidad",
+    "valor agregado por actividades económicas",
+    
+    # Measurable Effects
+    "efectos directos", "efectos inmediatos",
+    "cierre de brechas sociales",
+    "mejora en la calidad de vida",
+    "mayor acceso a servicios",
+    "población con acceso incrementado",
+    "fortalecimiento del tejido social",
+    
+    # Indicators
+    "indicador de resultado", "IR",
+    "línea base", "meta", "meta cuatrienio",
+    "matriz de indicadores de resultado",
+    "cambios en percepción", "cambios en conocimiento",
+    "cambios en condiciones de bienestar",
+    
+    # ========================================================================
+    # 5. IMPACTOS - Efectos a largo plazo atribuibles
+    # ========================================================================
+    # Structural Transformation
+    "transformación estructural",
+    "consolidación de la paz estable y duradera",
+    "superación de la pobreza",
+    "desarrollo humano integral",
+    "ruptura de ciclos de violencia",
+    "equidad y justicia social",
+    "justicia ambiental",
+    "transformación del campo",
+    
+    # Strategic Alignment
+    "alineación con marcos globales",
+    "Objetivos de Desarrollo Sostenible", "ODS",
+    "Acuerdo de Paz", "PDET",
+    "Plan Nacional de Desarrollo", "PND",
+    "Plan de Desarrollo Departamental", "PDD",
+    "visión", "misión", "fundamentos conceptuales",
+    "ejes estratégicos", "propósitos fundamentales",
+    
+    # Long-term Vision
+    "efectos a largo plazo",
+    "exclusivamente atribuibles",
+    "desarrollo sostenible",
+    "paz territorial",
+    "potencial transformador",
+    "visión de largo plazo",
+    "cambio significativo",
+    
+    # ========================================================================
+    # DIAGNOSTIC & STRATEGIC TERMS (not in regex patterns)
+    # ========================================================================
+    "diagnóstico", "caracterización", "análisis situacional",
+    "año base", "situación inicial",
+    "brecha", "déficit", "rezago", "carencia", "limitación",
+    "problemática", "necesidad",
+    "articulación", "concertación",
+    "coherencia entre diagnóstico y propuesta",
+    "articulación lógica",
+    "cadena de valor", "matriz causal",
+    "eslabones de la cadena",
+    "Metodología General Ajustada", "MGA",
+    
+    # ========================================================================
+    # VERIFICATION SOURCES - Where to find evidence in PDT
+    # ========================================================================
+    "diagnóstico sectorial",
+    "capítulo estratégico",
+    "programas y proyectos",
+    "matriz de metas e indicadores",
+    "SisPT", "Sistema de Planificación Territorial",
+    "TerriData",
+    "tablas de alineación estratégica"
+]
+
+COLOMBIAN_ENTITIES = {
+    "DNP": "Departamento Nacional de Planeación",
+    "DANE": "Departamento Administrativo Nacional de Estadística",
+    "MinSalud": "Ministerio de Salud y Protección Social",
+    "MinEducación": "Ministerio de Educación Nacional",
+    "MinVivienda": "Ministerio de Vivienda, Ciudad y Territorio",
+    "SIVIGILA": "Sistema de Vigilancia en Salud Pública",
+    "SISPRO": "Sistema Integral de Información de la Protección Social",
+    "SIMAT": "Sistema Integrado de Matrícula",
+    "CAR": "Corporación Autónoma Regional",
+    "CRC": "Corporación Autónoma Regional del Cauca",
+    "Gobernación": "Gobernación Departamental",
+    "Alcaldía": "Alcaldía Municipal",
+    "Secretaría": "Secretaría"
+}
+
+ALIGNMENT_THRESHOLD = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2
+RISK_THRESHOLDS = {
+    "excellent": 1 - MICRO_LEVELS["EXCELENTE"],
+    "good": 1 - MICRO_LEVELS["BUENO"],
+    "acceptable": 1 - MICRO_LEVELS["ACEPTABLE"]
+}
+
+# Legacy constants for backward compatibility
 DEFAULT_CONFIG_FILE = "config.yaml"
 EXTRACTION_REPORT_SUFFIX = "_extraction_confidence_report.json"
 CAUSAL_MODEL_SUFFIX = "_causal_model.json"
@@ -464,28 +1258,25 @@ class ConfigLoader:
 
     
     def _load_default_config(self) -> None:
-        """Load default configuration if custom fails"""
+        """Load default configuration with PDT/PDM-aware patterns"""
         self.config = {
             'patterns': {
-                'section_titles': r'^(?:CAPÍTULO|ARTÍCULO|PARTE)\s+[\dIVX]+',
-                'goal_codes': r'[MP][RIP]-\d{3}',
-                'numeric_formats': r'[\d,]+(?:\.\d+)?%?',
-                'table_headers': r'(?:PROGRAMA|META|INDICADOR|LÍNEA BASE|VALOR ESPERADO)',
-                'financial_headers': r'(?:PRESUPUESTO|VALOR|MONTO|INVERSIÓN)'
+                'section_titles': PDT_PATTERNS["section_delimiters"].pattern,
+                'goal_codes': PDT_PATTERNS["product_codes"].pattern,
+                'numeric_formats': r'[\d,]+(?:\.\d+)?%?|por\s+100\.000',
+                'table_headers': PDT_PATTERNS["indicator_matrix_headers"].pattern,
+                'financial_headers': PDT_PATTERNS["ppi_headers"].pattern
             },
             'lexicons': {
-                'causal_logic': [
-                    'gracias a', 'con el fin de', 'para lograr', 'mediante',
-                    'a través de', 'como resultado de', 'debido a', 'porque',
-                    'por medio de', 'permitirá', 'contribuirá a'
-                ],
+                'causal_logic': CAUSAL_CHAIN_VOCABULARY,
                 'goal_classification': {
                     'tasa': 'decreciente',
                     'índice': 'constante',
                     'número': 'suma',
                     'porcentaje': 'constante',
                     'cantidad': 'suma',
-                    'cobertura': 'suma'
+                    'cobertura': 'suma',
+                    'por 100.000': 'tasa'
                 },
                 'contextual_factors': [
                     'riesgo', 'amenaza', 'obstáculo', 'limitación',
@@ -498,14 +1289,7 @@ class ConfigLoader:
                     'decreto', 'resolución', 'acuerdo'
                 ]
             },
-            'entity_aliases': {
-                'SEC GOB': 'Secretaría de Gobierno',
-                'SEC PLAN': 'Secretaría de Planeación',
-                'SEC HAC': 'Secretaría de Hacienda',
-                'SEC SALUD': 'Secretaría de Salud',
-                'SEC EDU': 'Secretaría de Educación',
-                'SEC INFRA': 'Secretaría de Infraestructura'
-            },
+            'entity_aliases': COLOMBIAN_ENTITIES,
             'verb_sequences': {
                 'diagnosticar': 1,
                 'identificar': 2,
@@ -517,7 +1301,6 @@ class ConfigLoader:
                 'monitorear': 8,
                 'evaluar': 9
             },
-            # Bayesian thresholds - now externalized
             'bayesian_thresholds': {
                 'kl_divergence': 0.01,
                 'convergence_min_evidence': 2,
@@ -525,7 +1308,6 @@ class ConfigLoader:
                 'prior_beta': 2.0,
                 'laplace_smoothing': 1.0
             },
-            # Mechanism type priors - now externalized
             'mechanism_type_priors': {
                 'administrativo': 0.30,
                 'tecnico': 0.25,
@@ -533,14 +1315,12 @@ class ConfigLoader:
                 'politico': 0.15,
                 'mixto': 0.10
             },
-            # Performance settings
             'performance': {
                 'enable_vectorized_ops': True,
                 'enable_async_processing': False,
                 'max_context_length': 1000,
                 'cache_embeddings': True
             },
-            # Self-reflection settings
             'self_reflection': {
                 'enable_prior_learning': False,
                 'feedback_weight': 0.1,
@@ -548,7 +1328,7 @@ class ConfigLoader:
                 'min_documents_for_learning': 5
             }
         }
-        self.logger.warning("Usando configuración por defecto")
+        self.logger.warning("Usando configuración por defecto PDT/PDM-aware")
 
     
     def _validate_config(self) -> None:
@@ -1293,27 +2073,36 @@ class CausalExtractor:
 
     
     def _calculate_type_transition_prior(self, source: str, target: str) -> float:
-        """Calculate prior based on historical transition frequencies between goal types"""
+        """
+        Calculate prior using causal chain distance formula.
+        
+        Uses canonical 5-link value chain from DNP methodology:
+        insumos → actividades → productos → resultados → impacto
+        
+        Forward causation is rewarded, backward causation is penalized.
+        Distance-based decay using MICRO_LEVELS["EXCELENTE"] as adjacent_prior.
+        """
+        CAUSAL_CHAIN_ORDER = {
+            'insumos': 0,
+            'actividades': 1,
+            'productos': 2,
+            'resultados': 3,
+            'impacto': 4
+        }
+        
         source_type = self.nodes[source].type
         target_type = self.nodes[target].type
-
-        # Define transition probabilities based on logical flow
-        # programa → producto → resultado → impacto
-        transition_priors = {
-            ('programa', 'producto'): 0.85,
-            ('producto', 'resultado'): 0.80,
-            ('resultado', 'impacto'): 0.75,
-            ('programa', 'resultado'): 0.60,
-            ('producto', 'impacto'): 0.50,
-            ('programa', 'impacto'): 0.30,
-        }
-
-        # Reverse transitions are less likely
-        reverse_key = (target_type, source_type)
-        if reverse_key in transition_priors:
-            return transition_priors[reverse_key] * 0.3
-
-        return transition_priors.get((source_type, target_type), 0.40)
+        
+        source_pos = CAUSAL_CHAIN_ORDER.get(source_type, 2)
+        target_pos = CAUSAL_CHAIN_ORDER.get(target_type, 2)
+        
+        distance = abs(target_pos - source_pos)
+        adjacent_prior = MICRO_LEVELS["EXCELENTE"]  # 0.85
+        
+        if target_pos > source_pos:  # Forward causation
+            return adjacent_prior ** distance
+        else:  # Backward causation (penalized)
+            return (adjacent_prior ** distance) * 0.3
 
     
     def _check_structural_violation(self, source: str, target: str) -> str | None:
@@ -1388,109 +2177,8 @@ class CausalExtractor:
             base_score = 0.5 # Refactored
 
         # HARMONIC FRONT 3 - Enhancement 4: Policy-specific vocabulary boost
-        # Check for specialized terminology per policy area
-        policy_area_vocabulary = {
-            "PA01": [
-                "violencia basada en género",
-                "feminicidio",
-                "brecha salarial",
-                "economía del cuidado",
-                "comisaría de familia",
-                "casa de refugio",
-                "ruta de atención",
-                "secretaría de la mujer",
-            ],
-            "PA02": [
-                "conflicto armado",
-                "alertas tempranas",
-                "defensoría del pueblo",
-                "reclutamiento forzado",
-                "minas antipersonal",
-                "grupos armados",
-                "extorsión",
-                "desaparición forzada",
-            ],
-            "PA03": [
-                "páramos",
-                "humedales",
-                "áreas protegidas",
-                "servicios ecosistémicos",
-                "restauración ecológica",
-                "cambio climático",
-                "mitigación",
-                "adaptación climática",
-            ],
-            "PA04": [
-                "vías terciarias",
-                "conectividad digital",
-                "internet rural",
-                "electrificación rural",
-                "atención primaria",
-                "vivienda de interés social",
-                "microcrédito",
-                "empleo",
-            ],
-            "PA05": [
-                "reparación integral",
-                "restitución de tierras",
-                "víctimas del conflicto",
-                "desplazamiento forzado",
-                "memoria histórica",
-                "construcción de paz",
-                "reconciliación",
-                "ley 1448",
-            ],
-            "PA06": [
-                "primera infancia",
-                "niñez",
-                "adolescencia",
-                "juventud",
-                "entornos protectores",
-                "embarazo adolescente",
-                "nutrición",
-                "protección integral",
-            ],
-            "PA07": [
-                "catastro multipropósito",
-                "titulación predial",
-                "uso del suelo",
-                "zonificación",
-                "pot",
-                "pbot",
-                "eot",
-                "territorios colectivos",
-            ],
-            "PA08": [
-                "líder social",
-                "lideresa",
-                "defensor de derechos humanos",
-                "amenazas",
-                "unidad nacional de protección",
-                "medidas de protección",
-                "protección colectiva",
-                "alerta temprana",
-            ],
-            "PA09": [
-                "personas privadas de la libertad",
-                "cárcel",
-                "hacinamiento",
-                "inpec",
-                "resocialización",
-                "condiciones de reclusión",
-                "derecho penitenciario",
-                "centro carcelario",
-            ],
-            "PA10": [
-                "migración",
-                "migrante",
-                "frontera",
-                "regularización",
-                "permiso por protección temporal",
-                "refugio",
-                "tránsito",
-                "integración socioeconómica",
-            ],
-        }
+        # Use CANON_POLICY_AREAS defined at module level (exhaustive PDET-focused keywords)
+        # This avoids duplication and ensures consistency with canonical constants
 
         # General contextual/differential focus vocabulary (D6-Q5)
         contextual_vocabulary = [
@@ -1502,12 +2190,12 @@ class CausalExtractor:
             'población dispersa', 'difícil acceso'
         ]
 
-        # Check for policy-specific vocabulary boost
+        # Check for policy-specific vocabulary boost using canonical constants
         specificity_boost = 0.0 # Refactored
         text_to_check = (keyword_lower + ' ' + (context or '')).lower()
 
-        if policy_area and policy_area in policy_area_vocabulary:
-            for term in policy_area_vocabulary[policy_area]:
+        if policy_area and policy_area in CANON_POLICY_AREAS:
+            for term in CANON_POLICY_AREAS[policy_area]["keywords"]:
                 if term.lower() in text_to_check:
                     specificity_boost = max(specificity_boost, 0.15)
                     self.logger.debug(f"Policy-specific term detected: '{term}' for {policy_area}")
