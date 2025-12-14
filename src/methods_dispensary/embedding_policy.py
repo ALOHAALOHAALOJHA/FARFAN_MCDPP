@@ -28,16 +28,25 @@ State-of-the-Art Components:
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
 import re
 from dataclasses import dataclass
-from enum import Enum
 from functools import lru_cache
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, Protocol, TypedDict
 
 import numpy as np
 from sentence_transformers import CrossEncoder, SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+
+from farfan_pipeline.core.canonical_notation import (
+    CANONICAL_DIMENSIONS,
+    CANONICAL_POLICY_AREAS,
+    get_dimension_description,
+    get_dimension_info,
+    get_policy_description,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -53,50 +62,79 @@ DEFAULT_CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 MODEL_PARAPHRASE_MULTILINGUAL = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
 
 # ============================================================================
+# JSON-DRIVEN DISPATCH TABLES (Monolith, no external ontology dependencies)
+# ============================================================================
+
+_DISPENSER_PATTERNS_FILE = "embedding_policy_patterns.json"
+
+
+def _dispenser_path(filename: str) -> Path:
+    return Path(__file__).resolve().with_name(filename)
+
+
+@lru_cache(maxsize=1)
+def _load_dispenser_patterns() -> dict[str, Any]:
+    path = _dispenser_path(_DISPENSER_PATTERNS_FILE)
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+# ============================================================================
 # TYPE SYSTEM - Python 3.10+ Type Safety
 # ============================================================================
 
-class PolicyDomain(Enum):
-    """
-    Policy areas (PA01-PA10) per canonical notation.
+class PolicyDomain:
+    """Proxy to canonical policy areas - never hardcode policy keywords."""
 
-    Values are aligned with questionnaire_monolith.json canonical_notation.policy_areas.
-    """
+    @classmethod
+    def get_all(cls) -> dict[str, str]:
+        return CANONICAL_POLICY_AREAS
 
-    PA01 = "PA01"  # Derechos de las mujeres e igualdad de género
-    PA02 = "PA02"  # Prevención de la violencia y protección frente al conflicto armado
-    PA03 = "PA03"  # Ambiente sano, cambio climático, prevención y atención a desastres
-    PA04 = "PA04"  # Derechos económicos, sociales y culturales
-    PA05 = "PA05"  # Derechos de las víctimas y construcción de paz
-    PA06 = "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud
-    PA07 = "PA07"  # Tierras y territorios
-    PA08 = "PA08"  # Líderes y defensores de derechos humanos
-    PA09 = "PA09"  # Crisis de derechos de personas privadas de la libertad
-    PA10 = "PA10"  # Migración transfronteriza
 
-class AnalyticalDimension(Enum):
-    """
-    Analytical dimensions (D1-D6) per canonical notation.
+class AnalyticalDimension:
+    """Proxy to canonical dimensions - never hardcode dimension labels."""
 
-    Values reference canonical notation from questionnaire_monolith.json.
-    Use CanonicalDimension from farfan_core.core.canonical_notation for dynamic access.
-    """
+    @classmethod
+    def get_all(cls) -> dict[str, str]:
+        return CANONICAL_DIMENSIONS
 
-    D1 = "DIM01"  # INSUMOS - Diagnóstico y Recursos
-    D2 = "DIM02"  # ACTIVIDADES - Diseño de Intervención
-    D3 = "DIM03"  # PRODUCTOS - Productos y Outputs
-    D4 = "DIM04"  # RESULTADOS - Resultados y Outcomes
-    D5 = "DIM05"  # IMPACTOS - Impactos de Largo Plazo
-    D6 = "DIM06"  # CAUSALIDAD - Teoría de Cambio
+    @classmethod
+    def D1(cls) -> tuple[str, str]:
+        info = get_dimension_info("D1")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D2(cls) -> tuple[str, str]:
+        info = get_dimension_info("D2")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D3(cls) -> tuple[str, str]:
+        info = get_dimension_info("D3")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D4(cls) -> tuple[str, str]:
+        info = get_dimension_info("D4")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D5(cls) -> tuple[str, str]:
+        info = get_dimension_info("D5")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D6(cls) -> tuple[str, str]:
+        info = get_dimension_info("D6")
+        return info.code, get_dimension_description(info.code)
 
 class PDQIdentifier(TypedDict):
-    """Canonical identifier structure for policy, dimension, and question."""
+    """Canonical identifier structure for policy area + analytical dimension."""
 
-    question_unique_id: str  # PAxx-DIMxx-Qnnn
+    context_id: str  # PAxx-DIMxx
     policy: str  # PAxx
     dimension: str  # DIMxx
-    question: int  # Numeric question index
-    rubric_key: str  # DIMxx-Qnnn
 
 class PosteriorSampleRecord(TypedDict):
     """Serializable posterior sample used by downstream Bayesian consumers."""
@@ -402,59 +440,53 @@ class AdvancedSemanticChunker:
         chunk_text: str,
     ) -> PDQIdentifier | None:
         """
-        Infer P-D-Q context from chunk content.
+        Infer policy area + analytical dimension context from chunk content.
 
-        Uses heuristics based on Colombian policy vocabulary.
+        This dispenser operates at PA×DIM granularity; it does not attempt to bind to a
+        specific micro-question.
         """
-        # Policy-specific keywords (simplified for example)
-        policy_keywords = {
-            "PA01": ["mujer", "género", "igualdad", "equidad"],
-            "PA02": ["violencia", "conflicto", "seguridad", "prevención"],
-            "PA03": ["ambiente", "clima", "desastre", "riesgo"],
-            "PA04": ["económico", "social", "cultural", "empleo"],
-            "PA05": ["víctima", "paz", "reconciliación", "reparación"],
-            "PA06": ["niñez", "adolescente", "juventud", "futuro"],
-            "PA07": ["tierra", "territorio", "rural", "agrario"],
-            "PA08": ["líder", "defensor", "derechos humanos"],
-            "PA09": ["privado libertad", "cárcel", "reclusión"],
-            "PA10": ["migración", "frontera", "venezolano"],
-        }
+        policy_areas = PolicyDomain.get_all()
+        dimensions = AnalyticalDimension.get_all()
 
-        dimension_keywords = {
-            "DIM01": ["diagnóstico", "baseline", "situación", "recurso"],
-            "DIM02": ["diseño", "estrategia", "intervención", "actividad"],
-            "DIM03": ["producto", "output", "entregable", "meta"],
-            "DIM04": ["resultado", "outcome", "efecto", "cambio"],
-            "DIM05": ["impacto", "largo plazo", "sostenibilidad"],
-            "DIM06": ["teoría", "causal", "coherencia", "lógica"],
-        }
+        text_lower = chunk_text.lower()
 
-        # Score policies and dimensions
-        policy_scores = {
-            policy: sum(1 for kw in keywords if kw.lower() in chunk_text.lower())
-            for policy, keywords in policy_keywords.items()
-        }
+        policy_match = re.search(r"\bPA\d{2}\b", chunk_text)
+        dimension_match = re.search(r"\bDIM\d{2}\b", chunk_text)
 
-        dimension_scores = {
-            dim: sum(1 for kw in keywords if kw.lower() in chunk_text.lower())
-            for dim, keywords in dimension_keywords.items()
-        }
+        policy_id = policy_match.group(0) if policy_match else None
+        dimension_id = dimension_match.group(0) if dimension_match else None
 
-        # Select best match if confidence is sufficient
-        best_policy = max(policy_scores, key=policy_scores.get)
-        best_dimension = max(dimension_scores, key=dimension_scores.get)
+        if policy_id not in policy_areas:
+            policy_id = None
+        if dimension_id not in dimensions:
+            dimension_id = None
 
-        if policy_scores[best_policy] > 0 and dimension_scores[best_dimension] > 0:
-            # Generate canonical identifier
-            question_num = 1  # Simplified; real system would infer from context
-            question_code = f"Q{question_num:03d}"
+        def _score_by_name(mapping: dict[str, str]) -> tuple[str | None, int]:
+            best_code: str | None = None
+            best_score = 0
+            for code, name in mapping.items():
+                tokens = [t for t in re.split(r"\W+", name.lower()) if len(t) >= 4]
+                score = sum(1 for token in tokens if token and token in text_lower)
+                if score > best_score:
+                    best_score = score
+                    best_code = code
+            return best_code, best_score
 
+        if policy_id is None:
+            inferred_policy, score = _score_by_name(policy_areas)
+            if score > 0:
+                policy_id = inferred_policy
+
+        if dimension_id is None:
+            inferred_dimension, score = _score_by_name(dimensions)
+            if score > 0:
+                dimension_id = inferred_dimension
+
+        if policy_id and dimension_id:
             return PDQIdentifier(
-                question_unique_id=f"{best_policy}-{best_dimension}-{question_code}",
-                policy=best_policy,
-                dimension=best_dimension,
-                question=question_num,
-                rubric_key=f"{best_dimension}-{question_code}",
+                context_id=f"{policy_id}-{dimension_id}",
+                policy=policy_id,
+                dimension=dimension_id,
             )
 
         return None
@@ -1003,7 +1035,7 @@ class PolicyAnalysisEmbedder:
             return self._chunk_cache[doc_id]
 
         # Chunk document with semantic awareness
-        chunks = self.chunker.chunk_document(document_text, document_metadata)
+        chunks = self.chunker.chunk_document(text=document_text, document_metadata=document_metadata)
 
         # Generate embeddings in batches
         chunk_texts = [chunk["content"] for chunk in chunks]
@@ -1023,6 +1055,12 @@ class PolicyAnalysisEmbedder:
             np.mean([c["token_count"] for c in chunks]),
         )
 
+        return chunks
+
+    def apply_pd_context(self, chunks: list[SemanticChunk], context: PDQIdentifier) -> list[SemanticChunk]:
+        """Apply a policy×dimension context to every chunk (in-place)."""
+        for chunk in chunks:
+            chunk["pdq_context"] = context
         return chunks
 
     def semantic_search(
@@ -1103,12 +1141,12 @@ class PolicyAnalysisEmbedder:
         """
         Bayesian evaluation of numerical consistency for policy metric.
 
-        Extracts numerical values from chunks matching P-D-Q context,
+        Extracts numerical values from chunks matching policy×dimension context,
         performs rigorous statistical analysis with uncertainty quantification.
 
         Args:
             chunks: Document chunks to analyze
-            pdq_context: P-D-Q context to filter relevant chunks
+            pdq_context: Policy×dimension context to filter relevant chunks
 
         Returns:
             Bayesian evaluation with credible intervals and evidence strength
@@ -1118,8 +1156,8 @@ class PolicyAnalysisEmbedder:
 
         if not relevant_chunks:
             self._logger.warning(
-                "No chunks found for P-D-Q context: %s",
-                pdq_context["question_unique_id"],
+                "No chunks found for policy×dimension context: %s",
+                pdq_context["context_id"],
             )
             return self.bayesian_analyzer._null_evaluation()
 
@@ -1138,7 +1176,7 @@ class PolicyAnalysisEmbedder:
         self._logger.info(
             "Evaluated %d numerical values for %s: point_estimate=%.3f, CI=[%.3f, %.3f], evidence=%s",
             len(numerical_values),
-            pdq_context["rubric_key"],
+            pdq_context["context_id"],
             evaluation["point_estimate"],
             evaluation["credible_interval_95"][0],
             evaluation["credible_interval_95"][1],
@@ -1173,7 +1211,7 @@ class PolicyAnalysisEmbedder:
         target_pdq: PDQIdentifier,
     ) -> dict[str, Any]:
         """
-        Generate comprehensive analytical report for P-D-Q question.
+        Generate comprehensive analytical report for policy×dimension context.
 
         Combines semantic search, numerical analysis, and evidence synthesis.
         """
@@ -1200,8 +1238,9 @@ class PolicyAnalysisEmbedder:
 
         # Synthesize report
         report = {
-            "question_unique_id": target_pdq["question_unique_id"],
-            "rubric_key": target_pdq["rubric_key"],
+            "context_id": target_pdq["context_id"],
+            "policy": target_pdq["policy"],
+            "dimension": target_pdq["dimension"],
             "evidence_count": len(relevant_chunks),
             "numerical_evaluation": {
                 "point_estimate": numerical_eval["point_estimate"],
@@ -1426,66 +1465,103 @@ class PolicyAnalysisEmbedder:
     
     def _extract_numerical_values(self, chunks: list[SemanticChunk]) -> list[float]:
         """
-        Extract numerical values from chunks using advanced patterns.
-
-        Focuses on policy-relevant metrics: percentages, amounts, counts.
+        Extract numerical values using patterns loaded from JSON.
         """
-        numerical_values = []
+        payload = _load_dispenser_patterns()
+        pattern_specs = payload.get("numerical_patterns", [])
+        if not isinstance(pattern_specs, list):
+            pattern_specs = []
 
-        # Advanced patterns for Colombian policy metrics
-        patterns = [
-            r"(\d+(?:[.,]\d+)?)\s*%",  # Percentages
-            r"\$\s*(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?)",  # Currency
-            # Millions
-            r"(\d{1,3}(?:[.,]\d{3})*)\s*(?:millones?|mil\s+millones?)",
-            # People count
-            r"(\d+(?:[.,]\d+)?)\s*(?:personas|beneficiarios|habitantes)",
-        ]
+        numerical_values: list[float] = []
 
         for chunk in chunks:
             content = chunk["content"]
+            claimed_spans: list[tuple[int, int]] = []
 
-            for pattern in patterns:
-                matches = re.finditer(pattern, content, re.IGNORECASE)
+            def _overlaps(span_a: tuple[int, int], span_b: tuple[int, int]) -> bool:
+                return span_a[0] < span_b[1] and span_b[0] < span_a[1]
+
+            for spec in pattern_specs:
+                if not isinstance(spec, dict):
+                    continue
+
+                pattern_name = spec.get("name")
+                pattern_regex = spec.get("regex")
+                if not isinstance(pattern_name, str) or not isinstance(pattern_regex, str):
+                    continue
+
+                try:
+                    matches = re.finditer(pattern_regex, content, re.IGNORECASE)
+                except re.error as exc:
+                    self._logger.error("Invalid regex pattern (%s): %s", pattern_name, exc)
+                    continue
 
                 for match in matches:
-                    try:
-                        # Extract and clean numerical string
-                        raw_num = match.group(1)
-
-                        # Handle Colombian and international decimal formats
-                        if "." in raw_num and "," in raw_num:
-                            # Colombian format: dot as thousands, comma as decimal
-                            num_str = raw_num.replace(".", "").replace(",", ".")
-                        elif "," in raw_num:
-                            # Comma as decimal separator
-                            num_str = raw_num.replace(",", ".")
-                        else:
-                            # Only dot or plain number
-                            num_str = raw_num
-
-                        value = float(num_str)
-
-                        # Normalize to 0-1 scale if it's a percentage
-                        if "%" in match.group(0) and value <= 100:
-                            value = value / 100.0
-
-                        # Filter outliers
-                        if 0 <= value <= 1e9:  # Reasonable range
-                            numerical_values.append(value)
-
-                    except (ValueError, IndexError):
+                    span = match.span()
+                    if any(_overlaps(span, existing) for existing in claimed_spans):
                         continue
+
+                    value = self._canonical_number_extraction(match, pattern_name)
+                    if value is None:
+                        continue
+
+                    if 0.0 <= value <= 1e12:
+                        numerical_values.append(value)
+                        claimed_spans.append(span)
+
+        self._logger.info(
+            "Extracted %d numerical values using dispenser patterns (%s).",
+            len(numerical_values),
+            _DISPENSER_PATTERNS_FILE,
+        )
 
         return numerical_values
 
+    def _canonical_number_extraction(self, match: re.Match[str], pattern_name: str) -> float | None:
+        matched_text = match.group(0)
+
+        number_token = re.search(r"\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?|\d+(?:[.,]\d+)?", matched_text)
+        if not number_token:
+            return None
+
+        raw = number_token.group(0)
+        normalized = raw
+
+        if "." in raw and "," in raw:
+            normalized = raw.replace(".", "").replace(",", ".")
+        elif "," in raw:
+            if re.match(r"^\d{1,3}(,\d{3})+$", raw):
+                normalized = raw.replace(",", "")
+            else:
+                normalized = raw.replace(",", ".")
+        elif "." in raw and re.match(r"^\d{1,3}(\.\d{3})+$", raw):
+            normalized = raw.replace(".", "")
+
+        try:
+            value = float(normalized)
+        except ValueError:
+            self._logger.debug("Failed to parse numeric token for %s: %s", pattern_name, raw)
+            return None
+
+        if "%" in matched_text and value <= 100:
+            value /= 100.0
+
+        matched_lower = matched_text.lower()
+        if "mil millones" in matched_lower:
+            value *= 1_000_000_000.0
+        elif "millones" in matched_lower or "millón" in matched_lower:
+            value *= 1_000_000.0
+
+        return value
+
     
     def _generate_query_from_pdq(self, pdq: PDQIdentifier) -> str:
-        """Generate search query from P-D-Q identifier."""
-        policy_name = PolicyDomain[pdq["policy"]].value
-        dimension_name = AnalyticalDimension[pdq["dimension"]].value
+        """Generate a search query for a policy×dimension context."""
+        policy_name = get_policy_description(pdq["policy"])
+        dimension_name = get_dimension_description(pdq["dimension"])
 
-        query = f"{policy_name} - {dimension_name}"
+        query = f"{policy_name} | {dimension_name}"
+        self._logger.debug("Generated query for %s: %s", pdq["context_id"], query)
         return query
 
     def _compute_overall_confidence(
@@ -1717,7 +1793,7 @@ class EmbeddingPolicyProducer:
         document_chunks: list[SemanticChunk],
         target_pdq: PDQIdentifier
     ) -> dict[str, Any]:
-        """Generate comprehensive analytical report for P-D-Q question"""
+        """Generate comprehensive analytical report for policy×dimension context."""
         return self.embedder.generate_pdq_report(document_chunks, target_pdq)
 
     
@@ -1821,38 +1897,35 @@ class EmbeddingPolicyProducer:
         return self.embedder.config
 
     
-    def list_policy_domains(self) -> list[PolicyDomain]:
-        """List all policy domains"""
-        return list(PolicyDomain)
+    def list_policy_domains(self) -> dict[str, str]:
+        """List canonical policy areas (code -> name)."""
+        return PolicyDomain.get_all()
 
     
-    def list_analytical_dimensions(self) -> list[AnalyticalDimension]:
-        """List all analytical dimensions"""
-        return list(AnalyticalDimension)
+    def list_analytical_dimensions(self) -> dict[str, str]:
+        """List canonical dimensions (code -> name)."""
+        return AnalyticalDimension.get_all()
 
     
-    def get_policy_domain_description(self, domain: PolicyDomain) -> str:
-        """Get description for policy domain"""
-        return domain.value
+    def get_policy_domain_description(self, policy_code: str) -> str:
+        """Get canonical policy area description."""
+        return get_policy_description(policy_code)
 
     
-    def get_analytical_dimension_description(self, dimension: AnalyticalDimension) -> str:
-        """Get description for analytical dimension"""
-        return dimension.value
+    def get_analytical_dimension_description(self, dimension_code: str) -> str:
+        """Get canonical dimension description."""
+        return get_dimension_description(dimension_code)
 
     def create_pdq_identifier(
         self,
         policy: str,
         dimension: str,
-        question: int
     ) -> PDQIdentifier:
-        """Create P-D-Q identifier"""
+        """Create policy×dimension context identifier."""
         return PDQIdentifier(
-            question_unique_id=f"{policy}-{dimension}-Q{question}",
+            context_id=f"{policy}-{dimension}",
             policy=policy,
             dimension=dimension,
-            question=question,
-            rubric_key=f"{dimension}-Q{question}"
         )
 
 # ============================================================================
@@ -1915,18 +1988,18 @@ def example_pdm_analysis() -> None:
     chunks = embedder.process_document(pdm_document, metadata)
     print(f"   Generated {len(chunks)} semantic chunks")
 
-    # Define policy-dimension-question query
+    # Define policy×dimension context (no micro-question binding)
     pdq_query = PDQIdentifier(
-        question_unique_id="PA01-DIM01-Q003",
+        context_id="PA01-DIM01",
         policy="PA01",
         dimension="DIM01",
-        question=3,
-        rubric_key="DIM01-Q003",
     )
 
-    print(f"\n2. ANALYZING PA-DIM-Q: {pdq_query['question_unique_id']}")
-    print(f"   Policy: {PolicyDomain.PA01.value}")
-    print(f"   Dimension: {AnalyticalDimension.D1.value}")
+    chunks = embedder.apply_pd_context(chunks, pdq_query)
+
+    print(f"\n2. ANALYZING CONTEXT: {pdq_query['context_id']}")
+    print(f"   Policy: {get_policy_description(pdq_query['policy'])}")
+    print(f"   Dimension: {get_dimension_description(pdq_query['dimension'])}")
 
     # Generate comprehensive report
     report = embedder.generate_pdq_report(chunks, pdq_query)
