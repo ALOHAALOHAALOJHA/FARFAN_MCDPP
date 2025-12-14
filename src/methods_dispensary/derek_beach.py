@@ -1375,6 +1375,66 @@ CAUSAL_CHAIN_VOCABULARY = [
     "tablas de alineación estratégica"
 ]
 
+CVC_EXPECTED_ACTIVITY_SEQUENCE: tuple[str, ...] = (
+    "diagnosticar",
+    "diseñar",
+    "planificar",
+    "implementar",
+    "ejecutar",
+    "monitorear",
+    "evaluar",
+)
+
+MGA_CODE_RE = re.compile(r"C[oó]digo\s+MGA\D*\d{7}", re.IGNORECASE)
+
+CVC_DIMENSION_SPECS: dict[str, dict[str, Any]] = {
+    "D1": {
+        "keywords": CAUSAL_CHAIN_VOCABULARY[0:50],
+        "patterns": (
+            re.compile(r"recursos\s+financieros.*\$[\d,.]+", re.IGNORECASE),
+            re.compile(r"personal\s+de\s+planta.*\d+", re.IGNORECASE),
+            re.compile(r"\bSGP\b|\bSGR\b|recursos\s+propios", re.IGNORECASE),
+            re.compile(r"Plan\s+Plurianual\s+de\s+Inversiones", re.IGNORECASE),
+        ),
+    },
+    "D2": {
+        "keywords": CAUSAL_CHAIN_VOCABULARY[50:100],
+        "patterns": (
+            re.compile(r"cronograma.*fecha.*inicio.*fin", re.IGNORECASE | re.DOTALL),
+            re.compile(r"implementaci[oó]n.*estrategia", re.IGNORECASE),
+            re.compile(r"coordinaci[oó]n.*interinstitucional", re.IGNORECASE),
+            re.compile(r"Plan\s+Operativo\s+Anual", re.IGNORECASE),
+        ),
+    },
+    "D3": {
+        "keywords": CAUSAL_CHAIN_VOCABULARY[100:150],
+        "patterns": (
+            MGA_CODE_RE,
+            re.compile(r"indicador\s+de\s+producto", re.IGNORECASE),
+            re.compile(r"meta.*producto.*\d+", re.IGNORECASE),
+            re.compile(r"bienes.*servicios.*entreg", re.IGNORECASE | re.DOTALL),
+        ),
+    },
+    "D4": {
+        "keywords": CAUSAL_CHAIN_VOCABULARY[150:200],
+        "patterns": (
+            re.compile(r"tasa.*cobertura.*increment", re.IGNORECASE | re.DOTALL),
+            re.compile(r"reducci[oó]n.*pobreza", re.IGNORECASE | re.DOTALL),
+            re.compile(r"indicador\s+de\s+resultado", re.IGNORECASE),
+            re.compile(r"poblaci[oó]n.*beneficiad", re.IGNORECASE | re.DOTALL),
+        ),
+    },
+    "D5": {
+        "keywords": CAUSAL_CHAIN_VOCABULARY[200:250],
+        "patterns": (
+            re.compile(r"transformaci[oó]n.*estructural", re.IGNORECASE | re.DOTALL),
+            re.compile(r"paz.*estable.*duradera", re.IGNORECASE | re.DOTALL),
+            re.compile(r"desarrollo.*sostenible", re.IGNORECASE | re.DOTALL),
+            re.compile(r"visi[oó]n.*largo.*plazo", re.IGNORECASE | re.DOTALL),
+        ),
+    },
+}
+
 COLOMBIAN_ENTITIES = {
     "DNP": "Departamento Nacional de Planeación",
     "DANE": "Departamento Administrativo Nacional de Estadística",
@@ -1595,22 +1655,95 @@ class BayesianThresholdsConfig(BaseModel):
         description="Laplace smoothing parameter"
     )
 
-class MechanismTypeConfig(BaseModel):
-    """Mechanism type prior probabilities"""
-    administrativo: float = Field(default=0.30, ge=0.0, le=1.0)
-    tecnico: float = Field(default=0.25, ge=0.0, le=1.0)
-    financiero: float = Field(default=0.20, ge=0.0, le=1.0)
-    politico: float = Field(default=0.15, ge=0.0, le=1.0)
-    mixto: float = Field(default=0.10, ge=0.0, le=1.0)
+class ChainCapacityVector(BaseModel):
+    """
+    Vector de Capacidad de Cadena de Valor (CVC).
+    Representa la fortaleza documentada en cada eslabón de la cadena causal.
+    """
+
+    insumos_capacity: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=1.0,
+        description="Capacidad documentada en D1: recursos financieros, humanos, materiales",
+    )
+    actividades_capacity: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=1.0,
+        description="Capacidad documentada en D2: procesos, cronogramas, gestión",
+    )
+    productos_capacity: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=1.0,
+        description="Capacidad documentada en D3: bienes/servicios entregables, indicadores",
+    )
+    resultados_capacity: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=1.0,
+        description="Capacidad documentada en D4: efectos directos, cambios medibles",
+    )
+    impactos_capacity: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=1.0,
+        description="Capacidad documentada en D5: transformación sistémica de largo plazo",
+    )
+
+    @property
+    def causalidad_score(self) -> float:
+        """
+        D6: CAUSALIDAD (derivada).
+        Coherencia = mínimo eslabón débil × penalización por gaps.
+        """
+
+        min_link = min(
+            self.insumos_capacity,
+            self.actividades_capacity,
+            self.productos_capacity,
+            self.resultados_capacity,
+            self.impactos_capacity,
+        )
+
+        chain = [
+            self.insumos_capacity,
+            self.actividades_capacity,
+            self.productos_capacity,
+            self.resultados_capacity,
+            self.impactos_capacity,
+        ]
+        gaps: list[float] = []
+        for idx in range(len(chain) - 1):
+            if chain[idx] > 0.5 and chain[idx + 1] < 0.3:
+                gaps.append(abs(chain[idx] - chain[idx + 1]))
+
+        gap_penalty = 1.0
+        if gaps:
+            gap_penalty = 1.0 - (sum(gaps) / len(gaps))
+
+        return float(max(0.0, min(1.0, min_link * gap_penalty)))
+
+
+class ChainCapacityPriorsConfig(BaseModel):
+    """Priors débiles para la inferencia CVC (D1-D5)."""
+
+    insumos: float = Field(default=0.30, ge=0.0, le=1.0)
+    actividades: float = Field(default=0.25, ge=0.0, le=1.0)
+    productos_base: float = Field(default=0.40, ge=0.0, le=1.0)
+    productos_with_mga: float = Field(default=0.80, ge=0.0, le=1.0)
+    resultados: float = Field(default=0.35, ge=0.0, le=1.0)
+    impactos: float = Field(default=0.15, ge=0.0, le=1.0)
 
     @validator('*', pre=True, always=True)
-    def check_sum_to_one(cls, v, values):
-        """Validate that probabilities sum to approximately 1.0"""
-        if len(values) == 4:  # All fields loaded
-            total = sum(values.values()) + v
-            if abs(total - 1.0) > 0.01:
-                raise ValueError(f"Mechanism type priors must sum to 1.0, got {total}")
-        return v
+    def clamp_0_1(cls, v: Any) -> float:
+        """Clamp priors to [0, 1] for resilience to config noise."""
+        try:
+            val = float(v)
+        except (TypeError, ValueError):
+            return 0.0
+        return float(max(0.0, min(1.0, val)))
 
 class PerformanceConfig(BaseModel):
     """Performance and optimization settings"""
@@ -1672,9 +1805,9 @@ class CDAFConfigSchema(BaseModel):
         default_factory=BayesianThresholdsConfig,
         description="Bayesian inference thresholds"
     )
-    mechanism_type_priors: MechanismTypeConfig = Field(
-        default_factory=MechanismTypeConfig,
-        description="Prior probabilities for mechanism types"
+    chain_capacity_priors: ChainCapacityPriorsConfig = Field(
+        default_factory=ChainCapacityPriorsConfig,
+        description="Priors débiles para inferencia de capacidades D1-D5 (CVC)",
     )
     performance: PerformanceConfig = Field(
         default_factory=PerformanceConfig,
@@ -1834,12 +1967,13 @@ class ConfigLoader:
                 'prior_beta': 2.0,
                 'laplace_smoothing': 1.0
             },
-            'mechanism_type_priors': {
-                'administrativo': 0.30,
-                'tecnico': 0.25,
-                'financiero': 0.20,
-                'politico': 0.15,
-                'mixto': 0.10
+            'chain_capacity_priors': {
+                'insumos': 0.30,
+                'actividades': 0.25,
+                'productos_base': 0.40,
+                'productos_with_mga': 0.80,
+                'resultados': 0.35,
+                'impactos': 0.15,
             },
             'performance': {
                 'enable_vectorized_ops': True,
@@ -1907,12 +2041,11 @@ class ConfigLoader:
             return getattr(self.validated_config.bayesian_thresholds, key)
         return self.get(f'bayesian_thresholds.{key}', 0.01)
 
-    
-    def get_mechanism_prior(self, mechanism_type: str) -> float:
-        """Get mechanism type prior probability with type safety"""
+    def get_chain_capacity_prior(self, key: str) -> float:
+        """Get prior for a CVC dimension with type safety."""
         if self.validated_config:
-            return getattr(self.validated_config.mechanism_type_priors, mechanism_type, 0.0)
-        return self.get(f'mechanism_type_priors.{mechanism_type}', 0.0)
+            return float(getattr(self.validated_config.chain_capacity_priors, key))
+        return float(self.get(f'chain_capacity_priors.{key}', 0.0))
 
     
     def get_performance_setting(self, key: str) -> Any:
@@ -1928,9 +2061,9 @@ class ConfigLoader:
         Implements frontier paradigm of learning from results
 
         HARMONIC FRONT 4 ENHANCEMENT:
-        - Applies penalties to mechanism types with implementation_failure flags
-        - Heavily penalizes "miracle" mechanisms failing necessity/sufficiency tests
-        - Ensures mean mech_uncertainty decreases by ≥5% over iterations
+        - Ajusta priors por dimensión (D1-D5) en función de evidencia observada
+        - Penaliza dimensiones asociadas con fallas sistemáticas
+        - Ensures mean uncertainty decreases by ≥5% over iterations
         """
         if not self.validated_config or not self.validated_config.self_reflection.enable_prior_learning:
             self.logger.debug("Prior learning disabled")
@@ -1938,85 +2071,32 @@ class ConfigLoader:
 
         feedback_weight = self.validated_config.self_reflection.feedback_weight
 
-        # Track initial priors for uncertainty measurement
-        initial_priors = {}
-        for attr in ['administrativo', 'tecnico', 'financiero', 'politico', 'mixto']:
-            if hasattr(self.validated_config.mechanism_type_priors, attr):
-                initial_priors[attr] = getattr(self.validated_config.mechanism_type_priors, attr)
+        if 'chain_capacity_means' in feedback_data:
+            for key, observed_mean in feedback_data['chain_capacity_means'].items():
+                if not hasattr(self.validated_config.chain_capacity_priors, key):
+                    continue
+                current_prior = float(getattr(self.validated_config.chain_capacity_priors, key))
+                updated_prior = (1 - feedback_weight) * current_prior + feedback_weight * float(observed_mean)
+                setattr(self.validated_config.chain_capacity_priors, key, updated_prior)
+                self.config.setdefault('chain_capacity_priors', {})
+                self.config['chain_capacity_priors'][key] = updated_prior
 
-        # Update mechanism type priors based on observed frequencies
-        if 'mechanism_frequencies' in feedback_data:
-            for mech_type, observed_freq in feedback_data['mechanism_frequencies'].items():
-                if hasattr(self.validated_config.mechanism_type_priors, mech_type):
-                    current_prior = getattr(self.validated_config.mechanism_type_priors, mech_type)
-                    # Weighted update: new_prior = (1-weight)*current + weight*observed
-                    updated_prior = (1 - feedback_weight) * current_prior + feedback_weight * observed_freq
-                    setattr(self.validated_config.mechanism_type_priors, mech_type, updated_prior)
-                    self.config['mechanism_type_priors'][mech_type] = updated_prior
+        if 'chain_capacity_penalties' in feedback_data:
+            penalty_weight = feedback_weight * 1.5
+            for key, penalty_factor in feedback_data['chain_capacity_penalties'].items():
+                if not hasattr(self.validated_config.chain_capacity_priors, key):
+                    continue
+                current_prior = float(getattr(self.validated_config.chain_capacity_priors, key))
+                penalized_prior = current_prior * float(penalty_factor)
+                updated_prior = (1 - penalty_weight) * current_prior + penalty_weight * penalized_prior
+                setattr(self.validated_config.chain_capacity_priors, key, updated_prior)
+                self.config.setdefault('chain_capacity_priors', {})
+                self.config['chain_capacity_priors'][key] = updated_prior
 
-        # NEW: Apply penalty factors for failing mechanism types
-        if 'penalty_factors' in feedback_data:
-            penalty_weight = feedback_weight * 1.5  # Heavier penalty than positive feedback
-            for mech_type, penalty_factor in feedback_data['penalty_factors'].items():
-                if hasattr(self.validated_config.mechanism_type_priors, mech_type):
-                    current_prior = getattr(self.validated_config.mechanism_type_priors, mech_type)
-                    # Apply penalty: reduce prior for frequently failing types
-                    penalized_prior = current_prior * penalty_factor
-                    # Blend with current
-                    updated_prior = (1 - penalty_weight) * current_prior + penalty_weight * penalized_prior
-                    setattr(self.validated_config.mechanism_type_priors, mech_type, updated_prior)
-                    self.config['mechanism_type_priors'][mech_type] = updated_prior
-                    self.logger.info(f"Applied penalty to {mech_type}: {current_prior:.4f} -> {updated_prior:.4f}")
-
-        # NEW: Heavy penalty for "miracle" mechanisms failing necessity/sufficiency
-        test_failures = feedback_data.get('test_failures', {})
-        if test_failures.get('necessity_failures', 0) > 0 or test_failures.get('sufficiency_failures', 0) > 0:
-            # If failures exist, apply additional penalty to 'politico' (often "miracle" type)
-            # and 'mixto' (vague mechanism types)
-            miracle_types = ['politico', 'mixto']
-            miracle_penalty = 0.85 # Refactored
-            for mech_type in miracle_types:
-                if hasattr(self.validated_config.mechanism_type_priors, mech_type):
-                    current_prior = getattr(self.validated_config.mechanism_type_priors, mech_type)
-                    updated_prior = current_prior * miracle_penalty
-                    setattr(self.validated_config.mechanism_type_priors, mech_type, updated_prior)
-                    self.config['mechanism_type_priors'][mech_type] = updated_prior
-                    self.logger.info(
-                        f"Miracle mechanism penalty for {mech_type}: {current_prior:.4f} -> {updated_prior:.4f}")
-
-        # Renormalize to ensure priors sum to 1.0
-        total_prior = sum(
-            getattr(self.validated_config.mechanism_type_priors, attr)
-            for attr in ['administrativo', 'tecnico', 'financiero', 'politico', 'mixto']
-            if hasattr(self.validated_config.mechanism_type_priors, attr)
-        )
-
-        if total_prior > 0:
-            for attr in ['administrativo', 'tecnico', 'financiero', 'politico', 'mixto']:
-                if hasattr(self.validated_config.mechanism_type_priors, attr):
-                    current = getattr(self.validated_config.mechanism_type_priors, attr)
-                    normalized = current / total_prior
-                    setattr(self.validated_config.mechanism_type_priors, attr, normalized)
-                    self.config['mechanism_type_priors'][attr] = normalized
-
-        # Calculate uncertainty reduction for quality criteria
-        final_priors = {}
-        for attr in ['administrativo', 'tecnico', 'financiero', 'politico', 'mixto']:
-            if hasattr(self.validated_config.mechanism_type_priors, attr):
-                final_priors[attr] = getattr(self.validated_config.mechanism_type_priors, attr)
-
-        # Calculate entropy as uncertainty measure
-        initial_entropy = -sum(p * np.log(p + 1e-10) for p in initial_priors.values() if p > 0)
-        final_entropy = -sum(p * np.log(p + 1e-10) for p in final_priors.values() if p > 0)
-        uncertainty_reduction = ((initial_entropy - final_entropy) / max(initial_entropy, 1e-10)) * 100
-
-        self.logger.info(f"Uncertainty reduction: {uncertainty_reduction:.2f}%")
-
-        # Save updated priors if history path configured
         if self.validated_config.self_reflection.prior_history_path:
-            self._save_prior_history(feedback_data, uncertainty_reduction)
+            self._save_prior_history(feedback_data, None)
 
-        self.logger.info(f"Priors actualizados con peso de retroalimentación {feedback_weight}")
+        self.logger.info(f"Priors CVC actualizados con peso {feedback_weight}")
 
     
     def _save_prior_history(self, feedback_data: dict[str, Any] | None = None,
@@ -2050,7 +2130,7 @@ class ConfigLoader:
 
             # Create new record
             history_record = {
-                'mechanism_type_priors': dict(self.config.get('mechanism_type_priors', {})),
+                'chain_capacity_priors': dict(self.config.get('chain_capacity_priors', {})),
                 'timestamp': pd.Timestamp.now().isoformat(),
                 'version': '2.0'
             }
@@ -2111,10 +2191,10 @@ class ConfigLoader:
     
     def check_uncertainty_reduction_criterion(self, current_uncertainty: float) -> dict[str, Any]:
         """
-        Check if mean mechanism_type uncertainty has decreased ≥5% over 10 iterations
+        Check if mean uncertainty has decreased ≥5% over 10 iterations
 
         HARMONIC FRONT 4 QUALITY CRITERIA:
-        Success verified if mean mech_uncertainty decreases by ≥5% over 10 sequential PDM analyses
+        Success verified if mean uncertainty decreases by ≥5% over 10 sequential PDM analyses
         """
         self._uncertainty_history.append(current_uncertainty)
 
@@ -3764,6 +3844,157 @@ class OperationalizationAuditor:
         self.sequence_warnings = warnings
         return warnings
 
+    def audit_causal_coherence_d6(
+        self,
+        nodes: dict[str, MetaNode],
+        graph: nx.DiGraph,
+        cvc_vectors: dict[str, ChainCapacityVector],
+    ) -> dict[str, dict[str, Any]]:
+        """
+        D6: CAUSALIDAD - Auditoría de coherencia causal derivada de D1-D5.
+
+        CRITERIOS:
+        1) Continuidad: no hay saltos abruptos o eslabones faltantes
+        2) Proporcionalidad: insumos proporcionales a productos
+        3) Trazabilidad: rutas hacia resultados/impactos en el grafo
+        4) Necesidad/Suficiencia: tests sobre transiciones clave
+        """
+
+        d6_results: dict[str, dict[str, Any]] = {}
+
+        for node_id, _node in nodes.items():
+            if node_id not in cvc_vectors:
+                continue
+
+            cvc = cvc_vectors[node_id]
+
+            chain_values = [
+                cvc.insumos_capacity,
+                cvc.actividades_capacity,
+                cvc.productos_capacity,
+                cvc.resultados_capacity,
+                cvc.impactos_capacity,
+            ]
+
+            missing_links: list[str] = []
+            labels = ['D1_insumos', 'D2_actividades', 'D3_productos', 'D4_resultados', 'D5_impactos']
+            for label, value in zip(labels, chain_values):
+                if value < 0.3:
+                    missing_links.append(label)
+
+            continuity_score = 1.0 - (len(missing_links) / 5.0)
+
+            proportionality_failures: list[dict[str, Any]] = []
+            if cvc.insumos_capacity > 0.7 and cvc.productos_capacity < 0.4:
+                proportionality_failures.append(
+                    {
+                        'type': 'resource_waste',
+                        'severity': 'high',
+                        'message': (
+                            f"Alta inversión D1={cvc.insumos_capacity:.2f} "
+                            f"pero baja productividad D3={cvc.productos_capacity:.2f}"
+                        ),
+                    }
+                )
+
+            if cvc.productos_capacity > 0.7 and cvc.insumos_capacity < 0.3:
+                proportionality_failures.append(
+                    {
+                        'type': 'magical_thinking',
+                        'severity': 'critical',
+                        'message': (
+                            f"Productos prometidos D3={cvc.productos_capacity:.2f} "
+                            f"sin recursos D1={cvc.insumos_capacity:.2f}"
+                        ),
+                    }
+                )
+
+            proportionality_score = 1.0 - (len(proportionality_failures) * 0.5)
+            proportionality_score = float(max(0.0, min(1.0, proportionality_score)))
+
+            causal_paths: list[list[str]] = []
+            if graph.has_node(node_id):
+                for target in graph.nodes():
+                    target_data = graph.nodes[target]
+                    if target_data.get('type') in ['resultado', 'impacto'] and nx.has_path(graph, node_id, target):
+                        causal_paths.append(nx.shortest_path(graph, node_id, target))
+
+            traceability_score = min(1.0, len(causal_paths) * 0.25)
+
+            necessity_tests: list[dict[str, Any]] = []
+            sufficiency_tests: list[dict[str, Any]] = []
+
+            if cvc.insumos_capacity < 0.3 and cvc.actividades_capacity > 0.5:
+                necessity_tests.append(
+                    {
+                        'transition': 'D1→D2',
+                        'failed': True,
+                        'reason': 'Actividades sin insumos (viola necesidad)',
+                    }
+                )
+
+            if cvc.productos_capacity > 0.7 and cvc.resultados_capacity < 0.3:
+                sufficiency_tests.append(
+                    {
+                        'transition': 'D3→D4',
+                        'failed': True,
+                        'reason': 'Productos no generan resultados (insuficiencia)',
+                    }
+                )
+
+            necessity_score = 1.0 - (sum(1 for t in necessity_tests if t['failed']) * 0.5)
+            sufficiency_score = 1.0 - (sum(1 for t in sufficiency_tests if t['failed']) * 0.5)
+            necessity_score = float(max(0.0, min(1.0, necessity_score)))
+            sufficiency_score = float(max(0.0, min(1.0, sufficiency_score)))
+
+            d6_causalidad_score = (
+                (continuity_score * 0.30)
+                + (proportionality_score * 0.25)
+                + (traceability_score * 0.25)
+                + (necessity_score * 0.10)
+                + (sufficiency_score * 0.10)
+            )
+
+            if d6_causalidad_score >= MICRO_LEVELS["EXCELENTE"]:
+                d6_quality = "EXCELENTE"
+            elif d6_causalidad_score >= MICRO_LEVELS["BUENO"]:
+                d6_quality = "BUENO"
+            elif d6_causalidad_score >= MICRO_LEVELS["ACEPTABLE"]:
+                d6_quality = "ACEPTABLE"
+            else:
+                d6_quality = "INSUFICIENTE"
+
+            d6_results[node_id] = {
+                'cvc': cvc.dict(),
+                'd6_causalidad_score': float(max(0.0, min(1.0, d6_causalidad_score))),
+                'd6_quality': d6_quality,
+                'continuity': {
+                    'score': float(max(0.0, min(1.0, continuity_score))),
+                    'missing_links': missing_links,
+                },
+                'proportionality': {
+                    'score': proportionality_score,
+                    'failures': proportionality_failures,
+                },
+                'traceability': {
+                    'score': float(max(0.0, min(1.0, traceability_score))),
+                    'causal_paths_found': len(causal_paths),
+                },
+                'necessity_sufficiency': {
+                    'necessity_score': necessity_score,
+                    'sufficiency_score': sufficiency_score,
+                    'necessity_tests': necessity_tests,
+                    'sufficiency_tests': sufficiency_tests,
+                },
+            }
+
+            if d6_quality == "INSUFICIENTE":
+                self.logger.error(
+                    f"FALLA CAUSAL CRÍTICA en {node_id}: D6={d6_causalidad_score:.2f} Missing={missing_links}"
+                )
+
+        return d6_results
+
     
     def bayesian_counterfactual_audit(self, nodes: dict[str, MetaNode],
                                       graph: nx.DiGraph,
@@ -4292,25 +4523,16 @@ class BayesianMechanismInference:
         else:
             self.bayesian_adapter = None
 
-        # Load mechanism type hyperpriors from configuration (externalized)
-        self.mechanism_type_priors = {
-            'administrativo': self.config.get_mechanism_prior('administrativo'),
-            'tecnico': self.config.get_mechanism_prior('tecnico'),
-            'financiero': self.config.get_mechanism_prior('financiero'),
-            'politico': self.config.get_mechanism_prior('politico'),
-            'mixto': self.config.get_mechanism_prior('mixto')
+        self.chain_capacity_priors = {
+            'insumos': self.config.get_chain_capacity_prior('insumos'),
+            'actividades': self.config.get_chain_capacity_prior('actividades'),
+            'productos_base': self.config.get_chain_capacity_prior('productos_base'),
+            'productos_with_mga': self.config.get_chain_capacity_prior('productos_with_mga'),
+            'resultados': self.config.get_chain_capacity_prior('resultados'),
+            'impactos': self.config.get_chain_capacity_prior('impactos'),
         }
 
-        # Typical activity sequences by mechanism type
-        # These could also be externalized if needed for domain-specific customization
-        self.mechanism_sequences = {
-            'administrativo': ['planificar', 'coordinar', 'gestionar', 'supervisar'],
-            'tecnico': ['diagnosticar', 'diseñar', 'implementar', 'evaluar'],
-            'financiero': ['asignar', 'ejecutar', 'auditar', 'reportar'],
-            'politico': ['concertar', 'negociar', 'aprobar', 'promulgar']
-        }
-
-        # Track inferred mechanisms
+        self.cvc_vectors: dict[str, ChainCapacityVector] = {}
         self.inferred_mechanisms: dict[str, dict[str, Any]] = {}
 
     
@@ -4332,7 +4554,7 @@ class BayesianMechanismInference:
         Infer latent causal mechanisms using hierarchical Bayesian modeling
 
         HARMONIC FRONT 4 ENHANCEMENT:
-        - Tracks mean mechanism_type uncertainty for quality criteria
+        - Tracks mean uncertainty for quality criteria
         - Reports uncertainty reduction metrics
         """
         self.logger.info("Iniciando inferencia Bayesiana de mecanismos...")
@@ -4340,28 +4562,22 @@ class BayesianMechanismInference:
         # Focus on 'producto' nodes which should have mechanisms
         product_nodes = {nid: n for nid, n in nodes.items() if n.type == 'producto'}
 
-        # Track uncertainties for mean calculation
-        mechanism_uncertainties = []
+        self.cvc_vectors = {}
+        self.inferred_mechanisms = {}
 
         for node_id, node in product_nodes.items():
             mechanism = self._infer_single_mechanism(node, text, nodes)
             self.inferred_mechanisms[node_id] = mechanism
 
-            # Track mechanism type uncertainty for quality criteria
-            if 'uncertainty' in mechanism:
-                mech_type_uncertainty = mechanism['uncertainty'].get('mechanism_type', 1.0)
-                mechanism_uncertainties.append(mech_type_uncertainty)
-
-        # Calculate mean mechanism uncertainty for Harmonic Front 4 quality criteria
-        mean_mech_uncertainty = (
-            np.mean(mechanism_uncertainties) if mechanism_uncertainties else 1.0
-        )
+        cvc_uncertainties = [
+            m.get('uncertainty', {}).get('cvc', 1.0) for m in self.inferred_mechanisms.values()
+        ]
+        mean_cvc_uncertainty = float(np.mean(cvc_uncertainties)) if cvc_uncertainties else 1.0
 
         self.logger.info(f"Mecanismos inferidos: {len(self.inferred_mechanisms)}")
-        self.logger.info(f"Mean mechanism_type uncertainty: {mean_mech_uncertainty:.4f}")
+        self.logger.info(f"Mean CVC uncertainty: {mean_cvc_uncertainty:.4f}")
 
-        # Store for reporting
-        self._mean_mechanism_uncertainty = mean_mech_uncertainty
+        self._mean_cvc_uncertainty = mean_cvc_uncertainty
 
         return self.inferred_mechanisms
 
@@ -4372,13 +4588,10 @@ class BayesianMechanismInference:
         # Extract observations from text
         observations = self._extract_observations(node, text)
 
-        # Level 3: Sample mechanism type from hyperprior
-        mechanism_type_posterior = self._infer_mechanism_type(observations)
+        cvc = self._infer_chain_capacity_vector(observations=observations, text=text)
+        self.cvc_vectors[node.id] = cvc
 
-        # Level 2: Infer activity sequence given mechanism type
-        sequence_posterior = self._infer_activity_sequence(
-            observations, mechanism_type_posterior
-        )
+        sequence_posterior = self._infer_activity_sequence(observations)
 
         # Level 1: Calculate coherence factor
         coherence_score = self._calculate_coherence_factor(
@@ -4391,14 +4604,14 @@ class BayesianMechanismInference:
 
         # Quantify uncertainty
         uncertainty = self._quantify_uncertainty(
-            mechanism_type_posterior, sequence_posterior, coherence_score
+            cvc, sequence_posterior, coherence_score
         )
 
         # Detect gaps
         gaps = self._detect_gaps(node, observations, uncertainty)
 
         return {
-            'mechanism_type': mechanism_type_posterior,
+            'cvc': cvc.dict(),
             'activity_sequence': sequence_posterior,
             'coherence_score': coherence_score,
             'sufficiency_test': sufficiency,
@@ -4451,52 +4664,166 @@ class BayesianMechanismInference:
 
         return observations
 
+    def _extract_dimension_evidence(
+        self,
+        text: str,
+        dimension: str,
+        keywords: list[str],
+        patterns: tuple[re.Pattern[str], ...],
+    ) -> dict[str, Any]:
+        text_lower = text.lower()
+        keyword_matches: list[str] = []
+        for kw in keywords:
+            if kw.lower() in text_lower:
+                keyword_matches.append(kw)
+                if len(keyword_matches) >= 12:
+                    break
+
+        pattern_matches: list[str] = []
+        for pattern in patterns:
+            match = pattern.search(text)
+            if match:
+                pattern_matches.append(match.group(0)[:200])
+
+        keyword_hits = len(keyword_matches)
+        pattern_hits = len(pattern_matches)
+        strength = min(1.0, (0.12 * pattern_hits) + (0.04 * keyword_hits))
+
+        return {
+            'dimension': dimension,
+            'keyword_hits': keyword_hits,
+            'pattern_hits': pattern_hits,
+            'keywords_checked': len(keywords),
+            'patterns_checked': len(patterns),
+            'keyword_matches': keyword_matches,
+            'pattern_matches': pattern_matches,
+            'strength': strength,
+        }
+
+    def _calculate_likelihood_from_evidence(self, evidence: dict[str, Any]) -> float:
+        keyword_hits = int(evidence.get('keyword_hits', 0))
+        pattern_hits = int(evidence.get('pattern_hits', 0))
+        patterns_checked = int(evidence.get('patterns_checked', 0))
+
+        keyword_score = min(1.0, keyword_hits / 6.0)
+        pattern_score = min(1.0, pattern_hits / max(patterns_checked, 1))
+
+        likelihood = (pattern_score * 0.65) + (keyword_score * 0.35)
+        return float(max(0.0, min(1.0, likelihood)))
+
+    def _bayesian_update(
+        self,
+        prior: float,
+        likelihood: float,
+        evidence: dict[str, Any],
+        observations: dict[str, Any],
+    ) -> float:
+        prior_alpha = self.config.get_bayesian_threshold('prior_alpha')
+        prior_beta = self.config.get_bayesian_threshold('prior_beta')
+        prior_strength = float(prior_alpha + prior_beta)
+
+        alpha0 = max(1e-3, float(prior) * prior_strength)
+        beta0 = max(1e-3, (1.0 - float(prior)) * prior_strength)
+
+        strength = float(evidence.get('strength', 0.0))
+        dimension = str(evidence.get('dimension', ''))
+
+        if dimension == 'D1':
+            budget = observations.get('budget')
+            if isinstance(budget, (int, float)) and budget > 0:
+                strength = min(1.0, strength + 0.15)
+        elif dimension == 'D2':
+            verbs = observations.get('verbs', [])
+            if isinstance(verbs, list) and len(verbs) >= 2:
+                strength = min(1.0, strength + 0.10)
+            if observations.get('entity_activity') is not None:
+                strength = min(1.0, strength + 0.10)
+
+        pseudo_n = 1.0 + (9.0 * strength)
+        alpha = alpha0 + (float(likelihood) * pseudo_n)
+        beta = beta0 + ((1.0 - float(likelihood)) * pseudo_n)
+
+        posterior = alpha / max(alpha + beta, 1e-10)
+        return float(max(0.0, min(1.0, posterior)))
+
     
-    def _infer_mechanism_type(self, observations: dict[str, Any]) -> dict[str, float]:
-        """Infer mechanism type using Bayesian updating"""
-        # Start with hyperprior
-        posterior = dict(self.mechanism_type_priors)
+    def _infer_chain_capacity_vector(self, observations: dict[str, Any], text: str) -> ChainCapacityVector:
+        """
+        Infiere Vector de Capacidad de Cadena (CVC) basado en evidencia textual
+        para cada dimensión D1-D5 del cuestionario.
+        """
 
-        # Get Laplace smoothing parameter from configuration
-        laplace_smooth = self.config.get_bayesian_threshold('laplace_smoothing')
+        cvc = ChainCapacityVector()
 
-        # Update based on observed verbs
-        observed_verbs = set(observations.get('verbs', []))
+        d1_evidence = self._extract_dimension_evidence(
+            text=text,
+            dimension='D1',
+            keywords=CVC_DIMENSION_SPECS['D1']['keywords'],
+            patterns=CVC_DIMENSION_SPECS['D1']['patterns'],
+        )
+        prior_d1 = self.chain_capacity_priors['insumos']
+        likelihood_d1 = self._calculate_likelihood_from_evidence(d1_evidence)
+        cvc.insumos_capacity = self._bayesian_update(prior_d1, likelihood_d1, d1_evidence, observations)
 
-        if observed_verbs:
-            for mech_type, typical_verbs in self.mechanism_sequences.items():
-                # Count overlap
-                overlap = len(observed_verbs.intersection(set(typical_verbs)))
-                total = len(typical_verbs)
+        d2_evidence = self._extract_dimension_evidence(
+            text=text,
+            dimension='D2',
+            keywords=CVC_DIMENSION_SPECS['D2']['keywords'],
+            patterns=CVC_DIMENSION_SPECS['D2']['patterns'],
+        )
+        prior_d2 = self.chain_capacity_priors['actividades']
+        likelihood_d2 = self._calculate_likelihood_from_evidence(d2_evidence)
+        cvc.actividades_capacity = self._bayesian_update(prior_d2, likelihood_d2, d2_evidence, observations)
 
-                if total > 0:
-                    # Likelihood: proportion of typical verbs observed with Laplace smoothing
-                    likelihood = (overlap + laplace_smooth) / (total + 2 * laplace_smooth)
+        d3_evidence = self._extract_dimension_evidence(
+            text=text,
+            dimension='D3',
+            keywords=CVC_DIMENSION_SPECS['D3']['keywords'],
+            patterns=CVC_DIMENSION_SPECS['D3']['patterns'],
+        )
+        if MGA_CODE_RE.search(text):
+            prior_d3 = self.chain_capacity_priors['productos_with_mga']
+        else:
+            prior_d3 = self.chain_capacity_priors['productos_base']
+        likelihood_d3 = self._calculate_likelihood_from_evidence(d3_evidence)
+        cvc.productos_capacity = self._bayesian_update(prior_d3, likelihood_d3, d3_evidence, observations)
 
-                    # Bayesian update
-                    posterior[mech_type] *= likelihood
+        d4_evidence = self._extract_dimension_evidence(
+            text=text,
+            dimension='D4',
+            keywords=CVC_DIMENSION_SPECS['D4']['keywords'],
+            patterns=CVC_DIMENSION_SPECS['D4']['patterns'],
+        )
+        prior_d4 = self.chain_capacity_priors['resultados']
+        likelihood_d4 = self._calculate_likelihood_from_evidence(d4_evidence)
+        cvc.resultados_capacity = self._bayesian_update(prior_d4, likelihood_d4, d4_evidence, observations)
 
-        # Update based on entity-activity
-        if observations.get('entity_activity'):
-            verb = observations['entity_activity'].get('verb_lemma', '')
-            for mech_type, typical_verbs in self.mechanism_sequences.items():
-                if verb in typical_verbs:
-                    posterior[mech_type] *= 1.5
+        d5_evidence = self._extract_dimension_evidence(
+            text=text,
+            dimension='D5',
+            keywords=CVC_DIMENSION_SPECS['D5']['keywords'],
+            patterns=CVC_DIMENSION_SPECS['D5']['patterns'],
+        )
+        prior_d5 = self.chain_capacity_priors['impactos']
+        likelihood_d5 = self._calculate_likelihood_from_evidence(d5_evidence)
+        cvc.impactos_capacity = self._bayesian_update(prior_d5, likelihood_d5, d5_evidence, observations)
 
-        # Normalize
-        total = sum(posterior.values())
-        if total > 0:
-            posterior = {k: v / total for k, v in posterior.items()}
+        self.logger.info(
+            "CVC inferido: "
+            f"D1={cvc.insumos_capacity:.2f}, "
+            f"D2={cvc.actividades_capacity:.2f}, "
+            f"D3={cvc.productos_capacity:.2f}, "
+            f"D4={cvc.resultados_capacity:.2f}, "
+            f"D5={cvc.impactos_capacity:.2f}, "
+            f"D6_causalidad={cvc.causalidad_score:.2f}"
+        )
 
-        return posterior
+        return cvc
 
     
-    def _infer_activity_sequence(self, observations: dict[str, Any],
-                                 mechanism_type_posterior: dict[str, float]) -> dict[str, Any]:
-        """Infer activity sequence parameters"""
-        # Get most likely mechanism type
-        best_type = max(mechanism_type_posterior.items(), key=lambda x: x[1])[0]
-        expected_sequence = self.mechanism_sequences.get(best_type, [])
+    def _infer_activity_sequence(self, observations: dict[str, Any]) -> dict[str, Any]:
+        """Infer activity sequence parameters from observed verbs."""
+        expected_sequence = list(CVC_EXPECTED_ACTIVITY_SEQUENCE)
 
         observed_verbs = observations.get('verbs', [])
 
@@ -4696,38 +5023,34 @@ class BayesianMechanismInference:
         )
 
     
-    def _quantify_uncertainty(self, mechanism_type_posterior: dict[str, float],
-                              sequence_posterior: dict[str, Any],
-                              coherence_score: float) -> dict[str, float]:
-        """Quantify epistemic uncertainty"""
-        # Entropy of mechanism type distribution
-        mech_probs = list(mechanism_type_posterior.values())
-        if mech_probs:
-            mech_entropy = -sum(p * np.log(p + 1e-10) for p in mech_probs if p > 0)
-            max_entropy = np.log(len(mech_probs))
-            mech_uncertainty = mech_entropy / max_entropy if max_entropy > 0 else 1.0
-        else:
-            mech_uncertainty = 1.0 # Refactored
+    def _quantify_uncertainty(
+        self,
+        cvc: ChainCapacityVector,
+        sequence_posterior: dict[str, Any],
+        coherence_score: float,
+    ) -> dict[str, float]:
+        """Quantify uncertainty from CVC completeness, sequencing, and coherence."""
+        cvc_values = [
+            cvc.insumos_capacity,
+            cvc.actividades_capacity,
+            cvc.productos_capacity,
+            cvc.resultados_capacity,
+            cvc.impactos_capacity,
+        ]
+        cvc_uncertainty = 1.0 - float(np.mean(cvc_values)) if cvc_values else 1.0
 
-        # Sequence completeness uncertainty
-        seq_completeness = sequence_posterior.get('sequence_completeness', 0.0)
-        seq_uncertainty = 1.0 - seq_completeness
+        seq_completeness = float(sequence_posterior.get('sequence_completeness', 0.0))
+        seq_uncertainty = 1.0 - max(0.0, min(1.0, seq_completeness))
 
-        # Coherence uncertainty
-        coherence_uncertainty = 1.0 - coherence_score
+        coherence_uncertainty = 1.0 - max(0.0, min(1.0, float(coherence_score)))
 
-        # Combined uncertainty
-        total_uncertainty = (
-                mech_uncertainty * 0.4 +
-                seq_uncertainty * 0.3 +
-                coherence_uncertainty * 0.3
-        )
+        total_uncertainty = (cvc_uncertainty * 0.4) + (seq_uncertainty * 0.3) + (coherence_uncertainty * 0.3)
 
         return {
-            'total': total_uncertainty,
-            'mechanism_type': mech_uncertainty,
-            'sequence': seq_uncertainty,
-            'coherence': coherence_uncertainty
+            'total': float(max(0.0, min(1.0, total_uncertainty))),
+            'cvc': float(max(0.0, min(1.0, cvc_uncertainty))),
+            'sequence': float(max(0.0, min(1.0, seq_uncertainty))),
+            'coherence': float(max(0.0, min(1.0, coherence_uncertainty))),
         }
 
     
@@ -4769,7 +5092,7 @@ class BayesianMechanismInference:
                 'type': 'missing_budget',
                 'severity': 'medium',
                 'message': f"Sin asignación presupuestaria para {node.id}",
-                'suggestion': "Asignar recursos financieros al producto"
+                'suggestion': "Asignar recursos presupuestarios al producto"
             })
 
         return gaps
@@ -4789,108 +5112,127 @@ class BayesianMechanismInference:
             return 0.5  # Default neutral confidence
         return float(np.mean(confidences))
 
-    
-    def _build_transition_matrix(self, mechanism_type: str) -> np.ndarray:
+    def derive_political_viability(
+        self,
+        d6_audit_results: dict[str, dict[str, Any]],
+        financial_audit: FinancialAuditor,
+        sequence_warnings: list[str],
+    ) -> dict[str, dict[str, Any]]:
         """
-        Build transition matrix for activity sequences.
+        La Viabilidad Política (VP) es DERIVADA, no inferida.
 
-        Args:
-            mechanism_type: Type of mechanism
+        AXIOMA BASE: VP = 0.95 (el plan fue aprobado políticamente)
 
-        Returns:
-            Transition probability matrix
+        PENALIZACIONES:
+        - Fallas en D6 (causalidad rota) → -0.30
+        - Riesgo financiero alto → -0.25
+        - Violaciones de secuencia → -0.20
+        - Missing actors (sin responsables) → -0.15
         """
-        # Get typical sequence for this mechanism type
-        sequence = self.mechanism_sequences.get(mechanism_type, ['planificar', 'ejecutar', 'evaluar'])
-        n = len(sequence)
 
-        # Create a simple sequential transition matrix
-        matrix = np.zeros((n, n))
-        for i in range(n - 1):
-            matrix[i, i + 1] = 0.7  # High probability of next step
-            matrix[i, i] = 0.2       # Some probability of staying in same step
-            if i < n - 2:
-                matrix[i, i + 2] = 0.1  # Small probability of skipping
-        matrix[n - 1, n - 1] = 1.0  # Final state is absorbing
+        political_viability: dict[str, dict[str, Any]] = {}
 
-        return matrix
+        for node_id, d6_result in d6_audit_results.items():
+            vp_score = 0.95
+            penalties: list[dict[str, Any]] = []
 
-    
-    def _calculate_type_transition_prior(self, from_type: str, to_type: str) -> float:
-        """
-        Calculate prior probability of transitioning between mechanism types.
+            d6_quality = d6_result.get('d6_quality', 'INSUFICIENTE')
+            if d6_quality == "INSUFICIENTE":
+                vp_score -= 0.30
+                penalties.append(
+                    {
+                        'type': 'causal_failure',
+                        'penalty': -0.30,
+                        'reason': 'Cadena causal rota o incoherente',
+                    }
+                )
+            elif d6_quality == "ACEPTABLE":
+                vp_score -= 0.10
+                penalties.append(
+                    {
+                        'type': 'causal_weakness',
+                        'penalty': -0.10,
+                        'reason': 'Cadena causal débil',
+                    }
+                )
 
-        Args:
-            from_type: Source mechanism type
-            to_type: Target mechanism type
+            prop_failures = d6_result.get('proportionality', {}).get('failures', [])
+            if isinstance(prop_failures, list):
+                for failure in prop_failures:
+                    severity = failure.get('severity')
+                    if severity == 'critical':
+                        vp_score -= 0.25
+                        penalties.append(
+                            {
+                                'type': 'proportionality_critical',
+                                'penalty': -0.25,
+                                'reason': failure.get('message', ''),
+                            }
+                        )
+                    elif severity == 'high':
+                        vp_score -= 0.15
+                        penalties.append(
+                            {
+                                'type': 'proportionality_high',
+                                'penalty': -0.15,
+                                'reason': failure.get('message', ''),
+                            }
+                        )
 
-        Returns:
-            Prior probability of transition
-        """
-        # Same type has high probability
-        if from_type == to_type:
-            return 0.7
+            if hasattr(financial_audit, 'd3_q3_analysis'):
+                node_financial = financial_audit.d3_q3_analysis.get('node_scores', {}).get(node_id, {})
+                if node_financial.get('counterfactual_sufficient', False):
+                    vp_score -= 0.20
+                    penalties.append(
+                        {
+                            'type': 'unnecessary_spending',
+                            'penalty': -0.20,
+                            'reason': 'Presupuesto no necesario para el mecanismo',
+                        }
+                    )
 
-        # Related types have medium probability
-        related_pairs = [
-            ('administrativo', 'politico'),
-            ('tecnico', 'financiero'),
-            ('financiero', 'administrativo'),
-        ]
-        if (from_type, to_type) in related_pairs or (to_type, from_type) in related_pairs:
-            return 0.2
+            node_sequence_violations = [w for w in sequence_warnings if node_id in w]
+            if node_sequence_violations:
+                vp_score -= 0.15
+                penalties.append(
+                    {
+                        'type': 'sequence_violation',
+                        'penalty': -0.15,
+                        'reason': f"{len(node_sequence_violations)} violaciones de secuencia lógica",
+                    }
+                )
 
-        # Unrelated types have low probability
-        return 0.1
+            cvc = d6_result.get('cvc', {})
+            if isinstance(cvc, dict) and float(cvc.get('actividades_capacity', 0.0)) < 0.3:
+                vp_score -= 0.15
+                penalties.append(
+                    {
+                        'type': 'missing_actors',
+                        'penalty': -0.15,
+                        'reason': 'Sin entidades responsables claras (D2 débil)',
+                    }
+                )
 
-    
-    def _classify_mechanism_type(self, observations: dict[str, Any]) -> str:
-        """
-        Classify mechanism type based on observations.
+            vp_score = max(0.0, min(1.0, vp_score))
 
-        Args:
-            observations: Observed features
+            political_viability[node_id] = {
+                'score': vp_score,
+                'baseline': 0.95,
+                'total_penalty': float(sum(float(p.get('penalty', 0.0)) for p in penalties)),
+                'penalties': penalties,
+                'interpretation': self._interpret_vp_score(vp_score),
+            }
 
-        Returns:
-            Classified mechanism type
-        """
-        # Extract features
-        verbs = observations.get('verbs', [])
-        entities = observations.get('entities', [])
-        budget = observations.get('budget')
+        return political_viability
 
-        # Score each mechanism type
-        scores = {}
-        for mech_type, typical_verbs in self.mechanism_sequences.items():
-            score = 0.0 # Refactored
-            # Count matching verbs
-            for verb in verbs:
-                if any(tv in verb.lower() for tv in typical_verbs):
-                    score += 1.0
-            scores[mech_type] = score
-
-        # Adjust for budget presence (indicates financial mechanism)
-        if budget and budget > 0:
-            scores['financiero'] = scores.get('financiero', 0) + 2.0
-
-        # Adjust for political/administrative entities
-        for entity in entities:
-            entity_lower = entity.lower()
-            if any(word in entity_lower for word in ['alcaldía', 'consejo', 'gobernación']):
-                scores['politico'] = scores.get('politico', 0) + 1.0
-            if any(word in entity_lower for word in ['secretaría', 'dirección', 'oficina']):
-                scores['administrativo'] = scores.get('administrativo', 0) + 1.0
-
-        # Return type with highest score, or 'mixto' if tie
-        if not scores or all(s == 0 for s in scores.values()):
-            return 'mixto'
-
-        max_score = max(scores.values())
-        max_types = [t for t, s in scores.items() if s == max_score]
-
-        if len(max_types) > 1:
-            return 'mixto'
-        return max_types[0]
+    def _interpret_vp_score(self, vp_score: float) -> str:
+        if vp_score >= 0.80:
+            return "ALTA: Mecanismo políticamente sostenible"
+        if vp_score >= 0.60:
+            return "MEDIA: Requiere gestión política activa"
+        if vp_score >= 0.40:
+            return "BAJA: Alto riesgo de abandono o fracaso"
+        return "CRÍTICA: Mecanismo políticamente inviable"
 
 class CausalInferenceSetup:
     """Prepare model for causal inference"""
@@ -5514,9 +5856,14 @@ class CDAFFramework:
             audit_results = self.op_auditor.audit_evidence_traceability(nodes)
             sequence_warnings = self.op_auditor.audit_sequence_logic(graph)
 
+            self.logger.info("Auditando coherencia causal D6 (CVC)...")
+            self.cvc_vectors = dict(self.bayesian_mechanism.cvc_vectors)
+            self.d6_audit_results = self.op_auditor.audit_causal_coherence_d6(nodes, graph, self.cvc_vectors)
+            self.political_viability = self.bayesian_mechanism.derive_political_viability(
+                self.d6_audit_results, self.financial_auditor, sequence_warnings
+            )
+
             # Step 5.5: Bayesian Counterfactual Audit (AGUJA III)
-            # Note: pdet_alignment should be calculated separately if needed via financiero_viabilidad_tablas
-            # For now, using None as placeholder - can be enhanced by integrating PDETMunicipalPlanAnalyzer
             self.logger.info("Ejecutando auditoría contrafactual Bayesiana...")
             counterfactual_audit = self.op_auditor.bayesian_counterfactual_audit(nodes, graph, pdet_alignment=None)
 
@@ -5556,9 +5903,9 @@ class CDAFFramework:
                 self.config.update_priors_from_feedback(feedback_data)
 
                 # HARMONIC FRONT 4: Check uncertainty reduction criterion
-                if hasattr(self.bayesian_mechanism, '_mean_mechanism_uncertainty'):
+                if hasattr(self.bayesian_mechanism, '_mean_cvc_uncertainty'):
                     uncertainty_check = self.config.check_uncertainty_reduction_criterion(
-                        self.bayesian_mechanism._mean_mechanism_uncertainty
+                        self.bayesian_mechanism._mean_cvc_uncertainty
                     )
                     self.logger.info(
                         f"Uncertainty criterion check: {uncertainty_check['status']} "
@@ -5566,6 +5913,7 @@ class CDAFFramework:
                         f"{uncertainty_check['reduction_percent']:.2f}% reduction)"
                     )
 
+            self._verify_cvc_compliance()
             self.logger.info(f"✅ Procesamiento completado exitosamente para {policy_code}")
             return True
 
@@ -5585,6 +5933,135 @@ class CDAFFramework:
                 recoverable=False
             ) from e
 
+    def _generate_bayesian_reports(
+        self,
+        inferred_mechanisms: dict[str, dict[str, Any]],
+        counterfactual_audit: dict[str, Any],
+        policy_code: str,
+    ) -> None:
+        """Genera reporte JSON con inferencias CVC, auditoría D6 y viabilidad política."""
+
+        def _json_default(obj: Any) -> Any:
+            if isinstance(obj, (np.integer, np.floating)):
+                return obj.item()
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            if isinstance(obj, Path):
+                return str(obj)
+            return str(obj)
+
+        def _sanitize_transition_probabilities(transitions: Any) -> list[dict[str, Any]]:
+            if not isinstance(transitions, dict):
+                return []
+            rows: list[dict[str, Any]] = []
+            for key, value in transitions.items():
+                if not isinstance(key, tuple) or len(key) != 2:
+                    continue
+                rows.append({'from': str(key[0]), 'to': str(key[1]), 'p': float(value)})
+            return rows
+
+        sanitized_mechanisms: dict[str, dict[str, Any]] = {}
+        for node_id, mechanism in inferred_mechanisms.items():
+            seq = mechanism.get('activity_sequence', {})
+            transitions = _sanitize_transition_probabilities(seq.get('transition_probabilities'))
+            sanitized_mechanisms[node_id] = {
+                'cvc': mechanism.get('cvc', {}),
+                'coherence_score': float(mechanism.get('coherence_score', 0.0)),
+                'uncertainty': mechanism.get('uncertainty', {}),
+                'gaps': mechanism.get('gaps', []),
+                'necessity_test': mechanism.get('necessity_test', {}),
+                'sufficiency_test': mechanism.get('sufficiency_test', {}),
+                'activity_sequence': {
+                    'expected_sequence': seq.get('expected_sequence', []),
+                    'observed_verbs': seq.get('observed_verbs', []),
+                    'sequence_completeness': float(seq.get('sequence_completeness', 0.0)),
+                    'transition_probabilities': transitions,
+                },
+            }
+
+        report = {
+            'policy_code': policy_code,
+            'cvc_vectors': {nid: v.dict() for nid, v in getattr(self, 'cvc_vectors', {}).items()},
+            'd6_audit_results': getattr(self, 'd6_audit_results', {}),
+            'political_viability': getattr(self, 'political_viability', {}),
+            'counterfactual_audit': counterfactual_audit,
+            'inferred_mechanisms': sanitized_mechanisms,
+        }
+
+        output_path = self.output_dir / f"{policy_code}_cvc_bayesian_report.json"
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(report, f, indent=2, ensure_ascii=False, sort_keys=True, default=_json_default)
+
+        self.logger.info(f"Reporte Bayesiano CVC guardado en: {output_path}")
+
+    def _verify_cvc_compliance(self) -> None:
+        """Garantiza que el sistema no use taxonomías de mecanismo obsoletas."""
+
+        forbidden_identifiers = [
+            'MechanismTypeConfig',
+            '_infer_mechanism_type',
+            'mechanism_type_priors',
+        ]
+        forbidden_type_labels = ['administrativo', 'tecnico', 'financiero', 'politico', 'mixto']
+
+        import inspect
+        import sys
+
+        module = sys.modules[self.__module__]
+        callables: list[tuple[str, Any]] = []
+
+        for cls_name, cls in inspect.getmembers(module, inspect.isclass):
+            if cls.__module__ != module.__name__:
+                continue
+            for fn_name, fn in inspect.getmembers(cls, inspect.isfunction):
+                callables.append((f"{cls_name}.{fn_name}", fn))
+
+        for qualname, fn in callables:
+            if qualname.endswith("._verify_cvc_compliance"):
+                continue
+            try:
+                source = inspect.getsource(fn)
+            except (OSError, TypeError):
+                continue
+
+            for ident in forbidden_identifiers:
+                if ident in source:
+                    raise ValueError(
+                        f"VIOLACIÓN CVC: encontrado identificador prohibido '{ident}' en {qualname}"
+                    )
+
+            for label in forbidden_type_labels:
+                if re.search(rf"['\"]{re.escape(label)}['\"]", source) or re.search(
+                    rf"\.{re.escape(label)}\b", source
+                ):
+                    raise ValueError(
+                        f"VIOLACIÓN CVC: encontrado label de tipo obsoleto '{label}' en {qualname}"
+                    )
+
+        if 'mechanism_type_priors' in getattr(self.config, 'config', {}):
+            raise ValueError("VIOLACIÓN CVC: configuración contiene 'mechanism_type_priors'")
+
+        if not hasattr(self, 'cvc_vectors'):
+            raise ValueError("FALTA: cvc_vectors no inicializado")
+        if not isinstance(self.cvc_vectors, dict):
+            raise TypeError("VIOLACIÓN CVC: cvc_vectors debe ser dict[str, ChainCapacityVector]")
+        if not all(isinstance(v, ChainCapacityVector) for v in self.cvc_vectors.values()):
+            raise ValueError("VIOLACIÓN CVC: cvc_vectors contiene valores no-ChainCapacityVector")
+
+        if not hasattr(self, 'd6_audit_results'):
+            raise ValueError("FALTA: D6 no calculada")
+        if not isinstance(self.d6_audit_results, dict):
+            raise TypeError("VIOLACIÓN CVC: d6_audit_results debe ser dict")
+
+        for node_id, d6_result in self.d6_audit_results.items():
+            if 'd6_causalidad_score' not in d6_result:
+                raise ValueError(f"FALTA: D6 score para {node_id}")
+            score = float(d6_result['d6_causalidad_score'])
+            if score > 1.0:
+                raise ValueError("VIOLACIÓN: D6 > 1.0")
+
+        self.logger.info("✓ VERIFICACIÓN CVC COMPLETA: sistema coherente con cadena de valor")
+
     
     def _extract_feedback_from_audit(self, inferred_mechanisms: dict[str, dict[str, Any]],
                                      counterfactual_audit: dict[str, Any],
@@ -5596,79 +6073,62 @@ class CDAFFramework:
         to improve future inference accuracy.
 
         HARMONIC FRONT 4 ENHANCEMENT:
-        - Reduces mechanism_type_priors for mechanisms with implementation_failure flags
+        - Ajusta priors por dimensión CVC (D1-D5)
         - Tracks necessity/sufficiency test failures
-        - Penalizes "miracle" mechanisms that fail counterfactual tests
+        - Penaliza mecanismos que fallan tests contrafactuales
         """
-        feedback = {}
+        feedback: dict[str, Any] = {}
 
-        # Extract mechanism type frequencies from successful inferences
-        mechanism_frequencies = defaultdict(float)
-        failure_frequencies = defaultdict(float)  # NEW: Track failures
-        total_mechanisms = 0
+        capacity_accumulators: dict[str, list[float]] = {
+            'insumos': [],
+            'actividades': [],
+            'productos_base': [],
+            'resultados': [],
+            'impactos': [],
+        }
+
         total_failures = 0
-
-        # Get causal implications from audit
         causal_implications = counterfactual_audit.get('causal_implications', {})
 
         for node_id, mechanism in inferred_mechanisms.items():
-            mechanism_type_dist = mechanism.get('mechanism_type', {})
-            # Weight by confidence (coherence score)
-            confidence = mechanism.get('coherence_score', 0.5)
+            cvc = mechanism.get('cvc', {})
+            if isinstance(cvc, dict):
+                capacity_accumulators['insumos'].append(float(cvc.get('insumos_capacity', 0.0)))
+                capacity_accumulators['actividades'].append(float(cvc.get('actividades_capacity', 0.0)))
+                capacity_accumulators['productos_base'].append(float(cvc.get('productos_capacity', 0.0)))
+                capacity_accumulators['resultados'].append(float(cvc.get('resultados_capacity', 0.0)))
+                capacity_accumulators['impactos'].append(float(cvc.get('impactos_capacity', 0.0)))
 
-            # Check for implementation_failure flags in audit results
             node_implications = causal_implications.get(node_id, {})
             causal_effects = node_implications.get('causal_effects', {})
             has_implementation_failure = 'implementation_failure' in causal_effects
 
-            # Check necessity/sufficiency test results
             necessity_test = mechanism.get('necessity_test', {})
             sufficiency_test = mechanism.get('sufficiency_test', {})
             failed_necessity = not necessity_test.get('is_necessary', True)
             failed_sufficiency = not sufficiency_test.get('is_sufficient', True)
 
-            # If mechanism failed tests or has implementation_failure flag
             if has_implementation_failure or failed_necessity or failed_sufficiency:
                 total_failures += 1
-                # Track which mechanism types are associated with failures
-                for mech_type, prob in mechanism_type_dist.items():
-                    failure_frequencies[mech_type] += prob * confidence
-            else:
-                # Only count successes for positive reinforcement
-                for mech_type, prob in mechanism_type_dist.items():
-                    mechanism_frequencies[mech_type] += prob * confidence
-                    total_mechanisms += confidence
 
-        # Normalize frequencies
-        if total_mechanisms > 0:
-            mechanism_frequencies = {
-                k: v / total_mechanisms
-                for k, v in mechanism_frequencies.items()
-            }
-            feedback['mechanism_frequencies'] = dict(mechanism_frequencies)
+        feedback['chain_capacity_means'] = {
+            key: float(np.mean(values)) if values else 0.0
+            for key, values in capacity_accumulators.items()
+        }
 
-        # NEW: Calculate penalty factors for failed mechanism types
-        if total_failures > 0:
-            failure_frequencies = {
-                k: v / total_failures
-                for k, v in failure_frequencies.items()
-            }
-            feedback['failure_frequencies'] = dict(failure_frequencies)
-
-            # Calculate penalty: reduce priors for frequently failing types
-            penalty_factors = {}
-            for mech_type, failure_freq in failure_frequencies.items():
-                # Higher failure frequency = stronger penalty (0.7 to 0.95) reduction)
-                penalty_factors[mech_type] = 0.95 - (failure_freq * 0.25)
-            feedback['penalty_factors'] = penalty_factors
+        failure_rate = total_failures / max(len(inferred_mechanisms), 1)
+        penalty_factor = 0.95 - (failure_rate * 0.25)
+        feedback['chain_capacity_penalties'] = {
+            key: float(max(0.70, min(0.95, penalty_factor))) for key in capacity_accumulators
+        }
 
         # Add audit quality metrics for future reference
         feedback['audit_quality'] = {
             'total_nodes_audited': len(audit_results),
             'passed_count': sum(1 for r in audit_results.values() if r['passed']),
             'success_rate': sum(1 for r in audit_results.values() if r['passed']) / max(len(audit_results), 1),
-            'failure_count': total_failures,  # NEW
-            'failure_rate': total_failures / max(len(inferred_mechanisms), 1)  # NEW
+            'failure_count': total_failures,
+            'failure_rate': failure_rate,
         }
 
         # Track necessity/sufficiency failures for iterative validation loop
@@ -6506,7 +6966,7 @@ class HierarchicalGenerativeModel:
     AGUJA II - Modelo Generativo Jerárquico con inferencia MCMC
 
     PROMPT II-1: Inferencia jerárquica con incertidumbre
-    Estima posterior(mechanism_type, activity_sequence | obs) con MCMC.
+    Estima posterior(CVC, activity_sequence | obs) con MCMC.
 
     PROMPT II-2: Posterior Predictive Checks + Ablation
     Genera datos simulados desde posterior y compara con observados.
@@ -6525,22 +6985,20 @@ class HierarchicalGenerativeModel:
     def __init__(self, mechanism_priors: dict[str, float] | None = None) -> None:
         self.logger = logging.getLogger(self.__class__.__name__)
 
-        # Priors débiles para mechanism_type si no se proveen
-        self.mechanism_priors = mechanism_priors or {
-            'administrativo': 0.30,
-            'tecnico': 0.25,
-            'financiero': 0.20,
-            'politico': 0.15,
-            'mixto': 0.10
+        self.cvc_priors: dict[str, float] = {
+            'insumos_capacity': 0.30,
+            'actividades_capacity': 0.25,
+            'productos_capacity': 0.40,
+            'resultados_capacity': 0.35,
+            'impactos_capacity': 0.15,
         }
 
-        # Validar que suman ~1.0
-        prior_sum = sum(self.mechanism_priors.values())
-        if abs(prior_sum - 1.0) > 0.01:
-            self.logger.warning(f"Mechanism priors sum to {prior_sum:.3f}, normalizing...")
-            self.mechanism_priors = {
-                k: v / prior_sum for k, v in self.mechanism_priors.items()
-            }
+        if mechanism_priors:
+            for key, value in mechanism_priors.items():
+                if key in self.cvc_priors:
+                    self.cvc_priors[key] = float(max(0.0, min(1.0, float(value))))
+                else:
+                    self.logger.warning(f"Ignoring unknown prior key: {key}")
 
     def infer_mechanism_posterior(
         self,
@@ -6552,7 +7010,7 @@ class HierarchicalGenerativeModel:
         """
         PROMPT II-1: Inferencia jerárquica con MCMC
 
-        Estima posterior(mechanism_type, activity_sequence | obs) usando MCMC.
+        Estima posterior(CVC, activity_sequence | obs) usando MCMC.
 
         Args:
             observations: Dict con {verbos, co_ocurrencias, coherence, structural_signals}
@@ -6561,7 +7019,7 @@ class HierarchicalGenerativeModel:
             n_chains: Número de cadenas para R-hat (≥2)
 
         Returns:
-            Dict con type_posterior, sequence_mode, coherence_score, entropy, CI95, R-hat, ESS
+            Dict con CVC posterior, coherence, entropy, CI95, R-hat, ESS
         """
         self.logger.info(f"Starting MCMC inference: {n_iter} iter, {burn_in} burn-in, {n_chains} chains")
 
@@ -6585,20 +7043,38 @@ class HierarchicalGenerativeModel:
         for chain in chains:
             all_samples.extend(chain)
 
-        # 1. Type posterior (frecuencias de mechanism_type)
-        type_counts = dict.fromkeys(self.mechanism_priors.keys(), 0)
+        cvc_samples_by_dim: dict[str, list[float]] = {k: [] for k in self.cvc_priors}
+        causalidad_scores: list[float] = []
         for sample in all_samples:
-            mtype = sample.get('mechanism_type', 'mixto')
-            if mtype in type_counts:
-                type_counts[mtype] += 1
+            cvc_data = sample.get('cvc')
+            if not isinstance(cvc_data, dict):
+                continue
+            for dim_key in cvc_samples_by_dim:
+                cvc_samples_by_dim[dim_key].append(float(cvc_data.get(dim_key, 0.0)))
+            try:
+                cvc_model = ChainCapacityVector(
+                    **{dim_key: float(cvc_data.get(dim_key, 0.0)) for dim_key in self.cvc_priors}
+                )
+                causalidad_scores.append(cvc_model.causalidad_score)
+            except Exception:
+                continue
 
         total_samples = len(all_samples)
-        type_posterior = {
-            mtype: count / max(total_samples, 1)
-            for mtype, count in type_counts.items()
+        cvc_posterior_mean = {
+            dim_key: float(np.mean(values)) if values else 0.0
+            for dim_key, values in cvc_samples_by_dim.items()
+        }
+        cvc_ci95 = {
+            dim_key: (
+                float(np.percentile(values, 2.5)),
+                float(np.percentile(values, 97.5)),
+            )
+            if values
+            else (0.0, 0.0)
+            for dim_key, values in cvc_samples_by_dim.items()
         }
 
-        # 2. Sequence mode (secuencia más frecuente)
+        # 2. CVC mode (calidad más frecuente)
         sequence_mode = self._get_mode_sequence(all_samples)
 
         # 3. Coherence score (estadísticas)
@@ -6607,10 +7083,15 @@ class HierarchicalGenerativeModel:
         coherence_std = float(np.std(coherence_scores))
 
         # 4. Entropy del posterior
-        posterior_probs = list(type_posterior.values())
-        entropy_posterior = -sum(p * np.log(p + 1e-10) for p in posterior_probs if p > 0)
-        max_entropy = np.log(len(self.mechanism_priors))
-        normalized_entropy = entropy_posterior / max_entropy if max_entropy > 0 else 0.0
+        if causalidad_scores:
+            hist, _bin_edges = np.histogram(causalidad_scores, bins=10, range=(0.0, 1.0))
+            probs = hist / max(int(hist.sum()), 1)
+            entropy_posterior = -sum(float(p) * float(np.log(p + 1e-10)) for p in probs if p > 0)
+            max_entropy = float(np.log(len(probs))) if len(probs) > 1 else 0.0
+            normalized_entropy = entropy_posterior / max_entropy if max_entropy > 0 else 0.0
+        else:
+            entropy_posterior = 0.0
+            normalized_entropy = 0.0
 
         # 5. CI95 para coherence
         ci95_low = float(np.percentile(coherence_scores, 2.5))
@@ -6637,7 +7118,8 @@ class HierarchicalGenerativeModel:
             self.logger.warning(warning)
 
         return {
-            'type_posterior': type_posterior,
+            'cvc_posterior_mean': cvc_posterior_mean,
+            'cvc_ci95': cvc_ci95,
             'sequence_mode': sequence_mode,
             'coherence_score': coherence_mean,
             'coherence_std': coherence_std,
@@ -6664,31 +7146,26 @@ class HierarchicalGenerativeModel:
         np.random.seed(seed)
         samples = []
 
-        # Estado inicial: sample desde prior
-        current_type = np.random.choice(
-            list(self.mechanism_priors.keys()),
-            p=list(self.mechanism_priors.values())
-        )
-        current_coherence = observations.get('coherence', 0.5)
+        current_cvc = dict(self.cvc_priors)
+        current_coherence = float(observations.get('coherence', 0.5))
+        step_size = 0.05
 
         for i in range(n_iter):
-            # Proponer nuevo mechanism_type
-            proposed_type = np.random.choice(list(self.mechanism_priors.keys()))
+            proposed_cvc = {
+                key: float(np.clip(value + np.random.normal(0, step_size), 0.0, 1.0))
+                for key, value in current_cvc.items()
+            }
 
             # Calcular likelihood ratio
-            current_likelihood = self._calculate_likelihood(current_type, observations)
-            proposed_likelihood = self._calculate_likelihood(proposed_type, observations)
-
-            # Prior ratio
-            prior_ratio = self.mechanism_priors[proposed_type] / max(self.mechanism_priors[current_type], 1e-10)
+            current_likelihood = self._calculate_likelihood(current_cvc, observations)
+            proposed_likelihood = self._calculate_likelihood(proposed_cvc, observations)
 
             # Acceptance probability (Metropolis-Hastings)
-            likelihood_ratio = proposed_likelihood / max(current_likelihood, 1e-10)
-            acceptance_prob = min(1.0, likelihood_ratio * prior_ratio)
+            acceptance_prob = min(1.0, proposed_likelihood / max(current_likelihood, 1e-10))
 
             # Accept/reject
             if np.random.random() < acceptance_prob:
-                current_type = proposed_type
+                current_cvc = proposed_cvc
 
             # Simular coherence con ruido
             simulated_coherence = current_coherence + np.random.normal(0, 0.05)
@@ -6697,7 +7174,7 @@ class HierarchicalGenerativeModel:
             # Almacenar sample (después de burn-in)
             if i >= burn_in:
                 sample = {
-                    'mechanism_type': current_type,
+                    'cvc': dict(current_cvc),
                     'coherence': float(simulated_coherence),
                     'iteration': i - burn_in,
                     'chain_seed': seed
@@ -6708,43 +7185,64 @@ class HierarchicalGenerativeModel:
 
     def _calculate_likelihood(
         self,
-        mechanism_type: str,
+        cvc: dict[str, float],
         observations: dict[str, Any]
     ) -> float:
-        """Calcula likelihood de observations dado mechanism_type"""
-        # Likelihood basado en coherence y structural signals
-        coherence = observations.get('coherence', 0.5)
+        """Calcula likelihood de observations dado un estado CVC (simplificado)."""
+        coherence = float(observations.get('coherence', 0.5))
         structural_signals = observations.get('structural_signals', {})
 
-        # Base likelihood desde prior
-        prior = self.mechanism_priors.get(mechanism_type, 0.1)
+        prior_log = 0.0
+        sigma = 0.30
+        for key, prior_mean in self.cvc_priors.items():
+            value = float(cvc.get(key, prior_mean))
+            prior_log += -((value - prior_mean) ** 2) / (2 * (sigma**2))
 
-        # Ajuste por coherence (mayor coherence → mayor likelihood)
-        coherence_factor = 1.0 + coherence
+        structural_bonus = 0.0
+        if isinstance(structural_signals, dict):
+            numeric_signals = [v for v in structural_signals.values() if isinstance(v, (int, float))]
+            if numeric_signals:
+                structural_bonus = min(0.20, float(np.mean(numeric_signals)) * 0.10)
 
-        # Ajuste por señales estructurales específicas del tipo
-        structural_match = 0.0 # Refactored
-        if mechanism_type == 'administrativo' and structural_signals.get('admin_keywords', 0) > 0:
-            structural_match = 0.2 # Refactored
-        elif mechanism_type == 'financiero' and structural_signals.get('budget_data', 0) > 0:
-            structural_match = 0.3 # Refactored
-        elif mechanism_type == 'tecnico' and structural_signals.get('technical_terms', 0) > 0:
-            structural_match = 0.25 # Refactored
-
-        likelihood = prior * coherence_factor * (1.0 + structural_match)
-        return likelihood
+        cvc_mean = float(np.mean([float(v) for v in cvc.values()])) if cvc else 0.0
+        base = (0.50 + (0.50 * coherence)) * (0.50 + (0.50 * cvc_mean))
+        likelihood = base * float(np.exp(prior_log)) * (1.0 + structural_bonus)
+        return float(max(1e-6, likelihood))
 
     
     def _get_mode_sequence(self, samples: list[dict[str, Any]]) -> str:
-        """Obtiene secuencia modal (tipo más frecuente)"""
-        type_counts = {}
-        for s in samples:
-            mtype = s.get('mechanism_type', 'mixto')
-            type_counts[mtype] = type_counts.get(mtype, 0) + 1
+        """Obtiene la calidad modal (más frecuente) del score de causalidad CVC."""
+        quality_counts: dict[str, int] = defaultdict(int)
+        for sample in samples:
+            cvc_data = sample.get('cvc')
+            if not isinstance(cvc_data, dict):
+                continue
+            try:
+                cvc_model = ChainCapacityVector(
+                    insumos_capacity=float(cvc_data.get('insumos_capacity', 0.0)),
+                    actividades_capacity=float(cvc_data.get('actividades_capacity', 0.0)),
+                    productos_capacity=float(cvc_data.get('productos_capacity', 0.0)),
+                    resultados_capacity=float(cvc_data.get('resultados_capacity', 0.0)),
+                    impactos_capacity=float(cvc_data.get('impactos_capacity', 0.0)),
+                )
+            except Exception:
+                continue
 
-        if type_counts:
-            return max(type_counts.items(), key=lambda x: x[1])[0]
-        return 'mixto'
+            score = cvc_model.causalidad_score
+            if score >= MICRO_LEVELS["EXCELENTE"]:
+                quality = "EXCELENTE"
+            elif score >= MICRO_LEVELS["BUENO"]:
+                quality = "BUENO"
+            elif score >= MICRO_LEVELS["ACEPTABLE"]:
+                quality = "ACEPTABLE"
+            else:
+                quality = "INSUFICIENTE"
+
+            quality_counts[quality] += 1
+
+        if quality_counts:
+            return max(quality_counts.items(), key=lambda item: item[1])[0]
+        return "INSUFICIENTE"
 
     
     def _calculate_r_hat(self, chains: list[list[dict[str, Any]]]) -> float:
