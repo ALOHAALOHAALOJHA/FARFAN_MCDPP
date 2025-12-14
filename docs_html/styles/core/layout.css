@@ -1,0 +1,63 @@
+/* FARFAN Visual Protocol: Layout Systems */
+
+:root {
+    --header-height: 80px;
+    --footer-height: 100px;
+    --horizontal-padding: 40px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.fvp-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Zone */
+.fvp-header-zone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background: linear-gradient(180deg, rgba(4,16,26,0.9) 0%, transparent 100%);
+    padding: 0 var(--horizontal-padding);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+/* Content Zone */
+.fvp-content-zone {
+    margin-top: var(--header-height);
+    margin-bottom: var(--footer-height);
+    padding: 2rem var(--horizontal-padding);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.fvp-grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+}
+
+/* Footer Zone */
+.fvp-footer-zone {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--footer-height);
+    background: linear-gradient(0deg, rgba(4,16,26,0.9) 0%, transparent 100%);
+    padding: 0 var(--horizontal-padding);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
