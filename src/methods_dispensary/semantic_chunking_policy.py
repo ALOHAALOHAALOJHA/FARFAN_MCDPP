@@ -31,6 +31,7 @@ import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
@@ -87,26 +88,106 @@ RENYI_STABILITY_EPSILON: float = 1e-9  # Numerical guard-rail for degenerative p
 # ========================
 
 class CausalDimension(Enum):
-    """Marco Lógico standard (DNP Colombia)"""
-    INSUMOS = "insumos"  # Recursos, capacidad institucional
-    ACTIVIDADES = "actividades"  # Acciones, procesos, cronogramas
-    PRODUCTOS = "productos"  # Entregables inmediatos
-    RESULTADOS = "resultados"  # Efectos mediano plazo
-    IMPACTOS = "impactos"  # Transformación estructural largo plazo
-    SUPUESTOS = "supuestos"  # Condiciones habilitantes
+    """Dimensiones de la cadena de valor (DNP Colombia)."""
 
-class PDMSection(Enum):
-    """
-    Enumerates the typical sections of a Colombian Municipal Development Plan (PDM),
-    as defined by Ley 152/1994. Each member represents a key structural component
-    of the PDM document, facilitating semantic analysis and policy structure recognition.
-    """
-    DIAGNOSTICO = "diagnostico"
-    VISION_ESTRATEGICA = "vision_estrategica"
-    PLAN_PLURIANUAL = "plan_plurianual"
-    PLAN_INVERSIONES = "plan_inversiones"
-    MARCO_FISCAL = "marco_fiscal"
-    SEGUIMIENTO = "seguimiento_evaluacion"
+    INSUMOS = "DIM01"
+    ACTIVIDADES = "DIM02"
+    PRODUCTOS = "DIM03"
+    RESULTADOS = "DIM04"
+    IMPACTOS = "DIM05"
+    CAUSALIDAD = "DIM06"
+
+    @classmethod
+    def from_dimension_code(cls, dim_code: str) -> CausalDimension | None:
+        normalized = dim_code.strip().upper()
+        mapping = {
+            "D1": cls.INSUMOS,
+            "DIM01": cls.INSUMOS,
+            "D2": cls.ACTIVIDADES,
+            "DIM02": cls.ACTIVIDADES,
+            "D3": cls.PRODUCTOS,
+            "DIM03": cls.PRODUCTOS,
+            "D4": cls.RESULTADOS,
+            "DIM04": cls.RESULTADOS,
+            "D5": cls.IMPACTOS,
+            "DIM05": cls.IMPACTOS,
+            "D6": cls.CAUSALIDAD,
+            "DIM06": cls.CAUSALIDAD,
+        }
+        return mapping.get(normalized)
+
+
+class UnitOfAnalysisLoader:
+    """Loads canonical patterns from unit_of_analysis_index.json."""
+
+    _payload: dict[str, Any] | None = None
+
+    @classmethod
+    def _index_path(cls) -> Path:
+        return (
+            Path(__file__).resolve().parents[2]
+            / "artifacts/plan1/canonical_ground_truth/unit_of_analysis_index.json"
+        )
+
+    @classmethod
+    def load(cls) -> dict[str, Any]:
+        if cls._payload is not None:
+            return cls._payload
+
+        path = cls._index_path()
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            payload = {}
+        except json.JSONDecodeError:
+            payload = {}
+
+        cls._payload = payload if isinstance(payload, dict) else {}
+        return cls._payload
+
+    @classmethod
+    def get_patterns(cls, pattern_type: str) -> list[str]:
+        payload = cls.load()
+        patterns = payload.get(pattern_type, [])
+        if isinstance(patterns, list) and all(isinstance(p, str) for p in patterns):
+            return list(patterns)
+        return []
+
+    @classmethod
+    def get_section_type_rules(cls) -> dict[str, list[str]]:
+        payload = cls.load()
+        rules = payload.get("section_type_rules", {})
+        if not isinstance(rules, dict):
+            return {}
+        typed: dict[str, list[str]] = {}
+        for key, value in rules.items():
+            if isinstance(key, str) and isinstance(value, list) and all(isinstance(p, str) for p in value):
+                typed[key] = list(value)
+        return typed
+
+    @classmethod
+    def get_table_columns(cls) -> dict[str, list[str]]:
+        payload = cls.load()
+        columns = payload.get("table_columns", {})
+        if not isinstance(columns, dict):
+            return {}
+        typed: dict[str, list[str]] = {}
+        for key, value in columns.items():
+            if isinstance(key, str) and isinstance(value, list) and all(isinstance(c, str) for c in value):
+                typed[key] = list(value)
+        return typed
+
+    @classmethod
+    def get_dimension_descriptions(cls) -> dict[str, str]:
+        payload = cls.load()
+        descriptions = payload.get("dimension_descriptions", {})
+        if not isinstance(descriptions, dict):
+            return {}
+        typed: dict[str, str] = {}
+        for key, value in descriptions.items():
+            if isinstance(key, str) and isinstance(value, str):
+                typed[key] = value
+        return typed
 
 @dataclass(frozen=True, slots=True)
 class SemanticConfig:
@@ -198,10 +279,12 @@ class SemanticProcessor:
                     "content": chunk_text,
                     "section_type": section["type"],
                     "section_id": section["id"],
+                    "section_header": section.get("header", ""),
                     "token_count": len(chunk_tokens),
                     "position": len(chunks),
                     "has_table": self._detect_table(chunk_text),
                     "has_numerical": self._detect_numerical_data(chunk_text),
+                    "has_causal_language": self._detect_causal_language(chunk_text),
                     "pdq_context": {},
                 })
         # Batch embed all chunks
@@ -213,39 +296,88 @@ class SemanticProcessor:
 
     
     def _detect_pdm_structure(self, text: str) -> list[dict[str, Any]]:
-        """Detect PDM sections using Colombian policy document patterns"""
-        sections = []
-        # Patterns for Colombian PDM structure
-        patterns = {
-            PDMSection.DIAGNOSTICO: r"(?i)(diagnóstico|caracterización|situación actual)",
-            PDMSection.VISION_ESTRATEGICA: r"(?i)(visión|misión|objetivos estratégicos)",
-            PDMSection.PLAN_PLURIANUAL: r"(?i)(plan plurianual|programas|proyectos)",
-            PDMSection.PLAN_INVERSIONES: r"(?i)(plan de inversiones|presupuesto|recursos)",
-            PDMSection.MARCO_FISCAL: r"(?i)(marco fiscal|sostenibilidad fiscal)",
-            PDMSection.SEGUIMIENTO: r"(?i)(seguimiento|evaluación|indicadores)"
-        }
-        # Split by major headers (numbered or capitalized)
-        parts = re.split(r'\n(?=[0-9]+\.|[A-ZÑÁÉÍÓÚ]{3,})', text)
-        for i, part in enumerate(parts):
-            section_type = PDMSection.DIAGNOSTICO  # default
-            for stype, pattern in patterns.items():
-                if re.search(pattern, part[:200]):
-                    section_type = stype
-                    break
-            sections.append({
-                "text": part.strip(),
-                "type": section_type,
-                "id": f"sec_{i}"
-            })
+        """Detect PDM sections using patterns from unit_of_analysis_index.json."""
+
+        header_patterns = [re.compile(p) for p in UnitOfAnalysisLoader.get_patterns("section_headers")]
+        if not header_patterns:
+            return [{"text": text.strip(), "type": "GENERAL", "id": "sec_0", "header": ""}]
+
+        headers: list[dict[str, Any]] = []
+        for compiled in header_patterns:
+            for match in compiled.finditer(text):
+                headers.append(
+                    {
+                        "text": match.group(0).strip(),
+                        "start": match.start(),
+                        "end": match.end(),
+                    }
+                )
+
+        if not headers:
+            return [{"text": text.strip(), "type": "GENERAL", "id": "sec_0", "header": ""}]
+
+        deduped_by_start: dict[int, dict[str, Any]] = {}
+        for header in headers:
+            start = int(header["start"])
+            if start not in deduped_by_start:
+                deduped_by_start[start] = header
+
+        ordered_headers = [deduped_by_start[k] for k in sorted(deduped_by_start)]
+        sections: list[dict[str, Any]] = []
+
+        if ordered_headers[0]["start"] > 0:
+            sections.append(
+                {
+                    "text": text[: ordered_headers[0]["start"]].strip(),
+                    "type": "GENERAL",
+                    "id": "sec_0_preamble",
+                    "header": "",
+                }
+            )
+
+        for idx, header in enumerate(ordered_headers):
+            start = int(header["end"])
+            end = int(ordered_headers[idx + 1]["start"]) if idx + 1 < len(ordered_headers) else len(text)
+            header_text = str(header.get("text", ""))
+            sections.append(
+                {
+                    "text": text[start:end].strip(),
+                    "type": self._classify_section_type(header_text),
+                    "id": f"sec_{idx}",
+                    "header": header_text,
+                }
+            )
+
         return sections
+
+    def _classify_section_type(self, header: str) -> str:
+        rules = UnitOfAnalysisLoader.get_section_type_rules()
+        for section_type, patterns in rules.items():
+            if any(re.search(pattern, header) for pattern in patterns):
+                return section_type
+        return "GENERAL"
 
     
     def _detect_table(self, text: str) -> bool:
         """Detect if chunk contains tabular data"""
-        # Multiple tabs or pipes suggest table structure
-        return (text.count('\t') > 3 or
-                text.count('|') > 3 or
-                bool(re.search(r'\d+\s+\d+\s+\d+', text)))
+        if text.count("\t") > 3 or text.count("|") > 3:
+            return True
+
+        marker_patterns = UnitOfAnalysisLoader.get_patterns("table_markers")
+        if any(re.search(pattern, text) for pattern in marker_patterns):
+            return True
+
+        table_columns = UnitOfAnalysisLoader.get_table_columns()
+        for columns in table_columns.values():
+            hits = sum(1 for col in columns if col and col in text)
+            if hits >= 2:
+                return True
+
+        return bool(re.search(r"\d+\s+\d+\s+\d+", text))
+
+    def _detect_causal_language(self, text: str) -> bool:
+        patterns = UnitOfAnalysisLoader.get_patterns("causal_connectors")
+        return any(re.search(pattern, text) for pattern in patterns)
 
     
     def _detect_numerical_data(self, text: str) -> bool:
@@ -385,32 +517,63 @@ class BayesianEvidenceIntegrator:
 
     
     def _compute_reliability_weights(self, metadata: list[dict[str, Any]]) -> NDArray[np.float64]:
-        """
-        Evidence reliability based on:
-        - Position in document (early sections more diagnostic)
-        - Content type (tables/numbers more reliable for quantitative claims)
-        - Section type (plan sections more reliable than diagnostics)
-        """
         n = len(metadata)
         weights = np.ones(n, dtype=np.float64)
+
         for i, meta in enumerate(metadata):
-            # Position weight (early = more reliable)
-            pos_weight = 1.0 - (meta["position"] / max(1, n)) * POSITION_WEIGHT_SCALE
-            # Content type weight
-            content_weight = 1.0 # Refactored
+            weight = 1.0
+
+            section_type = str(meta.get("section_type", ""))
+            if section_type == "ESTRATEGICA":
+                weight *= 1.35
+            elif section_type == "FINANCIERA":
+                weight *= 1.30
+            elif section_type == "PAZ_PDET":
+                weight *= 1.25
+            elif section_type == "DIAGNOSTICO":
+                weight *= 0.90
+            elif section_type == "SEGUIMIENTO":
+                weight *= 1.10
+
+            chunk_text = _get_chunk_content(meta)
+
             if meta.get("has_table", False):
-                content_weight *= TABLE_WEIGHT_FACTOR
+                if "Matriz de Indicadores" in chunk_text:
+                    weight *= 1.50
+                elif "Plan Plurianual de Inversiones" in chunk_text:
+                    weight *= 1.45
+                elif "Línea base" in chunk_text and "Meta" in chunk_text:
+                    weight *= 1.35
+                else:
+                    weight *= 1.20
+
             if meta.get("has_numerical", False):
-                content_weight *= NUMERICAL_WEIGHT_FACTOR
-            # Section type weight (plan sections > diagnostic)
-            section_type = meta.get("section_type")
-            if section_type in [PDMSection.PLAN_PLURIANUAL, PDMSection.PLAN_INVERSIONES]:
-                content_weight *= PLAN_SECTION_WEIGHT_FACTOR
-            elif section_type == PDMSection.DIAGNOSTICO:
-                content_weight *= DIAGNOSTIC_SECTION_WEIGHT_FACTOR
-            weights[i] = pos_weight * content_weight
-        # Normalize to sum to n (preserve total evidence mass)
-        return weights * (n / weights.sum())
+                if re.search(r"\\$\\s*[\\d,.]+\\s*(?:millones?)?\\s*(?:COP)?", chunk_text, re.I):
+                    weight *= 1.40
+                elif re.search(r"\\d+(?:[.,]\\d+)?%", chunk_text):
+                    weight *= 1.25
+                else:
+                    weight *= 1.15
+
+            if meta.get("has_causal_language", False):
+                weight *= 1.30
+
+            if re.search(r"Ley\\s+\\d+\\s+de\\s+\\d{4}", chunk_text, re.I):
+                weight *= 1.20
+
+            if re.search(r"(?:municipio|vereda|corregimiento|PDET|zona rural)", chunk_text, re.I):
+                weight *= 1.15
+
+            position = float(meta.get("position", 0.0))
+            position_factor = 1.0 - (position / max(1.0, float(n))) * 0.3
+            weight *= position_factor
+
+            weights[i] = weight
+
+        total = float(weights.sum())
+        if total <= 0:
+            return weights
+        return weights * (n / total)
 
     
     def _null_evidence(self) -> dict[str, float]:
@@ -472,39 +635,16 @@ class PolicyDocumentAnalyzer:
 
     
     def _init_dimension_embeddings(self) -> dict[CausalDimension, NDArray[np.floating[Any]]]:
-        """
-        Canonical embeddings for Marco Lógico dimensions
-        Using Colombian policy-specific terminology
-        """
-        descriptions = {
-            CausalDimension.INSUMOS: (
-                "recursos humanos financieros técnicos capacidad institucional "
-                "presupuesto asignado infraestructura disponible personal capacitado"
-            ),
-            CausalDimension.ACTIVIDADES: (
-                "actividades programadas acciones ejecutadas procesos implementados "
-                "cronograma cumplido capacitaciones realizadas gestiones adelantadas"
-            ),
-            CausalDimension.PRODUCTOS: (
-                "productos entregables resultados inmediatos bienes servicios generados "
-                "documentos producidos obras construidas beneficiarios atendidos"
-            ),
-            CausalDimension.RESULTADOS: (
-                "resultados efectos mediano plazo cambios comportamiento acceso mejorado "
-                "capacidades fortalecidas servicios prestados metas alcanzadas"
-            ),
-            CausalDimension.IMPACTOS: (
-                "impactos transformación estructural efectos largo plazo desarrollo sostenible "
-                "bienestar poblacional reducción pobreza equidad territorial"
-            ),
-            CausalDimension.SUPUESTOS: (
-                "supuestos condiciones habilitantes riesgos externos factores contextuales "
-                "viabilidad política sostenibilidad financiera apropiación comunitaria"
-            )
-        }
+        descriptions = UnitOfAnalysisLoader.get_dimension_descriptions()
+
+        def _fallback(dim: CausalDimension) -> str:
+            from farfan_pipeline.core.canonical_notation import get_dimension_description
+
+            return get_dimension_description(dim.value)
+
         return {
-            dim: self.semantic.embed_single(desc)
-            for dim, desc in descriptions.items()
+            dim: self.semantic.embed_single(descriptions.get(dim.value, _fallback(dim)))
+            for dim in CausalDimension
         }
 
     
@@ -632,10 +772,12 @@ class SemanticChunkingProducer:
         return {
             "section_type": chunk.get("section_type"),
             "section_id": chunk.get("section_id"),
+            "section_header": chunk.get("section_header"),
             "token_count": chunk.get("token_count"),
             "position": chunk.get("position"),
             "has_table": chunk.get("has_table"),
-            "has_numerical": chunk.get("has_numerical")
+            "has_numerical": chunk.get("has_numerical"),
+            "has_causal_language": chunk.get("has_causal_language"),
         }
 
     # ========================================================================
@@ -777,15 +919,9 @@ class SemanticChunkingProducer:
     
     def get_dimension_description(self, dimension: CausalDimension) -> str:
         """Get description for dimension"""
-        descriptions = {
-            CausalDimension.INSUMOS: "Recursos, capacidad institucional",
-            CausalDimension.ACTIVIDADES: "Acciones, procesos, cronogramas",
-            CausalDimension.PRODUCTOS: "Entregables inmediatos",
-            CausalDimension.RESULTADOS: "Efectos mediano plazo",
-            CausalDimension.IMPACTOS: "Transformación estructural largo plazo",
-            CausalDimension.SUPUESTOS: "Condiciones habilitantes"
-        }
-        return descriptions.get(dimension, "")
+        from farfan_pipeline.core.canonical_notation import get_dimension_description
+
+        return get_dimension_description(dimension.value)
 
     
     def get_config(self) -> SemanticConfig:

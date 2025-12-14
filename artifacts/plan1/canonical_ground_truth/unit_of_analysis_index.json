@@ -1,7 +1,109 @@
 {
   "source_examples": [],
-  "section_headers": [],
-  "table_columns": {},
-  "causal_connectors": [],
-  "temporal_expressions": []
+  "section_headers": [
+    "(?im)^\\s*CAP(?:ÍTULO|ITULO)\\s+(?:[IVXLCDM]+|\\d+)\\s*[\\.:]?\\s+.+$",
+    "(?im)^\\s*T[ÍI]TULO\\s+(?:[IVXLCDM]+|\\d+)\\s*[:\\.]?\\s*.+$",
+    "(?im)^\\s*\\d+(?:\\.\\d+){0,3}\\.?(?:\\s+|\\t+)[A-ZÁÉÍÓÚÑ].{3,}$",
+    "(?im)^\\s*L[ÍI]NEA\\s+[Ee]STRAT[ÉE]GICA\\s+(?:\\d+|[IVXLCDM]+)\\s*:\\s*.+$",
+    "(?im)^\\s*Sector\\s*:\\s*.+$",
+    "(?im)^\\s*Programa\\s*:\\s*.+$",
+    "(?im)^\\s*#{3,5}\\s*\\d+(?:\\.\\d+)*\\s+ARMONIZACI(?:ÓN|ON).*?$"
+  ],
+  "section_type_rules": {
+    "DIAGNOSTICO": [
+      "(?i)diagn[óo]stico",
+      "(?i)caracterizaci[óo]n",
+      "(?i)situaci[óo]n\\s+actual"
+    ],
+    "ESTRATEGICA": [
+      "(?i)parte\\s+estrat[ée]gica",
+      "(?i)l[íi]nea\\s+estrat[ée]gica",
+      "(?i)visi[óo]n",
+      "(?i)misi[óo]n",
+      "(?i)objeti(?:vo|vos|v[oa]s)\\s+estrat[ée]gic(?:o|os|a|as)"
+    ],
+    "FINANCIERA": [
+      "(?i)plan\\s+plurianual",
+      "(?i)plan\\s+de\\s+inversion(?:es)?",
+      "(?i)presupuesto",
+      "(?i)marco\\s+fiscal",
+      "(?i)mfmp",
+      "(?i)poai"
+    ],
+    "SEGUIMIENTO": [
+      "(?i)seguimiento",
+      "(?i)evaluaci[óo]n",
+      "(?i)monitoreo",
+      "(?i)indicadores"
+    ],
+    "PAZ_PDET": [
+      "(?i)\\bpdet\\b",
+      "(?i)\\bpaz\\b",
+      "(?i)víctimas",
+      "(?i)acuerdo\\s+de\\s+paz"
+    ]
+  },
+  "table_markers": [
+    "(?i)\\bTabla\\s+\\d+[\\.: ]\\s*",
+    "(?i)\\bCuadro\\s+\\d+[\\.:]\\s*",
+    "(?i)\\bMatriz\\s+de\\s+[Ii]ndicadores\\b",
+    "(?i)\\bPlan\\s+Plurianual\\s+de\\s+Inversiones\\b",
+    "(?i)\\bMatriz\\s+de\\s+[Ii]ndicadores\\s+de\\s+Producto\\b"
+  ],
+  "table_columns": {
+    "indicator_matrix": [
+      "Línea Estratégica",
+      "Cód. Programa",
+      "Programas presupuestales",
+      "Cód. Producto",
+      "Producto",
+      "Cód. indicador de producto",
+      "Indicadores producto",
+      "Unidad de medida",
+      "Línea base",
+      "Año línea base",
+      "Fuente de información",
+      "Metas de producto"
+    ],
+    "ppi": [
+      "Costo Total Cuatrienio",
+      "TOTAL 2024",
+      "TOTAL 2025",
+      "TOTAL 2026",
+      "TOTAL 2027",
+      "SGP",
+      "SGR",
+      "Regalías",
+      "Recursos Propios",
+      "Otras Fuentes"
+    ]
+  },
+  "causal_connectors": [
+    "(?i)a\\s+trav[ée]s\\s+de\\s+la\\s+estructuraci[óo]n\\s+y\\s+ejecuci[óo]n",
+    "(?i)con\\s+el\\s+fin\\s+de\\s+incidir\\s+positivamente",
+    "(?i)contribuir[áa]\\s+a\\s+que\\s+durante",
+    "(?i)propiciando\\s+la\\s+transformaci[óo]n",
+    "(?i)donde\\s+se\\s+pone\\s+en\\s+valor\\s+los\\s+hallazgos",
+    "(?i)coherencia\\s+entre\\s+diagn[óo]stico\\s+y\\s+propuesta\\s+de\\s+intervenci[óo]n",
+    "(?i)articulaci[óo]n\\s+l[óo]gica\\s+entre\\s+los\\s+eslabones\\s+de\\s+la\\s+cadena\\s+de\\s+valor",
+    "(?i)dar\\s+respuesta\\s+a\\s+las\\s+grandes\\s+necesidades\\s+encontradas"
+  ],
+  "temporal_expressions": [
+    "(?i)\\b2024\\s*[-–]\\s*2027\\b",
+    "(?i)\\bcuatrienio\\b",
+    "(?i)\\bvigencia\\s+\\d{4}\\s*[-–]\\s*\\d{4}\\b",
+    "(?i)\\bcorto\\s+plazo\\b",
+    "(?i)\\bmediano\\s+plazo\\b",
+    "(?i)\\blargo\\s+plazo\\b",
+    "(?i)\\bMFMP\\b",
+    "(?i)\\bPOAI\\b"
+  ],
+  "dimension_descriptions": {
+    "DIM01": "recursos financieros, fuentes de financiación, Asignación de recursos, recursos propios, Sistema General de Participaciones (SGP), Sistema General de Regalías (SGR), Otras fuentes. fortalecimiento de capacidades, personal capacitado, capacidad institucional, infraestructura adecuada, gestión institucional, financiera y administrativa. Falta de recursos, limitaciones financieras, Déficit técnico, Carencia de infraestructura, personal capacitado.",
+    "DIM02": "Implementar acciones, Realizar actividades, Desarrollar actividades, Adelantar la construcción, Ejecutar los proyectos, Contempla actividades de apoyo. conjunto de procesos u operaciones, acciones relacionadas con, procesos de formación, gestión de peticiones, quejas, reclamos y denuncias. procesos productivos, Monitoreo y diagnóstico periódico, Formulación de política pública, mecanismos de seguimiento y evaluación.",
+    "DIM03": "bienes y servicios provistos por el Estado, bienes o servicios específicos a entregar, Metas de Producto, Productos específicos. Indicadores de producto, Código de Producto, Unidad de medida. Documentos... elaborados, Campañas... implementadas, Personas capacitadas, Unidades productivas beneficiadas, Infraestructura mejorada.",
+    "DIM04": "efectos relacionados con la intervención pública, cuantifican los efectos o cambios generados, Metas de Resultado, Metas de Bienestar. cierre de brechas, mejorar su condición de salud, incrementar el control sobre su salud, superación total de las brechas. Indicadores de resultado, Línea base, Meta Cuatrienio, Tasa de cobertura, Tasa de pobreza.",
+    "DIM05": "efectos exclusivamente atribuibles a la intervención pública, Potencial Transformador: Alto, visión de largo plazo, cambio significativo. sostenibilidad, desarrollo sostenible, enfoque de sostenibilidad, EMI_total (para medir la madurez de integración). Puntaje Final DE-1, Potencial Transformador, EMI_total, Resultados Esperados: Transformadores.",
+    "DIM06": "coherencia entre diagnóstico y propuesta de intervención, Articulación lógica entre los eslabones de la cadena de valor, dar respuesta a las grandes necesidades encontradas. Cadena de valor, Matriz Causal, Metodología General Ajustada (MGA), eslabones clave de la cadena de valor. efectos pueden ser intencionales o no y/o atribuibles o no, dichos efectos pueden ser incididos por factores externos."
+  }
 }
