@@ -628,24 +628,32 @@ class PDETMunicipalPlanAnalyzer:
 
     
     def _classify_tables(self, tables: list[ExtractedTable]) -> list[ExtractedTable]:
-        classification_patterns = {
-            'presupuesto': ['presupuesto', 'recursos', 'millones', 'sgp', 'sgr', 'fuente', 'financiación'],
-            'indicadores': ['indicador', 'línea base', 'meta', 'fórmula', 'unidad de medida', 'periodicidad'],
-            'cronograma': ['cronograma', 'actividad', 'mes', 'trimestre', 'año', 'fecha'],
-            'responsables': ['responsable', 'secretaría', 'dirección', 'oficina', 'ejecutor'],
-            'diagnostico': ['diagnóstico', 'problema', 'causa', 'efecto', 'situación actual'],
-            'pdet': ['pdet', 'iniciativa', 'pilar', 'patr', 'transformación regional']
-        }
+        classification_patterns = TABLE_CLASSIFICATION_PATTERNS
 
         for table in tables:
             table_text = table.df.to_string().lower()
-            scores = {}
-            for table_type, keywords in classification_patterns.items():
-                score = sum(1 for kw in keywords if kw in table_text)
-                scores[table_type] = score
 
-            if max(scores.values()) > 0:
-                table.table_type = max(scores, key=scores.get)
+            # Strong-signal classification using canonical regex (preferred over keyword heuristics)
+            if PDT_PATTERNS["ppi_headers"].search(table_text):
+                table.table_type = "presupuesto"
+                table.confidence_score = MICRO_LEVELS["EXCELENTE"]
+                continue
+            if PDT_PATTERNS["indicator_matrix_headers"].search(table_text):
+                table.table_type = "indicadores"
+                table.confidence_score = MICRO_LEVELS["EXCELENTE"]
+                continue
+
+            scores: dict[str, float] = {}
+            for table_type, keywords in classification_patterns.items():
+                hits = sum(1 for kw in keywords if kw in table_text)
+                scores[table_type] = hits / max(len(keywords), 1)
+
+            best_type = max(scores, key=scores.get)
+            if scores[best_type] > MIN_TABLE_TYPE_SCORE:
+                table.table_type = best_type
+                table.confidence_score = min(
+                    MICRO_LEVELS["EXCELENTE"], MICRO_LEVELS["ACEPTABLE"] + scores[best_type]
+                )
 
         return tables
 
@@ -706,7 +714,7 @@ class PDETMunicipalPlanAnalyzer:
                         budget_category='',
                         execution_percentage=None,
                         confidence_interval=(0.0, 0.0),
-                        risk_level = 0.0 # Refactored
+                        risk_level=DEFAULT_INDICATOR_RISK  # Refactored
                     ))
                 except (ValueError, Exception):
                     continue
@@ -721,21 +729,25 @@ class PDETMunicipalPlanAnalyzer:
 
     
     def _identify_funding_source(self, context: str) -> str:
-        sources = {
-            'SGP': ['sgp', 'sistema general de participaciones'],
-            'SGR': ['sgr', 'regalías', 'sistema general de regalías'],
-            'Recursos Propios': ['recursos propios', 'propios', 'ingresos corrientes'],
-            'Cofinanciación': ['cofinanciación', 'cofinanciado'],
-            'Crédito': ['crédito', 'préstamo', 'endeudamiento'],
-            'Cooperación': ['cooperación internacional', 'donación'],
-            'PDET': ['pdet', 'paz', 'transformación regional']
-        }
+        """Identify predominant funding source from context using canonical vocabulary.
 
-        context_lower = context.lower()
-        for source_name, keywords in sources.items():
-            if any(kw in context_lower for kw in keywords):
-                return source_name
-        return 'No especificada'
+        Properties:
+        - deterministic (no ML, no runtime JSON)
+        - transparent scoring (count of keyword hits)
+        - stable under casing/punctuation noise
+        """
+        text_l = (context or "").lower()
+
+        best_source = "No identificado"
+        best_score = 0
+
+        for source, keywords in FUNDING_SOURCE_KEYWORDS.items():
+            score = sum(1 for kw in keywords if kw and kw in text_l)
+            if score > best_score:
+                best_source = source
+                best_score = score
+
+        return best_source
 
     
     def _extract_from_budget_table(self, df: pd.DataFrame) -> list[FinancialIndicator]:
@@ -771,7 +783,7 @@ class PDETMunicipalPlanAnalyzer:
                     budget_category='',
                     execution_percentage=None,
                     confidence_interval=(0.0, 0.0),
-                    risk_level = 0.0 # Refactored
+                    risk_level=DEFAULT_INDICATOR_RISK  # Refactored
                 ))
             except Exception:
                 continue
@@ -810,7 +822,8 @@ class PDETMunicipalPlanAnalyzer:
 
         distribution = funding_sources.get('distribution', {})
         total = sum(distribution.values())
-        own_resources = distribution.get('Recursos Propios', 0) / total if total > 0 else 0.0
+        own_resources_amount = distribution.get("Recursos Municipales", 0) + distribution.get("Recursos Propios", 0)
+        own_resources = own_resources_amount / total if total > 0 else 0.0
         pdet_dependency = distribution.get('PDET', 0) / total if total > 0 else 0.0
         pdet_risk = min(pdet_dependency * 2, 1.0)
 
@@ -862,13 +875,13 @@ class PDETMunicipalPlanAnalyzer:
 
     
     def _interpret_risk(self, risk: float) -> str:
-        if risk < 0.2:
+        if risk < RISK_THRESHOLDS["excellent"]:
             return "Riesgo bajo - Plan financieramente robusto"
-        elif risk < 0.4:
+        elif risk < RISK_THRESHOLDS["good"]:
             return "Riesgo moderado-bajo - Sostenibilidad probable"
-        elif risk < 0.6:
+        elif risk < RISK_THRESHOLDS["acceptable"]:
             return "Riesgo moderado - Requiere monitoreo"
-        elif risk < 0.8:
+        elif risk < CRITICAL_RISK_THRESHOLD:
             return "Riesgo alto - Vulnerabilidades significativas"
         else:
             return "Riesgo crítico - Inviabilidad financiera probable"
@@ -1278,7 +1291,7 @@ class PDETMunicipalPlanAnalyzer:
                         target=mediator,
                         edge_type='direct',
                         mechanism="Mecanismo según teoría PDET",
-                        probability = 0.8 # Refactored
+                        probability = PROBABILITY_PRIORS["direct"]  # Refactored
                     ))
 
             for outcome in theory['outcomes']:
@@ -1290,7 +1303,7 @@ class PDETMunicipalPlanAnalyzer:
                                 target=outcome,
                                 edge_type='mediated',
                                 mechanism=f"Mediado por {mediator}",
-                                probability = 0.7 # Refactored
+                                probability = PROBABILITY_PRIORS["mediated"]  # Refactored
                             ))
 
         causal_patterns = [
@@ -1311,7 +1324,9 @@ class PDETMunicipalPlanAnalyzer:
                     existing = next((e for e in edges if e.source == source_node and e.target == target_node), None)
 
                     if existing:
-                        existing.probability = min(existing.probability + 0.2, 1.0)
+                        existing.probability = min(
+                            MICRO_LEVELS["EXCELENTE"], existing.probability + PROBABILITY_REINFORCEMENT
+                        )
                         existing.evidence_quotes.append(match.group(0)[:200])
                     else:
                         edges.append(CausalEdge(
@@ -1320,7 +1335,7 @@ class PDETMunicipalPlanAnalyzer:
                             edge_type=edge_type,
                             mechanism=match.group(0)[:200],
                             evidence_quotes=[match.group(0)[:200]],
-                            probability = 0.6 # Refactored
+                            probability = PROBABILITY_PRIORS["text_extracted"]  # Refactored
                         ))
 
         edges = self._refine_edge_probabilities(edges, text, nodes)
@@ -2620,3 +2635,47 @@ async def main_example() -> None:
     except Exception as e:
         print(f"❌ Error inesperado: {e}")
         raise
+
+# ============================================================================
+# INTERNAL QUALITY GATES (IMPORT-TIME, NON-FATAL)
+# ============================================================================
+def _run_quality_gates() -> dict[str, bool]:
+    """Internal quality validation gates for deterministic configuration."""
+    results: dict[str, bool] = {}
+
+    # Regex compilation sanity
+    try:
+        for _name, _pat in PDT_PATTERNS.items():
+            _ = _pat.pattern
+        results["regex_compile"] = True
+    except Exception:
+        results["regex_compile"] = False
+
+    # Micro levels monotonicity
+    levels = list(MICRO_LEVELS.values())
+    results["micro_levels_monotonic"] = all(levels[i] >= levels[i + 1] for i in range(len(levels) - 1))
+
+    # Derived thresholds consistency
+    expected_alignment = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2
+    results["alignment_threshold_derived"] = abs(ALIGNMENT_THRESHOLD - expected_alignment) < 1e-6
+    results["risk_thresholds_ordered"] = (
+        RISK_THRESHOLDS["excellent"] < RISK_THRESHOLDS["good"] < RISK_THRESHOLDS["acceptable"]
+    )
+
+    # Funding sources taxonomy presence
+    results["funding_sources_min"] = set(["SGP", "SGR", "Recursos Municipales"]).issubset(set(FUNDING_SOURCE_KEYWORDS.keys()))
+
+    # Causal priors ordered
+    results["causal_priors_ordered"] = (
+        PROBABILITY_PRIORS["direct"] >= PROBABILITY_PRIORS["mediated"] >= PROBABILITY_PRIORS["text_extracted"]
+    )
+
+    return results
+
+
+# Run gates at import-time (non-fatal)
+if __name__ != "__main__":
+    _gates_result = _run_quality_gates()
+    if not all(_gates_result.values()):
+        _failed = [k for k, v in _gates_result.items() if not v]
+        warnings.warn(f"Quality gates failed: {_failed}", stacklevel=2)
