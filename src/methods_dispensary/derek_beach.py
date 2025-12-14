@@ -2838,15 +2838,22 @@ class CausalExtractor:
         return prior_mean, adjusted_alpha, adjusted_beta
 
     
-    def _calculate_composite_likelihood(self, evidence: dict[str, Any]) -> float:
-        """Calculate composite likelihood from multiple evidence components
+    def _get_policy_area_keywords(self, policy_area: str) -> list[str]:
+        """Get keywords for policy area with legacy support"""
+        if policy_area.startswith("P") and policy_area[1:].isdigit():
+            for pa_id, pa_data in CANON_POLICY_AREAS.items():
+                if pa_data["legacy"] == policy_area:
+                    policy_area = pa_id
+                    break
+                
+        
+        if policy_area in CANON_POLICY_AREAS:
+            return CANON_POLICY_AREAS[policy_area]["keywords"]
+        return []
 
-        Enhanced with:
-        - Nonlinear transformation rewarding triangulation
-        - Evidence diversity verification across analytical domains
-        """
-        # Weight different evidence types
-        weights = {
+    def _calculate_dynamic_weights(self, evidence: dict[str, Any]) -> dict[str, float]: 
+        """Calculate normalized weights based on evidence availability"""
+        base_weights = {
             'semantic_distance': 0.25,
             'type_transition_prior': 0.20,
             'language_specificity': 0.20,
@@ -2854,6 +2861,28 @@ class CausalExtractor:
             'financial_consistency': 0.10,
             'textual_proximity': 0.10
         }
+        
+        available_weights = {}
+        for component, base_weight in base_weights.items():
+            if component in evidence and evidence[component] is not None: 
+                available_weights[component] = base_weight
+            else:
+                available_weights[component] = 0.0
+        
+        total = sum(available_weights.values())
+        if total > 0:
+            return {k: v/total for k, v in available_weights.items()}
+        return base_weights
+
+    def _calculate_composite_likelihood(self, evidence: dict[str, Any]) -> float:
+        """Calculate composite likelihood from multiple evidence components
+
+        Enhanced with:
+        - Nonlinear transformation rewarding triangulation
+        - Evidence diversity verification across analytical domains
+        """
+        # Weight different evidence types based on availability
+        weights = self._calculate_dynamic_weights(evidence)
 
         # Basic weighted average
         likelihood = 0.0 # Refactored
@@ -7919,3 +7948,40 @@ class DerekBeachProducer:
     def get_refutation_recommendation(self, refutation: dict[str, Any]) -> str:
         """Extract recommendation from refutation"""
         return refutation.get("recommendation", "")
+
+def _run_quality_gates() -> dict[str, bool]: 
+    """Internal quality validation gates"""
+    results = {}
+    
+    try:
+        for pattern_name, pattern in PDT_PATTERNS.items():
+            _ = pattern.pattern
+        results["regex_compile"] = True
+    except: 
+        results["regex_compile"] = False
+    
+    levels = list(MICRO_LEVELS.values())
+    results["monotonicity"] = all(
+        levels[i] >= levels[i+1] 
+        for i in range(len(levels)-1)
+    )
+    
+    results["policy_areas_10"] = len(CANON_POLICY_AREAS) == 10
+    
+    expected_alignment = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2
+    results["threshold_derived"] = abs(ALIGNMENT_THRESHOLD - expected_alignment) < 0.001
+    
+    results["risk_consistent"] = (
+        RISK_THRESHOLDS["excellent"] < RISK_THRESHOLDS["good"] < RISK_THRESHOLDS["acceptable"]
+    )
+    
+    return results
+
+if __name__ != "__main__":
+    try:
+        gates_result = _run_quality_gates()
+        if not all(gates_result.values()):
+            failed = [k for k, v in gates_result.items() if not v]
+            warnings.warn(f"Quality gates failed: {failed}", stacklevel=2)
+    except Exception as e:
+        warnings.warn(f"Quality gates execution failed: {e}", stacklevel=2)
