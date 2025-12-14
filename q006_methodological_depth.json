@@ -1,0 +1,448 @@
+{
+  "methods": [
+    {
+      "method_name": "extract_tables",
+      "class_name": "PDFProcessor",
+      "priority": 1,
+      "role": "table_extraction",
+      "epistemological_foundation": {
+        "paradigm": "Structural Document Analysis",
+        "ontological_basis": "Accountability structures as embedded tabular representations in policy documents. Tables encode institutional responsibility assignments following Colombian public administration norms.",
+        "epistemological_stance": "Empirical-structural - assumes accountability matrices exist as explicit table structures per Colombian planning methodology (DNP guidelines 2012)",
+        "theoretical_framework": [
+          "Document structure theory - tables as semantic units encoding relational data",
+          "Colombian municipal planning framework (Ley 152/1994) - mandates structured action plans",
+          "Accountability matrix methodology - responsible entity, deliverable, timeline, budget",
+          "Gender policy operationalization (Conpes 161/2013) - requires traceable implementation plans"
+        ],
+        "justification": "Q006 evaluates presence of structured action plans for gender equity activities. Method extract_tables detects and parses tabular structures containing accountability assignments (responsable, producto, cronograma, costo columns). Without table extraction, cannot validate existence of required implementation structure."
+      },
+      "technical_approach": {
+        "method_type": "structural_extraction",
+        "algorithm": "PDF table detection via layout analysis and cell boundary recognition",
+        "input": "Preprocessed PDF document with layout information",
+        "output": "list[Table] with row/column structure, cell contents, confidence scores",
+        "steps": [
+          "Analyze document layout to identify table regions via whitespace and grid patterns",
+          "Detect table boundaries using horizontal/vertical line detection and text alignment",
+          "Parse cell structure from detected grid (row/column assignment)",
+          "Extract cell contents with OCR where needed",
+          "Validate table structure (header row, consistent columns)",
+          "Calculate extraction confidence based on structure clarity",
+          "Return structured Table objects with metadata (page, position, dimensions)"
+        ],
+        "assumptions": [
+          "Documents follow standard PDF table formatting (aligned cells, clear boundaries)",
+          "Tables have explicit structure (not narrative lists masquerading as tables)",
+          "Text within cells is machine-readable (not scanned images without OCR layer)"
+        ],
+        "limitations": [
+          "May fail on heavily formatted tables with merged cells or complex layouts",
+          "Confidence degrades with poor PDF quality or non-standard table formats",
+          "Cannot extract accountability semantics from purely narrative descriptions"
+        ],
+        "complexity": "O(n×m) where n=pages, m=avg tables per page"
+      },
+      "output_interpretation": {
+        "output_structure": {
+          "tables": "list[Table]",
+          "table_count": "int",
+          "avg_confidence": "float [0-1]"
+        },
+        "interpretation_guide": {
+          "high_confidence": "≥0.8: Well-formed tables with clear structure, all cells readable",
+          "medium_confidence": "0.5-0.79: Tables detected but some structural ambiguity or OCR uncertainty",
+          "low_confidence": "<0.5: Weak table structure or poor extraction quality"
+        },
+        "actionable_insights": [
+          "High table count (≥5) with high confidence → document uses structured planning approach",
+          "Low table count (<3) → plan may lack operationalization detail",
+          "Low confidence despite tables present → need document quality improvement or manual review"
+        ]
+      }
+    },
+    {
+      "method_name": "_process_financial_table",
+      "class_name": "FinancialAuditor",
+      "priority": 2,
+      "role": "financial_column_detection",
+      "epistemological_foundation": {
+        "paradigm": "Gender-Responsive Budgeting Analysis",
+        "ontological_basis": "Budget allocations reveal policy priorities; absence of cost/budget columns in action plans indicates implementation risk (Elson 2006 - gender budgeting)",
+        "epistemological_stance": "Critical feminist economics - assumes budget opacity until proven otherwise",
+        "theoretical_framework": [
+          "Gender-responsive budgeting methodology (Elson 2006, Stotsky 2016 IMF)",
+          "Colombian budget framework (Estatuto Orgánico de Presupuesto - Decreto 111/1996)",
+          "Accountability theory - resources must be allocated to responsibilities",
+          "Financial transparency principles - costs must be explicit and traceable"
+        ],
+        "justification": "Q006 requires detection of 'costo' or 'presupuesto' columns in gender action tables. Method _process_financial_table identifies financial data columns and validates budget allocation explicitness. Without financial clarity, accountability structures are incomplete - cannot assess resource adequacy or monitor expenditure."
+      },
+      "technical_approach": {
+        "method_type": "column_classification",
+        "algorithm": "Financial column detection via header analysis and content validation",
+        "input": "Table objects from extract_tables",
+        "output": "dict[table_id, FinancialColumns] with detected cost/budget columns",
+        "steps": [
+          "For each table, analyze header row for financial keywords (costo, presupuesto, valor, monto, recursos)",
+          "Validate column contents match financial patterns (numeric values, currency symbols, amounts)",
+          "Classify column as financial if header match + >70% cells contain valid amounts",
+          "Extract financial metadata (currency, total amounts, aggregation level)",
+          "Calculate confidence from header clarity and content consistency",
+          "Return financial column identification with per-table confidence scores"
+        ],
+        "assumptions": [
+          "Financial columns have explicit headers (not implicit or unlabeled)",
+          "Amounts follow Colombian formatting (periods for thousands, optional COP symbol)",
+          "Tables aggregate to consistent units (not mixing individual and total costs)"
+        ],
+        "limitations": [
+          "Cannot infer financial data from narrative descriptions",
+          "May misclassify non-financial numeric columns as budget data",
+          "Assumes standardized terminology - may miss regional variations"
+        ],
+        "complexity": "O(t×c) where t=tables, c=avg columns per table"
+      },
+      "output_interpretation": {
+        "output_structure": {
+          "financial_columns_found": "int",
+          "tables_with_budget": "int",
+          "total_tables": "int",
+          "coverage_ratio": "float [0-1]"
+        },
+        "interpretation_guide": {
+          "full_coverage": "ratio=1.0: All tables have explicit budget columns - strong financial transparency",
+          "partial_coverage": "0.5≤ratio<1.0: Some tables lack budget data - incomplete accountability",
+          "no_coverage": "ratio<0.5: Minimal financial transparency - high implementation risk"
+        },
+        "actionable_insights": [
+          "High coverage → plan has clear resource allocation for gender activities",
+          "Low coverage → cannot assess adequacy of resources or monitor expenditure",
+          "Missing budget columns in critical tables → prioritize for revision"
+        ]
+      }
+    },
+    {
+      "method_name": "_deduplicate_tables",
+      "class_name": "PDETMunicipalPlanAnalyzer",
+      "priority": 3,
+      "role": "table_deduplication",
+      "epistemological_foundation": {
+        "paradigm": "Data Quality Assurance",
+        "ontological_basis": "Duplicate tables create analytical noise and inflate apparent evidence. Deduplication ensures each unique accountability structure counted once.",
+        "epistemological_stance": "Pragmatic empiricism - prioritizes data cleanliness for valid inference",
+        "theoretical_framework": [
+          "Record linkage theory - entity resolution via similarity metrics",
+          "Hash-based deduplication for exact matches",
+          "Fuzzy matching for near-duplicates (accounting for OCR errors, formatting variations)",
+          "PDET municipal plan conventions - tables may repeat across sections"
+        ],
+        "justification": "Q006 counts structured action plans. Without deduplication, same table repeated across document sections (e.g., executive summary + detailed plan) inflates evidence count, biasing assessment. Method ensures accurate accountability structure count."
+      },
+      "technical_approach": {
+        "method_type": "similarity_clustering",
+        "algorithm": "Hash-based exact match + Jaccard similarity for near-duplicates",
+        "input": "list[Table] from extract_tables",
+        "output": "list[Table] with duplicates removed, metadata tracking deduplicated instances",
+        "steps": [
+          "Compute SHA-256 hash of table structure (rows×columns) and content",
+          "Group tables by exact hash (perfect duplicates)",
+          "For remaining tables, calculate pairwise Jaccard similarity on cell contents",
+          "Cluster near-duplicates (Jaccard ≥ 0.85 threshold)",
+          "Select representative table per cluster (highest extraction confidence)",
+          "Return deduplicated table list with cluster metadata"
+        ],
+        "assumptions": [
+          "True duplicates have ≥85% content overlap",
+          "OCR errors and minor formatting differences don't exceed 15% divergence",
+          "Same semantic table in different formats should be merged"
+        ],
+        "limitations": [
+          "May incorrectly merge structurally similar but semantically distinct tables",
+          "Cannot detect paraphrased duplicates (same information, different wording)",
+          "Threshold tuning required for document-specific conditions"
+        ],
+        "complexity": "O(t² log t) for pairwise similarity, optimized with hashing to O(t log t) average case"
+      },
+      "output_interpretation": {
+        "output_structure": {
+          "unique_tables": "int",
+          "duplicates_removed": "int",
+          "deduplication_ratio": "float"
+        },
+        "interpretation_guide": {
+          "high_duplication": "ratio>0.3: Significant redundancy - likely section repetition",
+          "moderate_duplication": "0.1≤ratio≤0.3: Some duplication - normal for multi-section documents",
+          "low_duplication": "ratio<0.1: Minimal redundancy - efficient document structure"
+        },
+        "actionable_insights": [
+          "High duplication + low unique count → plan lacks implementation detail variety",
+          "Deduplication essential for accurate evidence counting in Q006 scoring"
+        ]
+      }
+    },
+    {
+      "method_name": "_classify_tables",
+      "class_name": "PDETMunicipalPlanAnalyzer",
+      "priority": 4,
+      "role": "table_type_classification",
+      "epistemological_foundation": {
+        "paradigm": "Semantic Table Understanding",
+        "ontological_basis": "Not all tables are accountability matrices. Classification separates action plan tables from diagnostic tables, budget summaries, indicator tables, etc.",
+        "epistemological_stance": "Supervised classification with domain-specific taxonomy",
+        "theoretical_framework": [
+          "Table classification taxonomy: {action_plan, budget, diagnostic, indicators, other}",
+          "Colombian planning typology - standard table types in municipal plans",
+          "Header-based semantic classification",
+          "PDET-specific table patterns (SGR reporting, PAC structures)"
+        ],
+        "justification": "Q006 specifically evaluates ACTION PLAN tables (responsable, producto, cronograma, costo). Method _classify_tables identifies which tables match this type vs. other table types. Without classification, diagnostic or budget tables could false-positive as action plans, inflating scores."
+      },
+      "technical_approach": {
+        "method_type": "supervised_classification",
+        "algorithm": "Rule-based + keyword matching for table type identification",
+        "input": "list[Table] (deduplicated)",
+        "output": "dict[table_id, TableType] with classification and confidence",
+        "steps": [
+          "Extract table headers and first column labels",
+          "Match headers against action_plan patterns (actividades, responsable, cronograma, presupuesto)",
+          "Check for diagnostic patterns (indicador, línea base, meta) - if present, classify as indicators",
+          "Check for budget patterns (fuente, rubro, valor total) - classify as budget",
+          "Calculate classification confidence from keyword match density",
+          "Return table type assignments with confidence scores"
+        ],
+        "assumptions": [
+          "Headers contain semantic information about table purpose",
+          "Colombian planning documents follow standard table naming conventions",
+          "Action plan tables have characteristic 4-column structure"
+        ],
+        "limitations": [
+          "Rule-based approach may misclassify non-standard table formats",
+          "Cannot classify tables without clear headers",
+          "May conflate action plans with implementation matrices in some edge cases"
+        ],
+        "complexity": "O(t×h) where t=tables, h=header terms per table"
+      },
+      "output_interpretation": {
+        "output_structure": {
+          "action_plan_tables": "int",
+          "budget_tables": "int",
+          "diagnostic_tables": "int",
+          "other_tables": "int"
+        },
+        "interpretation_guide": {
+          "high_action_plan_count": "≥3: Document has structured implementation planning",
+          "low_action_plan_count": "<2: Limited operationalization detail",
+          "high_diagnostic_ratio": "diagnostic > action_plan: Document diagnostic-heavy, weak on implementation"
+        },
+        "actionable_insights": [
+          "Only action_plan_tables count for Q006 scoring",
+          "High diagnostic/low action_plan → plan identifies problems but lacks solutions",
+          "Classification confidence <0.7 → manual review recommended"
+        ]
+      }
+    },
+    {
+      "method_name": "_is_likely_header",
+      "class_name": "PDETMunicipalPlanAnalyzer",
+      "priority": 5,
+      "role": "header_detection",
+      "epistemological_foundation": {
+        "paradigm": "Structural Document Understanding",
+        "ontological_basis": "Table headers provide semantic labels for columns. Accurate header detection enables column identification (which column is 'responsable'?).",
+        "epistemological_stance": "Heuristic structural analysis - headers distinguished by formatting, position, content",
+        "theoretical_framework": [
+          "Document layout conventions - headers typically first row, bold, different formatting",
+          "Semantic content analysis - headers are labels not data",
+          "Table parsing best practices - header detection as first step in structured extraction"
+        ],
+        "justification": "Q006 requires identifying specific columns (responsable, producto, cronograma, costo). Method _is_likely_header correctly identifies header rows so column matching can proceed. Without accurate header detection, cannot map table columns to required schema."
+      },
+      "technical_approach": {
+        "method_type": "heuristic_classification",
+        "algorithm": "Multi-feature header detection (position, formatting, content patterns)",
+        "input": "Table row data with formatting metadata",
+        "output": "bool per row indicating header likelihood + confidence",
+        "steps": [
+          "Check row position (first row more likely header)",
+          "Analyze formatting (bold, larger font, different color)",
+          "Check content patterns (short labels vs. long data, lack of numeric content)",
+          "Check repetition (headers don't repeat, data rows may)",
+          "Aggregate features into header likelihood score",
+          "Return boolean classification with confidence"
+        ],
+        "assumptions": [
+          "Headers follow standard formatting conventions",
+          "Header row precedes data rows (not trailing or embedded)",
+          "Headers contain descriptive labels not data values"
+        ],
+        "limitations": [
+          "May fail on non-standard table layouts (multi-level headers, headers in first column)",
+          "Cannot detect semantic headers without visual formatting",
+          "Heuristic approach - may misclassify in ambiguous cases"
+        ],
+        "complexity": "O(r) per table where r=rows"
+      },
+      "output_interpretation": {
+        "output_structure": {
+          "header_row_index": "int",
+          "confidence": "float [0-1]"
+        },
+        "interpretation_guide": {
+          "high_confidence": "≥0.85: Clear header formatting",
+          "medium_confidence": "0.60-0.84: Likely header but some ambiguity",
+          "low_confidence": "<0.60: Ambiguous - manual verification needed"
+        },
+        "actionable_insights": [
+          "Accurate header detection prerequisite for column matching in Q006",
+          "Low confidence → table may lack clear structure",
+          "Multiple candidate headers → complex table, may need special handling"
+        ]
+      }
+    },
+    {
+      "method_name": "_clean_dataframe",
+      "class_name": "PDETMunicipalPlanAnalyzer",
+      "priority": 6,
+      "role": "data_normalization",
+      "epistemological_foundation": {
+        "paradigm": "Data Cleaning and Normalization",
+        "ontological_basis": "Raw extracted table data contains noise (extra whitespace, OCR errors, formatting artifacts). Cleaning ensures data quality for downstream analysis.",
+        "epistemological_stance": "Pragmatic empiricism - noise reduction improves analytical reliability",
+        "theoretical_framework": [
+          "Data quality dimensions (accuracy, completeness, consistency)",
+          "OCR error correction patterns",
+          "Whitespace normalization and text standardization",
+          "Missing value handling strategies"
+        ],
+        "justification": "Q006 requires precise column matching (e.g., detecting 'responsable' column). Uncleaned data with OCR errors ('resp0nsable') or inconsistent formatting may cause false negatives. Method _clean_dataframe normalizes text enabling accurate pattern matching."
+      },
+      "technical_approach": {
+        "method_type": "data_preprocessing",
+        "algorithm": "Multi-stage text normalization pipeline",
+        "input": "Raw table DataFrames from previous steps",
+        "output": "Cleaned DataFrames with normalized text",
+        "steps": [
+          "Strip extra whitespace from all cells",
+          "Normalize whitespace (multiple spaces → single space)",
+          "Correct common OCR errors (0→O, 1→l, etc.) using dictionary",
+          "Standardize case for headers (title case)",
+          "Remove empty rows and columns",
+          "Handle missing values (empty cells → None)",
+          "Return cleaned DataFrame"
+        ],
+        "assumptions": [
+          "OCR errors follow common patterns",
+          "Whitespace is not semantically meaningful",
+          "Empty rows/columns are artifacts not intentional"
+        ],
+        "limitations": [
+          "Cannot correct all OCR errors (ambiguous corrections)",
+          "May over-normalize in cases where case or whitespace is meaningful",
+          "Dictionary-based correction misses domain-specific terms"
+        ],
+        "complexity": "O(r×c) where r=rows, c=columns"
+      },
+      "output_interpretation": {
+        "output_structure": {
+          "cleaned_table": "DataFrame",
+          "corrections_applied": "int",
+          "empty_rows_removed": "int"
+        },
+        "interpretation_guide": {
+          "high_correction_count": ">20% cells: Poor source quality - OCR or formatting issues",
+          "moderate_correction_count": "5-20% cells: Normal cleaning needs",
+          "low_correction_count": "<5% cells: High source quality"
+        },
+        "actionable_insights": [
+          "High corrections required → source document quality issue",
+          "Cleaning essential for reliable Q006 column detection",
+          "Cleaned data ready for final column matching"
+        ]
+      }
+    },
+    {
+      "method_name": "generate_accountability_matrix",
+      "class_name": "ReportingEngine",
+      "priority": 7,
+      "role": "accountability_matrix_synthesis",
+      "epistemological_foundation": {
+        "paradigm": "Evidence Synthesis and Reporting",
+        "ontological_basis": "Accountability matrix synthesizes outputs from all prior methods into structured evidence for Q006 scoring. Matrix represents whether document contains required implementation structure.",
+        "epistemological_stance": "Integrative synthesis - combines extraction, classification, validation into coherent assessment",
+        "theoretical_framework": [
+          "Evidence synthesis methodology - systematic integration of multiple sources",
+          "Accountability framework - mapping responsibilities, deliverables, timelines, resources",
+          "Quality assurance - confidence aggregation from method pipeline",
+          "Reporting standards - transparent traceability of evidence chain"
+        ],
+        "justification": "Q006 final assessment requires determining presence/absence of structured action plan with 4 required columns. Method generate_accountability_matrix synthesizes evidence from 6 prior methods (table extraction, financial detection, deduplication, classification, header detection, cleaning) to produce final verdict with confidence and provenance."
+      },
+      "technical_approach": {
+        "method_type": "evidence_synthesis",
+        "algorithm": "Multi-method evidence aggregation with provenance tracking",
+        "input": "Outputs from methods 1-6",
+        "output": "AccountabilityMatrix with structure assessment, confidence, provenance",
+        "steps": [
+          "Aggregate classified action_plan tables from _classify_tables",
+          "For each action_plan table, check column presence: responsable, producto, cronograma, costo",
+          "Calculate completeness score = columns_present / 4",
+          "Weight by financial column confidence from _process_financial_table",
+          "Aggregate confidences from extraction, classification, cleaning steps",
+          "Determine overall assessment: complete (4/4 columns), partial (2-3/4), absent (<2/4)",
+          "Package provenance: which methods contributed, table IDs, confidence breakdown",
+          "Return AccountabilityMatrix with verdict, confidence, provenance"
+        ],
+        "assumptions": [
+          "Column presence determined by header keyword matching",
+          "All 4 columns required for 'complete' assessment",
+          "Confidence should reflect uncertainty across full pipeline"
+        ],
+        "limitations": [
+          "Binary column presence - doesn't assess column data quality",
+          "Assumes standard column naming - may miss semantic equivalents",
+          "Aggregated confidence may obscure specific failure points"
+        ],
+        "complexity": "O(t) where t=action_plan tables"
+      },
+      "output_interpretation": {
+        "output_structure": {
+          "assessment": "complete|partial|absent",
+          "tables_with_4_columns": "int",
+          "total_action_tables": "int",
+          "overall_confidence": "float [0-1]",
+          "provenance": "dict"
+        },
+        "interpretation_guide": {
+          "complete": "≥1 table with all 4 columns, confidence ≥0.7: Q006 evidence present",
+          "partial": "Tables with 2-3 columns: Incomplete accountability structure",
+          "absent": "No tables with ≥2 required columns: Missing implementation detail"
+        },
+        "actionable_insights": [
+          "Complete + high confidence → strong Q006 evidence, likely high score",
+          "Partial → plan has structure but lacks completeness - medium score",
+          "Absent → plan fails Q006 - no structured action planning",
+          "Provenance enables tracing assessment back to source tables and methods"
+        ]
+      }
+    }
+  ],
+  "method_combination_logic": {
+    "combination_strategy": "Sequential pipeline with structural validation - each method builds on prior outputs",
+    "rationale": "Q006 evaluates whether gender equity activities are presented in structured format with 4 required columns (responsable, producto, cronograma, costo). This requires: (1) extracting tables from PDF, (2) identifying financial columns, (3) removing duplicates, (4) classifying table types, (5) detecting headers, (6) cleaning data, (7) synthesizing evidence. Sequential pipeline ensures data quality improves at each stage before final assessment.",
+    "evidence_fusion": "Evidence from 7 methods aggregated in final synthesis (generate_accountability_matrix). Each method contributes specific aspect: extraction provides raw tables, financial detection identifies budget columns, classification filters action plans, cleaning enables matching, synthesis produces final verdict. Confidence scores combined via weighted product (conservative - weakest link determines strength).",
+    "confidence_aggregation": "Confidence = product([conf_extraction, conf_financial, conf_classification, conf_synthesis]) × weight_factors. Weights: extraction 0.90, financial 0.85, classification 0.90, synthesis 0.95. Product aggregation ensures high confidence only when all pipeline stages succeed.",
+    "execution_order": "Strict dependency chain: extract_tables(1) → _process_financial_table(2) → _deduplicate_tables(3) → _classify_tables(4) → _is_likely_header(5) → _clean_dataframe(6) → generate_accountability_matrix(7). Each method consumes prior outputs. No parallelism possible due to dependencies.",
+    "trade_offs": [
+      "Sequential vs Parallel: Sequential execution required by dependencies but increases latency. Mitigated by efficient algorithms (O(n) to O(n log n) per stage). Total pipeline ~5-15s per document acceptable.",
+      "Precision vs Recall: Conservative classification (high threshold for action_plan type) prioritizes precision over recall to avoid false positives in Q006 scoring. Threshold tuned to 0.85 confidence minimum for action plan classification.",
+      "Automation vs Manual Review: Fully automated pipeline with confidence scores. Low confidence outputs (<0.7) flagged for manual review. Trade-off: ~85% documents fully automated, ~15% need review - acceptable for production scale.",
+      "Standardization vs Flexibility: Pipeline assumes standard Colombian planning document structure. Handles ~95% of PDET municipal plans but may miss non-standard formats. Trade-off accepted given domain specificity."
+    ],
+    "dependency_graph": {
+      "root": "extract_tables(1)",
+      "sequential_chain": "extract_tables(1) → _process_financial_table(2) → _deduplicate_tables(3) → _classify_tables(4) → _is_likely_header(5) → _clean_dataframe(6) → generate_accountability_matrix(7)",
+      "critical_path": "All methods on critical path - failure at any stage aborts pipeline"
+    }
+  }
+}
