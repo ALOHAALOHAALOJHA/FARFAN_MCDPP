@@ -378,7 +378,12 @@ class QualityScore:
 class PDETMunicipalPlanAnalyzer:
     """Analizador de vanguardia para Planes de Desarrollo Municipal PDET"""
 
-    def __init__(self, use_gpu: bool = True, language: str = 'es', confidence_threshold: float = 0.7) -> None:
+    def __init__(
+        self,
+        use_gpu: bool = True,
+        language: str = 'es',
+        confidence_threshold: float = MICRO_LEVELS["BUENO"],
+    ) -> None:
         self.device = 'cuda' if use_gpu and torch.cuda.is_available() else 'cpu'
         self.confidence_threshold = confidence_threshold
         self.context = ColombianMunicipalContext()
@@ -465,7 +470,7 @@ class PDETMunicipalPlanAnalyzer:
                 edge_tol=500, row_tol=15, column_tol=10
             )
             for idx, table in enumerate(stream_tables):
-                if table.parsing_report['accuracy'] > 0.6:
+                if float(table.parsing_report["accuracy"]) > MIN_TABLE_ACCURACY:
                     all_tables.append(ExtractedTable(
                         df=self._clean_dataframe(table.df),
                         page_number=table.page,
