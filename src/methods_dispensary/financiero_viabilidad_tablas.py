@@ -25,6 +25,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import re
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import Decimal
@@ -64,6 +65,115 @@ _lockdown = get_dependency_lockdown()
 # LOGGING CONFIGURATION
 # ============================================================================
 logger = logging.getLogger(__name__)
+
+# ============================================================================
+# CANONICAL CONSTANTS FROM GUIDES (NO RUNTIME JSON DEPENDENCIES)
+# ============================================================================
+# These constants are deterministic and traceable to:
+# - Reverse-archeology refactoring guide
+# - questionnaire_monolith structure guide (PDT/PDM-aware patterns)
+
+MICRO_LEVELS: dict[str, float] = {
+    "EXCELENTE": 0.85,
+    "BUENO": 0.70,
+    "ACEPTABLE": 0.55,
+    "INSUFICIENTE": 0.00,
+}
+
+# Derived thresholds (traceable formulas)
+ALIGNMENT_THRESHOLD: float = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2  # 0.625
+RISK_THRESHOLDS: dict[str, float] = {
+    "excellent": 1 - MICRO_LEVELS["EXCELENTE"],   # 0.15
+    "good": 1 - MICRO_LEVELS["BUENO"],            # 0.30
+    "acceptable": 1 - MICRO_LEVELS["ACEPTABLE"],  # 0.45
+}
+
+# Table quality and classification gates
+MIN_TABLE_ACCURACY: float = MICRO_LEVELS["ACEPTABLE"] + 0.05  # 0.60
+MIN_TABLE_TYPE_SCORE: float = RISK_THRESHOLDS["excellent"] + 0.05  # 0.20
+DEFAULT_INDICATOR_RISK: float = RISK_THRESHOLDS["good"]  # 0.30
+CRITICAL_RISK_THRESHOLD: float = MICRO_LEVELS["EXCELENTE"]  # 0.85
+
+# Canonical PDT/PDM-aware regex patterns (subset used by this module)
+PDT_PATTERNS: dict[str, re.Pattern[str]] = {
+    "indicator_matrix_headers": re.compile(
+        r"(?:"
+        r"Línea\s+Estratégica|"
+        r"Cód\.\s*Programa|"
+        r"Cód\.\s*Producto|"
+        r"Unidad\s+de\s+medida|"
+        r"Línea\s+base|"
+        r"Meta\s+202[4-7]|"
+        r"Fuente"
+        r")",
+        re.IGNORECASE,
+    ),
+    "ppi_headers": re.compile(
+        r"(?:"
+        r"TOTAL\s+202[4-7]|"
+        r"SGP|"
+        r"SGR|"
+        r"Regalías|"
+        r"Recursos\s+Propios|"
+        r"Otras\s+Fuentes"
+        r")",
+        re.IGNORECASE,
+    ),
+}
+
+# Deterministic funding-source vocabulary (PDT/PDM practice)
+FUNDING_SOURCE_KEYWORDS: dict[str, list[str]] = {
+    "SGP": ["sgp", "sistema general de participaciones", "participaciones"],
+    "SGR": ["sgr", "sistema general de regalías", "sistema general de regalias", "regalías", "regalias"],
+    "Recursos Municipales": [
+        "recursos municipales", "recursos del municipio", "recursos propios",
+        "ingresos propios", "rentas propias", "icld", "predial", "ica"
+    ],
+    "PDET": ["pdet", "programas pdet", "pilares pdet"],
+    "Cofinanciación": ["cofinanciación", "cofinanciacion", "contrapartida", "cofinanciado", "alianza", "convenio"],
+    "Crédito": ["crédito", "credito", "deuda", "endeudamiento", "empréstito", "emprestito"],
+    "Cooperación": ["cooperación", "cooperacion", "cooperante", "donación", "donacion", "usaid", "pnud", "ue", "giz"],
+    "Otras Fuentes": ["otras fuentes", "otras", "aportes", "gestión de recursos", "gestion de recursos"],
+}
+
+# Canonical priors for causal edges (traceable to micro_levels)
+PROBABILITY_PRIORS: dict[str, float] = {
+    "direct": MICRO_LEVELS["EXCELENTE"],          # 0.85
+    "mediated": MICRO_LEVELS["BUENO"],            # 0.70
+    "text_extracted": MICRO_LEVELS["ACEPTABLE"],  # 0.55
+}
+PROBABILITY_REINFORCEMENT: float = MICRO_LEVELS["BUENO"] - MICRO_LEVELS["ACEPTABLE"]  # 0.15
+
+# Table-type keyword baselines (fallback when regex signals are absent)
+TABLE_CLASSIFICATION_PATTERNS: dict[str, list[str]] = {
+    "presupuesto": [
+        "plan plurianual", "ppi", "presupuesto", "financiación", "financiacion", "fuente",
+        "sgp", "sgr", "regalías", "regalias", "recursos propios", "recursos municipales",
+        "recursos del municipio", "otras fuentes", "total 2024", "total 2025", "total 2026", "total 2027",
+        "vigencia", "apropiación", "apropiacion", "ejecución financiera", "ejecucion financiera",
+    ],
+    "indicadores": [
+        "matriz de indicadores", "línea estratégica", "linea estrategica", "cód. programa", "cod. programa",
+        "cód. producto", "cod. producto", "unidad de medida", "línea base", "linea base",
+        "meta 2024", "meta 2025", "meta 2026", "meta 2027", "fuente",
+    ],
+    "cronograma": [
+        "cronograma", "año", "ano", "vigencia", "trimestre", "semestral", "mensual",
+        "inicio", "fin", "fecha", "periodo",
+    ],
+    "responsables": [
+        "responsable", "entidad", "dependencia", "secretaría", "secretaria", "alcaldía", "alcaldia",
+        "ejecutor", "coordinador", "líder", "lider",
+    ],
+    "diagnostico": [
+        "diagnóstico", "diagnostico", "caracterización", "caracterizacion", "línea base", "linea base",
+        "brecha", "déficit", "deficit", "situación actual", "situacion actual",
+    ],
+    "pdet": [
+        "pdet", "pilares pdet", "programas pdet", "planes pdet",
+        "posconflicto", "posconflicto",
+    ],
+}
 
 # ============================================================================
 # CONFIGURACIÓN ESPECÍFICA PARA COLOMBIA Y PDET
