@@ -1,0 +1,343 @@
+{
+  "$schema": "contract_templates_v1",
+  "template_name": "methodological_depth_template",
+  "version": "1.0.0",
+  "description": "Captures Q001's 17-method documentation structure for comprehensive methodological depth including technical approach, output interpretation, and method combination logic",
+  "derived_from": [
+    "Q001.v3.json - 17 methods with complete technical documentation",
+    "Q002.v3.json - 12 methods with detailed algorithmic specifications",
+    "Q003.v3.json - 13 methods with financial analysis workflows",
+    "Q004.v3.json - 11 methods with NLP pipeline specifications"
+  ],
+  "method_documentation_schema": {
+    "type": "object",
+    "description": "Complete method documentation template following Q001 pattern",
+    "required": ["method_name", "class_name", "priority", "role", "epistemological_foundation", "technical_approach", "output_interpretation"],
+    "properties": {
+      "method_name": {
+        "type": "string",
+        "description": "Method name exactly as appears in code",
+        "examples": ["diagnose_critical_links", "_analyze_link_text", "_audit_direct_evidence"]
+      },
+      "class_name": {
+        "type": "string",
+        "description": "Class containing the method",
+        "examples": ["TextMiningEngine", "BayesianNumericalAnalyzer", "OperationalizationAuditor"]
+      },
+      "priority": {
+        "type": "integer",
+        "description": "Execution order in pipeline (1-N)",
+        "minimum": 1
+      },
+      "role": {
+        "type": "string",
+        "description": "Brief role description with action verb",
+        "pattern": "[verb]_[noun]_[action]",
+        "examples": ["diagnose_critical_links_diagnosis", "bayesian_inference", "causal_mechanism_gap_inference"]
+      },
+      "epistemological_foundation": {
+        "type": "object",
+        "description": "See epistemological_foundation_template.json for complete schema",
+        "$ref": "epistemological_foundation_template.json#/epistemological_foundation_schema"
+      },
+      "technical_approach": {
+        "type": "object",
+        "description": "Detailed technical specification of method implementation",
+        "required": ["algorithm", "input", "output", "steps", "complexity"],
+        "properties": {
+          "algorithm": {
+            "type": "string",
+            "description": "High-level algorithm description",
+            "examples": [
+              "Pattern-based causal link extraction with context window analysis",
+              "Bayesian evidence audit with SCM-informed priors",
+              "Dempster-Shafer cumulative risk propagation with alignment penalty",
+              "do-calculus graph surgery with Monte Carlo forward simulation",
+              "Parallel NER + Syntax Extraction → Entity Type Classification → Specificity Scoring → Consolidation"
+            ]
+          },
+          "input": {
+            "type": "string",
+            "description": "Input data types and structures",
+            "examples": [
+              "Preprocessed document sentences",
+              "dict[str, MetaNode] (parsed plan nodes), nx.DiGraph (SCM DAG), dict historical_data",
+              "list[FinancialAmount] (parsed budget lines), list[PolicyGoal]",
+              "preprocessed_document: Dict[str, Any], patterns: List[PatternConfig]"
+            ]
+          },
+          "output": {
+            "type": "string",
+            "description": "Output data types and structures",
+            "examples": [
+              "list[CausalLink] with cause, effect, connector, criticality_score",
+              "dict[str, dict[str, Any]] with component_id → {present: bool, prior_prob, posterior_prob}",
+              "dict {gaps_found: list[GapReport], total_budget_cop: float, gap_severity: float [0-1]}",
+              "entities: List[Dict[str, Any]] with fields {name, type, specificity_score, confidence}"
+            ]
+          },
+          "steps": {
+            "type": "array",
+            "description": "Detailed algorithmic steps with complexity notes",
+            "items": {
+              "oneOf": [
+                {"type": "string"},
+                {
+                  "type": "object",
+                  "properties": {
+                    "step": {"type": "integer"},
+                    "description": {"type": "string"},
+                    "algorithms": {"type": "array", "items": {"type": "string"}},
+                    "complexity": {"type": "string"}
+                  }
+                }
+              ]
+            },
+            "examples": [
+              [
+                "Identify causal connectors in sentences (porque, por lo tanto, conduce a, genera)",
+                "Extract entities before connector (cause) and after (effect)",
+                "Calculate criticality score based on proximity to gender indicators",
+                "Return structured CausalLink objects with sentence_id for traceability"
+              ],
+              [
+                "Build normative SCM DAG of expected gender policy components",
+                "For each required component, retrieve Bayesian prior P(component|plan_quality_category)",
+                "Search MetaNodes for component presence using NLP pattern matching",
+                "Compute likelihood P(observation|component_present) and P(observation|component_absent)",
+                "Apply Bayes' theorem: P(component_present|observation) = P(obs|present) × P(present) / P(obs)",
+                "Flag component as 'found' if posterior > 0.7, 'partial' if 0.3-0.7, 'absent' if < 0.3",
+                "Return dict mapping component_id → audit result with posterior probabilities"
+              ]
+            ],
+            "minimum_steps": 3,
+            "recommended_steps": 5
+          },
+          "complexity": {
+            "type": "string",
+            "description": "Computational complexity in Big-O notation with variable definitions",
+            "pattern": "O\\([^)]+\\)( where [^)]+)?",
+            "examples": [
+              "O(n*p) where n=sentences, p=causal patterns",
+              "O(n×m) where n=MetaNodes, m=expected components (typically m=10-15 for Q002)",
+              "O(n + e) where n=nodes, e=edges in causal graph",
+              "O(MCMC_iters × edges) = O(1000 × e) where e=edges in causal graph",
+              "O(e²) for pairwise comparison"
+            ]
+          },
+          "assumptions": {
+            "type": "array",
+            "description": "Critical assumptions method relies on",
+            "items": {"type": "string"},
+            "examples": [
+              "Input data is preprocessed and valid",
+              "Document preprocessing has sentence segmentation and tokenization",
+              "spaCy model es_core_news_lg is loaded",
+              "Patterns include at least one organizational entity pattern"
+            ]
+          },
+          "limitations": {
+            "type": "array",
+            "description": "Known limitations and failure modes",
+            "items": {"type": "string"},
+            "examples": [
+              "Method-specific limitations apply",
+              "NER precision limited by spaCy model performance (F1≈0.89 on Spanish ORG entities)",
+              "Syntax parsing fails on malformed sentences (typically <5% of corpus)",
+              "False negatives on rare entity names not in training corpus"
+            ]
+          }
+        }
+      },
+      "output_interpretation": {
+        "type": "object",
+        "description": "How to interpret method outputs for actionable insights",
+        "required": ["output_structure", "interpretation_guide", "actionable_insights"],
+        "properties": {
+          "output_structure": {
+            "type": "object",
+            "description": "Example output structure with concrete values",
+            "examples": [
+              {
+                "cause": "string",
+                "effect": "string",
+                "connector": "string",
+                "criticality_score": "float",
+                "sentence_id": "int",
+                "context": "string"
+              }
+            ]
+          },
+          "interpretation_guide": {
+            "type": "object",
+            "description": "Thresholds and interpretations for different output ranges",
+            "patternProperties": {
+              ".*": {
+                "type": "string",
+                "description": "Threshold label → interpretation"
+              }
+            },
+            "examples": {
+              "high_criticality": "≥0.8: Link directly mentions gender inequality outcomes (VBG, autonomía económica)",
+              "medium_criticality": "0.5-0.79: Link relates to intermediate factors (educación, empleo)",
+              "low_criticality": "<0.5: Peripheral causal relationship",
+              "actionable_insight": "Few critical links → diagnosis lacks causal depth, may be purely descriptive"
+            }
+          },
+          "actionable_insights": {
+            "type": "array",
+            "description": "Practical recommendations based on output values",
+            "items": {"type": "string"},
+            "examples": [
+              "Use trace_financial_allocation results for downstream analysis",
+              "If 0 entities with specificity≥0.75: Flag as CRITICAL GAP - plan lacks identifiable responsible institutions",
+              "Absent components with high prior importance → critical gap requiring immediate remediation",
+              "High necessity (>0.75) for cuantificacion_brecha → omission is root cause of implementation failure"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "method_combination_logic_schema": {
+    "type": "object",
+    "description": "Documents how multiple methods combine to produce integrated analysis",
+    "required": ["combination_strategy", "rationale", "evidence_fusion", "confidence_aggregation", "execution_order", "trade_offs"],
+    "properties": {
+      "combination_strategy": {
+        "type": "string",
+        "description": "Overall strategy for combining method outputs",
+        "examples": [
+          "Sequential multi-method pipeline with evidence fusion via graph construction",
+          "Hierarchical Bayesian pipeline with counterfactual validation and operational loss quantification",
+          "Parallel NER + Syntax → Classification → Consolidation pipeline"
+        ]
+      },
+      "rationale": {
+        "type": "string",
+        "description": "Why this combination is appropriate for the question",
+        "examples": [
+          "D1-Q1 requires comprehensive extraction of quantitative baseline data from heterogeneous sources (narrative text, causal statements, tables, financial data). The 17 methods provide complementary coverage: text mining (1-2) for causal structure, industrial processing (3-5) for structural extraction, causal extraction (6-7) for goals, financial analysis (8-10) for budget data, contradiction detection (11-13) for quality assurance, Bayesian inference (14-15) for uncertainty quantification, and semantic processing (16-17) for similarity-based retrieval.",
+          "D1-Q2 evaluates recognition of gender data gaps and quantification of disparities - requires detecting ABSENCES (what's NOT stated). 12 methods form 4-layer hierarchy: (1) Bayesian evidence audit for gap detection, (2) Causal risk propagation via Dempster-Shafer, (3) Financial/mechanism gap inference, (4) Contradiction detection for data quality, (5) Counterfactual validation of causal claims, (6) Performance loss quantification."
+        ]
+      },
+      "evidence_fusion": {
+        "type": "string",
+        "description": "How evidence from different methods is integrated",
+        "examples": [
+          "All 17 method outputs are transformed into EvidenceNode objects by EvidenceNexus. Content-identical nodes are deduplicated via SHA-256 hashing. Confidence values are combined using Dempster-Shafer belief propagation across the evidence graph. Causal relationships are inferred via edge construction (SUPPORTS, CONTRADICTS, CAUSES, CORRELATES).",
+          "Hierarchical fusion NOT flat aggregation: Layer 1 (_audit_direct_evidence) outputs feed Layer 2 (_audit_systemic_risk), which combines via Dempster-Shafer rule m1⊕m2 = ∑(m1(A)×m2(B))/(1-conflict) for omission beliefs. EvidenceAssembler respects dependency graph - no naive averaging of dependent posteriors."
+        ]
+      },
+      "confidence_aggregation": {
+        "type": "string",
+        "description": "How confidence scores are combined across methods",
+        "examples": [
+          "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability. Bayesian methods receive higher weights (0.95) than regex-based extraction (0.85) due to principled uncertainty quantification. Dempster-Shafer combination rule handles conflicting evidence.",
+          "Non-uniform weighting by method reliability corpus-validated: Bayesian methods (1,2,4,7,8,11) weight=0.95, causal inference (6) weight=0.90, statistical tests (9,10) weight=0.85, financial heuristics (3) weight=0.75. Final posterior P(gap|all_evidence) = mixture ∑ w_i × P(gap|method_i) / ∑w_i."
+        ]
+      },
+      "execution_order": {
+        "type": "string",
+        "description": "Method execution dependencies and sequencing",
+        "examples": [
+          "Methods execute in strict priority order (1→17). Later methods can access outputs of earlier methods via provides/depends_on mechanism. For example, method 7 (_parse_goal_context) depends on method 6 (_extract_goals) and enriches goal objects with context.",
+          "Strict DAG topology enforced: {1→2→[3,4,5]→[6,7,8]→[9,10]→11→12}. Methods 1-2 are sequential (systemic risk depends on direct evidence). Methods 3-5 are parallel (independent gap sources). Violations → runtime dependency error."
+        ]
+      },
+      "trade_offs": {
+        "type": "array",
+        "description": "Acknowledged trade-offs in method combination design",
+        "items": {"type": "string"},
+        "examples": [
+          "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost (O(n) → O(n²) for pairwise comparisons) and maintenance burden. Mitigated by caching and parallel execution where dependencies allow.",
+          "Precision vs. Recall: Multiple methods increase recall (finding more evidence) but risk redundancy. SHA-256 deduplication and graph-based merging handle overlap. Conservative confidence weighting prevents false positives.",
+          "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex matching. human_readable_output compensates via methodological documentation and Carver-style narrative synthesis explaining model reasoning.",
+          "Sensitivity vs. Specificity: Bayesian priors tuned for rare omissions (P(explicit_bias_recognition)≈0.15) maximize sensitivity (detect gaps) at cost of false positives; validated against corpus showing precision=0.82, recall=0.91",
+          "Computational Cost vs. Robustness: MCMC sampling requires O(10000) iterations per method. Amortized cost: 15-30s per contract. Justified by robustness to prior misspecification and uncertainty quantification unavailable in frequentist methods"
+        ]
+      },
+      "dependency_graph": {
+        "type": "object",
+        "description": "Visual representation of method dependencies",
+        "properties": {
+          "independent": {
+            "type": "array",
+            "description": "Methods with no dependencies",
+            "items": {"type": "string"}
+          },
+          "dependent_chains": {
+            "type": "array",
+            "description": "Sequential dependency chains",
+            "items": {"type": "string"}
+          },
+          "parallel_branches": {
+            "type": "array",
+            "description": "Methods that can execute in parallel",
+            "items": {"type": "string"}
+          },
+          "aggregation_sinks": {
+            "type": "array",
+            "description": "Methods that aggregate outputs from multiple upstream methods",
+            "items": {"type": "string"}
+          }
+        },
+        "example": {
+          "independent": ["text_mining.diagnose_critical_links", "industrial_policy.process"],
+          "dependent_chains": [
+            "text_mining.diagnose_critical_links → text_mining.analyze_link_text",
+            "industrial_policy.process → industrial_policy.match_patterns_in_sentences → industrial_policy.extract_point_evidence"
+          ],
+          "parallel_branches": [
+            "_audit_systemic_risk (2) → {_detect_allocation_gaps (3), _detect_gaps (4), _generate_optimal_remediations (5)}"
+          ],
+          "aggregation_sinks": [
+            "{1,2,3,4,5,6,7,8,9,10} → calculate_posterior (11)"
+          ]
+        }
+      }
+    }
+  },
+  "usage_guidelines": {
+    "when_to_apply": "Apply this template when documenting complex multi-method pipelines (3+ methods) that require detailed technical specifications and integration documentation",
+    "documentation_completeness_checklist": [
+      "All methods have epistemological foundations",
+      "Technical approach includes algorithm, input/output types, 5+ steps, complexity analysis",
+      "Output interpretation provides thresholds, interpretation guide, and actionable insights",
+      "Method combination logic documents strategy, rationale, fusion approach, confidence aggregation",
+      "Dependency graph visualizes execution order",
+      "Trade-offs are explicitly acknowledged"
+    ],
+    "quality_indicators": [
+      "Steps are concrete enough to implement from documentation alone",
+      "Complexity analysis includes variable definitions and typical values",
+      "Interpretation guide provides threshold-based decision rules",
+      "Actionable insights connect method outputs to question evaluation",
+      "Trade-offs acknowledge both benefits and costs of design choices"
+    ]
+  },
+  "reference_examples": {
+    "q001_17_method_pipeline": {
+      "method_count": 17,
+      "combination_strategy": "Sequential multi-method pipeline with evidence fusion via graph construction",
+      "highlights": [
+        "Complete epistemological foundations for all 17 methods",
+        "Detailed technical approach with 4-7 steps per method",
+        "Output interpretation with high/medium/low thresholds",
+        "Dependency graph showing independent roots and sequential chains",
+        "Trade-offs explicitly documented (comprehensiveness vs. complexity)"
+      ]
+    },
+    "q002_12_method_hierarchical_pipeline": {
+      "method_count": 12,
+      "combination_strategy": "Hierarchical Bayesian pipeline with counterfactual validation",
+      "highlights": [
+        "Four-layer hierarchy with Dempster-Shafer fusion",
+        "Pearl's three-level causal hierarchy (association → intervention → counterfactuals)",
+        "Non-uniform method weighting by corpus-validated reliability",
+        "Strict DAG topology with parallel branches",
+        "Epistemological integration across 4 paradigms"
+      ]
+    }
+  }
+}
