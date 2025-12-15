@@ -107,7 +107,7 @@ def test_input_verification_gate_passes_with_hashes():
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner.input_pdf_sha256 = "abc123" * 10 + "abcd"  # 64 chars
-    runner.questionnaire_sha256 = "def456" * 10 + "efgh"
+    runner.questionnaire_sha256 = "def456" * 10 + "defa"
     
     result = check_input_verification_gate(runner)
     
@@ -120,7 +120,7 @@ def test_input_verification_gate_fails_on_missing_pdf_hash():
     """Gate 2 should fail if PDF not hashed."""
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
-    runner.questionnaire_sha256 = "def456" * 10 + "efgh"
+    runner.questionnaire_sha256 = "def456" * 10 + "defa"
     # input_pdf_sha256 is empty string
     
     result = check_input_verification_gate(runner)
@@ -134,7 +134,7 @@ def test_determinism_gate_passes_with_mandatory_seeds():
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner.input_pdf_sha256 = "abc123" * 10 + "abcd"
-    runner.questionnaire_sha256 = "def456" * 10 + "efgh"
+    runner.questionnaire_sha256 = "def456" * 10 + "defa"
     runner.seed_snapshot = {
         "python": 12345,
         "numpy": 67890,
@@ -151,7 +151,7 @@ def test_determinism_gate_fails_on_missing_python_seed():
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner.input_pdf_sha256 = "abc123" * 10 + "abcd"
-    runner.questionnaire_sha256 = "def456" * 10 + "efgh"
+    runner.questionnaire_sha256 = "def456" * 10 + "defa"
     runner.seed_snapshot = {
         "numpy": 67890,
         # Missing python seed
@@ -169,7 +169,7 @@ def test_check_all_gates_success():
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner.input_pdf_sha256 = "abc123" * 10 + "abcd"
-    runner.questionnaire_sha256 = "def456" * 10 + "efgh"
+    runner.questionnaire_sha256 = "def456" * 10 + "defa"
     runner.seed_snapshot = {"python": 12345, "numpy": 67890}
     
     all_passed, results = check_all_gates(runner)

@@ -207,13 +207,13 @@ class TestPhase0InputContract:
     
     def test_phase0_input_validator_empty_pdf_path(self):
         """Test validator rejects empty pdf_path."""
-        with pytest.raises(Exception, match="pdf_path cannot be empty"):
+        with pytest.raises(Exception, match=r"(pdf_path cannot be empty|String should have at least 1 character)"):
             Phase0InputValidator(pdf_path="", run_id="test_run")
         print("  ✓ Empty pdf_path rejected")
     
     def test_phase0_input_validator_empty_run_id(self):
         """Test validator rejects empty run_id."""
-        with pytest.raises(Exception, match="run_id cannot be empty"):
+        with pytest.raises(Exception, match=r"(run_id cannot be empty|String should have at least 1 character)"):
             Phase0InputValidator(pdf_path="/tmp/test.pdf", run_id="")
         print("  ✓ Empty run_id rejected")
     
@@ -309,7 +309,7 @@ class TestCanonicalInputContract:
     
     def test_canonical_input_validator_invalid_sha256_length(self):
         """Test validator rejects invalid SHA256 length."""
-        with pytest.raises(Exception, match="must be 64 characters"):
+        with pytest.raises(Exception, match=r"(must be 64 characters|String should have at least 64 characters)"):
             CanonicalInputValidator(
                 document_id="test",
                 run_id="test_run",
@@ -578,7 +578,7 @@ class TestPhase0ContractExecution:
         """Test Phase0ValidationContract has required invariants."""
         contract = Phase0ValidationContract()
         
-        invariant_names = [inv["name"] for inv in contract.invariants]
+        invariant_names = [inv.name for inv in contract.invariants]
         
         assert "validation_passed" in invariant_names
         assert "pdf_page_count_positive" in invariant_names

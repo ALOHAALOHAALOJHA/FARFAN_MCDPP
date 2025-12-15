@@ -1232,6 +1232,10 @@ def create_minimal_pipeline(
     return factory.create_orchestrator()
 
 
+# Alias for backward compatibility with Phase 2 executors
+build_processor = create_analysis_pipeline
+
+
 # =============================================================================
 # Validation and Diagnostics
 # =============================================================================

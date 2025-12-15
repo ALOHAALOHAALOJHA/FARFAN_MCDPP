@@ -590,7 +590,7 @@
                 "Rank mechanisms by posterior probability; select top-3 per product→outcome pair",
                 "Flag mechanisms with posterior > 0.6 as 'explicitly articulated', 0.3-0.6 as 'partially implicit', < 0.3 as 'absent/unclear'",
                 "Return inferred mechanisms with provenance (which sentences contributed evidence)"
-              },
+              ],
               "assumptions": [
                 "Template completeness: mechanistic templates from corpus cover the true mechanisms in the focal plan (violated if novel, context-specific mechanisms exist)",
                 "Conditional independence: textual features (keywords, embeddings) are conditionally independent given mechanism (simplifying assumption for tractability)",
