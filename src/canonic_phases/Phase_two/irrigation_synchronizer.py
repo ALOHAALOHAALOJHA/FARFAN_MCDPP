@@ -540,10 +540,18 @@ class IrrigationSynchronizer:
                 self.questionnaire = self.questionnaire.to_dict()
 
         blocks = self.questionnaire.get("blocks", {})
-        if not blocks:
+
+        # Fallback: Check if micro_questions is at root or directly in self.questionnaire
+        micro_questions = blocks.get("micro_questions")
+        if not micro_questions:
+             micro_questions = self.questionnaire.get("micro_questions")
+             if not micro_questions and isinstance(self.questionnaire, list):
+                 # Handle case where questionnaire IS the list of questions
+                 micro_questions = self.questionnaire
+
+        if not blocks and not micro_questions:
             logger.warning("No 'blocks' found in questionnaire")
 
-        micro_questions = blocks.get("micro_questions")
         if isinstance(micro_questions, list) and micro_questions:
             logger.info(f"Found {len(micro_questions)} micro_questions in canonical format")
             for raw in micro_questions:
