@@ -5,11 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "05c3cf938184ab0aa8ae90d86a250115d28ff8534f808061eb04f9838a991573",
+    "contract_hash": "87b394517d11f8ea3e1ea7d1d5d8734ba52841a3c2ca5c5479def8d89f443274",
     "created_at": "2025-11-28T03:50:42.192174+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
-    "question_global": 243
+    "question_global": 243,
+    "updated_at": "2025-12-15T20:32:11.071750+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -283,43 +284,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -350,7 +335,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 273
+          "const": 243
         },
         "policy_area_id": {
           "type": [
@@ -366,7 +351,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM01"
         },
         "cluster_id": {
           "type": [
@@ -374,7 +359,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL03"
         },
         "evidence": {
           "type": [
@@ -1664,6 +1649,333 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "FinancialAuditor.trace_financial_allocation": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor.trace_financial_allocation",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from trace_financial_allocation"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.trace_financial_allocation",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._process_financial_table": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._process_financial_table",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _process_financial_table"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.process_financial_table",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._match_program_to_node": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._match_program_to_node",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _match_program_to_node"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.match_program_to_node",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._match_goal_to_budget": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._match_goal_to_budget",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _match_goal_to_budget"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.match_goal_to_budget",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._perform_counterfactual_budget_check": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._perform_counterfactual_budget_check",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _perform_counterfactual_budget_check"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.perform_counterfactual_budget_check",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._calculate_sufficiency": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._calculate_sufficiency",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_sufficiency"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.calculate_sufficiency",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer.analyze_financial_feasibility",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from analyze_financial_feasibility"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.analyze_financial_feasibility",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._extract_budget_for_pillar": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._extract_budget_for_pillar",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_budget_for_pillar"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.extract_budget_for_pillar",
+        "merge_strategy": "concat"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._identify_funding_source": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._identify_funding_source",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _identify_funding_source"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.identify_funding_source",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._classify_tables": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._classify_tables",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _classify_tables"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.classify_tables",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._analyze_funding_sources": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._analyze_funding_sources",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _analyze_funding_sources"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.analyze_funding_sources",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._score_financial_component": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_financial_component",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _score_financial_component"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.score_financial_component",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor.aggregate_risk_and_prioritize",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from aggregate_risk_and_prioritize"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

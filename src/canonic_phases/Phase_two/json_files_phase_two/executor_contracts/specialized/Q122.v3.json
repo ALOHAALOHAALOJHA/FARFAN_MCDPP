@@ -5,11 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "433fa957c957086dccec483c2793e3eaed8acd63fced3fc325aa18fa332c5155",
+    "contract_hash": "aecfb9d99d4f580a66841d10e624df325f8e425dc2ca6c694d4fa1c34a8b0997",
     "created_at": "2025-11-28T03:50:31.388098+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
-    "question_global": 122
+    "question_global": 122,
+    "updated_at": "2025-12-15T20:32:11.001351+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -267,43 +268,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -334,7 +319,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 272
+          "const": 122
         },
         "policy_area_id": {
           "type": [
@@ -350,7 +335,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM01"
         },
         "cluster_id": {
           "type": [
@@ -358,7 +343,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL03"
         },
         "evidence": {
           "type": [
@@ -1595,6 +1580,308 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "OperationalizationAuditor._audit_direct_evidence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from OperationalizationAuditor._audit_direct_evidence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _audit_direct_evidence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "operationalizationauditor.audit_direct_evidence",
+        "merge_strategy": "replace"
+      }
+    },
+    "OperationalizationAuditor._audit_systemic_risk": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from OperationalizationAuditor._audit_systemic_risk",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _audit_systemic_risk"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "operationalizationauditor.audit_systemic_risk",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._detect_allocation_gaps": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._detect_allocation_gaps",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_allocation_gaps"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.detect_allocation_gaps",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._detect_gaps": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._detect_gaps",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_gaps"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.detect_gaps",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._generate_optimal_remediations": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._generate_optimal_remediations",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _generate_optimal_remediations"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.generate_optimal_remediations",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._simulate_intervention": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._simulate_intervention",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _simulate_intervention"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.simulate_intervention",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor.counterfactual_query": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor.counterfactual_query",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from counterfactual_query"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.counterfactual_query",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor._test_effect_stability": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor._test_effect_stability",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _test_effect_stability"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.test_effect_stability",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._detect_numerical_inconsistencies": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._detect_numerical_inconsistencies",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_numerical_inconsistencies"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.detect_numerical_inconsistencies",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._calculate_numerical_divergence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._calculate_numerical_divergence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_numerical_divergence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.calculate_numerical_divergence",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianConfidenceCalculator.calculate_posterior": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianConfidenceCalculator.calculate_posterior",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from calculate_posterior"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianconfidencecalculator.calculate_posterior",
+        "merge_strategy": "replace"
+      }
+    },
+    "PerformanceAnalyzer.analyze_performance": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PerformanceAnalyzer.analyze_performance",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from analyze_performance"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "performanceanalyzer.analyze_performance",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

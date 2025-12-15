@@ -5,11 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "5491e1ef3372ec6732639879d538f534a68f121fa7de23bb6085fe6d0efeb230",
+    "contract_hash": "bebb424f540e8421b6c4bd130191fa6d29741ac3aae403d10e56396c4576f76c",
     "created_at": "2025-11-28T03:50:31.548540+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
-    "question_global": 143
+    "question_global": 143,
+    "updated_at": "2025-12-15T20:32:12.481359+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -203,43 +204,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -270,7 +255,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 293
+          "const": 143
         },
         "policy_area_id": {
           "type": [
@@ -286,7 +271,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM05"
         },
         "cluster_id": {
           "type": [
@@ -294,7 +279,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL03"
         },
         "evidence": {
           "type": [
@@ -1213,6 +1198,158 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "CausalExtractor._calculate_semantic_distance": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_semantic_distance",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_semantic_distance"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_semantic_distance",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer.extract_semantic_cube": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer.extract_semantic_cube",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from extract_semantic_cube"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.extract_semantic_cube",
+        "merge_strategy": "concat"
+      }
+    },
+    "BayesianMechanismInference._quantify_uncertainty": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._quantify_uncertainty",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _quantify_uncertainty"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.quantify_uncertainty",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._find_mediator_mentions": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._find_mediator_mentions",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _find_mediator_mentions"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.find_mediator_mentions",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyAnalysisEmbedder.get_diagnostics": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyAnalysisEmbedder.get_diagnostics",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from get_diagnostics"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "policyanalysisembedder.get_diagnostics",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator._perturb_evidence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator._perturb_evidence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _perturb_evidence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.perturb_evidence",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

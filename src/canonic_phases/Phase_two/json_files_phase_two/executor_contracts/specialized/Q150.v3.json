@@ -5,11 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "629dfdc265f8999872d566b243fe2838b6e0e6b24a962495898cc1a0ec46d90e",
+    "contract_hash": "573477b8fae681abd40cb6d779d4390d59dc18d6f1a30f2721b69a079f4de05e",
     "created_at": "2025-11-28T03:50:31.571934+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
-    "question_global": 150
+    "question_global": 150,
+    "updated_at": "2025-12-15T20:32:12.760807+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -240,23 +241,14 @@
       {
         "target": "elements_found",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
@@ -264,8 +256,7 @@
       {
         "target": "pattern_matches",
         "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
+          "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "concat",
         "default": {},
@@ -273,9 +264,7 @@
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -306,7 +295,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 300
+          "const": 150
         },
         "policy_area_id": {
           "type": [
@@ -322,7 +311,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM06"
         },
         "cluster_id": {
           "type": [
@@ -330,7 +319,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL03"
         },
         "evidence": {
           "type": [
@@ -1416,6 +1405,233 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "CausalExtractor._calculate_language_specificity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_language_specificity",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_language_specificity"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_language_specificity",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._assess_temporal_coherence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._assess_temporal_coherence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _assess_temporal_coherence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.assess_temporal_coherence",
+        "merge_strategy": "replace"
+      }
+    },
+    "TextMiningEngine.diagnose_critical_links": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine.diagnose_critical_links",
+        "type": "object",
+        "properties": {
+          "critical_links": {
+            "type": "array",
+            "description": "List of critical causal links"
+          },
+          "link_scores": {
+            "type": "object",
+            "description": "Criticality scores for each link"
+          },
+          "context": {
+            "type": "object",
+            "description": "Contextual information"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "text_mining.diagnose_critical_links",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalInferenceSetup.identify_failure_points": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup.identify_failure_points",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from identify_failure_points"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causalinferencesetup.identify_failure_points",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalInferenceSetup._get_dynamics_pattern": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup._get_dynamics_pattern",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _get_dynamics_pattern"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causalinferencesetup.get_dynamics_pattern",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor.chunk_text": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor.chunk_text",
+        "type": "object",
+        "properties": {
+          "chunks": {
+            "type": "array",
+            "description": "Text chunks"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.chunk_text",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor._detect_pdm_structure": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor._detect_pdm_structure",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_pdm_structure"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.detect_pdm_structure",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor._detect_table": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor._detect_table",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_table"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.detect_table",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator.generate_traceability_record": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.generate_traceability_record",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_traceability_record"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.generate_traceability_record",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

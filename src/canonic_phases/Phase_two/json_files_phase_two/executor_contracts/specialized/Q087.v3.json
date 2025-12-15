@@ -5,11 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "3287344fa6092f58f86fa3cc3c07e706897d3c8ebbbec19c61fe2f81754e74cc",
+    "contract_hash": "0235663098e3f4fca63f3494ad357d478dc1fd233746cf8f933e0dfdd352b97b",
     "created_at": "2025-11-28T03:50:13.368622+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
-    "question_global": 87
+    "question_global": 87,
+    "updated_at": "2025-12-15T20:32:12.640558+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q2_Executor",
@@ -199,43 +200,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -266,7 +251,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 297
+          "const": 87
         },
         "policy_area_id": {
           "type": [
@@ -282,7 +267,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM06"
         },
         "cluster_id": {
           "type": [
@@ -290,7 +275,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL01"
         },
         "evidence": {
           "type": [
@@ -1262,6 +1247,183 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "BeachEvidentialTest.apply_test_logic": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BeachEvidentialTest.apply_test_logic",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from apply_test_logic"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "beachevidentialtest.apply_test_logic",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._test_necessity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._test_necessity",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _test_necessity"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.test_necessity",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._test_sufficiency": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._test_sufficiency",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _test_sufficiency"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.test_sufficiency",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._calculate_coherence_factor": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._calculate_coherence_factor",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_coherence_factor"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.calculate_coherence_factor",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor._test_effect_stability": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor._test_effect_stability",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _test_effect_stability"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.test_effect_stability",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialGradeValidator.validate_connection_matrix": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialGradeValidator.validate_connection_matrix",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from validate_connection_matrix"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrialgradevalidator.validate_connection_matrix",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyAnalysisEmbedder._compute_overall_confidence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyAnalysisEmbedder._compute_overall_confidence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _compute_overall_confidence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "policyanalysisembedder.compute_overall_confidence",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

@@ -5,11 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "15a4a8399863fc424acd906c46357910c370c1eef35b401abadfd09badcbc9b5",
+    "contract_hash": "19ef3282b3d54f741f8a9f3dcc6082d087cde057ecdbbdd76a4bca0907f6acae",
     "created_at": "2025-11-28T03:50:42.218549+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
-    "question_global": 251
+    "question_global": 251,
+    "updated_at": "2025-12-15T20:32:11.606562+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -252,23 +253,14 @@
       {
         "target": "elements_found",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
@@ -276,8 +268,7 @@
       {
         "target": "pattern_matches",
         "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
+          "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "concat",
         "default": {},
@@ -285,9 +276,7 @@
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -318,7 +307,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 281
+          "const": 251
         },
         "policy_area_id": {
           "type": [
@@ -334,7 +323,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM03"
         },
         "cluster_id": {
           "type": [
@@ -342,7 +331,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL03"
         },
         "evidence": {
           "type": [
@@ -1372,6 +1361,212 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "PDETMunicipalPlanAnalyzer._score_indicators": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_indicators",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _score_indicators"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.score_indicators",
+        "merge_strategy": "replace"
+      }
+    },
+    "OperationalizationAuditor.audit_evidence_traceability": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from OperationalizationAuditor.audit_evidence_traceability",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from audit_evidence_traceability"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "operationalizationauditor.audit_evidence_traceability",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalInferenceSetup.assign_probative_value": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup.assign_probative_value",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from assign_probative_value"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causalinferencesetup.assign_probative_value",
+        "merge_strategy": "replace"
+      }
+    },
+    "BeachEvidentialTest.apply_test_logic": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BeachEvidentialTest.apply_test_logic",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from apply_test_logic"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "beachevidentialtest.apply_test_logic",
+        "merge_strategy": "replace"
+      }
+    },
+    "TextMiningEngine.diagnose_critical_links": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine.diagnose_critical_links",
+        "type": "object",
+        "properties": {
+          "critical_links": {
+            "type": "array",
+            "description": "List of critical causal links"
+          },
+          "link_scores": {
+            "type": "object",
+            "description": "Criticality scores for each link"
+          },
+          "context": {
+            "type": "object",
+            "description": "Contextual information"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "text_mining.diagnose_critical_links",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._extract_metadata": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._extract_metadata",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_metadata"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.extract_metadata",
+        "merge_strategy": "concat"
+      }
+    },
+    "IndustrialPolicyProcessor._calculate_quality_score": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._calculate_quality_score",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_quality_score"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.calculate_quality_score",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator.generate_traceability_record": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.generate_traceability_record",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_traceability_record"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.generate_traceability_record",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

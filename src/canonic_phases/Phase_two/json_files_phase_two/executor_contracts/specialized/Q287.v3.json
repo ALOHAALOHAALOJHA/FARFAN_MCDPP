@@ -5,11 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "47765e1442ffb57f8417de90c5bd3cd8bca323dd3edb158c9fcb9cadb212abb3",
+    "contract_hash": "7bb8bac4c0c8c338bea0a7e95f83ebeac7bc4dd5d033cbc1911106c022f7dad0",
     "created_at": "2025-11-28T03:50:42.518902+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
-    "question_global": 287
+    "question_global": 287,
+    "updated_at": "2025-12-15T20:32:12.183196+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -227,43 +228,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -310,7 +295,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM04"
         },
         "cluster_id": {
           "type": [
@@ -318,7 +303,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL04"
         },
         "evidence": {
           "type": [
@@ -1343,6 +1328,208 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "TeoriaCambio._encontrar_caminos_completos": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio._encontrar_caminos_completos",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _encontrar_caminos_completos"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "teoriacambio.encontrar_caminos_completos",
+        "merge_strategy": "replace"
+      }
+    },
+    "TeoriaCambio.validacion_completa": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio.validacion_completa",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from validacion_completa"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "teoriacambio.validacion_completa",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor.extract_causal_hierarchy": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor.extract_causal_hierarchy",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from extract_causal_hierarchy"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.extract_causal_hierarchy",
+        "merge_strategy": "concat"
+      }
+    },
+    "HierarchicalGenerativeModel.verify_conditional_independence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from HierarchicalGenerativeModel.verify_conditional_independence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from verify_conditional_independence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "hierarchicalgenerativemodel.verify_conditional_independence",
+        "merge_strategy": "replace"
+      }
+    },
+    "HierarchicalGenerativeModel._generate_independence_tests": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from HierarchicalGenerativeModel._generate_independence_tests",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _generate_independence_tests"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "hierarchicalgenerativemodel.generate_independence_tests",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor.construct_scm": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor.construct_scm",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from construct_scm"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.construct_scm",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdvancedDAGValidator._perform_sensitivity_analysis_internal": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdvancedDAGValidator._perform_sensitivity_analysis_internal",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _perform_sensitivity_analysis_internal"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "advanceddagvalidator.perform_sensitivity_analysis_internal",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesFactorTable.get_bayes_factor": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesFactorTable.get_bayes_factor",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from get_bayes_factor"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesfactortable.get_bayes_factor",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

@@ -5,11 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "753f7c252845475dfabd38544f23ae81fa2620f48e41bf2269d753c931ac1489",
+    "contract_hash": "e8284bfab313a52721fdcc580a85cd45cc6fc5e9b60cf0cc7c91b7f401960e79",
     "created_at": "2025-11-28T03:49:29.823196+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
-    "question_global": 13
+    "question_global": 13,
+    "updated_at": "2025-12-15T20:32:11.690615+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -335,43 +336,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -402,7 +387,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 283
+          "const": 13
         },
         "policy_area_id": {
           "type": [
@@ -418,7 +403,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM03"
         },
         "cluster_id": {
           "type": [
@@ -426,7 +411,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL02"
         },
         "evidence": {
           "type": [
@@ -2193,6 +2178,558 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "FinancialAuditor._match_program_to_node": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._match_program_to_node",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _match_program_to_node"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.match_program_to_node",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._match_goal_to_budget": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._match_goal_to_budget",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _match_goal_to_budget"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.match_goal_to_budget",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_from_responsibility_tables"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.extract_from_responsibility_tables",
+        "merge_strategy": "concat"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._consolidate_entities": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._consolidate_entities",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _consolidate_entities"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.consolidate_entities",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer.identify_responsible_entities": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer.identify_responsible_entities",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from identify_responsible_entities"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.identify_responsible_entities",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._score_responsibility_clarity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_responsibility_clarity",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _score_responsibility_clarity"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.score_responsibility_clarity",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyAnalysisEmbedder.process_document": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyAnalysisEmbedder.process_document",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from process_document"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "policyanalysisembedder.process_document",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyAnalysisEmbedder._generate_query_from_pdq": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyAnalysisEmbedder._generate_query_from_pdq",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _generate_query_from_pdq"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "policyanalysisembedder.generate_query_from_pdq",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyAnalysisEmbedder.semantic_search": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyAnalysisEmbedder.semantic_search",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from semantic_search"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "policyanalysisembedder.semantic_search",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyAnalysisEmbedder._apply_mmr": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyAnalysisEmbedder._apply_mmr",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _apply_mmr"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "policyanalysisembedder.apply_mmr",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer._empty_semantic_cube": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer._empty_semantic_cube",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _empty_semantic_cube"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.empty_semantic_cube",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer._classify_policy_domain": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer._classify_policy_domain",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _classify_policy_domain"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.classify_policy_domain",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer._classify_cross_cutting_themes": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer._classify_cross_cutting_themes",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _classify_cross_cutting_themes"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.classify_cross_cutting_themes",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer._classify_value_chain_link": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer._classify_value_chain_link",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _classify_value_chain_link"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.classify_value_chain_link",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer._vectorize_segments": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer._vectorize_segments",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _vectorize_segments"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.vectorize_segments",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer._process_segment": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer._process_segment",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _process_segment"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.process_segment",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer._calculate_semantic_complexity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer._calculate_semantic_complexity",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_semantic_complexity"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.calculate_semantic_complexity",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._compute_evidence_confidence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._compute_evidence_confidence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _compute_evidence_confidence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.compute_evidence_confidence",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._entity_to_dict": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._entity_to_dict",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _entity_to_dict"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.entity_to_dict",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator.generate_traceability_record": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.generate_traceability_record",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_traceability_record"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.generate_traceability_record",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyAnalysisEmbedder.generate_pdq_report": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyAnalysisEmbedder.generate_pdq_report",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_pdq_report"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "policyanalysisembedder.generate_pdq_report",
+        "merge_strategy": "replace"
+      }
+    },
+    "ReportingEngine.generate_accountability_matrix": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ReportingEngine.generate_accountability_matrix",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_accountability_matrix"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "reportingengine.generate_accountability_matrix",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

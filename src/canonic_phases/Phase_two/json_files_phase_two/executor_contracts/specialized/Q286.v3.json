@@ -5,11 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "e20c57d69478a809a6752df8ec56891471d0ea069802d20525acf95a5ec72b9b",
+    "contract_hash": "6a5286341acade9d5f2aefe53a9488561095b2ad64c48421cb120a4653a42321",
     "created_at": "2025-11-28T03:50:42.515264+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
-    "question_global": 286
+    "question_global": 286,
+    "updated_at": "2025-12-15T20:32:12.128700+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -312,42 +313,28 @@
       {
         "target": "elements_found",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "causal_extraction.extract_goals"
         ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -394,7 +381,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM04"
         },
         "cluster_id": {
           "type": [
@@ -402,7 +389,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL04"
         },
         "evidence": {
           "type": [
@@ -1860,6 +1847,400 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "PDETMunicipalPlanAnalyzer._extract_entities_syntax": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._extract_entities_syntax",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_entities_syntax"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.extract_entities_syntax",
+        "merge_strategy": "concat"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._extract_entities_ner": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._extract_entities_ner",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_entities_ner"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.extract_entities_ner",
+        "merge_strategy": "concat"
+      }
+    },
+    "CausalExtractor._calculate_language_specificity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_language_specificity",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_language_specificity"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_language_specificity",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._calculate_composite_likelihood": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_composite_likelihood",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_composite_likelihood"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_composite_likelihood",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._calculate_semantic_distance": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_semantic_distance",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_semantic_distance"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_semantic_distance",
+        "merge_strategy": "replace"
+      }
+    },
+    "TemporalLogicVerifier._classify_temporal_type": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TemporalLogicVerifier._classify_temporal_type",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _classify_temporal_type"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "temporallogicverifier.classify_temporal_type",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._score_indicators": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_indicators",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _score_indicators"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.score_indicators",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._find_outcome_mentions": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._find_outcome_mentions",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _find_outcome_mentions"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.find_outcome_mentions",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._score_temporal_consistency": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_temporal_consistency",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _score_temporal_consistency"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.score_temporal_consistency",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._extract_goals": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._extract_goals",
+        "type": "object",
+        "properties": {
+          "goals": {
+            "type": "array",
+            "description": "Extracted policy goals"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.extract_goals",
+        "merge_strategy": "concat"
+      }
+    },
+    "CausalExtractor._parse_goal_context": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._parse_goal_context",
+        "type": "object",
+        "properties": {
+          "goal_contexts": {
+            "type": "object",
+            "description": "Contextual information for goals"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.parse_goal_context",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._classify_goal_type": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._classify_goal_type",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _classify_goal_type"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.classify_goal_type",
+        "merge_strategy": "replace"
+      }
+    },
+    "TemporalLogicVerifier._parse_temporal_marker": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TemporalLogicVerifier._parse_temporal_marker",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _parse_temporal_marker"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "temporallogicverifier.parse_temporal_marker",
+        "merge_strategy": "replace"
+      }
+    },
+    "TemporalLogicVerifier._extract_resources": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TemporalLogicVerifier._extract_resources",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_resources"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "temporallogicverifier.extract_resources",
+        "merge_strategy": "concat"
+      }
+    },
+    "PerformanceAnalyzer.analyze_performance": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PerformanceAnalyzer.analyze_performance",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from analyze_performance"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "performanceanalyzer.analyze_performance",
+        "merge_strategy": "replace"
+      }
+    },
+    "PerformanceAnalyzer._generate_recommendations": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PerformanceAnalyzer._generate_recommendations",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _generate_recommendations"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "performanceanalyzer.generate_recommendations",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

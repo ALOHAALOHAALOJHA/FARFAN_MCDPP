@@ -5,11 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "c8ffff81d808df44b20a47ce661b14adfbfc0e3f4a5bd589e7bdb983ded864c1",
+    "contract_hash": "85a5bcbd8ece434ce75d9064aff3106819e01260a2f9d57dd927c1a8c40d4390",
     "created_at": "2025-11-28T03:50:13.362409+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
-    "question_global": 85
+    "question_global": 85,
+    "updated_at": "2025-12-15T20:32:12.556197+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -227,43 +228,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -294,7 +279,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 295
+          "const": 85
         },
         "policy_area_id": {
           "type": [
@@ -310,7 +295,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM05"
         },
         "cluster_id": {
           "type": [
@@ -318,7 +303,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL01"
         },
         "evidence": {
           "type": [
@@ -1343,6 +1328,208 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "HierarchicalGenerativeModel.posterior_predictive_check": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from HierarchicalGenerativeModel.posterior_predictive_check",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from posterior_predictive_check"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "hierarchicalgenerativemodel.posterior_predictive_check",
+        "merge_strategy": "replace"
+      }
+    },
+    "HierarchicalGenerativeModel._ablation_analysis": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from HierarchicalGenerativeModel._ablation_analysis",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _ablation_analysis"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "hierarchicalgenerativemodel.ablation_analysis",
+        "merge_strategy": "replace"
+      }
+    },
+    "HierarchicalGenerativeModel._calculate_waic_difference": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from HierarchicalGenerativeModel._calculate_waic_difference",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_waic_difference"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "hierarchicalgenerativemodel.calculate_waic_difference",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator._add_ood_noise": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator._add_ood_noise",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _add_ood_noise"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.add_ood_noise",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator.validate_quality_criteria": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.validate_quality_criteria",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from validate_quality_criteria"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.validate_quality_criteria",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._compute_e_value": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._compute_e_value",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _compute_e_value"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.compute_e_value",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._compute_robustness_value": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._compute_robustness_value",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _compute_robustness_value"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.compute_robustness_value",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._calculate_coherence_factor": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._calculate_coherence_factor",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_coherence_factor"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.calculate_coherence_factor",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

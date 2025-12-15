@@ -4,12 +4,13 @@
     "question_id": "Q011",
     "dimension_id": "DIM03",
     "policy_area_id": "PA01",
-    "contract_version": "3.1.0",
-    "contract_hash": "TRANSFORMED_AWAITING_FINAL_HASH",
-    "created_at": "2025-01-19T00:00:00.000000+00:00",
+    "contract_version": "3.0.0",
+    "contract_hash": "22600e7a8c7bcdeb2e61742990b1a2d363a89e545f442a10f1f15248f6632255",
+    "created_at": "2025-11-28T03:49:29.814106+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
-    "question_global": 11
+    "question_global": 11,
+    "updated_at": "2025-12-15T20:32:11.567948+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -252,24 +253,14 @@
       {
         "target": "elements_found",
         "sources": [
-          "pdet_analysis.score_indicators",
-          "operationalizationauditor.audit_evidence_traceability",
-          "causalinferencesetup.assign_probative_value",
-          "beachevidentialtest.apply_test_logic",
-          "text_mining.diagnose_critical_links",
-          "industrial_policy.extract_metadata",
-          "industrial_policy.calculate_quality_score",
-          "adaptivepriorcalculator.generate_traceability_record"
+          "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "concat",
-        "description": "Combine evidence from 8 methods"
+        "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
@@ -277,8 +268,7 @@
       {
         "target": "pattern_matches",
         "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
+          "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "concat",
         "default": {},
@@ -286,9 +276,7 @@
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -314,7 +302,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q011"
+          "const": "Q281"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +315,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA01"
+          "const": "PA09"
         },
         "dimension_id": {
           "type": [
@@ -409,67 +397,50 @@
             "priority": 1,
             "role": "_score_indicators",
             "epistemological_foundation": {
-              "paradigm": "Quantitative indicator analysis with municipal development framework",
-              "ontological_basis": "Product indicators exist as measurable outcomes traceable to baseline data, targets, and verification sources in municipal planning documents",
-              "epistemological_stance": "Empirical-analytical: Knowledge emerges from systematic scoring of indicator completeness (baseline, target, source presence) against structured criteria",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._score_indicators",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Results-based management: Product indicators must link outputs to verifiable evidence (Kusek & Rist, 2004)",
-                "PDET framework: Territorial development plans require gender-disaggregated metrics with accountability mechanisms"
+                "Method _score_indicators implements structured analysis for D3-Q1"
               ],
-              "justification": "Scoring indicators reveals institutional capacity to operationalize gender commitments through measurable, verifiable product delivery"
+              "justification": "This method contributes to D3-Q1 analysis"
             },
             "technical_approach": {
-              "method_type": "rule_based_scoring_with_pattern_matching",
-              "algorithm": "Structured indicator completeness scoring across baseline/target/source dimensions",
+              "method_type": "analytical_processing",
+              "algorithm": "PDETMunicipalPlanAnalyzer._score_indicators algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Extract indicator mentions using regex patterns for product indicators (capacitadas, kits entregados, etc.)"
+                  "description": "Execute _score_indicators"
                 },
                 {
                   "step": 2,
-                  "description": "For each indicator, search context window (±50 tokens) for baseline markers (Línea Base, LB, Valor inicial)"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Search for target markers (Meta Cuatrienio, Meta, Valor esperado) with numeric extraction"
-                },
-                {
-                  "step": 4,
-                  "description": "Detect verification sources (Fuente de verificación, Medio de verificación, listados de asistencia)"
-                },
-                {
-                  "step": 5,
-                  "description": "Calculate completeness score: 1.0 if all three elements present, 0.67 if two, 0.33 if one, 0.0 if zero"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Indicators appear in proximity to their baseline/target/source specifications",
-                "Standard Colombian planning terminology used (Meta Cuatrienio, Línea Base, etc.)",
-                "Context window of ±50 tokens captures most indicator metadata"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot detect implicit baselines or targets without linguistic markers",
-                "May miss indicators specified in tables or structured data formats",
-                "Assumes Spanish-language documents with Colombian public sector conventions"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(n*p) where n=document sentences, p=indicator patterns"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "indicator_scores": "List of dicts with {indicator_name, baseline_present, target_present, source_present, completeness_score}",
-                "aggregate_score": "Mean completeness across all indicators (0-1 scale)",
-                "missing_elements": "List of indicators missing baseline/target/source"
+                "result": "Structured output from _score_indicators"
               },
               "interpretation_guide": {
-                "high_completeness": "≥0.8: Indicators fully specified with baseline, target, and verification sources",
-                "medium_completeness": "0.5-0.79: Most indicators have 2/3 elements, some gaps remain",
-                "low_completeness": "<0.5: Systematic gaps in indicator specification, likely implementation challenges"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "If baseline missing: Cannot assess progress, need baseline data collection",
-                "If targets missing: Unclear success criteria, need target specification",
-                "If sources missing: Verification impossible, need source identification and validation protocols"
+                "Use _score_indicators results for downstream analysis"
               ]
             }
           },
@@ -479,65 +450,50 @@
             "priority": 2,
             "role": "audit_evidence_traceability_auditing",
             "epistemological_foundation": {
-              "paradigm": "Evidence chain verification with traceability analysis",
-              "ontological_basis": "Evidence exists as traceable artifacts linking claims to sources through verifiable chains of custody",
-              "epistemological_stance": "Critical-analytical: Knowledge validity depends on transparent provenance from claim to primary source",
+              "paradigm": "OperationalizationAuditor analytical paradigm",
+              "ontological_basis": "Analysis via OperationalizationAuditor.audit_evidence_traceability",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Evidence-based policy: Claims require traceable evidence chains (Nutley et al., 2007)",
-                "Audit theory: Traceability establishes epistemic warrant for policy assertions"
+                "Method audit_evidence_traceability implements structured analysis for D3-Q1"
               ],
-              "justification": "Auditing traceability exposes gaps between rhetorical commitments and evidentiary foundations"
+              "justification": "This method contributes to D3-Q1 analysis"
             },
             "technical_approach": {
-              "method_type": "chain_of_custody_validation",
-              "algorithm": "Backward tracing from claims to sources with gap detection",
+              "method_type": "analytical_processing",
+              "algorithm": "OperationalizationAuditor.audit_evidence_traceability algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Identify quantitative claims (numeric assertions about gender indicators)"
+                  "description": "Execute audit_evidence_traceability"
                 },
                 {
                   "step": 2,
-                  "description": "Extract source citations (DANE, INML, Secretary reports) within claim context"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Validate source authority (official entity, publication year, dataset ID)"
-                },
-                {
-                  "step": 4,
-                  "description": "Flag traceability gaps: claims without sources, sources without validation, broken citation chains"
-                },
-                {
-                  "step": 5,
-                  "description": "Generate traceability score: (validated_claims / total_claims) * confidence_weight"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Claims and sources appear in same paragraph or adjacent paragraphs",
-                "Standard citation patterns used (según DANE, fuente: X, datos de Y)"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot validate source authenticity without external database lookup",
-                "May miss indirect citations or footnote-based referencing"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(n*c) where n=claims, c=citation patterns"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "traced_claims": "List of claims with {claim_text, source_citation, source_valid, traceability_score}",
-                "traceability_gaps": "Claims without sources or with invalid sources",
-                "aggregate_traceability": "Percentage of claims with valid source traceability"
+                "result": "Structured output from audit_evidence_traceability"
               },
               "interpretation_guide": {
-                "high_traceability": "≥0.8: Strong evidence chain, most claims traceable to valid sources",
-                "medium_traceability": "0.5-0.79: Moderate gaps, some claims lack source validation",
-                "low_traceability": "<0.5: Weak evidence foundation, many unsubstantiated claims"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "If many gaps: Request source documentation from plan authors",
-                "If invalid sources: Flag for verification with official databases",
-                "If high traceability: Evidence foundation strong, can proceed with confidence"
+                "Use audit_evidence_traceability results for downstream analysis"
               ]
             }
           },
@@ -547,65 +503,50 @@
             "priority": 3,
             "role": "assign_probative_value",
             "epistemological_foundation": {
-              "paradigm": "Bayesian probative value assignment for causal inference",
-              "ontological_basis": "Evidence has varying probative strength based on causal proximity, reliability, and inferential warrant",
-              "epistemological_stance": "Bayesian-inferential: Evidence strength quantified through posterior probabilities given causal structure",
+              "paradigm": "CausalInferenceSetup analytical paradigm",
+              "ontological_basis": "Analysis via CausalInferenceSetup.assign_probative_value",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Bayesian epistemology: Probative value reflects evidential support for causal hypotheses (Joyce, 2003)",
-                "Beach & Pedersen: Process tracing assigns probative weight based on test type (hoop/smoking gun/doubly decisive)"
+                "Method assign_probative_value implements structured analysis for D3-Q1"
               ],
-              "justification": "Probative value assignment enables weighted aggregation of evidence with differential epistemic strength"
+              "justification": "This method contributes to D3-Q1 analysis"
             },
             "technical_approach": {
-              "method_type": "bayesian_weight_assignment",
-              "algorithm": "Posterior probability computation for evidential strength",
+              "method_type": "analytical_processing",
+              "algorithm": "CausalInferenceSetup.assign_probative_value algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Classify evidence by type (statistical, observational, testimonial)"
+                  "description": "Execute assign_probative_value"
                 },
                 {
                   "step": 2,
-                  "description": "Assign prior probative weight based on evidence type (statistical: 0.9, observational: 0.7, testimonial: 0.5)"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Adjust for source reliability (official sources +0.1, academic +0.15, anecdotal -0.2)"
-                },
-                {
-                  "step": 4,
-                  "description": "Compute posterior probative value via Bayesian updating given document quality score"
-                },
-                {
-                  "step": 5,
-                  "description": "Return ranked evidence with probative values for weighted aggregation"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Prior probative weights reflect true evidential strength hierarchy",
-                "Source reliability is independent of evidence type"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Subjective priors for probative weights may not generalize across contexts",
-                "Independence assumptions may not hold for correlated evidence"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(e) where e=evidence elements"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "evidence_elements": "List with {element_id, evidence_type, source_reliability, prior_weight, posterior_probative_value}",
-                "high_value_evidence": "Elements with probative_value ≥ 0.8",
-                "low_value_evidence": "Elements with probative_value < 0.5"
+                "result": "Structured output from assign_probative_value"
               },
               "interpretation_guide": {
-                "high_probative": "≥0.8: Strong evidential warrant, suitable for primary inferences",
-                "medium_probative": "0.5-0.79: Moderate strength, useful for triangulation",
-                "low_probative": "<0.5: Weak warrant, use cautiously or discard"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Prioritize high-probative evidence for causal claims",
-                "Use medium-probative for corroboration, not primary inference",
-                "Flag low-probative evidence for exclusion or sensitivity analysis"
+                "Use assign_probative_value results for downstream analysis"
               ]
             }
           },
@@ -615,68 +556,50 @@
             "priority": 4,
             "role": "apply_test_logic",
             "epistemological_foundation": {
-              "paradigm": "Process-tracing evidential tests (Beach & Pedersen framework)",
-              "ontological_basis": "Evidence can be classified by logical strength: hoop tests (necessary), smoking gun tests (sufficient), doubly decisive tests (both)",
-              "epistemological_stance": "Quasi-experimental: Causal mechanisms inferred through structured evidential tests eliminating rival hypotheses",
+              "paradigm": "BeachEvidentialTest analytical paradigm",
+              "ontological_basis": "Analysis via BeachEvidentialTest.apply_test_logic",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Beach & Pedersen (2013): Process tracing uses evidential tests to evaluate causal mechanisms",
-                "Van Evera (1997): Tests vary in uniqueness and certainty, affecting inferential strength"
+                "Method apply_test_logic implements structured analysis for D3-Q1"
               ],
-              "justification": "Structured evidential tests provide rigorous basis for causal claims in observational policy contexts"
+              "justification": "This method contributes to D3-Q1 analysis"
             },
             "technical_approach": {
-              "method_type": "structured_process_tracing",
-              "algorithm": "Multi-test evidential logic with elimination inferencing",
+              "method_type": "analytical_processing",
+              "algorithm": "BeachEvidentialTest.apply_test_logic algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Define mechanism hypothesis (e.g., 'lack of baseline data causes incomplete indicator specification')"
+                  "description": "Execute apply_test_logic"
                 },
                 {
                   "step": 2,
-                  "description": "Apply hoop test: Is baseline data presence necessary? If absent, mechanism rejected"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Apply smoking gun test: Is complete indicator spec sufficient to confirm mechanism? If present, mechanism confirmed"
-                },
-                {
-                  "step": 4,
-                  "description": "Aggregate test results: passed hoop + passed smoking gun = strong confirmation, failed hoop = rejection"
-                },
-                {
-                  "step": 5,
-                  "description": "Return mechanism confidence: doubly decisive (both passed) = 0.9, smoking gun only = 0.7, hoop only = 0.4, neither = 0.1"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Mechanisms are discrete and testable via observable implications",
-                "Tests are correctly classified as hoop/smoking gun based on logical strength"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Requires pre-specified mechanism hypotheses, cannot discover novel mechanisms",
-                "Test classification subjective and context-dependent"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(m*t) where m=mechanisms, t=tests per mechanism"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "mechanism": "Hypothesized causal mechanism being tested",
-                "hoop_test_result": "{passed: bool, evidence: str, confidence: float}",
-                "smoking_gun_result": "{passed: bool, evidence: str, confidence: float}",
-                "overall_confidence": "Mechanism confidence (0-1) based on test outcomes"
+                "result": "Structured output from apply_test_logic"
               },
               "interpretation_guide": {
-                "doubly_decisive": "Both tests passed (0.9): Strong mechanism confirmation",
-                "smoking_gun_only": "Sufficient but not necessary (0.7): Mechanism plausible but not unique",
-                "hoop_only": "Necessary but not sufficient (0.4): Mechanism possible but not confirmed",
-                "both_failed": "Neither test passed (0.1): Mechanism rejected or unsupported"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Doubly decisive: Accept mechanism, use for intervention design",
-                "Smoking gun only: Consider alternative mechanisms with same sufficient evidence",
-                "Hoop only: Mechanism survives but needs additional evidence",
-                "Both failed: Reject mechanism, explore alternative causal pathways"
+                "Use apply_test_logic results for downstream analysis"
               ]
             }
           },
@@ -744,66 +667,50 @@
             "priority": 6,
             "role": "_extract_metadata_extraction",
             "epistemological_foundation": {
-              "paradigm": "Metadata extraction for policy document characterization",
-              "ontological_basis": "Policy documents contain structured and unstructured metadata revealing document provenance, scope, and administrative context",
-              "epistemological_stance": "Empirical-descriptive: Document metadata provides contextual knowledge for interpretation and validation",
+              "paradigm": "IndustrialPolicyProcessor analytical paradigm",
+              "ontological_basis": "Analysis via IndustrialPolicyProcessor._extract_metadata",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Document analysis: Metadata enables systematic comparison and quality assessment (Prior, 2003)",
-                "Administrative records theory: Metadata reveals institutional production conditions"
+                "Method _extract_metadata implements structured analysis for D3-Q1"
               ],
-              "justification": "Metadata extraction enables quality filtering and contextualization of evidence by document characteristics"
+              "justification": "This method contributes to D3-Q1 analysis"
             },
             "technical_approach": {
-              "method_type": "structured_metadata_extraction",
-              "algorithm": "Pattern-based metadata field extraction with validation",
+              "method_type": "analytical_processing",
+              "algorithm": "IndustrialPolicyProcessor._extract_metadata algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Extract document identifiers (plan name, municipality, year) from title and header sections"
+                  "description": "Execute _extract_metadata"
                 },
                 {
                   "step": 2,
-                  "description": "Detect policy area classification (gender, rural development, etc.) via keyword matching"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Parse temporal scope (plan period: 2020-2023) from common metadata fields"
-                },
-                {
-                  "step": 4,
-                  "description": "Identify responsible entities (Secretarías, alcaldía) from authorship and approval sections"
-                },
-                {
-                  "step": 5,
-                  "description": "Validate metadata completeness and flag missing critical fields (year, municipality)"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Metadata fields appear in standard locations (headers, footers, first pages)",
-                "Standard Colombian municipal plan structure followed"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot extract metadata from unstructured or non-standard documents",
-                "May fail on scanned PDFs without OCR or poorly formatted text"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(n) where n=document tokens (single-pass extraction)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "document_id": "Unique identifier (plan name + municipality + year)",
-                "metadata_fields": "Dict with {municipality, year, policy_area, temporal_scope, responsible_entity, author}",
-                "completeness": "Percentage of required metadata fields present",
-                "validation_flags": "Missing or invalid fields requiring attention"
+                "result": "Structured output from _extract_metadata"
               },
               "interpretation_guide": {
-                "complete_metadata": "100%: All required fields present and valid",
-                "partial_metadata": "50-99%: Some fields missing, usable with caveats",
-                "incomplete_metadata": "<50%: Critical fields missing, document may be unreliable"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Complete metadata: Document well-characterized, suitable for analysis",
-                "Partial metadata: Use with caution, note limitations in reporting",
-                "Incomplete metadata: Request additional documentation or exclude from analysis"
+                "Use _extract_metadata results for downstream analysis"
               ]
             }
           },
@@ -813,65 +720,50 @@
             "priority": 7,
             "role": "_calculate_quality_score_calculation",
             "epistemological_foundation": {
-              "paradigm": "Multi-dimensional document quality assessment",
-              "ontological_basis": "Document quality is a composite construct spanning completeness, consistency, traceability, and specification",
-              "epistemological_stance": "Evaluative-analytical: Quality emerges from weighted aggregation of measurable quality dimensions",
+              "paradigm": "IndustrialPolicyProcessor analytical paradigm",
+              "ontological_basis": "Analysis via IndustrialPolicyProcessor._calculate_quality_score",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Information quality framework: Quality assessed via completeness, accuracy, consistency dimensions (Wang & Strong, 1996)",
-                "Policy quality metrics: Operationalization quality predicts implementation success"
+                "Method _calculate_quality_score implements structured analysis for D3-Q1"
               ],
-              "justification": "Quality scoring enables prioritization of high-reliability evidence and flagging of low-quality sources"
+              "justification": "This method contributes to D3-Q1 analysis"
             },
             "technical_approach": {
-              "method_type": "composite_quality_scoring",
-              "algorithm": "Weighted aggregation of quality dimensions with threshold checks",
+              "method_type": "analytical_processing",
+              "algorithm": "IndustrialPolicyProcessor._calculate_quality_score algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Calculate completeness: (present_fields / required_fields) * 0.3"
+                  "description": "Execute _calculate_quality_score"
                 },
                 {
                   "step": 2,
-                  "description": "Calculate consistency: 1 - (contradictions_detected / total_claims) * 0.25"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Calculate traceability: (claims_with_sources / total_claims) * 0.25"
-                },
-                {
-                  "step": 4,
-                  "description": "Calculate specification: (indicators_with_baseline_target / total_indicators) * 0.2"
-                },
-                {
-                  "step": 5,
-                  "description": "Aggregate: quality_score = completeness + consistency + traceability + specification (0-1 scale)"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Quality dimensions are independent and equally important within their weights",
-                "Weighted formula reflects true document quality construct"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Weights subjectively chosen, may not match all use cases",
-                "Cannot assess semantic quality or logical coherence beyond contradiction detection"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(n) where n=document elements (claims, indicators, fields)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "quality_score": "Composite score (0-1) aggregating completeness, consistency, traceability, specification",
-                "dimension_scores": "Dict with {completeness, consistency, traceability, specification} subscores",
-                "quality_flags": "Specific issues detected (contradictions, missing sources, incomplete indicators)"
+                "result": "Structured output from _calculate_quality_score"
               },
               "interpretation_guide": {
-                "high_quality": "≥0.8: Document meets quality standards, suitable for primary evidence",
-                "medium_quality": "0.6-0.79: Acceptable quality with minor issues",
-                "low_quality": "<0.6: Quality concerns, use cautiously or exclude"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "High quality: Proceed with analysis, document is reliable",
-                "Medium quality: Flag specific issues, use with caveats",
-                "Low quality: Request document revision or seek alternative sources"
+                "Use _calculate_quality_score results for downstream analysis"
               ]
             }
           },
@@ -881,82 +773,64 @@
             "priority": 8,
             "role": "generate_traceability_record_generation",
             "epistemological_foundation": {
-              "paradigm": "Bayesian prior adaptation with full provenance tracking",
-              "ontological_basis": "Prior distributions encode background knowledge that should adapt as evidence accumulates, with adaptation traced for reproducibility",
-              "epistemological_stance": "Bayesian-reflexive: Priors updated systematically with transparent documentation of adaptation rationale",
+              "paradigm": "AdaptivePriorCalculator analytical paradigm",
+              "ontological_basis": "Analysis via AdaptivePriorCalculator.generate_traceability_record",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Adaptive Bayesian inference: Priors updated via empirical Bayes or hierarchical modeling (Gelman et al., 2013)",
-                "Provenance tracking: Scientific reproducibility requires documented lineage of analytical choices"
+                "Method generate_traceability_record implements structured analysis for D3-Q1"
               ],
-              "justification": "Traceability records enable auditing of prior choices and sensitivity analysis of posterior conclusions"
+              "justification": "This method contributes to D3-Q1 analysis"
             },
             "technical_approach": {
-              "method_type": "provenance_logging_with_bayesian_updating",
-              "algorithm": "Structured prior adaptation with full audit trail generation",
+              "method_type": "analytical_processing",
+              "algorithm": "AdaptivePriorCalculator.generate_traceability_record algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Initialize prior distribution from expert elicitation or empirical data (e.g., Beta(2, 5) for baseline presence)"
+                  "description": "Execute generate_traceability_record"
                 },
                 {
                   "step": 2,
-                  "description": "Update prior to posterior using observed data via Bayesian conjugate updating"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Log adaptation record: prior parameters, observed data, posterior parameters, update rationale"
-                },
-                {
-                  "step": 4,
-                  "description": "Generate provenance graph: link posterior to evidence elements and methods contributing to update"
-                },
-                {
-                  "step": 5,
-                  "description": "Return traceability record with full audit trail for reproducibility and sensitivity analysis"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Conjugate priors available for efficient updating (Beta-Binomial, Normal-Normal, etc.)",
-                "Prior choice transparent and justified via expert knowledge or data"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Non-conjugate updates require MCMC or variational inference (computationally expensive)",
-                "Prior sensitivity not automatically assessed, requires additional sensitivity analysis"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(d) where d=data points for posterior update (O(1) for conjugate, O(n*iterations) for MCMC)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "prior_distribution": "Initial distribution (e.g., Beta(2, 5))",
-                "observed_data": "Data used for updating (e.g., 8 successes in 10 trials)",
-                "posterior_distribution": "Updated distribution (e.g., Beta(10, 7))",
-                "adaptation_rationale": "Reason for update (observed data, expert input)",
-                "provenance_graph": "Linkage from posterior to contributing evidence elements"
+                "result": "Structured output from generate_traceability_record"
               },
               "interpretation_guide": {
-                "strong_update": "Large shift in posterior mean (>0.2): Data highly informative",
-                "moderate_update": "Moderate shift (0.05-0.2): Data provides some information",
-                "weak_update": "Small shift (<0.05): Data weakly informative, prior dominates"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Strong update: Data-driven inference, posterior reflects observed patterns",
-                "Moderate update: Balanced inference, both prior and data contribute",
-                "Weak update: Prior-dominated, consider collecting more data or refining prior",
-                "Always check provenance graph for sensitivity to specific evidence elements"
+                "Use generate_traceability_record results for downstream analysis"
               ]
             }
           }
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D3-Q1 requires comprehensive analysis of product indicators with baseline/target/source verification. The 8 methods cover complementary aspects: indicator scoring (method 1), evidence traceability (method 2), probative value assignment (method 3), evidential tests (method 4), causal link diagnosis (method 5), metadata extraction (method 6), quality scoring (method 7), and traceability recording (method 8).",
-          "evidence_fusion": "Evidence from all 8 methods is aggregated by the EvidenceAssembler. Overlapping evidence (e.g., same indicator detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than pattern matching).",
-          "execution_order": "Methods execute in priority order (1→8). Later methods can access outputs of earlier methods (e.g., method 7 quality scoring uses metadata from method 6).",
+          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
+          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceAssembler. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
+          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
+          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
           "trade_offs": [
-            "Comprehensiveness vs. Complexity: 8 methods ensure thorough coverage but increase computational cost and maintenance burden",
+            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
             "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and process-tracing methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
           ]
         }
       }
@@ -1487,6 +1361,212 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "PDETMunicipalPlanAnalyzer._score_indicators": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_indicators",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _score_indicators"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.score_indicators",
+        "merge_strategy": "replace"
+      }
+    },
+    "OperationalizationAuditor.audit_evidence_traceability": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from OperationalizationAuditor.audit_evidence_traceability",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from audit_evidence_traceability"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "operationalizationauditor.audit_evidence_traceability",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalInferenceSetup.assign_probative_value": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup.assign_probative_value",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from assign_probative_value"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causalinferencesetup.assign_probative_value",
+        "merge_strategy": "replace"
+      }
+    },
+    "BeachEvidentialTest.apply_test_logic": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BeachEvidentialTest.apply_test_logic",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from apply_test_logic"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "beachevidentialtest.apply_test_logic",
+        "merge_strategy": "replace"
+      }
+    },
+    "TextMiningEngine.diagnose_critical_links": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine.diagnose_critical_links",
+        "type": "object",
+        "properties": {
+          "critical_links": {
+            "type": "array",
+            "description": "List of critical causal links"
+          },
+          "link_scores": {
+            "type": "object",
+            "description": "Criticality scores for each link"
+          },
+          "context": {
+            "type": "object",
+            "description": "Contextual information"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "text_mining.diagnose_critical_links",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._extract_metadata": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._extract_metadata",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_metadata"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.extract_metadata",
+        "merge_strategy": "concat"
+      }
+    },
+    "IndustrialPolicyProcessor._calculate_quality_score": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._calculate_quality_score",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_quality_score"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.calculate_quality_score",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator.generate_traceability_record": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.generate_traceability_record",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_traceability_record"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.generate_traceability_record",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

@@ -5,11 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "c11cb8aaeaabba1a74fb977d197ef12bc23c9c143b024800f32ec9474e430bd4",
+    "contract_hash": "36ede958a09055ae6af8ede73bea5bf98f45a5e80a884cde3cc775f5d76fe7bb",
     "created_at": "2025-11-28T03:50:31.847231+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
-    "question_global": 181
+    "question_global": 181,
+    "updated_at": "2025-12-15T20:21:11.052945+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -375,8 +376,8 @@
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
-    "module": "farfan_core.core.orchestrator.evidence_assembler",
-    "class_name": "EvidenceAssembler",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
     "method_name": "assemble",
     "output_schema": {
       "type": "object",
@@ -417,23 +418,20 @@
       {
         "target": "elements_found",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "text_mining.diagnose_critical_links",
+          "industrial_policy.process",
+          "causal_extraction.extract_goals",
+          "financial_audit.parse_amount",
+          "pdet_analysis.extract_financial_amounts",
+          "contradiction_detection.extract_quantitative_claims",
+          "bayesian_analysis.evaluate_policy_metric"
         ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
@@ -441,8 +439,8 @@
       {
         "target": "pattern_matches",
         "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
+          "text_mining.diagnose_critical_links",
+          "industrial_policy.match_patterns_in_sentences"
         ],
         "merge_strategy": "concat",
         "default": {},
@@ -450,9 +448,7 @@
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -478,12 +474,12 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q271"
+          "const": "Q181"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 271
+          "const": 181
         },
         "policy_area_id": {
           "type": [
@@ -491,7 +487,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [
@@ -499,7 +495,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM01"
         },
         "cluster_id": {
           "type": [
@@ -507,7 +503,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL02"
         },
         "evidence": {
           "type": [
@@ -1674,12 +1670,7 @@
   },
   "human_answer_structure": {
     "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
-    "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
-      "step_2_evidence_assembly": "EvidenceAssembler merges outputs according to assembly_rules",
-      "step_3_validation": "EvidenceValidator checks against validation_rules",
-      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
-    },
+    "assembly_flow": "Add missing steps from golden",
     "evidence_structure_schema": {
       "type": "object",
       "description": "Assembled evidence after all methods complete",
@@ -1923,139 +1914,7 @@
         }
       }
     },
-    "concrete_example": {
-      "elements_found": [
-        {
-          "element_id": "E-001",
-          "type": "fuentes_oficiales",
-          "value": "DANE",
-          "confidence": 0.95,
-          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "según datos de DANE para el año 2022",
-          "sentence_id": 45,
-          "position": {
-            "start": 123,
-            "end": 145
-          }
-        },
-        {
-          "element_id": "E-002",
-          "type": "indicadores_cuantitativos",
-          "value": "tasa de VBG: 12.3%",
-          "normalized_value": 12.3,
-          "unit": "%",
-          "confidence": 0.89,
-          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
-          "bayesian_posterior": {
-            "mean": 0.123,
-            "ci_95": [
-              0.11,
-              0.145
-            ]
-          },
-          "sentence_id": 45
-        },
-        {
-          "element_id": "E-003",
-          "type": "series_temporales_años",
-          "years": [
-            2020,
-            2021,
-            2022
-          ],
-          "confidence": 0.92,
-          "source_method": "TextMiningEngine.diagnose_critical_links"
-        },
-        {
-          "element_id": "E-004",
-          "type": "cobertura_territorial_especificada",
-          "coverage": "municipal - zona rural y urbana",
-          "confidence": 0.88,
-          "source_method": "CausalExtractor._parse_goal_context"
-        }
-      ],
-      "elements_summary": {
-        "total_count": 38,
-        "by_type": {
-          "fuentes_oficiales": 5,
-          "indicadores_cuantitativos": 12,
-          "series_temporales_años": 4,
-          "cobertura_territorial_especificada": 1,
-          "financial_amounts": 8,
-          "policy_goals": 7,
-          "causal_links": 5
-        }
-      },
-      "confidence_scores": {
-        "mean": 0.876,
-        "std": 0.089,
-        "min": 0.72,
-        "max": 0.98,
-        "by_method": {
-          "TextMiningEngine": 0.83,
-          "IndustrialPolicyProcessor": 0.91,
-          "CausalExtractor": 0.79,
-          "FinancialAuditor": 0.94,
-          "PDETMunicipalPlanAnalyzer": 0.88,
-          "PolicyContradictionDetector": 0.9,
-          "BayesianNumericalAnalyzer": 0.92,
-          "SemanticProcessor": 0.85
-        }
-      },
-      "pattern_matches": [
-        {
-          "pattern_id": "PAT-Q001-000",
-          "count": 3,
-          "avg_confidence": 0.87
-        },
-        {
-          "pattern_id": "PAT-Q001-002",
-          "count": 5,
-          "avg_confidence": 0.95
-        }
-      ],
-      "critical_links": [
-        {
-          "cause": "alta tasa de VBG",
-          "effect": "baja autonomía económica",
-          "criticality": 0.87,
-          "coherence": 0.82
-        }
-      ],
-      "financial_summary": {
-        "total_budget_cop": 850000000.0,
-        "amounts_found": 12,
-        "by_category": {
-          "SGR": 250000000.0,
-          "recursos_propios": 180000000.0
-        }
-      },
-      "goals_summary": {
-        "total_goals": 7,
-        "quantified_goals": 5,
-        "goals_with_complete_context": 4
-      },
-      "contradictions": {
-        "found": 0,
-        "tests_performed": 15,
-        "interpretation": "No statistical contradictions in quantitative claims"
-      },
-      "bayesian_insights": {
-        "metrics_with_high_uncertainty": [],
-        "significant_comparisons": 1
-      },
-      "semantic_processing": {
-        "chunks_created": 45,
-        "embeddings_generated": 45,
-        "avg_semantic_similarity_to_query": 0.78
-      },
-      "metadata": {
-        "methods_executed": 17,
-        "execution_time_ms": 2845,
-        "document_length": 15230,
-        "analysis_timestamp": "2025-11-26T12:34:56Z"
-      }
-    },
+    "concrete_example": "Merge missing keys from golden",
     "validation_against_expected_elements": {
       "cobertura_territorial_especificada": {
         "required": true,
@@ -2097,6 +1956,395 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "TextMiningEngine.diagnose_critical_links": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine.diagnose_critical_links",
+        "type": "object",
+        "properties": {
+          "critical_links": {
+            "type": "array",
+            "description": "List of critical causal links"
+          },
+          "link_scores": {
+            "type": "object",
+            "description": "Criticality scores for each link"
+          },
+          "context": {
+            "type": "object",
+            "description": "Contextual information"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "text_mining.diagnose_critical_links",
+        "merge_strategy": "replace"
+      }
+    },
+    "TextMiningEngine._analyze_link_text": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine._analyze_link_text",
+        "type": "object",
+        "properties": {
+          "context_coherence_score": {
+            "type": "number"
+          },
+          "supporting_evidence": {
+            "type": "array"
+          },
+          "contradicting_evidence": {
+            "type": "array"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "text_mining.analyze_link_text",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor.process": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor.process",
+        "type": "object",
+        "properties": {
+          "extracted_segments": {
+            "type": "object"
+          },
+          "pattern_matches": {
+            "type": "object"
+          },
+          "structural_completeness": {
+            "type": "number"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.process",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._match_patterns_in_sentences": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._match_patterns_in_sentences",
+        "type": "object",
+        "properties": {
+          "sentence_matches": {
+            "type": "array"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.match_patterns_in_sentences",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._extract_point_evidence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._extract_point_evidence",
+        "type": "object",
+        "properties": {
+          "evidence_points": {
+            "type": "array"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.extract_point_evidence",
+        "merge_strategy": "concat"
+      }
+    },
+    "CausalExtractor._extract_goals": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._extract_goals",
+        "type": "object",
+        "properties": {
+          "goals": {
+            "type": "array",
+            "description": "Extracted policy goals"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.extract_goals",
+        "merge_strategy": "concat"
+      }
+    },
+    "CausalExtractor._parse_goal_context": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._parse_goal_context",
+        "type": "object",
+        "properties": {
+          "goal_contexts": {
+            "type": "object",
+            "description": "Contextual information for goals"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.parse_goal_context",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._parse_amount": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._parse_amount",
+        "type": "object",
+        "properties": {
+          "amounts": {
+            "type": "array",
+            "description": "Parsed financial amounts"
+          },
+          "total": {
+            "type": "number"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.parse_amount",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._extract_financial_amounts": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+        "type": "object",
+        "properties": {
+          "financial_amounts": {
+            "type": "array"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.extract_financial_amounts",
+        "merge_strategy": "concat"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._extract_from_budget_table": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._extract_from_budget_table",
+        "type": "object",
+        "properties": {
+          "budget_items": {
+            "type": "array"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.extract_from_budget_table",
+        "merge_strategy": "concat"
+      }
+    },
+    "PolicyContradictionDetector._extract_quantitative_claims": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._extract_quantitative_claims",
+        "type": "object",
+        "properties": {
+          "quantitative_claims": {
+            "type": "array"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.extract_quantitative_claims",
+        "merge_strategy": "concat"
+      }
+    },
+    "PolicyContradictionDetector._parse_number": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._parse_number",
+        "type": "object",
+        "properties": {
+          "parsed_value": {
+            "type": "number"
+          },
+          "original_text": {
+            "type": "string"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.parse_number",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._statistical_significance_test": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._statistical_significance_test",
+        "type": "object",
+        "properties": {
+          "p_value": {
+            "type": "number"
+          },
+          "is_significant": {
+            "type": "boolean"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.statistical_significance_test",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianNumericalAnalyzer.evaluate_policy_metric": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianNumericalAnalyzer.evaluate_policy_metric",
+        "type": "object",
+        "properties": {
+          "metric_value": {
+            "type": "number"
+          },
+          "confidence": {
+            "type": "number"
+          },
+          "posterior_distribution": {
+            "type": "object"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesian_analysis.evaluate_policy_metric",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianNumericalAnalyzer.compare_policies": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianNumericalAnalyzer.compare_policies",
+        "type": "object",
+        "properties": {
+          "comparison_result": {
+            "type": "object"
+          },
+          "winner": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesian_analysis.compare_policies",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor.chunk_text": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor.chunk_text",
+        "type": "object",
+        "properties": {
+          "chunks": {
+            "type": "array",
+            "description": "Text chunks"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.chunk_text",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor.embed_single": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor.embed_single",
+        "type": "object",
+        "properties": {
+          "embedding": {
+            "type": "array",
+            "description": "Vector embedding"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.embed_single",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

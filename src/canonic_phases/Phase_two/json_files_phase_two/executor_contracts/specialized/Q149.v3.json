@@ -5,11 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "0dc521fc04b5058bce73a7d6055f6716ed3c7eb0668041621cc85a8362d57bae",
+    "contract_hash": "76674cabc09d98eb0a058844a02933750069eef06c73841dd95ba3bae00a462f",
     "created_at": "2025-11-28T03:50:31.568080+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
-    "question_global": 149
+    "question_global": 149,
+    "updated_at": "2025-12-15T20:32:12.722861+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -219,43 +220,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -286,7 +271,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 299
+          "const": 149
         },
         "policy_area_id": {
           "type": [
@@ -302,7 +287,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM06"
         },
         "cluster_id": {
           "type": [
@@ -310,7 +295,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL03"
         },
         "evidence": {
           "type": [
@@ -1282,6 +1267,183 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "ConfigLoader.update_priors_from_feedback": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ConfigLoader.update_priors_from_feedback",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from update_priors_from_feedback"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "configloader.update_priors_from_feedback",
+        "merge_strategy": "replace"
+      }
+    },
+    "ConfigLoader.check_uncertainty_reduction_criterion": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ConfigLoader.check_uncertainty_reduction_criterion",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from check_uncertainty_reduction_criterion"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "configloader.check_uncertainty_reduction_criterion",
+        "merge_strategy": "replace"
+      }
+    },
+    "ConfigLoader._save_prior_history": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ConfigLoader._save_prior_history",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _save_prior_history"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "configloader.save_prior_history",
+        "merge_strategy": "replace"
+      }
+    },
+    "ConfigLoader._load_uncertainty_history": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ConfigLoader._load_uncertainty_history",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _load_uncertainty_history"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "configloader.load_uncertainty_history",
+        "merge_strategy": "replace"
+      }
+    },
+    "CDAFFramework._extract_feedback_from_audit": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CDAFFramework._extract_feedback_from_audit",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_feedback_from_audit"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "cdafframework.extract_feedback_from_audit",
+        "merge_strategy": "concat"
+      }
+    },
+    "AdvancedDAGValidator._calculate_node_importance": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdvancedDAGValidator._calculate_node_importance",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_node_importance"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "advanceddagvalidator.calculate_node_importance",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesFactorTable.get_bayes_factor": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesFactorTable.get_bayes_factor",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from get_bayes_factor"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesfactortable.get_bayes_factor",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

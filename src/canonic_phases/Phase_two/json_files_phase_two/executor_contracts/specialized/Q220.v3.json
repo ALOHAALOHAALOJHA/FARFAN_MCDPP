@@ -5,11 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "f1c4f03c92794766705932dbb8285b9e984eade2e98d81aa734abff7bb540c3c",
+    "contract_hash": "6bbe1032806ecb4900df36054101af6c4449a634d14705daaa9229327369cbc9",
     "created_at": "2025-11-28T03:50:41.939993+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
-    "question_global": 220
+    "question_global": 220,
+    "updated_at": "2025-12-15T20:32:11.554649+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -215,43 +216,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -282,7 +267,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 280
+          "const": 220
         },
         "policy_area_id": {
           "type": [
@@ -298,7 +283,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM02"
         },
         "cluster_id": {
           "type": [
@@ -306,7 +291,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL01"
         },
         "evidence": {
           "type": [
@@ -1331,6 +1316,208 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "PolicyContradictionDetector._detect_logical_incompatibilities": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._detect_logical_incompatibilities",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_logical_incompatibilities"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.detect_logical_incompatibilities",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._calculate_coherence_metrics": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._calculate_coherence_metrics",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_coherence_metrics"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.calculate_coherence_metrics",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._calculate_objective_alignment": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._calculate_objective_alignment",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_objective_alignment"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.calculate_objective_alignment",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._calculate_graph_fragmentation": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._calculate_graph_fragmentation",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_graph_fragmentation"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.calculate_graph_fragmentation",
+        "merge_strategy": "replace"
+      }
+    },
+    "OperationalizationAuditor.audit_sequence_logic": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from OperationalizationAuditor.audit_sequence_logic",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from audit_sequence_logic"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "operationalizationauditor.audit_sequence_logic",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._calculate_coherence_factor": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._calculate_coherence_factor",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_coherence_factor"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.calculate_coherence_factor",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._score_causal_coherence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_causal_coherence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _score_causal_coherence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.score_causal_coherence",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator.calculate_likelihood_adaptativo": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.calculate_likelihood_adaptativo",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from calculate_likelihood_adaptativo"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.calculate_likelihood_adaptativo",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

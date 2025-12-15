@@ -5,11 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "090a43c1ead71a108724f2ef5677af453fc917d3c7a07680a54268622b14cb20",
+    "contract_hash": "53cc7f572b61835337796308743cc6dda93d74974a60ba2d4bb674b91bb2e226",
     "created_at": "2025-11-28T03:50:31.862442+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
-    "question_global": 185
+    "question_global": 185,
+    "updated_at": "2025-12-15T20:32:11.157375+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -239,43 +240,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -306,7 +291,7 @@
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 275
+          "const": 185
         },
         "policy_area_id": {
           "type": [
@@ -322,7 +307,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM01"
         },
         "cluster_id": {
           "type": [
@@ -330,7 +315,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL02"
         },
         "evidence": {
           "type": [
@@ -1307,6 +1292,184 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "TemporalLogicVerifier._check_deadline_constraints": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TemporalLogicVerifier._check_deadline_constraints",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _check_deadline_constraints"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "temporallogicverifier.check_deadline_constraints",
+        "merge_strategy": "replace"
+      }
+    },
+    "TemporalLogicVerifier.verify_temporal_consistency": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TemporalLogicVerifier.verify_temporal_consistency",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from verify_temporal_consistency"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "temporallogicverifier.verify_temporal_consistency",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalInferenceSetup.identify_failure_points": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup.identify_failure_points",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from identify_failure_points"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causalinferencesetup.identify_failure_points",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._assess_temporal_coherence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._assess_temporal_coherence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _assess_temporal_coherence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.assess_temporal_coherence",
+        "merge_strategy": "replace"
+      }
+    },
+    "TextMiningEngine._analyze_link_text": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine._analyze_link_text",
+        "type": "object",
+        "properties": {
+          "context_coherence_score": {
+            "type": "number"
+          },
+          "supporting_evidence": {
+            "type": "array"
+          },
+          "contradicting_evidence": {
+            "type": "array"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "text_mining.analyze_link_text",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._analyze_causal_dimensions": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._analyze_causal_dimensions",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _analyze_causal_dimensions"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.analyze_causal_dimensions",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._extract_metadata": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._extract_metadata",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_metadata"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.extract_metadata",
+        "merge_strategy": "concat"
+      }
     }
   }
 }

@@ -5,11 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "4254cd42e7fb87732d35cefc25b515a2c6bbbed5fd6b065c9fccb8e264597bb1",
+    "contract_hash": "aab4385767f75fd440ce181b780956e8b58721db0c8e3118f8c8779265bf5236",
     "created_at": "2025-11-28T03:49:29.797923+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
-    "question_global": 6
+    "question_global": 6,
+    "updated_at": "2025-12-15T20:32:11.176554+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q1_Executor",
@@ -182,8 +183,8 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
+    "minimum_signal_threshold": 0.0,
+    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
     "module": "farfan_core.core.orchestrator.evidence_assembler",
@@ -227,47 +228,29 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "pdfprocessor.extract_tables",
-          "financial_audit.process_financial_table",
-          "pdet_analysis.deduplicate_tables",
-          "pdet_analysis.classify_tables",
-          "pdet_analysis.is_likely_header",
-          "pdet_analysis.clean_dataframe",
-          "reportingengine.generate_accountability_matrix"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 7 method invocations"
+        "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "pdfprocessor.extract_tables",
-          "financial_audit.process_financial_table",
-          "pdet_analysis.deduplicate_tables",
-          "pdet_analysis.classify_tables"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from table extraction methods"
+        "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 7 methods for full traceability"
+        "description": "Combine metadata from all 17 methods for full traceability"
       }
     ]
   },
@@ -291,7 +274,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q006"
+          "const": "Q276"
         },
         "question_global": {
           "type": "integer",
@@ -304,7 +287,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA01"
+          "const": "PA09"
         },
         "dimension_id": {
           "type": [
@@ -1292,6 +1275,183 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "PDFProcessor.extract_tables": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDFProcessor.extract_tables",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from extract_tables"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdfprocessor.extract_tables",
+        "merge_strategy": "concat"
+      }
+    },
+    "FinancialAuditor._process_financial_table": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._process_financial_table",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _process_financial_table"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.process_financial_table",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._deduplicate_tables": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._deduplicate_tables",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _deduplicate_tables"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.deduplicate_tables",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._classify_tables": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._classify_tables",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _classify_tables"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.classify_tables",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._is_likely_header": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._is_likely_header",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _is_likely_header"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.is_likely_header",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._clean_dataframe": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._clean_dataframe",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _clean_dataframe"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.clean_dataframe",
+        "merge_strategy": "replace"
+      }
+    },
+    "ReportingEngine.generate_accountability_matrix": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ReportingEngine.generate_accountability_matrix",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_accountability_matrix"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "reportingengine.generate_accountability_matrix",
+        "merge_strategy": "replace"
+      }
     }
   }
 }

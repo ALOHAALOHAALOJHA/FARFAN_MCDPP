@@ -5,11 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "11cf2fb50ef486642d678364f6fa695d64c618c865ed782ae0b221a8283368f3",
+    "contract_hash": "c7536ec0653f47c5e833b00557265c35ffe55effb358db9a4c34d66dc73f9cf8",
     "created_at": "2025-11-28T03:49:29.842799+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
-    "question_global": 17
+    "question_global": 17,
+    "updated_at": "2025-12-15T20:32:12.135070+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -94,7 +95,7 @@
     "expected_output_type": "score",
     "patterns": [
       {
-        "category": "CAUSAL_CHAIN",
+        "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q017-000",
@@ -102,7 +103,7 @@
         "pattern": "cadena causal|lógica de intervención|si... entonces..."
       },
       {
-        "category": "ASSUMPTION",
+        "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q017-001",
@@ -110,7 +111,7 @@
         "pattern": "el resultado se logrará siempre y cuando|asumiendo que"
       },
       {
-        "category": "ASSUMPTION",
+        "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q017-002",
@@ -118,7 +119,7 @@
         "pattern": "supuesto clave|premisa fundamental"
       },
       {
-        "category": "ENABLING_CONDITION",
+        "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q017-003",
@@ -126,7 +127,7 @@
         "pattern": "condición habilitante|factor crítico|requiere de"
       },
       {
-        "category": "ENABLING_CONDITION",
+        "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q017-004",
@@ -134,7 +135,7 @@
         "pattern": "depende de la articulación con|necesita de la participación de"
       },
       {
-        "category": "ASSUMPTION",
+        "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q017-005",
@@ -142,7 +143,7 @@
         "pattern": "un supuesto es que las mujeres se apropien de las herramientas"
       },
       {
-        "category": "ENABLING_CONDITION",
+        "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q017-006",
@@ -182,8 +183,8 @@
       "verification_sources"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
+    "minimum_signal_threshold": 0.0,
+    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
     "module": "farfan_core.core.orchestrator.evidence_assembler",
@@ -227,46 +228,29 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "teoriacambio.encontrar_caminos_completos",
-          "teoriacambio.validacion_completa",
-          "causal_extraction.extract_causal_hierarchy",
-          "hierarchicalgenerativemodel.verify_conditional_independence",
-          "hierarchicalgenerativemodel.generate_independence_tests",
-          "bayesiancounterfactualauditor.construct_scm",
-          "advanceddagvalidator.perform_sensitivity_analysis_internal",
-          "bayesfactortable.get_bayes_factor"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 8 method invocations"
+        "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "teoriacambio.patterns",
-          "causal_extraction.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from causal analysis methods"
+        "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 8 methods for full traceability"
+        "description": "Combine metadata from all 17 methods for full traceability"
       }
     ]
   },
@@ -290,7 +274,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q017"
+          "const": "Q287"
         },
         "question_global": {
           "type": "integer",
@@ -303,7 +287,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA01"
+          "const": "PA09"
         },
         "dimension_id": {
           "type": [
@@ -364,15 +348,15 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D4-Q2 (Q017): Cadena Causal y Supuestos en Intervenciones de Género",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la explicitación de **{evidence.elements_found_count}** elementos de la cadena causal relacionados con resultados de género, incluyendo supuestos clave y condiciones habilitantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/7 patrones detectados",
+        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
-          "**Cadenas causales explícitas**: {evidence.causal_chains_count}",
-          "**Supuestos identificados**: {evidence.assumptions_count}",
-          "**Condiciones habilitantes**: {evidence.enabling_conditions_count}",
-          "**Coherencia lógica**: {evidence.logical_coherence}"
+          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
+          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
+          "**Series temporales**: {evidence.temporal_series_count}",
+          "**Cobertura territorial**: {evidence.territorial_coverage}"
         ],
         "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
@@ -383,71 +367,52 @@
             "method_name": "_encontrar_caminos_completos",
             "class_name": "TeoriaCambio",
             "priority": 1,
-            "role": "causal_pathway_discovery",
+            "role": "_encontrar_caminos_completos",
             "epistemological_foundation": {
-              "paradigm": "Theory of Change Reconstruction",
-              "ontological_basis": "Causal pathways in policy documents represent logical chains from interventions to outcomes, mediated by assumptions and enabling conditions",
-              "epistemological_stance": "Constructivist-analytical: Knowledge of causal mechanisms emerges from structured analysis of intervention logic and implicit assumptions",
+              "paradigm": "TeoriaCambio analytical paradigm",
+              "ontological_basis": "Analysis via TeoriaCambio._encontrar_caminos_completos",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Theory of Change methodology (Weiss, 1995)",
-                "Causal pathway analysis (Pearl, 2009)",
-                "Logic model reconstruction (W.K. Kellogg Foundation, 2004)",
-                "Critical assumption identification theory (Rogers, 2008)"
+                "Method _encontrar_caminos_completos implements structured analysis for D4-Q2"
               ],
-              "justification": "Identifying complete causal pathways reveals whether policymakers understand the full chain from interventions to gender outcomes, including critical mediating factors and contingencies"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "graph_traversal_analysis",
-              "algorithm": "Breadth-first search with assumption node detection in intervention logic graphs",
+              "method_type": "analytical_processing",
+              "algorithm": "TeoriaCambio._encontrar_caminos_completos algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Parse document to extract action verbs, target populations, and outcome statements related to gender equality"
+                  "description": "Execute _encontrar_caminos_completos"
                 },
                 {
                   "step": 2,
-                  "description": "Construct directed graph where nodes are interventions/outcomes and edges represent causal claims (marked by 'si...entonces', 'para que', 'con el fin de')"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Traverse graph from intervention nodes to outcome nodes, identifying complete vs incomplete pathways"
-                },
-                {
-                  "step": 4,
-                  "description": "Extract assumption nodes (conditional statements using 'asumiendo que', 'siempre y cuando') along each pathway"
-                },
-                {
-                  "step": 5,
-                  "description": "Score completeness based on pathway length, assumption density, and terminal node (outcome) specificity"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Causal language uses standard Spanish connectors ('si', 'entonces', 'para que', 'con el fin de')",
-                "Complete pathways have 3+ nodes (intervention → intermediate outcome → final gender outcome)",
-                "Explicit assumptions use conditional markers ('asumiendo', 'siempre y cuando', 'si y solo si')"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot detect implicit causal assumptions not stated in text",
-                "May miss causal pathways expressed across distant document sections",
-                "Assumes linear causality; may undercount feedback loops and reciprocal causation"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(V + E) where V=intervention/outcome nodes, E=causal edges in logic graph"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "complete_pathways": "Array of {intervention, intermediates, outcome, assumptions} objects",
-                "incomplete_pathways": "Array of truncated pathways missing outcomes or assumptions",
-                "pathway_completeness_score": "Ratio of complete to total pathways (0-1)"
+                "result": "Structured output from _encontrar_caminos_completos"
               },
               "interpretation_guide": {
-                "high_completeness": "≥0.7: Strong intervention logic with explicit causal chains and assumptions",
-                "medium_completeness": "0.4-0.69: Partial logic; some pathways complete, others implicit",
-                "low_completeness": "<0.4: Weak causal reasoning; interventions disconnected from outcomes"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Pathways with missing assumptions indicate areas where implementation may fail due to unexamined contingencies",
-                "High assumption density (>3 per pathway) suggests complex interventions requiring careful monitoring",
-                "Incomplete pathways to gender outcomes reveal gaps in theory of change"
+                "Use _encontrar_caminos_completos results for downstream analysis"
               ]
             }
           },
@@ -455,72 +420,52 @@
             "method_name": "validacion_completa",
             "class_name": "TeoriaCambio",
             "priority": 2,
-            "role": "theory_of_change_validation",
+            "role": "validacion_completa",
             "epistemological_foundation": {
-              "paradigm": "Logical coherence validation in causal models",
-              "ontological_basis": "Valid theories of change must satisfy internal consistency (no contradictory causal claims), completeness (all paths lead to outcomes), and empirical grounding (assumptions are testable)",
-              "epistemological_stance": "Falsificationist: Theories of change can be invalidated by detecting logical contradictions or empirically implausible assumptions",
+              "paradigm": "TeoriaCambio analytical paradigm",
+              "ontological_basis": "Analysis via TeoriaCambio.validacion_completa",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Logical consistency theory (Popper, 1959)",
-                "Causal model validation (Pearl, 2009)",
-                "Program theory evaluation (Chen, 1990)",
-                "Assumption testing in impact evaluation (White, 2009)"
+                "Method validacion_completa implements structured analysis for D4-Q2"
               ],
-              "justification": "Even explicit causal chains are insufficient if internally contradictory or based on implausible assumptions; validation ensures theory of change is actionable"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "constraint_satisfaction_validation",
-              "algorithm": "Multi-criteria validation checking logical consistency, assumption plausibility, and outcome alignment",
+              "method_type": "analytical_processing",
+              "algorithm": "TeoriaCambio.validacion_completa algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Extract all causal claims from pathways (format: intervention X causes outcome Y)"
+                  "description": "Execute validacion_completa"
                 },
                 {
                   "step": 2,
-                  "description": "Check for contradictory claims (X→Y and X→¬Y) using semantic similarity on outcome statements"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Validate assumption plausibility against external knowledge base (gender policy best practices)"
-                },
-                {
-                  "step": 4,
-                  "description": "Verify outcome alignment: all pathways terminate in gender equality outcomes (not generic outcomes)"
-                },
-                {
-                  "step": 5,
-                  "description": "Calculate validation score combining consistency, plausibility, and alignment metrics"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Contradictory causal claims occur within same document (not across documents)",
-                "Plausibility can be assessed using heuristics (e.g., assumptions requiring >5 years are implausible for 4-year policies)",
-                "Gender outcomes are identifiable by keyword matching ('igualdad de género', 'empoderamiento de mujeres', 'reducción VBG')"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot validate causal claims against empirical evidence (requires RCT data)",
-                "Plausibility scoring is heuristic-based, not scientifically validated",
-                "May miss subtle contradictions expressed through implication rather than direct negation"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(C²) where C=number of causal claims (pairwise consistency check)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "validation_status": "Boolean (true if theory of change passes all validation checks)",
-                "contradictions_found": "Array of {claim_A, claim_B, conflict_type} for each inconsistency",
-                "implausible_assumptions": "Array of {assumption, plausibility_score, reason}",
-                "outcome_alignment_score": "Ratio of gender-specific outcomes to total outcomes (0-1)"
+                "result": "Structured output from validacion_completa"
               },
               "interpretation_guide": {
-                "validated": "validation_status=true and outcome_alignment≥0.8: Theory of change is coherent and gender-focused",
-                "partially_validated": "Minor issues (1-2 contradictions or <3 implausible assumptions): Theory salvageable with revisions",
-                "invalidated": "Major issues (≥3 contradictions or outcome_alignment<0.5): Theory requires fundamental reformulation"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Contradictions indicate conflicting intervention strategies that will undermine each other",
-                "Implausible assumptions are implementation risks that should be monitored",
-                "Low outcome alignment suggests policy is not genuinely gender-focused despite gender language"
+                "Use validacion_completa results for downstream analysis"
               ]
             }
           },
@@ -528,71 +473,52 @@
             "method_name": "extract_causal_hierarchy",
             "class_name": "CausalExtractor",
             "priority": 3,
-            "role": "hierarchical_causal_structure_extraction",
+            "role": "extract_causal_hierarchy_extraction",
             "epistemological_foundation": {
-              "paradigm": "Hierarchical causality in policy interventions",
-              "ontological_basis": "Gender policy causality operates at multiple levels: proximate causes (direct interventions), intermediate causes (enabling conditions), and distal causes (structural factors)",
-              "epistemological_stance": "Structural-functionalist: Outcomes result from nested causal levels, with higher levels constraining lower levels",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor.extract_causal_hierarchy",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Hierarchical causal models (Judea Pearl, 2009)",
-                "Structural equation modeling (Bollen, 1989)",
-                "Multi-level causation in social policy (Pawson & Tilley, 1997)",
-                "Gender mainstreaming theory (Walby, 2005)"
+                "Method extract_causal_hierarchy implements structured analysis for D4-Q2"
               ],
-              "justification": "Flat causal models miss critical enabling conditions and structural constraints; hierarchical extraction reveals full dependency structure"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "dependency_parsing_with_hierarchical_clustering",
-              "algorithm": "spaCy dependency parsing to extract causal clauses, followed by hierarchical clustering based on causal distance",
+              "method_type": "analytical_processing",
+              "algorithm": "CausalExtractor.extract_causal_hierarchy algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Apply spaCy dependency parsing to identify causal clause patterns (nsubj→verb→dobj with causal verb)"
+                  "description": "Execute extract_causal_hierarchy"
                 },
                 {
                   "step": 2,
-                  "description": "Extract causal triples (subject, causal_verb, object) for each sentence"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Calculate causal distance: proximate causes mention specific interventions, intermediate causes mention 'condiciones' or 'factores', distal causes mention 'estructuras' or 'normas'"
-                },
-                {
-                  "step": 4,
-                  "description": "Apply hierarchical agglomerative clustering to group causes by distance level"
-                },
-                {
-                  "step": 5,
-                  "description": "Construct hierarchy tree with distal→intermediate→proximate levels"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Causal verbs are identifiable by lexicon ('causa', 'genera', 'produce', 'conduce a', 'permite')",
-                "Causal distance correlates with linguistic markers ('directamente', 'mediante', 'a través de estructuras')",
-                "Hierarchy has max 3 levels (distal, intermediate, proximate)"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Dependency parsing fails on long, complex sentences (>50 words)",
-                "Causal distance heuristic may misclassify ambiguous language",
-                "Cannot extract implicit hierarchies (e.g., structural causes mentioned only in introduction)"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(n*p + k²) where n=sentences, p=causal patterns, k=causal clauses (for clustering)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "hierarchy_tree": "Nested dict with levels {distal: [causes], intermediate: [causes], proximate: [causes]}",
-                "causal_triples": "Array of {subject, verb, object, level} for all extracted causality",
-                "hierarchy_completeness": "Boolean flags {has_distal, has_intermediate, has_proximate}"
+                "result": "Structured output from extract_causal_hierarchy"
               },
               "interpretation_guide": {
-                "complete_hierarchy": "All 3 levels present: Policy has sophisticated causal understanding",
-                "partial_hierarchy": "Only proximate+intermediate: Policy addresses enabling conditions but ignores structures",
-                "flat_hierarchy": "Only proximate: Policy has shallow causal model, likely to fail"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Missing distal causes suggests policy will not address root structural inequalities",
-                "Rich intermediate level indicates policy recognizes importance of enabling conditions (institutions, norms)",
-                "Proximate-only causality reveals technocratic approach that ignores systemic constraints"
+                "Use extract_causal_hierarchy results for downstream analysis"
               ]
             }
           },
@@ -600,71 +526,52 @@
             "method_name": "verify_conditional_independence",
             "class_name": "HierarchicalGenerativeModel",
             "priority": 4,
-            "role": "causal_assumption_verification",
+            "role": "verify_conditional_independence_verification",
             "epistemological_foundation": {
-              "paradigm": "Bayesian causal inference with conditional independence",
-              "ontological_basis": "Causal assumptions encode conditional independence relations: outcome Y is independent of intervention X given mediator M implies M fully mediates X→Y relationship",
-              "epistemological_stance": "Probabilistic: Causality is captured by conditional probability distributions P(Y|X,M) with independence constraints",
+              "paradigm": "HierarchicalGenerativeModel analytical paradigm",
+              "ontological_basis": "Analysis via HierarchicalGenerativeModel.verify_conditional_independence",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Causal Bayesian networks (Pearl, 2000; Spirtes et al., 2000)",
-                "Conditional independence testing (Dawid, 1979)",
-                "d-separation criterion (Pearl, 1988)",
-                "Markov condition in causal models (Lauritzen, 1996)"
+                "Method verify_conditional_independence implements structured analysis for D4-Q2"
               ],
-              "justification": "Stated causal assumptions imply testable conditional independence relations; violations indicate flawed theory of change"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "independence_test_generation_from_causal_graph",
-              "algorithm": "Convert causal pathways to Bayesian network, apply d-separation to generate independence tests",
+              "method_type": "analytical_processing",
+              "algorithm": "HierarchicalGenerativeModel.verify_conditional_independence algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Convert extracted causal pathways to directed acyclic graph (DAG) with nodes=variables, edges=causal relations"
+                  "description": "Execute verify_conditional_independence"
                 },
                 {
                   "step": 2,
-                  "description": "Identify mediator nodes (nodes with incoming and outgoing edges on pathway to outcome)"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "For each intervention→mediator→outcome chain, generate conditional independence test: intervention ⊥ outcome | mediator"
-                },
-                {
-                  "step": 4,
-                  "description": "Check whether document states independence assumption explicitly (using 'independiente de', 'solo a través de')"
-                },
-                {
-                  "step": 5,
-                  "description": "Flag mismatches: DAG implies independence but document does not state it (or vice versa)"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Causal graph is a DAG (no feedback loops)",
-                "Mediators are correctly identified (nodes with indegree≥1 and outdegree≥1 on path)",
-                "Independence language uses standard markers ('independiente', 'solo a través de', 'únicamente mediante')"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot test independence empirically (requires data, not just document analysis)",
-                "Assumes perfect mediation; does not detect partial mediation",
-                "May generate false positives if causal graph is incomplete"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(V * E) where V=nodes, E=edges (d-separation check per node pair)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "independence_tests": "Array of {X, Y, Z, expected_independent, stated_independent} for each mediator test",
-                "mismatches": "Array of tests where expected_independent ≠ stated_independent",
-                "verification_score": "Ratio of matching tests to total tests (0-1)"
+                "result": "Structured output from verify_conditional_independence"
               },
               "interpretation_guide": {
-                "verified": "verification_score≥0.9: Causal assumptions align with implied independence structure",
-                "partial_verification": "0.6-0.89: Some independence assumptions missing or inconsistent",
-                "unverified": "<0.6: Major misalignment between stated assumptions and causal graph"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Missing independence assumptions indicate unexamined mediation paths (risk: confounding)",
-                "Stated independence contradicting graph structure suggests misunderstanding of causal mechanism",
-                "Low verification score flags need for theory of change workshop to clarify causal logic"
+                "Use verify_conditional_independence results for downstream analysis"
               ]
             }
           },
@@ -672,71 +579,52 @@
             "method_name": "_generate_independence_tests",
             "class_name": "HierarchicalGenerativeModel",
             "priority": 5,
-            "role": "conditional_independence_test_generation",
+            "role": "_generate_independence_tests_generation",
             "epistemological_foundation": {
-              "paradigm": "Automated hypothesis generation from causal structures",
-              "ontological_basis": "Every causal structure implies a set of testable independence hypotheses via the Markov condition and d-separation",
-              "epistemological_stance": "Hypothetico-deductive: Causal models are falsifiable via their independence implications",
+              "paradigm": "HierarchicalGenerativeModel analytical paradigm",
+              "ontological_basis": "Analysis via HierarchicalGenerativeModel._generate_independence_tests",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Markov condition (Lauritzen, 1996)",
-                "d-separation algorithm (Geiger et al., 1990)",
-                "Independence testing in causal discovery (Spirtes & Glymour, 1991)",
-                "Testable implications of causal models (Pearl, 2009, Ch. 3)"
+                "Method _generate_independence_tests implements structured analysis for D4-Q2"
               ],
-              "justification": "Generating full set of independence tests enables comprehensive validation of stated causal assumptions against model structure"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "d-separation_enumeration",
-              "algorithm": "Enumerate all node triples (X,Y,Z) in causal DAG, apply d-separation criterion to determine X ⊥ Y | Z",
+              "method_type": "analytical_processing",
+              "algorithm": "HierarchicalGenerativeModel._generate_independence_tests algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Enumerate all triples (X,Y,Z) where X≠Y, Z is a set of conditioning nodes"
+                  "description": "Execute _generate_independence_tests"
                 },
                 {
                   "step": 2,
-                  "description": "For each triple, check d-separation: X ⊥ Y | Z iff every path from X to Y is blocked by Z"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Path is blocked if: (i) contains chain X→Z→Y and Z is in conditioning set, or (ii) contains fork X←Z→Y and Z is in conditioning set, or (iii) contains collider X→Z←Y and neither Z nor its descendants are in conditioning set"
-                },
-                {
-                  "step": 4,
-                  "description": "Generate test specification for each d-separated triple: 'Test: X ⊥ Y | Z'"
-                },
-                {
-                  "step": 5,
-                  "description": "Prioritize tests involving outcome variables and policy intervention variables"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Causal DAG is complete (all relevant variables included)",
-                "d-separation correctly captures conditional independence (faithfulness assumption)",
-                "Tests are prioritized correctly (interventions and outcomes most important)"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Combinatorial explosion: O(V³) tests for V variables (mitigated by prioritization)",
-                "Cannot execute tests (document analysis cannot test statistical independence)",
-                "Faithfulness assumption may fail (independence holds in data but not implied by graph)"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(V³ * E) where V=variables, E=edges (d-separation check per triple)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "all_tests": "Array of {X, Y, Z, priority} where X ⊥ Y | Z is implied by causal graph",
-                "priority_tests": "Subset of tests involving intervention or outcome variables",
-                "test_count": "Total number of testable independence relations"
+                "result": "Structured output from _generate_independence_tests"
               },
               "interpretation_guide": {
-                "high_test_count": ">20 tests: Complex causal model with many testable implications",
-                "medium_test_count": "10-20 tests: Moderate complexity, reasonable to validate",
-                "low_test_count": "<10 tests: Simple causal model, may be underspecified"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "High-priority tests should be checked against stated assumptions in document",
-                "Tests not stated in document represent hidden assumptions (risk: unexamined)",
-                "Test count indicates model complexity; very high counts may signal overparameterization"
+                "Use _generate_independence_tests results for downstream analysis"
               ]
             }
           },
@@ -744,71 +632,52 @@
             "method_name": "construct_scm",
             "class_name": "BayesianCounterfactualAuditor",
             "priority": 6,
-            "role": "structural_causal_model_construction",
+            "role": "construct_scm_construction",
             "epistemological_foundation": {
-              "paradigm": "Structural causal modeling for policy counterfactuals",
-              "ontological_basis": "Causal effects are defined via interventions in structural causal models (SCMs): effect of X on Y = Y(do(X=1)) - Y(do(X=0))",
-              "epistemological_stance": "Interventionist: Causality is defined by the results of hypothetical interventions, not mere correlation",
+              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
+              "ontological_basis": "Analysis via BayesianCounterfactualAuditor.construct_scm",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Structural causal models (Pearl, 2009)",
-                "Counterfactual theory of causation (Lewis, 1973; Pearl, 2009)",
-                "do-calculus for causal effect identification (Pearl, 1995)",
-                "Potential outcomes framework (Rubin, 1974; Pearl, 2009 Ch. 7)"
+                "Method construct_scm implements structured analysis for D4-Q2"
               ],
-              "justification": "SCMs enable counterfactual queries ('What if intervention X were not implemented?') essential for policy evaluation and understanding causal assumptions"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "scm_construction_from_causal_graph",
-              "algorithm": "Convert causal DAG to SCM by assigning structural equations to each node based on parents",
+              "method_type": "analytical_processing",
+              "algorithm": "BayesianCounterfactualAuditor.construct_scm algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Take causal DAG from previous methods (nodes=variables, edges=causal relations)"
+                  "description": "Execute construct_scm"
                 },
                 {
                   "step": 2,
-                  "description": "For each node Y with parents X1,...,Xk, construct structural equation: Y = f_Y(X1,...,Xk, U_Y) where U_Y is unobserved noise"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Assign functional forms: linear f_Y(X) = β0 + Σ β_i*X_i + U_Y for quantifiable variables, categorical for qualitative"
-                },
-                {
-                  "step": 4,
-                  "description": "Extract parameter values from document when stated (e.g., 'reducción de 20% en VBG' → β=-0.2)"
-                },
-                {
-                  "step": 5,
-                  "description": "For unstated parameters, assign non-informative priors (uniform or weakly informative)"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Functional forms are linear or log-linear (sufficient for policy analysis)",
-                "Unobserved confounders U_Y are independent across equations (no unmeasured common causes)",
-                "Parameter values stated in document are reliable (not aspirational)"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot learn functional forms or parameters from data (document analysis only)",
-                "Linear functional form may miss nonlinearities (e.g., threshold effects)",
-                "Independence of U_Y may fail if document omits confounders"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(V * k) where V=variables, k=average parent set size"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "scm": "Dict mapping each variable Y to {parents: [X1,...,Xk], function: f_Y, parameters: {β0, β1,...}}",
-                "identified_parameters": "List of parameters with values extracted from document",
-                "unidentified_parameters": "List of parameters with prior distributions only"
+                "result": "Structured output from construct_scm"
               },
               "interpretation_guide": {
-                "well_specified": "≥80% parameters identified: Document provides quantitative causal model",
-                "partially_specified": "40-79% parameters identified: Model has some quantitative detail but gaps remain",
-                "underspecified": "<40% parameters identified: Document lacks quantitative causal structure"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Unidentified parameters indicate areas where policy lacks quantitative targets",
-                "Well-specified SCM enables counterfactual simulation (e.g., 'What if budget reduced by 30%?')",
-                "Parameter extraction from document reveals whether policy is evidence-based (citing studies) or aspirational"
+                "Use construct_scm results for downstream analysis"
               ]
             }
           },
@@ -816,75 +685,52 @@
             "method_name": "_perform_sensitivity_analysis_internal",
             "class_name": "AdvancedDAGValidator",
             "priority": 7,
-            "role": "causal_model_sensitivity_analysis",
+            "role": "_perform_sensitivity_analysis_internal",
             "epistemological_foundation": {
-              "paradigm": "Robustness analysis for causal conclusions",
-              "ontological_basis": "Causal conclusions depend on model assumptions; sensitivity analysis quantifies how much conclusions change if assumptions are violated",
-              "epistemological_stance": "Critical realist: Causal claims are fallible; sensitivity analysis reveals their fragility or robustness",
+              "paradigm": "AdvancedDAGValidator analytical paradigm",
+              "ontological_basis": "Analysis via AdvancedDAGValidator._perform_sensitivity_analysis_internal",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Sensitivity analysis in causal inference (Rosenbaum, 2002; Imbens, 2003)",
-                "Bounds under confounding (Manski, 1990)",
-                "E-value for unmeasured confounding (VanderWeele & Ding, 2017)",
-                "Stability analysis in causal models (Cinelli & Hazlett, 2020)"
+                "Method _perform_sensitivity_analysis_internal implements structured analysis for D4-Q2"
               ],
-              "justification": "Stated causal assumptions may be wrong; sensitivity analysis identifies which assumptions are critical (small violation → large conclusion change) vs robust"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "perturbation_analysis_on_causal_graph",
-              "algorithm": "Systematically perturb causal graph (add/remove edges) and check if causal conclusions change",
+              "method_type": "analytical_processing",
+              "algorithm": "AdvancedDAGValidator._perform_sensitivity_analysis_internal algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Extract primary causal claim from document (e.g., 'Intervention X reduces VBG by 20%')"
+                  "description": "Execute _perform_sensitivity_analysis_internal"
                 },
                 {
                   "step": 2,
-                  "description": "Enumerate potential confounders: variables that could affect both X and outcome Y"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "For each potential confounder C, add edge C→X and C→Y to causal graph"
-                },
-                {
-                  "step": 4,
-                  "description": "Recompute causal effect of X on Y using backdoor adjustment (adjust for C)"
-                },
-                {
-                  "step": 5,
-                  "description": "Calculate sensitivity: |effect_with_C - effect_without_C| / effect_without_C"
-                },
-                {
-                  "step": 6,
-                  "description": "Rank confounders by sensitivity; flag high-sensitivity confounders (>50% change)"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Potential confounders are identifiable from domain knowledge (gender policy expertise)",
-                "Confounding effect is linear (sensitivity scales with confounder strength)",
-                "Backdoor adjustment is sufficient (no other biases like selection or measurement error)"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Cannot quantify confounder strength from document (requires data)",
-                "Sensitivity is pessimistic: assumes worst-case confounding",
-                "Enumerating all potential confounders is intractable; uses heuristic subset"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(C * V * E) where C=candidate confounders, V=variables, E=edges (backdoor adjustment per confounder)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "sensitivity_results": "Array of {confounder, sensitivity_pct, critical_threshold} for each tested confounder",
-                "high_sensitivity_confounders": "Subset where sensitivity_pct > 50%",
-                "robustness_score": "1 - (# high-sensitivity confounders / # tested confounders)"
+                "result": "Structured output from _perform_sensitivity_analysis_internal"
               },
               "interpretation_guide": {
-                "robust": "robustness_score ≥ 0.8: Causal conclusions resilient to unmeasured confounding",
-                "moderately_robust": "0.5-0.79: Conclusions hold unless major confounders omitted",
-                "fragile": "<0.5: Conclusions highly sensitive; small confounding invalidates claims"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "High-sensitivity confounders are critical threats to validity; should be measured if possible",
-                "Fragile conclusions indicate need for robustness checks (e.g., propensity score sensitivity analysis)",
-                "Robust conclusions justify stronger causal language in policy documents"
+                "Use _perform_sensitivity_analysis_internal results for downstream analysis"
               ]
             }
           },
@@ -892,86 +738,66 @@
             "method_name": "get_bayes_factor",
             "class_name": "BayesFactorTable",
             "priority": 8,
-            "role": "bayesian_hypothesis_comparison",
+            "role": "get_bayes_factor",
             "epistemological_foundation": {
-              "paradigm": "Bayesian model comparison and evidence accumulation",
-              "ontological_basis": "Alternative causal hypotheses have prior probabilities; evidence updates these via Bayes' rule; Bayes factor quantifies relative evidence for H1 vs H0",
-              "epistemological_stance": "Bayesian epistemology: Knowledge is probabilistic; evidence shifts degrees of belief, not binary acceptance/rejection",
+              "paradigm": "BayesFactorTable analytical paradigm",
+              "ontological_basis": "Analysis via BayesFactorTable.get_bayes_factor",
+              "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Bayes factors for hypothesis testing (Kass & Raftery, 1995)",
-                "Bayesian model selection (Jeffreys, 1961)",
-                "Evidence accumulation theory (Lee & Wagenmakers, 2013)",
-                "Likelihood principle (Berger & Wolpert, 1988)"
+                "Method get_bayes_factor implements structured analysis for D4-Q2"
               ],
-              "justification": "Multiple causal explanations may be consistent with stated evidence; Bayes factors quantify which explanation is better supported"
+              "justification": "This method contributes to D4-Q2 analysis"
             },
             "technical_approach": {
-              "method_type": "bayes_factor_calculation_from_document_statements",
-              "algorithm": "Extract competing hypotheses and evidence statements, calculate Bayes factor BF = P(E|H1)/P(E|H0)",
+              "method_type": "analytical_processing",
+              "algorithm": "BayesFactorTable.get_bayes_factor algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Identify competing causal hypotheses in document (e.g., 'VBG reduction due to economic empowerment' vs 'due to justice system reform')"
+                  "description": "Execute get_bayes_factor"
                 },
                 {
                   "step": 2,
-                  "description": "Extract evidence statements supporting each hypothesis (e.g., 'women with income are 30% less likely to experience VBG')"
+                  "description": "Process results"
                 },
                 {
                   "step": 3,
-                  "description": "Assign likelihoods: P(E|H1) = how well evidence E supports H1, estimated from strength of association"
-                },
-                {
-                  "step": 4,
-                  "description": "Calculate Bayes factor: BF = P(E|H1) / P(E|H0) for each hypothesis pair"
-                },
-                {
-                  "step": 5,
-                  "description": "Interpret using Jeffreys' scale: BF>10 is strong evidence for H1, 3-10 is moderate, 1-3 is weak"
+                  "description": "Return structured output"
                 }
               ],
               "assumptions": [
-                "Competing hypotheses are explicitly stated in document (not implicit)",
-                "Evidence strength can be quantified from language ('fuertemente asociado'=high likelihood, 'posiblemente relacionado'=low likelihood)",
-                "Priors are equal (P(H1)=P(H0)) unless document states prior belief"
+                "Input data is preprocessed and valid"
               ],
               "limitations": [
-                "Likelihood assignment is heuristic, not data-driven",
-                "Cannot calculate exact Bayes factors (requires full probability models)",
-                "Assumes hypotheses are mutually exclusive (may both be partially true)"
+                "Method-specific limitations apply"
               ],
-              "complexity": "O(H²) where H=number of hypotheses (pairwise comparisons)"
+              "complexity": "O(n) where n=input size"
             },
             "output_interpretation": {
               "output_structure": {
-                "hypothesis_pairs": "Array of {H1, H0, bayes_factor, interpretation} for each comparison",
-                "strongest_hypothesis": "Hypothesis with highest average BF across all comparisons",
-                "evidence_quality": "Average BF across all pairs (1=no discrimination, >10=strong discrimination)"
+                "result": "Structured output from get_bayes_factor"
               },
               "interpretation_guide": {
-                "decisive_evidence": "BF>100: Overwhelming support for one causal hypothesis",
-                "strong_evidence": "BF 10-100: Strong support, hypothesis well-justified",
-                "moderate_evidence": "BF 3-10: Moderate support, hypothesis plausible",
-                "weak_evidence": "BF 1-3: Weak support, competing hypotheses equally viable"
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Low BF (<3) indicates competing causal explanations not adequately differentiated by evidence",
-                "High BF (>10) justifies focusing policy on best-supported causal mechanism",
-                "Evidence quality score reveals overall rigor of causal reasoning in document"
+                "Use get_bayes_factor results for downstream analysis"
               ]
             }
           }
         ],
         "method_combination_logic": {
-          "combination_strategy": "Sequential causal analysis pipeline: pathway extraction → validation → hierarchical structuring → independence verification → SCM construction → sensitivity analysis → hypothesis comparison",
-          "rationale": "Q017 requires comprehensive analysis of causal reasoning quality in gender policy documents. The 8 methods cover complementary aspects: causal pathway discovery (methods 1-2), structural analysis (method 3), formal validation (methods 4-5), quantitative modeling (method 6), robustness checking (method 7), and hypothesis testing (method 8). This pipeline moves from descriptive (what causal claims exist?) to normative (are causal claims valid and robust?).",
-          "evidence_fusion": "Evidence from all 8 methods is aggregated by EvidenceAssembler. Causal pathways (method 1) are validated (method 2), structured hierarchically (method 3), checked for independence implications (methods 4-5), formalized as SCM (method 6), tested for robustness (method 7), and compared via Bayesian model comparison (method 8). Final score combines pathway completeness, validation status, hierarchy depth, independence verification, SCM specification, robustness, and hypothesis differentiation.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, ..., confidence_method8]) where weights reflect method reliability: formal methods (4-5, 6) have higher weight (0.9) than heuristic methods (1-3) (0.7). Bayesian methods (6, 8) have highest weight (1.0) due to probabilistic rigor.",
-          "execution_order": "Methods execute in strict priority order (1→8). Methods 4-5 depend on causal graph from method 3; method 6 depends on validated pathways from method 2; method 7 depends on SCM from method 6; method 8 depends on alternative hypotheses identified in methods 1-3.",
+          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
+          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceAssembler. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
+          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
+          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
           "trade_offs": [
-            "Completeness vs. Computational Cost: 8 methods ensure thorough causal analysis but increase execution time (~5-10 seconds per document). Justified by complexity of causal reasoning validation.",
-            "Formal Rigor vs. Interpretability: Methods 4-8 use formal causal inference techniques (d-separation, SCMs, Bayes factors) which are mathematically rigorous but less interpretable than methods 1-3. Trade-off acceptable for Q017 which assesses technical causal reasoning quality.",
-            "Depth vs. Breadth: Pipeline deeply analyzes causal reasoning (8 complementary methods) but focuses narrowly on explicit causal statements. May miss implicit causal assumptions expressed through narrative. Acceptable given Q017 focus on explicit causal chains."
+            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
+            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
+            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
           ]
         }
       }
@@ -986,12 +812,10 @@
         "must_contain": {
           "count": 1,
           "elements": [
-            "cadena_causal_explicita",
-            "condiciones_habilitantes",
-            "supuestos_identificados"
+            "cobertura_territorial_especificada"
           ]
         },
-        "description": "All three critical elements must be present: explicit causal chain, enabling conditions, and identified assumptions"
+        "description": "Derived from monolith expected_elements where required is true"
       },
       {
         "field": "elements_found",
@@ -999,37 +823,37 @@
         "should_contain": [
           {
             "elements": [
-              "complete_pathways"
+              "fuentes_oficiales"
             ],
             "minimum": 2
           },
           {
             "elements": [
-              "validated_assumptions"
+              "indicadores_cuantitativos"
             ],
             "minimum": 3
           },
           {
             "elements": [
-              "hierarchical_levels"
+              "series_temporales_años"
             ],
-            "minimum": 2
+            "minimum": 3
           }
         ],
-        "description": "Desirable elements for high-quality causal analysis"
+        "description": "Derived from monolith expected_elements with minimum counts"
       }
     ]
   },
   "traceability": {
     "source_file": "data/questionnaire_monolith.json",
-    "json_path": "blocks.micro_questions[16]",
+    "json_path": "blocks.micro_questions[286]",
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D4_Q2_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
     "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 8 methods from D4_Q2_Executor, with enhanced epistemological documentation and substantive technical approaches for comprehensive causal reasoning analysis.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q017",
     "specialized_from_base_slot": "D4-Q2",
     "specialization_timestamp": "2025-11-28T03:49:29.842841+00:00"
@@ -1080,9 +904,9 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 8 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "8 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceAssembler merges outputs according to assembly_rules",
       "step_3_validation": "EvidenceValidator checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -1093,7 +917,7 @@
       "properties": {
         "elements_found": {
           "type": "array",
-          "description": "Concatenated evidence elements from 8 causal analysis methods",
+          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
           "items": {
             "type": "object",
             "properties": {
@@ -1104,19 +928,18 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "cadena_causal_explicita",
-                  "condiciones_habilitantes",
-                  "supuestos_identificados",
-                  "complete_pathways",
-                  "validated_assumptions",
-                  "hierarchical_levels",
-                  "independence_tests",
-                  "scm_parameters"
+                  "fuentes_oficiales",
+                  "indicadores_cuantitativos",
+                  "series_temporales_años",
+                  "cobertura_territorial_especificada",
+                  "financial_amounts",
+                  "policy_goals",
+                  "causal_links"
                 ]
               },
               "value": {
                 "type": "string",
-                "example": "Intervención X → Condición habilitante Y → Resultado de género Z"
+                "example": "DANE"
               },
               "confidence": {
                 "type": "number",
@@ -1125,126 +948,188 @@
               },
               "source_method": {
                 "type": "string",
-                "example": "TeoriaCambio._encontrar_caminos_completos"
+                "example": "IndustrialPolicyProcessor._extract_point_evidence"
+              },
+              "sentence_id": {
+                "type": "integer"
               },
               "context": {
                 "type": "string"
               }
             }
           },
-          "example_count": "Expected 10-30 elements for a well-reasoned causal chain"
+          "example_count": "Expected 15-50 elements for a complete diagnostic"
         },
-        "causal_pathways": {
+        "elements_summary": {
           "type": "object",
           "properties": {
-            "complete_pathways_count": {
+            "total_count": {
               "type": "integer"
             },
-            "incomplete_pathways_count": {
-              "type": "integer"
-            },
-            "pathway_completeness_score": {
-              "type": "number"
-            }
-          }
-        },
-        "validation_status": {
-          "type": "object",
-          "properties": {
-            "theory_validated": {
-              "type": "boolean"
-            },
-            "contradictions_found": {
-              "type": "integer"
-            },
-            "implausible_assumptions": {
-              "type": "integer"
-            }
-          }
-        },
-        "hierarchical_structure": {
-          "type": "object",
-          "properties": {
-            "has_distal_causes": {
-              "type": "boolean"
-            },
-            "has_intermediate_causes": {
-              "type": "boolean"
-            },
-            "has_proximate_causes": {
-              "type": "boolean"
-            },
-            "hierarchy_completeness": {
-              "type": "string",
-              "enum": [
-                "complete",
-                "partial",
-                "flat"
-              ]
-            }
-          }
-        },
-        "independence_verification": {
-          "type": "object",
-          "properties": {
-            "tests_generated": {
-              "type": "integer"
-            },
-            "tests_matched": {
-              "type": "integer"
-            },
-            "verification_score": {
-              "type": "number"
-            }
-          }
-        },
-        "scm_specification": {
-          "type": "object",
-          "properties": {
-            "parameters_identified": {
-              "type": "integer"
-            },
-            "parameters_total": {
-              "type": "integer"
-            },
-            "specification_completeness": {
-              "type": "number"
-            }
-          }
-        },
-        "robustness_analysis": {
-          "type": "object",
-          "properties": {
-            "high_sensitivity_confounders": {
-              "type": "integer"
-            },
-            "robustness_score": {
-              "type": "number"
-            }
-          }
-        },
-        "hypothesis_comparison": {
-          "type": "object",
-          "properties": {
-            "competing_hypotheses": {
-              "type": "integer"
-            },
-            "strongest_hypothesis": {
-              "type": "string"
-            },
-            "evidence_quality": {
-              "type": "number"
+            "by_type": {
+              "type": "object",
+              "properties": {
+                "fuentes_oficiales": {
+                  "type": "integer",
+                  "minimum_expected": 2
+                },
+                "indicadores_cuantitativos": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "series_temporales_años": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "cobertura_territorial_especificada": {
+                  "type": "integer",
+                  "minimum_expected": 1
+                }
+              }
             }
           }
         },
         "confidence_scores": {
           "type": "object",
+          "description": "Aggregated confidence metrics (weighted_mean strategy)",
           "properties": {
             "mean": {
               "type": "number"
             },
+            "std": {
+              "type": "number"
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
             "by_method": {
-              "type": "object"
+              "type": "object",
+              "description": "Average confidence per analyzer class"
+            }
+          }
+        },
+        "pattern_matches": {
+          "type": "array",
+          "description": "Aggregated pattern matches from text mining methods",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern_id": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "avg_confidence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "critical_links": {
+          "type": "array",
+          "description": "Causal links extracted by TextMiningEngine",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cause": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string"
+              },
+              "criticality": {
+                "type": "number"
+              },
+              "coherence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "financial_summary": {
+          "type": "object",
+          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
+          "properties": {
+            "total_budget_cop": {
+              "type": "number"
+            },
+            "amounts_found": {
+              "type": "integer"
+            },
+            "by_category": {
+              "type": "object",
+              "properties": {
+                "SGR": {
+                  "type": "number"
+                },
+                "recursos_propios": {
+                  "type": "number"
+                },
+                "transferencias": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "goals_summary": {
+          "type": "object",
+          "description": "Policy goals extracted by CausalExtractor",
+          "properties": {
+            "total_goals": {
+              "type": "integer"
+            },
+            "quantified_goals": {
+              "type": "integer"
+            },
+            "goals_with_complete_context": {
+              "type": "integer"
+            }
+          }
+        },
+        "contradictions": {
+          "type": "object",
+          "description": "Results from PolicyContradictionDetector",
+          "properties": {
+            "found": {
+              "type": "integer"
+            },
+            "tests_performed": {
+              "type": "integer"
+            },
+            "interpretation": {
+              "type": "string"
+            }
+          }
+        },
+        "bayesian_insights": {
+          "type": "object",
+          "description": "Results from BayesianNumericalAnalyzer",
+          "properties": {
+            "metrics_with_high_uncertainty": {
+              "type": "array"
+            },
+            "significant_comparisons": {
+              "type": "integer"
+            }
+          }
+        },
+        "semantic_processing": {
+          "type": "object",
+          "description": "Results from SemanticProcessor",
+          "properties": {
+            "chunks_created": {
+              "type": "integer"
+            },
+            "embeddings_generated": {
+              "type": "integer"
+            },
+            "avg_semantic_similarity_to_query": {
+              "type": "number"
             }
           }
         },
@@ -1255,12 +1140,395 @@
               "type": "integer",
               "const": 8
             },
+            "execution_time_ms": {
+              "type": "number"
+            },
+            "document_length": {
+              "type": "integer"
+            },
             "analysis_timestamp": {
               "type": "string",
               "format": "date-time"
             }
           }
         }
+      }
+    },
+    "concrete_example": {
+      "elements_found": [
+        {
+          "element_id": "E-001",
+          "type": "fuentes_oficiales",
+          "value": "DANE",
+          "confidence": 0.95,
+          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
+          "source_sentence": "según datos de DANE para el año 2022",
+          "sentence_id": 45,
+          "position": {
+            "start": 123,
+            "end": 145
+          }
+        },
+        {
+          "element_id": "E-002",
+          "type": "indicadores_cuantitativos",
+          "value": "tasa de VBG: 12.3%",
+          "normalized_value": 12.3,
+          "unit": "%",
+          "confidence": 0.89,
+          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
+          "bayesian_posterior": {
+            "mean": 0.123,
+            "ci_95": [
+              0.11,
+              0.145
+            ]
+          },
+          "sentence_id": 45
+        },
+        {
+          "element_id": "E-003",
+          "type": "series_temporales_años",
+          "years": [
+            2020,
+            2021,
+            2022
+          ],
+          "confidence": 0.92,
+          "source_method": "TextMiningEngine.diagnose_critical_links"
+        },
+        {
+          "element_id": "E-004",
+          "type": "cobertura_territorial_especificada",
+          "coverage": "municipal - zona rural y urbana",
+          "confidence": 0.88,
+          "source_method": "CausalExtractor._parse_goal_context"
+        }
+      ],
+      "elements_summary": {
+        "total_count": 38,
+        "by_type": {
+          "fuentes_oficiales": 5,
+          "indicadores_cuantitativos": 12,
+          "series_temporales_años": 4,
+          "cobertura_territorial_especificada": 1,
+          "financial_amounts": 8,
+          "policy_goals": 7,
+          "causal_links": 5
+        }
+      },
+      "confidence_scores": {
+        "mean": 0.876,
+        "std": 0.089,
+        "min": 0.72,
+        "max": 0.98,
+        "by_method": {
+          "TextMiningEngine": 0.83,
+          "IndustrialPolicyProcessor": 0.91,
+          "CausalExtractor": 0.79,
+          "FinancialAuditor": 0.94,
+          "PDETMunicipalPlanAnalyzer": 0.88,
+          "PolicyContradictionDetector": 0.9,
+          "BayesianNumericalAnalyzer": 0.92,
+          "SemanticProcessor": 0.85
+        }
+      },
+      "pattern_matches": [
+        {
+          "pattern_id": "PAT-Q001-000",
+          "count": 3,
+          "avg_confidence": 0.87
+        },
+        {
+          "pattern_id": "PAT-Q001-002",
+          "count": 5,
+          "avg_confidence": 0.95
+        }
+      ],
+      "critical_links": [
+        {
+          "cause": "alta tasa de VBG",
+          "effect": "baja autonomía económica",
+          "criticality": 0.87,
+          "coherence": 0.82
+        }
+      ],
+      "financial_summary": {
+        "total_budget_cop": 850000000.0,
+        "amounts_found": 12,
+        "by_category": {
+          "SGR": 250000000.0,
+          "recursos_propios": 180000000.0
+        }
+      },
+      "goals_summary": {
+        "total_goals": 7,
+        "quantified_goals": 5,
+        "goals_with_complete_context": 4
+      },
+      "contradictions": {
+        "found": 0,
+        "tests_performed": 15,
+        "interpretation": "No statistical contradictions in quantitative claims"
+      },
+      "bayesian_insights": {
+        "metrics_with_high_uncertainty": [],
+        "significant_comparisons": 1
+      },
+      "semantic_processing": {
+        "chunks_created": 45,
+        "embeddings_generated": 45,
+        "avg_semantic_similarity_to_query": 0.78
+      },
+      "metadata": {
+        "methods_executed": 8,
+        "execution_time_ms": 2845,
+        "document_length": 15230,
+        "analysis_timestamp": "2025-11-26T12:34:56Z"
+      }
+    },
+    "validation_against_expected_elements": {
+      "cobertura_territorial_especificada": {
+        "required": true,
+        "found_in_example": true,
+        "example_element_id": "E-004"
+      },
+      "fuentes_oficiales": {
+        "minimum": 2,
+        "found_in_example": 5,
+        "status": "PASS"
+      },
+      "indicadores_cuantitativos": {
+        "minimum": 3,
+        "found_in_example": 12,
+        "status": "PASS"
+      },
+      "series_temporales_años": {
+        "minimum": 3,
+        "found_in_example": 4,
+        "status": "PASS"
+      },
+      "overall_validation_result": "PASS - All required and minimum elements present"
+    },
+    "template_variable_bindings": {
+      "description": "These variables are available for human_readable_output template",
+      "variables": {
+        "{evidence.elements_found_count}": 38,
+        "{score}": "Calculated by scorer based on elements",
+        "{quality_level}": "ALTO",
+        "{evidence.confidence_scores.mean}": "87.6%",
+        "{evidence.pattern_matches_count}": 14,
+        "{evidence.official_sources_count}": 5,
+        "{evidence.quantitative_indicators_count}": 12,
+        "{evidence.temporal_series_count}": 4,
+        "{evidence.territorial_coverage}": "municipal - zona rural y urbana"
+      }
+    },
+    "usage_notes": {
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_validators": "Use this to verify that actual execution output matches expected structure.",
+      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "TeoriaCambio._encontrar_caminos_completos": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio._encontrar_caminos_completos",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _encontrar_caminos_completos"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "teoriacambio.encontrar_caminos_completos",
+        "merge_strategy": "replace"
+      }
+    },
+    "TeoriaCambio.validacion_completa": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio.validacion_completa",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from validacion_completa"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "teoriacambio.validacion_completa",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor.extract_causal_hierarchy": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor.extract_causal_hierarchy",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from extract_causal_hierarchy"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.extract_causal_hierarchy",
+        "merge_strategy": "concat"
+      }
+    },
+    "HierarchicalGenerativeModel.verify_conditional_independence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from HierarchicalGenerativeModel.verify_conditional_independence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from verify_conditional_independence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "hierarchicalgenerativemodel.verify_conditional_independence",
+        "merge_strategy": "replace"
+      }
+    },
+    "HierarchicalGenerativeModel._generate_independence_tests": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from HierarchicalGenerativeModel._generate_independence_tests",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _generate_independence_tests"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "hierarchicalgenerativemodel.generate_independence_tests",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor.construct_scm": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor.construct_scm",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from construct_scm"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.construct_scm",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdvancedDAGValidator._perform_sensitivity_analysis_internal": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdvancedDAGValidator._perform_sensitivity_analysis_internal",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _perform_sensitivity_analysis_internal"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "advanceddagvalidator.perform_sensitivity_analysis_internal",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesFactorTable.get_bayes_factor": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesFactorTable.get_bayes_factor",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from get_bayes_factor"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesfactortable.get_bayes_factor",
+        "merge_strategy": "replace"
       }
     }
   }

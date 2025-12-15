@@ -5,11 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "3838509c180a8dd27428b837dd38816964a2c0ef637d72d900e5eec793be05d3",
+    "contract_hash": "025d3afb774492228b124fcf0e84adfe66086ab4a9ab44d25392647148dd3fc4",
     "created_at": "2025-11-28T03:50:42.396313+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
-    "question_global": 277
+    "question_global": 277,
+    "updated_at": "2025-12-15T20:32:11.281319+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q2_Executor",
@@ -267,43 +268,27 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
-        "sources": [
-          "*.confidence",
-          "*.bayesian_posterior"
-        ],
+        "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
         "description": "Aggregate confidence scores across all methods"
       },
       {
         "target": "pattern_matches",
-        "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "default": {},
         "description": "Combine pattern matches from text mining methods"
       },
       {
         "target": "metadata",
-        "sources": [
-          "*.metadata"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
         "description": "Combine metadata from all 17 methods for full traceability"
       }
@@ -350,7 +335,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM02"
         },
         "cluster_id": {
           "type": [
@@ -358,7 +343,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL04"
         },
         "evidence": {
           "type": [
@@ -1542,6 +1527,283 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "BayesianMechanismInference.infer_mechanisms": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference.infer_mechanisms",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from infer_mechanisms"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.infer_mechanisms",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._infer_single_mechanism": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._infer_single_mechanism",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _infer_single_mechanism"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.infer_single_mechanism",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._infer_mechanism_type": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._infer_mechanism_type",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _infer_mechanism_type"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.infer_mechanism_type",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._test_sufficiency": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._test_sufficiency",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _test_sufficiency"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.test_sufficiency",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._test_necessity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._test_necessity",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _test_necessity"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.test_necessity",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor.extract_causal_hierarchy": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor.extract_causal_hierarchy",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from extract_causal_hierarchy"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.extract_causal_hierarchy",
+        "merge_strategy": "concat"
+      }
+    },
+    "TeoriaCambio.construir_grafo_causal": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio.construir_grafo_causal",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from construir_grafo_causal"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "teoriacambio.construir_grafo_causal",
+        "merge_strategy": "replace"
+      }
+    },
+    "TeoriaCambio._es_conexion_valida": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio._es_conexion_valida",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _es_conexion_valida"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "teoriacambio.es_conexion_valida",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer.construct_causal_dag": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer.construct_causal_dag",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from construct_causal_dag"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.construct_causal_dag",
+        "merge_strategy": "replace"
+      }
+    },
+    "BeachEvidentialTest.classify_test": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BeachEvidentialTest.classify_test",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from classify_test"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "beachevidentialtest.classify_test",
+        "merge_strategy": "replace"
+      }
+    },
+    "IndustrialPolicyProcessor._analyze_causal_dimensions": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from IndustrialPolicyProcessor._analyze_causal_dimensions",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _analyze_causal_dimensions"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "industrial_policy.analyze_causal_dimensions",
+        "merge_strategy": "replace"
+      }
     }
   }
 }
