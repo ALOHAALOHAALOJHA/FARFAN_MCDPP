@@ -18,23 +18,23 @@ Date: 2025-12-11
 
 import pytest
 
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_method_metadata import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_method_metadata import (
     MethodMetadata,
     MethodExecutionMetadata,
     extract_method_metadata,
     should_execute_method,
     get_adaptive_execution_plan,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_validation_specs import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_validation_specs import (
     ValidationSpecifications,
     extract_validation_specifications,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_scoring_context import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_scoring_context import (
     ScoringModalityDefinition,
     extract_scoring_context,
     create_default_scoring_context,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_semantic_context import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_semantic_context import (
     SemanticContext,
     DisambiguationRule,
     extract_semantic_context,

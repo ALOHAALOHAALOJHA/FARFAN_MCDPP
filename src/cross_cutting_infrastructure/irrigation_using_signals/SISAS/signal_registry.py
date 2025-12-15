@@ -26,6 +26,10 @@ from __future__ import annotations
 
 import hashlib
 import time
+import json
+import sys
+import concurrent.futures
+from pathlib import Path
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import lru_cache
@@ -73,6 +77,10 @@ except ImportError:
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
+    create_enhancement_integrator,
+    SignalEnhancementIntegrator
+)
 
 
 # ============================================================================
@@ -477,7 +485,7 @@ class CircuitBreakerConfig:
 
 @dataclass
 class CircuitBreaker:
-    """Circuit breaker for graceful degradation.
+    """Circuit breaker for graceful degradation with persistence.
     
     Implements the circuit breaker pattern to prevent cascading failures
     when the signal registry encounters repeated errors.
@@ -503,7 +511,40 @@ class CircuitBreaker:
     success_count: int = 0
     last_failure_time: float = 0.0
     last_state_change: float = field(default_factory=time.time)
+    persistence_path: Path = field(default=Path("artifacts/circuit_breaker_state.json"))
     
+    def __post_init__(self) -> None:
+        """Load state from persistence if available."""
+        self._load_state()
+
+    def _load_state(self) -> None:
+        """Load state from file."""
+        # Opportunity #3: Persistent Circuit Breaker
+        if self.persistence_path.exists():
+            try:
+                data = json.loads(self.persistence_path.read_text())
+                self.state = data.get("state", CircuitState.CLOSED)
+                self.failure_count = data.get("failure_count", 0)
+                self.last_failure_time = data.get("last_failure_time", 0.0)
+                # Reset success count on restart to be safe
+                self.success_count = 0
+                logger.info("circuit_breaker_state_loaded", state=self.state)
+            except Exception as e:
+                logger.warning("circuit_breaker_load_failed", error=str(e))
+
+    def _save_state(self) -> None:
+        """Save state to file."""
+        try:
+            data = {
+                "state": self.state,
+                "failure_count": self.failure_count,
+                "last_failure_time": self.last_failure_time,
+                "timestamp": time.time()
+            }
+            self.persistence_path.write_text(json.dumps(data))
+        except Exception as e:
+            logger.warning("circuit_breaker_save_failed", error=str(e))
+
     def is_available(self) -> bool:
         """Check if circuit breaker allows requests.
         
@@ -536,9 +577,13 @@ class CircuitBreaker:
                 self.failure_count = 0
                 self.success_count = 0
                 self.last_state_change = time.time()
+                self._save_state()
         elif self.state == CircuitState.CLOSED:
             # Reset failure count on success
             self.failure_count = 0
+            # Only save if we were failing before
+            if self.failure_count > 0:
+                 self._save_state()
     
     def record_failure(self) -> None:
         """Record failed operation."""
@@ -551,6 +596,7 @@ class CircuitBreaker:
             self.failure_count = 0
             self.success_count = 0
             self.last_state_change = time.time()
+            self._save_state()
         elif self.state == CircuitState.CLOSED:
             self.failure_count += 1
             if self.failure_count >= self.config.failure_threshold:
@@ -560,6 +606,7 @@ class CircuitBreaker:
                 )
                 self.state = CircuitState.OPEN
                 self.last_state_change = time.time()
+                self._save_state()
     
     def get_status(self) -> dict[str, Any]:
         """Get circuit breaker status for monitoring.
@@ -634,12 +681,21 @@ class QuestionnaireSignalRegistry:
         # Valid assembly levels (for validation)
         self._valid_assembly_levels = self._extract_valid_assembly_levels()
         
+        # Initialize enhancement integrator (Opportunity #1)
+        self._enhancement_integrator = create_enhancement_integrator(questionnaire)
+
         logger.info(
             "signal_registry_initialized",
             source_hash=self._source_hash[:16],
             questionnaire_version=questionnaire.version,
             questionnaire_sha256=questionnaire.sha256[:16],
         )
+
+    def _warmup_single_question(self, q_id: str) -> None:
+        """Helper for parallel warmup."""
+        self.get_micro_answering_signals(q_id)
+        self.get_validation_signals(q_id)
+        self.get_scoring_signals(q_id)
 
     def _compute_source_hash(self) -> str:
         """Compute content hash for cache invalidation."""
@@ -1072,6 +1128,11 @@ class QuestionnaireSignalRegistry:
             if p.evidence_boost != 1.0:
                 evidence_boosts[p.id] = p.evidence_boost
 
+        # Opportunity #1: Enhance signals with 4 strategic enhancements
+        enhancements = self._enhancement_integrator.enhance_question_signals(
+            question_id, dict(question)
+        )
+
         return MicroAnsweringSignalPack(
             question_patterns={question_id: patterns},
             expected_elements={question_id: elements},
@@ -1082,6 +1143,13 @@ class QuestionnaireSignalRegistry:
             semantic_expansions=semantic_expansions,
             context_requirements=context_requirements,
             evidence_boosts=evidence_boosts,
+
+            # Integrated Strategic Enhancements
+            method_execution_metadata=enhancements.get("method_execution_metadata", {}),
+            validation_specifications=enhancements.get("validation_specifications", {}),
+            scoring_modality_context=enhancements.get("scoring_modality_context", {}),
+            semantic_disambiguation=enhancements.get("semantic_disambiguation", {}),
+
             source_hash=self._source_hash,
             metadata={
                 "question_id": question_id,
@@ -1327,10 +1395,26 @@ class QuestionnaireSignalRegistry:
         Returns:
             Dictionary with cache performance and usage statistics
         """
+        # Opportunity #4: Memory Awareness
+        # Estimate size of caches (rough approximation)
+        cache_size = (
+            sys.getsizeof(self._micro_answering_cache) +
+            sys.getsizeof(self._validation_cache) +
+            sys.getsizeof(self._scoring_cache) +
+            # approximate content size
+            len(self._micro_answering_cache) * 2000
+        )
+
+        # If cache is too big (>100MB), clear it
+        if cache_size > 100 * 1024 * 1024:
+            logger.warning("cache_size_limit_exceeded", size=cache_size)
+            self.clear_cache()
+
         return {
             "cache_hits": self._metrics.cache_hits,
             "cache_misses": self._metrics.cache_misses,
             "hit_rate": self._metrics.hit_rate,
+            "estimated_cache_size_bytes": cache_size,
             "total_requests": self._metrics.total_requests,
             "signal_loads": self._metrics.signal_loads,
             "errors": self._metrics.errors,
@@ -1407,21 +1491,25 @@ class QuestionnaireSignalRegistry:
             # Get all question IDs
             blocks = dict(self._questionnaire.data.get("blocks", {}))
             micro_questions = blocks.get("micro_questions", [])
-            question_ids = [q.get("question_id", "") for q in micro_questions]
+            question_ids = [q.get("question_id", "") for q in micro_questions if q.get("question_id")]
         
-        for q_id in question_ids:
-            if not q_id:
-                continue
-            try:
-                self.get_micro_answering_signals(q_id)
-                self.get_validation_signals(q_id)
-                self.get_scoring_signals(q_id)
-            except Exception as e:
-                logger.warning(
-                    "warmup_failed_for_question",
-                    question_id=q_id,
-                    error=str(e)
-                )
+        # Opportunity #2: Parallel Signal Warmup
+        max_workers = min(32, len(question_ids)) if question_ids else 1
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_qid = {
+                executor.submit(self._warmup_single_question, q_id): q_id
+                for q_id in question_ids
+            }
+            for future in concurrent.futures.as_completed(future_to_qid):
+                q_id = future_to_qid[future]
+                try:
+                    future.result()
+                except Exception as e:
+                    logger.warning(
+                        "warmup_failed_for_question",
+                        question_id=q_id,
+                        error=str(e)
+                    )
         
         # Warmup assembly levels
         for level in self._valid_assembly_levels:
@@ -1448,6 +1536,44 @@ class QuestionnaireSignalRegistry:
     def valid_assembly_levels(self) -> list[str]:
         """Get valid assembly levels."""
         return self._valid_assembly_levels.copy()
+
+    def verify_integrity(self) -> dict[str, Any]:
+        """Verify logical integrity of signals.
+
+        Opportunity #5: Deep Integrity Verification
+        Checks that all referenced patterns in validation rules actually exist.
+
+        Returns:
+            Dictionary of integrity violations.
+        """
+        violations = []
+
+        # Load all signals (this might be slow, but it's an audit tool)
+        blocks = dict(self._questionnaire.data.get("blocks", {}))
+        micro_questions = blocks.get("micro_questions", [])
+        question_ids = [q.get("question_id", "") for q in micro_questions if q.get("question_id")]
+
+        for q_id in question_ids:
+            try:
+                ma = self.get_micro_answering_signals(q_id)
+                val = self.get_validation_signals(q_id)
+
+                # Check validation rules exist
+                if not val.validation_rules.get(q_id):
+                     violations.append(f"Question {q_id}: No validation rules defined")
+
+                # Check patterns exist
+                if not ma.question_patterns.get(q_id):
+                     violations.append(f"Question {q_id}: No patterns defined")
+
+            except Exception as e:
+                violations.append(f"Question {q_id}: {str(e)}")
+
+        return {
+            "status": "clean" if not violations else "violations_found",
+            "violation_count": len(violations),
+            "violations": violations
+        }
 
 
 # ============================================================================

@@ -97,7 +97,7 @@ except ImportError:
 
 # SISAS Signal Registry - REAL PATHS after repo reorganization
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry as SISASSignalRegistry,
         create_signal_registry,
     )
@@ -109,7 +109,7 @@ except ImportError:
 
 # SignalPack with compute_hash - REAL PATH
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import SignalPack
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalPack
     SIGNAL_PACK_AVAILABLE = True
 except ImportError:
     SIGNAL_PACK_AVAILABLE = False
@@ -117,7 +117,7 @@ except ImportError:
 
 # Signal loader for building packs by policy area - REAL PATH
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_loader import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader import (
         build_all_signal_packs,
         build_signal_pack_from_monolith,
     )
