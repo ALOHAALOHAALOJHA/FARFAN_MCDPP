@@ -52,7 +52,7 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
-from canonic_phases.Phase_two import executors_contract as executors
+from canonic_phases.Phase_two import executors
 from canonic_phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,
@@ -1632,9 +1632,82 @@ class Orchestrator:
         micro_questions = config.get("micro_questions", [])
         instrumentation.start(items_total=len(micro_questions))
         
-        logger.warning("Phase 2 stub - add your executor logic here")
-        
         results: list[MicroQuestionRun] = []
+
+        for question in micro_questions:
+            self._ensure_not_aborted()
+            start_q = time.perf_counter()
+
+            # Determine base_slot (e.g. "D1-Q1") from question ID or metadata
+            base_slot = question.get("base_slot")
+            if not base_slot:
+                logger.warning(f"Question missing base_slot: {question.get('id')}")
+                continue
+
+            executor_class = self.executors.get(base_slot)
+            if not executor_class:
+                logger.warning(f"No executor found for {base_slot}")
+                continue
+
+            try:
+                # Instantiate executor with injected dependencies
+                instance = executor_class(
+                    method_executor=self.executor,
+                    signal_registry=self.executor.signal_registry,
+                    config=self.executor_config,
+                    questionnaire_provider=self._canonical_questionnaire,
+                    calibration_orchestrator=self.calibration_orchestrator,
+                    enriched_packs=self._enriched_packs or {},
+                )
+
+                # Build context
+                q_context = {
+                    "question_id": question.get("id"),
+                    "question_global": question.get("global_id"),
+                    "base_slot": base_slot,
+                    "patterns": question.get("patterns", []),
+                    "expected_elements": question.get("expected_elements", []),
+                    "identity": {
+                        "dimension_id": question.get("dimension_id"),
+                        "cluster_id": question.get("cluster_id"),
+                    }
+                }
+
+                # Execute
+                result_data = instance.execute(
+                    document=document,
+                    method_executor=self.executor,
+                    question_context=q_context
+                )
+
+                duration = (time.perf_counter() - start_q) * 1000
+
+                # Result
+                run_result = MicroQuestionRun(
+                    question_id=question.get("id"),
+                    question_global=question.get("global_id"),
+                    base_slot=base_slot,
+                    metadata=result_data.get("metadata", {}),
+                    evidence=result_data.get("evidence"),
+                    duration_ms=duration,
+                )
+                results.append(run_result)
+                instrumentation.increment(latency=duration)
+
+            except Exception as e:
+                logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
+                instrumentation.record_error("execution", str(e))
+                # Create failed result
+                results.append(MicroQuestionRun(
+                    question_id=question.get("id"),
+                    question_global=question.get("global_id"),
+                    base_slot=base_slot,
+                    metadata={},
+                    evidence=None,
+                    error=str(e),
+                    aborted=False
+                ))
+
         return results
     
     async def _score_micro_results_async(

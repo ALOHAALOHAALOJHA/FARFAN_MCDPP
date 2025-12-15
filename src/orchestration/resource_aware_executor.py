@@ -163,26 +163,23 @@ class ResourceAwareExecutor:
         """Synchronous execution wrapper."""
         try:
             from canonic_phases.Phase_two.executors import (
-                D3_Q3_TraceabilityValidator,
-                D4_Q2_CausalChainValidator,
+                D3Q3_Executor,
+                D4Q2_Executor,
             )
             
             executor_map = {
-                "D3-Q3": D3_Q3_TraceabilityValidator,
-                "D4-Q2": D4_Q2_CausalChainValidator,
+                "D3-Q3": D3Q3_Executor,
+                "D4-Q2": D4Q2_Executor,
             }
             
             executor_class = executor_map.get(executor_id)
             if not executor_class:
                 raise ValueError(f"Unknown executor: {executor_id}")
             
-            executor_instance = executor_class(
-                executor_id=executor_id,
-                config={},
-                method_executor=self.method_executor,
-            )
-            
-            return executor_instance.execute(context)
+            # TODO: ResourceAwareExecutor needs update to support BaseExecutorWithContract dependencies.
+            # Currently missing signal_registry, config, questionnaire_provider.
+            # Bypassing execution for now to maintain structure integrity.
+            raise NotImplementedError("ResourceAwareExecutor update pending for Contract-Based Executors")
             
         except Exception as exc:
             logger.error(f"Sync execution failed: {exc}")
