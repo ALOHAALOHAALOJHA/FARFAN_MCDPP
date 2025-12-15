@@ -171,7 +171,7 @@ class TestOrchestratorRuntimeConfig:
     """Test Orchestrator integration with RuntimeConfig."""
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_accepts_runtime_config(
         self,
         mock_validate_structure,
@@ -189,7 +189,7 @@ class TestOrchestratorRuntimeConfig:
         assert orchestrator.runtime_config.mode == RuntimeMode.PROD
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_runtime_config_none(
         self,
         mock_validate_structure,
@@ -205,7 +205,7 @@ class TestOrchestratorRuntimeConfig:
         assert orchestrator.runtime_config is None
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_logs_runtime_mode_prod(
         self,
@@ -223,11 +223,19 @@ class TestOrchestratorRuntimeConfig:
         
         # Check that info was logged
         assert mock_logger.info.called
-        call_args = mock_logger.info.call_args
-        assert "orchestrator_runtime_mode" in str(call_args)
+        found = False
+        for call in mock_logger.info.call_args_list:
+             if call.args and "orchestrator_runtime_mode" in str(call.args[0]):
+                 found = True
+                 break
+             # Structlog style
+             if call.args and call.args[0] == "orchestrator_runtime_mode":
+                 found = True
+                 break
+        assert found, "orchestrator_runtime_mode not logged"
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_logs_runtime_mode_dev(
         self,
@@ -247,7 +255,7 @@ class TestOrchestratorRuntimeConfig:
         assert orchestrator.runtime_config.mode == RuntimeMode.DEV
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_warns_if_no_runtime_config(
         self,
@@ -264,8 +272,15 @@ class TestOrchestratorRuntimeConfig:
         
         # Check that warning was logged
         assert mock_logger.warning.called
-        call_args = mock_logger.warning.call_args
-        assert "orchestrator_no_runtime_config" in str(call_args)
+        found = False
+        for call in mock_logger.warning.call_args_list:
+             if call.args and "orchestrator_no_runtime_config" in str(call.args[0]):
+                 found = True
+                 break
+             if call.args and call.args[0] == "orchestrator_no_runtime_config":
+                 found = True
+                 break
+        assert found, "orchestrator_no_runtime_config warning not logged"
 
 
 # ============================================================================
@@ -276,7 +291,7 @@ class TestOrchestratorPhase0Validation:
     """Test Orchestrator integration with Phase 0 exit gate validation."""
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_accepts_phase0_validation(
         self,
         mock_validate_structure,
@@ -294,7 +309,7 @@ class TestOrchestratorPhase0Validation:
         assert orchestrator.phase0_validation.all_passed is True
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_fails_if_phase0_gates_failed(
         self,
         mock_validate_structure,
@@ -313,7 +328,7 @@ class TestOrchestratorPhase0Validation:
         assert "bootstrap" in str(exc_info.value)
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_logs_phase0_validation_success(
         self,
@@ -331,8 +346,15 @@ class TestOrchestratorPhase0Validation:
         
         # Check that info was logged
         assert mock_logger.info.called
-        call_args = mock_logger.info.call_args
-        assert "orchestrator_phase0_validation_passed" in str(call_args)
+        found = False
+        for call in mock_logger.info.call_args_list:
+             if call.args and "orchestrator_phase0_validation_passed" in str(call.args[0]):
+                 found = True
+                 break
+             if call.args and call.args[0] == "orchestrator_phase0_validation_passed":
+                 found = True
+                 break
+        assert found, "orchestrator_phase0_validation_passed not logged"
 
 
 # ============================================================================
@@ -343,7 +365,7 @@ class TestOrchestratorLoadConfiguration:
     """Test _load_configuration method with Phase 0 integration."""
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_includes_runtime_mode(
         self,
         mock_validate_structure,
@@ -356,6 +378,7 @@ class TestOrchestratorLoadConfiguration:
             **mock_orchestrator_dependencies,
             runtime_config=mock_runtime_config_prod
         )
+        orchestrator._phase_instrumentation[0] = Mock()
         
         config = orchestrator._load_configuration()
         
@@ -365,7 +388,7 @@ class TestOrchestratorLoadConfiguration:
         assert config["_strict_mode"] is True
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_without_runtime_config(
         self,
         mock_validate_structure,
@@ -377,6 +400,7 @@ class TestOrchestratorLoadConfiguration:
             **mock_orchestrator_dependencies,
             runtime_config=None
         )
+        orchestrator._phase_instrumentation[0] = Mock()
         
         config = orchestrator._load_configuration()
         
@@ -385,7 +409,7 @@ class TestOrchestratorLoadConfiguration:
         assert "_strict_mode" not in config
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_validates_phase0_success(
         self,
         mock_validate_structure,
@@ -398,13 +422,14 @@ class TestOrchestratorLoadConfiguration:
             **mock_orchestrator_dependencies,
             phase0_validation=mock_phase0_validation_success
         )
+        orchestrator._phase_instrumentation[0] = Mock()
         
         # Should not raise
         config = orchestrator._load_configuration()
         assert config is not None
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_fails_if_phase0_failed(
         self,
         mock_validate_structure,
@@ -435,7 +460,7 @@ class TestOrchestratorFullIntegration:
     """Test full integration of RuntimeConfig + Phase 0 validation."""
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_with_full_phase0_context(
         self,
         mock_validate_structure,
@@ -450,6 +475,7 @@ class TestOrchestratorFullIntegration:
             runtime_config=mock_runtime_config_prod,
             phase0_validation=mock_phase0_validation_success
         )
+        orchestrator._phase_instrumentation[0] = Mock()
         
         # Verify both are stored
         assert orchestrator.runtime_config is not None
@@ -462,7 +488,7 @@ class TestOrchestratorFullIntegration:
         assert config["_runtime_mode"] == "prod"
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.orchestrator._validate_questionnaire_structure')
+    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_backward_compatible_no_phase0(
         self,
         mock_validate_structure,
@@ -474,6 +500,7 @@ class TestOrchestratorFullIntegration:
             **mock_orchestrator_dependencies
             # No runtime_config, no phase0_validation
         )
+        orchestrator._phase_instrumentation[0] = Mock()
         
         assert orchestrator.runtime_config is None
         assert orchestrator.phase0_validation is None

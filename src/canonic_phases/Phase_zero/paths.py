@@ -100,6 +100,8 @@ PROJECT_ROOT: Final[Path] = _detect_project_root()
 SRC_DIR: Final[Path] = PROJECT_ROOT / "src"
 DATA_DIR: Final[Path] = PROJECT_ROOT / "data"
 TESTS_DIR: Final[Path] = PROJECT_ROOT / "tests"
+CONFIG_DIR: Final[Path] = PROJECT_ROOT / "canonic_questionnaire_central"
+QUESTIONNAIRE_FILE: Final[Path] = CONFIG_DIR / "questionnaire_monolith.json"
 
 
 def proj_root() -> Path:
@@ -448,6 +450,8 @@ __all__ = [
     "SRC_DIR",
     "DATA_DIR",
     "TESTS_DIR",
+    "CONFIG_DIR",
+    "QUESTIONNAIRE_FILE",
     # Directory accessors
     "proj_root",
     "src_dir",

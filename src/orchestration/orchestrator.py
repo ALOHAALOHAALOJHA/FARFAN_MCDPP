@@ -20,6 +20,7 @@ import logging
 import os
 import statistics
 import threading
+import structlog
 import time
 from collections import deque
 from dataclasses import dataclass, field, asdict
@@ -64,7 +65,7 @@ from canonic_phases.Phase_two.irrigation_synchronizer import (
     ExecutionPlan,
 )
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 _CORE_MODULE_DIR = Path(__file__).resolve().parent
 
 EXPECTED_QUESTION_COUNT = int(os.getenv("EXPECTED_QUESTION_COUNT", "305"))

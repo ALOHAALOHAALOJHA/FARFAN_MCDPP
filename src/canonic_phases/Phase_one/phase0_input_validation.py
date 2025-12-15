@@ -61,7 +61,7 @@ from typing import Any
 # REQUIRED: pydantic for runtime contract validation
 # This is a hard dependency for Phase 0 as per dura_lex contract system
 try:
-    from pydantic import BaseModel, Field, field_validator
+    from pydantic import BaseModel, Field, field_validator, model_validator
 except ImportError as e:
     raise ImportError(
         "pydantic>=2.0 is REQUIRED for Phase 0 contract validation. "
@@ -226,20 +226,18 @@ class CanonicalInputValidator(BaseModel):
     validation_errors: list[str] = Field(default_factory=list)
     validation_warnings: list[str] = Field(default_factory=list)
 
-    @field_validator("validation_passed")
-    @classmethod
-    def validate_passed(cls, v: bool, info) -> bool:
+    @model_validator(mode='after')
+    def validate_consistency(self) -> "CanonicalInputValidator":
         """Ensure validation_passed is True and consistent with errors."""
-        if not v:
+        if not self.validation_passed:
             raise ValueError(
                 "validation_passed must be True for valid CanonicalInput"
             )
-        errors = info.data.get("validation_errors", [])
-        if errors:
+        if self.validation_errors:
             raise ValueError(
-                f"validation_passed is True but validation_errors is not empty: {errors}"
+                f"validation_passed is True but validation_errors is not empty: {self.validation_errors}"
             )
-        return v
+        return self
 
     @field_validator("pdf_sha256", "questionnaire_sha256")
     @classmethod
