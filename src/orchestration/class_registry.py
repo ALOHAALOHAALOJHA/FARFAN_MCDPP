@@ -67,8 +67,7 @@ _CLASS_PATHS: Mapping[str, str] = {
     "EvidenceAssembler": "canonic_phases.Phase_two.evidence_nexus.EvidenceNexus",  # Alias for backwards compatibility
     
     # Executors (in canonic_phases/Phase_two/executors.py)
-    "D1_Q1_QuantitativeBaselineExtractor": "canonic_phases.Phase_two.executors.D1_Q1_QuantitativeBaselineExtractor",
-    "D1_Q2_ProblemDimensioningAnalyzer": "canonic_phases.Phase_two.executors.D1_Q2_ProblemDimensioningAnalyzer",
+    # D1_Q1_QuantitativeBaselineExtractor and D1_Q2_ProblemDimensioningAnalyzer removed (Legacy)
     
     # Additional classes that may be referenced in contracts
     "MechanismPartExtractor": "methods_dispensary.derek_beach.MechanismPartExtractor",
