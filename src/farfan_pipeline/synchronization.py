@@ -178,6 +178,15 @@ class ChunkMatrix:
     def integrity_hash(self) -> str:
         return self._integrity_hash
 
+    def raw_chunks_sorted(self) -> tuple[Any, ...]:  # noqa: ANN401
+        raw_chunks: list[Any] = []
+        for key in self._matrix_keys_sorted:
+            raw = self._chunk_matrix[key].raw_chunk
+            if raw is None:
+                raise ValueError(f"ChunkMatrix missing raw_chunk for key={key}")
+            raw_chunks.append(raw)
+        return tuple(raw_chunks)
+
     def get_chunk(self, policy_area_id: str, dimension_id: str) -> SmartPolicyChunk:
         return self._chunk_matrix[(policy_area_id, dimension_id)]
 
