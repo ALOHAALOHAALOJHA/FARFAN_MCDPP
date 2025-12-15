@@ -2102,17 +2102,29 @@ class Orchestrator:
     async def _format_and_export(
         self, report: dict[str, Any], config: dict[str, Any]
     ) -> dict[str, Any]:
-        """FASE 10: Format and export (STUB)."""
+        """FASE 10: Format and export (and Ingest to Dashboard)."""
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[10]
         
         instrumentation.start(items_total=1)
         
+        # Dashboard Ingestion Integration
+        # We perform this here to ensure the dashboard is updated immediately after analysis
+        try:
+            from dashboard_atroz_.ingestion import DashboardIngester
+            ingester = DashboardIngester()
+            # Pass the full context which contains all artifacts (macro_result, cluster_scores, etc.)
+            await ingester.ingest_results(self._context)
+        except Exception as e:
+            logger.error(f"Dashboard ingestion failed in Phase 10: {e}")
+            instrumentation.record_warning("ingestion", f"Dashboard update failed: {e}")
+
         logger.warning("Phase 10 stub - add your export logic here")
         
         export_payload = {
             "status": "stub",
             "report": report,
+            "dashboard_updated": True
         }
         return export_payload
 
