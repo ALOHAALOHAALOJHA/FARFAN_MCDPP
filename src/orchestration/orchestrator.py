@@ -1260,11 +1260,12 @@ class Orchestrator:
                 if phase_id == 1:
                     try:
                         document = self._context.get("document")
-                        chunks = getattr(document, "chunks", []) if document else []
-                        
+                        if document is None:
+                            raise ValueError("Phase 1 output missing: context['document'] is None")
+
                         synchronizer = IrrigationSynchronizer(
                             questionnaire=self._monolith_data,
-                            document_chunks=chunks
+                            preprocessed_document=document,
                         )
                         self._execution_plan = synchronizer.build_execution_plan()
                         
