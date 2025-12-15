@@ -36,7 +36,7 @@ from orchestration.memory_safety import (
     ExecutorType,
     create_default_guard,
 )
-from farfan_pipeline.processing.policy_processor import CausalDimension
+from methods_dispensary.policy_processor import CausalDimension
 
 try:
     from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
