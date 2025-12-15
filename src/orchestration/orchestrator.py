@@ -72,6 +72,7 @@ from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
+from canonic_phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
 
 logger = structlog.get_logger(__name__)
 _CORE_MODULE_DIR = Path(__file__).resolve().parent
@@ -1651,19 +1652,28 @@ class Orchestrator:
         signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
         
         logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results")
+        # Initialize SignalEnrichedScorer if signals available
+        scorer_engine = None
+        if signal_registry is not None:
+            scorer_engine = SignalEnrichedScorer(signal_registry=signal_registry)
+            logger. info(f"Phase 3: Scoring {len(micro_results)} micro-question results using SignalEnrichedScorer")
+        else:
+            logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results")
         
         for idx, micro_result in enumerate(micro_results):
             self._ensure_not_aborted()
             
-            try:
+            try: 
+                # Extract scoring signals if available
                 scoring_signals = None
                 if signal_registry is not None:
                     try:
                         scoring_signals = signal_registry.get_scoring_signals(micro_result.question_id)
-                    except Exception as e:
+                    except Exception as e: 
                         pass
                 
-                metadata = micro_result.metadata
+                # Extract metadata and evidence
+                metadata = micro_result. metadata
                 evidence_obj = micro_result.evidence
                 if hasattr(evidence_obj, "__dict__"):
                     evidence = evidence_obj.__dict__
@@ -1672,10 +1682,11 @@ class Orchestrator:
                 else:
                     evidence = {}
                 
+                # Extract score from multiple possible locations
                 score = metadata.get("overall_confidence")
                 if score is None:
                     validation = evidence.get("validation", {})
-                    score = validation.get("score")
+                    score = validation. get("score")
                 
                 if score is None:
                     conf_scores = evidence.get("confidence_scores", {})
@@ -1686,8 +1697,9 @@ class Orchestrator:
                 except (TypeError, ValueError):
                     score_float = 0.0
                 
+                # Determine completeness and quality level
                 completeness = metadata.get("completeness")
-                if completeness:
+                if completeness: 
                     completeness_lower = str(completeness).lower()
                     quality_mapping = {
                         "complete": "EXCELENTE",
@@ -1700,34 +1712,90 @@ class Orchestrator:
                     validation = evidence.get("validation", {})
                     quality_level = validation.get("quality_level", "INSUFICIENTE")
                 
-                scoring_details = {
+                # Build base scoring details
+                base_scoring_details = {
                     "source": "evidence_nexus",
                     "method": "overall_confidence",
                     "completeness": completeness,
                     "calibrated_interval": metadata.get("calibrated_interval"),
                 }
                 
+                # Apply signal enrichment if scorer engine available
+                if scorer_engine is not None:
+                    # Validate quality level using signals
+                    validated_quality, validation_details = scorer_engine.validate_quality_level(
+                        question_id=micro_result.question_id,
+                        quality_level=quality_level,
+                        score=score_float,
+                        completeness=str(completeness).lower() if completeness else None,
+                    )
+                    
+                    # Get threshold adjustment details
+                    _, adjustment_details = scorer_engine.adjust_threshold_for_question(
+                        question_id=micro_result.question_id,
+                        base_threshold=0.7,
+                        score=score_float,
+                        metadata=metadata
+                    )
+                    
+                    # Enrich scoring details with signal metadata
+                    scoring_details = scorer_engine.enrich_scoring_details(
+                        question_id=micro_result.question_id,
+                        base_scoring_details=base_scoring_details,
+                        threshold_adjustment=adjustment_details,
+                        quality_validation=validation_details
+                    )
+                    
+                    # Use signal-validated quality
+                    final_quality_level = validated_quality
+                else:
+                    # No signal enrichment - use base scoring
+                    scoring_details = base_scoring_details
+                    final_quality_level = quality_level
+                
+                # Add raw signal info if available (legacy compatibility)
                 if scoring_signals is not None:
-                    scoring_details["signal_enrichment"] = {
+                    scoring_details["signal_enrichment_raw"] = {
                         "modality": scoring_signals.question_modalities.get(micro_result.question_id),
                         "source_hash": getattr(scoring_signals, 'source_hash', None),
                         "signal_source": "sisas_registry"
                     }
                 
+                # Create scored result
                 scored = ScoredMicroQuestion(
                     question_id=micro_result.question_id,
                     question_global=micro_result.question_global,
                     base_slot=micro_result.base_slot,
                     score=score_float,
                     normalized_score=score_float,
-                    quality_level=quality_level,
+                    quality_level=final_quality_level,
                     evidence=micro_result.evidence,
                     scoring_details=scoring_details,
-                    metadata=micro_result.metadata,
+                    metadata=micro_result. metadata,
                     error=micro_result.error,
                 )
                 
-                scored_results.append(scored)
+                scored_results. append(scored)
+                instrumentation.increment(latency=0.0)
+                
+            except Exception as e:
+                logger.error(
+                    f"Phase 3: Failed to score question {micro_result.question_global}: {e}",
+                    exc_info=True
+                )
+                scored = ScoredMicroQuestion(
+                    question_id=micro_result.question_id,
+                    question_global=micro_result.question_global,
+                    base_slot=micro_result.base_slot,
+                    score=0.0,
+                    normalized_score=0.0,
+                    quality_level="ERROR",
+                    evidence=micro_result.evidence,
+                    scoring_details={"error":  str(e)},
+                    metadata=micro_result.metadata,
+                    error=f"Scoring error: {e}",
+                )
+                scored_results. append(scored)
                 instrumentation.increment(latency=0.0)
                 
             except Exception as e:
