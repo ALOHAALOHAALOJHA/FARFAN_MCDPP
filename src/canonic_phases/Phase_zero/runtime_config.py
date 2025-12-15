@@ -239,6 +239,54 @@ class RuntimeConfig:
     }
     
     @classmethod
+    def from_dict(cls, data: dict) -> "RuntimeConfig":
+        """
+        Create RuntimeConfig from dictionary (for testing).
+
+        Args:
+            data: Dictionary with configuration values
+
+        Returns:
+            RuntimeConfig: Configuration instance
+        """
+        mode_val = data.get("mode", "prod")
+        if isinstance(mode_val, RuntimeMode):
+            mode = mode_val
+        else:
+            try:
+                mode = RuntimeMode(str(mode_val).lower())
+            except ValueError:
+                mode = RuntimeMode.PROD
+
+        return cls(
+            mode=mode,
+            allow_contradiction_fallback=data.get("allow_contradiction_fallback", False),
+            allow_validator_disable=data.get("allow_validator_disable", False),
+            allow_execution_estimates=data.get("allow_execution_estimates", False),
+            allow_networkx_fallback=data.get("allow_networkx_fallback", False),
+            allow_spacy_fallback=data.get("allow_spacy_fallback", False),
+            allow_dev_ingestion_fallbacks=data.get("allow_dev_ingestion_fallbacks", False),
+            allow_aggregation_defaults=data.get("allow_aggregation_defaults", False),
+            allow_missing_base_weights=data.get("allow_missing_base_weights", False),
+            allow_hash_fallback=data.get("allow_hash_fallback", True),
+            allow_pdfplumber_fallback=data.get("allow_pdfplumber_fallback", False),
+            strict_calibration=data.get("strict_calibration", True),
+            preferred_spacy_model=data.get("preferred_spacy_model", "es_core_news_lg"),
+            preferred_embedding_model=data.get("preferred_embedding_model", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"),
+            project_root_override=data.get("project_root_override"),
+            data_dir_override=data.get("data_dir_override"),
+            output_dir_override=data.get("output_dir_override"),
+            cache_dir_override=data.get("cache_dir_override"),
+            logs_dir_override=data.get("logs_dir_override"),
+            hf_online=data.get("hf_online", False),
+            expected_question_count=data.get("expected_question_count", 305),
+            expected_method_count=data.get("expected_method_count", 416),
+            phase_timeout_seconds=data.get("phase_timeout_seconds", 300),
+            max_workers=data.get("max_workers", 4),
+            batch_size=data.get("batch_size", 100),
+        )
+
+    @classmethod
     def from_env(cls) -> "RuntimeConfig":
         """
         Parse runtime configuration from environment variables.
