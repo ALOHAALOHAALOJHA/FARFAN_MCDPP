@@ -1,0 +1,642 @@
+{
+  "audit_metadata": {
+    "orchestrator_path": "/home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/src/orchestration/orchestrator.py",
+    "audit_timestamp": "2025-12-11T07:56:16.999010Z",
+    "total_lines": 1696
+  },
+  "overall_score": 86.857,
+  "category_scores": {
+    "architecture": 90.0,
+    "phase_flow": 55.0,
+    "resource_management": 100.0,
+    "instrumentation": 100.0,
+    "abort_mechanism": 75.0,
+    "data_contracts": 77.76,
+    "error_handling": 100.0,
+    "integration": 100.0,
+    "code_quality": 98.312
+  },
+  "components": {
+    "classes": [
+      {
+        "name": "MacroScoreDict",
+        "bases": [
+          "TypedDict"
+        ],
+        "methods": [],
+        "method_count": 0,
+        "line": 140
+      },
+      {
+        "name": "ClusterScoreData",
+        "bases": [],
+        "methods": [],
+        "method_count": 0,
+        "line": 152
+      },
+      {
+        "name": "MacroEvaluation",
+        "bases": [],
+        "methods": [],
+        "method_count": 0,
+        "line": 160
+      },
+      {
+        "name": "Evidence",
+        "bases": [],
+        "methods": [],
+        "method_count": 0,
+        "line": 168
+      },
+      {
+        "name": "PhaseResult",
+        "bases": [],
+        "methods": [],
+        "method_count": 0,
+        "line": 176
+      },
+      {
+        "name": "MicroQuestionRun",
+        "bases": [],
+        "methods": [],
+        "method_count": 0,
+        "line": 188
+      },
+      {
+        "name": "ScoredMicroQuestion",
+        "bases": [],
+        "methods": [],
+        "method_count": 0,
+        "line": 201
+      },
+      {
+        "name": "AbortRequested",
+        "bases": [
+          "RuntimeError"
+        ],
+        "methods": [],
+        "method_count": 0,
+        "line": 219
+      },
+      {
+        "name": "AbortSignal",
+        "bases": [],
+        "methods": [
+          "__init__",
+          "abort",
+          "is_aborted",
+          "get_reason",
+          "get_timestamp",
+          "reset"
+        ],
+        "method_count": 6,
+        "line": 224
+      },
+      {
+        "name": "ResourceLimits",
+        "bases": [],
+        "methods": [
+          "__init__",
+          "max_workers",
+          "attach_semaphore",
+          "_record_usage",
+          "_predict_worker_budget",
+          "get_resource_usage",
+          "check_memory_exceeded",
+          "check_cpu_exceeded",
+          "get_usage_history"
+        ],
+        "method_count": 9,
+        "line": 269
+      },
+      {
+        "name": "PhaseInstrumentation",
+        "bases": [],
+        "methods": [
+          "__init__",
+          "start",
+          "increment",
+          "should_snapshot",
+          "capture_resource_snapshot",
+          "record_warning",
+          "record_error",
+          "_detect_latency_anomaly",
+          "complete",
+          "duration_ms",
+          "progress",
+          "throughput",
+          "latency_histogram",
+          "build_metrics"
+        ],
+        "method_count": 14,
+        "line": 423
+      },
+      {
+        "name": "PhaseTimeoutError",
+        "bases": [
+          "RuntimeError"
+        ],
+        "methods": [
+          "__init__"
+        ],
+        "method_count": 1,
+        "line": 587
+      },
+      {
+        "name": "_LazyInstanceDict",
+        "bases": [],
+        "methods": [
+          "__init__",
+          "get",
+          "__getitem__",
+          "__contains__",
+          "keys",
+          "values",
+          "items",
+          "__len__"
+        ],
+        "method_count": 8,
+        "line": 642
+      },
+      {
+        "name": "MethodExecutor",
+        "bases": [],
+        "methods": [
+          "__init__",
+          "_supports_parameter",
+          "execute",
+          "inject_method",
+          "has_method",
+          "get_registry_stats",
+          "get_routing_metrics"
+        ],
+        "method_count": 7,
+        "line": 673
+      },
+      {
+        "name": "RecommendationEnginePort",
+        "bases": [],
+        "methods": [],
+        "method_count": 0,
+        "line": 825
+      },
+      {
+        "name": "Orchestrator",
+        "bases": [],
+        "methods": [
+          "__init__",
+          "_ensure_not_aborted",
+          "request_abort",
+          "reset_abort",
+          "_get_phase_timeout",
+          "process_development_plan",
+          "get_processing_status",
+          "get_phase_metrics",
+          "export_metrics",
+          "calibrate_method",
+          "_load_configuration",
+          "_ingest_document",
+          "_aggregate_clusters",
+          "_evaluate_macro",
+          "_assemble_report"
+        ],
+        "method_count": 15,
+        "line": 834
+      },
+      {
+        "name": "DependencyLockdown",
+        "bases": [],
+        "methods": [
+          "get_mode_description"
+        ],
+        "method_count": 1,
+        "line": 819
+      }
+    ],
+    "class_count": 17,
+    "functions": [
+      {
+        "name": "resolve_workspace_path",
+        "params": [
+          "path"
+        ],
+        "param_count": 1,
+        "has_return_type": true,
+        "is_async": false,
+        "line": 82
+      },
+      {
+        "name": "_normalize_monolith_for_hash",
+        "params": [
+          "monolith"
+        ],
+        "param_count": 1,
+        "has_return_type": true,
+        "is_async": false,
+        "line": 112
+      },
+      {
+        "name": "validate_phase_definitions",
+        "params": [
+          "phase_list",
+          "orchestrator_class"
+        ],
+        "param_count": 2,
+        "has_return_type": true,
+        "is_async": false,
+        "line": 773
+      },
+      {
+        "name": "get_questionnaire_provider",
+        "params": [],
+        "param_count": 0,
+        "has_return_type": true,
+        "is_async": false,
+        "line": 812
+      },
+      {
+        "name": "get_dependency_lockdown",
+        "params": [],
+        "param_count": 0,
+        "has_return_type": true,
+        "is_async": false,
+        "line": 817
+      }
+    ],
+    "function_count": 5,
+    "constants": [
+      {
+        "name": "RULES_DIR",
+        "line": 38
+      },
+      {
+        "name": "_CORE_MODULE_DIR",
+        "line": 66
+      },
+      {
+        "name": "EXPECTED_QUESTION_COUNT",
+        "line": 68
+      },
+      {
+        "name": "EXPECTED_METHOD_COUNT",
+        "line": 69
+      },
+      {
+        "name": "PHASE_TIMEOUT_DEFAULT",
+        "line": 70
+      },
+      {
+        "name": "P01_EXPECTED_CHUNK_COUNT",
+        "line": 71
+      },
+      {
+        "name": "P",
+        "line": 74
+      },
+      {
+        "name": "T",
+        "line": 75
+      }
+    ],
+    "constant_count": 8,
+    "import_count": 62
+  },
+  "phases": {
+    "phase_definitions": [
+      {
+        "phase_id": 0,
+        "mode": "sync",
+        "handler": "_load_configuration",
+        "label": "FASE 0 - Configuración"
+      },
+      {
+        "phase_id": 1,
+        "mode": "sync",
+        "handler": "_ingest_document",
+        "label": "FASE 1 - Ingestión"
+      },
+      {
+        "phase_id": 2,
+        "mode": "async",
+        "handler": "_execute_micro_questions_async",
+        "label": "FASE 2 - Micro Preguntas"
+      },
+      {
+        "phase_id": 3,
+        "mode": "async",
+        "handler": "_score_micro_results_async",
+        "label": "FASE 3 - Scoring"
+      },
+      {
+        "phase_id": 4,
+        "mode": "async",
+        "handler": "_aggregate_dimensions_async",
+        "label": "FASE 4 - Dimensiones"
+      },
+      {
+        "phase_id": 5,
+        "mode": "async",
+        "handler": "_aggregate_policy_areas_async",
+        "label": "FASE 5 - Áreas"
+      },
+      {
+        "phase_id": 6,
+        "mode": "sync",
+        "handler": "_aggregate_clusters",
+        "label": "FASE 6 - Clústeres"
+      },
+      {
+        "phase_id": 7,
+        "mode": "sync",
+        "handler": "_evaluate_macro",
+        "label": "FASE 7 - Macro"
+      },
+      {
+        "phase_id": 8,
+        "mode": "async",
+        "handler": "_generate_recommendations",
+        "label": "FASE 8 - Recomendaciones"
+      },
+      {
+        "phase_id": 9,
+        "mode": "sync",
+        "handler": "_assemble_report",
+        "label": "FASE 9 - Reporte"
+      },
+      {
+        "phase_id": 10,
+        "mode": "async",
+        "handler": "_format_and_export",
+        "label": "FASE 10 - Exportación"
+      }
+    ],
+    "phase_count": 11,
+    "phase_handlers": {
+      "_load_configuration": {
+        "is_async": false,
+        "params": [
+          "self"
+        ],
+        "line": 1263
+      },
+      "_ingest_document": {
+        "is_async": false,
+        "params": [
+          "self",
+          "pdf_path",
+          "config"
+        ],
+        "line": 1299
+      },
+      "_execute_micro_questions_async": {
+        "is_async": true,
+        "params": [
+          "self",
+          "document",
+          "config"
+        ],
+        "line": 1403
+      },
+      "_score_micro_results_async": {
+        "is_async": true,
+        "params": [
+          "self",
+          "micro_results",
+          "config"
+        ],
+        "line": 1426
+      },
+      "_aggregate_dimensions_async": {
+        "is_async": true,
+        "params": [
+          "self",
+          "scored_results",
+          "config"
+        ],
+        "line": 1567
+      },
+      "_aggregate_policy_areas_async": {
+        "is_async": true,
+        "params": [
+          "self",
+          "dimension_scores",
+          "config"
+        ],
+        "line": 1581
+      },
+      "_aggregate_clusters": {
+        "is_async": false,
+        "params": [
+          "self",
+          "policy_area_scores",
+          "config"
+        ],
+        "line": 1595
+      },
+      "_evaluate_macro": {
+        "is_async": false,
+        "params": [
+          "self",
+          "cluster_scores",
+          "config"
+        ],
+        "line": 1609
+      },
+      "_generate_recommendations": {
+        "is_async": true,
+        "params": [
+          "self",
+          "macro_result",
+          "config"
+        ],
+        "line": 1627
+      },
+      "_assemble_report": {
+        "is_async": false,
+        "params": [
+          "self",
+          "recommendations",
+          "config"
+        ],
+        "line": 1644
+      },
+      "_format_and_export": {
+        "is_async": true,
+        "params": [
+          "self",
+          "report",
+          "config"
+        ],
+        "line": 1661
+      }
+    },
+    "handler_count": 11,
+    "phase_timeouts": {},
+    "phase_item_targets": {},
+    "phase_dependencies": {},
+    "phase_outputs": {},
+    "sync_phases": 5,
+    "async_phases": 6
+  },
+  "resource_management": {
+    "has_resource_limits": true,
+    "has_memory_tracking": true,
+    "has_cpu_tracking": true,
+    "has_adaptive_workers": true,
+    "has_usage_history": true,
+    "worker_constraints": {
+      "max_workers": 32,
+      "min_workers": 4,
+      "hard_max_workers": 64
+    },
+    "thresholds": {
+      "max_memory_mb": 4096.0,
+      "max_cpu_percent": 85.0
+    }
+  },
+  "instrumentation": {
+    "has_phase_instrumentation": true,
+    "has_progress_tracking": true,
+    "has_resource_snapshots": true,
+    "has_latency_tracking": true,
+    "has_warning_recording": true,
+    "has_error_recording": true,
+    "metrics_exported": [
+      "build_metrics"
+    ],
+    "metric_count": 1
+  },
+  "abort_mechanism": {
+    "has_abort_signal": true,
+    "thread_safe": true,
+    "has_abort_reason": false,
+    "has_abort_timestamp": false,
+    "propagation_points": [
+      "_ensure_not_aborted:981",
+      "get_processing_status:1137",
+      "get_processing_status:1137",
+      "export_metrics:1178",
+      "_load_configuration:1263",
+      "_ingest_document:1299",
+      "_aggregate_clusters:1595",
+      "_evaluate_macro:1609",
+      "_assemble_report:1644"
+    ],
+    "propagation_count": 9
+  },
+  "data_contracts": {
+    "typed_dicts": [
+      "MacroScoreDict"
+    ],
+    "typed_dict_count": 1,
+    "dataclasses": [
+      "ClusterScoreData",
+      "MacroEvaluation",
+      "Evidence",
+      "PhaseResult",
+      "MicroQuestionRun",
+      "ScoredMicroQuestion"
+    ],
+    "dataclass_count": 6,
+    "phase_io_alignment": false,
+    "type_safety_score": 1.11
+  },
+  "error_handling": {
+    "has_timeout_handling": true,
+    "has_abort_handling": true,
+    "has_exception_recovery": true,
+    "try_except_count": 21,
+    "finally_count": 1,
+    "error_categories": [
+      "",
+      "asyncio.TimeoutError",
+      "asyncio.CancelledError",
+      "Exception",
+      "MethodRegistryError",
+      "RuntimeError",
+      "OSError",
+      "PhaseTimeoutError",
+      "AbortRequested",
+      "ValueError"
+    ],
+    "category_count": 10
+  },
+  "integrations": {
+    "method_executor": {
+      "detected": true,
+      "locations": [
+        "import:canonic_phases.Phase_two.executors_contract",
+        "import:canonic_phases.Phase_two.executor_config.ExecutorConfig",
+        "usage_count:5",
+        "usage_count:2",
+        "usage_count:47"
+      ]
+    },
+    "questionnaire": {
+      "detected": true,
+      "locations": [
+        "import:orchestration.factory.CanonicalQuestionnaire",
+        "import:orchestration.factory._validate_questionnaire_structure",
+        "usage_count:2",
+        "usage_count:29",
+        "usage_count:3"
+      ]
+    },
+    "calibration": {
+      "detected": true,
+      "locations": [
+        "import:src.orchestration.calibration_orchestrator.CalibrationSubject",
+        "import:src.orchestration.calibration_orchestrator.EvidenceStore",
+        "import:src.orchestration.calibration_orchestrator.CalibrationOrchestrator",
+        "usage_count:7",
+        "usage_count:11"
+      ]
+    },
+    "sisas": {
+      "detected": true,
+      "locations": [
+        "import:canonic_phases.Phase_two.irrigation_synchronizer.IrrigationSynchronizer",
+        "usage_count:2",
+        "usage_count:19",
+        "usage_count:3"
+      ]
+    },
+    "phase_two_executors": {
+      "detected": true,
+      "locations": [
+        "import:canonic_phases.Phase_two.executors_contract",
+        "usage_count:1",
+        "usage_count:1",
+        "usage_count:33"
+      ]
+    },
+    "aggregation": {
+      "detected": true,
+      "locations": [
+        "import:canonic_phases.Phase_four_five_six_seven.aggregation.AreaPolicyAggregator",
+        "import:canonic_phases.Phase_four_five_six_seven.aggregation.ClusterAggregator",
+        "import:canonic_phases.Phase_four_five_six_seven.aggregation.DimensionAggregator",
+        "usage_count:1",
+        "usage_count:1",
+        "usage_count:1"
+      ]
+    },
+    "recommendation": {
+      "detected": true,
+      "locations": [
+        "usage_count:2",
+        "usage_count:4"
+      ]
+    }
+  },
+  "code_quality": {
+    "total_lines": 1696,
+    "code_lines": 634,
+    "comment_lines": 41,
+    "docstring_lines": 861,
+    "code_to_comment_ratio": 15.46,
+    "type_annotation_coverage": 1.11,
+    "complexity_score": 0.609,
+    "logging_statements": 45
+  }
+}

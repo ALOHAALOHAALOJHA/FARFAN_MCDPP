@@ -56,7 +56,7 @@ class CPPAdapter:
         self.enable_runtime_validation = enable_runtime_validation
         if enable_runtime_validation:
             try:
-                from farfan_pipeline.core.wiring.validation import WiringValidator
+                from orchestration.wiring.validation import WiringValidator
 
                 self.wiring_validator = WiringValidator()
                 self.logger.info(

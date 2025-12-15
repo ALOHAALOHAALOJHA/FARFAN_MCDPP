@@ -31,7 +31,7 @@ from canonic_phases.Phase_three.gaming_resistant_thresholds import (
 
 if TYPE_CHECKING:
     try:
-        from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
             QuestionnaireSignalRegistry,
         )
     except ImportError:

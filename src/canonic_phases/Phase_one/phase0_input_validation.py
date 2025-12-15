@@ -82,18 +82,9 @@ from canonic_phases.Phase_one.phase_protocol import (
 try:
     # Import directly from module files, not through package __init__
     import sys
-    from canonic_phases.Phase_zero.paths import PROJECT_ROOT, safe_join
-
-    dura_lex_path = safe_join(
-        PROJECT_ROOT,
-        "src",
-        "cross_cutting_infrastrucuture",
-        "contractual",
-        "dura_lex",
-    )
-    dura_lex_str = str(dura_lex_path)
-    if dura_lex_str not in sys.path:
-        sys.path.insert(0, dura_lex_str)
+    from pathlib import Path
+    dura_lex_path = Path(__file__).parent.parent.parent / "cross_cutting_infrastructure" / "contractual" / "dura_lex"
+    sys.path.insert(0, str(dura_lex_path))
     
     from idempotency_dedup import IdempotencyContract, EvidenceStore
     from traceability import TraceabilityContract, MerkleTree
@@ -442,7 +433,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         # 1. Resolve questionnaire path
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
-            from farfan_pipeline.config.paths import QUESTIONNAIRE_FILE
+            from canonic_phases.Phase_zero.paths import QUESTIONNAIRE_FILE
 
             questionnaire_path = QUESTIONNAIRE_FILE
             warnings.append(

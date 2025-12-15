@@ -20,6 +20,7 @@ Version: 1.0.0
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -314,16 +315,28 @@ class SignalEnrichedReporter:
                     # Check evidence text against patterns
                     evidence_text = evidence_item.get("text", "").lower()
                     
-                    # Simple pattern matching (in production, use regex)
+                    # Pattern matching with word boundaries to avoid false positives
                     for pattern in patterns[:20]:  # Check top 20 patterns
                         pattern_str = str(pattern).lower()
-                        if pattern_str in evidence_text:
-                            matched_patterns.append(pattern)
+                        # Use word boundaries for more precise matching
+                        try:
+                            if re.search(r'\b' + re.escape(pattern_str) + r'\b', evidence_text):
+                                matched_patterns.append(pattern)
+                        except re.error:
+                            # Fallback to simple substring match if regex fails
+                            if pattern_str in evidence_text:
+                                matched_patterns.append(pattern)
                     
                     for indicator in indicators[:10]:  # Check top 10 indicators
                         indicator_str = str(indicator).lower()
-                        if indicator_str in evidence_text:
-                            matched_indicators.append(indicator)
+                        # Use word boundaries for indicators as well
+                        try:
+                            if re.search(r'\b' + re.escape(indicator_str) + r'\b', evidence_text):
+                                matched_indicators.append(indicator)
+                        except re.error:
+                            # Fallback to simple substring match if regex fails
+                            if indicator_str in evidence_text:
+                                matched_indicators.append(indicator)
                     
                     # Add highlighting metadata if matches found
                     if matched_patterns or matched_indicators:

@@ -28,18 +28,25 @@ State-of-the-Art Components:
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
 import re
 from dataclasses import dataclass
-from enum import Enum
 from functools import lru_cache
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, Protocol, TypedDict
 
 import numpy as np
 from sentence_transformers import CrossEncoder, SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-from farfan_pipeline.core.parameters import ParameterLoaderV2
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+
+from farfan_pipeline.core.canonical_notation import (
+    CANONICAL_DIMENSIONS,
+    CANONICAL_POLICY_AREAS,
+    get_dimension_description,
+    get_dimension_info,
+    get_policy_description,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -55,52 +62,79 @@ DEFAULT_CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 MODEL_PARAPHRASE_MULTILINGUAL = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
 
 # ============================================================================
+# JSON-DRIVEN DISPATCH TABLES (Monolith, no external ontology dependencies)
+# ============================================================================
+
+_DISPENSER_PATTERNS_FILE = "embedding_policy_patterns.json"
+
+
+def _dispenser_path(filename: str) -> Path:
+    return Path(__file__).resolve().with_name(filename)
+
+
+@lru_cache(maxsize=1)
+def _load_dispenser_patterns() -> dict[str, Any]:
+    path = _dispenser_path(_DISPENSER_PATTERNS_FILE)
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+# ============================================================================
 # TYPE SYSTEM - Python 3.10+ Type Safety
 # ============================================================================
 
-class PolicyDomain(Enum):
-    """
-    Colombian PDM policy areas (PA01-PA10) per canonical notation.
+class PolicyDomain:
+    """Proxy to canonical policy areas - never hardcode policy keywords."""
 
-    Values are loaded from questionnaire_monolith.json canonical_notation.
-    Use CanonicalPolicyArea from farfan_core.core.canonical_notation for dynamic access.
-    """
+    @classmethod
+    def get_all(cls) -> dict[str, str]:
+        return CANONICAL_POLICY_AREAS
 
-    # Legacy IDs mapped to canonical codes for backward compatibility
-    P1 = "PA01"  # Derechos de las mujeres e igualdad de género
-    P2 = "PA02"  # Prevención de la violencia y protección frente al conflicto
-    P3 = "PA03"  # Ambiente sano, cambio climático, prevención y atención a desastres
-    P4 = "PA04"  # Derechos económicos, sociales y culturales
-    P5 = "PA05"  # Derechos de las víctimas y construcción de paz
-    P6 = "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud
-    P7 = "PA07"  # Tierras y territorios
-    P8 = "PA08"  # Líderes y defensores de derechos humanos
-    P9 = "PA09"  # Crisis de derechos de personas privadas de la libertad
-    P10 = "PA10"  # Migración transfronteriza
 
-class AnalyticalDimension(Enum):
-    """
-    Analytical dimensions (D1-D6) per canonical notation.
+class AnalyticalDimension:
+    """Proxy to canonical dimensions - never hardcode dimension labels."""
 
-    Values reference canonical notation from questionnaire_monolith.json.
-    Use CanonicalDimension from farfan_core.core.canonical_notation for dynamic access.
-    """
+    @classmethod
+    def get_all(cls) -> dict[str, str]:
+        return CANONICAL_DIMENSIONS
 
-    D1 = "DIM01"  # INSUMOS - Diagnóstico y Recursos
-    D2 = "DIM02"  # ACTIVIDADES - Diseño de Intervención
-    D3 = "DIM03"  # PRODUCTOS - Productos y Outputs
-    D4 = "DIM04"  # RESULTADOS - Resultados y Outcomes
-    D5 = "DIM05"  # IMPACTOS - Impactos de Largo Plazo
-    D6 = "DIM06"  # CAUSALIDAD - Teoría de Cambio
+    @classmethod
+    def D1(cls) -> tuple[str, str]:
+        info = get_dimension_info("D1")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D2(cls) -> tuple[str, str]:
+        info = get_dimension_info("D2")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D3(cls) -> tuple[str, str]:
+        info = get_dimension_info("D3")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D4(cls) -> tuple[str, str]:
+        info = get_dimension_info("D4")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D5(cls) -> tuple[str, str]:
+        info = get_dimension_info("D5")
+        return info.code, get_dimension_description(info.code)
+
+    @classmethod
+    def D6(cls) -> tuple[str, str]:
+        info = get_dimension_info("D6")
+        return info.code, get_dimension_description(info.code)
 
 class PDQIdentifier(TypedDict):
-    """Canonical P-D-Q identifier structure."""
+    """Canonical identifier structure for policy area + analytical dimension."""
 
-    question_unique_id: str  # P#-D#-Q#
-    policy: str  # P#
-    dimension: str  # D#
-    question: int  # Q#
-    rubric_key: str  # D#-Q#
+    context_id: str  # PAxx-DIMxx
+    policy: str  # PAxx
+    dimension: str  # DIMxx
 
 class PosteriorSampleRecord(TypedDict):
     """Serializable posterior sample used by downstream Bayesian consumers."""
@@ -298,7 +332,7 @@ class AdvancedSemanticChunker:
 
         return semantic_chunks
 
-    @calibrated_method("farfan_core.processing.embedding_policy.AdvancedSemanticChunker._normalize_text")
+    
     def _normalize_text(self, text: str) -> str:
         """Normalize text while preserving structure."""
         # Remove excessive whitespace but preserve paragraph breaks
@@ -306,7 +340,7 @@ class AdvancedSemanticChunker:
         text = re.sub(r"\n{3,}", "\n\n", text)
         return text.strip()
 
-    @calibrated_method("farfan_core.processing.embedding_policy.AdvancedSemanticChunker._recursive_split")
+    
     def _recursive_split(self, text: str, target_size: int, overlap: int) -> list[str]:
         """
         Recursive character splitting with semantic boundary respect.
@@ -349,7 +383,7 @@ class AdvancedSemanticChunker:
 
         return chunks
 
-    @calibrated_method("farfan_core.processing.embedding_policy.AdvancedSemanticChunker._find_sentence_boundary")
+    
     def _find_sentence_boundary(self, text: str, start: int, end: int) -> int | None:
         """Find sentence boundary using Spanish punctuation rules."""
         # Spanish sentence endings: . ! ? ; followed by space or newline
@@ -361,7 +395,7 @@ class AdvancedSemanticChunker:
             return matches[-1].end()
         return None
 
-    @calibrated_method("farfan_core.processing.embedding_policy.AdvancedSemanticChunker._extract_sections")
+    
     def _extract_sections(self, text: str) -> list[dict[str, Any]]:
         """Extract document sections with hierarchical structure."""
         sections = []
@@ -378,7 +412,7 @@ class AdvancedSemanticChunker:
     # Number of characters to consider as table extent after marker
     TABLE_EXTENT_CHARS = 300
 
-    @calibrated_method("farfan_core.processing.embedding_policy.AdvancedSemanticChunker._extract_tables")
+    
     def _extract_tables(self, text: str) -> list[dict[str, Any]]:
         """Identify table regions in document."""
         tables = []
@@ -393,7 +427,7 @@ class AdvancedSemanticChunker:
             )
         return tables
 
-    @calibrated_method("farfan_core.processing.embedding_policy.AdvancedSemanticChunker._extract_lists")
+    
     def _extract_lists(self, text: str) -> list[dict[str, Any]]:
         """Identify list structures."""
         lists = []
@@ -406,59 +440,53 @@ class AdvancedSemanticChunker:
         chunk_text: str,
     ) -> PDQIdentifier | None:
         """
-        Infer P-D-Q context from chunk content.
+        Infer policy area + analytical dimension context from chunk content.
 
-        Uses heuristics based on Colombian policy vocabulary.
+        This dispenser operates at PA×DIM granularity; it does not attempt to bind to a
+        specific micro-question.
         """
-        # Policy-specific keywords (simplified for example)
-        policy_keywords = {
-            "PA01": ["mujer", "género", "igualdad", "equidad"],
-            "PA02": ["violencia", "conflicto", "seguridad", "prevención"],
-            "PA03": ["ambiente", "clima", "desastre", "riesgo"],
-            "PA04": ["económico", "social", "cultural", "empleo"],
-            "PA05": ["víctima", "paz", "reconciliación", "reparación"],
-            "PA06": ["niñez", "adolescente", "juventud", "futuro"],
-            "PA07": ["tierra", "territorio", "rural", "agrario"],
-            "PA08": ["líder", "defensor", "derechos humanos"],
-            "PA09": ["privado libertad", "cárcel", "reclusión"],
-            "PA10": ["migración", "frontera", "venezolano"],
-        }
+        policy_areas = PolicyDomain.get_all()
+        dimensions = AnalyticalDimension.get_all()
 
-        dimension_keywords = {
-            "DIM01": ["diagnóstico", "baseline", "situación", "recurso"],
-            "DIM02": ["diseño", "estrategia", "intervención", "actividad"],
-            "DIM03": ["producto", "output", "entregable", "meta"],
-            "DIM04": ["resultado", "outcome", "efecto", "cambio"],
-            "DIM05": ["impacto", "largo plazo", "sostenibilidad"],
-            "DIM06": ["teoría", "causal", "coherencia", "lógica"],
-        }
+        text_lower = chunk_text.lower()
 
-        # Score policies and dimensions
-        policy_scores = {
-            policy: sum(1 for kw in keywords if kw.lower() in chunk_text.lower())
-            for policy, keywords in policy_keywords.items()
-        }
+        policy_match = re.search(r"\bPA\d{2}\b", chunk_text)
+        dimension_match = re.search(r"\bDIM\d{2}\b", chunk_text)
 
-        dimension_scores = {
-            dim: sum(1 for kw in keywords if kw.lower() in chunk_text.lower())
-            for dim, keywords in dimension_keywords.items()
-        }
+        policy_id = policy_match.group(0) if policy_match else None
+        dimension_id = dimension_match.group(0) if dimension_match else None
 
-        # Select best match if confidence is sufficient
-        best_policy = max(policy_scores, key=policy_scores.get)
-        best_dimension = max(dimension_scores, key=dimension_scores.get)
+        if policy_id not in policy_areas:
+            policy_id = None
+        if dimension_id not in dimensions:
+            dimension_id = None
 
-        if policy_scores[best_policy] > 0 and dimension_scores[best_dimension] > 0:
-            # Generate canonical identifier
-            question_num = 1  # Simplified; real system would infer from context
-            question_code = f"Q{question_num:03d}"
+        def _score_by_name(mapping: dict[str, str]) -> tuple[str | None, int]:
+            best_code: str | None = None
+            best_score = 0
+            for code, name in mapping.items():
+                tokens = [t for t in re.split(r"\W+", name.lower()) if len(t) >= 4]
+                score = sum(1 for token in tokens if token and token in text_lower)
+                if score > best_score:
+                    best_score = score
+                    best_code = code
+            return best_code, best_score
 
+        if policy_id is None:
+            inferred_policy, score = _score_by_name(policy_areas)
+            if score > 0:
+                policy_id = inferred_policy
+
+        if dimension_id is None:
+            inferred_dimension, score = _score_by_name(dimensions)
+            if score > 0:
+                dimension_id = inferred_dimension
+
+        if policy_id and dimension_id:
             return PDQIdentifier(
-                question_unique_id=f"{best_policy}-{best_dimension}-{question_code}",
-                policy=best_policy,
-                dimension=best_dimension,
-                question=question_num,
-                rubric_key=f"{best_dimension}-{question_code}",
+                context_id=f"{policy_id}-{dimension_id}",
+                policy=policy_id,
+                dimension=dimension_id,
             )
 
         return None
@@ -472,7 +500,7 @@ class AdvancedSemanticChunker:
             for table in tables
         )
 
-    @calibrated_method("farfan_core.processing.embedding_policy.AdvancedSemanticChunker._contains_list")
+    
     def _contains_list(self, chunk_text: str, lists: list[dict[str, Any]]) -> bool:
         """Check if chunk contains list structures."""
         return bool(self.LIST_MARKERS.search(chunk_text))
@@ -508,7 +536,7 @@ class BayesianNumericalAnalyzer:
         Initialize Bayesian analyzer.
 
         Args:
-            prior_strength: Prior belief strength (ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L510_51", 1.0) = weak, 1ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L510_64", 0.0) = strong)
+            prior_strength: Prior belief strength (1.0 = weak, 10.0 = strong)
         """
         self.prior_strength = prior_strength
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -614,7 +642,7 @@ class BayesianNumericalAnalyzer:
         """
         n_obs = len(observations)
         obs_mean = np.mean(observations)
-        obs_std = np.std(observations, ddof=1) if n_obs > 1 else ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L616_65", 1.0)
+        obs_std = np.std(observations, ddof=1) if n_obs > 1 else 1.0
 
         # Prior parameters (weakly informative centered on observed mean)
         mu_prior = obs_mean
@@ -647,16 +675,16 @@ class BayesianNumericalAnalyzer:
         Returns:
             Evidence strength classification (weak/moderate/strong/very_strong)
         """
-        if credible_interval_width > ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L649_37", 0.5):
+        if credible_interval_width > 0.5:
             return "weak"
-        elif credible_interval_width > ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L651_39", 0.3):
+        elif credible_interval_width > 0.3:
             return "moderate"
-        elif credible_interval_width > ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer.__init__", "auto_param_L653_39", 0.15):
+        elif credible_interval_width > 0.15:
             return "strong"
         else:
             return "very_strong"
 
-    @calibrated_method("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._compute_coherence")
+    
     def _compute_coherence(self, observations: NDArray[np.float32], **kwargs: Any) -> float:
         """
         Compute numerical coherence (consistency) score.
@@ -671,34 +699,34 @@ class BayesianNumericalAnalyzer:
             Coherence score in [0, 1]
         """
         if len(observations) < 2:
-            return ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._compute_coherence", "auto_param_L673_19", 1.0)
+            return 1.0
 
         # Coefficient of variation
         mean_val = np.mean(observations)
         std_val = np.std(observations, ddof=1)
 
         if mean_val == 0:
-            return ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._compute_coherence", "auto_param_L680_19", 0.0)
+            return 0.0
 
         cv = std_val / abs(mean_val)
 
         # Normalize: lower CV = higher coherence
         coherence = np.exp(-cv)  # Exponential decay
 
-        return float(np.clip(coherence, ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._compute_coherence", "auto_param_L687_40", 0.0), ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._compute_coherence", "auto_param_L687_45", 1.0)))
+        return float(np.clip(coherence, 0.0, 1.0))
 
-    @calibrated_method("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation")
+    
     def _null_evaluation(self) -> BayesianEvaluation:
         """Return null evaluation when no data available."""
-        null_samples = to_dict_samples(np.array([ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L692_49", 0.0)], dtype=np.float32))
+        null_samples = to_dict_samples(np.array([0.0], dtype=np.float32))
 
         return BayesianEvaluation(
-            point_estimate=ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L695_27", 0.0),
-            credible_interval_95=(ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L696_34", 0.0), ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L696_39", 0.0)),
+            point_estimate=0.0,
+            credible_interval_95=(0.0, 0.0),
             posterior_samples=null_samples,
             evidence_strength="weak",
-            numerical_coherence=ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L699_32", 0.0),
-            posterior_records=[{"coherence": ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L700_45", 0.0)}],
+            numerical_coherence=0.0,
+            posterior_records=[{"coherence": 0.0}],
         )
 
     def serialize_posterior_samples(
@@ -734,7 +762,7 @@ class BayesianNumericalAnalyzer:
         Returns probability that A > B and Bayes factor.
         """
         if not policy_a_values or not policy_b_values:
-            return {"probability_a_better": ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L736_44", 0.5), "bayes_factor": ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L736_65", 1.0)}
+            return {"probability_a_better": 0.5, "bayes_factor": 1.0}
 
         # Get posterior distributions
         eval_a = self.evaluate_policy_metric(policy_a_values)
@@ -748,10 +776,10 @@ class BayesianNumericalAnalyzer:
         # Compute probability that A > B and clip to avoid exact 0/1 which can cause
         # division-by-zero in subsequent Bayes factor calculation.
         prob_a_better = float(np.mean(samples_a > samples_b))
-        prob_a_better = float(np.clip(prob_a_better, 1e-6, ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L750_59", 1.0) - 1e-6))
+        prob_a_better = float(np.clip(prob_a_better, 1e-6, 1.0 - 1e-6))
 
         # Compute Bayes factor (simplified)
-        if prob_a_better > ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L753_27", 0.5):
+        if prob_a_better > 0.5:
             bayes_factor = prob_a_better / (1 - prob_a_better)
         else:
             bayes_factor = (1 - prob_a_better) / prob_a_better
@@ -846,7 +874,7 @@ class PolicyCrossEncoderReranker:
         query: str,
         candidates: list[SemanticChunk],
         top_k: int = 10,
-        min_score: float = ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L848_27", 0.0),
+        min_score: float = 0.0,
     ) -> list[tuple[SemanticChunk, float]]:
         """
         Rerank candidates using cross-encoder attention.
@@ -898,10 +926,10 @@ class PolicyEmbeddingConfig:
     # Retrieval parameters
     top_k_candidates: int = 50  # Bi-encoder retrieval
     top_k_rerank: int = 10  # Cross-encoder rerank
-    mmr_lambda: float = ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L900_24", 0.7)  # Diversity vs relevance trade-off
+    mmr_lambda: float = 0.7  # Diversity vs relevance trade-off
 
     # Bayesian analysis
-    prior_strength: float = ParameterLoaderV2.get("farfan_core.processing.embedding_policy.BayesianNumericalAnalyzer._null_evaluation", "auto_param_L903_28", 1.0)  # Weakly informative prior
+    prior_strength: float = 1.0  # Weakly informative prior
 
     # Performance
     batch_size: int = 32
@@ -1007,7 +1035,7 @@ class PolicyAnalysisEmbedder:
             return self._chunk_cache[doc_id]
 
         # Chunk document with semantic awareness
-        chunks = self.chunker.chunk_document(document_text, document_metadata)
+        chunks = self.chunker.chunk_document(text=document_text, document_metadata=document_metadata)
 
         # Generate embeddings in batches
         chunk_texts = [chunk["content"] for chunk in chunks]
@@ -1027,6 +1055,12 @@ class PolicyAnalysisEmbedder:
             np.mean([c["token_count"] for c in chunks]),
         )
 
+        return chunks
+
+    def apply_pd_context(self, chunks: list[SemanticChunk], context: PDQIdentifier) -> list[SemanticChunk]:
+        """Apply a policy×dimension context to every chunk (in-place)."""
+        for chunk in chunks:
+            chunk["pdq_context"] = context
         return chunks
 
     def semantic_search(
@@ -1107,12 +1141,12 @@ class PolicyAnalysisEmbedder:
         """
         Bayesian evaluation of numerical consistency for policy metric.
 
-        Extracts numerical values from chunks matching P-D-Q context,
+        Extracts numerical values from chunks matching policy×dimension context,
         performs rigorous statistical analysis with uncertainty quantification.
 
         Args:
             chunks: Document chunks to analyze
-            pdq_context: P-D-Q context to filter relevant chunks
+            pdq_context: Policy×dimension context to filter relevant chunks
 
         Returns:
             Bayesian evaluation with credible intervals and evidence strength
@@ -1122,8 +1156,8 @@ class PolicyAnalysisEmbedder:
 
         if not relevant_chunks:
             self._logger.warning(
-                "No chunks found for P-D-Q context: %s",
-                pdq_context["question_unique_id"],
+                "No chunks found for policy×dimension context: %s",
+                pdq_context["context_id"],
             )
             return self.bayesian_analyzer._null_evaluation()
 
@@ -1142,7 +1176,7 @@ class PolicyAnalysisEmbedder:
         self._logger.info(
             "Evaluated %d numerical values for %s: point_estimate=%.3f, CI=[%.3f, %.3f], evidence=%s",
             len(numerical_values),
-            pdq_context["rubric_key"],
+            pdq_context["context_id"],
             evaluation["point_estimate"],
             evaluation["credible_interval_95"][0],
             evaluation["credible_interval_95"][1],
@@ -1177,7 +1211,7 @@ class PolicyAnalysisEmbedder:
         target_pdq: PDQIdentifier,
     ) -> dict[str, Any]:
         """
-        Generate comprehensive analytical report for P-D-Q question.
+        Generate comprehensive analytical report for policy×dimension context.
 
         Combines semantic search, numerical analysis, and evidence synthesis.
         """
@@ -1204,8 +1238,9 @@ class PolicyAnalysisEmbedder:
 
         # Synthesize report
         report = {
-            "question_unique_id": target_pdq["question_unique_id"],
-            "rubric_key": target_pdq["rubric_key"],
+            "context_id": target_pdq["context_id"],
+            "policy": target_pdq["policy"],
+            "dimension": target_pdq["dimension"],
             "evidence_count": len(relevant_chunks),
             "numerical_evaluation": {
                 "point_estimate": numerical_eval["point_estimate"],
@@ -1225,7 +1260,7 @@ class PolicyAnalysisEmbedder:
     # PRIVATE METHODS
     # ========================================================================
 
-    @calibrated_method("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._embed_texts")
+    
     def _embed_texts(self, texts: list[str]) -> NDArray[np.float32]:
         """Generate embeddings with caching and retry logic."""
         uncached_texts = []
@@ -1427,69 +1462,106 @@ class PolicyAnalysisEmbedder:
         # Reorder by MMR selection
         return [(chunks[i], scores[i]) for i in selected_indices]
 
-    @calibrated_method("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._extract_numerical_values")
+    
     def _extract_numerical_values(self, chunks: list[SemanticChunk]) -> list[float]:
         """
-        Extract numerical values from chunks using advanced patterns.
-
-        Focuses on policy-relevant metrics: percentages, amounts, counts.
+        Extract numerical values using patterns loaded from JSON.
         """
-        numerical_values = []
+        payload = _load_dispenser_patterns()
+        pattern_specs = payload.get("numerical_patterns", [])
+        if not isinstance(pattern_specs, list):
+            pattern_specs = []
 
-        # Advanced patterns for Colombian policy metrics
-        patterns = [
-            r"(\d+(?:[.,]\d+)?)\s*%",  # Percentages
-            r"\$\s*(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?)",  # Currency
-            # Millions
-            r"(\d{1,3}(?:[.,]\d{3})*)\s*(?:millones?|mil\s+millones?)",
-            # People count
-            r"(\d+(?:[.,]\d+)?)\s*(?:personas|beneficiarios|habitantes)",
-        ]
+        numerical_values: list[float] = []
 
         for chunk in chunks:
             content = chunk["content"]
+            claimed_spans: list[tuple[int, int]] = []
 
-            for pattern in patterns:
-                matches = re.finditer(pattern, content, re.IGNORECASE)
+            def _overlaps(span_a: tuple[int, int], span_b: tuple[int, int]) -> bool:
+                return span_a[0] < span_b[1] and span_b[0] < span_a[1]
+
+            for spec in pattern_specs:
+                if not isinstance(spec, dict):
+                    continue
+
+                pattern_name = spec.get("name")
+                pattern_regex = spec.get("regex")
+                if not isinstance(pattern_name, str) or not isinstance(pattern_regex, str):
+                    continue
+
+                try:
+                    matches = re.finditer(pattern_regex, content, re.IGNORECASE)
+                except re.error as exc:
+                    self._logger.error("Invalid regex pattern (%s): %s", pattern_name, exc)
+                    continue
 
                 for match in matches:
-                    try:
-                        # Extract and clean numerical string
-                        raw_num = match.group(1)
-
-                        # Handle Colombian and international decimal formats
-                        if "." in raw_num and "," in raw_num:
-                            # Colombian format: dot as thousands, comma as decimal
-                            num_str = raw_num.replace(".", "").replace(",", ".")
-                        elif "," in raw_num:
-                            # Comma as decimal separator
-                            num_str = raw_num.replace(",", ".")
-                        else:
-                            # Only dot or plain number
-                            num_str = raw_num
-
-                        value = float(num_str)
-
-                        # Normalize to 0-1 scale if it's a percentage
-                        if "%" in match.group(0) and value <= 100:
-                            value = value / 100.0
-
-                        # Filter outliers
-                        if 0 <= value <= 1e9:  # Reasonable range
-                            numerical_values.append(value)
-
-                    except (ValueError, IndexError):
+                    span = match.span()
+                    if any(_overlaps(span, existing) for existing in claimed_spans):
                         continue
+
+                    value = self._canonical_number_extraction(match, pattern_name)
+                    if value is None:
+                        continue
+
+                    if 0.0 <= value <= 1e12:
+                        numerical_values.append(value)
+                        claimed_spans.append(span)
+
+        self._logger.info(
+            "Extracted %d numerical values using dispenser patterns (%s).",
+            len(numerical_values),
+            _DISPENSER_PATTERNS_FILE,
+        )
 
         return numerical_values
 
-    @calibrated_method("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq")
-    def _generate_query_from_pdq(self, pdq: PDQIdentifier) -> str:
-        """Generate search query from P-D-Q identifier."""
-        policy_name = PolicyDomain[pdq["policy"]].value
-        dimension_name = AnalyticalDimension[pdq["dimension"]].value
+    def _canonical_number_extraction(self, match: re.Match[str], pattern_name: str) -> float | None:
+        matched_text = match.group(0)
 
-        query = f"{policy_name} - {dimension_name}"
+        number_token = re.search(r"\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?|\d+(?:[.,]\d+)?", matched_text)
+        if not number_token:
+            return None
+
+        raw = number_token.group(0)
+        normalized = raw
+
+        if "." in raw and "," in raw:
+            normalized = raw.replace(".", "").replace(",", ".")
+        elif "," in raw:
+            if re.match(r"^\d{1,3}(,\d{3})+$", raw):
+                normalized = raw.replace(",", "")
+            else:
+                normalized = raw.replace(",", ".")
+        elif "." in raw and re.match(r"^\d{1,3}(\.\d{3})+$", raw):
+            normalized = raw.replace(".", "")
+
+        try:
+            value = float(normalized)
+        except ValueError:
+            self._logger.debug("Failed to parse numeric token for %s: %s", pattern_name, raw)
+            return None
+
+        if "%" in matched_text and value <= 100:
+            value /= 100.0
+
+        matched_lower = matched_text.lower()
+        if "mil millones" in matched_lower:
+            value *= 1_000_000_000.0
+        elif "millones" in matched_lower or "millón" in matched_lower:
+            value *= 1_000_000.0
+
+        return value
+
+    
+    def _generate_query_from_pdq(self, pdq: PDQIdentifier) -> str:
+        """Generate a search query for a policy×dimension context."""
+        policy_name = get_policy_description(pdq["policy"])
+        dimension_name = get_dimension_description(pdq["dimension"])
+
+        query = f"{policy_name} | {dimension_name}"
+        self._logger.debug("Generated query for %s: %s", pdq["context_id"], query)
         return query
 
     def _compute_overall_confidence(
@@ -1507,20 +1579,20 @@ class PolicyAnalysisEmbedder:
         - Statistical coherence
         """
         if not relevant_chunks:
-            return ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1509_19", 0.0)
+            return 0.0
 
         # Semantic confidence: average of top scores
         semantic_scores = [score for _, score in relevant_chunks[:5]]
         semantic_confidence = (
-            float(np.mean(semantic_scores)) if semantic_scores else ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1514_68", 0.0)
+            float(np.mean(semantic_scores)) if semantic_scores else 0.0
         )
 
         # Numerical confidence: based on evidence strength and coherence
         evidence_strength_map = {
-            "weak": ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1519_20", 0.25),
-            "moderate": ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1520_24", 0.5),
-            "strong": ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1521_22", 0.75),
-            "very_strong": ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1522_27", 1.0),
+            "weak": 0.25,
+            "moderate": 0.5,
+            "strong": 0.75,
+            "very_strong": 1.0,
         }
         numerical_confidence = (
             evidence_strength_map[numerical_eval["evidence_strength"]]
@@ -1528,12 +1600,12 @@ class PolicyAnalysisEmbedder:
         )
 
         # Combined confidence: weighted average
-        overall_confidence = ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1530_29", 0.6) * semantic_confidence + ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1530_57", 0.4) * numerical_confidence
+        overall_confidence = 0.6 * semantic_confidence + 0.4 * numerical_confidence
 
-        return float(np.clip(overall_confidence, ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1532_49", 0.0), ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._generate_query_from_pdq", "auto_param_L1532_54", 1.0)))
+        return float(np.clip(overall_confidence, 0.0, 1.0))
 
     @lru_cache(maxsize=1024)
-    @calibrated_method("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder._cached_similarity")
+    
     def _cached_similarity(self, text_hash1: str, text_hash2: str) -> float:
         """Cached similarity computation for performance.
         Assumes embeddings are cached in self._embedding_cache using text_hash as key.
@@ -1542,7 +1614,7 @@ class PolicyAnalysisEmbedder:
         emb2 = self._embedding_cache[text_hash2]
         return float(cosine_similarity(emb1.reshape(1, -1), emb2.reshape(1, -1))[0, 0])
 
-    @calibrated_method("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.get_diagnostics")
+    
     def get_diagnostics(self) -> dict[str, Any]:
         """Get system diagnostics and performance metrics."""
         return {
@@ -1628,7 +1700,7 @@ class EmbeddingPolicyProducer:
     Provides public API methods for orchestrator integration without exposing
     internal implementation details or summarization logic.
 
-    Version: ParameterLoaderV2.get("farfan_core.processing.embedding_policy.PolicyAnalysisEmbedder.get_diagnostics", "auto_param_L1630_13", 1.0).0
+    Version: 1.0
     Producer Type: Embedding / Semantic Search
     """
 
@@ -1659,27 +1731,27 @@ class EmbeddingPolicyProducer:
         """Process document into semantic chunks with embeddings"""
         return self.embedder.process_document(document_text, document_metadata)
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_count")
+    
     def get_chunk_count(self, chunks: list[SemanticChunk]) -> int:
         """Get number of chunks"""
         return len(chunks)
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_text")
+    
     def get_chunk_text(self, chunk: SemanticChunk) -> str:
         """Extract text from chunk"""
         return chunk["content"]
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_embedding")
+    
     def get_chunk_embedding(self, chunk: SemanticChunk) -> NDArray[np.float32]:
         """Extract embedding from chunk"""
         return chunk["embedding"]
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_metadata")
+    
     def get_chunk_metadata(self, chunk: SemanticChunk) -> dict[str, Any]:
         """Extract metadata from chunk"""
         return chunk["metadata"]
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_chunk_pdq_context")
+    
     def get_chunk_pdq_context(self, chunk: SemanticChunk) -> PDQIdentifier | None:
         """Extract P-D-Q context from chunk"""
         return chunk["pdq_context"]
@@ -1721,28 +1793,28 @@ class EmbeddingPolicyProducer:
         document_chunks: list[SemanticChunk],
         target_pdq: PDQIdentifier
     ) -> dict[str, Any]:
-        """Generate comprehensive analytical report for P-D-Q question"""
+        """Generate comprehensive analytical report for policy×dimension context."""
         return self.embedder.generate_pdq_report(document_chunks, target_pdq)
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_evidence_count")
+    
     def get_pdq_evidence_count(self, report: dict[str, Any]) -> int:
         """Extract evidence count from P-D-Q report"""
         return report.get("evidence_count", 0)
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_numerical_evaluation")
+    
     def get_pdq_numerical_evaluation(self, report: dict[str, Any]) -> dict[str, Any]:
         """Extract numerical evaluation from P-D-Q report"""
         return report.get("numerical_evaluation", {})
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_evidence_passages")
+    
     def get_pdq_evidence_passages(self, report: dict[str, Any]) -> list[dict[str, Any]]:
         """Extract evidence passages from P-D-Q report"""
         return report.get("evidence_passages", [])
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_confidence")
+    
     def get_pdq_confidence(self, report: dict[str, Any]) -> float:
         """Extract confidence from P-D-Q report"""
-        return report.get("confidence", ParameterLoaderV2.get("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_pdq_confidence", "auto_param_L1744_40", 0.0))
+        return report.get("confidence", 0.0)
 
     # ========================================================================
     # BAYESIAN NUMERICAL ANALYSIS API
@@ -1758,7 +1830,7 @@ class EmbeddingPolicyProducer:
             chunks, pdq_context
         )
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_point_estimate")
+    
     def get_point_estimate(self, evaluation: BayesianEvaluation) -> float:
         """Extract point estimate from Bayesian evaluation"""
         return evaluation["point_estimate"]
@@ -1775,7 +1847,7 @@ class EmbeddingPolicyProducer:
         """Extract evidence strength classification"""
         return evaluation["evidence_strength"]
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_numerical_coherence")
+    
     def get_numerical_coherence(self, evaluation: BayesianEvaluation) -> float:
         """Extract numerical coherence score"""
         return evaluation["numerical_coherence"]
@@ -1795,68 +1867,65 @@ class EmbeddingPolicyProducer:
             intervention_a_chunks, intervention_b_chunks, pdq_context
         )
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_probability")
+    
     def get_comparison_probability(self, comparison: dict[str, Any]) -> float:
         """Extract probability that A is better than B"""
-        return comparison.get("probability_a_better", ParameterLoaderV2.get("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_probability", "auto_param_L1800_54", 0.5))
+        return comparison.get("probability_a_better", 0.5)
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_bayes_factor")
+    
     def get_comparison_bayes_factor(self, comparison: dict[str, Any]) -> float:
         """Extract Bayes factor from comparison"""
-        return comparison.get("bayes_factor", ParameterLoaderV2.get("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_bayes_factor", "auto_param_L1805_46", 1.0))
+        return comparison.get("bayes_factor", 1.0)
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_difference_mean")
+    
     def get_comparison_difference_mean(self, comparison: dict[str, Any]) -> float:
         """Extract mean difference from comparison"""
-        return comparison.get("difference_mean", ParameterLoaderV2.get("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_comparison_difference_mean", "auto_param_L1810_49", 0.0))
+        return comparison.get("difference_mean", 0.0)
 
     # ========================================================================
     # UTILITY API
     # ========================================================================
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_diagnostics")
+    
     def get_diagnostics(self) -> dict[str, Any]:
         """Get system diagnostics and performance metrics"""
         return self.embedder.get_diagnostics()
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_config")
+    
     def get_config(self) -> PolicyEmbeddingConfig:
         """Get current configuration"""
         return self.embedder.config
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.list_policy_domains")
-    def list_policy_domains(self) -> list[PolicyDomain]:
-        """List all policy domains"""
-        return list(PolicyDomain)
+    
+    def list_policy_domains(self) -> dict[str, str]:
+        """List canonical policy areas (code -> name)."""
+        return PolicyDomain.get_all()
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.list_analytical_dimensions")
-    def list_analytical_dimensions(self) -> list[AnalyticalDimension]:
-        """List all analytical dimensions"""
-        return list(AnalyticalDimension)
+    
+    def list_analytical_dimensions(self) -> dict[str, str]:
+        """List canonical dimensions (code -> name)."""
+        return AnalyticalDimension.get_all()
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_policy_domain_description")
-    def get_policy_domain_description(self, domain: PolicyDomain) -> str:
-        """Get description for policy domain"""
-        return domain.value
+    
+    def get_policy_domain_description(self, policy_code: str) -> str:
+        """Get canonical policy area description."""
+        return get_policy_description(policy_code)
 
-    @calibrated_method("farfan_core.processing.embedding_policy.EmbeddingPolicyProducer.get_analytical_dimension_description")
-    def get_analytical_dimension_description(self, dimension: AnalyticalDimension) -> str:
-        """Get description for analytical dimension"""
-        return dimension.value
+    
+    def get_analytical_dimension_description(self, dimension_code: str) -> str:
+        """Get canonical dimension description."""
+        return get_dimension_description(dimension_code)
 
     def create_pdq_identifier(
         self,
         policy: str,
         dimension: str,
-        question: int
     ) -> PDQIdentifier:
-        """Create P-D-Q identifier"""
+        """Create policy×dimension context identifier."""
         return PDQIdentifier(
-            question_unique_id=f"{policy}-{dimension}-Q{question}",
+            context_id=f"{policy}-{dimension}",
             policy=policy,
             dimension=dimension,
-            question=question,
-            rubric_key=f"{dimension}-Q{question}"
         )
 
 # ============================================================================
@@ -1919,18 +1988,18 @@ def example_pdm_analysis() -> None:
     chunks = embedder.process_document(pdm_document, metadata)
     print(f"   Generated {len(chunks)} semantic chunks")
 
-    # Define P-D-Q query
+    # Define policy×dimension context (no micro-question binding)
     pdq_query = PDQIdentifier(
-        question_unique_id="P1-D1-Q3",
-        policy="P1",
-        dimension="D1",
-        question=3,
-        rubric_key="D1-Q3",
+        context_id="PA01-DIM01",
+        policy="PA01",
+        dimension="DIM01",
     )
 
-    print(f"\n2. ANALYZING P-D-Q: {pdq_query['question_unique_id']}")
-    print(f"   Policy: {PolicyDomain.P1.value}")
-    print(f"   Dimension: {AnalyticalDimension.D1.value}")
+    chunks = embedder.apply_pd_context(chunks, pdq_query)
+
+    print(f"\n2. ANALYZING CONTEXT: {pdq_query['context_id']}")
+    print(f"   Policy: {get_policy_description(pdq_query['policy'])}")
+    print(f"   Dimension: {get_dimension_description(pdq_query['dimension'])}")
 
     # Generate comprehensive report
     report = embedder.generate_pdq_report(chunks, pdq_query)

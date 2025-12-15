@@ -21,6 +21,8 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 
+from orchestration.method_registry import MethodRegistry, MethodRegistryError
+
 logger = logging.getLogger(__name__)
 
 
@@ -59,6 +61,7 @@ class Phase1DependencyValidator:
     def __init__(self):
         self.checks: List[DependencyCheck] = []
         self.critical_failures: List[DependencyCheck] = []
+        self.method_registry = MethodRegistry()
     
     def validate_all(self) -> bool:
         """
@@ -205,90 +208,66 @@ class Phase1DependencyValidator:
             ))
     
     def _check_methods_dispensary(self) -> None:
-        """Check methods_dispensary package is accessible."""
+        """Check methods_dispensary is reachable through the registry."""
         try:
-            import methods_dispensary
+            cls = self.method_registry._load_class("BeachEvidentialTest")
             self.checks.append(DependencyCheck(
                 name="methods_dispensary package",
                 available=True,
-                version=getattr(methods_dispensary, '__version__', 'unknown')
+                version="registry"
             ))
-        except ImportError as e:
+        except MethodRegistryError as e:
             self.critical_failures.append(DependencyCheck(
                 name="methods_dispensary package",
                 available=False,
                 error=str(e),
-                fix_command="Ensure src/methods_dispensary/__init__.py exists and PYTHONPATH includes src/"
+                fix_command="Verify class_registry paths and PYTHONPATH include src/"
             ))
     
     def _check_derek_beach(self) -> None:
         """Check Derek Beach module can be imported."""
         try:
-            from methods_dispensary.derek_beach import (
-                BeachEvidentialTest,
-                CausalExtractor,
-                MechanismPartExtractor,
-            )
-            
-            # Verify key methods exist
-            if not hasattr(BeachEvidentialTest, 'classify_test'):
-                raise AttributeError("BeachEvidentialTest missing classify_test method")
-            if not hasattr(BeachEvidentialTest, 'apply_test_logic'):
-                raise AttributeError("BeachEvidentialTest missing apply_test_logic method")
-            
+            classify = self.method_registry.get_method("BeachEvidentialTest", "classify_test")
+            apply_logic = self.method_registry.get_method("BeachEvidentialTest", "apply_test_logic")
+
+            if not callable(classify):
+                raise MethodRegistryError("BeachEvidentialTest.classify_test not callable")
+            if not callable(apply_logic):
+                raise MethodRegistryError("BeachEvidentialTest.apply_test_logic not callable")
+
             self.checks.append(DependencyCheck(
                 name="Derek Beach module",
                 available=True,
-                version="2.0.0"
+                version="registry"
             ))
-        except ImportError as e:
+        except MethodRegistryError as e:
             self.critical_failures.append(DependencyCheck(
                 name="Derek Beach module",
                 available=False,
                 error=str(e),
-                fix_command="Fix import errors in methods_dispensary.derek_beach (check dependencies above)"
-            ))
-        except AttributeError as e:
-            self.critical_failures.append(DependencyCheck(
-                name="Derek Beach module",
-                available=False,
-                error=str(e),
-                fix_command="Derek Beach module incomplete - verify src/methods_dispensary/derek_beach.py"
+                fix_command="Resolve registry path or dependencies for BeachEvidentialTest in methods_dispensary"
             ))
     
     def _check_teoria_cambio(self) -> None:
         """Check Theory of Change module can be imported."""
         try:
-            from methods_dispensary.teoria_cambio import (
-                TeoriaCambio,
-                ValidacionResultado,
-                AdvancedDAGValidator,
-            )
-            
-            # Verify key methods exist
-            if not hasattr(TeoriaCambio, 'construir_grafo_causal'):
-                raise AttributeError("TeoriaCambio missing construir_grafo_causal method")
-            if not hasattr(TeoriaCambio, 'validacion_completa'):
-                raise AttributeError("TeoriaCambio missing validacion_completa method")
-            
+            tc_cls = self.method_registry._load_class("TeoriaCambio")
+            if not hasattr(tc_cls, "construir_grafo_causal"):
+                raise MethodRegistryError("TeoriaCambio missing construir_grafo_causal")
+            if not hasattr(tc_cls, "validacion_completa"):
+                raise MethodRegistryError("TeoriaCambio missing validacion_completa")
+
             self.checks.append(DependencyCheck(
                 name="Theory of Change module",
                 available=True,
-                version="4.0.0"
+                version="registry"
             ))
-        except ImportError as e:
+        except MethodRegistryError as e:
             self.critical_failures.append(DependencyCheck(
                 name="Theory of Change module",
                 available=False,
                 error=str(e),
-                fix_command="Fix import errors in methods_dispensary.teoria_cambio (check dependencies above)"
-            ))
-        except AttributeError as e:
-            self.critical_failures.append(DependencyCheck(
-                name="Theory of Change module",
-                available=False,
-                error=str(e),
-                fix_command="Theory of Change module incomplete - verify src/methods_dispensary/teoria_cambio.py"
+                fix_command="Resolve registry path or dependencies for TeoriaCambio in methods_dispensary"
             ))
     
     def _check_module(self, module_name: str, fix_command: str, critical: bool = False) -> None:

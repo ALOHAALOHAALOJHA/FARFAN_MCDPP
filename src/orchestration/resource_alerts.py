@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Callable
 
-from farfan_pipeline.core.orchestrator.resource_manager import (
+from orchestration.resource_manager import (
     ResourcePressureEvent,
     ResourcePressureLevel,
 )

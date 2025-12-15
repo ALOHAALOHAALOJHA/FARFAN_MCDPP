@@ -12,7 +12,7 @@ This module provides:
 4. Target achievement verification
 
 Usage:
-    >>> from farfan_pipeline.core.orchestrator.precision_tracking import (
+    >>> from orchestration.orchestrator.precision_tracking import (
     ...     get_patterns_with_validation
     ... )
     >>> patterns, stats = get_patterns_with_validation(
@@ -473,7 +473,7 @@ def finalize_precision_tracking_session(
     """
     from datetime import datetime, timezone
 
-    from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
         generate_precision_improvement_report,
     )
 
@@ -551,7 +551,7 @@ def compare_precision_across_policy_areas(
         >>> comparison = compare_precision_across_policy_areas(packs)
         >>> print(comparison['rankings']['by_target_achievement'])
     """
-    from farfan_pipeline.core.orchestrator.signal_intelligence_layer import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
         generate_precision_improvement_report,
     )
 

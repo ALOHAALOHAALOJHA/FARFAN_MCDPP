@@ -31,14 +31,15 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
-        SignalRegistry as SignalRegistryImpl,
-    )
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalRegistry
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from orchestration.task_planner import ExecutableTask
 from canonic_phases.Phase_two.phase6_validation import (
     validate_phase6_schema_compatibility,
 )
-from orchestration.task_planner import ExecutableTask
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
 from farfan_pipeline.synchronization import ChunkMatrix
 
@@ -86,7 +87,7 @@ except ImportError as e:
         pass
 
 try:
-    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
         SignalRegistry as _SignalRegistry,
     )
 except ImportError:
@@ -544,12 +545,7 @@ class IrrigationSynchronizer:
                 policy_area_id = raw.get("policy_area_id")
                 dimension_id = raw.get("dimension_id")
                 question_global = raw.get("question_global")
-                question_id = raw.get("question_id")
 
-                if not isinstance(question_id, str) or not question_id:
-                    raise ValueError(
-                        f"micro_question missing question_id or invalid type: {question_id!r}"
-                    )
                 if not isinstance(policy_area_id, str) or not policy_area_id:
                     raise ValueError(
                         "micro_question missing policy_area_id or invalid type: "
@@ -581,7 +577,7 @@ class IrrigationSynchronizer:
 
                 questions.append(
                     {
-                        "question_id": question_id,
+                        "question_id": raw.get("question_id"),
                         "question_global": question_global,
                         "question_text": raw.get("text", ""),
                         "policy_area_id": policy_area_id,

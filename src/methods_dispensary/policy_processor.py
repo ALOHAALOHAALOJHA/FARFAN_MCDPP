@@ -18,6 +18,8 @@ Author: Policy Analytics Research Unit
 License: Proprietary
 """
 
+from __future__ import annotations
+
 import logging
 import re
 import unicodedata
@@ -26,26 +28,47 @@ from dataclasses import asdict, dataclass, field
 from enum import Enum
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 import numpy as np
 
 # Import runtime error fixes for defensive programming
-from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return
+try:
+    from canonic_phases.Phase_zero.runtime_error_fixes import ensure_list_return
+except Exception:  # pragma: no cover - local fallback for standalone import
 
-from farfan_pipeline.analysis.financiero_viabilidad_tablas import PDETAnalysisException, QualityScore
-from farfan_pipeline.core.parameters import ParameterLoaderV2
-from farfan_pipeline.core.calibration.decorators import calibrated_method
-from farfan_pipeline.core.ports import (
-    PortDocumentLoader,
-    PortMunicipalOntology,
-    PortSemanticAnalyzer,
-    PortPerformanceAnalyzer,
-    PortContradictionDetector,
-    PortTemporalLogicVerifier,
-    PortBayesianConfidenceCalculator,
-    PortMunicipalAnalyzer,
-)
+    def ensure_list_return(value: Any) -> list[Any]:
+        """Ensure a value is a list, converting bool/None/non-iterables to empty list."""
+        if isinstance(value, bool) or value is None:
+            return []
+        if isinstance(value, list):
+            return value
+        try:
+            return list(value)
+        except (TypeError, ValueError):
+            return []
+
+try:
+    from methods_dispensary.financiero_viabilidad_tablas import (  # type: ignore[attr-defined]
+        PDETAnalysisException,
+        QualityScore,
+    )
+except Exception:  # pragma: no cover - lightweight fallback for hermetic import
+
+    class PDETAnalysisException(Exception):
+        """Exception raised when policy analysis cannot be completed."""
+
+    @dataclass(frozen=True)
+    class QualityScore:
+        overall_score: float
+        financial_feasibility: float
+        indicator_quality: float
+        responsibility_clarity: float
+        temporal_consistency: float
+        pdet_alignment: float
+        causal_coherence: float
+        confidence_interval: tuple[float, float]
+        evidence: dict[str, Any]
 
 try:
     from farfan_pipeline.analysis.contradiction_deteccion import (
@@ -69,15 +92,565 @@ except Exception as import_error:
         TERRITORIAL = "ordenamiento territorial"
 
 
+# ============================================================================
+# CANONICAL CONSTANTS FROM QUESTIONNAIRE MONOLITH (NO RUNTIME JSON)
+# ============================================================================
+
+# Core Scoring Levels from Questionnaire
+MICRO_LEVELS: dict[str, float] = {
+    "EXCELENTE": 0.85,
+    "BUENO": 0.70,
+    "ACEPTABLE": 0.55,
+    "INSUFICIENTE": 0.00,
+}
+
+# Derived Thresholds (Algebraically Traceable)
+ALIGNMENT_THRESHOLD: float = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2  # 0.625
+CONFIDENCE_THRESHOLD: float = MICRO_LEVELS["ACEPTABLE"] + (
+    MICRO_LEVELS["BUENO"] - MICRO_LEVELS["ACEPTABLE"]
+) * (2 / 3)  # 0.65
+HIGH_CONFIDENCE_THRESHOLD: float = MICRO_LEVELS["BUENO"] + (
+    MICRO_LEVELS["EXCELENTE"] - MICRO_LEVELS["BUENO"]
+) * (1 / 3)  # 0.75
+COHERENCE_THRESHOLD: float = MICRO_LEVELS["ACEPTABLE"] + (
+    MICRO_LEVELS["BUENO"] - MICRO_LEVELS["ACEPTABLE"]
+) * (1 / 3)  # 0.60
+LOW_QUALITY_THRESHOLD: float = MICRO_LEVELS["ACEPTABLE"] - (
+    MICRO_LEVELS["BUENO"] - MICRO_LEVELS["ACEPTABLE"]
+)  # 0.40
+
+RISK_THRESHOLDS: dict[str, float] = {
+    "excellent": 1 - MICRO_LEVELS["EXCELENTE"],  # 0.15
+    "good": 1 - MICRO_LEVELS["BUENO"],  # 0.30
+    "acceptable": 1 - MICRO_LEVELS["ACEPTABLE"],  # 0.45
+}
+
+# Canonical Dimensions from Questionnaire
+CANONICAL_DIMENSIONS: dict[str, dict[str, str]] = {
+    "DIM01": {"code": "D1", "name": "INSUMOS", "label": "Diagnóstico y Recursos"},
+    "DIM02": {"code": "D2", "name": "ACTIVIDADES", "label": "Diseño de Intervención"},
+    "DIM03": {"code": "D3", "name": "PRODUCTOS", "label": "Productos y Outputs"},
+    "DIM04": {"code": "D4", "name": "RESULTADOS", "label": "Resultados y Outcomes"},
+    "DIM05": {"code": "D5", "name": "IMPACTOS", "label": "Impactos de Largo Plazo"},
+    "DIM06": {"code": "D6", "name": "CAUSALIDAD", "label": "Teoría de Cambio"},
+}
+
+# Canonical Policy Areas from Questionnaire
+CANON_POLICY_AREAS: dict[str, dict[str, Any]] = {
+    "PA01": {
+        "name": "Derechos de las mujeres e igualdad de género",
+        "legacy_id": "P1",
+        "keywords": [
+            "género",
+            "mujer",
+            "violencia basada en género",
+            "VBG",
+            "feminicidio",
+            "brecha salarial",
+            "autonomía económica",
+            "participación política de las mujeres",
+            "madres adolescentes",
+            "embarazo en adolescentes",
+            "violencia intrafamiliar",
+            "delitos sexuales",
+            "mujeres en cargos directivos",
+            "tasa de desempleo femenina",
+        ],
+    },
+    "PA02": {
+        "name": "Prevención de la violencia y protección de la población frente al conflicto armado",
+        "legacy_id": "P2",
+        "keywords": [
+            "conflicto armado",
+            "grupos armados",
+            "economías ilegales",
+            "alertas tempranas",
+            "protección",
+            "DIH",
+            "derechos humanos",
+            "desplazamiento forzado",
+            "confinamiento",
+            "minas antipersonal",
+            "reclutamiento forzado",
+            "violencia generada por grupos",
+        ],
+    },
+    "PA03": {
+        "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "legacy_id": "P3",
+        "keywords": [
+            "ambiental",
+            "cambio climático",
+            "ecosistemas",
+            "biodiversidad",
+            "gestión del riesgo",
+            "desastres",
+            "fenómenos naturales",
+            "adaptación",
+            "mitigación",
+            "recursos naturales",
+            "contaminación",
+            "deforestación",
+            "conservación",
+            "áreas protegidas",
+        ],
+    },
+    "PA04": {
+        "name": "Derechos económicos, sociales y culturales",
+        "legacy_id": "P4",
+        "keywords": [
+            "salud",
+            "educación",
+            "vivienda",
+            "empleo",
+            "servicios básicos",
+            "agua potable",
+            "saneamiento",
+            "cultura",
+            "deporte",
+            "recreación",
+            "seguridad alimentaria",
+            "cobertura en salud",
+            "calidad educativa",
+            "déficit de vivienda",
+        ],
+    },
+    "PA05": {
+        "name": "Derechos de las víctimas y construcción de paz",
+        "legacy_id": "P5",
+        "keywords": [
+            "víctimas",
+            "reparación",
+            "construcción de paz",
+            "reconciliación",
+            "memoria",
+            "verdad",
+            "justicia",
+            "no repetición",
+            "reintegración",
+            "reincorporación",
+            "atención psicosocial",
+            "indemnización",
+            "restitución de tierras",
+        ],
+    },
+    "PA06": {
+        "name": "Derecho al buen futuro de la niñez, adolescencia, juventud",
+        "legacy_id": "P6",
+        "keywords": [
+            "niñez",
+            "adolescencia",
+            "juventud",
+            "primera infancia",
+            "protección integral",
+            "trabajo infantil",
+            "educación inicial",
+            "desarrollo integral",
+            "entornos protectores",
+            "prevención del consumo",
+            "proyecto de vida",
+            "participación juvenil",
+        ],
+    },
+    "PA07": {
+        "name": "Tierras y territorios",
+        "legacy_id": "P7",
+        "keywords": [
+            "tierras",
+            "territorio",
+            "POT",
+            "PBOT",
+            "catastro",
+            "ordenamiento territorial",
+            "uso del suelo",
+            "expansión urbana",
+            "rural",
+            "frontera agrícola",
+            "baldíos",
+            "formalización de la propiedad",
+            "actualización catastral",
+        ],
+    },
+    "PA08": {
+        "name": "Líderes y defensores de derechos humanos",
+        "legacy_id": "P8",
+        "keywords": [
+            "líderes sociales",
+            "defensores",
+            "amenazas",
+            "protección",
+            "UNP",
+            "esquemas de seguridad",
+            "autoprotección",
+            "rutas de protección",
+            "homicidios de líderes",
+            "estigmatización",
+            "garantías de no repetición",
+        ],
+    },
+    "PA09": {
+        "name": "Crisis de derechos de personas privadas de la libertad",
+        "legacy_id": "P9",
+        "keywords": [
+            "privada de la libertad",
+            "cárcel",
+            "INPEC",
+            "resocialización",
+            "hacinamiento",
+            "condiciones dignas",
+            "salud penitenciaria",
+            "educación penitenciaria",
+            "trabajo penitenciario",
+            "visitas",
+            "traslados",
+        ],
+    },
+    "PA10": {
+        "name": "Migración transfronteriza",
+        "legacy_id": "P10",
+        "keywords": [
+            "migrante",
+            "migración",
+            "refugiado",
+            "frontera",
+            "regularización",
+            "integración",
+            "xenofobia",
+            "trata de personas",
+            "venezolanos",
+            "retornados",
+            "apátridas",
+            "permisos de permanencia",
+            "acceso a servicios",
+        ],
+    },
+}
+
+# Pattern Categories from Questionnaire (300 micro-questions patterns)
+QUESTIONNAIRE_PATTERNS: dict[str, list[str]] = {
+    # D1-INSUMOS Patterns
+    "diagnostico_cuantitativo": [
+        r"\b(?:línea\s+base|año\s+base|situación\s+inicial|diagnóstico\s+de\s+género)\b",
+        r"\b(?:serie\s+histórica|evolución\s+20\d{2}-20\d{2}|tendencia\s+de\s+los\s+últimos)\b",
+        r"\b(?:DANE|Medicina\s+Legal|Fiscalía|Policía\s+Nacional|SIVIGILA|SISPRO)\b",
+        r"\b(?:Observatorio\s+de\s+Asuntos\s+de\s+Género|Secretaría\s+de\s+la\s+Mujer|Comisaría\s+de\s+Familia)\b",
+        r"\b(?:Encuesta\s+Nacional\s+de\s+Demografía\s+y\s+Salud|ENDS)\b",
+        r"\b(?:\d+(?:\.\d+)?\s*%|por\s+cada\s+100\.000|por\s+100\s+mil\s+habitantes)\b",
+    ],
+    "brechas_deficits": [
+        r"\b(?:brecha\s+de\s+género|déficit\s+en|rezago\s+frente\s+a\s+los\s+hombres)\b",
+        r"\b(?:subregistro\s+de\s+casos|cifra\s+negra)\b",
+        r"\b(?:barreras\s+de\s+acceso|dificultades\s+para)\b",
+        r"\b(?:información\s+insuficiente|falta\s+de\s+datos\s+desagregados)\b",
+        r"\b(?:limitación\s+en\s+la\s+medición|trabajo\s+no\s+remunerado)\b",
+    ],
+    "recursos_asignados": [
+        r"\b(?:asignación\s+presupuestal|recursos\s+destinados|inversión\s+prevista)\b",
+        r"\b(?:plan\s+plurianual|marco\s+fiscal|presupuesto\s+participativo)\b",
+        r"\b(?:fuentes\s+de\s+financiación|SGP|SGR|recursos\s+propios)\b",
+        r"\b(?:BPIN|código\s+presupuestal|rubro)\b",
+        r"\b(?:\\$[\d\.,]+|COP[\d\.,]+|millones\s+de\s+pesos)\b",
+    ],
+    # D2-ACTIVIDADES Patterns
+    "estrategias_intervenciones": [
+        r"\b(?:estrategia\s+de|programa\s+de|proyecto\s+de|iniciativa\s+de)\b",
+        r"\b(?:plan\s+de\s+acción|hoja\s+de\s+ruta|agenda\s+de)\b",
+        r"\b(?:componentes\s+del\s+programa|líneas\s+de\s+acción|ejes\s+temáticos)\b",
+        r"\b(?:metodología\s+de\s+intervención|modelo\s+de\s+atención|protocolo\s+de)\b",
+    ],
+    "poblacion_focalizada": [
+        r"\b(?:población\s+objetivo|beneficiarios\s+directos|grupo\s+meta)\b",
+        r"\b(?:criterios\s+de\s+focalización|priorización\s+de|selección\s+de\s+beneficiarios)\b",
+        r"\b(?:cobertura\s+territorial|municipios\s+priorizados|zonas\s+de\s+intervención)\b",
+        r"\b(?:enfoque\s+diferencial|enfoque\s+de\s+género|enfoque\s+étnico)\b",
+    ],
+    # D3-PRODUCTOS Patterns
+    "metas_producto": [
+        r"\b(?:meta\s+de\s+producto|indicador\s+de\s+producto|entregable)\b",
+        r"\b(?:cantidad\s+de|número\s+de|porcentaje\s+de)\b",
+        r"\b(?:construir|implementar|realizar|ejecutar|desarrollar)\b",
+        r"\b(?:unidades|personas\s+atendidas|familias\s+beneficiadas|eventos\s+realizados)\b",
+    ],
+    # D4-RESULTADOS Patterns
+    "indicadores_resultado": [
+        r"\b(?:indicador\s+de\s+resultado|meta\s+de\s+resultado|outcome)\b",
+        r"\b(?:reducción\s+de|aumento\s+de|mejora\s+en|fortalecimiento\s+de)\b",
+        r"\b(?:tasa\s+de|índice\s+de|porcentaje\s+de|proporción\s+de)\b",
+        r"\b(?:al\s+final\s+del\s+cuatrienio|para\s+20\d{2}|meta\s+cuatrienal)\b",
+    ],
+    # D5-IMPACTOS Patterns
+    "transformacion_estructural": [
+        r"\b(?:impacto\s+esperado|transformación|cambio\s+sistémico)\b",
+        r"\b(?:largo\s+plazo|sostenibilidad|permanencia|consolidación)\b",
+        r"\b(?:desarrollo\s+sostenible|ODS|Agenda\s+2030)\b",
+        r"\b(?:cierre\s+de\s+brechas|equidad|inclusión\s+social)\b",
+    ],
+    # D6-CAUSALIDAD Patterns
+    "teoria_cambio": [
+        r"\b(?:teoría\s+de\s+cambio|modelo\s+lógico|cadena\s+de\s+valor)\b",
+        r"\b(?:supuestos|hipótesis|condiciones\s+necesarias)\b",
+        r"\b(?:si\.\.\.entonces|causa.*efecto|debido\s+a|como\s+resultado\s+de)\b",
+        r"\b(?:contribuir\s+a|generar|provocar|desencadenar|facilitar)\b",
+    ],
+}
+
+# Official Entities from Questionnaire
+OFFICIAL_ENTITIES: set[str] = {
+    "DANE",
+    "DNP",
+    "Medicina Legal",
+    "Fiscalía",
+    "Policía Nacional",
+    "SIVIGILA",
+    "SISPRO",
+    "Ministerio de Salud",
+    "Ministerio de Educación",
+    "Ministerio del Interior",
+    "Ministerio de Defensa",
+    "ICBF",
+    "SENA",
+    "Unidad de Víctimas",
+    "ARN",
+    "ART",
+    "ANT",
+    "Defensoría del Pueblo",
+    "Procuraduría",
+    "Contraloría",
+    "Personería",
+    "UNP",
+    "INPEC",
+    "Migración Colombia",
+    "UNGRD",
+    "IDEAM",
+    "Corpoamazonia",
+    "CAR",
+    "IGAC",
+    "Registraduría",
+}
+
+# Scoring Modalities from Questionnaire
+SCORING_MODALITIES: dict[str, dict[str, Any]] = {
+    "TYPE_A": {
+        "name": "Binary Evidence Detection",
+        "description": "Verifica presencia/ausencia de elementos específicos",
+        "scoring_function": "binary_threshold",
+        "required_elements": ["cobertura_territorial", "fuentes_oficiales", "indicadores_cuantitativos"],
+        "threshold": CONFIDENCE_THRESHOLD,
+    },
+    "TYPE_B": {
+        "name": "Graduated Quality Assessment",
+        "description": "Evalúa calidad gradual de la evidencia",
+        "scoring_function": "graduated_scale",
+        "quality_levels": MICRO_LEVELS,
+        "weights": {"completeness": 0.4, "specificity": 0.3, "verification": 0.3},
+    },
+    "TYPE_C": {
+        "name": "Composite Multi-Criteria",
+        "description": "Combina múltiples criterios con ponderación",
+        "scoring_function": "weighted_composite",
+        "criteria": ["coherence", "feasibility", "measurability", "temporal_consistency"],
+        "aggregation": "weighted_average",
+    },
+    "MESO_INTEGRATION": {
+        "name": "Cross-Policy Integration",
+        "description": "Evalúa integración entre políticas del cluster",
+        "scoring_function": "integration_matrix",
+        "min_cross_references": 2,
+        "coherence_threshold": COHERENCE_THRESHOLD,
+    },
+    "MACRO_HOLISTIC": {
+        "name": "Holistic Assessment",
+        "description": "Evaluación integral del plan completo",
+        "scoring_function": "holistic_synthesis",
+        "aggregation_method": "hierarchical",
+        "min_dimension_coverage": 0.8,
+    },
+}
+
+# Method Class Mappings from Questionnaire
+METHOD_CLASSES: dict[str, list[str]] = {
+    "TextMiningEngine": ["diagnose_critical_links", "_analyze_link_text"],
+    "IndustrialPolicyProcessor": ["process", "_match_patterns_in_sentences", "_extract_point_evidence"],
+    "CausalExtractor": ["_extract_goals", "_parse_goal_context"],
+    "FinancialAuditor": ["_parse_amount", "trace_financial_allocation", "_detect_allocation_gaps"],
+    "PDETMunicipalPlanAnalyzer": ["_extract_financial_amounts", "_extract_from_budget_table"],
+    "PolicyContradictionDetector": ["_extract_quantitative_claims", "_parse_number", "_statistical_significance_test"],
+    "BayesianNumericalAnalyzer": ["evaluate_policy_metric", "compare_policies"],
+    "SemanticProcessor": ["chunk_text", "embed_single"],
+    "OperationalizationAuditor": ["_audit_direct_evidence", "_audit_systemic_risk"],
+    "BayesianMechanismInference": ["_detect_gaps"],
+    "BayesianCounterfactualAuditor": ["counterfactual_query", "_test_effect_stability"],
+    "BayesianConfidenceCalculator": ["calculate_posterior"],
+    "PerformanceAnalyzer": ["analyze_performance"],
+}
+
+# Validation Rules from Questionnaire
+VALIDATION_RULES: dict[str, dict[str, Any]] = {
+    "buscar_indicadores_cuantitativos": {
+        "minimum_required": 3,
+        "patterns": [
+            r"\d{1,3}(\.\d{3})*(,\d{1,2})?\s*%",
+            r"\d+\s*(por|cada)\s*(100|mil|100\.000)",
+        ],
+        "proximity_validation": {"require_near": ["año", "periodo", "vigencia"], "max_distance": 30},
+    },
+    "verificar_fuentes": {
+        "minimum_required": 2,
+        "patterns": ["fuente:", "según", "datos de"] + list(OFFICIAL_ENTITIES),
+    },
+    "cobertura": {
+        "minimum_required": 1,
+        "patterns": ["departamental", "municipal", "urbano", "rural", "territorial", "poblacional"],
+    },
+    "series_temporales": {
+        "minimum_years": 3,
+        "patterns": [r"20\d{2}", "año", "periodo", "histórico", "serie"],
+    },
+}
+
+# PDT/PDM Document Structure Patterns
+PDT_PATTERNS: dict[str, re.Pattern[str]] = {
+    "section_delimiters": re.compile(
+        r'^(?:CAP[IÍ]TULO\s+[IVX\d]+|T[IÍ]TULO\s+[IVX\d]+|PARTE\s+[IVX\d]+|'
+        r'L[IÍ]NEA\s+ESTRAT[EÉ]GICA\s*\d*|EJE\s+\d+|SECTOR:\s*[\w\s]+|'
+        r'PROGRAMA:\s*[\w\s]+|SUBPROGRAMA:\s*[\w\s]+|\#{3,5}\s*\d+\.\d+|\d+\.\d+\. ?\s+)',
+        re.MULTILINE | re.IGNORECASE,
+    ),
+    "product_codes": re.compile(
+        r'(?:\b\d{7}\b|C[oó]d\.\s*(?:Producto|Indicador):\s*[\w\-]+|'
+        r'BPIN\s*:\s*\d{10,13}|KPT\d{6})',
+        re.IGNORECASE,
+    ),
+    "meta_indicators": re.compile(
+        r'(?:Meta\s+(?:de\s+)?(?:producto|resultado|bienestar):\s*[\d\.,]+|'
+        r'Indicador\s+(?:de\s+)?(?:producto|resultado|impacto):\s*[^\. ]+)',
+        re.IGNORECASE,
+    ),
+}
+
+# Cluster Definitions from Questionnaire
+POLICY_CLUSTERS: dict[str, dict[str, Any]] = {
+    "CL01": {
+        "name": "Seguridad y Paz",
+        "policy_areas": ["PA02", "PA03", "PA07"],
+        "legacy_ids": ["P2", "P3", "P7"],
+        "integration_keywords": ["seguridad territorial", "paz ambiental", "ordenamiento para la paz"],
+    },
+    "CL02": {
+        "name": "Grupos Poblacionales",
+        "policy_areas": ["PA01", "PA05", "PA06"],
+        "legacy_ids": ["P1", "P5", "P6"],
+        "integration_keywords": ["enfoque diferencial", "interseccionalidad", "ciclo de vida"],
+    },
+    "CL03": {
+        "name": "Territorio-Ambiente",
+        "policy_areas": ["PA04", "PA08"],
+        "legacy_ids": ["P4", "P8"],
+        "integration_keywords": ["desarrollo territorial", "sostenibilidad", "derechos territoriales"],
+    },
+    "CL04": {
+        "name": "Derechos Sociales & Crisis",
+        "policy_areas": ["PA09", "PA10"],
+        "legacy_ids": ["P9", "P10"],
+        "integration_keywords": [
+            "crisis humanitaria",
+            "derechos en contextos de crisis",
+            "poblaciones vulnerables",
+        ],
+    },
+}
+
+
+def _score_to_micro_level(score: float) -> str:
+    """Convert numeric score to micro level category."""
+    for level, cutoff in sorted(MICRO_LEVELS.items(), key=lambda kv: kv[1], reverse=True):
+        if score >= cutoff:
+            return level
+    return "INSUFICIENTE"
+
+
+def _get_policy_area_keywords(policy_area: str) -> list[str]:
+    """Get keywords for a policy area (supports both PA## and P# formats)."""
+    policy_area_id = policy_area
+    if policy_area_id.startswith("P") and policy_area_id[1:].isdigit():
+        for pa_id, pa_data in CANON_POLICY_AREAS.items():
+            if pa_data.get("legacy_id") == policy_area_id:
+                policy_area_id = pa_id
+                break
+    return list(CANON_POLICY_AREAS.get(policy_area_id, {}).get("keywords", []))
+
+
+def _get_dimension_patterns(dimension: str) -> dict[str, list[str]]:
+    """Get all pattern categories for a dimension."""
+    normalized = (dimension or "").strip().upper()
+    if normalized.startswith("DIM"):
+        normalized = CANONICAL_DIMENSIONS.get(normalized, {}).get("code", normalized)
+    if normalized.startswith("D") and len(normalized) >= 2 and normalized[1].isdigit():
+        normalized = normalized[:2]
+
+    if normalized == "D1":
+        return {
+            "diagnostico_cuantitativo": QUESTIONNAIRE_PATTERNS["diagnostico_cuantitativo"],
+            "brechas_deficits": QUESTIONNAIRE_PATTERNS["brechas_deficits"],
+            "recursos_asignados": QUESTIONNAIRE_PATTERNS["recursos_asignados"],
+        }
+    if normalized == "D2":
+        return {
+            "estrategias_intervenciones": QUESTIONNAIRE_PATTERNS["estrategias_intervenciones"],
+            "poblacion_focalizada": QUESTIONNAIRE_PATTERNS["poblacion_focalizada"],
+        }
+    if normalized == "D3":
+        return {
+            "metas_producto": QUESTIONNAIRE_PATTERNS["metas_producto"],
+        }
+    if normalized == "D4":
+        return {
+            "indicadores_resultado": QUESTIONNAIRE_PATTERNS["indicadores_resultado"],
+        }
+    if normalized == "D5":
+        return {
+            "transformacion_estructural": QUESTIONNAIRE_PATTERNS["transformacion_estructural"],
+        }
+    if normalized == "D6":
+        return {
+            "teoria_cambio": QUESTIONNAIRE_PATTERNS["teoria_cambio"],
+        }
+
+    return {}
+
+
+def _validate_pattern_match(match_text: str, validation_rule: str) -> bool:
+    """Apply validation rule to pattern match."""
+    if validation_rule not in VALIDATION_RULES:
+        return True
+
+    rule = VALIDATION_RULES[validation_rule]
+    patterns = rule.get("patterns", [])
+    if not isinstance(patterns, list):
+        return True
+
+    text = match_text or ""
+    for pattern in patterns:
+        if not pattern:
+            continue
+        if isinstance(pattern, str):
+            if re.search(pattern, text, flags=re.IGNORECASE):
+                return True
+        else:
+            if re.search(pattern, text, flags=re.IGNORECASE):
+                return True
+    return False
+
+
 class _FallbackBayesianCalculator:
     """Fallback Bayesian calculator when advanced module is unavailable."""
 
     def __init__(self) -> None:
-        self.prior_alpha = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackBayesianCalculator.__init__", "auto_param_L64_31", 1.0)
-        self.prior_beta = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackBayesianCalculator.__init__", "auto_param_L65_30", 1.0)
+        self.prior_alpha = 1.0
+        self.prior_beta = 1.0
 
     def calculate_posterior(
-        self, evidence_strength: float, observations: int, domain_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackBayesianCalculator.__init__", "auto_param_L68_86", 1.0)
+        self, evidence_strength: float, observations: int, domain_weight: float = 1.0
     ) -> float:
         alpha_post = self.prior_alpha + evidence_strength * observations * domain_weight
         beta_post = self.prior_beta + (1 - evidence_strength) * observations * domain_weight
@@ -87,7 +660,7 @@ class _FallbackBayesianCalculator:
 class _FallbackTemporalVerifier:
     """Fallback temporal verifier providing graceful degradation."""
 
-    @calibrated_method("farfan_core.processing.policy_processor._FallbackTemporalVerifier.verify_temporal_consistency")
+    
     def verify_temporal_consistency(self, statements: list[Any]) -> tuple[bool, list[dict[str, Any]]]:
         return True, []
 
@@ -112,7 +685,7 @@ class _FallbackContradictionDetector:
             "knowledge_graph_stats": {"nodes": 0, "edges": 0, "components": 0},
         }
 
-    @calibrated_method("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements")
+    
     def _extract_policy_statements(self, text: str, dimension: Any) -> list[Any]:
         return []
 
@@ -141,7 +714,7 @@ class CausalDimension(Enum):
 # ENHANCED PATTERN LIBRARY WITH SEMANTIC HIERARCHIES
 # ============================================================================
 
-CAUSAL_PATTERN_TAXONOMY: dict[CausalDimension, dict[str, list[str]]] = {
+LEGACY_CAUSAL_PATTERN_TAXONOMY: dict[CausalDimension, dict[str, list[str]]] = {
     CausalDimension.D1_INSUMOS: {
         "diagnostico_cuantitativo": [
             r"\b(?:diagn[óo]stico\s+(?:cuantitativo|estad[íi]stico|situacional))\b",
@@ -284,6 +857,15 @@ CAUSAL_PATTERN_TAXONOMY: dict[CausalDimension, dict[str, list[str]]] = {
     },
 }
 
+CAUSAL_PATTERN_TAXONOMY: dict[CausalDimension, dict[str, list[str]]] = {
+    CausalDimension.D1_INSUMOS: _get_dimension_patterns("D1"),
+    CausalDimension.D2_ACTIVIDADES: _get_dimension_patterns("D2"),
+    CausalDimension.D3_PRODUCTOS: _get_dimension_patterns("D3"),
+    CausalDimension.D4_RESULTADOS: _get_dimension_patterns("D4"),
+    CausalDimension.D5_IMPACTOS: _get_dimension_patterns("D5"),
+    CausalDimension.D6_CAUSALIDAD: _get_dimension_patterns("D6"),
+}
+
 # ============================================================================
 # CONFIGURATION ARCHITECTURE
 # ============================================================================
@@ -294,31 +876,31 @@ class ProcessorConfig:
 
     preserve_document_structure: bool = True
     enable_semantic_tagging: bool = True
-    confidence_threshold: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L301_34", 0.65)
+    confidence_threshold: float = field(default=CONFIDENCE_THRESHOLD)
     context_window_chars: int = 400
     max_evidence_per_pattern: int = 5
     enable_bayesian_scoring: bool = True
     utf8_normalization_form: str = "NFC"
 
     # Advanced controls
-    entropy_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L308_28", 0.3)
-    proximity_decay_rate: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L309_34", 0.15)
+    entropy_weight: float = 0.3
+    proximity_decay_rate: float = 0.15
     min_sentence_length: int = 20
     max_sentence_length: int = 500
-    bayesian_prior_confidence: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L312_39", 0.5)
-    bayesian_entropy_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L313_37", 0.3)
+    bayesian_prior_confidence: float = 0.5
+    bayesian_entropy_weight: float = 0.3
     minimum_dimension_scores: dict[str, float] = field(
         default_factory=lambda: {
-            "D1": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L316_18", 0.50),
-            "D2": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L317_18", 0.50),
-            "D3": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L318_18", 0.50),
-            "D4": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L319_18", 0.50),
-            "D5": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L320_18", 0.50),
-            "D6": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L321_18", 0.50),
+            "D1": MICRO_LEVELS["ACEPTABLE"] - 0.05,
+            "D2": MICRO_LEVELS["ACEPTABLE"] - 0.05,
+            "D3": MICRO_LEVELS["ACEPTABLE"] - 0.05,
+            "D4": MICRO_LEVELS["ACEPTABLE"] - 0.05,
+            "D5": MICRO_LEVELS["ACEPTABLE"] - 0.05,
+            "D6": MICRO_LEVELS["ACEPTABLE"] - 0.05,
         }
     )
     critical_dimension_overrides: dict[str, float] = field(
-        default_factory=lambda: {"D1": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L325_39", 0.55), "D6": ParameterLoaderV2.get("farfan_core.processing.policy_processor._FallbackContradictionDetector._extract_policy_statements", "auto_param_L325_51", 0.55)}
+        default_factory=lambda: {"D1": MICRO_LEVELS["ACEPTABLE"], "D6": MICRO_LEVELS["ACEPTABLE"]}
     )
     differential_focus_indicators: tuple[str, ...] = (
         "enfoque diferencial",
@@ -356,26 +938,26 @@ class ProcessorConfig:
             normalized[canonical] = value
         return cls(**normalized)
 
-    @calibrated_method("farfan_core.processing.policy_processor.ProcessorConfig.validate")
+    
     def validate(self) -> None:
         """Validate configuration parameters."""
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L366_15", 0.0) <= self.confidence_threshold <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L366_51", 1.0):
+        if not 0.0 <= self.confidence_threshold <= 1.0:
             raise ValueError("confidence_threshold must be in [0, 1]")
         if self.context_window_chars < 100:
             raise ValueError("context_window_chars must be >= 100")
         if self.entropy_weight < 0 or self.entropy_weight > 1:
             raise ValueError("entropy_weight must be in [0, 1]")
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L372_15", 0.0) <= self.bayesian_prior_confidence <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L372_56", 1.0):
+        if not 0.0 <= self.bayesian_prior_confidence <= 1.0:
             raise ValueError("bayesian_prior_confidence must be in [0, 1]")
-        if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L374_15", 0.0) <= self.bayesian_entropy_weight <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L374_54", 1.0):
+        if not 0.0 <= self.bayesian_entropy_weight <= 1.0:
             raise ValueError("bayesian_entropy_weight must be in [0, 1]")
         for dimension, threshold in self.minimum_dimension_scores.items():
-            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L377_19", 0.0) <= threshold <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L377_39", 1.0):
+            if not 0.0 <= threshold <= 1.0:
                 raise ValueError(
                     f"minimum_dimension_scores[{dimension}] must be in [0, 1]"
                 )
         for dimension, threshold in self.critical_dimension_overrides.items():
-            if not ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L382_19", 0.0) <= threshold <= ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L382_39", 1.0):
+            if not 0.0 <= threshold <= 1.0:
                 raise ValueError(
                     f"critical_dimension_overrides[{dimension}] must be in [0, 1]"
                 )
@@ -394,8 +976,8 @@ class BayesianEvidenceScorer:
 
     def __init__(
         self,
-        prior_confidence: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L401_34", 0.5),
-        entropy_weight: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L402_32", 0.3),
+        prior_confidence: float = 0.5,
+        entropy_weight: float = 0.3,
         calibration: dict[str, Any] | None = None,
     ) -> None:
         self.prior = prior_confidence
@@ -404,18 +986,18 @@ class BayesianEvidenceScorer:
         self.calibration = calibration or {}
 
         # Defaults that can be overridden by calibration manifests
-        self.epsilon_clip: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L411_35", 0.02)
-        self.duplicate_gamma: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L412_38", 1.0)
-        self.cross_type_floor: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L413_39", 0.0)
+        self.epsilon_clip: float = 0.02
+        self.duplicate_gamma: float = 1.0
+        self.cross_type_floor: float = 0.0
         self.source_quality_weights: dict[str, float] = {}
         self.sector_multipliers: dict[str, float] = {}
-        self.sector_default: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L416_37", 1.0)
+        self.sector_default: float = 1.0
         self.municipio_multipliers: dict[str, float] = {}
-        self.municipio_default: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.ProcessorConfig.validate", "auto_param_L418_40", 1.0)
+        self.municipio_default: float = 1.0
 
         self._configure_from_calibration()
 
-    @calibrated_method("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration")
+    
     def _configure_from_calibration(self) -> None:
         config = self.calibration.get("bayesian_inference_robust") if isinstance(self.calibration, dict) else {}
         if not isinstance(config, dict):
@@ -428,9 +1010,9 @@ class BayesianEvidenceScorer:
                 self.epsilon_clip = float(stability.get("epsilon_clip", self.epsilon_clip))
                 self.duplicate_gamma = float(stability.get("duplicate_gamma", self.duplicate_gamma))
                 self.cross_type_floor = float(stability.get("cross_type_floor", self.cross_type_floor))
-                self.epsilon_clip = min(max(self.epsilon_clip, ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L435_63", 0.0)), ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L435_69", 0.45))
-                self.duplicate_gamma = max(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L436_43", 0.0), self.duplicate_gamma)
-                self.cross_type_floor = max(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L437_44", 0.0), min(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L437_53", 1.0), self.cross_type_floor))
+                self.epsilon_clip = min(max(self.epsilon_clip, 0.0), 0.45)
+                self.duplicate_gamma = max(0.0, self.duplicate_gamma)
+                self.cross_type_floor = max(0.0, min(1.0, self.cross_type_floor))
 
             weights = evidence_cfg.get("source_quality_weights", {})
             if isinstance(weights, dict):
@@ -443,17 +1025,17 @@ class BayesianEvidenceScorer:
                 sector = hierarchy.get("sector_multipliers", {})
                 if isinstance(sector, dict):
                     self.sector_multipliers = {str(k).lower(): float(v) for k, v in sector.items() if isinstance(v, (int, float))}
-                    self.sector_default = float(self.sector_multipliers.get("default", ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L450_87", 1.0)))
+                    self.sector_default = float(self.sector_multipliers.get("default", 1.0))
                 muni = hierarchy.get("municipio_tamano_multipliers", {})
                 if isinstance(muni, dict):
                     self.municipio_multipliers = {str(k).lower(): float(v) for k, v in muni.items() if isinstance(v, (int, float))}
-                    self.municipio_default = float(self.municipio_multipliers.get("default", ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L454_93", 1.0)))
+                    self.municipio_default = float(self.municipio_multipliers.get("default", 1.0))
 
     def compute_evidence_score(
         self,
         matches: list[str],
         total_corpus_size: int,
-        pattern_specificity: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L460_37", 0.8),
+        pattern_specificity: float = 0.8,
         **kwargs: Any
     ) -> float:
         """
@@ -469,7 +1051,7 @@ class BayesianEvidenceScorer:
             Calibrated confidence score in [0, 1]
         """
         if not matches:
-            return ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L476_19", 0.0)
+            return 0.0
 
         # Term frequency normalization
         tf = len(matches) / max(1, total_corpus_size / 1000)
@@ -482,10 +1064,10 @@ class BayesianEvidenceScorer:
 
         # Bayesian update
         clip_low = self.epsilon_clip
-        clip_high = ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L489_20", 1.0) - self.epsilon_clip
+        clip_high = 1.0 - self.epsilon_clip
         pattern_specificity = max(clip_low, min(clip_high, pattern_specificity))
 
-        likelihood = min(ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L492_25", 1.0), tf * pattern_specificity)
+        likelihood = min(1.0, tf * pattern_specificity)
         posterior = (likelihood * self.prior) / (
             (likelihood * self.prior) + ((1 - likelihood) * (1 - self.prior))
         )
@@ -503,7 +1085,7 @@ class BayesianEvidenceScorer:
         if self.source_quality_weights:
             source_quality = kwargs.get("source_quality")
             if source_quality is not None:
-                weight = self._lookup_weight(self.source_quality_weights, source_quality, default=ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L510_98", 1.0))
+                weight = self._lookup_weight(self.source_quality_weights, source_quality, default=1.0)
                 final_score *= weight
 
         # Context multipliers (sector / municipality)
@@ -515,7 +1097,7 @@ class BayesianEvidenceScorer:
         if self.municipio_multipliers:
             final_score *= self._lookup_weight(self.municipio_multipliers, municipio, default=self.municipio_default)
 
-        return np.clip(final_score, ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L522_36", 0.0), ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L522_41", 1.0))
+        return np.clip(final_score, 0.0, 1.0)
 
     @staticmethod
     def _calculate_shannon_entropy(values: np.ndarray, **kwargs: Any) -> float:
@@ -529,7 +1111,7 @@ class BayesianEvidenceScorer:
             Normalized Shannon entropy
         """
         if len(values) < 2:
-            return ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L536_19", 0.0)
+            return 0.0
 
         # Discrete probability distribution
         hist, _ = np.histogram(values, bins=min(10, len(values)))
@@ -537,12 +1119,12 @@ class BayesianEvidenceScorer:
         prob = prob[prob > 0]  # Remove zeros
 
         entropy = -np.sum(prob * np.log2(prob))
-        max_entropy = np.log2(len(prob)) if len(prob) > 1 else ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L544_63", 1.0)
+        max_entropy = np.log2(len(prob)) if len(prob) > 1 else 1.0
 
-        return entropy / max_entropy if max_entropy > 0 else ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L546_61", 0.0)
+        return entropy / max_entropy if max_entropy > 0 else 0.0
 
     @staticmethod
-    def _lookup_weight(mapping: dict[str, float], key: Any, default: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.BayesianEvidenceScorer._configure_from_calibration", "auto_param_L549_77", 1.0)) -> float:
+    def _lookup_weight(mapping: dict[str, float], key: Any, default: float = 1.0) -> float:
         if not mapping:
             return default
         if key is None:
@@ -575,12 +1157,12 @@ class PolicyTextProcessor:
             r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ])|(?<=\n\n)"
         )
 
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyTextProcessor.normalize_unicode")
+    
     def normalize_unicode(self, text: str) -> str:
         """Apply canonical Unicode normalization (NFC/NFKC)."""
         return unicodedata.normalize(self.config.utf8_normalization_form, text)
 
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyTextProcessor.segment_into_sentences")
+    
     def segment_into_sentences(self, text: str, **kwargs: Any) -> list[str]:
         """
         Segment text into sentences with context-aware boundary detection.
@@ -630,7 +1212,7 @@ class PolicyTextProcessor:
         return text[start:end].strip()
 
     @lru_cache(maxsize=256)
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyTextProcessor.compile_pattern")
+    
     def compile_pattern(self, pattern_str: str) -> re.Pattern:
         """Cache and compile regex patterns for performance."""
         return re.compile(pattern_str, re.IGNORECASE | re.UNICODE)
@@ -646,11 +1228,11 @@ class EvidenceBundle:
     dimension: CausalDimension
     category: str
     matches: list[str] = field(default_factory=list)
-    confidence: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.PolicyTextProcessor.compile_pattern", "auto_param_L653_24", 0.0)
+    confidence: float = 0.0
     context_windows: list[str] = field(default_factory=list)
     match_positions: list[int] = field(default_factory=list)
 
-    @calibrated_method("farfan_core.processing.policy_processor.EvidenceBundle.to_dict")
+    
     def to_dict(self) -> dict[str, Any]:
         return {
             "dimension": self.dimension.value,
@@ -669,35 +1251,21 @@ class IndustrialPolicyProcessor:
 
     This processor provides core analysis capabilities for policy documents.
 
-    DEPRECATION NOTE: The questionnaire_path parameter is deprecated.
-    Modern pipelines use SPC (Smart Policy Chunks) ingestion which handles
-    questionnaire integration separately.
+    NOTE: This implementation is hermetic (no runtime questionnaire JSON).
     """
 
     def __init__(
         self,
         config: ProcessorConfig | None = None,
-        questionnaire_path: Path | None = None,  # DEPRECATED: Kept for API compatibility only
         *,
-        ontology: PortMunicipalOntology | None = None,
-        semantic_analyzer: PortSemanticAnalyzer | None = None,
-        performance_analyzer: PortPerformanceAnalyzer | None = None,
-        contradiction_detector: PortContradictionDetector | None = None,
-        temporal_verifier: PortTemporalLogicVerifier | None = None,
-        confidence_calculator: PortBayesianConfidenceCalculator | None = None,
-        municipal_analyzer: PortMunicipalAnalyzer | None = None,
+        ontology: Any | None = None,
+        semantic_analyzer: Any | None = None,
+        performance_analyzer: Any | None = None,
+        contradiction_detector: Any | None = None,
+        temporal_verifier: Any | None = None,
+        confidence_calculator: Any | None = None,
+        municipal_analyzer: Any | None = None,
     ) -> None:
-        # DEPRECATION WARNING: questionnaire_path parameter is deprecated
-        if questionnaire_path is not None:
-            import warnings
-            warnings.warn(
-                "The 'questionnaire_path' parameter is deprecated and will be ignored. "
-                "Modern SPC pipelines handle questionnaire integration separately. "
-                "Use CPPIngestionPipeline instead.",
-                DeprecationWarning,
-                stacklevel=2
-            )
-
         self.config = config or ProcessorConfig()
         self.config.validate()
 
@@ -708,7 +1276,7 @@ class IndustrialPolicyProcessor:
         )
 
         if ontology is None or semantic_analyzer is None or performance_analyzer is None:
-            from farfan_pipeline.core.wiring.analysis_factory import (
+            from orchestration.wiring.analysis_factory import (
                 create_municipal_ontology,
                 create_semantic_analyzer,
                 create_performance_analyzer,
@@ -718,19 +1286,19 @@ class IndustrialPolicyProcessor:
             performance_analyzer = performance_analyzer or create_performance_analyzer(ontology)
 
         if contradiction_detector is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_contradiction_detector
+            from orchestration.wiring.analysis_factory import create_contradiction_detector
             contradiction_detector = create_contradiction_detector()
 
         if temporal_verifier is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_temporal_logic_verifier
+            from orchestration.wiring.analysis_factory import create_temporal_logic_verifier
             temporal_verifier = create_temporal_logic_verifier()
 
         if confidence_calculator is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_bayesian_confidence_calculator
+            from orchestration.wiring.analysis_factory import create_bayesian_confidence_calculator
             confidence_calculator = create_bayesian_confidence_calculator()
 
         if municipal_analyzer is None:
-            from farfan_pipeline.core.wiring.analysis_factory import create_municipal_analyzer
+            from orchestration.wiring.analysis_factory import create_municipal_analyzer
             municipal_analyzer = create_municipal_analyzer()
 
         self.ontology = ontology
@@ -741,22 +1309,16 @@ class IndustrialPolicyProcessor:
         self.confidence_calculator = confidence_calculator
         self.municipal_analyzer = municipal_analyzer
 
-        # LEGACY: Questionnaire loading removed - this component is deprecated
-        # Modern SPC pipeline handles questionnaire injection separately
-        self.questionnaire_file_path = None
-        self.questionnaire_data = {"questions": []}  # Empty stub for backward compatibility
-
         # Compile pattern taxonomy
         self._pattern_registry = self._compile_pattern_registry()
 
-        # Policy point keyword extraction
-        self.point_patterns: dict[str, re.Pattern] = {}
-        self._build_point_patterns()
+        # Initialize point patterns from canonical policy areas
+        self.point_patterns = self._build_canonical_point_patterns()
 
         # Processing statistics
         self.statistics: dict[str, Any] = defaultdict(int)
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._load_questionnaire")
+    
     def _load_questionnaire(self) -> dict[str, Any]:
         """
         LEGACY: Questionnaire loading disabled.
@@ -770,7 +1332,7 @@ class IndustrialPolicyProcessor:
         )
         return {"questions": []}
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._compile_pattern_registry")
+    
     def _compile_pattern_registry(self) -> dict[CausalDimension, dict[str, list[re.Pattern]]]:
         """Compile all causal patterns into efficient regex objects."""
         registry = {}
@@ -782,53 +1344,74 @@ class IndustrialPolicyProcessor:
                 ]
         return registry
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._build_point_patterns")
+    def _build_canonical_point_patterns(self) -> dict[str, re.Pattern]:
+        """Build point patterns from canonical policy areas."""
+        patterns: dict[str, re.Pattern] = {}
+        for pa_id, pa_data in CANON_POLICY_AREAS.items():
+            keywords = pa_data.get("keywords", [])
+            if keywords:
+                pattern_str = "|".join(rf"\b{re.escape(kw)}\b" for kw in keywords)
+                patterns[pa_id] = re.compile(pattern_str, re.IGNORECASE)
+        return patterns
+
+    def _detect_policy_areas(self, text: str) -> list[str]:
+        """Detect policy areas present in text using canonical keywords."""
+        detected: list[str] = []
+        text_lower = text.lower()
+        for pa_id, pa_data in CANON_POLICY_AREAS.items():
+            for keyword in pa_data.get("keywords", []):
+                if keyword.lower() in text_lower:
+                    detected.append(pa_id)
+                    break
+        return detected
+
+    def _detect_scoring_modality(self, dimension: str, category: str) -> str:
+        """Determine appropriate scoring modality for dimension/category."""
+        normalized_dim = (dimension or "").upper()
+        if normalized_dim.startswith("DIM"):
+            normalized_dim = CANONICAL_DIMENSIONS.get(normalized_dim, {}).get("code", normalized_dim)
+        if normalized_dim.startswith("D") and len(normalized_dim) >= 2 and normalized_dim[1].isdigit():
+            normalized_dim = normalized_dim[:2]
+
+        if normalized_dim in ["D1", "DIM01"] and category in ["diagnostico_cuantitativo", "recursos_asignados"]:
+            return "TYPE_A"
+        if normalized_dim in ["D2", "DIM02"] and category == "poblacion_focalizada":
+            return "TYPE_B"
+        if normalized_dim in ["D4", "DIM04", "D5", "DIM05"]:
+            return "TYPE_C"
+        if normalized_dim in ["D6", "DIM06"]:
+            return "MACRO_HOLISTIC"
+        return "TYPE_A"  # Default
+
+    def _apply_validation_rules(self, matches: list[str], rule_name: str) -> list[str]:
+        """Filter matches through validation rules."""
+        if rule_name not in VALIDATION_RULES:
+            return matches
+
+        rule = VALIDATION_RULES[rule_name]
+        validated: list[str] = []
+
+        for match in matches:
+            if _validate_pattern_match(match, rule_name):
+                validated.append(match)
+
+        # Apply minimum requirements
+        min_required = int(rule.get("minimum_required", 0))
+        if len(validated) < min_required:
+            logger.warning(f"Validation {rule_name}: found {len(validated)}, required {min_required}")
+
+        return validated
+
+    
     def _build_point_patterns(self) -> None:
         """
-        LEGACY: Pattern building from questionnaire disabled.
+        LEGACY: Build patterns from canonical vocabulary.
 
-        This method is kept for backward compatibility but does nothing.
-        Modern SPC pipeline handles question-aware chunking separately.
+        This method remains for backward compatibility; it no longer reads questionnaire JSON.
         """
-        questions = self.questionnaire_data.get("questions", [])
+        self.point_patterns = self._build_canonical_point_patterns()
 
-        if not questions:
-            logger.info(
-                "No questionnaire questions available. "
-                "This is expected for legacy IndustrialPolicyProcessor. "
-                "Use SPC ingestion for question-aware analysis."
-            )
-            return
-
-        # Legacy path (should not be reached in modern pipeline)
-        point_keywords: dict[str, set[str]] = defaultdict(set)
-
-        for question in questions:
-            point_code = question.get("point_code")
-            if not point_code:
-                continue
-
-            # Extract title keywords
-            title = question.get("point_title", "").lower()
-            if title:
-                point_keywords[point_code].add(title)
-
-            # Extract hint keywords (cleaned)
-            for hint in question.get("hints", []):
-                cleaned = re.sub(r"[()]", "", hint).strip().lower()
-                if len(cleaned) > 3:
-                    point_keywords[point_code].add(cleaned)
-
-        # Compile into optimized regex patterns
-        for point_code, keywords in point_keywords.items():
-            # Sort by length (prioritize longer phrases)
-            sorted_kw = sorted(keywords, key=len, reverse=True)
-            pattern_str = "|".join(rf"\b{re.escape(kw)}\b" for kw in sorted_kw if kw)
-            self.point_patterns[point_code] = re.compile(pattern_str, re.IGNORECASE)
-
-        logger.info(f"Compiled patterns for {len(self.point_patterns)} policy points")
-
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process")
+    
     def process(self, raw_text: str, **kwargs: Any) -> dict[str, Any]:
         """
         Execute comprehensive policy plan analysis.
@@ -1019,8 +1602,8 @@ class IndustrialPolicyProcessor:
 
         domain_weights = {
             CausalDimension.D1_INSUMOS: 1.1,
-            CausalDimension.D2_ACTIVIDADES: ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1000_44", 1.0),
-            CausalDimension.D3_PRODUCTOS: ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1001_42", 1.0),
+            CausalDimension.D2_ACTIVIDADES: 1.0,
+            CausalDimension.D3_PRODUCTOS: 1.0,
             CausalDimension.D4_RESULTADOS: 1.1,
             CausalDimension.D5_IMPACTOS: 1.15,
             CausalDimension.D6_CAUSALIDAD: 1.2,
@@ -1062,12 +1645,12 @@ class IndustrialPolicyProcessor:
             }
 
             coherence_metrics = report.get("coherence_metrics", {})
-            coherence_score = float(coherence_metrics.get("coherence_score", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1043_77", 0.0)))
+            coherence_score = float(coherence_metrics.get("coherence_score", 0.0))
             observations = max(1, len(statements))
             posterior = self.confidence_calculator.calculate_posterior(
-                evidence_strength=max(coherence_score, ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1046_55", 0.01)),
+                evidence_strength=max(coherence_score, 0.01),
                 observations=observations,
-                domain_weight=domain_weights.get(dimension, ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1048_60", 1.0)),
+                domain_weight=domain_weights.get(dimension, 1.0),
             )
             bayesian_scores[dimension.value] = float(posterior)
 
@@ -1081,11 +1664,11 @@ class IndustrialPolicyProcessor:
                     if ctype:
                         keywords.append(ctype)
 
-                severity = 1 - coherence_score if coherence_score else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1062_71", 0.5)
+                severity = 1 - coherence_score if coherence_score else 0.5
                 critical_links[dimension.value] = {
-                    "criticality_score": round(min(ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1064_51", 1.0), max(ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1064_60", 0.0), severity)), 4),
+                    "criticality_score": round(min(1.0, max(0.0, severity)), 4),
                     "text_analysis": {
-                        "sentiment": "negative" if coherence_score < ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1066_69", 0.5) else "neutral",
+                        "sentiment": "negative" if coherence_score < 0.5 else "neutral",
                         "keywords": keywords,
                         "word_count": len(text.split()),
                     },
@@ -1119,28 +1702,28 @@ class IndustrialPolicyProcessor:
 
         bayesian_scores = contradiction_bundle.get("bayesian_scores", {})
         bayesian_values = list(bayesian_scores.values())
-        overall_score = float(np.mean(bayesian_values)) if bayesian_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1100_80", 0.0)
+        overall_score = float(np.mean(bayesian_values)) if bayesian_values else 0.0
 
         def _dimension_confidence(key: CausalDimension) -> float:
             return float(
-                dimension_analysis.get(key.value, {}).get("dimension_confidence", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1104_82", 0.0))
+                dimension_analysis.get(key.value, {}).get("dimension_confidence", 0.0)
             )
 
         temporal_flags = contradiction_bundle.get("temporal_assessments", {})
         temporal_values = [
-            ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1109_12", 1.0) if assessment.get("is_consistent", True) else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1109_62", 0.0)
+            1.0 if assessment.get("is_consistent", True) else 0.0
             for assessment in temporal_flags.values()
         ]
         temporal_consistency = (
-            float(np.mean(temporal_values)) if temporal_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1113_68", 1.0)
+            float(np.mean(temporal_values)) if temporal_values else 1.0
         )
 
         reports = contradiction_bundle.get("reports", {})
         coherence_scores = [
-            float(report.get("coherence_metrics", {}).get("coherence_score", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1118_77", 0.0)))
+            float(report.get("coherence_metrics", {}).get("coherence_score", 0.0))
             for report in reports.values()
         ]
-        causal_coherence = float(np.mean(coherence_scores)) if coherence_scores else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1121_85", 0.0)
+        causal_coherence = float(np.mean(coherence_scores)) if coherence_scores else 0.0
 
         objective_alignment = float(
             reports.get(
@@ -1148,18 +1731,18 @@ class IndustrialPolicyProcessor:
                 {},
             )
             .get("coherence_metrics", {})
-            .get("objective_alignment", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1129_40", 0.0))
+            .get("objective_alignment", 0.0)
         )
 
         confidence_interval = (
-            float(min(bayesian_values)) if bayesian_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1133_64", 0.0),
-            float(max(bayesian_values)) if bayesian_values else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1134_64", 0.0),
+            float(min(bayesian_values)) if bayesian_values else 0.0,
+            float(max(bayesian_values)) if bayesian_values else 0.0,
         )
 
         evidence = {
             "bayesian_scores": bayesian_scores,
             "dimension_confidences": {
-                key: value.get("dimension_confidence", ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1140_55", 0.0))
+                key: value.get("dimension_confidence", 0.0)
                 for key, value in dimension_analysis.items()
             },
             "performance_metrics": performance_analysis.get("value_chain_metrics", {}),
@@ -1202,7 +1785,7 @@ class IndustrialPolicyProcessor:
 
                 if matches:
                     confidence = self._compute_evidence_confidence(
-                        matches, len(text), pattern_specificity=ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1183_64", 0.85)
+                        matches, len(text), pattern_specificity=0.85
                     )
 
                     if confidence >= self.config.confidence_threshold:
@@ -1244,25 +1827,36 @@ class IndustrialPolicyProcessor:
             # Auto-extract sentences if not provided
             sentences = self.text_processor.segment_into_sentences(text)
 
-        dimension_scores = {}
+        dimension_scores: dict[str, Any] = {}
 
         for dimension, categories in self._pattern_registry.items():
+            # Get canonical patterns for this dimension
+            canonical_patterns = _get_dimension_patterns(dimension.value.replace("d", "D").upper())
             total_matches = 0
-            category_results = {}
+            category_results: dict[str, Any] = {}
 
-            for category, compiled_patterns in categories.items():
-                matches = []
+            for category, patterns in canonical_patterns.items():
+                # Apply scoring modality
+                modality = self._detect_scoring_modality(dimension.value, category)
+
+                compiled_patterns = categories.get(
+                    category,
+                    [self.text_processor.compile_pattern(p) for p in patterns],
+                )
+
+                matches: list[str] = []
                 for pattern in compiled_patterns:
                     for sentence in sentences:
                         matches.extend(pattern.findall(sentence))
 
                 if matches:
                     confidence = self.scorer.compute_evidence_score(
-                        matches, len(text), pattern_specificity=ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1239_64", 0.80)
+                        matches, len(text), pattern_specificity=0.80
                     )
                     category_results[category] = {
                         "match_count": len(matches),
                         "confidence": round(confidence, 4),
+                        "scoring_modality": modality,
                     }
                     total_matches += len(matches)
 
@@ -1272,7 +1866,7 @@ class IndustrialPolicyProcessor:
                 "dimension_confidence": round(
                     np.mean([c["confidence"] for c in category_results.values()])
                     if category_results
-                    else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1253_25", 0.0),
+                    else 0.0,
                     4,
                 ),
             }
@@ -1318,9 +1912,9 @@ class IndustrialPolicyProcessor:
             for dim_data in dimension_analysis.values()
             if dim_data.get("dimension_confidence", 0) > 0
         ]
-        return round(np.mean(confidences), 4) if confidences else ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor.process", "auto_param_L1299_66", 0.0)
+        return round(np.mean(confidences), 4) if confidences else 0.0
 
-    @calibrated_method("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._empty_result")
+    
     def _empty_result(self) -> dict[str, Any]:
         """Return structure for failed/empty processing."""
         return {
@@ -1331,7 +1925,7 @@ class IndustrialPolicyProcessor:
                 "character_count": 0,
                 "sentence_count": 0,
                 "point_coverage": 0,
-                "avg_confidence": ParameterLoaderV2.get("farfan_core.processing.policy_processor.IndustrialPolicyProcessor._empty_result", "auto_param_L1312_34", 0.0),
+                "avg_confidence": 0.0,
             },
             "processing_status": "failed",
             "error": "Insufficient input for analysis",
@@ -1366,7 +1960,7 @@ class AdvancedTextSanitizer:
             "citation": ("__CITE_START__", "__CITE_END__"),
         }
 
-    @calibrated_method("farfan_core.processing.policy_processor.AdvancedTextSanitizer.sanitize")
+    
     def sanitize(self, raw_text: str) -> str:
         """
         Execute comprehensive text sanitization pipeline.
@@ -1404,7 +1998,7 @@ class AdvancedTextSanitizer:
 
         return text.strip()
 
-    @calibrated_method("farfan_core.processing.policy_processor.AdvancedTextSanitizer._protect_structure")
+    
     def _protect_structure(self, text: str) -> str:
         """Mark structural elements for protection during sanitization."""
         protected = text
@@ -1436,7 +2030,7 @@ class AdvancedTextSanitizer:
 
         return protected
 
-    @calibrated_method("farfan_core.processing.policy_processor.AdvancedTextSanitizer._restore_structure")
+    
     def _restore_structure(self, text: str) -> str:
         """Remove protection markers after sanitization."""
         restored = text
@@ -1496,31 +2090,17 @@ class PolicyAnalysisPipeline:
     End-to-end orchestrator for Colombian local development plan analysis
     implementing the complete DECALOGO causal framework evaluation workflow.
 
-    DEPRECATION NOTE: The questionnaire_path parameter is deprecated.
-    Modern pipelines use SPC (Smart Policy Chunks) ingestion which handles
-    questionnaire integration separately.
+    NOTE: This pipeline is hermetic (no runtime questionnaire JSON).
     """
 
     def __init__(
         self,
         config: ProcessorConfig | None = None,
-        questionnaire_path: Path | None = None,  # DEPRECATED: Kept for API compatibility only
     ) -> None:
-        # DEPRECATION WARNING: questionnaire_path parameter is deprecated
-        if questionnaire_path is not None:
-            import warnings
-            warnings.warn(
-                "The 'questionnaire_path' parameter is deprecated and will be ignored. "
-                "Modern SPC pipelines handle questionnaire integration separately. "
-                "Use CPPIngestionPipeline instead.",
-                DeprecationWarning,
-                stacklevel=2
-            )
-
         self.config = config or ProcessorConfig()
         self.sanitizer = AdvancedTextSanitizer(self.config)
 
-        from farfan_pipeline.core.wiring.analysis_factory import create_analysis_components
+        from orchestration.wiring.analysis_factory import create_analysis_components
 
         components = create_analysis_components()
         self.document_loader = components['document_loader']
@@ -1534,7 +2114,6 @@ class PolicyAnalysisPipeline:
 
         self.processor = IndustrialPolicyProcessor(
             self.config,
-            questionnaire_path,
             ontology=self.ontology,
             semantic_analyzer=self.semantic_analyzer,
             performance_analyzer=self.performance_analyzer,
@@ -1596,7 +2175,7 @@ class PolicyAnalysisPipeline:
         logger.info(f"Analysis complete: {results['processing_status']}")
         return results
 
-    @calibrated_method("farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_text")
+    
     def analyze_text(self, raw_text: str) -> dict[str, Any]:
         """
         Execute analysis pipeline on raw text input.
@@ -1617,7 +2196,7 @@ class PolicyAnalysisPipeline:
 def create_policy_processor(
     preserve_structure: bool = True,
     enable_semantic_tagging: bool = True,
-    confidence_threshold: float = ParameterLoaderV2.get("farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_text", "auto_param_L1595_34", 0.65),
+    confidence_threshold: float = 0.65,
     **kwargs: Any,
 ) -> PolicyAnalysisPipeline:
     """
@@ -1659,15 +2238,8 @@ def main() -> None:
         "-t",
         "--threshold",
         type=float,
-        default=ParameterLoaderV2.get("farfan_core.processing.policy_processor.PolicyAnalysisPipeline.analyze_text", "auto_param_L1637_16", 0.65),
+        default=0.65,
         help="Confidence threshold (0-1)",
-    )
-    parser.add_argument(
-        "-q",
-        "--questionnaire",
-        type=str,
-        help="Custom questionnaire JSON path",
-        default=None,
     )
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="Enable verbose logging"
@@ -1680,11 +2252,8 @@ def main() -> None:
 
     # Configure and execute pipeline
     config = ProcessorConfig(confidence_threshold=args.threshold)
-    questionnaire_path = Path(args.questionnaire) if args.questionnaire else None
 
-    pipeline = PolicyAnalysisPipeline(
-        config=config, questionnaire_path=questionnaire_path
-    )
+    pipeline = PolicyAnalysisPipeline(config=config)
 
     try:
         results = pipeline.analyze_file(args.input_file, args.output)
@@ -1704,3 +2273,67 @@ def main() -> None:
     except Exception as e:
         logger.error(f"Analysis failed: {e}", exc_info=True)
         raise
+
+
+def _run_quality_gates() -> dict[str, bool]:
+    """Run quality gates to ensure canonical constants integrity."""
+    results: dict[str, bool] = {}
+
+    # Verify micro levels are monotonic
+    vals = list(MICRO_LEVELS.values())
+    results["micro_levels_monotone"] = all(vals[i] >= vals[i + 1] for i in range(len(vals) - 1))
+
+    # Verify all 10 policy areas present
+    results["policy_areas_10"] = len(CANON_POLICY_AREAS) == 10
+
+    # Verify all 6 dimensions present
+    results["dimensions_6"] = len(CANONICAL_DIMENSIONS) == 6
+
+    # Verify derived thresholds consistency
+    results["alignment_threshold"] = abs(
+        ALIGNMENT_THRESHOLD - (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2
+    ) < 1e-9
+    results["confidence_threshold"] = (
+        CONFIDENCE_THRESHOLD > MICRO_LEVELS["ACEPTABLE"] and CONFIDENCE_THRESHOLD < MICRO_LEVELS["BUENO"]
+    )
+
+    # Verify risk thresholds ordering
+    results["risk_order"] = RISK_THRESHOLDS["excellent"] < RISK_THRESHOLDS["good"] < RISK_THRESHOLDS["acceptable"]
+
+    # Verify pattern compilation
+    try:
+        for pattern_dict in [PDT_PATTERNS, QUESTIONNAIRE_PATTERNS]:
+            if isinstance(pattern_dict, dict):
+                for key in pattern_dict:
+                    if hasattr(pattern_dict[key], 'pattern'):
+                        _ = pattern_dict[key].pattern
+        results["patterns_compile"] = True
+    except Exception:
+        results["patterns_compile"] = False
+
+    # Verify scoring modalities
+    results["scoring_modalities"] = all(
+        modality in SCORING_MODALITIES
+        for modality in ["TYPE_A", "TYPE_B", "TYPE_C", "MESO_INTEGRATION", "MACRO_HOLISTIC"]
+    )
+
+    # Verify method classes mapping
+    results["method_classes"] = len(METHOD_CLASSES) > 10
+
+    # Verify official entities
+    results["official_entities"] = len(OFFICIAL_ENTITIES) > 20
+
+    # Verify clusters
+    results["clusters_4"] = len(POLICY_CLUSTERS) == 4
+
+    return results
+
+
+# Run quality gates on module import
+if __name__ != "__main__":
+    import warnings
+
+    gates = _run_quality_gates()
+    if not all(gates.values()):
+        failed = [k for k, v in gates.items() if not v]
+        warnings.warn(f"Quality gates failed: {failed}", RuntimeWarning, stacklevel=2)

@@ -202,7 +202,7 @@
       "territorial_scope"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -248,16 +248,16 @@
       {
         "target": "elements_found",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "temporallogicverifier.check_deadline_constraints",
+          "temporallogicverifier.verify_temporal_consistency",
+          "causalinferencesetup.identify_failure_points",
+          "causal_extraction.assess_temporal_coherence",
+          "text_mining.analyze_link_text",
+          "industrial_policy.analyze_causal_dimensions",
+          "industrial_policy.extract_metadata"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine all evidence elements from 7 method invocations"
       },
       {
         "target": "confidence_scores",
@@ -272,8 +272,8 @@
       {
         "target": "pattern_matches",
         "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
+          "text_mining.analyze_link_text",
+          "industrial_policy.analyze_causal_dimensions"
         ],
         "merge_strategy": "concat",
         "default": {},
@@ -285,7 +285,7 @@
           "*.metadata"
         ],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from all 7 methods for full traceability"
       }
     ]
   },
@@ -309,12 +309,12 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q275"
+          "const": "Q005"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 275
+          "const": 5
         },
         "policy_area_id": {
           "type": [
@@ -322,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [
@@ -330,7 +330,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM01"
         },
         "cluster_id": {
           "type": [
@@ -338,7 +338,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL02"
         },
         "evidence": {
           "type": [
@@ -383,15 +383,15 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "title": "## Análisis D1-Q5: Justificación de Alcance con Marco Legal y Restricciones",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relacionados con la justificación del alcance del plan en materia de género, incluyendo referencias al marco legal y reconocimiento de restricciones.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/10 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
-          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
-          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
-          "**Series temporales**: {evidence.temporal_series_count}",
-          "**Cobertura territorial**: {evidence.territorial_coverage}"
+          "**Referencias legales identificadas**: {evidence.legal_references_count}",
+          "**Restricciones presupuestales**: {evidence.budget_constraints_count}",
+          "**Restricciones temporales**: {evidence.temporal_constraints_count}",
+          "**Coherencia justificada**: {evidence.coherence_demonstrated}"
         ],
         "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
@@ -402,52 +402,65 @@
             "method_name": "_check_deadline_constraints",
             "class_name": "TemporalLogicVerifier",
             "priority": 1,
-            "role": "_check_deadline_constraints",
+            "role": "_check_deadline_constraints_execution",
             "epistemological_foundation": {
-              "paradigm": "TemporalLogicVerifier analytical paradigm",
-              "ontological_basis": "Analysis via TemporalLogicVerifier._check_deadline_constraints",
-              "epistemological_stance": "Empirical-analytical approach",
+              "paradigm": "Temporal logic and constraint satisfaction",
+              "ontological_basis": "Policy documents contain explicit and implicit temporal commitments that must be internally consistent. Deadlines form a constraint network where violations signal planning incoherence.",
+              "epistemological_stance": "Formalist-computational: temporal constraints are verifiable logical propositions that can be checked mechanically",
               "theoretical_framework": [
-                "Method _check_deadline_constraints implements structured analysis for D1-Q5"
+                "Temporal constraint satisfaction problems (Dechter et al., 1991)",
+                "Allen's interval algebra for temporal reasoning",
+                "Logic-based policy coherence verification"
               ],
-              "justification": "This method contributes to D1-Q5 analysis"
+              "justification": "Deadline constraints reveal whether the plan's timeline is internally consistent and feasible given stated temporal restrictions. Violations indicate unrealistic planning or scope misalignment."
             },
             "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "TemporalLogicVerifier._check_deadline_constraints algorithm",
+              "method_type": "constraint_verification",
+              "algorithm": "Extract temporal intervals, construct constraint graph, verify consistency via path consistency algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _check_deadline_constraints"
+                  "description": "Parse temporal expressions (deadlines, durations, sequences) from document"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Construct temporal constraint network with intervals as nodes"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Check for constraint violations via path consistency algorithm"
+                },
+                {
+                  "step": 4,
+                  "description": "Report violated constraints with severity scores"
                 }
               ],
               "assumptions": [
-                "Input data is preprocessed and valid"
+                "Temporal expressions follow standard formats (dates, durations)",
+                "Implicit temporal constraints can be inferred from context",
+                "Violated constraints indicate planning problems"
               ],
               "limitations": [
-                "Method-specific limitations apply"
+                "Cannot detect implicit temporal dependencies not linguistically marked",
+                "Assumes temporal expressions are accurate (not aspirational)",
+                "May miss temporal constraints stated in external documents"
               ],
-              "complexity": "O(n) where n=input size"
+              "complexity": "O(n^3) where n=number of temporal intervals (path consistency algorithm)"
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _check_deadline_constraints"
+                "constraints_checked": "List of temporal constraints extracted",
+                "violations": "List of constraint violations with severity",
+                "consistency_score": "Overall temporal consistency (0-1)"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
+                "high_consistency": "≥0.8: Timeline is feasible and internally consistent",
+                "medium_consistency": "0.5-0.79: Some temporal tensions, may need adjustment",
+                "low_consistency": "<0.5: Significant temporal conflicts, plan likely infeasible"
               },
               "actionable_insights": [
-                "Use _check_deadline_constraints results for downstream analysis"
+                "Violated deadlines indicate scope-timeline misalignment",
+                "High violation density suggests unrealistic planning or poor constraint awareness"
               ]
             }
           },
@@ -457,50 +470,62 @@
             "priority": 2,
             "role": "verify_temporal_consistency_verification",
             "epistemological_foundation": {
-              "paradigm": "TemporalLogicVerifier analytical paradigm",
-              "ontological_basis": "Analysis via TemporalLogicVerifier.verify_temporal_consistency",
-              "epistemological_stance": "Empirical-analytical approach",
+              "paradigm": "Modal temporal logic verification",
+              "ontological_basis": "Policy commitments have temporal modalities (before, after, during) that must satisfy logical consistency rules. Temporal inconsistency reveals conceptual confusion.",
+              "epistemological_stance": "Logical-formal: temporal consistency is a necessary condition for policy coherence, verifiable through modal logic",
               "theoretical_framework": [
-                "Method verify_temporal_consistency implements structured analysis for D1-Q5"
+                "Linear temporal logic (LTL) for policy verification",
+                "Modal logic for temporal relations (Prior, 1957)",
+                "Formal verification of planning documents"
               ],
-              "justification": "This method contributes to D1-Q5 analysis"
+              "justification": "Temporal consistency verification detects logical contradictions in the plan's temporal structure, revealing whether policymakers understand temporal constraints and dependencies."
             },
             "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "TemporalLogicVerifier.verify_temporal_consistency algorithm",
+              "method_type": "modal_logic_verification",
+              "algorithm": "Extract temporal claims, formalize as LTL propositions, check satisfiability via model checking",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute verify_temporal_consistency"
+                  "description": "Extract temporal claims with modal operators (before, after, always, eventually)"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Formalize claims as Linear Temporal Logic (LTL) formulas"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Check satisfiability using bounded model checking"
+                },
+                {
+                  "step": 4,
+                  "description": "Identify unsatisfiable formula sets (temporal contradictions)"
                 }
               ],
               "assumptions": [
-                "Input data is preprocessed and valid"
+                "Temporal claims can be formalized as LTL propositions",
+                "Model checking is tractable within document scope",
+                "Contradictions indicate genuine conceptual errors"
               ],
               "limitations": [
-                "Method-specific limitations apply"
+                "Complexity grows exponentially with formula nesting depth",
+                "Cannot verify claims dependent on external state",
+                "May produce false positives from ambiguous language"
               ],
-              "complexity": "O(n) where n=input size"
+              "complexity": "O(2^k * n) where k=formula depth, n=document length (model checking)"
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from verify_temporal_consistency"
+                "temporal_claims": "List of formalized temporal propositions",
+                "contradictions": "Unsatisfiable formula sets",
+                "consistency_verdict": "Boolean: consistent or inconsistent"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
+                "consistent": "All temporal claims are mutually satisfiable",
+                "inconsistent": "Logical contradictions detected in temporal structure"
               },
               "actionable_insights": [
-                "Use verify_temporal_consistency results for downstream analysis"
+                "Contradictions reveal conceptual confusion about temporal dependencies",
+                "Consistent but unrealistic timelines suggest poor constraint awareness"
               ]
             }
           },
@@ -510,50 +535,63 @@
             "priority": 3,
             "role": "identify_failure_points_identification",
             "epistemological_foundation": {
-              "paradigm": "CausalInferenceSetup analytical paradigm",
-              "ontological_basis": "Analysis via CausalInferenceSetup.identify_failure_points",
-              "epistemological_stance": "Empirical-analytical approach",
+              "paradigm": "Causal graph analysis and failure mode detection",
+              "ontological_basis": "Policy plans implicitly define causal graphs where interventions produce outcomes. Failure points are nodes or edges where causal mechanisms are vulnerable to breakdown.",
+              "epistemological_stance": "Structural-causal: failures arise from causal structure vulnerabilities, identifiable via graph analysis and counterfactual reasoning",
               "theoretical_framework": [
-                "Method identify_failure_points implements structured analysis for D1-Q5"
+                "Causal graph analysis (Pearl, 2009)",
+                "Failure Mode and Effects Analysis (FMEA)",
+                "Counterfactual reasoning for policy evaluation"
               ],
-              "justification": "This method contributes to D1-Q5 analysis"
+              "justification": "Identifying failure points reveals where the plan's causal logic is fragile, enabling proactive risk mitigation and realistic scope setting."
             },
             "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "CausalInferenceSetup.identify_failure_points algorithm",
+              "method_type": "causal_graph_vulnerability_analysis",
+              "algorithm": "Construct causal DAG from policy document, identify high-criticality nodes via centrality metrics and counterfactual fragility",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute identify_failure_points"
+                  "description": "Extract causal claims and construct directed acyclic graph (DAG)"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Calculate node criticality via betweenness centrality and reachability metrics"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Simulate interventions and counterfactuals to identify fragile edges"
+                },
+                {
+                  "step": 4,
+                  "description": "Rank failure points by impact and likelihood"
                 }
               ],
               "assumptions": [
-                "Input data is preprocessed and valid"
+                "Causal structure can be extracted from linguistic patterns",
+                "Node criticality correlates with failure risk",
+                "Counterfactual simulations approximate real failure modes"
               ],
               "limitations": [
-                "Method-specific limitations apply"
+                "Cannot detect failures from unmentioned causal factors",
+                "Centrality metrics may not capture domain-specific vulnerability",
+                "Simulations assume causal graph completeness"
               ],
-              "complexity": "O(n) where n=input size"
+              "complexity": "O(V + E) for graph construction, O(V^3) for all-pairs shortest paths (betweenness)"
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from identify_failure_points"
+                "causal_graph": "DAG with nodes (mechanisms) and edges (causal links)",
+                "failure_points": "Ranked list of vulnerable nodes/edges",
+                "criticality_scores": "Impact scores per failure point"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
+                "high_criticality": "≥0.8: Failure here collapses entire causal chain",
+                "medium_criticality": "0.5-0.79: Failure degrades outcomes but recoverable",
+                "low_criticality": "<0.5: Failure has localized impact"
               },
               "actionable_insights": [
-                "Use identify_failure_points results for downstream analysis"
+                "High-criticality nodes should have explicit contingency plans",
+                "Multiple failure points in sequence indicate brittle design"
               ]
             }
           },
@@ -561,60 +599,73 @@
             "method_name": "_assess_temporal_coherence",
             "class_name": "CausalExtractor",
             "priority": 4,
-            "role": "_assess_temporal_coherence",
+            "role": "_assess_temporal_coherence_execution",
             "epistemological_foundation": {
-              "paradigm": "CausalExtractor analytical paradigm",
-              "ontological_basis": "Analysis via CausalExtractor._assess_temporal_coherence",
-              "epistemological_stance": "Empirical-analytical approach",
+              "paradigm": "Temporal coherence in causal narratives",
+              "ontological_basis": "Causal claims have implicit temporal orderings (causes precede effects). Temporal incoherence in causal narratives signals conceptual confusion or post-hoc rationalization.",
+              "epistemological_stance": "Narrative-causal: coherent causality requires temporally ordered sequences; violations undermine epistemic trustworthiness",
               "theoretical_framework": [
-                "Method _assess_temporal_coherence implements structured analysis for D1-Q5"
+                "Temporal precedence in causality (Granger, 1969)",
+                "Narrative coherence theory (Bruner, 1991)",
+                "Causal process tracing in policy analysis"
               ],
-              "justification": "This method contributes to D1-Q5 analysis"
+              "justification": "Assessing temporal coherence of causal claims distinguishes genuine causal understanding from rhetorical causality (post-hoc storytelling without temporal logic)."
             },
             "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "CausalExtractor._assess_temporal_coherence algorithm",
+              "method_type": "temporal_ordering_verification",
+              "algorithm": "Extract causal links with temporal markers, verify cause-precedes-effect ordering, score coherence based on violations",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _assess_temporal_coherence"
+                  "description": "Extract causal links (cause → effect pairs) with temporal context"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Identify temporal markers (before, after, during) for each entity"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Verify temporal precedence: does cause timestamp < effect timestamp?"
+                },
+                {
+                  "step": 4,
+                  "description": "Score coherence as (valid_orderings / total_links)"
                 }
               ],
               "assumptions": [
-                "Input data is preprocessed and valid"
+                "Temporal markers accurately reflect entity timing",
+                "Causes must temporally precede effects (no simultaneous causation)",
+                "Coherence violations indicate conceptual errors"
               ],
               "limitations": [
-                "Method-specific limitations apply"
+                "Cannot detect implicit temporal orderings without linguistic markers",
+                "May misinterpret simultaneous causation as incoherent",
+                "Assumes all causal claims have extractable temporal context"
               ],
-              "complexity": "O(n) where n=input size"
+              "complexity": "O(n*m) where n=causal links, m=average temporal markers per link"
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _assess_temporal_coherence"
+                "causal_links_assessed": "List of cause-effect pairs with temporal data",
+                "coherence_violations": "Links where temporal ordering is violated",
+                "coherence_score": "Proportion of temporally coherent links (0-1)"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
+                "high_coherence": "≥0.8: Causal narrative is temporally sound",
+                "medium_coherence": "0.5-0.79: Some temporal inconsistencies present",
+                "low_coherence": "<0.5: Causal narrative is temporally confused or post-hoc"
               },
               "actionable_insights": [
-                "Use _assess_temporal_coherence results for downstream analysis"
+                "Low coherence suggests post-hoc rationalization rather than genuine causal analysis",
+                "Violation clusters may indicate conceptual blind spots"
               ]
             }
           },
           {
             "method_name": "_analyze_link_text",
             "class_name": "TextMiningEngine",
-            "priority": 2,
-            "role": "link_context_analysis",
+            "priority": 5,
+            "role": "_analyze_link_text_analysis",
             "epistemological_foundation": {
               "paradigm": "Contextual semantic analysis",
               "ontological_basis": "The meaning and validity of a causal claim depends on its textual context (surrounding sentences, semantic coherence)",
@@ -674,50 +725,62 @@
             "priority": 6,
             "role": "_analyze_causal_dimensions_analysis",
             "epistemological_foundation": {
-              "paradigm": "IndustrialPolicyProcessor analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialPolicyProcessor._analyze_causal_dimensions",
-              "epistemological_stance": "Empirical-analytical approach",
+              "paradigm": "Multi-dimensional causal analysis",
+              "ontological_basis": "Policy causality operates across multiple dimensions (temporal, spatial, institutional, financial). Single-dimension analysis misses cross-dimensional dependencies.",
+              "epistemological_stance": "Systems-theoretic: causal mechanisms are multi-dimensional; understanding requires analyzing dimensions separately and interactions jointly",
               "theoretical_framework": [
-                "Method _analyze_causal_dimensions implements structured analysis for D1-Q5"
+                "Systems theory: complex causality emerges from dimension interactions",
+                "Multi-level analysis in policy science (Ostrom, 2005)",
+                "Cross-cutting dimensions in institutional analysis"
               ],
-              "justification": "This method contributes to D1-Q5 analysis"
+              "justification": "Analyzing causal dimensions separately reveals whether constraints in one dimension (e.g., budget) are acknowledged when discussing another (e.g., scope), revealing planning realism."
             },
             "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "IndustrialPolicyProcessor._analyze_causal_dimensions algorithm",
+              "method_type": "dimensional_decomposition_analysis",
+              "algorithm": "Extract causal claims per dimension (legal, budget, temporal, institutional), analyze cross-dimensional coherence",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _analyze_causal_dimensions"
+                  "description": "Classify causal claims by dimension using keyword matching and NER"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Analyze each dimension separately for internal coherence"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Check cross-dimensional references: do budget claims acknowledge temporal constraints?"
+                },
+                {
+                  "step": 4,
+                  "description": "Score dimensional integration as proportion of cross-references"
                 }
               ],
               "assumptions": [
-                "Input data is preprocessed and valid"
+                "Dimensions can be reliably classified via linguistic markers",
+                "Cross-dimensional coherence indicates planning sophistication",
+                "Dimension interactions are linguistically expressed"
               ],
               "limitations": [
-                "Method-specific limitations apply"
+                "Cannot detect implicit cross-dimensional dependencies",
+                "Dimension taxonomy may not capture all relevant policy dimensions",
+                "Assumes dimensions are orthogonal (may have conceptual overlap)"
               ],
-              "complexity": "O(n) where n=input size"
+              "complexity": "O(n*d) where n=claims, d=dimensions analyzed"
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _analyze_causal_dimensions"
+                "dimensional_breakdown": "Claims per dimension (legal, budget, temporal, etc.)",
+                "cross_references": "Claims that explicitly link multiple dimensions",
+                "integration_score": "Proportion of multi-dimensional claims (0-1)"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
+                "high_integration": "≥0.6: Plan explicitly connects dimensions (e.g., budget-timeline linkage)",
+                "low_integration": "<0.3: Dimensions treated in isolation, missing dependencies"
               },
               "actionable_insights": [
-                "Use _analyze_causal_dimensions results for downstream analysis"
+                "Low integration suggests siloed planning (e.g., ambitious goals without budget reality)",
+                "High integration indicates systems-aware planning"
               ]
             }
           },
@@ -727,64 +790,76 @@
             "priority": 7,
             "role": "_extract_metadata_extraction",
             "epistemological_foundation": {
-              "paradigm": "IndustrialPolicyProcessor analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialPolicyProcessor._extract_metadata",
-              "epistemological_stance": "Empirical-analytical approach",
+              "paradigm": "Metadata-driven policy document analysis",
+              "ontological_basis": "Policy documents contain structural metadata (sections, hierarchy, authorship markers) that reveal planning process and institutional context.",
+              "epistemological_stance": "Document-as-artifact: structural features of the document reflect institutional capacity and planning maturity",
               "theoretical_framework": [
-                "Method _extract_metadata implements structured analysis for D1-Q5"
+                "Document genre analysis: structure reveals institutional norms",
+                "Digital forensics: metadata as process trace",
+                "Institutional analysis via document artifacts"
               ],
-              "justification": "This method contributes to D1-Q5 analysis"
+              "justification": "Metadata extraction reveals document provenance, authorship patterns, and structural sophistication, which correlate with planning quality and legitimacy."
             },
             "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "IndustrialPolicyProcessor._extract_metadata algorithm",
+              "method_type": "structural_metadata_extraction",
+              "algorithm": "Parse document structure, extract metadata fields, analyze hierarchical organization and formatting patterns",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_metadata"
+                  "description": "Extract document structure (sections, subsections, headings)"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Parse metadata fields (author, date, version, institution)"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Analyze hierarchical depth and organizational complexity"
+                },
+                {
+                  "step": 4,
+                  "description": "Identify formatting patterns (tables, lists, citations) as quality signals"
                 }
               ],
               "assumptions": [
-                "Input data is preprocessed and valid"
+                "Metadata presence correlates with institutional capacity",
+                "Structural sophistication indicates planning maturity",
+                "Formatting patterns are reliable quality signals"
               ],
               "limitations": [
-                "Method-specific limitations apply"
+                "Metadata can be fabricated or incomplete",
+                "Structural complexity doesn't guarantee content quality",
+                "Formatting may reflect template use rather than genuine organization"
               ],
-              "complexity": "O(n) where n=input size"
+              "complexity": "O(n) where n=document elements (linear scan)"
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _extract_metadata"
+                "document_metadata": "Extracted fields (author, date, version, institution)",
+                "structural_metrics": "Hierarchy depth, section count, formatting richness",
+                "quality_indicators": "Presence of tables, citations, versioning"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
+                "high_quality": "Rich metadata + deep hierarchy + citations: indicates mature planning",
+                "low_quality": "Sparse metadata + flat structure: suggests rushed or low-capacity planning"
               },
               "actionable_insights": [
-                "Use _extract_metadata results for downstream analysis"
+                "Missing metadata signals accountability gaps",
+                "Flat structure may indicate copy-paste planning without adaptation"
               ]
             }
           }
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceAssembler. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "rationale": "Q005 requires analyzing justification of scope through multiple lenses: temporal logic (methods 1-2), causal reasoning (3-4), textual evidence (5), dimensional integration (6), and structural quality (7). Each method examines different aspects of justification quality.",
+          "evidence_fusion": "Evidence from all 7 methods is aggregated by the EvidenceAssembler. Temporal logic violations, causal incoherence, weak contextual support, poor dimensional integration, and metadata gaps are combined to assess overall justification quality.",
+          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability for this question type (temporal methods have higher weight for Q005).",
+          "execution_order": "Methods execute in priority order (1→7). Later methods can access outputs of earlier methods (e.g., method 6 uses causal links from method 4).",
           "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
-            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+            "Comprehensiveness vs. Complexity: 7 methods ensure thorough justification assessment but increase computational cost",
+            "Precision vs. Recall: Multiple methods increase recall (find more justification elements) but may introduce redundancy; deduplication and confidence weighting mitigate this",
+            "Interpretability vs. Sophistication: Temporal logic and causal analysis are powerful but less transparent than regex; methodological documentation compensates"
           ]
         }
       }
@@ -799,7 +874,10 @@
         "must_contain": {
           "count": 1,
           "elements": [
-            "cobertura_territorial_especificada"
+            "coherencia_demostrada",
+            "restricciones_legales",
+            "restricciones_presupuestales",
+            "restricciones_temporales"
           ]
         },
         "description": "Derived from monolith expected_elements where required is true"
@@ -810,37 +888,31 @@
         "should_contain": [
           {
             "elements": [
-              "fuentes_oficiales"
+              "marco_legal_citado"
+            ],
+            "minimum": 1
+          },
+          {
+            "elements": [
+              "restricciones_explicitadas"
             ],
             "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
-              "series_temporales_años"
-            ],
-            "minimum": 3
           }
         ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "description": "Additional quality indicators for justification completeness"
       }
     ]
   },
   "traceability": {
     "source_file": "data/questionnaire_monolith.json",
-    "json_path": "blocks.micro_questions[274]",
+    "json_path": "blocks.micro_questions[4]",
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q5_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
     "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 7 methods from D1_Q5_Executor, with substantive epistemological foundations replacing generic placeholders.",
     "source_question_id": "Q005",
     "specialized_from_base_slot": "D1-Q5",
     "specialization_timestamp": "2025-11-28T03:49:29.794948+00:00"
@@ -891,9 +963,9 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all 7 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "7 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceAssembler merges outputs according to assembly_rules",
       "step_3_validation": "EvidenceValidator checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -915,18 +987,17 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "fuentes_oficiales",
-                  "indicadores_cuantitativos",
-                  "series_temporales_años",
-                  "cobertura_territorial_especificada",
-                  "financial_amounts",
-                  "policy_goals",
-                  "causal_links"
+                  "coherencia_demostrada",
+                  "restricciones_legales",
+                  "restricciones_presupuestales",
+                  "restricciones_temporales",
+                  "marco_legal_citado",
+                  "restricciones_explicitadas"
                 ]
               },
               "value": {
                 "type": "string",
-                "example": "DANE"
+                "example": "Ley 1257 de 2008"
               },
               "confidence": {
                 "type": "number",
@@ -935,7 +1006,7 @@
               },
               "source_method": {
                 "type": "string",
-                "example": "IndustrialPolicyProcessor._extract_point_evidence"
+                "example": "TemporalLogicVerifier._check_deadline_constraints"
               },
               "sentence_id": {
                 "type": "integer"
@@ -945,7 +1016,7 @@
               }
             }
           },
-          "example_count": "Expected 15-50 elements for a complete diagnostic"
+          "example_count": "Expected 8-20 elements for a complete justification analysis"
         },
         "elements_summary": {
           "type": "object",
@@ -956,19 +1027,19 @@
             "by_type": {
               "type": "object",
               "properties": {
-                "fuentes_oficiales": {
+                "coherencia_demostrada": {
                   "type": "integer",
-                  "minimum_expected": 2
+                  "minimum_expected": 1
                 },
-                "indicadores_cuantitativos": {
+                "restricciones_legales": {
                   "type": "integer",
-                  "minimum_expected": 3
+                  "minimum_expected": 1
                 },
-                "series_temporales_años": {
+                "restricciones_presupuestales": {
                   "type": "integer",
-                  "minimum_expected": 3
+                  "minimum_expected": 1
                 },
-                "cobertura_territorial_especificada": {
+                "restricciones_temporales": {
                   "type": "integer",
                   "minimum_expected": 1
                 }
@@ -1016,106 +1087,44 @@
             }
           }
         },
-        "critical_links": {
-          "type": "array",
-          "description": "Causal links extracted by TextMiningEngine",
-          "items": {
-            "type": "object",
-            "properties": {
-              "cause": {
-                "type": "string"
-              },
-              "effect": {
-                "type": "string"
-              },
-              "criticality": {
-                "type": "number"
-              },
-              "coherence": {
-                "type": "number"
-              }
-            }
-          }
-        },
-        "financial_summary": {
+        "temporal_consistency": {
           "type": "object",
-          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
+          "description": "Temporal logic verification results",
           "properties": {
-            "total_budget_cop": {
+            "constraints_checked": {
+              "type": "integer"
+            },
+            "violations": {
+              "type": "integer"
+            },
+            "consistency_score": {
               "type": "number"
-            },
-            "amounts_found": {
-              "type": "integer"
-            },
-            "by_category": {
-              "type": "object",
-              "properties": {
-                "SGR": {
-                  "type": "number"
-                },
-                "recursos_propios": {
-                  "type": "number"
-                },
-                "transferencias": {
-                  "type": "number"
-                }
-              }
             }
           }
         },
-        "goals_summary": {
+        "causal_coherence": {
           "type": "object",
-          "description": "Policy goals extracted by CausalExtractor",
+          "description": "Causal analysis results",
           "properties": {
-            "total_goals": {
-              "type": "integer"
-            },
-            "quantified_goals": {
-              "type": "integer"
-            },
-            "goals_with_complete_context": {
-              "type": "integer"
-            }
-          }
-        },
-        "contradictions": {
-          "type": "object",
-          "description": "Results from PolicyContradictionDetector",
-          "properties": {
-            "found": {
-              "type": "integer"
-            },
-            "tests_performed": {
-              "type": "integer"
-            },
-            "interpretation": {
-              "type": "string"
-            }
-          }
-        },
-        "bayesian_insights": {
-          "type": "object",
-          "description": "Results from BayesianNumericalAnalyzer",
-          "properties": {
-            "metrics_with_high_uncertainty": {
+            "failure_points": {
               "type": "array"
             },
-            "significant_comparisons": {
-              "type": "integer"
+            "temporal_coherence_score": {
+              "type": "number"
             }
           }
         },
-        "semantic_processing": {
+        "dimensional_integration": {
           "type": "object",
-          "description": "Results from SemanticProcessor",
+          "description": "Cross-dimensional analysis results",
           "properties": {
-            "chunks_created": {
+            "dimensions_analyzed": {
+              "type": "array"
+            },
+            "cross_references": {
               "type": "integer"
             },
-            "embeddings_generated": {
-              "type": "integer"
-            },
-            "avg_semantic_similarity_to_query": {
+            "integration_score": {
               "type": "number"
             }
           }
@@ -1145,174 +1154,139 @@
       "elements_found": [
         {
           "element_id": "E-001",
-          "type": "fuentes_oficiales",
-          "value": "DANE",
+          "type": "restricciones_legales",
+          "value": "Ley 1257 de 2008",
           "confidence": 0.95,
-          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "según datos de DANE para el año 2022",
-          "sentence_id": 45,
+          "source_method": "TextMiningEngine._analyze_link_text",
+          "source_sentence": "en el marco de la Ley 1257 de 2008",
+          "sentence_id": 23,
           "position": {
-            "start": 123,
-            "end": 145
+            "start": 456,
+            "end": 485
           }
         },
         {
           "element_id": "E-002",
-          "type": "indicadores_cuantitativos",
-          "value": "tasa de VBG: 12.3%",
-          "normalized_value": 12.3,
-          "unit": "%",
-          "confidence": 0.89,
-          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
-          "bayesian_posterior": {
-            "mean": 0.123,
-            "ci_95": [
-              0.11,
-              0.145
-            ]
-          },
-          "sentence_id": 45
+          "type": "restricciones_presupuestales",
+          "value": "límite fiscal municipal",
+          "confidence": 0.88,
+          "source_method": "IndustrialPolicyProcessor._analyze_causal_dimensions",
+          "sentence_id": 67
         },
         {
           "element_id": "E-003",
-          "type": "series_temporales_años",
-          "years": [
-            2020,
-            2021,
-            2022
-          ],
+          "type": "restricciones_temporales",
+          "value": "cuatrienio 2024-2027",
           "confidence": 0.92,
-          "source_method": "TextMiningEngine.diagnose_critical_links"
+          "source_method": "TemporalLogicVerifier._check_deadline_constraints"
         },
         {
           "element_id": "E-004",
-          "type": "cobertura_territorial_especificada",
-          "coverage": "municipal - zona rural y urbana",
-          "confidence": 0.88,
-          "source_method": "CausalExtractor._parse_goal_context"
+          "type": "coherencia_demostrada",
+          "value": "coherencia entre metas y recursos disponibles",
+          "confidence": 0.85,
+          "source_method": "CausalInferenceSetup.identify_failure_points"
         }
       ],
       "elements_summary": {
-        "total_count": 38,
+        "total_count": 15,
         "by_type": {
-          "fuentes_oficiales": 5,
-          "indicadores_cuantitativos": 12,
-          "series_temporales_años": 4,
-          "cobertura_territorial_especificada": 1,
-          "financial_amounts": 8,
-          "policy_goals": 7,
-          "causal_links": 5
+          "coherencia_demostrada": 2,
+          "restricciones_legales": 4,
+          "restricciones_presupuestales": 5,
+          "restricciones_temporales": 4
         }
       },
       "confidence_scores": {
-        "mean": 0.876,
-        "std": 0.089,
-        "min": 0.72,
-        "max": 0.98,
+        "mean": 0.892,
+        "std": 0.067,
+        "min": 0.78,
+        "max": 0.96,
         "by_method": {
-          "TextMiningEngine": 0.83,
-          "IndustrialPolicyProcessor": 0.91,
-          "CausalExtractor": 0.79,
-          "FinancialAuditor": 0.94,
-          "PDETMunicipalPlanAnalyzer": 0.88,
-          "PolicyContradictionDetector": 0.9,
-          "BayesianNumericalAnalyzer": 0.92,
-          "SemanticProcessor": 0.85
+          "TemporalLogicVerifier": 0.91,
+          "CausalInferenceSetup": 0.87,
+          "CausalExtractor": 0.84,
+          "TextMiningEngine": 0.90,
+          "IndustrialPolicyProcessor": 0.93
         }
       },
       "pattern_matches": [
         {
-          "pattern_id": "PAT-Q001-000",
-          "count": 3,
-          "avg_confidence": 0.87
+          "pattern_id": "PAT-Q005-000",
+          "count": 2,
+          "avg_confidence": 0.93
         },
         {
-          "pattern_id": "PAT-Q001-002",
-          "count": 5,
-          "avg_confidence": 0.95
+          "pattern_id": "PAT-Q005-006",
+          "count": 3,
+          "avg_confidence": 0.87
         }
       ],
-      "critical_links": [
-        {
-          "cause": "alta tasa de VBG",
-          "effect": "baja autonomía económica",
-          "criticality": 0.87,
-          "coherence": 0.82
-        }
-      ],
-      "financial_summary": {
-        "total_budget_cop": 850000000.0,
-        "amounts_found": 12,
-        "by_category": {
-          "SGR": 250000000.0,
-          "recursos_propios": 180000000.0
-        }
+      "temporal_consistency": {
+        "constraints_checked": 12,
+        "violations": 1,
+        "consistency_score": 0.92
       },
-      "goals_summary": {
-        "total_goals": 7,
-        "quantified_goals": 5,
-        "goals_with_complete_context": 4
+      "causal_coherence": {
+        "failure_points": 3,
+        "temporal_coherence_score": 0.88
       },
-      "contradictions": {
-        "found": 0,
-        "tests_performed": 15,
-        "interpretation": "No statistical contradictions in quantitative claims"
-      },
-      "bayesian_insights": {
-        "metrics_with_high_uncertainty": [],
-        "significant_comparisons": 1
-      },
-      "semantic_processing": {
-        "chunks_created": 45,
-        "embeddings_generated": 45,
-        "avg_semantic_similarity_to_query": 0.78
+      "dimensional_integration": {
+        "dimensions_analyzed": [
+          "legal",
+          "presupuestal",
+          "temporal",
+          "competencias"
+        ],
+        "cross_references": 8,
+        "integration_score": 0.67
       },
       "metadata": {
         "methods_executed": 7,
-        "execution_time_ms": 2845,
-        "document_length": 15230,
-        "analysis_timestamp": "2025-11-26T12:34:56Z"
+        "execution_time_ms": 1834,
+        "document_length": 12450,
+        "analysis_timestamp": "2025-11-26T14:22:18Z"
       }
     },
     "validation_against_expected_elements": {
-      "cobertura_territorial_especificada": {
+      "coherencia_demostrada": {
         "required": true,
         "found_in_example": true,
         "example_element_id": "E-004"
       },
-      "fuentes_oficiales": {
-        "minimum": 2,
-        "found_in_example": 5,
-        "status": "PASS"
+      "restricciones_legales": {
+        "required": true,
+        "found_in_example": true,
+        "example_element_id": "E-001"
       },
-      "indicadores_cuantitativos": {
-        "minimum": 3,
-        "found_in_example": 12,
-        "status": "PASS"
+      "restricciones_presupuestales": {
+        "required": true,
+        "found_in_example": true,
+        "example_element_id": "E-002"
       },
-      "series_temporales_años": {
-        "minimum": 3,
-        "found_in_example": 4,
-        "status": "PASS"
+      "restricciones_temporales": {
+        "required": true,
+        "found_in_example": true,
+        "example_element_id": "E-003"
       },
-      "overall_validation_result": "PASS - All required and minimum elements present"
+      "overall_validation_result": "PASS - All required elements present"
     },
     "template_variable_bindings": {
       "description": "These variables are available for human_readable_output template",
       "variables": {
-        "{evidence.elements_found_count}": 38,
+        "{evidence.elements_found_count}": 15,
         "{score}": "Calculated by scorer based on elements",
         "{quality_level}": "ALTO",
-        "{evidence.confidence_scores.mean}": "87.6%",
-        "{evidence.pattern_matches_count}": 14,
-        "{evidence.official_sources_count}": 5,
-        "{evidence.quantitative_indicators_count}": 12,
-        "{evidence.temporal_series_count}": 4,
-        "{evidence.territorial_coverage}": "municipal - zona rural y urbana"
+        "{evidence.confidence_scores.mean}": "89.2%",
+        "{evidence.pattern_matches_count}": 10,
+        "{evidence.legal_references_count}": 4,
+        "{evidence.budget_constraints_count}": 5,
+        "{evidence.temporal_constraints_count}": 4,
+        "{evidence.coherence_demonstrated}": "Presente"
       }
     },
     "usage_notes": {
-      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 7 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
     }

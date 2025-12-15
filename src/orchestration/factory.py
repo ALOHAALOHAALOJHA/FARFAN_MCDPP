@@ -112,27 +112,28 @@ from pathlib import Path
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
-from canonic_phases.Phase_two.class_registry import build_class_registry, get_class_paths
+from orchestration.class_registry import build_class_registry, get_class_paths
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
 
 # Core orchestration
-from orchestration.orchestrator import MethodExecutor, Orchestrator
+if TYPE_CHECKING:
+    from orchestration.orchestrator import MethodExecutor, Orchestrator
 from orchestration.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
@@ -904,6 +905,8 @@ class AnalysisPipelineFactory:
 
             # Step 4: Build method executor WITH signal registry injected
             # This is the CORE integration point - executors call methods through this
+            # Local import to avoid circular dependency
+            from orchestration.orchestrator import MethodExecutor
             method_executor = MethodExecutor(
                 method_registry=method_registry,
                 arg_router=arg_router,
@@ -1059,6 +1062,8 @@ class AnalysisPipelineFactory:
 
         try:
             # Build orchestrator with FULL dependency injection
+            # Local import to avoid circular dependency
+            from orchestration.orchestrator import Orchestrator
             orchestrator = Orchestrator(
                 questionnaire=self._canonical_questionnaire,  # DI: inject questionnaire object
                 method_executor=self._method_executor,  # DI: inject method executor
@@ -1341,7 +1346,7 @@ def check_legacy_signal_loader_deleted() -> dict[str, Any]:
         dict with check results.
     """
     try:
-        import farfan_pipeline.core.orchestrator.signal_loader
+        import cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader
         return {
             "legacy_loader_deleted": False,
             "error": "signal_loader.py still exists - must be deleted per architecture requirements",
@@ -1539,3 +1544,5 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     return validation_results
 
 
+# _validate_questionnaire_structure moved to orchestration.questionnaire_validation
+# to break import cycle between factory and orchestrator.

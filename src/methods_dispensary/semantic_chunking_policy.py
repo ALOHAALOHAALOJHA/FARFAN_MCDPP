@@ -31,6 +31,7 @@ import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
@@ -42,8 +43,6 @@ from scipy.special import rel_entr
 # Check dependency lockdown before importing transformers
 from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
 from transformers import AutoModel, AutoTokenizer
-from farfan_pipeline.core.parameters import ParameterLoaderV2
-from farfan_pipeline.core.calibration.decorators import calibrated_method
 
 _lockdown = get_dependency_lockdown()
 
@@ -89,26 +88,106 @@ RENYI_STABILITY_EPSILON: float = 1e-9  # Numerical guard-rail for degenerative p
 # ========================
 
 class CausalDimension(Enum):
-    """Marco Lógico standard (DNP Colombia)"""
-    INSUMOS = "insumos"  # Recursos, capacidad institucional
-    ACTIVIDADES = "actividades"  # Acciones, procesos, cronogramas
-    PRODUCTOS = "productos"  # Entregables inmediatos
-    RESULTADOS = "resultados"  # Efectos mediano plazo
-    IMPACTOS = "impactos"  # Transformación estructural largo plazo
-    SUPUESTOS = "supuestos"  # Condiciones habilitantes
+    """Dimensiones de la cadena de valor (DNP Colombia)."""
 
-class PDMSection(Enum):
-    """
-    Enumerates the typical sections of a Colombian Municipal Development Plan (PDM),
-    as defined by Ley 152/1994. Each member represents a key structural component
-    of the PDM document, facilitating semantic analysis and policy structure recognition.
-    """
-    DIAGNOSTICO = "diagnostico"
-    VISION_ESTRATEGICA = "vision_estrategica"
-    PLAN_PLURIANUAL = "plan_plurianual"
-    PLAN_INVERSIONES = "plan_inversiones"
-    MARCO_FISCAL = "marco_fiscal"
-    SEGUIMIENTO = "seguimiento_evaluacion"
+    INSUMOS = "DIM01"
+    ACTIVIDADES = "DIM02"
+    PRODUCTOS = "DIM03"
+    RESULTADOS = "DIM04"
+    IMPACTOS = "DIM05"
+    CAUSALIDAD = "DIM06"
+
+    @classmethod
+    def from_dimension_code(cls, dim_code: str) -> CausalDimension | None:
+        normalized = dim_code.strip().upper()
+        mapping = {
+            "D1": cls.INSUMOS,
+            "DIM01": cls.INSUMOS,
+            "D2": cls.ACTIVIDADES,
+            "DIM02": cls.ACTIVIDADES,
+            "D3": cls.PRODUCTOS,
+            "DIM03": cls.PRODUCTOS,
+            "D4": cls.RESULTADOS,
+            "DIM04": cls.RESULTADOS,
+            "D5": cls.IMPACTOS,
+            "DIM05": cls.IMPACTOS,
+            "D6": cls.CAUSALIDAD,
+            "DIM06": cls.CAUSALIDAD,
+        }
+        return mapping.get(normalized)
+
+
+class UnitOfAnalysisLoader:
+    """Loads canonical patterns from unit_of_analysis_index.json."""
+
+    _payload: dict[str, Any] | None = None
+
+    @classmethod
+    def _index_path(cls) -> Path:
+        return (
+            Path(__file__).resolve().parents[2]
+            / "artifacts/plan1/canonical_ground_truth/unit_of_analysis_index.json"
+        )
+
+    @classmethod
+    def load(cls) -> dict[str, Any]:
+        if cls._payload is not None:
+            return cls._payload
+
+        path = cls._index_path()
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            payload = {}
+        except json.JSONDecodeError:
+            payload = {}
+
+        cls._payload = payload if isinstance(payload, dict) else {}
+        return cls._payload
+
+    @classmethod
+    def get_patterns(cls, pattern_type: str) -> list[str]:
+        payload = cls.load()
+        patterns = payload.get(pattern_type, [])
+        if isinstance(patterns, list) and all(isinstance(p, str) for p in patterns):
+            return list(patterns)
+        return []
+
+    @classmethod
+    def get_section_type_rules(cls) -> dict[str, list[str]]:
+        payload = cls.load()
+        rules = payload.get("section_type_rules", {})
+        if not isinstance(rules, dict):
+            return {}
+        typed: dict[str, list[str]] = {}
+        for key, value in rules.items():
+            if isinstance(key, str) and isinstance(value, list) and all(isinstance(p, str) for p in value):
+                typed[key] = list(value)
+        return typed
+
+    @classmethod
+    def get_table_columns(cls) -> dict[str, list[str]]:
+        payload = cls.load()
+        columns = payload.get("table_columns", {})
+        if not isinstance(columns, dict):
+            return {}
+        typed: dict[str, list[str]] = {}
+        for key, value in columns.items():
+            if isinstance(key, str) and isinstance(value, list) and all(isinstance(c, str) for c in value):
+                typed[key] = list(value)
+        return typed
+
+    @classmethod
+    def get_dimension_descriptions(cls) -> dict[str, str]:
+        payload = cls.load()
+        descriptions = payload.get("dimension_descriptions", {})
+        if not isinstance(descriptions, dict):
+            return {}
+        typed: dict[str, str] = {}
+        for key, value in descriptions.items():
+            if isinstance(key, str) and isinstance(value, str):
+                typed[key] = value
+        return typed
 
 @dataclass(frozen=True, slots=True)
 class SemanticConfig:
@@ -142,7 +221,7 @@ class SemanticProcessor:
         self._tokenizer = None
         self._loaded = False
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticProcessor._lazy_load")
+    
     def _lazy_load(self) -> None:
         if self._loaded:
             return
@@ -170,7 +249,7 @@ class SemanticProcessor:
                 f"Missing dependency: {missing}. Please install with 'pip install {missing}'"
             ) from e
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticProcessor.chunk_text")
+    
     def chunk_text(self, text: str, preserve_structure: bool = True) -> list[dict[str, Any]]:
         """
         Policy-aware semantic chunking:
@@ -200,10 +279,12 @@ class SemanticProcessor:
                     "content": chunk_text,
                     "section_type": section["type"],
                     "section_id": section["id"],
+                    "section_header": section.get("header", ""),
                     "token_count": len(chunk_tokens),
                     "position": len(chunks),
                     "has_table": self._detect_table(chunk_text),
                     "has_numerical": self._detect_numerical_data(chunk_text),
+                    "has_causal_language": self._detect_causal_language(chunk_text),
                     "pdq_context": {},
                 })
         # Batch embed all chunks
@@ -213,43 +294,92 @@ class SemanticProcessor:
         logger.info(f"Generated {len(chunks)} policy-aware chunks")
         return [_upgrade_chunk_schema(chunk) for chunk in chunks]
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticProcessor._detect_pdm_structure")
+    
     def _detect_pdm_structure(self, text: str) -> list[dict[str, Any]]:
-        """Detect PDM sections using Colombian policy document patterns"""
-        sections = []
-        # Patterns for Colombian PDM structure
-        patterns = {
-            PDMSection.DIAGNOSTICO: r"(?i)(diagnóstico|caracterización|situación actual)",
-            PDMSection.VISION_ESTRATEGICA: r"(?i)(visión|misión|objetivos estratégicos)",
-            PDMSection.PLAN_PLURIANUAL: r"(?i)(plan plurianual|programas|proyectos)",
-            PDMSection.PLAN_INVERSIONES: r"(?i)(plan de inversiones|presupuesto|recursos)",
-            PDMSection.MARCO_FISCAL: r"(?i)(marco fiscal|sostenibilidad fiscal)",
-            PDMSection.SEGUIMIENTO: r"(?i)(seguimiento|evaluación|indicadores)"
-        }
-        # Split by major headers (numbered or capitalized)
-        parts = re.split(r'\n(?=[0-9]+\.|[A-ZÑÁÉÍÓÚ]{3,})', text)
-        for i, part in enumerate(parts):
-            section_type = PDMSection.DIAGNOSTICO  # default
-            for stype, pattern in patterns.items():
-                if re.search(pattern, part[:200]):
-                    section_type = stype
-                    break
-            sections.append({
-                "text": part.strip(),
-                "type": section_type,
-                "id": f"sec_{i}"
-            })
+        """Detect PDM sections using patterns from unit_of_analysis_index.json."""
+
+        header_patterns = [re.compile(p) for p in UnitOfAnalysisLoader.get_patterns("section_headers")]
+        if not header_patterns:
+            return [{"text": text.strip(), "type": "GENERAL", "id": "sec_0", "header": ""}]
+
+        headers: list[dict[str, Any]] = []
+        for compiled in header_patterns:
+            for match in compiled.finditer(text):
+                headers.append(
+                    {
+                        "text": match.group(0).strip(),
+                        "start": match.start(),
+                        "end": match.end(),
+                    }
+                )
+
+        if not headers:
+            return [{"text": text.strip(), "type": "GENERAL", "id": "sec_0", "header": ""}]
+
+        deduped_by_start: dict[int, dict[str, Any]] = {}
+        for header in headers:
+            start = int(header["start"])
+            if start not in deduped_by_start:
+                deduped_by_start[start] = header
+
+        ordered_headers = [deduped_by_start[k] for k in sorted(deduped_by_start)]
+        sections: list[dict[str, Any]] = []
+
+        if ordered_headers[0]["start"] > 0:
+            sections.append(
+                {
+                    "text": text[: ordered_headers[0]["start"]].strip(),
+                    "type": "GENERAL",
+                    "id": "sec_0_preamble",
+                    "header": "",
+                }
+            )
+
+        for idx, header in enumerate(ordered_headers):
+            start = int(header["end"])
+            end = int(ordered_headers[idx + 1]["start"]) if idx + 1 < len(ordered_headers) else len(text)
+            header_text = str(header.get("text", ""))
+            sections.append(
+                {
+                    "text": text[start:end].strip(),
+                    "type": self._classify_section_type(header_text),
+                    "id": f"sec_{idx}",
+                    "header": header_text,
+                }
+            )
+
         return sections
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticProcessor._detect_table")
+    def _classify_section_type(self, header: str) -> str:
+        rules = UnitOfAnalysisLoader.get_section_type_rules()
+        for section_type, patterns in rules.items():
+            if any(re.search(pattern, header) for pattern in patterns):
+                return section_type
+        return "GENERAL"
+
+    
     def _detect_table(self, text: str) -> bool:
         """Detect if chunk contains tabular data"""
-        # Multiple tabs or pipes suggest table structure
-        return (text.count('\t') > 3 or
-                text.count('|') > 3 or
-                bool(re.search(r'\d+\s+\d+\s+\d+', text)))
+        if text.count("\t") > 3 or text.count("|") > 3:
+            return True
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticProcessor._detect_numerical_data")
+        marker_patterns = UnitOfAnalysisLoader.get_patterns("table_markers")
+        if any(re.search(pattern, text) for pattern in marker_patterns):
+            return True
+
+        table_columns = UnitOfAnalysisLoader.get_table_columns()
+        for columns in table_columns.values():
+            hits = sum(1 for col in columns if col and col in text)
+            if hits >= 2:
+                return True
+
+        return bool(re.search(r"\d+\s+\d+\s+\d+", text))
+
+    def _detect_causal_language(self, text: str) -> bool:
+        patterns = UnitOfAnalysisLoader.get_patterns("causal_connectors")
+        return any(re.search(pattern, text) for pattern in patterns)
+
+    
     def _detect_numerical_data(self, text: str) -> bool:
         """Detect if chunk contains significant numerical/financial data"""
         # Look for currency, percentages, large numbers
@@ -260,7 +390,7 @@ class SemanticProcessor:
         ]
         return any(re.search(p, text) for p in patterns)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticProcessor._embed_batch")
+    
     def _embed_batch(self, texts: list[str]) -> list[NDArray[np.floating[Any]]]:
         """Batch embedding with BGE-M3"""
         self._lazy_load()
@@ -288,7 +418,7 @@ class SemanticProcessor:
             embeddings.extend([emb.astype(np.float32) for emb in batch_embeddings])
         return embeddings
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticProcessor.embed_single")
+    
     def embed_single(self, text: str) -> NDArray[np.floating[Any]]:
         """Single text embedding"""
         return self._embed_batch([text])[0]
@@ -343,7 +473,7 @@ class BayesianEvidenceIntegrator:
         # 3. Aggregate weighted evidence
         # Dirichlet posterior parameters: α_post = α_prior + weighted_counts
         positive_evidence = np.sum(weights * probs)
-        negative_evidence = np.sum(weights * (ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__", "auto_param_L348_46", 1.0) - probs))
+        negative_evidence = np.sum(weights * (1.0 - probs))
         alpha_pos = self.prior_alpha + positive_evidence
         alpha_neg = self.prior_alpha + negative_evidence
         alpha_total = alpha_pos + alpha_neg
@@ -361,71 +491,102 @@ class BayesianEvidenceIntegrator:
         # 6. Entropy-based calibrated confidence
         posterior_entropy = stats.beta.entropy(alpha_pos, alpha_neg)
         max_entropy = stats.beta.entropy(1, 1)  # Maximum uncertainty
-        confidence = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__", "auto_param_L366_21", 1.0) - (posterior_entropy / max_entropy)
+        confidence = 1.0 - (posterior_entropy / max_entropy)
         return {
-            "posterior_mean": float(np.clip(posterior_mean, ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__", "auto_param_L368_60", 0.0), ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__", "auto_param_L368_65", 1.0))),
+            "posterior_mean": float(np.clip(posterior_mean, 0.0, 1.0)),
             "posterior_std": float(np.sqrt(posterior_variance)),
             "information_gain": float(kl_divergence),
             "confidence": float(confidence),
             "evidence_strength": float(
                 positive_evidence / (alpha_total - 2 * self.prior_alpha)
-                if abs(alpha_total - 2 * self.prior_alpha) > 1e-8 else ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator.__init__", "auto_param_L374_71", 0.0)
+                if abs(alpha_total - 2 * self.prior_alpha) > 1e-8 else 0.0
             ),
             "n_chunks": len(similarities)
         }
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._similarity_to_probability")
+    
     def _similarity_to_probability(self, sims: NDArray[np.float64]) -> NDArray[np.float64]:
         """
         Calibrated transform from cosine similarity [-1,1] to probability [0,1]
         Using sigmoid with empirically derived temperature
         """
         # Shift to [0,2], scale to reasonable range
-        x = (sims + ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._similarity_to_probability", "auto_param_L386_20", 1.0)) * 2.0
+        x = (sims + 1.0) * 2.0
         # Sigmoid with temperature=2.0 (calibrated on policy corpus)
-        return ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._similarity_to_probability", "auto_param_L388_15", 1.0) / (ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._similarity_to_probability", "auto_param_L388_22", 1.0) + np.exp(-x / 2.0))
+        return 1.0 / (1.0 + np.exp(-x / 2.0))
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._compute_reliability_weights")
+    
     def _compute_reliability_weights(self, metadata: list[dict[str, Any]]) -> NDArray[np.float64]:
-        """
-        Evidence reliability based on:
-        - Position in document (early sections more diagnostic)
-        - Content type (tables/numbers more reliable for quantitative claims)
-        - Section type (plan sections more reliable than diagnostics)
-        """
         n = len(metadata)
         weights = np.ones(n, dtype=np.float64)
-        for i, meta in enumerate(metadata):
-            # Position weight (early = more reliable)
-            pos_weight = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._compute_reliability_weights", "auto_param_L402_25", 1.0) - (meta["position"] / max(1, n)) * POSITION_WEIGHT_SCALE
-            # Content type weight
-            content_weight = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._compute_reliability_weights", "content_weight", 1.0) # Refactored
-            if meta.get("has_table", False):
-                content_weight *= TABLE_WEIGHT_FACTOR
-            if meta.get("has_numerical", False):
-                content_weight *= NUMERICAL_WEIGHT_FACTOR
-            # Section type weight (plan sections > diagnostic)
-            section_type = meta.get("section_type")
-            if section_type in [PDMSection.PLAN_PLURIANUAL, PDMSection.PLAN_INVERSIONES]:
-                content_weight *= PLAN_SECTION_WEIGHT_FACTOR
-            elif section_type == PDMSection.DIAGNOSTICO:
-                content_weight *= DIAGNOSTIC_SECTION_WEIGHT_FACTOR
-            weights[i] = pos_weight * content_weight
-        # Normalize to sum to n (preserve total evidence mass)
-        return weights * (n / weights.sum())
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence")
+        for i, meta in enumerate(metadata):
+            weight = 1.0
+
+            section_type = str(meta.get("section_type", ""))
+            if section_type == "ESTRATEGICA":
+                weight *= 1.35
+            elif section_type == "FINANCIERA":
+                weight *= 1.30
+            elif section_type == "PAZ_PDET":
+                weight *= 1.25
+            elif section_type == "DIAGNOSTICO":
+                weight *= 0.90
+            elif section_type == "SEGUIMIENTO":
+                weight *= 1.10
+
+            chunk_text = _get_chunk_content(meta)
+
+            if meta.get("has_table", False):
+                if "Matriz de Indicadores" in chunk_text:
+                    weight *= 1.50
+                elif "Plan Plurianual de Inversiones" in chunk_text:
+                    weight *= 1.45
+                elif "Línea base" in chunk_text and "Meta" in chunk_text:
+                    weight *= 1.35
+                else:
+                    weight *= 1.20
+
+            if meta.get("has_numerical", False):
+                if re.search(r"\\$\\s*[\\d,.]+\\s*(?:millones?)?\\s*(?:COP)?", chunk_text, re.I):
+                    weight *= 1.40
+                elif re.search(r"\\d+(?:[.,]\\d+)?%", chunk_text):
+                    weight *= 1.25
+                else:
+                    weight *= 1.15
+
+            if meta.get("has_causal_language", False):
+                weight *= 1.30
+
+            if re.search(r"Ley\\s+\\d+\\s+de\\s+\\d{4}", chunk_text, re.I):
+                weight *= 1.20
+
+            if re.search(r"(?:municipio|vereda|corregimiento|PDET|zona rural)", chunk_text, re.I):
+                weight *= 1.15
+
+            position = float(meta.get("position", 0.0))
+            position_factor = 1.0 - (position / max(1.0, float(n))) * 0.3
+            weight *= position_factor
+
+            weights[i] = weight
+
+        total = float(weights.sum())
+        if total <= 0:
+            return weights
+        return weights * (n / total)
+
+    
     def _null_evidence(self) -> dict[str, float]:
         """Return prior state (no evidence)"""
-        prior_mean = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "prior_mean", 0.5) # Refactored
+        prior_mean = 0.5 # Refactored
         prior_var = self.prior_alpha / \
             ((2 * self.prior_alpha)**2 * (2 * self.prior_alpha + 1))
         return {
             "posterior_mean": prior_mean,
             "posterior_std": float(np.sqrt(prior_var)),
-            "information_gain": ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L428_32", 0.0),
-            "confidence": ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L429_26", 0.0),
-            "evidence_strength": ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L430_33", 0.0),
+            "information_gain": 0.0,
+            "confidence": 0.0,
+            "evidence_strength": 0.0,
             "n_chunks": 0
         }
 
@@ -441,14 +602,14 @@ class BayesianEvidenceIntegrator:
         Intuition: Strong causal link if cause-effect similar AND
         both relate similarly to context (conditional independence test proxy)
         """
-        sim_ce = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L446_17", 1.0) - cosine(cause_emb, effect_emb)
-        sim_c_ctx = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L447_20", 1.0) - cosine(cause_emb, context_emb)
-        sim_e_ctx = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L448_20", 1.0) - cosine(effect_emb, context_emb)
+        sim_ce = 1.0 - cosine(cause_emb, effect_emb)
+        sim_c_ctx = 1.0 - cosine(cause_emb, context_emb)
+        sim_e_ctx = 1.0 - cosine(effect_emb, context_emb)
         # Conditional independence proxy
-        cond_indep = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L450_21", 1.0) - abs(sim_c_ctx - sim_e_ctx)
+        cond_indep = 1.0 - abs(sim_c_ctx - sim_e_ctx)
         # Combined strength (normalized to [0,1])
         strength = ((sim_ce + 1) / 2) * cond_indep
-        return float(np.clip(strength, ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L453_39", 0.0), ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.BayesianEvidenceIntegrator._null_evidence", "auto_param_L453_44", 1.0)))
+        return float(np.clip(strength, 0.0, 1.0))
 
 # ========================
 # POLICY ANALYZER (INTEGRATED)
@@ -472,44 +633,21 @@ class PolicyDocumentAnalyzer:
         # Initialize dimension embeddings
         self.dimension_embeddings = self._init_dimension_embeddings()
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.PolicyDocumentAnalyzer._init_dimension_embeddings")
+    
     def _init_dimension_embeddings(self) -> dict[CausalDimension, NDArray[np.floating[Any]]]:
-        """
-        Canonical embeddings for Marco Lógico dimensions
-        Using Colombian policy-specific terminology
-        """
-        descriptions = {
-            CausalDimension.INSUMOS: (
-                "recursos humanos financieros técnicos capacidad institucional "
-                "presupuesto asignado infraestructura disponible personal capacitado"
-            ),
-            CausalDimension.ACTIVIDADES: (
-                "actividades programadas acciones ejecutadas procesos implementados "
-                "cronograma cumplido capacitaciones realizadas gestiones adelantadas"
-            ),
-            CausalDimension.PRODUCTOS: (
-                "productos entregables resultados inmediatos bienes servicios generados "
-                "documentos producidos obras construidas beneficiarios atendidos"
-            ),
-            CausalDimension.RESULTADOS: (
-                "resultados efectos mediano plazo cambios comportamiento acceso mejorado "
-                "capacidades fortalecidas servicios prestados metas alcanzadas"
-            ),
-            CausalDimension.IMPACTOS: (
-                "impactos transformación estructural efectos largo plazo desarrollo sostenible "
-                "bienestar poblacional reducción pobreza equidad territorial"
-            ),
-            CausalDimension.SUPUESTOS: (
-                "supuestos condiciones habilitantes riesgos externos factores contextuales "
-                "viabilidad política sostenibilidad financiera apropiación comunitaria"
-            )
-        }
+        descriptions = UnitOfAnalysisLoader.get_dimension_descriptions()
+
+        def _fallback(dim: CausalDimension) -> str:
+            from farfan_pipeline.core.canonical_notation import get_dimension_description
+
+            return get_dimension_description(dim.value)
+
         return {
-            dim: self.semantic.embed_single(desc)
-            for dim, desc in descriptions.items()
+            dim: self.semantic.embed_single(descriptions.get(dim.value, _fallback(dim)))
+            for dim in CausalDimension
         }
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.PolicyDocumentAnalyzer.analyze")
+    
     def analyze(self, text: str) -> dict[str, Any]:
         """
         Full pipeline: chunking → embedding → dimension analysis → evidence integration
@@ -521,7 +659,7 @@ class PolicyDocumentAnalyzer:
         dimension_results = {}
         for dim, dim_emb in self.dimension_embeddings.items():
             similarities = np.array([
-                ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.PolicyDocumentAnalyzer.analyze", "auto_param_L526_16", 1.0) - cosine(chunk["embedding"], dim_emb)
+                1.0 - cosine(chunk["embedding"], dim_emb)
                 for chunk in chunks
             ])
             # Filter by threshold
@@ -566,7 +704,7 @@ class PolicyDocumentAnalyzer:
         for dim, dim_emb in self.dimension_embeddings.items():
             # Rank chunks by similarity
             sims = [
-                (i, ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.PolicyDocumentAnalyzer.analyze", "auto_param_L571_20", 1.0) - cosine(chunk["embedding"], dim_emb))
+                (i, 1.0 - cosine(chunk["embedding"], dim_emb))
                 for i, chunk in enumerate(chunks)
             ]
             sims.sort(key=lambda x: x[1], reverse=True)
@@ -590,7 +728,7 @@ class SemanticChunkingProducer:
     Provides public API methods for orchestrator integration without exposing
     internal implementation details or summarization logic.
 
-    Version: ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.PolicyDocumentAnalyzer.analyze", "auto_param_L595_13", 1.0).0
+    Version: 1.0
     Producer Type: Semantic Analysis / Chunking
     """
 
@@ -608,48 +746,50 @@ class SemanticChunkingProducer:
     # CHUNKING API
     # ========================================================================
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.chunk_document")
+    
     def chunk_document(self, text: str, preserve_structure: bool = True) -> list[dict[str, Any]]:
         """Chunk document into semantic units with embeddings"""
         return self.semantic.chunk_text(text, preserve_structure)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_count")
+    
     def get_chunk_count(self, chunks: list[dict[str, Any]]) -> int:
         """Get number of chunks"""
         return len(chunks)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_text")
+    
     def get_chunk_text(self, chunk: dict[str, Any]) -> str:
         """Extract text from chunk"""
         return _get_chunk_content(chunk)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_embedding")
+    
     def get_chunk_embedding(self, chunk: dict[str, Any]) -> NDArray[np.floating[Any]]:
         """Extract embedding from chunk"""
         return chunk.get("embedding", np.array([]))
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_chunk_metadata")
+    
     def get_chunk_metadata(self, chunk: dict[str, Any]) -> dict[str, Any]:
         """Extract metadata from chunk"""
         return {
             "section_type": chunk.get("section_type"),
             "section_id": chunk.get("section_id"),
+            "section_header": chunk.get("section_header"),
             "token_count": chunk.get("token_count"),
             "position": chunk.get("position"),
             "has_table": chunk.get("has_table"),
-            "has_numerical": chunk.get("has_numerical")
+            "has_numerical": chunk.get("has_numerical"),
+            "has_causal_language": chunk.get("has_causal_language"),
         }
 
     # ========================================================================
     # EMBEDDING API
     # ========================================================================
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.embed_text")
+    
     def embed_text(self, text: str) -> NDArray[np.floating[Any]]:
         """Generate single embedding for text"""
         return self.semantic.embed_single(text)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.embed_batch")
+    
     def embed_batch(self, texts: list[str]) -> list[NDArray[np.floating[Any]]]:
         """Generate embeddings for batch of texts"""
         return self.semantic._embed_batch(texts)
@@ -658,7 +798,7 @@ class SemanticChunkingProducer:
     # ANALYSIS API
     # ========================================================================
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.analyze_document")
+    
     def analyze_document(self, text: str) -> dict[str, Any]:
         """Full pipeline analysis of document"""
         return self.analyzer.analyze(text)
@@ -678,7 +818,7 @@ class SemanticChunkingProducer:
     ) -> float:
         """Extract dimension evidence strength score"""
         dim_result = self.get_dimension_analysis(analysis, dimension)
-        return dim_result.get("evidence_strength", ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.analyze_document", "auto_param_L683_51", 0.0))
+        return dim_result.get("evidence_strength", 0.0)
 
     def get_dimension_confidence(
         self,
@@ -687,7 +827,7 @@ class SemanticChunkingProducer:
     ) -> float:
         """Extract dimension confidence score"""
         dim_result = self.get_dimension_analysis(analysis, dimension)
-        return dim_result.get("confidence", ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.analyze_document", "auto_param_L692_44", 0.0))
+        return dim_result.get("confidence", 0.0)
 
     def get_dimension_excerpts(
         self,
@@ -718,25 +858,25 @@ class SemanticChunkingProducer:
         """Calculate causal strength between embeddings"""
         return self.bayesian.causal_strength(cause_emb, effect_emb, context_emb)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_mean")
+    
     def get_posterior_mean(self, evidence: dict[str, float]) -> float:
         """Extract posterior mean from evidence integration"""
-        return evidence.get("posterior_mean", ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_mean", "auto_param_L726_46", 0.0))
+        return evidence.get("posterior_mean", 0.0)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_std")
+    
     def get_posterior_std(self, evidence: dict[str, float]) -> float:
         """Extract posterior standard deviation"""
-        return evidence.get("posterior_std", ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_posterior_std", "auto_param_L731_45", 0.0))
+        return evidence.get("posterior_std", 0.0)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_information_gain")
+    
     def get_information_gain(self, evidence: dict[str, float]) -> float:
         """Extract information gain (KL divergence)"""
-        return evidence.get("information_gain", ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_information_gain", "auto_param_L736_48", 0.0))
+        return evidence.get("information_gain", 0.0)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_confidence")
+    
     def get_confidence(self, evidence: dict[str, float]) -> float:
         """Extract confidence score"""
-        return evidence.get("confidence", ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_confidence", "auto_param_L741_42", 0.0))
+        return evidence.get("confidence", 0.0)
 
     # ========================================================================
     # SEMANTIC SEARCH API
@@ -756,7 +896,7 @@ class SemanticChunkingProducer:
         for chunk in chunks:
             chunk_emb = chunk.get("embedding")
             if chunk_emb is not None and len(chunk_emb) > 0:
-                similarity = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_confidence", "auto_param_L761_29", 1.0) - cosine(query_emb, chunk_emb)
+                similarity = 1.0 - cosine(query_emb, chunk_emb)
 
                 # Filter by dimension if specified
                 if dimension is None or chunk.get("section_type") == dimension:
@@ -771,30 +911,24 @@ class SemanticChunkingProducer:
     # UTILITY API
     # ========================================================================
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.list_dimensions")
+    
     def list_dimensions(self) -> list[CausalDimension]:
         """List all causal dimensions"""
         return list(CausalDimension)
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_dimension_description")
+    
     def get_dimension_description(self, dimension: CausalDimension) -> str:
         """Get description for dimension"""
-        descriptions = {
-            CausalDimension.INSUMOS: "Recursos, capacidad institucional",
-            CausalDimension.ACTIVIDADES: "Acciones, procesos, cronogramas",
-            CausalDimension.PRODUCTOS: "Entregables inmediatos",
-            CausalDimension.RESULTADOS: "Efectos mediano plazo",
-            CausalDimension.IMPACTOS: "Transformación estructural largo plazo",
-            CausalDimension.SUPUESTOS: "Condiciones habilitantes"
-        }
-        return descriptions.get(dimension, "")
+        from farfan_pipeline.core.canonical_notation import get_dimension_description
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.get_config")
+        return get_dimension_description(dimension.value)
+
+    
     def get_config(self) -> SemanticConfig:
         """Get current configuration"""
         return self.config
 
-    @calibrated_method("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.set_config")
+    
     def set_config(self, config: SemanticConfig) -> None:
         """Update configuration (requires reinitialization)"""
         self.config = config
@@ -831,7 +965,7 @@ Se implementará sistema de indicadores alineado con ODS, con mediciones semestr
     config = SemanticConfig(
         chunk_size=512,
         chunk_overlap=100,
-        similarity_threshold = ParameterLoaderV2.get("farfan_core.processing.semantic_chunking_policy.SemanticChunkingProducer.set_config", "similarity_threshold", 0.8) # Refactored
+        similarity_threshold = 0.8 # Refactored
     )
     analyzer = PolicyDocumentAnalyzer(config)
     results = analyzer.analyze(sample_pdm)

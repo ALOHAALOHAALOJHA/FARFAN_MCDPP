@@ -374,7 +374,7 @@ def main():
     print(f"📁 Output directory: {output_dir}")
     print("\n⚠️  IMPORTANT: These files contain ONLY runtime parameters (HOW).")
     print("    Calibration data (WHAT quality scores) is loaded from:")
-    print("    - src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/calibration/COHORT_2024_intrinsic_calibration.json")
+    print("    - src/cross_cutting_infrastructure/capaz_calibration_parmetrization/calibration/COHORT_2024_intrinsic_calibration.json")
     print("    - canonic_questionnaire_central/questionnaire_monolith.json")
 
 

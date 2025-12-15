@@ -44,8 +44,23 @@ CV_CONVERGENCE_THRESHOLD = 0.15  # Coefficient of variation for convergence
 CV_MODERATE_THRESHOLD = 0.40  # CV threshold for moderate dispersion
 CV_HIGH_THRESHOLD = 0.60  # CV threshold for high dispersion
 
-# Representative question placeholder (to be replaced by actual logic)
-REPRESENTATIVE_QUESTION_PLACEHOLDER = "Q001"
+# Utility: Select a representative question for a given dimension from the signal registry
+def get_representative_question_for_dimension(
+    dimension_id: str,
+    signal_registry: "QuestionnaireSignalRegistry" | None,
+) -> str | None:
+    """
+    Returns a representative question ID for the given dimension, or None if not found.
+    Selection strategy: first question found for the dimension in the registry.
+    """
+    if signal_registry is None:
+        logger.warning("Signal registry is None; cannot select representative question for dimension '%s'.", dimension_id)
+        return None
+    questions = signal_registry.get_questions_for_dimension(dimension_id)
+    if not questions:
+        logger.warning("No questions found for dimension '%s' in signal registry.", dimension_id)
+        return None
+    return questions[0]
 
 __all__ = [
     "SignalEnrichedAggregator",
@@ -146,8 +161,14 @@ class SignalEnrichedAggregator:
             if self.signal_registry and dimension_id:
                 try:
                     # For dimension aggregation, check pattern density across questions
-                    # TODO: Replace with actual representative question logic
-                    representative_question = REPRESENTATIVE_QUESTION_PLACEHOLDER
+                    representative_question = get_representative_question_for_dimension(
+                        dimension_id, self.signal_registry
+                    )
+                    if representative_question is None:
+                        # No representative question found, skip signal-based weighting
+                        logger.debug(f"No representative question for dimension {dimension_id}, skipping signal-based weighting")
+                        return adjusted_weights, adjustment_details
+                    
                     signal_pack = self.signal_registry.get_micro_answering_signals(
                         representative_question
                     )
@@ -278,20 +299,26 @@ class SignalEnrichedAggregator:
             if self.signal_registry and dimension_id:
                 try:
                     # Get signal characteristics for dimension
-                    representative_question = f"Q001"  # Placeholder
-                    signal_pack = self.signal_registry.get_micro_answering_signals(
-                        representative_question
+                    representative_question = get_representative_question_for_dimension(
+                        dimension_id, self.signal_registry
                     )
-                    
-                    pattern_count = len(signal_pack.patterns) if hasattr(signal_pack, 'patterns') else 0
-                    
-                    # High pattern count with high dispersion suggests genuine complexity
-                    if pattern_count > 15 and cv > 0.40:
-                        interpretation["insights"].append({
-                            "type": "genuine_complexity",
-                            "description": f"High pattern density ({pattern_count}) with high dispersion suggests inherent complexity",
-                            "recommendation": "Dispersion may reflect genuine answer complexity, not data quality issues",
-                        })
+                    if representative_question is None:
+                        # No representative question found, skip signal-based enhancement
+                        logger.debug(f"No representative question for dimension {dimension_id}")
+                    else:
+                        signal_pack = self.signal_registry.get_micro_answering_signals(
+                            representative_question
+                        )
+                        
+                        pattern_count = len(signal_pack.patterns) if hasattr(signal_pack, 'patterns') else 0
+                        
+                        # High pattern count with high dispersion suggests genuine complexity
+                        if pattern_count > 15 and cv > 0.40:
+                            interpretation["insights"].append({
+                                "type": "genuine_complexity",
+                                "description": f"High pattern density ({pattern_count}) with high dispersion suggests inherent complexity",
+                                "recommendation": "Dispersion may reflect genuine answer complexity, not data quality issues",
+                            })
                     
                 except Exception as e:
                     logger.debug(f"Signal-based dispersion analysis failed: {e}")
@@ -336,8 +363,6 @@ class SignalEnrichedAggregator:
             "context": context,
             "candidates": [],
         }
-        
-        method_name = "weighted_mean"  # Default
         
         try:
             cv = dispersion_metrics.get("cv", 0.0)

@@ -21,19 +21,19 @@ from typing import Any
 
 import structlog
 
-from farfan_pipeline.config.paths import CONFIG_DIR, DATA_DIR
+from canonic_phases.Phase_zero.paths import CONFIG_DIR, DATA_DIR
 from orchestration.factory import CanonicalQuestionnaire
-from farfan_pipeline.core.orchestrator.arg_router import ExtendedArgRouter
-from farfan_pipeline.core.orchestrator.class_registry import build_class_registry
-from farfan_pipeline.core.orchestrator.executor_config import ExecutorConfig
-from farfan_pipeline.core.orchestrator.factory import CoreModuleFactory
-from farfan_pipeline.core.orchestrator.signals import (
+from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
+from orchestration.class_registry import build_class_registry
+from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from orchestration.factory import CoreModuleFactory
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
     InMemorySignalSource,
     SignalClient,
     SignalPack,
     SignalRegistry,
 )
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_consumption import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     AccessLevel,
     get_access_audit,
 )
@@ -228,19 +228,14 @@ class QuestionnaireResourceProvider:
             return ""
         return self._canonical.sha256
 
-try:  # Optional dependency: calibration orchestrator
-    from farfan_pipeline.core.calibration.orchestrator import CalibrationOrchestrator as _CalibrationOrchestrator
-    from farfan_pipeline.core.calibration.config import DEFAULT_CALIBRATION_CONFIG as _DEFAULT_CALIBRATION_CONFIG
-    _HAS_CALIBRATION = True
-except Exception:  # pragma: no cover - only during stripped installs
-    _CalibrationOrchestrator = None  # type: ignore[assignment]
-    _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
-    _HAS_CALIBRATION = False
+_CalibrationOrchestrator = None  # type: ignore[assignment]
+_DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
+_HAS_CALIBRATION = False
 
-from farfan_pipeline.core.wiring.errors import MissingDependencyError, WiringInitializationError
-from farfan_pipeline.core.wiring.feature_flags import WiringFeatureFlags
-from farfan_pipeline.core.wiring.phase_0_validator import Phase0Validator
-from farfan_pipeline.core.wiring.validation import WiringValidator
+from orchestration.wiring.errors import MissingDependencyError, WiringInitializationError
+from orchestration.wiring.feature_flags import WiringFeatureFlags
+from orchestration.wiring.phase_0_validator import Phase0Validator
+from orchestration.wiring.validation import WiringValidator
 
 logger = structlog.get_logger(__name__)
 

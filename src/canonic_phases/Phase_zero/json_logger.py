@@ -19,7 +19,6 @@ import json
 import logging
 import time
 from typing import Any
-from farfan_pipeline.core.calibration.decorators import calibrated_method
 
 # Import will be available at runtime
 try:
@@ -36,7 +35,6 @@ class JsonFormatter(logging.Formatter):
     Formats LogRecord as JSON with standard fields plus custom extras.
     """
 
-    @calibrated_method("farfan_core.utils.json_logger.JsonFormatter.format")
     def format(self, record: logging.LogRecord) -> str:
         """
         Format LogRecord as JSON string.

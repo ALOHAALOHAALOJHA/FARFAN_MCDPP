@@ -24,7 +24,7 @@ from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
     try:
-        from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
             QuestionnaireSignalRegistry,
         )
     except ImportError:
@@ -156,11 +156,10 @@ class SignalEnrichedRecommender:
             # Signal-based enhancement: Check if patterns support this condition
             if self.signal_registry and base_met:
                 try:
-                    # Try to get related signals (use first policy area as default)
+                    # Try to get related signals
                     # In production, extract actual policy_area from score_data
-                    policy_area = score_data.get("policy_area", "PA01")
                     signal_pack = self.signal_registry.get_micro_answering_signals(
-                        f"Q{score_data.get('question_global', '001'):03d}"
+                        f"Q{int(score_data.get('question_global', 1)):03d}"
                     )
                     
                     # Check if condition field matches signal patterns
@@ -256,7 +255,7 @@ class SignalEnrichedRecommender:
             # Factor 3: Signal-based pattern density (more patterns = more actionable)
             if self.signal_registry:
                 try:
-                    question_id = f"Q{score_data.get('question_global', '001'):03d}"
+                    question_id = f"Q{int(score_data.get('question_global', 1)):03d}"
                     signal_pack = self.signal_registry.get_micro_answering_signals(question_id)
                     
                     pattern_count = len(signal_pack.patterns) if hasattr(signal_pack, 'patterns') else 0
@@ -328,7 +327,7 @@ class SignalEnrichedRecommender:
             # Signal-based refinement
             if self.signal_registry:
                 try:
-                    question_id = f"Q{score_data.get('question_global', '001'):03d}"
+                    question_id = f"Q{int(score_data.get('question_global', 1)):03d}"
                     signal_pack = self.signal_registry.get_micro_answering_signals(question_id)
                     
                     # Analyze signal patterns to refine template choice

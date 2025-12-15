@@ -1,0 +1,39 @@
+[
+  {
+    "legacy_id": "D1",
+    "canonical_id": "DIM01",
+    "canonical_name": "INSUMOS",
+    "source_of_truth": "value_chain"
+  },
+  {
+    "legacy_id": "D2",
+    "canonical_id": "DIM02",
+    "canonical_name": "ACTIVIDADES",
+    "source_of_truth": "value_chain"
+  },
+  {
+    "legacy_id": "D3",
+    "canonical_id": "DIM03",
+    "canonical_name": "PRODUCTOS",
+    "source_of_truth": "value_chain"
+  },
+  {
+    "legacy_id": "D4",
+    "canonical_id": "DIM04",
+    "canonical_name": "RESULTADOS",
+    "source_of_truth": "value_chain"
+  },
+  {
+    "legacy_id": "D5",
+    "canonical_id": "DIM05",
+    "canonical_name": "IMPACTOS",
+    "source_of_truth": "value_chain"
+  },
+  {
+    "legacy_id": "D6",
+    "canonical_id": "DIM06",
+    "canonical_name": "CAUSALIDAD",
+    "source_of_truth": "value_chain"
+  }
+]
+

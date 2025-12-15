@@ -22,7 +22,7 @@ Key Modules:
 - analysis_factory: Factory for analysis module dependency injection
 """
 
-from farfan_pipeline.core.wiring.analysis_factory import (
+from orchestration.wiring.analysis_factory import (
     create_analysis_components,
     create_bayesian_confidence_calculator,
     create_contradiction_detector,

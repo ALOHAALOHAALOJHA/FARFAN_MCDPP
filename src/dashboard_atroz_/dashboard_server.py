@@ -7,7 +7,7 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
-from farfan_pipeline.core.orchestrator import Orchestrator
+from orchestration.orchestrator import Orchestrator
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

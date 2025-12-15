@@ -27,8 +27,18 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, TypeVar
-from farfan_pipeline.core.calibration.parameter_loader import get_parameter_loader
-from farfan_pipeline.core.calibration.decorators import calibrated_method
+
+# Calibration removed - stub placeholders
+def get_parameter_loader() -> Any:
+    """Stub: Calibration parameter loader removed."""
+    return None
+
+def calibrated_method(method_path: str) -> Any:
+    """Stub decorator: Calibration removed."""
+    def decorator(func: Any) -> Any:
+        return func
+    return decorator
+
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 # SOTA imports
@@ -48,7 +58,7 @@ from farfan_pipeline.processing.choquet_adapter import (
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
-    from farfan_pipeline.core.orchestrator.signal_registry import QuestionnaireSignalRegistry
+    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
 
 T = TypeVar('T')
 
@@ -100,7 +110,8 @@ class AggregationSettings:
         
         try:
             # Get assembly signals from registry
-            assembly_pack = registry.get_assembly_signals(level)
+            # Note: Using "meso" as the canonical level for aggregation assembly signals
+            assembly_pack = registry.get_assembly_signals("meso")
             source_hash = getattr(assembly_pack, 'source_hash', None)
             
             # Extract weights from assembly pack

@@ -182,8 +182,8 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
   },
   "evidence_assembly": {
     "module": "farfan_core.core.orchestrator.evidence_assembler",
@@ -228,16 +228,16 @@
       {
         "target": "elements_found",
         "sources": [
-          "text_mining.critical_links",
-          "industrial_policy.processed_evidence",
-          "causal_extraction.goals",
-          "financial_audit.amounts",
-          "pdet_analysis.financial_data",
-          "contradiction_detection.quantitative_claims",
-          "bayesian_analysis.policy_metrics"
+          "pdfprocessor.extract_tables",
+          "financial_audit.process_financial_table",
+          "pdet_analysis.deduplicate_tables",
+          "pdet_analysis.classify_tables",
+          "pdet_analysis.is_likely_header",
+          "pdet_analysis.clean_dataframe",
+          "reportingengine.generate_accountability_matrix"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine all evidence elements from 7 method invocations"
       },
       {
         "target": "confidence_scores",
@@ -252,12 +252,14 @@
       {
         "target": "pattern_matches",
         "sources": [
-          "text_mining.patterns",
-          "industrial_policy.patterns"
+          "pdfprocessor.extract_tables",
+          "financial_audit.process_financial_table",
+          "pdet_analysis.deduplicate_tables",
+          "pdet_analysis.classify_tables"
         ],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from text mining methods"
+        "description": "Combine pattern matches from table extraction methods"
       },
       {
         "target": "metadata",
@@ -265,7 +267,7 @@
           "*.metadata"
         ],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from all 7 methods for full traceability"
       }
     ]
   },
@@ -289,12 +291,12 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q276"
+          "const": "Q006"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 276
+          "const": 6
         },
         "policy_area_id": {
           "type": [
@@ -302,7 +304,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [
@@ -310,7 +312,7 @@
             "null"
           ],
           "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": null
+          "const": "DIM02"
         },
         "cluster_id": {
           "type": [
@@ -318,7 +320,7 @@
             "null"
           ],
           "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": null
+          "const": "CL02"
         },
         "evidence": {
           "type": [

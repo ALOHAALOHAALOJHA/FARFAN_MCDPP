@@ -19,7 +19,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, TypedDict
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from farfan_pipeline.core.calibration.decorators import calibrated_method
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -92,7 +91,6 @@ class SchemaDriftDetector:
         if baseline_path and baseline_path.exists():
             self._load_baseline()
 
-    @calibrated_method("farfan_core.utils.schema_monitor.SchemaDriftDetector.should_sample")
     def should_sample(self) -> bool:
         """Decide whether to sample this payload (probabilistic)."""
         return random.random() < self.sample_rate
@@ -146,7 +144,6 @@ class SchemaDriftDetector:
                     f"SCHEMA_DRIFT[source={source}]: Missing keys detected: {missing_keys}"
                 )
 
-    @calibrated_method("farfan_core.utils.schema_monitor.SchemaDriftDetector.get_alerts")
     def get_alerts(self, *, source: str | None = None) -> list[dict[str, Any]]:
         """
         Get schema drift alerts.
@@ -201,7 +198,6 @@ class SchemaDriftDetector:
 
         return alerts
 
-    @calibrated_method("farfan_core.utils.schema_monitor.SchemaDriftDetector.save_baseline")
     def save_baseline(self, output_path: Path) -> None:
         """
         Save current schema shapes as baseline.
@@ -234,7 +230,6 @@ class SchemaDriftDetector:
         output_path.write_text(json.dumps(baseline, indent=2))
         logger.info(f"Saved schema baseline to {output_path}")
 
-    @calibrated_method("farfan_core.utils.schema_monitor.SchemaDriftDetector._load_baseline")
     def _load_baseline(self) -> None:
         """Load baseline schema from file."""
         if not self.baseline_path:
@@ -255,7 +250,6 @@ class SchemaDriftDetector:
         except Exception as e:
             logger.error(f"Failed to load baseline: {e}")
 
-    @calibrated_method("farfan_core.utils.schema_monitor.SchemaDriftDetector.get_metrics")
     def get_metrics(self, *, source: str | None = None) -> dict[str, Any]:
         """
         Get monitoring metrics.
@@ -375,7 +369,6 @@ class PayloadValidator:
                     else:
                         logger.warning(msg)
 
-    @calibrated_method("farfan_core.utils.schema_monitor.PayloadValidator._load_schemas")
     def _load_schemas(self) -> None:
         """Load schema definitions from file."""
         if not self.schema_path:
@@ -400,3 +393,4 @@ def get_detector() -> SchemaDriftDetector:
     if _global_detector is None:
         _global_detector = SchemaDriftDetector(sample_rate=ParameterLoaderV2.get("farfan_core.utils.schema_monitor.PayloadValidator._load_schemas", "auto_param_L400_59", 0.05))
     return _global_detector
+

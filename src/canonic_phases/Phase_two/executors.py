@@ -25,9 +25,12 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from farfan_pipeline.core.canonical_notation import CanonicalDimension, get_dimension_info
-from farfan_pipeline.core.orchestrator.core import MethodExecutor
-from farfan_pipeline.core.orchestrator.factory import build_processor
-from farfan_pipeline.core.orchestrator.memory_safety import (
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from orchestration.orchestrator import MethodExecutor
+from orchestration.factory import build_processor
+from orchestration.memory_safety import (
     MemorySafetyGuard,
     MemorySafetyConfig,
     ExecutorType,
@@ -36,7 +39,7 @@ from farfan_pipeline.core.orchestrator.memory_safety import (
 from farfan_pipeline.processing.policy_processor import CausalDimension
 
 try:
-    from src.cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
         CalibrationOrchestrator,
         MethodBelowThresholdError,
     )
@@ -1918,7 +1921,7 @@ class D3_Q3_TraceabilityValidator(BaseExecutor):
     Step 11: Semantic cube baseline - SemanticAnalyzer._empty_semantic_cube
     Step 12: Policy domain classification - SemanticAnalyzer._classify_policy_domain
     Step 13: Cross-cutting themes - SemanticAnalyzer._classify_cross_cutting_themes
-    Step 14: Value chain classification - SemanticAnalyzer._classify_value_chain_link
+    Step 14: Base-slot classification - SemanticAnalyzer._classify_value_chain_link
     Step 15: Segment vectorization - SemanticAnalyzer._vectorize_segments
     Step 16: Segment processing - SemanticAnalyzer._process_segment
     Step 17: Semantic complexity - SemanticAnalyzer._calculate_semantic_complexity
@@ -1989,7 +1992,7 @@ class D3_Q3_TraceabilityValidator(BaseExecutor):
             "SemanticAnalyzer", "_classify_cross_cutting_themes", context,
             segment=document_text
         )
-        value_chain = self._execute_method(
+        base_slots = self._execute_method(
             "SemanticAnalyzer", "_classify_value_chain_link", context,
             segment=document_text
         )
@@ -2079,7 +2082,7 @@ class D3_Q3_TraceabilityValidator(BaseExecutor):
             "policy_domain_scores": domain_scores,
             "responsibility_entities_dict": entity_dicts,
             "cross_cutting_themes": cross_cutting,
-            "value_chain_links": value_chain,
+            "base_slots": base_slots,
             "semantic_vectors": semantic_vectors,
             "semantic_complexity": semantic_complexity,
             "evidence_confidence": evidence_confidence,

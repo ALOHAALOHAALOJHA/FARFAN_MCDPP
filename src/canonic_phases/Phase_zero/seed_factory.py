@@ -7,7 +7,6 @@ import hashlib
 import hmac
 import random
 from typing import Any
-from farfan_pipeline.core.calibration.decorators import calibrated_method
 
 try:
     import numpy as np
@@ -87,7 +86,6 @@ class SeedFactory:
 
         return seed_int
 
-    @calibrated_method("farfan_core.utils.seed_factory.SeedFactory.configure_global_random_state")
     def configure_global_random_state(self, seed: int) -> None:
         """
         Configure all random number generators with seed
@@ -188,8 +186,8 @@ def create_deterministic_seed(
     Example:
         >>> seed = create_deterministic_seed(
         ...     "run-001",
-        ...     question_id="P1-D1-Q001",
-        ...     policy_area="P1"
+        ...     question_id="Q001",
+        ...     policy_area_id="PA01"
         ... )
     """
     factory = SeedFactory()
