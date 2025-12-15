@@ -38,9 +38,9 @@ def test_package_structure():
         'src/canonic_phases/Phase_four_five_six_seven/__init__.py',
         'src/canonic_phases/Phase_eight/__init__.py',
         'src/canonic_phases/Phase_nine/__init__.py',
-        'src/cross_cutting_infrastrucuture/__init__.py',
-        'src/cross_cutting_infrastrucuture/irrigation_using_signals/__init__.py',
-        'src/cross_cutting_infrastrucuture/irrigation_using_signals/SISAS/__init__.py',
+        'src/cross_cutting_infrastructure/__init__.py',
+        'src/cross_cutting_infrastructure/irrigation_using_signals/__init__.py',
+        'src/cross_cutting_infrastructure/irrigation_using_signals/SISAS/__init__.py',
     ]
     
     missing = []
@@ -171,14 +171,14 @@ def test_dura_lex_integration():
     
     # Test 1: Verify dura_lex modules can be imported
     try:
-        from cross_cutting_infrastrucuture.contractual.dura_lex import idempotency_dedup
+        from cross_cutting_infrastructure.contractual.dura_lex import idempotency_dedup
         print("  ✓ idempotency_dedup module accessible")
     except ImportError as e:
         print(f"  ✗ idempotency_dedup not accessible: {e}")
         tests_passed = False
     
     try:
-        from cross_cutting_infrastrucuture.contractual.dura_lex import traceability
+        from cross_cutting_infrastructure.contractual.dura_lex import traceability
         print("  ✓ traceability module accessible")
     except ImportError as e:
         print(f"  ✗ traceability not accessible: {e}")

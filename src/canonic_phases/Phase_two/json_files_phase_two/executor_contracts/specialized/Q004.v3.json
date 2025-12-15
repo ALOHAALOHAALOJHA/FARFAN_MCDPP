@@ -735,30 +735,12 @@
                 },
                 {
                   "step": 2,
-                  "description": "Rule-based classification via lexical matching:
-  IF head_normalized in {'secretaría', 'secretaria'}:
-    IF any(keyword in entity['text'].lower() for keyword in ['mujer', 'género', 'equidad de género']):
-      type = 'Secretaría Especializada', confidence = 1.0
-    ELSE:
-      type = 'Secretaría General', confidence = 0.90
-  ELIF head_normalized in {'comisaría', 'comisaria'}:
-    type = 'Comisaría', confidence = 0.95
-  ELIF head_normalized in {'equipo', 'grupo', 'unidad'}:
-    type = 'Equipo Técnico', confidence = 0.85
-  ELSE:
-    type = 'Genérico', confidence = 0.50 (fallback to semantic matching in step 3)",
+                  "description": "Rule-based classification via lexical matching: IF head_normalized in {'secretaría', 'secretaria'}: IF any(keyword in entity['text'].lower() for keyword in ['mujer', 'género', 'equidad de género']): type = 'Secretaría Especializada', confidence = 1.0 ELSE: type = 'Secretaría General', confidence = 0.90 ELIF head_normalized in {'comisaría', 'comisaria'}: type = 'Comisaría', confidence = 0.95 ELIF head_normalized in {'equipo', 'grupo', 'unidad'}: type = 'Equipo Técnico', confidence = 0.85 ELSE: type = 'Genérico', confidence = 0.50 (fallback to semantic matching in step 3)",
                   "justification": "Deterministic rules for canonical institutional types achieve 100% precision on well-formed entity names"
                 },
                 {
                   "step": 3,
-                  "description": "Semantic fallback for type='Genérico': Compute spaCy embedding similarity between head_normalized and prototype types.
-  prototypes = {'secretaría', 'comisaría', 'equipo', 'oficina', 'dirección'}
-  similarities = [nlp(head_normalized).similarity(nlp(proto)) for proto in prototypes]
-  best_match = argmax(similarities)
-  IF max(similarities) ≥ 0.70:
-    type = map_prototype_to_type(best_match), confidence = max(similarities)
-  ELSE:
-    type = 'Genérico', confidence = max(similarities)",
+                  "description": "Semantic fallback for type='Genérico': Compute spaCy embedding similarity between head_normalized and prototype types. prototypes = {'secretaría', 'comisaría', 'equipo', 'oficina', 'dirección'} similarities = [nlp(head_normalized).similarity(nlp(proto)) for proto in prototypes] best_match = argmax(similarities) IF max(similarities) ≥ 0.70: type = map_prototype_to_type(best_match), confidence = max(similarities) ELSE: type = 'Genérico', confidence = max(similarities)",
                   "rationale": "Word embeddings capture semantic relatedness for out-of-vocabulary entity types (e.g., 'dependencia' → 0.72 similarity to 'secretaría')"
                 },
                 {
@@ -831,7 +813,7 @@
                 {
                   "step": 2,
                   "description": "Base score from token count: base_score = min(1.0, len(tokens_filtered) / 5.0). Rationale: 5+ content tokens indicate high specificity (e.g., 'Secretaría de la Mujer y Equidad de Género' = 5 content tokens).",
-                  "examples": ["'entidad competente' = 2 tokens → 0.40", "'Secretaría de la Mujer' = 2 content tokens ('Secretaría', 'Mujer') → 0.40", "'Secretaría de la Mujer y Equidad de Género' = 4 content tokens → 0.80"]
+                  "examples": ["'entidad competente' = 2 tokens -> 0.40", "'Secretaría de la Mujer' = 2 content tokens ('Secretaría', 'Mujer') -> 0.40", "'Secretaría de la Mujer y Equidad de Género' = 4 content tokens -> 0.80"]
                 },
                 {
                   "step": 3,
