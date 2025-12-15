@@ -31,12 +31,14 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.signals import SignalRegistry
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
+        SignalRegistry as SignalRegistryImpl,
+    )
 
-from farfan_pipeline.core.orchestrator.task_planner import ExecutableTask
-from farfan_pipeline.core.orchestrator.phase6_validation import (
+from canonic_phases.Phase_two.phase6_validation import (
     validate_phase6_schema_compatibility,
 )
+from orchestration.task_planner import ExecutableTask
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
 from farfan_pipeline.synchronization import ChunkMatrix
 
@@ -84,7 +86,7 @@ except ImportError as e:
         pass
 
 try:
-    from farfan_pipeline.core.orchestrator.signals import (
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signals import (
         SignalRegistry as _SignalRegistry,
     )
 except ImportError:
@@ -394,9 +396,13 @@ class IrrigationSynchronizer:
 
     def _count_questions(self) -> int:
         """Count total questions across all dimensions."""
-        count = 0
         blocks = self.questionnaire.get("blocks", {})
 
+        micro_questions = blocks.get("micro_questions")
+        if isinstance(micro_questions, list):
+            return len(micro_questions)
+
+        count = 0
         for dimension_key in ["D1", "D2", "D3", "D4", "D5", "D6"]:
             for i in range(1, 51):
                 question_key = f"D{dimension_key[1]}_Q{i:02d}"
@@ -525,6 +531,72 @@ class IrrigationSynchronizer:
         """Extract all questions from questionnaire in deterministic order."""
         questions = []
         blocks = self.questionnaire.get("blocks", {})
+
+        micro_questions = blocks.get("micro_questions")
+        if isinstance(micro_questions, list):
+            for raw in micro_questions:
+                if not isinstance(raw, dict):
+                    raise TypeError(
+                        "Invalid micro_question type in questionnaire: "
+                        f"expected dict but got {type(raw).__name__}"
+                    )
+
+                policy_area_id = raw.get("policy_area_id")
+                dimension_id = raw.get("dimension_id")
+                question_global = raw.get("question_global")
+                question_id = raw.get("question_id")
+
+                if not isinstance(question_id, str) or not question_id:
+                    raise ValueError(
+                        f"micro_question missing question_id or invalid type: {question_id!r}"
+                    )
+                if not isinstance(policy_area_id, str) or not policy_area_id:
+                    raise ValueError(
+                        "micro_question missing policy_area_id or invalid type: "
+                        f"{policy_area_id!r}"
+                    )
+                if not isinstance(dimension_id, str) or not dimension_id:
+                    raise ValueError(
+                        "micro_question missing dimension_id or invalid type: "
+                        f"{dimension_id!r}"
+                    )
+                if not isinstance(question_global, int):
+                    raise ValueError(
+                        "micro_question missing question_global or invalid type: "
+                        f"{question_global!r}"
+                    )
+
+                patterns_raw = raw.get("patterns", [])
+                patterns: list[dict[str, Any]] = []
+                if isinstance(patterns_raw, list):
+                    for pattern in patterns_raw:
+                        if not isinstance(pattern, dict):
+                            raise TypeError(
+                                "Invalid pattern type in micro_question: "
+                                f"expected dict but got {type(pattern).__name__}"
+                            )
+                        enriched = dict(pattern)
+                        enriched.setdefault("policy_area_id", policy_area_id)
+                        patterns.append(enriched)
+
+                questions.append(
+                    {
+                        "question_id": question_id,
+                        "question_global": question_global,
+                        "question_text": raw.get("text", ""),
+                        "policy_area_id": policy_area_id,
+                        "dimension_id": dimension_id,
+                        "base_slot": raw.get("base_slot", ""),
+                        "cluster_id": raw.get("cluster_id", ""),
+                        "patterns": patterns,
+                        "expected_elements": raw.get("expected_elements", []),
+                        "signal_requirements": raw.get("signal_requirements", []),
+                        "validations": raw.get("validations", {}),
+                    }
+                )
+
+            questions.sort(key=lambda q: (q["policy_area_id"], q["question_global"]))
+            return questions
 
         for dimension in range(1, 7):
             dim_key = f"D{dimension}"

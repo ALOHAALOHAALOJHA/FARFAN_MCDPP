@@ -32,6 +32,7 @@ except ImportError:
 class Signal(NamedTuple):
     """Immutable signal with type and content."""
 
+    signal_id: str
     signal_type: str
     content: SignalPack | None
 

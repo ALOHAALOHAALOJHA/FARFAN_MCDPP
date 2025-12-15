@@ -22,6 +22,13 @@ from __future__ import annotations
 import logging
 from typing import Any, TYPE_CHECKING
 
+from canonic_phases.Phase_three.gaming_resistant_thresholds import (
+    ThresholdConfig,
+    compute_pattern_adjustment,
+    compute_indicator_adjustment,
+    validate_signal_authenticity,
+)
+
 if TYPE_CHECKING:
     try:
         from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
@@ -39,11 +46,14 @@ QUALITY_INSUFICIENTE = "INSUFICIENTE"
 QUALITY_NO_APLICABLE = "NO_APLICABLE"
 QUALITY_ERROR = "ERROR"
 
-# Threshold adjustment constants
-HIGH_PATTERN_THRESHOLD = 15  # Pattern count threshold for complexity
-HIGH_INDICATOR_THRESHOLD = 10  # Indicator count threshold for specificity
-PATTERN_COMPLEXITY_ADJUSTMENT = -0.05  # Lower threshold for complex questions
-INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03  # Raise threshold for specific questions
+# Gaming-resistant configuration (uses sigmoid functions)
+DEFAULT_THRESHOLD_CONFIG = ThresholdConfig()
+
+# Legacy constants (kept for backward compatibility, use ThresholdConfig instead)
+HIGH_PATTERN_THRESHOLD = DEFAULT_THRESHOLD_CONFIG.high_pattern_threshold
+HIGH_INDICATOR_THRESHOLD = DEFAULT_THRESHOLD_CONFIG.high_indicator_threshold
+PATTERN_COMPLEXITY_ADJUSTMENT = DEFAULT_THRESHOLD_CONFIG.pattern_complexity_adjustment
+INDICATOR_SPECIFICITY_ADJUSTMENT = DEFAULT_THRESHOLD_CONFIG.indicator_specificity_adjustment
 COMPLETE_EVIDENCE_ADJUSTMENT = 0.02  # Bonus for complete evidence
 
 # Score thresholds for validation
@@ -80,6 +90,7 @@ class SignalEnrichedScorer:
         signal_registry: QuestionnaireSignalRegistry | None = None,
         enable_threshold_adjustment: bool = True,
         enable_quality_validation: bool = True,
+        threshold_config: ThresholdConfig | None = None,
     ) -> None:
         """Initialize signal-enriched scorer.
         
@@ -87,16 +98,19 @@ class SignalEnrichedScorer:
             signal_registry: Optional signal registry for signal access
             enable_threshold_adjustment: Enable threshold adjustment feature
             enable_quality_validation: Enable quality validation feature
+            threshold_config: Gaming-resistant threshold configuration
         """
         self.signal_registry = signal_registry
         self.enable_threshold_adjustment = enable_threshold_adjustment
         self.enable_quality_validation = enable_quality_validation
+        self.threshold_config = threshold_config or DEFAULT_THRESHOLD_CONFIG
         
         logger.info(
             f"SignalEnrichedScorer initialized: "
             f"registry={'enabled' if signal_registry else 'disabled'}, "
             f"threshold_adj={enable_threshold_adjustment}, "
-            f"quality_val={enable_quality_validation}"
+            f"quality_val={enable_quality_validation}, "
+            f"gaming_resistant=True"
         )
     
     def adjust_threshold_for_question(
@@ -135,27 +149,56 @@ class SignalEnrichedScorer:
             # Get micro answering signals for question
             signal_pack = self.signal_registry.get_micro_answering_signals(question_id)
             
-            # Adjust based on pattern complexity (more patterns = more complex)
-            pattern_count = len(getattr(signal_pack, 'patterns', []))
-            if pattern_count > HIGH_PATTERN_THRESHOLD:
-                adjustment = PATTERN_COMPLEXITY_ADJUSTMENT
-                adjusted = max(0.3, adjusted + adjustment)
-                adjustment_details["adjustments"].append({
-                    "type": "high_pattern_complexity",
-                    "pattern_count": pattern_count,
-                    "adjustment": adjustment,
-                })
+            # CRITICAL: Validate signal authenticity before using
+            # This prevents gaming by filtering out low-quality signals
+            evidence = metadata.get("evidence", {})
+            validated_signals, authenticity_score = validate_signal_authenticity(
+                signal_pack, evidence, min_quality=self.threshold_config.min_quality_threshold
+            )
             
-            # Adjust based on indicator count (more indicators = more specific)
-            indicator_count = len(getattr(signal_pack, 'indicators', []))
-            if indicator_count > HIGH_INDICATOR_THRESHOLD:
-                adjustment = INDICATOR_SPECIFICITY_ADJUSTMENT
-                adjusted = min(0.9, adjusted + adjustment)
-                adjustment_details["adjustments"].append({
-                    "type": "high_indicator_specificity",
-                    "indicator_count": indicator_count,
-                    "adjustment": adjustment,
-                })
+            adjustment_details["signal_validation"] = {
+                "authenticity_score": authenticity_score,
+                "original_patterns": len(getattr(signal_pack, 'patterns', [])),
+                "validated_patterns": len(validated_signals["patterns"]),
+                "original_indicators": len(getattr(signal_pack, 'indicators', [])),
+                "validated_indicators": len(validated_signals["indicators"]),
+            }
+            
+            # Use validated pattern count instead of raw count
+            pattern_count = len(validated_signals["patterns"])
+            pattern_adj, pattern_meta = compute_pattern_adjustment(
+                pattern_count, self.threshold_config
+            )
+            # Scale adjustment by authenticity score to discount low-quality signals
+            pattern_adj *= authenticity_score
+            pattern_meta["authenticity_scaled"] = True
+            pattern_meta["final_adjustment"] = pattern_adj
+            
+            # Pattern complexity lowers threshold (negative adjustment)
+            adjusted = max(0.3, adjusted - pattern_adj)
+            adjustment_details["adjustments"].append({
+                "type": "pattern_complexity",
+                **pattern_meta,
+            })
+            
+            # Use validated indicator count with quality scores
+            indicator_count = len(validated_signals["indicators"])
+            indicator_quality_scores = validated_signals.get("indicator_quality_scores")
+            
+            indicator_adj, indicator_meta = compute_indicator_adjustment(
+                indicator_count, indicator_quality_scores, self.threshold_config
+            )
+            # Scale adjustment by authenticity score
+            indicator_adj *= authenticity_score
+            indicator_meta["authenticity_scaled"] = True
+            indicator_meta["final_adjustment"] = indicator_adj
+            
+            # Higher specificity raises threshold
+            adjusted = min(0.9, adjusted + indicator_adj)
+            adjustment_details["adjustments"].append({
+                "type": "indicator_specificity",
+                **indicator_meta,
+            })
             
             # Adjust based on evidence quality from metadata
             completeness = metadata.get("completeness", "").lower()
@@ -363,3 +406,4 @@ def get_signal_quality_validation(
         score=score,
         completeness=completeness,
     )
+

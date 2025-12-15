@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any
 
 from jsonschema import Draft7Validator
 
-from farfan_pipeline.config.paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 # NEW: Replace legacy evidence modules with EvidenceNexus and Carver
 from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
 from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
@@ -45,18 +45,11 @@ class BaseExecutorWithContract(ABC):
         enriched_packs: dict[str, Any] | None = None,
         validation_orchestrator: Any | None = None,
     ) -> None:
-        try:
-            from farfan_pipeline.core.orchestrator.core import (
-                MethodExecutor as _MethodExecutor,
-            )
-        except Exception as exc:  # pragma: no cover - defensive guard
+        executor_callable = getattr(method_executor, "execute", None)
+        if not callable(executor_callable):
             raise RuntimeError(
-                "Failed to import MethodExecutor for BaseExecutorWithContract invariants. "
-                "Ensure farfan_core.core.orchestrator.core is importable before constructing contract executors."
-            ) from exc
-        if not isinstance(method_executor, _MethodExecutor):
-            raise RuntimeError(
-                "A valid MethodExecutor instance is required for contract executors."
+                "A valid MethodExecutor instance is required for contract executors: "
+                "expected callable .execute(...) method."
             )
         self.method_executor = method_executor
         self.signal_registry = signal_registry

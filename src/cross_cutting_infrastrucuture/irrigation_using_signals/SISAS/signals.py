@@ -27,7 +27,9 @@ from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any, Literal, Protocol
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.orchestrator.signal_resolution import Signal
+    from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_resolution import (
+        Signal,
+    )
 
 
 class ChunkProtocol(Protocol):
@@ -494,13 +496,21 @@ class SignalRegistry:
             )
             return self._chunk_cache[chunk_id]
 
-        from farfan_pipeline.core.orchestrator.signal_resolution import Signal
+        from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_resolution import (
+            Signal,
+        )
 
         signals: list[Signal] = []
         for signal_type in required_types:
             pack = self.get(signal_type)
             if pack is not None:
-                signals.append(Signal(signal_type=signal_type, content=pack))
+                signals.append(
+                    Signal(
+                        signal_id=f"{chunk_id}:{signal_type}",
+                        signal_type=signal_type,
+                        content=pack,
+                    )
+                )
 
         self._chunk_cache[chunk_id] = signals
 

@@ -658,15 +658,73 @@ class EvidenceGraph:
     
     @staticmethod
     def _dempster_combine(m1: float, m2: float) -> float:
-        """Dempster's rule of combination for two belief masses."""
-        # Simplified:  assume no direct conflict
-        conflict = m1 * (1 - m2) * 0.1  # Small conflict factor
-        normalization = 1 - conflict
-        if normalization <= 0:
-            return 0.5  # Maximum uncertainty
-        
-        combined = (m1 * m2) / normalization
-        return max(0.0, min(1.0, combined))
+        """
+        Dempster's rule of combination for two belief masses.
+
+        Mathematically correct implementation for {True, False} frame.
+
+        Args:
+            m1: Belief mass for hypothesis 1 (0.0 to 1.0)
+            m2: Belief mass for hypothesis 2 (0.0 to 1.0)
+
+        Returns:
+            Combined belief mass (0.0 to 1.0)
+
+        Mathematical Foundation:
+            For frame Θ = {T, F}, define mass functions:
+            - m1(T) = belief1, m1(Θ) = 1-belief1
+            - m2(T) = belief2, m2(Θ) = 1-belief2
+
+            Dempster's rule:
+            m(A) = Σ{B∩C=A} m1(B)·m2(C) / (1 - conflict)
+
+            where conflict = Σ{B∩C=∅} m1(B)·m2(C)
+        """
+        # Validate inputs
+        if not (0.0 <= m1 <= 1.0 and 0.0 <= m2 <= 1.0):
+            logger.warning(f"Belief masses out of range: m1={m1}, m2={m2}, clamping")
+            m1 = max(0.0, min(1.0, m1))
+            m2 = max(0.0, min(1.0, m2))
+
+        # Define frame: Θ = {True, False}
+        # Mass function 1: m1(True)=belief1, m1(Θ)=1-belief1
+        # Mass function 2: m2(True)=belief2, m2(Θ)=1-belief2
+
+        # Compute combined mass function using Dempster's rule
+        # m_combined(True) = [m1(True)·m2(True) + m1(True)·m2(Θ) + m1(Θ)·m2(True)] / (1-conflict)
+
+        # Components that map to True:
+        # 1. m1(True) ∩ m2(True) = True
+        # 2. m1(True) ∩ m2(Θ) = True
+        # 3. m1(Θ) ∩ m2(True) = True
+        mass_true = (m1 * m2) + (m1 * (1 - m2)) + ((1 - m1) * m2)
+
+        # Components that map to False:
+        # 1. m1(False) ∩ m2(False) = False
+        # Note: m1(False) = 0 in this simplified model (all uncertainty goes to Θ)
+        # mass_false = 0.0
+
+        # Conflict (empty set):
+        # m1(True) ∩ m2(False) = ∅ (but m2(False)=0 in our model)
+        # m1(False) ∩ m2(True) = ∅ (but m1(False)=0 in our model)
+        conflict = 0.0  # No conflict in this simplified binary belief model
+
+        # Normalization
+        normalization = 1.0 - conflict
+        if normalization <= 0.0:
+            # Complete contradiction: return maximum uncertainty
+            logger.warning(
+                f"Complete conflict in Dempster combination: m1={m1}, m2={m2}, "
+                f"conflict={conflict:.3f}"
+            )
+            return 0.5
+
+        # Normalize combined belief
+        combined_belief = mass_true / normalization
+
+        # Clamp to [0, 1]
+        return max(0.0, min(1.0, combined_belief))
+
     
     def _topological_sort(self) -> list[EvidenceID]: 
         """Topological sort of nodes (Kahn's algorithm)."""
