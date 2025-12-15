@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "cfff80d9472e49bb686b3b6f070180896427c93fc0362ab483bcf2dd8e14a60c",
+    "contract_hash": "94dd033f8753ad79ed908e4a8510a00fdcc52ef5f3d5d1477a822540eaa06d2c",
     "created_at": "2025-11-28T03:50:09.614544+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 70,
-    "updated_at": "2025-12-15T20:32:11.531190+00:00"
+    "updated_at": "2025-12-15T21:42:31.451074+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q070-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de seguridad y protección|de manera articulada"
+        "pattern": "estrategia integral de seguridad y protección|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q070-001",
         "match_type": "LITERAL",
-        "pattern": "la prevención se complementa con|sinergia entre"
+        "pattern": "la prevención se complementa con|sinergia entre",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q070-002",
         "match_type": "REGEX",
-        "pattern": "la respuesta a las alertas tempranas activa las rutas de protección"
+        "pattern": "la respuesta a las alertas tempranas activa las rutas de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q070-003",
         "match_type": "LITERAL",
-        "pattern": "la asistencia humanitaria es el primer paso para la estabilización"
+        "pattern": "la asistencia humanitaria es el primer paso para la estabilización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q070-004",
         "match_type": "REGEX",
-        "pattern": "en una primera fase... y luego..."
+        "pattern": "en una primera fase... y luego...",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q070-005",
         "match_type": "REGEX",
-        "pattern": "la estrategia combina prevención, protección y garantías de no repetición"
+        "pattern": "la estrategia combina prevención, protección y garantías de no repetición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q070"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

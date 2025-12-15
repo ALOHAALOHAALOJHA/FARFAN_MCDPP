@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "5f9199c7ab273cdd3d2d009c9b550142ec03a765a458f34e46103e56505a702e",
+    "contract_hash": "0336249e08cfb643ddbaf97da444b31366f18fb88532057051248c50888e2ef6",
     "created_at": "2025-11-28T03:50:41.930133+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 217,
-    "updated_at": "2025-12-15T20:32:11.266272+00:00"
+    "updated_at": "2025-12-15T21:42:32.390682+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q2_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q217-000",
         "match_type": "REGEX",
-        "pattern": "mediante|a través de|con la implementación de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0081"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q217-001",
         "match_type": "REGEX",
-        "pattern": "barrido predial masivo|formalización por demanda"
+        "pattern": "barrido predial masivo|formalización por demanda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q217-002",
         "match_type": "REGEX",
-        "pattern": "construcción de placa huella|mantenimiento rutinario de vías"
+        "pattern": "construcción de placa huella|mantenimiento rutinario de vías",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q217-003",
         "match_type": "LITERAL",
-        "pattern": "asistencia técnica agropecuaria|extensión rural"
+        "pattern": "asistencia técnica agropecuaria|extensión rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q217-004",
         "match_type": "REGEX",
-        "pattern": "población objetivo:|dirigido a|beneficiarios serán"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q217-005",
         "match_type": "REGEX",
-        "pattern": "pequeños y medianos productores|familias campesinas sin tierra"
+        "pattern": "pequeños y medianos productores|familias campesinas sin tierra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q217-006",
         "match_type": "REGEX",
-        "pattern": "comunidades rurales de las veredas X y Y"
+        "pattern": "comunidades rurales de las veredas X y Y",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q217-007",
         "match_type": "REGEX",
-        "pattern": "con el fin de mejorar la conectividad|para garantizar la seguridad jurídica"
+        "pattern": "con el fin de mejorar la conectividad|para garantizar la seguridad jurídica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q217-008",
         "match_type": "REGEX",
-        "pattern": "lo cual reduce los costos de transporte|porque incentiva la inversión"
+        "pattern": "lo cual reduce los costos de transporte|porque incentiva la inversión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +359,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q277"
+          "const": "Q217"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +372,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

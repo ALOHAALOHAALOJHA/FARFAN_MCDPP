@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "d82c2b3a233e4940036ec58c8083f52f5b7bbc94c8c96911d0ec0dc6f0cae5a9",
+    "contract_hash": "82db57207b41e7e4ae3c9303753aaaebd0a55dddf65506818dd78f47a13c0c6b",
     "created_at": "2025-11-28T03:50:42.495872+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 282,
-    "updated_at": "2025-12-15T20:32:11.682376+00:00"
+    "updated_at": "2025-12-15T21:42:32.713240+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q282-000",
         "match_type": "REGEX",
-        "pattern": "la meta de nuevos cupos reduce en un X% el hacinamiento de sindicados"
+        "pattern": "la meta de nuevos cupos reduce en un X% el hacinamiento de sindicados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q282-001",
         "match_type": "REGEX",
-        "pattern": "se cubrirá al \\d+% de la población PPL con atención en salud"
+        "pattern": "se cubrirá al \\d+% de la población PPL con atención en salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q282-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|total de PPL bajo responsabilidad municipal"
+        "pattern": "universo de atención|total de PPL bajo responsabilidad municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q282-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de la capacidad presupuestal"
+        "pattern": "la meta se establece en función de la capacidad presupuestal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q282-004",
         "match_type": "REGEX",
-        "pattern": "se priorizará la atención a PPL con enfermedades crónicas"
+        "pattern": "se priorizará la atención a PPL con enfermedades crónicas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

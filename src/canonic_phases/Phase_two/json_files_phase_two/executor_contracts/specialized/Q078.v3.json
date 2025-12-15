@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "0317295686c67e8954753a112a0129ac163248d51eb10a6ce464e4ae6bc9ba97",
+    "contract_hash": "fe5c36e49a72a27b011b6d58ca283d76e722cf684042139f976363b9c1676f84",
     "created_at": "2025-11-28T03:50:09.647721+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 78,
-    "updated_at": "2025-12-15T20:32:12.198464+00:00"
+    "updated_at": "2025-12-15T21:42:31.505214+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q078-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dado el contexto de seguridad"
+        "pattern": "meta ambiciosa pero factible|meta realista dado el contexto de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q078-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por el aumento del pie de fuerza"
+        "pattern": "la meta se justifica por el aumento del pie de fuerza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q078-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión en X se espera lograr una reducción de Y"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0041"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q078-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad de articulación del Consejo de Seguridad permite"
+        "pattern": "la capacidad de articulación del Consejo de Seguridad permite",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q078-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias similares de otros municipios en posconflicto"
+        "pattern": "en experiencias similares de otros municipios en posconflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q078-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente nacional|meta del PND en seguridad"
+        "pattern": "benchmark|referente nacional|meta del PND en seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q078-006",
         "match_type": "REGEX",
-        "pattern": "análisis de viabilidad de la meta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0025"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q078"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

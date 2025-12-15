@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "73c40dc53c60816565d8c22b1d2b1dec51e329e7b242976b5f825b9c0888ad43",
+    "contract_hash": "9bb133dcec5fe34eb95bc580621091c074a245d27af63b46cfe31c0fd10a05ca",
     "created_at": "2025-11-28T03:49:29.791441+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 4,
-    "updated_at": "2025-12-15T20:32:11.083035+00:00"
+    "updated_at": "2025-12-15T21:42:31.040317+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q004-000",
         "match_type": "REGEX",
-        "pattern": "Secretaría de la Mujer|Oficina de la Mujer|Enlace de Género"
+        "pattern": "Secretaría de la Mujer|Oficina de la Mujer|Enlace de Género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,23 @@
         "flags": "i",
         "id": "PAT-Q004-001",
         "match_type": "REGEX",
-        "pattern": "Comisaría de Familia|equipo psicosocial|abogado|trabajador social"
+        "pattern": "Comisaría de Familia|equipo psicosocial|abogado|trabajador social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "negative_filter": {
+          "required_co_occurrence": {
+            "terms": [
+              "víctima",
+              "reparación",
+              "derechos humanos",
+              "defensa"
+            ],
+            "proximity": 3
+          }
+        },
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +161,15 @@
         "flags": "i",
         "id": "PAT-Q004-002",
         "match_type": "REGEX",
-        "pattern": "capacidad instalada|talento humano|personal idóneo"
+        "pattern": "capacidad instalada|talento humano|personal idóneo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "element_tags": [
+          "capacidad_institucional_realista"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q004-003",
         "match_type": "REGEX",
-        "pattern": "ruta de atención a víctimas de VBG|protocolo de atención"
+        "pattern": "ruta de atención a víctimas de VBG|protocolo de atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q004-004",
         "match_type": "REGEX",
-        "pattern": "sistema de información de casos de VBG|registro de feminicidios"
+        "pattern": "sistema de información de casos de VBG|registro de feminicidios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q004-005",
         "match_type": "REGEX",
-        "pattern": "Observatorio de Asuntos de Género"
+        "pattern": "Observatorio de Asuntos de Género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -172,15 +216,39 @@
         "flags": "i",
         "id": "PAT-Q004-006",
         "match_type": "REGEX",
-        "pattern": "Mesa Municipal de Mujeres|Consejo Consultivo de Mujeres|Comité de seguimiento Ley 1257"
+        "pattern": "Mesa Municipal de Mujeres|Consejo Consultivo de Mujeres|Comité de seguimiento Ley 1257",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q004-007",
-        "match_type": "REGEX",
-        "pattern": "articulación interinstitucional|coordinación con Fiscalía y Policía"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "articulación interinstitucional|coordinación con Fiscalía y Policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "element_tags": [
+          "capacidad_institucional_realista"
+        ],
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +256,15 @@
         "flags": "i",
         "id": "PAT-Q004-008",
         "match_type": "REGEX",
-        "pattern": "cuello de botella|limitación institucional|barrera de acceso|falta de capacidad|necesidad de fortalecimiento"
+        "pattern": "cuello de botella|limitación institucional|barrera de acceso|falta de capacidad|necesidad de fortalecimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "element_tags": [
+          "capacidad_institucional_realista"
+        ],
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -322,7 +398,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q274"
+          "const": "Q004"
         },
         "question_global": {
           "type": "integer",
@@ -335,7 +411,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

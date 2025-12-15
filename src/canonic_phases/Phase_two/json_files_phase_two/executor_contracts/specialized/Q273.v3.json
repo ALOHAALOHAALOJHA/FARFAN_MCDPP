@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "e1870e7f2e1385582e7ee37de2f906a4dcf10545319d16e05bf44ac5cdac9d97",
+    "contract_hash": "8e348f37ad1567ad3706440b0637378f772714fa38a27480a8a21942e5635d46",
     "created_at": "2025-11-28T03:50:42.381872+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 273,
-    "updated_at": "2025-12-15T20:32:11.077234+00:00"
+    "updated_at": "2025-12-15T21:42:32.668821+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -140,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q273-000",
         "match_type": "REGEX",
-        "pattern": "Plan Plurianual de Inversiones|PPI|Plan Indicativo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
       },
       {
         "category": "GENERAL",
@@ -148,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q273-001",
         "match_type": "REGEX",
-        "pattern": "BPIN|Banco de Proyectos|proyecto de infraestructura carcelaria"
+        "pattern": "BPIN|Banco de Proyectos|proyecto de infraestructura carcelaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q273-002",
         "match_type": "REGEX",
-        "pattern": "recursos para la construcción/adecuación de centro de detención transitoria"
+        "pattern": "recursos para la construcción/adecuación de centro de detención transitoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +179,12 @@
         "flags": "i",
         "id": "PAT-Q273-003",
         "match_type": "REGEX",
-        "pattern": "presupuesto para la atención en salud de la población sindicada"
+        "pattern": "presupuesto para la atención en salud de la población sindicada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,15 +192,36 @@
         "flags": "i",
         "id": "PAT-Q273-004",
         "match_type": "REGEX",
-        "pattern": "asignación para programas de resocialización (educación, trabajo)"
+        "pattern": "asignación para programas de resocialización (educación, trabajo)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q273-005",
-        "match_type": "REGEX",
-        "pattern": "inversión en alimentación para PPL en estaciones de policía"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "inversión en alimentación para PPL en estaciones de policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +229,16 @@
         "flags": "i",
         "id": "PAT-Q273-006",
         "match_type": "REGEX",
-        "pattern": "\\$\\s*\\d+|COP\\s*\\d+|millones de pesos"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
       },
       {
         "category": "GENERAL",
@@ -196,7 +246,12 @@
         "flags": "i",
         "id": "PAT-Q273-007",
         "match_type": "LITERAL",
-        "pattern": "fuentes: recursos propios, cofinanciación USPEC/MinJusticia"
+        "pattern": "fuentes: recursos propios, cofinanciación USPEC/MinJusticia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +259,12 @@
         "flags": "i",
         "id": "PAT-Q273-008",
         "match_type": "REGEX",
-        "pattern": "el presupuesto es suficiente para reducir el hacinamiento"
+        "pattern": "el presupuesto es suficiente para reducir el hacinamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "74746be913eb9d376e19d96bbf0ccef9342752b183afc6c9af35c7b447ff4438",
+    "contract_hash": "e0a5008d468fb79a8db0fb47383cbe35455ba4f10a748ea1aaedb3241c66d6c7",
     "created_at": "2025-11-28T03:50:41.936722+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 219,
-    "updated_at": "2025-12-15T20:32:11.500553+00:00"
+    "updated_at": "2025-12-15T21:42:32.400087+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q4_Executor",
@@ -116,7 +116,12 @@
         "flags": "i",
         "id": "PAT-Q219-000",
         "match_type": "REGEX",
-        "pattern": "riesgos:|posibles dificultades:|barreras a la implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
       },
       {
         "category": "GENERAL",
@@ -124,7 +129,12 @@
         "flags": "i",
         "id": "PAT-Q219-001",
         "match_type": "REGEX",
-        "pattern": "conflictos por linderos|oposición de ocupantes secundarios"
+        "pattern": "conflictos por linderos|oposición de ocupantes secundarios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +142,12 @@
         "flags": "i",
         "id": "PAT-Q219-002",
         "match_type": "REGEX",
-        "pattern": "demoras en trámites ante la SNR y el IGAC"
+        "pattern": "demoras en trámites ante la SNR y el IGAC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +155,12 @@
         "flags": "i",
         "id": "PAT-Q219-003",
         "match_type": "REGEX",
-        "pattern": "sostenibilidad de las obras viales|falta de mantenimiento"
+        "pattern": "sostenibilidad de las obras viales|falta de mantenimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +168,12 @@
         "flags": "i",
         "id": "PAT-Q219-004",
         "match_type": "REGEX",
-        "pattern": "condiciones climáticas que afectan las obras"
+        "pattern": "condiciones climáticas que afectan las obras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +181,12 @@
         "flags": "i",
         "id": "PAT-Q219-005",
         "match_type": "REGEX",
-        "pattern": "baja adopción de la asistencia técnica por parte de los productores"
+        "pattern": "baja adopción de la asistencia técnica por parte de los productores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +194,12 @@
         "flags": "i",
         "id": "PAT-Q219-006",
         "match_type": "REGEX",
-        "pattern": "medidas de mitigación|plan de contingencia|para mitigar"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
       },
       {
         "category": "GENERAL",
@@ -172,7 +207,12 @@
         "flags": "i",
         "id": "PAT-Q219-007",
         "match_type": "REGEX",
-        "pattern": "concertación social|mesas de diálogo|gestión interinstitucional"
+        "pattern": "concertación social|mesas de diálogo|gestión interinstitucional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -294,7 +334,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q279"
+          "const": "Q219"
         },
         "question_global": {
           "type": "integer",
@@ -307,7 +347,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

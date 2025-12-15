@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "d327330f0c44fff36500a1c6ba3972bb5fca469019578d3bd1995dd995897aa7",
+    "contract_hash": "2efea86cec927af90621d82dc602461334bd9ade19c0480208303b34aa7e290e",
     "created_at": "2025-11-28T03:50:31.884382+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 192,
-    "updated_at": "2025-12-15T20:32:11.660706+00:00"
+    "updated_at": "2025-12-15T21:42:32.257058+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q192-000",
         "match_type": "REGEX",
-        "pattern": "cobertura universal del PAE|atenderá al \\d+% de los NNA"
+        "pattern": "cobertura universal del PAE|atenderá al \\d+% de los NNA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q192-001",
         "match_type": "REGEX",
-        "pattern": "la meta de cupos en CDI cubre el X% del déficit de atención"
+        "pattern": "la meta de cupos en CDI cubre el X% del déficit de atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q192-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|población total de jóvenes"
+        "pattern": "universo de atención|población total de jóvenes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q192-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de la capacidad instalada"
+        "pattern": "la meta se establece en función de la capacidad instalada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q192-004",
         "match_type": "REGEX",
-        "pattern": "se priorizarán los NNA en mayor vulnerabilidad"
+        "pattern": "se priorizarán los NNA en mayor vulnerabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +269,12 @@
         "flags": "i",
         "id": "PAT-Q192-005",
         "match_type": "REGEX",
-        "pattern": "intensidad horaria de los programas de jornada complementaria"
+        "pattern": "intensidad horaria de los programas de jornada complementaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +282,12 @@
         "flags": "i",
         "id": "PAT-Q192-006",
         "match_type": "REGEX",
-        "pattern": "frecuencia de las intervenciones psicosociales"
+        "pattern": "frecuencia de las intervenciones psicosociales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -374,7 +409,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q192"
         },
         "question_global": {
           "type": "integer",
@@ -387,7 +422,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

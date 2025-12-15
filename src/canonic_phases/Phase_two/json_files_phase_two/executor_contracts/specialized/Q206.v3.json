@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "3619c3b8233c1846f3ee745b8d053d14977adf47f5c01109d7e7531e98e505e1",
+    "contract_hash": "5e9e02016b08653f0b489839f2d9acb2aa731ca98e10634eb583efbafef4ee07",
     "created_at": "2025-11-28T03:50:41.892548+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 206,
-    "updated_at": "2025-12-15T20:32:12.618050+00:00"
+    "updated_at": "2025-12-15T21:42:32.335478+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -100,15 +100,26 @@
         "flags": "i",
         "id": "PAT-Q206-000",
         "match_type": "REGEX",
-        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de desarrollo juvenil"
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de desarrollo juvenil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
-        "category": "GENERAL",
+        "category": "CAUSAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q206-001",
         "match_type": "REGEX",
-        "pattern": "diagrama causal|gráfico de la teoría|esquema de intervención|figura"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
       },
       {
         "category": "GENERAL",
@@ -116,7 +127,12 @@
         "flags": "i",
         "id": "PAT-Q206-002",
         "match_type": "REGEX",
-        "pattern": "causa raíz de la deserción|determinante del embarazo adolescente"
+        "pattern": "causa raíz de la deserción|determinante del embarazo adolescente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q206-003",
         "match_type": "REGEX",
-        "pattern": "mediador|variable intermedia|eslabón|permanencia escolar|proyecto de vida"
+        "pattern": "mediador|variable intermedia|eslabón|permanencia escolar|proyecto de vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q206-004",
         "match_type": "REGEX",
-        "pattern": "moderador|factor contextual|apoyo familiar"
+        "pattern": "moderador|factor contextual|apoyo familiar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q206-005",
         "match_type": "LITERAL",
-        "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
       }
     ],
     "expected_elements": [
@@ -266,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q296"
+          "const": "Q206"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

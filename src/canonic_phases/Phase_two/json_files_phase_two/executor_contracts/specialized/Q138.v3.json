@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "d3d7f5929645f2e219c5d5c61fee1279dbfbea27ed261ffea647c0064840c310",
+    "contract_hash": "b0a306e3a6225f1df9af4736bbed96789521f4f17589603d90837d440e84a56e",
     "created_at": "2025-11-28T03:50:31.446766+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 138,
-    "updated_at": "2025-12-15T20:32:12.208177+00:00"
+    "updated_at": "2025-12-15T21:42:31.910854+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q138-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto del SGP"
+        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto del SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q138-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por la construcción de la nueva infraestructura"
+        "pattern": "la meta se justifica por la construcción de la nueva infraestructura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q138-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión de X se espera lograr una reducción de Y"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0040"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q138-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad de la red hospitalaria permite aspirar a esta meta"
+        "pattern": "la capacidad de la red hospitalaria permite aspirar a esta meta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q138-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias similares de otros municipios con programas de APS"
+        "pattern": "en experiencias similares de otros municipios con programas de APS",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q138-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente departamental|meta del PND en educación"
+        "pattern": "benchmark|referente departamental|meta del PND en educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q138"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

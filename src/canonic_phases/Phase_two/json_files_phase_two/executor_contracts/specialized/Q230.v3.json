@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "440ec88f6cd93a77058c6f35000669d61898f1eab9ae72bfa01a9cf2ff65c9bf",
+    "contract_hash": "b6e8417cd4851db258b627ba0685c0bba9931edb8484ca606dbb63fe7efae95f",
     "created_at": "2025-11-28T03:50:42.065894+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 230,
-    "updated_at": "2025-12-15T20:32:12.317157+00:00"
+    "updated_at": "2025-12-15T21:42:32.464082+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q230-000",
         "match_type": "REGEX",
-        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|transformación 1 y 4"
+        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|transformación 1 y 4",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q230-001",
         "match_type": "REGEX",
-        "pattern": "contribuye al Punto 1 del Acuerdo de Paz|Reforma Rural Integral|RRI"
+        "pattern": "contribuye al Punto 1 del Acuerdo de Paz|Reforma Rural Integral|RRI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q230-002",
         "match_type": "REGEX",
-        "pattern": "implementación de iniciativas PDET|Planes Nacionales Sectoriales"
+        "pattern": "implementación de iniciativas PDET|Planes Nacionales Sectoriales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q230-003",
         "match_type": "REGEX",
-        "pattern": "aporta a los ODS 1, 2, 8, 11, 15|Objetivos de Desarrollo Sostenible"
+        "pattern": "aporta a los ODS 1, 2, 8, 11, 15|Objetivos de Desarrollo Sostenible",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q230-004",
         "match_type": "REGEX",
-        "pattern": "en concordancia con la política de Catastro Multipropósito|CONPES 3958"
+        "pattern": "en concordancia con la política de Catastro Multipropósito|CONPES 3958",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -242,7 +267,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q290"
+          "const": "Q230"
         },
         "question_global": {
           "type": "integer",
@@ -255,7 +280,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

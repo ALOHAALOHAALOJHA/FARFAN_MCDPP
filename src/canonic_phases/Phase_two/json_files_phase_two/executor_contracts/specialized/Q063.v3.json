@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "280b4617d5c7c0f8e8bc97c17cfd2fdd5a31382827f01c84936fd048def9ec5a",
+    "contract_hash": "4a44e8912697b536cd54adb46a20143ba1bc6ecf2ecfa076ceb6bfccf6f07300",
     "created_at": "2025-11-28T03:50:09.590954+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 63,
-    "updated_at": "2025-12-15T20:32:11.041420+00:00"
+    "updated_at": "2025-12-15T21:42:31.415404+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -140,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q063-000",
         "match_type": "REGEX",
-        "pattern": "Plan Plurianual de Inversiones|PPI|Plan Indicativo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
       },
       {
         "category": "GENERAL",
@@ -148,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q063-001",
         "match_type": "REGEX",
-        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión para víctimas/paz"
+        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión para víctimas/paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q063-002",
         "match_type": "REGEX",
-        "pattern": "recursos para el Plan de Acción Territorial|PAT"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0089"
       },
       {
         "category": "GENERAL",
@@ -164,7 +179,12 @@
         "flags": "i",
         "id": "PAT-Q063-003",
         "match_type": "REGEX",
-        "pattern": "presupuesto para el Comité de Justicia Transicional|CJT"
+        "pattern": "presupuesto para el Comité de Justicia Transicional|CJT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +192,12 @@
         "flags": "i",
         "id": "PAT-Q063-004",
         "match_type": "REGEX",
-        "pattern": "asignación para ayuda humanitaria|atención a emergencias"
+        "pattern": "asignación para ayuda humanitaria|atención a emergencias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +205,12 @@
         "flags": "i",
         "id": "PAT-Q063-005",
         "match_type": "REGEX",
-        "pattern": "inversión en prevención del reclutamiento"
+        "pattern": "inversión en prevención del reclutamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +218,12 @@
         "flags": "i",
         "id": "PAT-Q063-006",
         "match_type": "REGEX",
-        "pattern": "fondos para la implementación del Acuerdo de Paz"
+        "pattern": "fondos para la implementación del Acuerdo de Paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +231,16 @@
         "flags": "i",
         "id": "PAT-Q063-007",
         "match_type": "REGEX",
-        "pattern": "\\$\\s*\\d+|COP\\s*\\d+|millones de pesos"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
       },
       {
         "category": "GENERAL",
@@ -204,7 +248,12 @@
         "flags": "i",
         "id": "PAT-Q063-008",
         "match_type": "LITERAL",
-        "pattern": "fuentes: SGP, recursos propios, cofinanciación UARIV"
+        "pattern": "fuentes: SGP, recursos propios, cofinanciación UARIV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +379,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q273"
+          "const": "Q063"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +392,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

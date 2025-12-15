@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "63f639c3df83f9be663c63adde4258a9d62aae108edda6dd3de6cc22e982aa4c",
+    "contract_hash": "c8a9f6f69edb84f8f3b8e5fe34a62c50c50044d9102543a25988196a312b198f",
     "created_at": "2025-11-28T03:50:42.059660+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 228,
-    "updated_at": "2025-12-15T20:32:12.221873+00:00"
+    "updated_at": "2025-12-15T21:42:32.455163+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q228-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto de inversión"
+        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto de inversión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q228-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por el convenio interadministrativo con el IGAC"
+        "pattern": "la meta se justifica por el convenio interadministrativo con el IGAC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q228-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión de X se espera lograr la actualización de Y hectáreas"
+        "pattern": "con la inversión de X se espera lograr la actualización de Y hectáreas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q228-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad técnica de la Secretaría de Planeación permite"
+        "pattern": "la capacidad técnica de la Secretaría de Planeación permite",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q228-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias similares de otros municipios gestores catastrales"
+        "pattern": "en experiencias similares de otros municipios gestores catastrales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q228-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente nacional|meta del PND en catastro multipropósito"
+        "pattern": "benchmark|referente nacional|meta del PND en catastro multipropósito",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q228"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "2b03ba9542871a16f24487ac2ff83d70d87dc3aaab8f60ae65bcc48787826e48",
+    "contract_hash": "1b1de3cedaafca6233e6d211c0736cc496db4e95e9314043646ef2081343feb2",
     "created_at": "2025-11-28T03:50:31.395460+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 124,
-    "updated_at": "2025-12-15T20:32:11.102864+00:00"
+    "updated_at": "2025-12-15T21:42:31.826156+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q124-000",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Educación|Salud|Desarrollo Social|Cultura"
+        "pattern": "Secretaría de Educación|Salud|Desarrollo Social|Cultura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q124-001",
         "match_type": "REGEX",
-        "pattern": "ESE|Empresa Social del Estado|Hospital|puestos de salud|IPS"
+        "pattern": "ESE|Empresa Social del Estado|Hospital|puestos de salud|IPS",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q124-002",
         "match_type": "REGEX",
-        "pattern": "docentes|personal médico|talento humano en salud"
+        "pattern": "docentes|personal médico|talento humano en salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q124-003",
         "match_type": "REGEX",
-        "pattern": "infraestructura educativa|infraestructura hospitalaria"
+        "pattern": "infraestructura educativa|infraestructura hospitalaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q124-004",
         "match_type": "REGEX",
-        "pattern": "protocolos de atención|rutas de acceso a servicios"
+        "pattern": "protocolos de atención|rutas de acceso a servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q124-005",
         "match_type": "REGEX",
-        "pattern": "sistema de información|historia clínica electrónica|SIMAT"
+        "pattern": "sistema de información|historia clínica electrónica|SIMAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q124-006",
         "match_type": "REGEX",
-        "pattern": "Consejo de Política Social|Consejo de Cultura|Juntas de Deporte"
+        "pattern": "Consejo de Política Social|Consejo de Cultura|Juntas de Deporte",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q124-007",
         "match_type": "REGEX",
-        "pattern": "articulación intersectorial|coordinación con ICBF"
+        "pattern": "articulación intersectorial|coordinación con ICBF",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q124-008",
         "match_type": "REGEX",
-        "pattern": "falta de especialistas|necesidad de dotación|infraestructura deficiente"
+        "pattern": "falta de especialistas|necesidad de dotación|infraestructura deficiente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +241,12 @@
         "flags": "i",
         "id": "PAT-Q124-009",
         "match_type": "REGEX",
-        "pattern": "cuello de botella|limitación de capacidad|barrera de acceso"
+        "pattern": "cuello de botella|limitación de capacidad|barrera de acceso",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +380,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q274"
+          "const": "Q124"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +393,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

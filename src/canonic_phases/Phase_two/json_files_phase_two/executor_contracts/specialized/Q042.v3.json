@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "bc2aae2a7af4bb668bf83146ee078fbf6ac797b628fd2043de54e8c5bd492561",
+    "contract_hash": "e91fe3235d51a137b825014b5c771b91aa0fe7ae1f9bdd2bbcd0fcd064b22ad3",
     "created_at": "2025-11-28T03:50:05.918987+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 42,
-    "updated_at": "2025-12-15T20:32:11.624663+00:00"
+    "updated_at": "2025-12-15T21:42:31.270506+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q042-000",
         "match_type": "REGEX",
-        "pattern": "la cobertura de atención humanitaria cubre un X% del flujo en tránsito estimado"
+        "pattern": "la cobertura de atención humanitaria cubre un X% del flujo en tránsito estimado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q042-001",
         "match_type": "REGEX",
-        "pattern": "se espera regularizar al \\d+% de la población con vocación de permanencia"
+        "pattern": "se espera regularizar al \\d+% de la población con vocación de permanencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q042-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|flujo migratorio estimado"
+        "pattern": "universo de atención|flujo migratorio estimado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q042-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de la capacidad de los albergues y los recursos de cooperación"
+        "pattern": "la meta se establece en función de la capacidad de los albergues y los recursos de cooperación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q042-004",
         "match_type": "REGEX",
-        "pattern": "se priorizará la atención a NNA no acompañados y mujeres gestantes"
+        "pattern": "se priorizará la atención a NNA no acompañados y mujeres gestantes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +269,12 @@
         "flags": "i",
         "id": "PAT-Q042-005",
         "match_type": "REGEX",
-        "pattern": "la dosificación de la ayuda humanitaria sigue los estándares Esfera"
+        "pattern": "la dosificación de la ayuda humanitaria sigue los estándares Esfera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -366,7 +396,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q042"
         },
         "question_global": {
           "type": "integer",
@@ -379,7 +409,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

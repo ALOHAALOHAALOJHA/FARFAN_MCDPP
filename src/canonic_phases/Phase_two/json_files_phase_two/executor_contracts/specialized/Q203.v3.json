@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "7cd2127dcb4407fde291fd6a681a2e77a529bf567de738bda3fc5593e23b7fea",
+    "contract_hash": "4e9cb57edb43b681d65031bc08a829bdd3b66cfc4971941a4da4dbab07a745e9",
     "created_at": "2025-11-28T03:50:41.882757+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 203,
-    "updated_at": "2025-12-15T20:32:12.489254+00:00"
+    "updated_at": "2025-12-15T21:42:32.322828+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q203-000",
         "match_type": "REGEX",
-        "pattern": "dado que es difícil medir las habilidades para la vida|para aproximar"
+        "pattern": "dado que es difícil medir las habilidades para la vida|para aproximar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q203-001",
         "match_type": "REGEX",
-        "pattern": "se utilizará como proxy|medición indirecta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
       },
       {
         "category": "INDICADOR",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q203-002",
         "match_type": "REGEX",
-        "pattern": "la tasa de participación en programas de voluntariado como proxy de ciudadanía activa"
+        "pattern": "la tasa de participación en programas de voluntariado como proxy de ciudadanía activa",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q203-003",
         "match_type": "REGEX",
-        "pattern": "este proxy es validado por estudios de juventud"
+        "pattern": "este proxy es validado por estudios de juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q203-004",
         "match_type": "REGEX",
-        "pattern": "una limitación es que no captura el desarrollo de habilidades blandas"
+        "pattern": "una limitación es que no captura el desarrollo de habilidades blandas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +149,12 @@
         "flags": "i",
         "id": "PAT-Q203-005",
         "match_type": "REGEX",
-        "pattern": "aunque imperfecto, este proxy nos da una señal de desarrollo de capacidades"
+        "pattern": "aunque imperfecto, este proxy nos da una señal de desarrollo de capacidades",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -250,7 +280,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q293"
+          "const": "Q203"
         },
         "question_global": {
           "type": "integer",
@@ -263,7 +293,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

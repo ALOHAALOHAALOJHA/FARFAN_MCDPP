@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "070750f672b571b6e1691e92a307fd7afb635fb931ce5745fcae5c967f0376d1",
+    "contract_hash": "f3494373e388b2e3a68d37b17086d157c694c01afadf13aeee76cb6c04f1187d",
     "created_at": "2025-11-28T03:50:31.913444+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 199,
-    "updated_at": "2025-12-15T20:32:12.264225+00:00"
+    "updated_at": "2025-12-15T21:42:32.301859+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q199-000",
         "match_type": "REGEX",
-        "pattern": "este resultado responde al problema del trabajo infantil"
+        "pattern": "este resultado responde al problema del trabajo infantil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q199-001",
         "match_type": "REGEX",
-        "pattern": "para solucionar la alta tasa de embarazo adolescente"
+        "pattern": "para solucionar la alta tasa de embarazo adolescente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q199-002",
         "match_type": "REGEX",
-        "pattern": "el resultado atiende directamente las causas de la desnutrición"
+        "pattern": "el resultado atiende directamente las causas de la desnutrición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q199-003",
         "match_type": "REGEX",
-        "pattern": "criterio de éxito|se considerará un logro si la tasa baja de X%"
+        "pattern": "criterio de éxito|se considerará un logro si la tasa baja de X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q199-004",
         "match_type": "REGEX",
-        "pattern": "umbral de cumplimiento|mínimo aceptable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,13 @@
         "flags": "i",
         "id": "PAT-Q199-005",
         "match_type": "REGEX",
-        "pattern": "matriz de coherencia|alineación diagnóstico-estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
       }
     ],
     "expected_elements": [
@@ -254,7 +285,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q289"
+          "const": "Q199"
         },
         "question_global": {
           "type": "integer",
@@ -267,7 +298,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "b75b1f1aa8d752b61b8ee386a9af5916b95fd4e2d5cc87cbddf879f8966cedca",
+    "contract_hash": "7c6dfe8a6e6c1ceb207ebce0d9fb7c76b87c5ac039cd3b358aa0869f7f505aed",
     "created_at": "2025-11-28T03:50:42.527899+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 290,
-    "updated_at": "2025-12-15T20:32:12.326743+00:00"
+    "updated_at": "2025-12-15T21:42:32.760422+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q290-000",
         "match_type": "REGEX",
-        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|Política de Seguridad Humana"
+        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|Política de Seguridad Humana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q290-001",
         "match_type": "REGEX",
-        "pattern": "contribuye al ODS 16|Paz, Justicia e Instituciones Sólidas"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0046"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q290-002",
         "match_type": "REGEX",
-        "pattern": "en cumplimiento de las sentencias sobre el Estado de Cosas Inconstitucional"
+        "pattern": "en cumplimiento de las sentencias sobre el Estado de Cosas Inconstitucional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q290-003",
         "match_type": "REGEX",
-        "pattern": "acata las Reglas Mínimas de Tratamiento de Reclusos|Reglas Mandela"
+        "pattern": "acata las Reglas Mínimas de Tratamiento de Reclusos|Reglas Mandela",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q290-004",
         "match_type": "REGEX",
-        "pattern": "en concordancia con la Política Criminal"
+        "pattern": "en concordancia con la Política Criminal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

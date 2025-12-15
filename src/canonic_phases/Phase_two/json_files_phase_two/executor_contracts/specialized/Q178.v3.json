@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "4279751529d478f4fa6628fd80854cfb209e66f6805d5613c8704b6a57a7ca71",
+    "contract_hash": "985abe27999c7bf1aeeae90e4e81086c17aaaa16f942fa5b0c2cf0f21394e06e",
     "created_at": "2025-11-28T03:50:31.751884+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 178,
-    "updated_at": "2025-12-15T20:32:12.688685+00:00"
+    "updated_at": "2025-12-15T21:42:32.151331+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q178-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q178-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar si las medidas de satisfacción son efectivas"
+        "pattern": "se requiere validar si las medidas de satisfacción son efectivas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q178-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto de reconciliación en una vereda"
+        "pattern": "plan piloto de reconciliación en una vereda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q178-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto de que la indemnización genera bienestar"
+        "pattern": "testear el supuesto de que la indemnización genera bienestar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q178-004",
         "match_type": "REGEX",
-        "pattern": "validar la hipótesis sobre la sostenibilidad de los retornos"
+        "pattern": "validar la hipótesis sobre la sostenibilidad de los retornos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q178-005",
         "match_type": "REGEX",
-        "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q178-006",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa de la paz"
+        "pattern": "aprendizaje adaptativo|gestión adaptativa de la paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +305,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q298"
+          "const": "Q178"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +318,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

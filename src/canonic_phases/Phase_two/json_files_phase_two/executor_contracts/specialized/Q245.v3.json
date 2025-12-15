@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "ea592677bed4f4f04dfa572b42aca7be9fc39d1198ead7fa4dba7cf63ec63458",
+    "contract_hash": "ab76b2f7984f032539823a1c6a2490b60c2104b4ad330533b9e6d1080872565f",
     "created_at": "2025-11-28T03:50:42.199448+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 245,
-    "updated_at": "2025-12-15T20:32:11.165799+00:00"
+    "updated_at": "2025-12-15T21:42:32.537688+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q245-000",
         "match_type": "REGEX",
-        "pattern": "en el marco del Decreto 660 de 2018|Decreto 2137 de 2018"
+        "pattern": "en el marco del Decreto 660 de 2018|Decreto 2137 de 2018",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q245-001",
         "match_type": "REGEX",
-        "pattern": "Acuerdo de Paz|Punto 2.1 Garantías de seguridad"
+        "pattern": "Acuerdo de Paz|Punto 2.1 Garantías de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q245-002",
         "match_type": "REGEX",
-        "pattern": "Plan de Acción Oportuna|PAO|Alertas Tempranas de la Defensoría"
+        "pattern": "Plan de Acción Oportuna|PAO|Alertas Tempranas de la Defensoría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,15 +131,36 @@
         "flags": "i",
         "id": "PAT-Q245-003",
         "match_type": "REGEX",
-        "pattern": "competencia del municipio en prevención|la protección material es de la UNP"
+        "pattern": "competencia del municipio en prevención|la protección material es de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q245-004",
-        "match_type": "REGEX",
-        "pattern": "responsabilidad del alcalde como primera autoridad de policía"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "responsabilidad del alcalde como primera autoridad de policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +168,12 @@
         "flags": "i",
         "id": "PAT-Q245-005",
         "match_type": "REGEX",
-        "pattern": "límite de recursos propios para medidas complementarias"
+        "pattern": "límite de recursos propios para medidas complementarias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +181,12 @@
         "flags": "i",
         "id": "PAT-Q245-006",
         "match_type": "LITERAL",
-        "pattern": "restricción presupuestal para fortalecer la Personería"
+        "pattern": "restricción presupuestal para fortalecer la Personería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +194,12 @@
         "flags": "i",
         "id": "PAT-Q245-007",
         "match_type": "REGEX",
-        "pattern": "dependencia de la evaluación de riesgo de la UNP"
+        "pattern": "dependencia de la evaluación de riesgo de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +207,12 @@
         "flags": "i",
         "id": "PAT-Q245-008",
         "match_type": "REGEX",
-        "pattern": "durante el cuatrienio|plazo de implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0052"
       }
     ],
     "expected_elements": [
@@ -286,7 +342,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q275"
+          "const": "Q245"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +355,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "f184f9a8ddd59f39d2cb1a66719971d095be3f1bcee30853cc6f87511b4308a1",
+    "contract_hash": "fe4c80a766eb7a59411c35a1262f52efc1584ea69ce9be20801734cd9f368be5",
     "created_at": "2025-11-28T03:50:05.974541+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 56,
-    "updated_at": "2025-12-15T20:32:12.595595+00:00"
+    "updated_at": "2025-12-15T21:42:31.378527+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -100,15 +100,26 @@
         "flags": "i",
         "id": "PAT-Q056-000",
         "match_type": "REGEX",
-        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de integración"
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
-        "category": "GENERAL",
+        "category": "CAUSAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q056-001",
         "match_type": "REGEX",
-        "pattern": "diagrama causal|gráfico de la teoría|esquema de intervención|figura"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
       },
       {
         "category": "GENERAL",
@@ -116,7 +127,12 @@
         "flags": "i",
         "id": "PAT-Q056-002",
         "match_type": "REGEX",
-        "pattern": "causa raíz de la vulnerabilidad|determinante de la no integración"
+        "pattern": "causa raíz de la vulnerabilidad|determinante de la no integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q056-003",
         "match_type": "REGEX",
-        "pattern": "mediador|variable intermedia|eslabón|regularización migratoria|acceso a servicios"
+        "pattern": "mediador|variable intermedia|eslabón|regularización migratoria|acceso a servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q056-004",
         "match_type": "REGEX",
-        "pattern": "moderador|factor contextual|nivel de xenofobia|dinamismo económico"
+        "pattern": "moderador|factor contextual|nivel de xenofobia|dinamismo económico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q056-005",
         "match_type": "LITERAL",
-        "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
       }
     ],
     "expected_elements": [
@@ -266,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q296"
+          "const": "Q056"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "ce87164943627e700585ed673284e4c62bc9f023075db663d3c4d6166253c8ed",
+    "contract_hash": "65382054e365f9d656a8b77fadbcf1bb7bc0d5268117873f63f97cea68a7f030",
     "created_at": "2025-11-28T03:50:42.378062+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 272,
-    "updated_at": "2025-12-15T20:32:11.026045+00:00"
+    "updated_at": "2025-12-15T21:42:32.663783+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -132,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q272-000",
         "match_type": "REGEX",
-        "pattern": "déficit de X cupos|el hacinamiento supera el Y%"
+        "pattern": "déficit de X cupos|el hacinamiento supera el Y%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q272-001",
         "match_type": "REGEX",
-        "pattern": "magnitud de la crisis humanitaria|vulneración masiva de derechos"
+        "pattern": "magnitud de la crisis humanitaria|vulneración masiva de derechos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q272-002",
         "match_type": "REGEX",
-        "pattern": "Estado de Cosas Inconstitucional|ECI|sentencia T-388 de 2013|SU-122 de 2022"
+        "pattern": "Estado de Cosas Inconstitucional|ECI|sentencia T-388 de 2013|SU-122 de 2022",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q272-003",
         "match_type": "REGEX",
-        "pattern": "población sin acceso a servicios de salud|falta de atención médica"
+        "pattern": "población sin acceso a servicios de salud|falta de atención médica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +184,12 @@
         "flags": "i",
         "id": "PAT-Q272-004",
         "match_type": "REGEX",
-        "pattern": "problemas con la calidad y oportunidad de la alimentación"
+        "pattern": "problemas con la calidad y oportunidad de la alimentación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +197,12 @@
         "flags": "i",
         "id": "PAT-Q272-005",
         "match_type": "REGEX",
-        "pattern": "información insuficiente sobre las condiciones sanitarias"
+        "pattern": "información insuficiente sobre las condiciones sanitarias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +210,12 @@
         "flags": "i",
         "id": "PAT-Q272-006",
         "match_type": "REGEX",
-        "pattern": "subregistro de riñas o actos violentos"
+        "pattern": "subregistro de riñas o actos violentos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +223,12 @@
         "flags": "i",
         "id": "PAT-Q272-007",
         "match_type": "REGEX",
-        "pattern": "causas del hacinamiento|abuso de la detención preventiva"
+        "pattern": "causas del hacinamiento|abuso de la detención preventiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q272-008",
         "match_type": "REGEX",
-        "pattern": "falta de infraestructura adecuada"
+        "pattern": "falta de infraestructura adecuada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

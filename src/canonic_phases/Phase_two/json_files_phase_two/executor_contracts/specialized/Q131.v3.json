@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "4a2119e45e59774d890068f1fd5c1310edc98cd137d59f69828017e68de6a672",
+    "contract_hash": "3d93ed97fbf6fcc49f9051c548a363b40281e1c681aeecef3eb26e27cfcc07a7",
     "created_at": "2025-11-28T03:50:31.417438+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 131,
-    "updated_at": "2025-12-15T20:32:11.586719+00:00"
+    "updated_at": "2025-12-15T21:42:31.859979+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q131-000",
         "match_type": "REGEX",
-        "pattern": "indicador de producto|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0073"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q131-001",
         "match_type": "REGEX",
-        "pattern": "cupos escolares creados|estudiantes beneficiados|raciones PAE entregadas"
+        "pattern": "cupos escolares creados|estudiantes beneficiados|raciones PAE entregadas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q131-002",
         "match_type": "REGEX",
-        "pattern": "familias con subsidio de vivienda|mejoramientos de vivienda realizados"
+        "pattern": "familias con subsidio de vivienda|mejoramientos de vivienda realizados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q131-003",
         "match_type": "REGEX",
-        "pattern": "personas afiliadas al régimen subsidiado|vacunas aplicadas"
+        "pattern": "personas afiliadas al régimen subsidiado|vacunas aplicadas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q131-004",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|Valor inicial:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0008"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q131-005",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0013"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q131-006",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0007"
       },
       {
         "category": "GENERAL",
@@ -156,7 +191,12 @@
         "flags": "i",
         "id": "PAT-Q131-007",
         "match_type": "REGEX",
-        "pattern": "registros del SIMAT|listados de beneficiarios del SISBEN|actas de obra"
+        "pattern": "registros del SIMAT|listados de beneficiarios del SISBEN|actas de obra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q131-008",
         "match_type": "REGEX",
-        "pattern": "informes de la ESE|reportes de la Secretaría de Educación"
+        "pattern": "informes de la ESE|reportes de la Secretaría de Educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -294,7 +339,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q281"
+          "const": "Q131"
         },
         "question_global": {
           "type": "integer",
@@ -307,7 +352,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

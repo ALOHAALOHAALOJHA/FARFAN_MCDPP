@@ -1,4 +1,4 @@
-# 📋 GUÍA DEFINITIVA: `questionnaire_monolith.json`
+are# 📋 GUÍA DEFINITIVA: `questionnaire_monolith.json`
 
 > **Documento de referencia técnica para desarrolladores del pipeline F.A.R.F.A.N**  
 > Generado: 11 de diciembre de 2025

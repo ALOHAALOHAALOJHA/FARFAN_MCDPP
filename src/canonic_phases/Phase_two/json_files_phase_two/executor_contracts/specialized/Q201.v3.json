@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "d882d1b349e37a7fb82ae0b6a96be4830b1fe69c66e7b449e3f52eaef013268b",
+    "contract_hash": "0d0336c44694a16cae48f5ebb9e91ca3d4ef8f1179d830e451f4f31541005caf",
     "created_at": "2025-11-28T03:50:41.873478+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 201,
-    "updated_at": "2025-12-15T20:32:12.358478+00:00"
+    "updated_at": "2025-12-15T21:42:32.310130+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q201-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación generacional"
+        "pattern": "impacto esperado|visión de largo plazo|transformación generacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q201-001",
         "match_type": "REGEX",
-        "pattern": "desarrollo integral de la niñez y la juventud|bienestar generacional"
+        "pattern": "desarrollo integral de la niñez y la juventud|bienestar generacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q201-002",
         "match_type": "REGEX",
-        "pattern": "ruptura de ciclos intergeneracionales de pobreza"
+        "pattern": "ruptura de ciclos intergeneracionales de pobreza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q201-003",
         "match_type": "REGEX",
-        "pattern": "formación de capital humano para el futuro del municipio"
+        "pattern": "formación de capital humano para el futuro del municipio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q201-004",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados en educación y salud generará el impacto de"
+        "pattern": "la suma de los resultados en educación y salud generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q201-005",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "TEMPORAL",
@@ -148,7 +178,13 @@
         "flags": "i",
         "id": "PAT-Q201-006",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 15-20 años"
+        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 15-20 años|el año pasado|desde \\d{4}|tendencia reciente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "dynamic_update": "CURRENT_YEAR_WINDOW",
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -274,7 +310,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q201"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +323,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "75f08a6d462e702ec7959b7bf6c3976116f6f997f94cd4019aa30f37891cb36f",
+    "contract_hash": "a9e7a120a6e562591a9f9791f17d848a0ae97c1f094e5303a4656a6ee830c614",
     "created_at": "2025-11-28T03:50:42.062698+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 229,
-    "updated_at": "2025-12-15T20:32:12.269246+00:00"
+    "updated_at": "2025-12-15T21:42:32.459881+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q229-000",
         "match_type": "REGEX",
-        "pattern": "este resultado responde al problema de la informalidad predial"
+        "pattern": "este resultado responde al problema de la informalidad predial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q229-001",
         "match_type": "REGEX",
-        "pattern": "para solucionar el aislamiento de las veredas"
+        "pattern": "para solucionar el aislamiento de las veredas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q229-002",
         "match_type": "REGEX",
-        "pattern": "el resultado atiende directamente el conflicto de uso del suelo"
+        "pattern": "el resultado atiende directamente el conflicto de uso del suelo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q229-003",
         "match_type": "REGEX",
-        "pattern": "criterio de éxito|se considerará un logro si la informalidad baja de X%"
+        "pattern": "criterio de éxito|se considerará un logro si la informalidad baja de X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q229-004",
         "match_type": "REGEX",
-        "pattern": "umbral de cumplimiento|mínimo aceptable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,13 @@
         "flags": "i",
         "id": "PAT-Q229-005",
         "match_type": "REGEX",
-        "pattern": "matriz de coherencia|alineación diagnóstico-estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
       }
     ],
     "expected_elements": [
@@ -254,7 +285,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q289"
+          "const": "Q229"
         },
         "question_global": {
           "type": "integer",
@@ -267,7 +298,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

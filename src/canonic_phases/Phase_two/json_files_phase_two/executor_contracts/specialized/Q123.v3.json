@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "e0d4579c7962874fd0659c4961835b315fb399fd3202a592452fbea4f70a2611",
+    "contract_hash": "e6026e6ce6927bca55894d6a70a6c285d35248d0f6c04563531b7a8fd1b4c103",
     "created_at": "2025-11-28T03:50:31.391808+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 123,
-    "updated_at": "2025-12-15T20:32:11.051130+00:00"
+    "updated_at": "2025-12-15T21:42:31.819852+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -140,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q123-000",
         "match_type": "REGEX",
-        "pattern": "Plan Plurianual de Inversiones|PPI|Plan Indicativo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
       },
       {
         "category": "GENERAL",
@@ -148,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q123-001",
         "match_type": "REGEX",
-        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión social"
+        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q123-002",
         "match_type": "REGEX",
-        "pattern": "recursos del Sistema General de Participaciones|SGP|destinación específica"
+        "pattern": "recursos del Sistema General de Participaciones|SGP|destinación específica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +179,12 @@
         "flags": "i",
         "id": "PAT-Q123-003",
         "match_type": "REGEX",
-        "pattern": "presupuesto para infraestructura educativa|mejoramiento de hospitales"
+        "pattern": "presupuesto para infraestructura educativa|mejoramiento de hospitales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +192,12 @@
         "flags": "i",
         "id": "PAT-Q123-004",
         "match_type": "REGEX",
-        "pattern": "asignación para subsidios de vivienda|proyectos VIS/VIP"
+        "pattern": "asignación para subsidios de vivienda|proyectos VIS/VIP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +205,12 @@
         "flags": "i",
         "id": "PAT-Q123-005",
         "match_type": "REGEX",
-        "pattern": "inversión en el Programa de Alimentación Escolar|PAE"
+        "pattern": "inversión en el Programa de Alimentación Escolar|PAE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +218,12 @@
         "flags": "i",
         "id": "PAT-Q123-006",
         "match_type": "REGEX",
-        "pattern": "recursos de cofinanciación de los Ministerios"
+        "pattern": "recursos de cofinanciación de los Ministerios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +231,16 @@
         "flags": "i",
         "id": "PAT-Q123-007",
         "match_type": "REGEX",
-        "pattern": "\\$\\s*\\d+|COP\\s*\\d+|millones de pesos"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
       },
       {
         "category": "GENERAL",
@@ -204,7 +248,12 @@
         "flags": "i",
         "id": "PAT-Q123-008",
         "match_type": "REGEX",
-        "pattern": "el presupuesto es suficiente para|análisis de suficiencia"
+        "pattern": "el presupuesto es suficiente para|análisis de suficiencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +379,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q273"
+          "const": "Q123"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +392,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

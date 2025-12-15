@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "19ef3282b3d54f741f8a9f3dcc6082d087cde057ecdbbdd76a4bca0907f6acae",
+    "contract_hash": "131c84a68bad41dc91bc4cce6556918e6002d34362e333201f3df66fce4ba825",
     "created_at": "2025-11-28T03:50:42.218549+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 251,
-    "updated_at": "2025-12-15T20:32:11.606562+00:00"
+    "updated_at": "2025-12-15T21:42:32.562201+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q251-000",
         "match_type": "REGEX",
-        "pattern": "indicador de producto|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0073"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q251-001",
         "match_type": "REGEX",
-        "pattern": "líderes con medidas de protección gestionadas ante la UNP"
+        "pattern": "líderes con medidas de protección gestionadas ante la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q251-002",
         "match_type": "REGEX",
-        "pattern": "organizaciones de DDHH acompañadas|defensores capacitados en autoprotección"
+        "pattern": "organizaciones de DDHH acompañadas|defensores capacitados en autoprotección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,15 +139,36 @@
         "flags": "i",
         "id": "PAT-Q251-003",
         "match_type": "REGEX",
-        "pattern": "campañas de no estigmatización realizadas"
+        "pattern": "campañas de no estigmatización realizadas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q251-004",
-        "match_type": "REGEX",
-        "pattern": "casos de amenaza tramitados ante la Personería/Fiscalía"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "casos de amenaza tramitados ante la Personería/Fiscalía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q251-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|Valor inicial:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0008"
       },
       {
         "category": "GENERAL",
@@ -148,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q251-006",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0013"
       },
       {
         "category": "GENERAL",
@@ -156,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q251-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0007"
       },
       {
         "category": "GENERAL",
@@ -164,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q251-008",
         "match_type": "REGEX",
-        "pattern": "informes de la Secretaría de Gobierno|actas de la Mesa de Garantías"
+        "pattern": "informes de la Secretaría de Gobierno|actas de la Mesa de Garantías",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -172,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q251-009",
         "match_type": "REGEX",
-        "pattern": "registros de la Personería Municipal"
+        "pattern": "registros de la Personería Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -302,7 +363,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q281"
+          "const": "Q251"
         },
         "question_global": {
           "type": "integer",
@@ -315,7 +376,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

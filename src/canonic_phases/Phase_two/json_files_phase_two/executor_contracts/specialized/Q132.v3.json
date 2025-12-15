@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "5876952a263e9eb2f826fc19ea1b84516bfcc50aa80b4021278aa7c0ef8d6fb1",
+    "contract_hash": "09b91b74ecec5bbe370d4a77f8088b1f75825aa5948b1709c63ba710b9013eb0",
     "created_at": "2025-11-28T03:50:31.421081+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 132,
-    "updated_at": "2025-12-15T20:32:11.646770+00:00"
+    "updated_at": "2025-12-15T21:42:31.865321+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q132-000",
         "match_type": "REGEX",
-        "pattern": "la meta de construcción de vivienda reduce en un 20% el déficit cuantitativo"
+        "pattern": "la meta de construcción de vivienda reduce en un 20% el déficit cuantitativo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q132-001",
         "match_type": "REGEX",
-        "pattern": "se cubrirá al \\d+% de la población sin aseguramiento"
+        "pattern": "se cubrirá al \\d+% de la población sin aseguramiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q132-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|población con NBI"
+        "pattern": "universo de atención|población con NBI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q132-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de los recursos SGP"
+        "pattern": "la meta se establece en función de los recursos SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q132-004",
         "match_type": "LITERAL",
-        "pattern": "se priorizarán los hogares con mayor puntaje SISBEN"
+        "pattern": "se priorizarán los hogares con mayor puntaje SISBEN",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +269,12 @@
         "flags": "i",
         "id": "PAT-Q132-005",
         "match_type": "REGEX",
-        "pattern": "frecuencia de las brigadas de salud|intensidad horaria de los programas culturales"
+        "pattern": "frecuencia de las brigadas de salud|intensidad horaria de los programas culturales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -362,7 +392,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q132"
         },
         "question_global": {
           "type": "integer",
@@ -375,7 +405,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

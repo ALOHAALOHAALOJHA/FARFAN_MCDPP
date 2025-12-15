@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "fd3645dd76e8ff6c46f0fb104bb5b85cb190f3e7e80023be149aa7acfdbbdfee",
+    "contract_hash": "b721b050a92f28d06bf2de0d3c02527ad5fc901ad5450647a8d10cd7e024ba3e",
     "created_at": "2025-11-28T03:50:42.389017+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 275,
-    "updated_at": "2025-12-15T20:32:11.170219+00:00"
+    "updated_at": "2025-12-15T21:42:32.682049+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q275-000",
         "match_type": "REGEX",
-        "pattern": "en el marco del Estado de Cosas Inconstitucional|ECI"
+        "pattern": "en el marco del Estado de Cosas Inconstitucional|ECI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q275-001",
         "match_type": "REGEX",
-        "pattern": "Ley 65 de 1993|Ley 1709 de 2014|Código Penitenciario y Carcelario"
+        "pattern": "Ley 65 de 1993|Ley 1709 de 2014|Código Penitenciario y Carcelario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q275-002",
         "match_type": "REGEX",
-        "pattern": "Reglas Nelson Mandela"
+        "pattern": "Reglas Nelson Mandela",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q275-003",
         "match_type": "REGEX",
-        "pattern": "competencia del municipio sobre la población sindicada"
+        "pattern": "competencia del municipio sobre la población sindicada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q275-004",
         "match_type": "REGEX",
-        "pattern": "la población condenada es responsabilidad del INPEC/Nación"
+        "pattern": "la población condenada es responsabilidad del INPEC/Nación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q275-005",
         "match_type": "REGEX",
-        "pattern": "límite de recursos propios para infraestructura carcelaria"
+        "pattern": "límite de recursos propios para infraestructura carcelaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q275-006",
         "match_type": "LITERAL",
-        "pattern": "restricción presupuestal para garantizar la alimentación"
+        "pattern": "restricción presupuestal para garantizar la alimentación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +183,12 @@
         "flags": "i",
         "id": "PAT-Q275-007",
         "match_type": "REGEX",
-        "pattern": "complejidad técnica para la construcción de nuevos centros"
+        "pattern": "complejidad técnica para la construcción de nuevos centros",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +196,12 @@
         "flags": "i",
         "id": "PAT-Q275-008",
         "match_type": "REGEX",
-        "pattern": "durante el cuatrienio|plazo de ejecución"
+        "pattern": "durante el cuatrienio|plazo de ejecución",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -164,7 +209,12 @@
         "flags": "i",
         "id": "PAT-Q275-009",
         "match_type": "LITERAL",
-        "pattern": "coherencia entre metas y la competencia municipal"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0034"
       }
     ],
     "expected_elements": [

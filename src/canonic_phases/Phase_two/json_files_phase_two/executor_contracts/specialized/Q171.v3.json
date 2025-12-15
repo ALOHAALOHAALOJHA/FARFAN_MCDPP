@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "332ed983875a9070149f443a8a5774db9f11235cf970a6c322405311011fe33b",
+    "contract_hash": "f3e8adc9dc3816ed6092f9a137b85686152a3a09d440c2ddd206f5204d2a0235",
     "created_at": "2025-11-28T03:50:31.729036+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 171,
-    "updated_at": "2025-12-15T20:32:12.353242+00:00"
+    "updated_at": "2025-12-15T21:42:32.112973+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q171-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación territorial"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0070"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q171-001",
         "match_type": "REGEX",
-        "pattern": "reconciliación|paz estable y duradera|superación del conflicto"
+        "pattern": "reconciliación|paz estable y duradera|superación del conflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q171-002",
         "match_type": "REGEX",
-        "pattern": "restablecimiento del tejido social|confianza ciudadana"
+        "pattern": "restablecimiento del tejido social|confianza ciudadana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q171-003",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados de reparación y seguridad generará el impacto de"
+        "pattern": "la suma de los resultados de reparación y seguridad generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q171-004",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q171-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|efectos intergeneracionales|se espera observar en una década"
+        "pattern": "tiempo de maduración|efectos intergeneracionales|se espera observar en una década",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q171"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "f9e48eea03344df2c8431bfc7a01709564de88b24cf289994d585c5d498c5c6b",
+    "contract_hash": "9b7bedc5c6601bad126bd90725ac1446234de8e992bc2d96f08a4db266020d7e",
     "created_at": "2025-11-28T03:50:41.877987+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 202,
-    "updated_at": "2025-12-15T20:32:12.433189+00:00"
+    "updated_at": "2025-12-15T21:42:32.316041+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q202-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Pobreza Multidimensional para Niñez y Adolescencia|IPM-NNA"
+        "pattern": "Índice de Pobreza Multidimensional para Niñez y Adolescencia|IPM-NNA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q202-001",
         "match_type": "REGEX",
-        "pattern": "Índice de Desarrollo Juvenil|indicador compuesto de bienestar"
+        "pattern": "Índice de Desarrollo Juvenil|indicador compuesto de bienestar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q202-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "INDICADOR",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q202-003",
         "match_type": "REGEX",
-        "pattern": "la tasa de graduación de educación media como proxy de capital humano"
+        "pattern": "la tasa de graduación de educación media como proxy de capital humano",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q202-004",
         "match_type": "REGEX",
-        "pattern": "la tasa de homicidios juvenil como proxy inverso de cohesión social"
+        "pattern": "la tasa de homicidios juvenil como proxy inverso de cohesión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -300,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q202-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque es una medición estandarizada"
+        "pattern": "este indicador es válido porque es una medición estandarizada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -426,7 +456,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q292"
+          "const": "Q202"
         },
         "question_global": {
           "type": "integer",
@@ -439,7 +469,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

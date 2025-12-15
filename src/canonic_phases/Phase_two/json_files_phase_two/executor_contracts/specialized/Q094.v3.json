@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "4a3bf5f00fbe69dbe1ec07e2c7752929c80ca0b6fbba06a324f89575210a2cf4",
+    "contract_hash": "7937109fc97886c175e1e75125784113d1841556ce60f91a7acaa467e8a3511c",
     "created_at": "2025-11-28T03:50:13.392732+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 94,
-    "updated_at": "2025-12-15T20:32:11.098492+00:00"
+    "updated_at": "2025-12-15T21:42:31.596778+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q094-000",
         "match_type": "REGEX",
-        "pattern": "Consejo Municipal de Gestión del Riesgo de Desastres|CMGRD"
+        "pattern": "Consejo Municipal de Gestión del Riesgo de Desastres|CMGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q094-001",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Ambiente|Oficina de Gestión del Riesgo|UMATA"
+        "pattern": "Secretaría de Ambiente|Oficina de Gestión del Riesgo|UMATA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q094-002",
         "match_type": "REGEX",
-        "pattern": "Cuerpo de Bomberos|Defensa Civil|Cruz Roja"
+        "pattern": "Cuerpo de Bomberos|Defensa Civil|Cruz Roja",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q094-003",
         "match_type": "REGEX",
-        "pattern": "capacidad técnica|personal idóneo para la gestión ambiental"
+        "pattern": "capacidad técnica|personal idóneo para la gestión ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q094-004",
         "match_type": "REGEX",
-        "pattern": "Plan de Ordenamiento Territorial|POT|EOT|PBOT"
+        "pattern": "Plan de Ordenamiento Territorial|POT|EOT|PBOT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q094-005",
         "match_type": "REGEX",
-        "pattern": "Plan Municipal de Gestión del Riesgo|PMGRD|Planes de Contingencia"
+        "pattern": "Plan Municipal de Gestión del Riesgo|PMGRD|Planes de Contingencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q094-006",
         "match_type": "REGEX",
-        "pattern": "sistema de monitoreo de calidad del aire/agua|red hidrometeorológica"
+        "pattern": "sistema de monitoreo de calidad del aire/agua|red hidrometeorológica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q094-007",
         "match_type": "REGEX",
-        "pattern": "articulación con la CAR|coordinación con la UNGRD"
+        "pattern": "articulación con la CAR|coordinación con la UNGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q094-008",
         "match_type": "REGEX",
-        "pattern": "falta de equipos para atención de emergencias|necesidad de fortalecer"
+        "pattern": "falta de equipos para atención de emergencias|necesidad de fortalecer",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +241,12 @@
         "flags": "i",
         "id": "PAT-Q094-009",
         "match_type": "REGEX",
-        "pattern": "cuello de botella|limitación en la capacidad de respuesta|barrera"
+        "pattern": "cuello de botella|limitación en la capacidad de respuesta|barrera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +380,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q274"
+          "const": "Q094"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +393,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "ac1d2c97a50477b70c0cd7f7b27a8d41df012c1f307a3271e962f2bb858337a9",
+    "contract_hash": "34a2be98129d4cbcb70aceb6d5aa47a79b1effa48096f01b28bc9aeeaf54ba99",
     "created_at": "2025-11-28T03:50:42.400335+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 278,
-    "updated_at": "2025-12-15T20:32:11.439768+00:00"
+    "updated_at": "2025-12-15T21:42:32.694832+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q278-000",
         "match_type": "REGEX",
-        "pattern": "para abordar la causa del hacinamiento|en respuesta al problema de"
+        "pattern": "para abordar la causa del hacinamiento|en respuesta al problema de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q278-001",
         "match_type": "REGEX",
-        "pattern": "la actividad de resocialización ataca el factor de la reincidencia"
+        "pattern": "la actividad de resocialización ataca el factor de la reincidencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q278-002",
         "match_type": "REGEX",
-        "pattern": "causa estructural|factor determinante|nudo crítico"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q278-003",
         "match_type": "REGEX",
-        "pattern": "falta de oportunidades educativas y laborales intramurales"
+        "pattern": "falta de oportunidades educativas y laborales intramurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q278-004",
         "match_type": "REGEX",
-        "pattern": "condiciones de reclusión indignas|violación de DDHH"
+        "pattern": "condiciones de reclusión indignas|violación de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q278-005",
         "match_type": "REGEX",
-        "pattern": "ocio y falta de actividades de redención"
+        "pattern": "ocio y falta de actividades de redención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q278-006",
         "match_type": "REGEX",
-        "pattern": "dificultades en el acceso a la justicia"
+        "pattern": "dificultades en el acceso a la justicia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +199,12 @@
         "flags": "i",
         "id": "PAT-Q278-007",
         "match_type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico causal de la crisis carcelaria"
+        "pattern": "árbol de problemas|diagnóstico causal de la crisis carcelaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

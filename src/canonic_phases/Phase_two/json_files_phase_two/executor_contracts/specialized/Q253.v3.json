@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "633b52afe092ee2a39df1deefec119dfbcac316b92a007b354ef0249a5ead85c",
+    "contract_hash": "1323bbeafc9340e1b3a1c709cf829bfbb7af10cd1321a96af0cad24aeaa2584b",
     "created_at": "2025-11-28T03:50:42.227298+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 253,
-    "updated_at": "2025-12-15T20:32:11.751064+00:00"
+    "updated_at": "2025-12-15T21:42:32.573957+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q253-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión para garantías y DDHH"
+        "pattern": "código BPIN|proyecto de inversión para garantías y DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q253-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión en seguridad y convivencia"
+        "pattern": "programa del PPI|línea de inversión en seguridad y convivencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q253-002",
         "match_type": "REGEX",
-        "pattern": "recursos del proyecto|presupuesto para la Mesa de Garantías"
+        "pattern": "recursos del proyecto|presupuesto para la Mesa de Garantías",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q253-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "TERRITORIAL",
@@ -244,7 +264,12 @@
         "flags": "i",
         "id": "PAT-Q253-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Despacho del Alcalde|Personería Municipal"
+        "pattern": "Secretaría de Gobierno|Despacho del Alcalde|Personería Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +277,12 @@
         "flags": "i",
         "id": "PAT-Q253-005",
         "match_type": "REGEX",
-        "pattern": "articulado con la UNP|en alianza con plataformas de DDHH"
+        "pattern": "articulado con la UNP|en alianza con plataformas de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +290,12 @@
         "flags": "i",
         "id": "PAT-Q253-006",
         "match_type": "REGEX",
-        "pattern": "convenio con|operado por"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0048"
       }
     ],
     "expected_elements": [
@@ -382,7 +417,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q283"
+          "const": "Q253"
         },
         "question_global": {
           "type": "integer",
@@ -395,7 +430,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

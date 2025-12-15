@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "a4dcff1227abb561461c26159d3aac52b8b006aaaffc52b681e6ac7e96b193bc",
+    "contract_hash": "240e55ad8443c9938972ddc31e4969f1498bf9ac2a64f56a364f3de9faf1b842",
     "created_at": "2025-11-28T03:50:42.524986+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 289,
-    "updated_at": "2025-12-15T20:32:12.279201+00:00"
+    "updated_at": "2025-12-15T21:42:32.756695+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q289-000",
         "match_type": "REGEX",
-        "pattern": "este resultado responde al problema del hacinamiento"
+        "pattern": "este resultado responde al problema del hacinamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q289-001",
         "match_type": "REGEX",
-        "pattern": "para solucionar la vulneración del derecho a la salud"
+        "pattern": "para solucionar la vulneración del derecho a la salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q289-002",
         "match_type": "REGEX",
-        "pattern": "el resultado atiende directamente las órdenes de la Corte Constitucional"
+        "pattern": "el resultado atiende directamente las órdenes de la Corte Constitucional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q289-003",
         "match_type": "REGEX",
-        "pattern": "criterio de éxito|se considerará un logro si no hay tutelas por salud"
+        "pattern": "criterio de éxito|se considerará un logro si no hay tutelas por salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q289-004",
         "match_type": "REGEX",
-        "pattern": "umbral de cumplimiento|mínimo aceptable según las Reglas Mandela"
+        "pattern": "umbral de cumplimiento|mínimo aceptable según las Reglas Mandela",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,13 @@
         "flags": "i",
         "id": "PAT-Q289-005",
         "match_type": "REGEX",
-        "pattern": "matriz de coherencia|alineación diagnóstico-estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
       }
     ],
     "expected_elements": [

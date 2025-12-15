@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "ad18449215ff55db7991a6b542a8f54ce255a9d25614b0e2ff29ff9a52aac9b1",
+    "contract_hash": "2b8b826d5954ae5dc502325cccbf0e49ec8be9bb7d1c718b8fff61c1d64fb73a",
     "created_at": "2025-11-28T03:50:41.924025+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 215,
-    "updated_at": "2025-12-15T20:32:11.161566+00:00"
+    "updated_at": "2025-12-15T21:42:32.382082+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q215-000",
         "match_type": "REGEX",
-        "pattern": "en el marco de la Ley 160 de 1994|Ley 388 de 1997|Ley 1448 de 2011"
+        "pattern": "en el marco de la Ley 160 de 1994|Ley 388 de 1997|Ley 1448 de 2011",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q215-001",
         "match_type": "REGEX",
-        "pattern": "Acuerdo de Paz|Reforma Rural Integral|RRI|PDET"
+        "pattern": "Acuerdo de Paz|Reforma Rural Integral|RRI|PDET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q215-002",
         "match_type": "REGEX",
-        "pattern": "Plan de Ordenamiento Territorial|POT|determinantes ambientales"
+        "pattern": "Plan de Ordenamiento Territorial|POT|determinantes ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q215-003",
         "match_type": "REGEX",
-        "pattern": "competencia del municipio|responsabilidad de la ANT/IGAC"
+        "pattern": "competencia del municipio|responsabilidad de la ANT/IGAC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q215-004",
         "match_type": "REGEX",
-        "pattern": "límite de recursos propios|dependencia de la cofinanciación nacional"
+        "pattern": "límite de recursos propios|dependencia de la cofinanciación nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q215-005",
         "match_type": "LITERAL",
-        "pattern": "restricción presupuestal para el mantenimiento vial"
+        "pattern": "restricción presupuestal para el mantenimiento vial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q215-006",
         "match_type": "REGEX",
-        "pattern": "complejidad técnica del barrido predial|falta de cartografía base"
+        "pattern": "complejidad técnica del barrido predial|falta de cartografía base",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +183,12 @@
         "flags": "i",
         "id": "PAT-Q215-007",
         "match_type": "REGEX",
-        "pattern": "durante el cuatrienio|plazo para la actualización catastral"
+        "pattern": "durante el cuatrienio|plazo para la actualización catastral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +196,12 @@
         "flags": "i",
         "id": "PAT-Q215-008",
         "match_type": "REGEX",
-        "pattern": "coherencia entre metas y recursos disponibles|factibilidad financiera y técnica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0035"
       }
     ],
     "expected_elements": [
@@ -286,7 +331,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q275"
+          "const": "Q215"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

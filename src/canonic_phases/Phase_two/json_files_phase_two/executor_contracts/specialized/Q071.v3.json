@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "f265a54b4e0fbb9815f9f38b4195095be0da6ea59da01e984f87508f6dee697c",
+    "contract_hash": "4023d93a33e030aa946ac0968b4d2f464e9ceebbd8366442389e749265514015",
     "created_at": "2025-11-28T03:50:09.617913+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 71,
-    "updated_at": "2025-12-15T20:32:11.577161+00:00"
+    "updated_at": "2025-12-15T21:42:31.455279+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q071-000",
         "match_type": "REGEX",
-        "pattern": "indicador de producto|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0073"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q071-001",
         "match_type": "REGEX",
-        "pattern": "número de alertas tempranas gestionadas"
+        "pattern": "número de alertas tempranas gestionadas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q071-002",
         "match_type": "REGEX",
-        "pattern": "personas incluidas en rutas de protección"
+        "pattern": "personas incluidas en rutas de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q071-003",
         "match_type": "REGEX",
-        "pattern": "familias que recibieron ayuda humanitaria"
+        "pattern": "familias que recibieron ayuda humanitaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q071-004",
         "match_type": "REGEX",
-        "pattern": "comunidades acompañadas en autoprotección"
+        "pattern": "comunidades acompañadas en autoprotección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q071-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|Valor inicial:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0008"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q071-006",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0013"
       },
       {
         "category": "GENERAL",
@@ -156,7 +191,12 @@
         "flags": "i",
         "id": "PAT-Q071-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0007"
       },
       {
         "category": "GENERAL",
@@ -164,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q071-008",
         "match_type": "REGEX",
-        "pattern": "informes del CTJT|actas del Consejo de Seguridad|registros de la Personería"
+        "pattern": "informes del CTJT|actas del Consejo de Seguridad|registros de la Personería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -294,7 +339,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q281"
+          "const": "Q071"
         },
         "question_global": {
           "type": "integer",
@@ -307,7 +352,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "c02a9bdd4eba12512961108c400e625a56ba60de83f612e613adb0ceffd0b9e2",
+    "contract_hash": "5ccaea85ccc6af1fd9cc51b421105128b9b07e96feeba785c9a0a733a20e1868",
     "created_at": "2025-11-28T03:50:42.222424+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 252,
-    "updated_at": "2025-12-15T20:32:11.674729+00:00"
+    "updated_at": "2025-12-15T21:42:32.567609+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q252-000",
         "match_type": "REGEX",
-        "pattern": "se cubrirá al 100% de los líderes con riesgo extraordinario"
+        "pattern": "se cubrirá al 100% de los líderes con riesgo extraordinario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q252-001",
         "match_type": "REGEX",
-        "pattern": "la meta es atender todas las solicitudes de protección recibidas"
+        "pattern": "la meta es atender todas las solicitudes de protección recibidas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q252-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|total de líderes identificados en el censo de riesgo"
+        "pattern": "universo de atención|total de líderes identificados en el censo de riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q252-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de la capacidad de respuesta y articulación"
+        "pattern": "la meta se establece en función de la capacidad de respuesta y articulación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q252-004",
         "match_type": "REGEX",
-        "pattern": "se priorizarán los casos con Alerta Temprana de la Defensoría"
+        "pattern": "se priorizarán los casos con Alerta Temprana de la Defensoría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -354,7 +379,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q252"
         },
         "question_global": {
           "type": "integer",
@@ -367,7 +392,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

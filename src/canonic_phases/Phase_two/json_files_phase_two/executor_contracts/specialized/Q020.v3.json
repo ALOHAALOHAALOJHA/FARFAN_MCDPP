@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "1033570b91abd4c909c2624fa0323727c9a672e8a47d2164e8829b28c6efcf7e",
+    "contract_hash": "53fdba3710849f2c413783c5d9c50c0ac5080abbcf7718bd6a94094a8f05d3eb",
     "created_at": "2025-11-28T03:49:29.852066+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 20,
-    "updated_at": "2025-12-15T20:32:12.284480+00:00"
+    "updated_at": "2025-12-15T21:42:31.139653+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q020-000",
         "match_type": "REGEX",
-        "pattern": "alineado con el Plan Nacional de Desarrollo|PND"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0023"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q020-001",
         "match_type": "REGEX",
-        "pattern": "contribuye al ODS 5|Objetivos de Desarrollo Sostenible"
+        "pattern": "contribuye al ODS 5|Objetivos de Desarrollo Sostenible",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q020-002",
         "match_type": "REGEX",
-        "pattern": "en concordancia con la Política Pública de Equidad de Género|PPEG"
+        "pattern": "en concordancia con la Política Pública de Equidad de Género|PPEG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q020-003",
         "match_type": "REGEX",
-        "pattern": "articulado con el CONPES de equidad de género"
+        "pattern": "articulado con el CONPES de equidad de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q020-004",
         "match_type": "REGEX",
-        "pattern": "transformación del PND|eje de convergencia social-regional"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0107"
       }
     ],
     "expected_elements": [
@@ -238,7 +263,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q290"
+          "const": "Q020"
         },
         "question_global": {
           "type": "integer",
@@ -251,7 +276,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

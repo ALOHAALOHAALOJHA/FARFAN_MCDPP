@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "3fc45b4a5cce69a4759a3eef52095551a05ecdd1385a1a38e1804db77a8bfd51",
+    "contract_hash": "0e53c8fa4141e4236ef93559ce916d5630507db0f600997ea8b7004493c54e28",
     "created_at": "2025-11-28T03:49:29.849102+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 19,
-    "updated_at": "2025-12-15T20:32:12.235171+00:00"
+    "updated_at": "2025-12-15T21:42:31.135724+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q019-000",
         "match_type": "REGEX",
-        "pattern": "este resultado responde al problema de|para solucionar la brecha de"
+        "pattern": "este resultado responde al problema de|para solucionar la brecha de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,43 @@
         "flags": "i",
         "id": "PAT-Q019-001",
         "match_type": "REGEX",
-        "pattern": "el resultado atiende directamente|aborda la causa de"
+        "pattern": "alineación causal|coherencia lógica|relación causa-efecto|solución orientada|mitigación de riesgos|impacto proyectado|cadena de resultados|vínculo problema-solución|teoría de cambio explícita|lógica de intervención|modelo causal integrado|arquitectura de causa-efecto|secuencia lógica de impacto|correspondencia problema-remedio|mecanismo de transformación|flujo causal verificable|racionalidad de la intervención|encadenamiento de efectos|vinculación causal explícita|trazabilidad causa-consecuencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": {
+          "solution_focused": [
+            "solución orientada",
+            "respuesta al problema",
+            "remedio estructurado",
+            "enfoque correctivo"
+          ],
+          "mitigation_focused": [
+            "mitigación de riesgos",
+            "prevención de daños",
+            "reducción de vulnerabilidad",
+            "control de amenazas"
+          ],
+          "impact_focused": [
+            "impacto proyectado",
+            "beneficio esperado",
+            "resultado anticipado",
+            "efecto previsto"
+          ],
+          "causal_chain": [
+            "cadena de resultados",
+            "secuencia de impacto",
+            "encadenamiento causal",
+            "trayectoria de efectos"
+          ],
+          "logical_coherence": [
+            "coherencia lógica",
+            "racionalidad interna",
+            "consistencia argumentativa",
+            "solidez del razonamiento"
+          ]
+        },
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +149,12 @@
         "flags": "i",
         "id": "PAT-Q019-002",
         "match_type": "REGEX",
-        "pattern": "criterio de éxito|se considerará un logro si"
+        "pattern": "criterio de éxito|se considerará un logro si",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +162,12 @@
         "flags": "i",
         "id": "PAT-Q019-003",
         "match_type": "REGEX",
-        "pattern": "umbral de cumplimiento|mínimo aceptable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
       },
       {
         "category": "GENERAL",
@@ -124,7 +175,13 @@
         "flags": "i",
         "id": "PAT-Q019-004",
         "match_type": "REGEX",
-        "pattern": "matriz de coherencia|alineación diagnóstico-estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
       }
     ],
     "expected_elements": [
@@ -246,7 +303,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q289"
+          "const": "Q019"
         },
         "question_global": {
           "type": "integer",
@@ -259,7 +316,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

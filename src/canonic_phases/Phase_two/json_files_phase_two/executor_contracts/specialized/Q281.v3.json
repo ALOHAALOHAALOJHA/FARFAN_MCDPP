@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "7e6e3958b20e7a53a856b5d65ef4b3defbce061853e030ef33d95edd0cbc0716",
+    "contract_hash": "acb67254726aa3a467bad5aed649d464fd2f00a70aeebc457027ecc81f968364",
     "created_at": "2025-11-28T03:50:42.491729+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 281,
-    "updated_at": "2025-12-15T20:32:11.611165+00:00"
+    "updated_at": "2025-12-15T21:42:32.707939+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q281-000",
         "match_type": "REGEX",
-        "pattern": "indicador de producto|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0073"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q281-001",
         "match_type": "REGEX",
-        "pattern": "PPL atendidos en jornadas de salud|PPL con valoración en salud mental"
+        "pattern": "PPL atendidos en jornadas de salud|PPL con valoración en salud mental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q281-002",
         "match_type": "REGEX",
-        "pattern": "cupos adecuados o creados en centros de detención transitoria"
+        "pattern": "cupos adecuados o creados en centros de detención transitoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q281-003",
         "match_type": "REGEX",
-        "pattern": "PPL inscritos en programas educativos o de formación"
+        "pattern": "PPL inscritos en programas educativos o de formación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q281-004",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|Valor inicial:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0008"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q281-005",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0013"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q281-006",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0007"
       },
       {
         "category": "GENERAL",
@@ -156,7 +191,12 @@
         "flags": "i",
         "id": "PAT-Q281-007",
         "match_type": "REGEX",
-        "pattern": "listados de la ESE|informes de la Personería|actas de obra"
+        "pattern": "listados de la ESE|informes de la Personería|actas de obra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q281-008",
         "match_type": "REGEX",
-        "pattern": "registros de la Secretaría de Gobierno|informes del INPEC"
+        "pattern": "registros de la Secretaría de Gobierno|informes del INPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

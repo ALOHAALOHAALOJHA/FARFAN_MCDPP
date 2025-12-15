@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "db062024fee3cf8ceba89b97002fd5b261d12a78ba714fb3cd7a53071659b09e",
+    "contract_hash": "39aa7ec43307fa2875346c93e996b6980eeaea0352c79d5881b535cc15453d60",
     "created_at": "2025-11-28T03:50:42.245957+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 257,
-    "updated_at": "2025-12-15T20:32:12.177615+00:00"
+    "updated_at": "2025-12-15T21:42:32.598567+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q257-000",
         "match_type": "REGEX",
-        "pattern": "cadena causal|lógica de intervención|si... entonces..."
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0028"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q257-001",
         "match_type": "REGEX",
-        "pattern": "el resultado se logrará siempre y cuando|asumiendo que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0057"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q257-002",
         "match_type": "REGEX",
-        "pattern": "supuesto clave|premisa fundamental"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0101"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q257-003",
         "match_type": "REGEX",
-        "pattern": "condición habilitante|factor crítico|requiere de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0043"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q257-004",
         "match_type": "REGEX",
-        "pattern": "depende de la efectividad de los esquemas de la UNP"
+        "pattern": "depende de la efectividad de los esquemas de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,15 +165,36 @@
         "flags": "i",
         "id": "PAT-Q257-005",
         "match_type": "REGEX",
-        "pattern": "un supuesto es que la comunidad rechace la estigmatización"
+        "pattern": "un supuesto es que la comunidad rechace la estigmatización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q257-006",
-        "match_type": "REGEX",
-        "pattern": "se requiere una acción efectiva de la Fiscalía para que haya impunidad cero"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "se requiere una acción efectiva de la Fiscalía para que haya impunidad cero",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -274,7 +320,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q287"
+          "const": "Q257"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +333,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

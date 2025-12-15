@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "9a8d4455d3d4a73b8bf1c67f7a7092487f64e83a20b8393d42c0d59d044d8dd7",
+    "contract_hash": "2b345c659530eaa27ec7cfa5faaa36a1e1e93f8a9523bb767eb258f9887b56b3",
     "created_at": "2025-11-28T03:50:31.241828+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 103,
-    "updated_at": "2025-12-15T20:32:11.713290+00:00"
+    "updated_at": "2025-12-15T21:42:31.667477+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q103-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión para gestión del riesgo"
+        "pattern": "código BPIN|proyecto de inversión para gestión del riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q103-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión en sostenibilidad ambiental"
+        "pattern": "programa del PPI|línea de inversión en sostenibilidad ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q103-002",
         "match_type": "REGEX",
-        "pattern": "recursos del proyecto|presupuesto de la obra"
+        "pattern": "recursos del proyecto|presupuesto de la obra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q103-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "GENERAL",
@@ -244,7 +264,12 @@
         "flags": "i",
         "id": "PAT-Q103-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Ambiente|Planeación|Infraestructura"
+        "pattern": "Secretaría de Ambiente|Planeación|Infraestructura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +277,12 @@
         "flags": "i",
         "id": "PAT-Q103-005",
         "match_type": "REGEX",
-        "pattern": "articulado con la CAR|CMGRD"
+        "pattern": "articulado con la CAR|CMGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +290,12 @@
         "flags": "i",
         "id": "PAT-Q103-006",
         "match_type": "REGEX",
-        "pattern": "convenio con|contrato de obra No."
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0047"
       }
     ],
     "expected_elements": [
@@ -382,7 +417,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q283"
+          "const": "Q103"
         },
         "question_global": {
           "type": "integer",
@@ -395,7 +430,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

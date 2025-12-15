@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "2dd233c9ec8705ae36982758f8c3ee9a609873b1fc780e7a10526d71b758bd7a",
+    "contract_hash": "4787528c2349e767f4d123a7bf047952614efacc5ea0c065c4881c755b01fed2",
     "created_at": "2025-11-28T03:50:42.547620+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 296,
-    "updated_at": "2025-12-15T20:32:12.629501+00:00"
+    "updated_at": "2025-12-15T21:42:32.787291+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -100,15 +100,26 @@
         "flags": "i",
         "id": "PAT-Q296-000",
         "match_type": "REGEX",
-        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de resocialización"
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
-        "category": "GENERAL",
+        "category": "CAUSAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q296-001",
         "match_type": "REGEX",
-        "pattern": "diagrama causal|gráfico de la teoría|esquema de intervención|figura"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
       },
       {
         "category": "GENERAL",
@@ -116,7 +127,12 @@
         "flags": "i",
         "id": "PAT-Q296-002",
         "match_type": "REGEX",
-        "pattern": "causa raíz del hacinamiento|determinante estructural de la reincidencia"
+        "pattern": "causa raíz del hacinamiento|determinante estructural de la reincidencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q296-003",
         "match_type": "REGEX",
-        "pattern": "mediador|variable intermedia|eslabón|habilidades para el trabajo|vínculos familiares"
+        "pattern": "mediador|variable intermedia|eslabón|habilidades para el trabajo|vínculos familiares",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q296-004",
         "match_type": "REGEX",
-        "pattern": "moderador|factor contextual|tipo de delito"
+        "pattern": "moderador|factor contextual|tipo de delito",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q296-005",
         "match_type": "LITERAL",
-        "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
       }
     ],
     "expected_elements": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "59639c7ad9840d7409b033559b0d05bf51b7787c126e08d7fa9dc0b66251d3d4",
+    "contract_hash": "181a8d7e965e0f05e63425852bedb9d4eaa8a54bd0febd4f7d028ef2f3a3d72a",
     "created_at": "2025-11-28T03:50:42.028482+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 221,
-    "updated_at": "2025-12-15T20:32:11.601829+00:00"
+    "updated_at": "2025-12-15T21:42:32.409949+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q221-000",
         "match_type": "REGEX",
-        "pattern": "indicador de producto|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0073"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q221-001",
         "match_type": "REGEX",
-        "pattern": "hectáreas (Ha) con catastro actualizado|predios actualizados"
+        "pattern": "hectáreas (Ha) con catastro actualizado|predios actualizados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q221-002",
         "match_type": "REGEX",
-        "pattern": "títulos de propiedad rural entregados|predios formalizados"
+        "pattern": "títulos de propiedad rural entregados|predios formalizados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q221-003",
         "match_type": "REGEX",
-        "pattern": "kilómetros (Km) de vías terciarias con mantenimiento/mejoramiento"
+        "pattern": "kilómetros (Km) de vías terciarias con mantenimiento/mejoramiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q221-004",
         "match_type": "REGEX",
-        "pattern": "familias beneficiadas con proyectos de riego|productores con asistencia técnica"
+        "pattern": "familias beneficiadas con proyectos de riego|productores con asistencia técnica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q221-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|Valor inicial:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0008"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q221-006",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0013"
       },
       {
         "category": "GENERAL",
@@ -156,7 +191,12 @@
         "flags": "i",
         "id": "PAT-Q221-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0007"
       },
       {
         "category": "GENERAL",
@@ -164,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q221-008",
         "match_type": "REGEX",
-        "pattern": "registros de la ANT/SNR|informes de interventoría de obra|actas de entrega"
+        "pattern": "registros de la ANT/SNR|informes de interventoría de obra|actas de entrega",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -294,7 +339,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q281"
+          "const": "Q221"
         },
         "question_global": {
           "type": "integer",
@@ -307,7 +352,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

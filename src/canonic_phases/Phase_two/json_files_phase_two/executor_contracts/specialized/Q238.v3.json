@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "5b23495c6d455e4f9727af30467913e50408e6ac458073330f64945d4aa36cf0",
+    "contract_hash": "d6d51b964eba91b436685eecd282c93ada284c02784ac8d20c2a171a095b0717",
     "created_at": "2025-11-28T03:50:42.091812+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 238,
-    "updated_at": "2025-12-15T20:32:12.696557+00:00"
+    "updated_at": "2025-12-15T21:42:32.501454+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q238-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q238-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar si la titulación por sí sola aumenta la inversión"
+        "pattern": "se requiere validar si la titulación por sí sola aumenta la inversión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q238-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto de catastro en una vereda|fase experimental"
+        "pattern": "plan piloto de catastro en una vereda|fase experimental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q238-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto de que las vías mejoradas aumentan la comercialización"
+        "pattern": "testear el supuesto de que las vías mejoradas aumentan la comercialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q238-004",
         "match_type": "REGEX",
-        "pattern": "validar la hipótesis sobre la adopción de la asistencia técnica"
+        "pattern": "validar la hipótesis sobre la adopción de la asistencia técnica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q238-005",
         "match_type": "REGEX",
-        "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q238-006",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa del desarrollo rural"
+        "pattern": "aprendizaje adaptativo|gestión adaptativa del desarrollo rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +305,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q298"
+          "const": "Q238"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +318,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

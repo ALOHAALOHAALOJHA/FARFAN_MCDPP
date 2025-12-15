@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "d5dde826ce7e96c31c42180de4dc05fc8eadfaea652ee6d228ef7a34e65a8082",
+    "contract_hash": "6315918300d5edc54977bae57cc091dc30962a15cbd6d408f2b8f1562461cb3b",
     "created_at": "2025-11-28T03:50:31.713982+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 166,
-    "updated_at": "2025-12-15T20:32:12.098613+00:00"
+    "updated_at": "2025-12-15T21:42:32.089862+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q166-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "INDICADOR",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q166-001",
         "match_type": "REGEX",
-        "pattern": "porcentaje de víctimas con su plan de reparación integral avanzado"
+        "pattern": "porcentaje de víctimas con su plan de reparación integral avanzado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q166-002",
         "match_type": "REGEX",
-        "pattern": "tasa de retornos o reubicaciones con sostenibilidad"
+        "pattern": "tasa de retornos o reubicaciones con sostenibilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q166-003",
         "match_type": "REGEX",
-        "pattern": "Índice de Goce Efectivo de Derechos (si se menciona)"
+        "pattern": "Índice de Goce Efectivo de Derechos (si se menciona)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q166-004",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "INDICADOR",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q166-005",
         "match_type": "LITERAL",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera avanzar a un X%"
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera avanzar a un X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q166-006",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q166-007",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT del DNP)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
       },
       {
         "category": "TEMPORAL",
@@ -228,7 +268,12 @@
         "flags": "i",
         "id": "PAT-Q166-008",
         "match_type": "REGEX",
-        "pattern": "horizonte temporal|ventana de maduración|al final del periodo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0068"
       }
     ],
     "expected_elements": [
@@ -360,7 +405,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q286"
+          "const": "Q166"
         },
         "question_global": {
           "type": "integer",
@@ -373,7 +418,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

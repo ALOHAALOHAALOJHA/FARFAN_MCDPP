@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "9a3173be755530afd99ee10503f17c9c9724a821d37c46133cf0e0c0cb1eef12",
+    "contract_hash": "cfaae6beb6218854dd556bdf5db0a02380509855d62db8b762235006eb63a43a",
     "created_at": "2025-11-28T03:50:09.653474+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 80,
-    "updated_at": "2025-12-15T20:32:12.293991+00:00"
+    "updated_at": "2025-12-15T21:42:31.513873+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q080-000",
         "match_type": "REGEX",
-        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|Colombia Potencia Mundial de la Vida"
+        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|Colombia Potencia Mundial de la Vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q080-001",
         "match_type": "REGEX",
-        "pattern": "contribuye al ODS 16|Paz, Justicia e Instituciones Sólidas"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0046"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q080-002",
         "match_type": "REGEX",
-        "pattern": "en concordancia con la Política de Seguridad y Defensa Nacional"
+        "pattern": "en concordancia con la Política de Seguridad y Defensa Nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q080-003",
         "match_type": "REGEX",
-        "pattern": "articulado con el Acuerdo de Paz|Punto 5 sobre Víctimas"
+        "pattern": "articulado con el Acuerdo de Paz|Punto 5 sobre Víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q080-004",
         "match_type": "REGEX",
-        "pattern": "eje de Seguridad Humana y Justicia Social"
+        "pattern": "eje de Seguridad Humana y Justicia Social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -238,7 +263,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q290"
+          "const": "Q080"
         },
         "question_global": {
           "type": "integer",
@@ -251,7 +276,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

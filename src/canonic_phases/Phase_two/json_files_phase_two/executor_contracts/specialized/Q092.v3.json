@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "909de78867fdcc576c285a10c071960b1e6cfc465be3b8326910063b3c2ecfe9",
+    "contract_hash": "bae3332e8d423f83db1f70ecab54fb59d3a2c7f44aa5f77fa7e26dbead2e58c3",
     "created_at": "2025-11-28T03:50:13.385537+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 92,
-    "updated_at": "2025-12-15T20:32:10.996898+00:00"
+    "updated_at": "2025-12-15T21:42:31.577957+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -132,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q092-000",
         "match_type": "REGEX",
-        "pattern": "déficit de conservación|presión sobre el ecosistema"
+        "pattern": "déficit de conservación|presión sobre el ecosistema",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q092-001",
         "match_type": "LITERAL",
-        "pattern": "población expuesta a amenaza|familias en alto riesgo no mitigable"
+        "pattern": "población expuesta a amenaza|familias en alto riesgo no mitigable",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q092-002",
         "match_type": "REGEX",
-        "pattern": "el municipio presenta una vulnerabilidad alta ante|escenario de riesgo"
+        "pattern": "el municipio presenta una vulnerabilidad alta ante|escenario de riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q092-003",
         "match_type": "REGEX",
-        "pattern": "aumento de la temperatura|variabilidad climática"
+        "pattern": "aumento de la temperatura|variabilidad climática",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +184,12 @@
         "flags": "i",
         "id": "PAT-Q092-004",
         "match_type": "REGEX",
-        "pattern": "contaminación del recurso hídrico|calidad del aire crítica"
+        "pattern": "contaminación del recurso hídrico|calidad del aire crítica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +197,12 @@
         "flags": "i",
         "id": "PAT-Q092-005",
         "match_type": "REGEX",
-        "pattern": "información desactualizada|falta de estudios de microzonificación sísmica"
+        "pattern": "información desactualizada|falta de estudios de microzonificación sísmica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +210,12 @@
         "flags": "i",
         "id": "PAT-Q092-006",
         "match_type": "REGEX",
-        "pattern": "no se cuenta con un inventario de emisiones GEI"
+        "pattern": "no se cuenta con un inventario de emisiones GEI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +223,12 @@
         "flags": "i",
         "id": "PAT-Q092-007",
         "match_type": "REGEX",
-        "pattern": "vacío de información sobre biodiversidad|se requiere caracterizar"
+        "pattern": "vacío de información sobre biodiversidad|se requiere caracterizar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q092-008",
         "match_type": "REGEX",
-        "pattern": "limitaciones en el monitoreo de|falta de estaciones"
+        "pattern": "limitaciones en el monitoreo de|falta de estaciones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -322,7 +367,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q272"
+          "const": "Q092"
         },
         "question_global": {
           "type": "integer",
@@ -335,7 +380,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

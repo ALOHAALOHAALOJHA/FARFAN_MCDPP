@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "6619ac4a65a1913d115db3e8ccec00c9bf26a1dc8653971dbb2fa6b3a621fb9c",
+    "contract_hash": "2101d6330d537575a65228e35ac666b18f6c389b56b3a6b11ae03e33a1ea5af5",
     "created_at": "2025-11-28T03:50:42.249324+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 258,
-    "updated_at": "2025-12-15T20:32:12.226244+00:00"
+    "updated_at": "2025-12-15T21:42:32.602391+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q258-000",
         "match_type": "REGEX",
-        "pattern": "la meta de 'cero homicidios' es un imperativo ético y legal, aunque ambicioso"
+        "pattern": "la meta de 'cero homicidios' es un imperativo ético y legal, aunque ambicioso",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q258-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por el fortalecimiento de la Mesa de Garantías"
+        "pattern": "la meta se justifica por el fortalecimiento de la Mesa de Garantías",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q258-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión en prevención se espera reducir las amenazas"
+        "pattern": "con la inversión en prevención se espera reducir las amenazas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q258-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad de articulación con la Fuerza Pública permite aspirar a esta meta"
+        "pattern": "la capacidad de articulación con la Fuerza Pública permite aspirar a esta meta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q258-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias de otros municipios con planes de protección efectivos"
+        "pattern": "en experiencias de otros municipios con planes de protección efectivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q258-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente internacional|meta del PND en protección"
+        "pattern": "benchmark|referente internacional|meta del PND en protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q258"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

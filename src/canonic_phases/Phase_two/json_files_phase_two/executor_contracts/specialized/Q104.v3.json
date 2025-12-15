@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "c00f90641f159dbd04c220b4d34ce72fa428b5739cc239d87647bd0166f1724c",
+    "contract_hash": "cd1c4b1616f882640abf7c34b381c0c7347bf206f165cad03b4b2b3f82407570",
     "created_at": "2025-11-28T03:50:31.246585+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 104,
-    "updated_at": "2025-12-15T20:32:11.835864+00:00"
+    "updated_at": "2025-12-15T21:42:31.684820+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -244,7 +244,12 @@
         "flags": "i",
         "id": "PAT-Q104-000",
         "match_type": "REGEX",
-        "pattern": "factibilidad|viabilidad|es realista esperar que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0066"
       },
       {
         "category": "GENERAL",
@@ -252,7 +257,12 @@
         "flags": "i",
         "id": "PAT-Q104-001",
         "match_type": "REGEX",
-        "pattern": "capacidad técnica para la construcción de la PTAR"
+        "pattern": "capacidad técnica para la construcción de la PTAR",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +270,12 @@
         "flags": "i",
         "id": "PAT-Q104-002",
         "match_type": "REGEX",
-        "pattern": "plazo de ejecución de la obra|tiempo de los estudios y diseños"
+        "pattern": "plazo de ejecución de la obra|tiempo de los estudios y diseños",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +283,12 @@
         "flags": "i",
         "id": "PAT-Q104-003",
         "match_type": "REGEX",
-        "pattern": "la meta de reforestación es ambiciosa pero alcanzable"
+        "pattern": "la meta de reforestación es ambiciosa pero alcanzable",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +296,12 @@
         "flags": "i",
         "id": "PAT-Q104-004",
         "match_type": "REGEX",
-        "pattern": "contradictorio|poco probable|desproporcionado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0045"
       },
       {
         "category": "GENERAL",
@@ -284,7 +309,12 @@
         "flags": "i",
         "id": "PAT-Q104-005",
         "match_type": "REGEX",
-        "pattern": "con los recursos asignados se puede lograr"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0042"
       }
     ],
     "expected_elements": [
@@ -410,7 +440,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q284"
+          "const": "Q104"
         },
         "question_global": {
           "type": "integer",
@@ -423,7 +453,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

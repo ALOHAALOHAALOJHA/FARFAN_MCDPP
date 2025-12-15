@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "34eecd816951d2153fd42a88959352a5af066c10d65769b3648b3ae015bad944",
+    "contract_hash": "933b940d4448c8cc1537987fd40871f59f075d630305e20497611731b0766ebd",
     "created_at": "2025-11-28T03:50:05.965358+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 53,
-    "updated_at": "2025-12-15T20:32:12.469599+00:00"
+    "updated_at": "2025-12-15T21:42:31.363608+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q053-000",
         "match_type": "REGEX",
-        "pattern": "dado que es difícil medir la integración cultural|para aproximar"
+        "pattern": "dado que es difícil medir la integración cultural|para aproximar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q053-001",
         "match_type": "REGEX",
-        "pattern": "se utilizará como proxy|medición indirecta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q053-002",
         "match_type": "REGEX",
-        "pattern": "el número de emprendimientos mixtos (colombo-venezolanos)"
+        "pattern": "el número de emprendimientos mixtos (colombo-venezolanos)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q053-003",
         "match_type": "REGEX",
-        "pattern": "este proxy es validado por estudios de migración de la OIM"
+        "pattern": "este proxy es validado por estudios de migración de la OIM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q053-004",
         "match_type": "REGEX",
-        "pattern": "una limitación es que solo captura la dimensión económica de la integración"
+        "pattern": "una limitación es que solo captura la dimensión económica de la integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +149,12 @@
         "flags": "i",
         "id": "PAT-Q053-005",
         "match_type": "REGEX",
-        "pattern": "aunque imperfecto, este proxy nos da una señal de interacción positiva"
+        "pattern": "aunque imperfecto, este proxy nos da una señal de interacción positiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -250,7 +280,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q293"
+          "const": "Q053"
         },
         "question_global": {
           "type": "integer",
@@ -263,7 +293,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

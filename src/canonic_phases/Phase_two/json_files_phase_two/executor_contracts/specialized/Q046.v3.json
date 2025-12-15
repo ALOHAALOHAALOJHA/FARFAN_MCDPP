@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "d3c6ffcc85069a32a6acfe0847339c17adf05cc01d5ae353e8e2c3324f9b5241",
+    "contract_hash": "93d1b6feed270086794af644c862d5640003dd5e40475feab4f31f6f9ac6e7de",
     "created_at": "2025-11-28T03:50:05.939667+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 46,
-    "updated_at": "2025-12-15T20:32:12.063353+00:00"
+    "updated_at": "2025-12-15T21:42:31.308759+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q046-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "INDICADOR",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q046-001",
         "match_type": "REGEX",
-        "pattern": "porcentaje de la población migrante con estatus regular"
+        "pattern": "porcentaje de la población migrante con estatus regular",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q046-002",
         "match_type": "REGEX",
-        "pattern": "tasa de ocupación de la población migrante"
+        "pattern": "tasa de ocupación de la población migrante",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q046-003",
         "match_type": "REGEX",
-        "pattern": "porcentaje de NNA migrantes que permanecen en el sistema educativo"
+        "pattern": "porcentaje de NNA migrantes que permanecen en el sistema educativo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q046-004",
         "match_type": "REGEX",
-        "pattern": "Índice de percepción de xenofobia"
+        "pattern": "Índice de percepción de xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q046-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q046-006",
         "match_type": "LITERAL",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera aumentar a un X%"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0011"
       },
       {
         "category": "GENERAL",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q046-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -228,7 +268,12 @@
         "flags": "i",
         "id": "PAT-Q046-008",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT del DNP)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
       },
       {
         "category": "TEMPORAL",
@@ -236,7 +281,12 @@
         "flags": "i",
         "id": "PAT-Q046-009",
         "match_type": "REGEX",
-        "pattern": "horizonte temporal|ventana de maduración|al final del periodo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0068"
       }
     ],
     "expected_elements": [
@@ -368,7 +418,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q286"
+          "const": "Q046"
         },
         "question_global": {
           "type": "integer",
@@ -381,7 +431,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

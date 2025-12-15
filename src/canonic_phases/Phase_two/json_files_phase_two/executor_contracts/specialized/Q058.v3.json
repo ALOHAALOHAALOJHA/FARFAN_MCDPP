@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "07c0ea695b758d6b6c3f965a28800a57c998489e3ad14c8b0ec8acc5db6a62e7",
+    "contract_hash": "1d973e601a599112f8a72d69c24d799d5d6d7bce586aa484e02325b9b8a442d7",
     "created_at": "2025-11-28T03:50:05.980596+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 58,
-    "updated_at": "2025-12-15T20:32:12.673603+00:00"
+    "updated_at": "2025-12-15T21:42:31.389031+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q058-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q058-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar si la orientación realmente conduce a la empleabilidad"
+        "pattern": "se requiere validar si la orientación realmente conduce a la empleabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q058-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto de emprendimiento mixto|fase experimental"
+        "pattern": "plan piloto de emprendimiento mixto|fase experimental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q058-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto de que la regularización reduce la explotación laboral"
+        "pattern": "testear el supuesto de que la regularización reduce la explotación laboral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q058-004",
         "match_type": "REGEX",
-        "pattern": "validar la hipótesis sobre la efectividad de las campañas anti-xenofobia"
+        "pattern": "validar la hipótesis sobre la efectividad de las campañas anti-xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q058-005",
         "match_type": "REGEX",
-        "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q058-006",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa de la migración"
+        "pattern": "aprendizaje adaptativo|gestión adaptativa de la migración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +305,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q298"
+          "const": "Q058"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +318,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "65c2e3e421862a1358bc7802ebb8e3d936da8b48def7a0c654341f097acbf31c",
+    "contract_hash": "98d613eac406ecb1e25972ca4ad3693890fe7a38d658c37f70132e0df07a457c",
     "created_at": "2025-11-28T03:50:41.912854+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 212,
-    "updated_at": "2025-12-15T20:32:11.015602+00:00"
+    "updated_at": "2025-12-15T21:42:32.366571+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -132,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q212-000",
         "match_type": "REGEX",
-        "pattern": "déficit de formalización|rezago en la actualización catastral"
+        "pattern": "déficit de formalización|rezago en la actualización catastral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -140,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q212-001",
         "match_type": "REGEX",
-        "pattern": "el X% de las vías terciarias se encuentra en mal estado"
+        "pattern": "el X% de las vías terciarias se encuentra en mal estado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q212-002",
         "match_type": "REGEX",
-        "pattern": "aislamiento de las veredas|costos de transporte elevados"
+        "pattern": "aislamiento de las veredas|costos de transporte elevados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q212-003",
         "match_type": "REGEX",
-        "pattern": "magnitud del conflicto por el uso del suelo"
+        "pattern": "magnitud del conflicto por el uso del suelo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +184,12 @@
         "flags": "i",
         "id": "PAT-Q212-004",
         "match_type": "REGEX",
-        "pattern": "familias campesinas sin tierra|población rural afectada"
+        "pattern": "familias campesinas sin tierra|población rural afectada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +197,12 @@
         "flags": "i",
         "id": "PAT-Q212-005",
         "match_type": "REGEX",
-        "pattern": "información catastral desactualizada|vacío de información predial"
+        "pattern": "información catastral desactualizada|vacío de información predial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +210,12 @@
         "flags": "i",
         "id": "PAT-Q212-006",
         "match_type": "REGEX",
-        "pattern": "no se cuenta con un inventario vial actualizado"
+        "pattern": "no se cuenta con un inventario vial actualizado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +223,12 @@
         "flags": "i",
         "id": "PAT-Q212-007",
         "match_type": "REGEX",
-        "pattern": "causas de la informalidad|determinantes de la baja productividad"
+        "pattern": "causas de la informalidad|determinantes de la baja productividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +354,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q272"
+          "const": "Q212"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +367,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

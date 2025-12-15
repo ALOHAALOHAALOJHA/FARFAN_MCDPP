@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "98e74a8bd40d9e0adfc540da9338f4f3f515d13de64f58550001c37dbc7359c4",
+    "contract_hash": "aeec906979619e94bcc867d5c20c104bf1edd5c4dff0b853dd9b9de5556f00b2",
     "created_at": "2025-11-28T03:50:42.072783+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 232,
-    "updated_at": "2025-12-15T20:32:12.441472+00:00"
+    "updated_at": "2025-12-15T21:42:32.473963+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q232-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Competitividad|Índice de Pobreza Multidimensional Rural"
+        "pattern": "Índice de Competitividad|Índice de Pobreza Multidimensional Rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q232-001",
         "match_type": "REGEX",
-        "pattern": "indicador compuesto|indicador sintético"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q232-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "GENERAL",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q232-003",
         "match_type": "REGEX",
-        "pattern": "el valor agregado agropecuario como proxy de la competitividad"
+        "pattern": "el valor agregado agropecuario como proxy de la competitividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q232-004",
         "match_type": "REGEX",
-        "pattern": "la tasa de migración neta rural como proxy del arraigo territorial"
+        "pattern": "la tasa de migración neta rural como proxy del arraigo territorial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -300,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q232-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque refleja|captura las dinámicas de desarrollo"
+        "pattern": "este indicador es válido porque refleja|captura las dinámicas de desarrollo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -426,7 +456,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q292"
+          "const": "Q232"
         },
         "question_global": {
           "type": "integer",
@@ -439,7 +469,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "c35486be5525bf913f981ecbc69a1cdfbd3c9dad784fee8c33da753c052a2a93",
+    "contract_hash": "d23424bf063c17f168c7b48004e2bffbb37644ebe466e4c1d88cdad6edaafe89",
     "created_at": "2025-11-28T03:50:01.832224+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 25,
-    "updated_at": "2025-12-15T20:32:12.547510+00:00"
+    "updated_at": "2025-12-15T21:42:31.168285+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q025-000",
         "match_type": "REGEX",
-        "pattern": "la ambición del impacto es realista si se mantienen las condiciones"
+        "pattern": "la ambición del impacto es realista si se mantienen las condiciones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q025-001",
         "match_type": "REGEX",
-        "pattern": "efecto no deseado|consecuencia imprevista|externalidad negativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q025-002",
         "match_type": "REGEX",
-        "pattern": "riesgo de sobrecargar a las mujeres con un doble rol"
+        "pattern": "riesgo de sobrecargar a las mujeres con un doble rol",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q025-003",
         "match_type": "LITERAL",
-        "pattern": "posible estigmatización o reacción violenta"
+        "pattern": "posible estigmatización o reacción violenta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q025-004",
         "match_type": "REGEX",
-        "pattern": "trade-off|costo de oportunidad"
+        "pattern": "trade-off|costo de oportunidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q025-005",
         "match_type": "REGEX",
-        "pattern": "hipótesis límite|el modelo funciona hasta el punto en que"
+        "pattern": "hipótesis límite|el modelo funciona hasta el punto en que",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q025-006",
         "match_type": "LITERAL",
-        "pattern": "supuesto crítico para el impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0102"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q295"
+          "const": "Q025"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

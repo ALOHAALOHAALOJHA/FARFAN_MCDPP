@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "7ba31bee250b9ab7fa840a50d137fb0ac0454f585a7688c22a6c0778890c936a",
+    "contract_hash": "19e628bf6d1482083373e9926fd2782781860984428f03fdf6afb9f1d0e78765",
     "created_at": "2025-11-28T03:50:41.901651+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 209,
-    "updated_at": "2025-12-15T20:32:12.729971+00:00"
+    "updated_at": "2025-12-15T21:42:32.348651+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q209-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E a la política de infancia"
+        "pattern": "sistema de seguimiento y evaluación|M&E a la política de infancia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q209-001",
         "match_type": "LITERAL",
-        "pattern": "monitoreo nominal|seguimiento niño a niño"
+        "pattern": "monitoreo nominal|seguimiento niño a niño",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q209-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana sobre deserción escolar|alerta por vulneración de derechos"
+        "pattern": "alerta temprana sobre deserción escolar|alerta por vulneración de derechos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q209-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste|medida correctiva del PAI (Plan de Atención Integral)"
+        "pattern": "mecanismo de ajuste|medida correctiva del PAI (Plan de Atención Integral)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q209-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación desde las mesas de participación de NNA"
+        "pattern": "retroalimentación desde las mesas de participación de NNA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q209-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Política Social"
+        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Política Social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q209-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en la implementación"
+        "pattern": "lecciones aprendidas en la implementación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +301,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q209"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +314,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

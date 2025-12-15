@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "ff960c09ac691eb1957a8651651940abfd3246ebf1c113dac5356626c36aef2b",
+    "contract_hash": "86ace22839a07b42bfc1de09f725dae1919397540052a7fbe783bb101125d88e",
     "created_at": "2025-11-28T03:50:01.879198+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 38,
-    "updated_at": "2025-12-15T20:32:11.323276+00:00"
+    "updated_at": "2025-12-15T21:42:31.243539+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q038-000",
         "match_type": "REGEX",
-        "pattern": "para abordar las barreras de acceso|en respuesta a la xenofobia"
+        "pattern": "para abordar las barreras de acceso|en respuesta a la xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q038-001",
         "match_type": "REGEX",
-        "pattern": "la actividad de regularización ataca la causa de la informalidad"
+        "pattern": "la actividad de regularización ataca la causa de la informalidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q038-002",
         "match_type": "REGEX",
-        "pattern": "causa estructural|factor determinante|nudo crítico"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q038-003",
         "match_type": "REGEX",
-        "pattern": "estatus migratorio irregular|falta del PPT"
+        "pattern": "estatus migratorio irregular|falta del PPT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q038-004",
         "match_type": "REGEX",
-        "pattern": "barreras de acceso a servicios básicos (salud, educación)"
+        "pattern": "barreras de acceso a servicios básicos (salud, educación)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q038-005",
         "match_type": "REGEX",
-        "pattern": "discriminación y xenofobia"
+        "pattern": "discriminación y xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q038-006",
         "match_type": "REGEX",
-        "pattern": "desconocimiento de sus derechos y rutas de atención"
+        "pattern": "desconocimiento de sus derechos y rutas de atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +199,12 @@
         "flags": "i",
         "id": "PAT-Q038-007",
         "match_type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico causal de la crisis migratoria"
+        "pattern": "árbol de problemas|diagnóstico causal de la crisis migratoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -286,7 +326,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q278"
+          "const": "Q038"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +339,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

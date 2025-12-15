@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "56d33128dcd7d67afe4bb63d28ed1358afa98712e1ce5941ffe7b4920f940174",
+    "contract_hash": "517cbfb91cd6b8acac6fb09595a99f68bc240eee1a1c96a657d3c5d4040e7b24",
     "created_at": "2025-11-28T03:50:41.916426+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 213,
-    "updated_at": "2025-12-15T20:32:11.066880+00:00"
+    "updated_at": "2025-12-15T21:42:32.372271+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -140,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q213-000",
         "match_type": "REGEX",
-        "pattern": "Plan Plurianual de Inversiones|PPI|Plan Indicativo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
       },
       {
         "category": "GENERAL",
@@ -148,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q213-001",
         "match_type": "REGEX",
-        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión para desarrollo rural"
+        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión para desarrollo rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q213-002",
         "match_type": "LITERAL",
-        "pattern": "recursos para catastro multipropósito|convenio con IGAC"
+        "pattern": "recursos para catastro multipropósito|convenio con IGAC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +179,12 @@
         "flags": "i",
         "id": "PAT-Q213-003",
         "match_type": "REGEX",
-        "pattern": "presupuesto para el mejoramiento de vías terciarias"
+        "pattern": "presupuesto para el mejoramiento de vías terciarias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +192,12 @@
         "flags": "i",
         "id": "PAT-Q213-004",
         "match_type": "REGEX",
-        "pattern": "asignación para formalización de la propiedad rural|convenio con la ANT"
+        "pattern": "asignación para formalización de la propiedad rural|convenio con la ANT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +205,12 @@
         "flags": "i",
         "id": "PAT-Q213-005",
         "match_type": "REGEX",
-        "pattern": "inversión en distritos de riego|proyectos productivos"
+        "pattern": "inversión en distritos de riego|proyectos productivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +218,16 @@
         "flags": "i",
         "id": "PAT-Q213-006",
         "match_type": "REGEX",
-        "pattern": "\\$\\s*\\d+|COP\\s*\\d+|millones de pesos"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
       },
       {
         "category": "GENERAL",
@@ -196,7 +235,12 @@
         "flags": "i",
         "id": "PAT-Q213-007",
         "match_type": "LITERAL",
-        "pattern": "fuentes: SGP, recursos propios, regalías, cofinanciación INVIAS/ADR"
+        "pattern": "fuentes: SGP, recursos propios, regalías, cofinanciación INVIAS/ADR",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +248,12 @@
         "flags": "i",
         "id": "PAT-Q213-008",
         "match_type": "REGEX",
-        "pattern": "el presupuesto es suficiente para la meta de Km/Ha"
+        "pattern": "el presupuesto es suficiente para la meta de Km/Ha",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +379,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q273"
+          "const": "Q213"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +392,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

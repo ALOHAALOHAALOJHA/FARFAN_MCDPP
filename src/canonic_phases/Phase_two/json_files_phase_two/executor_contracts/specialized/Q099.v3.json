@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "0a33171fe8918d18f5417448d72503769ed9baf2e9e7285884e305c57ac438c8",
+    "contract_hash": "b941b609e59fcc25acaeb3ec5e0502043f8e5af2b06a15d49f1b6479c78afaef",
     "created_at": "2025-11-28T03:50:13.408863+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 99,
-    "updated_at": "2025-12-15T20:32:11.470919+00:00"
+    "updated_at": "2025-12-15T21:42:31.628872+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q4_Executor",
@@ -116,7 +116,12 @@
         "flags": "i",
         "id": "PAT-Q099-000",
         "match_type": "REGEX",
-        "pattern": "riesgos:|posibles dificultades:|barreras a la implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
       },
       {
         "category": "GENERAL",
@@ -124,7 +129,12 @@
         "flags": "i",
         "id": "PAT-Q099-001",
         "match_type": "REGEX",
-        "pattern": "baja adopción de prácticas sostenibles por parte de los agricultores"
+        "pattern": "baja adopción de prácticas sostenibles por parte de los agricultores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +142,12 @@
         "flags": "i",
         "id": "PAT-Q099-002",
         "match_type": "REGEX",
-        "pattern": "eventos climáticos extremos que superen la capacidad de las obras"
+        "pattern": "eventos climáticos extremos que superen la capacidad de las obras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +155,12 @@
         "flags": "i",
         "id": "PAT-Q099-003",
         "match_type": "REGEX",
-        "pattern": "conflictos por el uso del suelo|resistencia de la comunidad"
+        "pattern": "conflictos por el uso del suelo|resistencia de la comunidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +168,12 @@
         "flags": "i",
         "id": "PAT-Q099-004",
         "match_type": "REGEX",
-        "pattern": "sostenibilidad financiera de los proyectos"
+        "pattern": "sostenibilidad financiera de los proyectos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +181,12 @@
         "flags": "i",
         "id": "PAT-Q099-005",
         "match_type": "REGEX",
-        "pattern": "retrasos en la obtención de licencias ambientales"
+        "pattern": "retrasos en la obtención de licencias ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +194,12 @@
         "flags": "i",
         "id": "PAT-Q099-006",
         "match_type": "REGEX",
-        "pattern": "medidas de mitigación|plan de contingencia|para mitigar"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
       },
       {
         "category": "GENERAL",
@@ -172,7 +207,12 @@
         "flags": "i",
         "id": "PAT-Q099-007",
         "match_type": "REGEX",
-        "pattern": "socialización del proyecto|mantenimiento preventivo"
+        "pattern": "socialización del proyecto|mantenimiento preventivo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -294,7 +334,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q279"
+          "const": "Q099"
         },
         "question_global": {
           "type": "integer",
@@ -307,7 +347,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

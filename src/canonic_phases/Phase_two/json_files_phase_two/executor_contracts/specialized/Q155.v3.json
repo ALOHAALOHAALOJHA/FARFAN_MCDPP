@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "76663db593c6a57940b31e7233ce31cc093a914e641b8eee46b1057af9eaede7",
+    "contract_hash": "c8bd40b131f655797cea0b49a6ad45f1516ed3512c6f09ffbea212d684acdc65",
     "created_at": "2025-11-28T03:50:31.591045+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 155,
-    "updated_at": "2025-12-15T20:32:11.153171+00:00"
+    "updated_at": "2025-12-15T21:42:32.025651+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q155-000",
         "match_type": "REGEX",
-        "pattern": "en el marco de la Ley 1448 de 2011|Ley de Víctimas y Restitución de Tierras"
+        "pattern": "en el marco de la Ley 1448 de 2011|Ley de Víctimas y Restitución de Tierras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q155-001",
         "match_type": "LITERAL",
-        "pattern": "Decretos Ley Étnicos 4633, 4634, 4635"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0003"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q155-002",
         "match_type": "REGEX",
-        "pattern": "Acuerdo de Paz|Punto 5 sobre Víctimas|PDET"
+        "pattern": "Acuerdo de Paz|Punto 5 sobre Víctimas|PDET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q155-003",
         "match_type": "REGEX",
-        "pattern": "competencias del municipio en atención y asistencia|principio de subsidiariedad"
+        "pattern": "competencias del municipio en atención y asistencia|principio de subsidiariedad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q155-004",
         "match_type": "REGEX",
-        "pattern": "la indemnización es competencia de la UARIV|la restitución es de la URT"
+        "pattern": "la indemnización es competencia de la UARIV|la restitución es de la URT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q155-005",
         "match_type": "LITERAL",
-        "pattern": "recursos insuficientes para la reparación integral"
+        "pattern": "recursos insuficientes para la reparación integral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q155-006",
         "match_type": "REGEX",
-        "pattern": "limitaciones presupuestales del FONSET"
+        "pattern": "limitaciones presupuestales del FONSET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +183,12 @@
         "flags": "i",
         "id": "PAT-Q155-007",
         "match_type": "REGEX",
-        "pattern": "durante el cuatrienio|plazo de implementación del PAT"
+        "pattern": "durante el cuatrienio|plazo de implementación del PAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +196,12 @@
         "flags": "i",
         "id": "PAT-Q155-008",
         "match_type": "REGEX",
-        "pattern": "coherencia entre metas y recursos disponibles|factibilidad financiera"
+        "pattern": "coherencia entre metas y recursos disponibles|factibilidad financiera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -286,7 +331,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q275"
+          "const": "Q155"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

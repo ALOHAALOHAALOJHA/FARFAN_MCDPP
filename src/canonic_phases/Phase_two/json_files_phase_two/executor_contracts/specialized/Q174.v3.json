@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "9c420c08d1052e1e23156591ab398c1111b4c5df1091281b6497c4ab5e12fc5d",
+    "contract_hash": "57c5c33f6ba246e833ff753b8eacdd423099d4197d78980bcf0a8b77b61705f9",
     "created_at": "2025-11-28T03:50:31.740406+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 174,
-    "updated_at": "2025-12-15T20:32:12.526341+00:00"
+    "updated_at": "2025-12-15T21:42:32.131088+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q174-000",
         "match_type": "REGEX",
-        "pattern": "visión de Paz Total|Acuerdo de Paz a largo plazo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0111"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q174-001",
         "match_type": "LITERAL",
-        "pattern": "riesgo sistémico|choque externo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0092"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q174-002",
         "match_type": "REGEX",
-        "pattern": "reconfiguración del conflicto armado|surgimiento de nuevos actores"
+        "pattern": "reconfiguración del conflicto armado|surgimiento de nuevos actores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q174-003",
         "match_type": "LITERAL",
-        "pattern": "crisis social o económica que exacerbe las tensiones"
+        "pattern": "crisis social o económica que exacerbe las tensiones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q174-004",
         "match_type": "REGEX",
-        "pattern": "estos factores podrían revertir los avances en la construcción de paz"
+        "pattern": "estos factores podrían revertir los avances en la construcción de paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q174-005",
         "match_type": "REGEX",
-        "pattern": "el mecanismo causal es vulnerable a|sensible a la voluntad política nacional"
+        "pattern": "el mecanismo causal es vulnerable a|sensible a la voluntad política nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q174-006",
         "match_type": "REGEX",
-        "pattern": "estrategias de resiliencia comunitaria|diplomacia local"
+        "pattern": "estrategias de resiliencia comunitaria|diplomacia local",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q294"
+          "const": "Q174"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

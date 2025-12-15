@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "16581cbd0f8605ee39c61108e1c9de6055a5d4cfa81f96ce00d2cfde1f3e9da6",
+    "contract_hash": "9aad599801bf40525440a4d9b9240d9b9b3e1efe0fb867ffde58090fcfc87e32",
     "created_at": "2025-11-28T03:50:42.510519+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 285,
-    "updated_at": "2025-12-15T20:32:12.042663+00:00"
+    "updated_at": "2025-12-15T21:42:32.735652+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -236,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q285-000",
         "match_type": "REGEX",
-        "pattern": "esto permitirá que|lo cual contribuirá a|generando una reducción de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0063"
       },
       {
         "category": "GENERAL",
@@ -244,7 +249,12 @@
         "flags": "i",
         "id": "PAT-Q285-001",
         "match_type": "REGEX",
-        "pattern": "el mecanismo es que la formación para el trabajo ofrece alternativas a la delincuencia"
+        "pattern": "el mecanismo es que la formación para el trabajo ofrece alternativas a la delincuencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +262,12 @@
         "flags": "i",
         "id": "PAT-Q285-002",
         "match_type": "REGEX",
-        "pattern": "al mejorar las condiciones de salud, se reduce la tensión y la violencia interna"
+        "pattern": "al mejorar las condiciones de salud, se reduce la tensión y la violencia interna",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +275,12 @@
         "flags": "i",
         "id": "PAT-Q285-003",
         "match_type": "REGEX",
-        "pattern": "la construcción de nuevos cupos reduce el hacinamiento, mejorando la gobernabilidad"
+        "pattern": "la construcción de nuevos cupos reduce el hacinamiento, mejorando la gobernabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +288,12 @@
         "flags": "i",
         "id": "PAT-Q285-004",
         "match_type": "REGEX",
-        "pattern": "variable intermedia|mediador|eslabón causal|habilidades para la vida|empleabilidad"
+        "pattern": "variable intermedia|mediador|eslabón causal|habilidades para la vida|empleabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q285-005",
         "match_type": "REGEX",
-        "pattern": "cadena de valor|ruta de cambio de la resocialización"
+        "pattern": "cadena de valor|ruta de cambio de la resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

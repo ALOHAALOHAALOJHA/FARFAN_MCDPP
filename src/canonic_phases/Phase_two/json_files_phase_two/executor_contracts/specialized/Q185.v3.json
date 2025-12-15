@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "53cc7f572b61835337796308743cc6dda93d74974a60ba2d4bb674b91bb2e226",
+    "contract_hash": "640dd915c26877b5769bd92963c9e98f0447146bf25a2530db2d45c8cbd01dee",
     "created_at": "2025-11-28T03:50:31.862442+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 185,
-    "updated_at": "2025-12-15T20:32:11.157375+00:00"
+    "updated_at": "2025-12-15T21:42:32.211440+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q185-000",
         "match_type": "REGEX",
-        "pattern": "en el marco de la Ley 1098 de 2006|Código de la Infancia y la Adolescencia"
+        "pattern": "en el marco de la Ley 1098 de 2006|Código de la Infancia y la Adolescencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q185-001",
         "match_type": "REGEX",
-        "pattern": "Ley 1622 de 2013|Estatuto de Ciudadanía Juvenil"
+        "pattern": "Ley 1622 de 2013|Estatuto de Ciudadanía Juvenil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q185-002",
         "match_type": "REGEX",
-        "pattern": "Política 'De Cero a Siempre'|Política Nacional de Juventud"
+        "pattern": "Política 'De Cero a Siempre'|Política Nacional de Juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q185-003",
         "match_type": "REGEX",
-        "pattern": "competencias del municipio en|responsabilidad del ICBF|SNBF"
+        "pattern": "competencias del municipio en|responsabilidad del ICBF|SNBF",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q185-004",
         "match_type": "REGEX",
-        "pattern": "recursos del SGP para primera infancia y educación"
+        "pattern": "recursos del SGP para primera infancia y educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q185-005",
         "match_type": "REGEX",
-        "pattern": "restricción presupuestal para ampliar la cobertura del PAE"
+        "pattern": "restricción presupuestal para ampliar la cobertura del PAE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q185-006",
         "match_type": "REGEX",
-        "pattern": "capacidad limitada de la Comisaría de Familia"
+        "pattern": "capacidad limitada de la Comisaría de Familia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +183,12 @@
         "flags": "i",
         "id": "PAT-Q185-007",
         "match_type": "REGEX",
-        "pattern": "durante el cuatrienio|plazo de implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0052"
       },
       {
         "category": "GENERAL",
@@ -156,7 +196,12 @@
         "flags": "i",
         "id": "PAT-Q185-008",
         "match_type": "REGEX",
-        "pattern": "coherencia entre metas y recursos disponibles|factibilidad financiera y técnica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0035"
       }
     ],
     "expected_elements": [
@@ -286,7 +331,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q275"
+          "const": "Q185"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

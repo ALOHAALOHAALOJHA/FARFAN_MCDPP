@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "4b3d2f7eb9c23e16ba85d8554678f5cbd94025356690958337e81dfabeadca60",
+    "contract_hash": "59dbc09b5a4c239dfb8b93bf58cd3cc4b350ecc6bdedbe7653978097378c4206",
     "created_at": "2025-11-28T03:50:05.971432+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 55,
-    "updated_at": "2025-12-15T20:32:12.551838+00:00"
+    "updated_at": "2025-12-15T21:42:31.373154+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q055-000",
         "match_type": "REGEX",
-        "pattern": "la ambición del impacto es realista si se mantiene el apoyo de la cooperación"
+        "pattern": "la ambición del impacto es realista si se mantiene el apoyo de la cooperación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q055-001",
         "match_type": "REGEX",
-        "pattern": "efecto no deseado|consecuencia imprevista|externalidad negativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q055-002",
         "match_type": "REGEX",
-        "pattern": "riesgo de generar una percepción de competencia desleal por empleos"
+        "pattern": "riesgo de generar una percepción de competencia desleal por empleos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q055-003",
         "match_type": "REGEX",
-        "pattern": "posible formación de enclaves o guetos"
+        "pattern": "posible formación de enclaves o guetos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q055-004",
         "match_type": "REGEX",
-        "pattern": "trade-off entre la rapidez de la ayuda humanitaria y la sostenibilidad de la integración"
+        "pattern": "trade-off entre la rapidez de la ayuda humanitaria y la sostenibilidad de la integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q055-005",
         "match_type": "REGEX",
-        "pattern": "hipótesis límite|el modelo de integración funciona si la economía local crece"
+        "pattern": "hipótesis límite|el modelo de integración funciona si la economía local crece",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q055-006",
         "match_type": "LITERAL",
-        "pattern": "supuesto crítico para el impacto a largo plazo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q295"
+          "const": "Q055"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

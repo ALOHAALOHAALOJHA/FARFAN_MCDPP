@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "dc76134e1daa2ab666405839c663edb1cb9105ca04688856a88cc067cb83e948",
+    "contract_hash": "8303d5f25ee66a28832607013bfb07c5e6e901ad2e54a795ab19af6583e92c91",
     "created_at": "2025-11-28T03:50:05.950174+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 49,
-    "updated_at": "2025-12-15T20:32:12.239448+00:00"
+    "updated_at": "2025-12-15T21:42:31.326944+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q049-000",
         "match_type": "REGEX",
-        "pattern": "este resultado responde al problema de la xenofobia"
+        "pattern": "este resultado responde al problema de la xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q049-001",
         "match_type": "REGEX",
-        "pattern": "para solucionar las barreras de acceso al empleo"
+        "pattern": "para solucionar las barreras de acceso al empleo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q049-002",
         "match_type": "REGEX",
-        "pattern": "el resultado atiende directamente la necesidad de regularización"
+        "pattern": "el resultado atiende directamente la necesidad de regularización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q049-003",
         "match_type": "REGEX",
-        "pattern": "criterio de éxito|se considerará un logro si disminuyen las denuncias por discriminación"
+        "pattern": "criterio de éxito|se considerará un logro si disminuyen las denuncias por discriminación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q049-004",
         "match_type": "REGEX",
-        "pattern": "umbral de cumplimiento|mínimo aceptable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,13 @@
         "flags": "i",
         "id": "PAT-Q049-005",
         "match_type": "REGEX",
-        "pattern": "matriz de coherencia|alineación diagnóstico-estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
       }
     ],
     "expected_elements": [
@@ -254,7 +285,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q289"
+          "const": "Q049"
         },
         "question_global": {
           "type": "integer",
@@ -267,7 +298,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

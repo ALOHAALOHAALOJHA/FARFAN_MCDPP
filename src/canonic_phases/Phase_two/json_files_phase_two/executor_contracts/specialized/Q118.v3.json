@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "803fa95511873f72ee1ad803a18c9b9bfebfd4e136a4a5d7f1ec642d05ad921e",
+    "contract_hash": "a785c8c3031ea6079ac1f8ba9d4be98dd960ea44cd3c30c3b0c7cf97735da357",
     "created_at": "2025-11-28T03:50:31.294975+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 118,
-    "updated_at": "2025-12-15T20:32:12.681313+00:00"
+    "updated_at": "2025-12-15T21:42:31.789784+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q118-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q118-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar|es necesario probar si el incentivo funciona"
+        "pattern": "se requiere validar|es necesario probar si el incentivo funciona",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q118-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto de PSA|fase experimental de compostaje|prueba de concepto"
+        "pattern": "plan piloto de PSA|fase experimental de compostaje|prueba de concepto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q118-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto de la adopción de prácticas"
+        "pattern": "testear el supuesto de la adopción de prácticas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q118-004",
         "match_type": "REGEX",
-        "pattern": "validar la hipótesis de costo-efectividad"
+        "pattern": "validar la hipótesis de costo-efectividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q118-005",
         "match_type": "REGEX",
-        "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q118-006",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa de recursos naturales"
+        "pattern": "aprendizaje adaptativo|gestión adaptativa de recursos naturales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +305,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q298"
+          "const": "Q118"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +318,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

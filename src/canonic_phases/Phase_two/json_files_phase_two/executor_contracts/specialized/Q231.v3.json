@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "298819d63a87b319b3bba7664c613799b36d422e14c5d2645c70ab62834b4736",
+    "contract_hash": "382718f7cfb283bcd79e8a04e6c684ee501776898f5664bb12013006f66c61eb",
     "created_at": "2025-11-28T03:50:42.069001+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 231,
-    "updated_at": "2025-12-15T20:32:12.363660+00:00"
+    "updated_at": "2025-12-15T21:42:32.468164+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q231-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación territorial"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0070"
       },
       {
         "category": "TERRITORIAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q231-001",
         "match_type": "REGEX",
-        "pattern": "ordenamiento territorial sostenible|desarrollo rural integral y competitivo"
+        "pattern": "ordenamiento territorial sostenible|desarrollo rural integral y competitivo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q231-002",
         "match_type": "REGEX",
-        "pattern": "cierre de brechas rural-urbanas|convergencia regional"
+        "pattern": "cierre de brechas rural-urbanas|convergencia regional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q231-003",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados de seguridad jurídica y productividad generará"
+        "pattern": "la suma de los resultados de seguridad jurídica y productividad generará",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q231-004",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "TEMPORAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q231-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en 10-15 años"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0106"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q231-006",
         "match_type": "LITERAL",
-        "pattern": "rezago temporal|efectos estructurales"
+        "pattern": "rezago temporal|efectos estructurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q231"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

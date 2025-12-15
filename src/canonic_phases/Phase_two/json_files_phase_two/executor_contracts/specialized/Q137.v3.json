@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "7e5d3aa7c5d39d7967d573c14be12ac94fc0b494edadf9115e3b10e902ba137c",
+    "contract_hash": "f429e7978d5f3a2ec01516431d966dfed6d87650fcc3ca3dfc0f1c24abe5b7a3",
     "created_at": "2025-11-28T03:50:31.443766+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 137,
-    "updated_at": "2025-12-15T20:32:12.156343+00:00"
+    "updated_at": "2025-12-15T21:42:31.905355+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q137-000",
         "match_type": "REGEX",
-        "pattern": "cadena causal|lógica de intervención|si... entonces..."
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0028"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q137-001",
         "match_type": "REGEX",
-        "pattern": "el resultado se logrará siempre y cuando|asumiendo que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0057"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q137-002",
         "match_type": "REGEX",
-        "pattern": "supuesto clave|premisa fundamental"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0101"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q137-003",
         "match_type": "REGEX",
-        "pattern": "condición habilitante|factor crítico|requiere de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0043"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q137-004",
         "match_type": "REGEX",
-        "pattern": "depende de la calidad de los docentes|corresponsabilidad de las familias"
+        "pattern": "depende de la calidad de los docentes|corresponsabilidad de las familias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q137-005",
         "match_type": "REGEX",
-        "pattern": "un supuesto es que los hogares usen adecuadamente la vivienda mejorada"
+        "pattern": "un supuesto es que los hogares usen adecuadamente la vivienda mejorada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q137-006",
         "match_type": "REGEX",
-        "pattern": "se requiere que la ESE garantice la disponibilidad de medicamentos"
+        "pattern": "se requiere que la ESE garantice la disponibilidad de medicamentos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q287"
+          "const": "Q137"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

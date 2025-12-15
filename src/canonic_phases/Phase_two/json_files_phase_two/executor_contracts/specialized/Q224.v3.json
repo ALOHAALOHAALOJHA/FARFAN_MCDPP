@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "edda41d56ea76134159d8e908808659ac2633acd171576a494948598f3f70b14",
+    "contract_hash": "575e36ca6f22f7125fb92dc00a85c38d3101e38e24225dae7394cbb606dded18",
     "created_at": "2025-11-28T03:50:42.042143+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 224,
-    "updated_at": "2025-12-15T20:32:11.906657+00:00"
+    "updated_at": "2025-12-15T21:42:32.429655+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -244,7 +244,12 @@
         "flags": "i",
         "id": "PAT-Q224-000",
         "match_type": "REGEX",
-        "pattern": "factibilidad|viabilidad|es realista esperar que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0066"
       },
       {
         "category": "GENERAL",
@@ -252,7 +257,12 @@
         "flags": "i",
         "id": "PAT-Q224-001",
         "match_type": "REGEX",
-        "pattern": "capacidad técnica y jurídica para el barrido predial"
+        "pattern": "capacidad técnica y jurídica para el barrido predial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +270,12 @@
         "flags": "i",
         "id": "PAT-Q224-002",
         "match_type": "REGEX",
-        "pattern": "plazo de ejecución de las obras viales|tiempo de los trámites registrales"
+        "pattern": "plazo de ejecución de las obras viales|tiempo de los trámites registrales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +283,12 @@
         "flags": "i",
         "id": "PAT-Q224-003",
         "match_type": "REGEX",
-        "pattern": "la meta de formalización es ambiciosa y depende de la agilidad de la ANT"
+        "pattern": "la meta de formalización es ambiciosa y depende de la agilidad de la ANT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +296,12 @@
         "flags": "i",
         "id": "PAT-Q224-004",
         "match_type": "REGEX",
-        "pattern": "contradictorio|poco probable|desproporcionado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0045"
       },
       {
         "category": "GENERAL",
@@ -284,7 +309,12 @@
         "flags": "i",
         "id": "PAT-Q224-005",
         "match_type": "REGEX",
-        "pattern": "con los recursos del banco de maquinaria se puede lograr"
+        "pattern": "con los recursos del banco de maquinaria se puede lograr",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -410,7 +440,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q284"
+          "const": "Q224"
         },
         "question_global": {
           "type": "integer",
@@ -423,7 +453,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

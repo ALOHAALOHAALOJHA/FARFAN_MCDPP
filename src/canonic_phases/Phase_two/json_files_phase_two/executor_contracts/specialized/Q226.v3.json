@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "6f6df3adc5c5f9e5a3c96829a45b72ae9306aa9f4c566e58deb635b477b9e688",
+    "contract_hash": "0d0524ea91a290e9e0e878fe9d000b29e1f88955f4dc16931f65d6dd6dbc9a04",
     "created_at": "2025-11-28T03:50:42.052524+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 226,
-    "updated_at": "2025-12-15T20:32:12.113518+00:00"
+    "updated_at": "2025-12-15T21:42:32.444717+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q226-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "INDICADOR",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q226-001",
         "match_type": "REGEX",
-        "pattern": "porcentaje de actualización del catastro con enfoque multipropósito"
+        "pattern": "porcentaje de actualización del catastro con enfoque multipropósito",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q226-002",
         "match_type": "REGEX",
-        "pattern": "porcentaje de reducción de la informalidad en la tenencia de la tierra"
+        "pattern": "porcentaje de reducción de la informalidad en la tenencia de la tierra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q226-003",
         "match_type": "REGEX",
-        "pattern": "índice de estado de la red vial terciaria"
+        "pattern": "índice de estado de la red vial terciaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q226-004",
         "match_type": "REGEX",
-        "pattern": "reducción en los costos de transporte de productos agropecuarios"
+        "pattern": "reducción en los costos de transporte de productos agropecuarios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q226-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q226-006",
         "match_type": "LITERAL",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera aumentar a un X%"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0011"
       },
       {
         "category": "GENERAL",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q226-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -228,7 +268,12 @@
         "flags": "i",
         "id": "PAT-Q226-008",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT del DNP)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
       },
       {
         "category": "TEMPORAL",
@@ -236,7 +281,12 @@
         "flags": "i",
         "id": "PAT-Q226-009",
         "match_type": "REGEX",
-        "pattern": "horizonte temporal|ventana de maduración|al final del periodo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0068"
       }
     ],
     "expected_elements": [
@@ -368,7 +418,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q286"
+          "const": "Q226"
         },
         "question_global": {
           "type": "integer",
@@ -381,7 +431,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

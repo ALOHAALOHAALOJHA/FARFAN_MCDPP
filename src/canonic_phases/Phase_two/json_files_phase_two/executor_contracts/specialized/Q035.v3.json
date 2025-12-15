@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "5daef4fec15a3b38edb069db359750d1aea781d33e05f54d1426006d84ccd559",
+    "contract_hash": "a66127f464179168c048113e69e8a2d6e45bf2763bf94e63f114e25b16b5e5ac",
     "created_at": "2025-11-28T03:50:01.869083+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 35,
-    "updated_at": "2025-12-15T20:32:11.135278+00:00"
+    "updated_at": "2025-12-15T21:42:31.225954+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q035-000",
         "match_type": "REGEX",
-        "pattern": "en el marco del Estatuto Temporal de Protección para Migrantes Venezolanos|ETPV|PPT"
+        "pattern": "en el marco del Estatuto Temporal de Protección para Migrantes Venezolanos|ETPV|PPT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q035-001",
         "match_type": "REGEX",
-        "pattern": "Ley 2136 de 2021|Política Integral Migratoria|CONPES 3950"
+        "pattern": "Ley 2136 de 2021|Política Integral Migratoria|CONPES 3950",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q035-002",
         "match_type": "REGEX",
-        "pattern": "competencia del municipio en asistencia humanitaria y complementaria"
+        "pattern": "competencia del municipio en asistencia humanitaria y complementaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q035-003",
         "match_type": "REGEX",
-        "pattern": "la regularización migratoria es competencia de Migración Colombia"
+        "pattern": "la regularización migratoria es competencia de Migración Colombia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q035-004",
         "match_type": "REGEX",
-        "pattern": "la determinación de la condición de refugiado es de la CONARE/Cancillería"
+        "pattern": "la determinación de la condición de refugiado es de la CONARE/Cancillería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q035-005",
         "match_type": "REGEX",
-        "pattern": "recursos propios insuficientes|alta dependencia de la cooperación internacional"
+        "pattern": "recursos propios insuficientes|alta dependencia de la cooperación internacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q035-006",
         "match_type": "REGEX",
-        "pattern": "capacidad de los servicios sociales superada por la demanda"
+        "pattern": "capacidad de los servicios sociales superada por la demanda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +183,12 @@
         "flags": "i",
         "id": "PAT-Q035-007",
         "match_type": "REGEX",
-        "pattern": "durante el cuatrienio|plazo de la estrategia de integración"
+        "pattern": "durante el cuatrienio|plazo de la estrategia de integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +196,12 @@
         "flags": "i",
         "id": "PAT-Q035-008",
         "match_type": "LITERAL",
-        "pattern": "coherencia entre metas y la competencia municipal"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0034"
       }
     ],
     "expected_elements": [
@@ -286,7 +331,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q275"
+          "const": "Q035"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

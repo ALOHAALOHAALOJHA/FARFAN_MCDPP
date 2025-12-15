@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "3ffb8c9fe25d2f8a0faddfdd84c6bd2362e56cb25c3028a55056a5f766566134",
+    "contract_hash": "a0a357ac6a8aaa3b564ec26140d15fba4de8794b606712436049e6876351405e",
     "created_at": "2025-11-28T03:50:05.914757+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 41,
-    "updated_at": "2025-12-15T20:32:11.572460+00:00"
+    "updated_at": "2025-12-15T21:42:31.261394+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q041-000",
         "match_type": "REGEX",
-        "pattern": "indicador de producto|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0073"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q041-001",
         "match_type": "REGEX",
-        "pattern": "migrantes orientados en el PAO|personas atendidas"
+        "pattern": "migrantes orientados en el PAO|personas atendidas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q041-002",
         "match_type": "REGEX",
-        "pattern": "kits de ayuda humanitaria (alimento, higiene) entregados"
+        "pattern": "kits de ayuda humanitaria (alimento, higiene) entregados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q041-003",
         "match_type": "REGEX",
-        "pattern": "personas alojadas en albergues temporales"
+        "pattern": "personas alojadas en albergues temporales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q041-004",
         "match_type": "REGEX",
-        "pattern": "migrantes acompañados en la obtención del PPT"
+        "pattern": "migrantes acompañados en la obtención del PPT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q041-005",
         "match_type": "REGEX",
-        "pattern": "NNA migrantes matriculados en el sistema escolar"
+        "pattern": "NNA migrantes matriculados en el sistema escolar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q041-006",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|Valor inicial:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0008"
       },
       {
         "category": "GENERAL",
@@ -156,7 +191,12 @@
         "flags": "i",
         "id": "PAT-Q041-007",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0013"
       },
       {
         "category": "GENERAL",
@@ -164,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q041-008",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0007"
       },
       {
         "category": "GENERAL",
@@ -172,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q041-009",
         "match_type": "REGEX",
-        "pattern": "listados de asistencia|registros del PAO|informes de los cooperantes (OIM, ACNUR)"
+        "pattern": "listados de asistencia|registros del PAO|informes de los cooperantes (OIM, ACNUR)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -302,7 +352,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q281"
+          "const": "Q041"
         },
         "question_global": {
           "type": "integer",
@@ -315,7 +365,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

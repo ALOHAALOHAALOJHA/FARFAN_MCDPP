@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "9bdcde319aceb31d0c20fcc56e9bfd8179e32152d6cf1082e1c549dd3b94000a",
+    "contract_hash": "99399c19c5cf0227a02e4102c812f4d7d2562f2d55648c76bd20413034ea54fc",
     "created_at": "2025-11-28T03:50:31.855498+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 183,
-    "updated_at": "2025-12-15T20:32:11.061475+00:00"
+    "updated_at": "2025-12-15T21:42:32.196677+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -140,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q183-000",
         "match_type": "REGEX",
-        "pattern": "Plan Plurianual de Inversiones|PPI|Plan Indicativo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
       },
       {
         "category": "GENERAL",
@@ -148,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q183-001",
         "match_type": "REGEX",
-        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión para infancia/juventud"
+        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión para infancia/juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q183-002",
         "match_type": "REGEX",
-        "pattern": "recursos del SGP para educación|recursos para el PAE"
+        "pattern": "recursos del SGP para educación|recursos para el PAE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +179,12 @@
         "flags": "i",
         "id": "PAT-Q183-003",
         "match_type": "REGEX",
-        "pattern": "presupuesto para el fortalecimiento de Comisarías de Familia"
+        "pattern": "presupuesto para el fortalecimiento de Comisarías de Familia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +192,12 @@
         "flags": "i",
         "id": "PAT-Q183-004",
         "match_type": "REGEX",
-        "pattern": "asignación para la Política Pública de Juventud"
+        "pattern": "asignación para la Política Pública de Juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +205,12 @@
         "flags": "i",
         "id": "PAT-Q183-005",
         "match_type": "REGEX",
-        "pattern": "inversión en Centros de Desarrollo Infantil|CDI"
+        "pattern": "inversión en Centros de Desarrollo Infantil|CDI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +218,12 @@
         "flags": "i",
         "id": "PAT-Q183-006",
         "match_type": "REGEX",
-        "pattern": "fondos para programas de prevención de SPA o embarazo adolescente"
+        "pattern": "fondos para programas de prevención de SPA o embarazo adolescente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +231,16 @@
         "flags": "i",
         "id": "PAT-Q183-007",
         "match_type": "REGEX",
-        "pattern": "\\$\\s*\\d+|COP\\s*\\d+|millones de pesos"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
       },
       {
         "category": "GENERAL",
@@ -204,7 +248,12 @@
         "flags": "i",
         "id": "PAT-Q183-008",
         "match_type": "LITERAL",
-        "pattern": "fuentes: SGP, recursos propios, cofinanciación ICBF"
+        "pattern": "fuentes: SGP, recursos propios, cofinanciación ICBF",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +379,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q273"
+          "const": "Q183"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +392,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

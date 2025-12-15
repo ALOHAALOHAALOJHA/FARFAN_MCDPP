@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "199bbc8ac2546a9507ed55a74f9b5883729b2f3c8eb765dffb2d47fee27e4c7f",
+    "contract_hash": "e79d50092e14c2862be0dee896b31f4773e07f6a2cf05f73742bd6718a6827db",
     "created_at": "2025-11-28T03:50:05.946975+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 48,
-    "updated_at": "2025-12-15T20:32:12.193307+00:00"
+    "updated_at": "2025-12-15T21:42:31.321481+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q048-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dado el flujo migratorio"
+        "pattern": "meta ambiciosa pero factible|meta realista dado el flujo migratorio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q048-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por los recursos de cooperación gestionados"
+        "pattern": "la meta se justifica por los recursos de cooperación gestionados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q048-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión de X se espera lograr la afiliación de Y personas"
+        "pattern": "con la inversión de X se espera lograr la afiliación de Y personas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q048-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad del sistema de salud local permite absorber esta nueva población"
+        "pattern": "la capacidad del sistema de salud local permite absorber esta nueva población",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q048-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias similares de Cúcuta|Maicao|otras ciudades fronterizas"
+        "pattern": "en experiencias similares de Cúcuta|Maicao|otras ciudades fronterizas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q048-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente de ACNUR/OIM|meta del PND para migración"
+        "pattern": "benchmark|referente de ACNUR/OIM|meta del PND para migración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q048"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

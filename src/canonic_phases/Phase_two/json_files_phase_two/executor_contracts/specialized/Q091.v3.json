@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "55fb10ec5fbc8588434c12b5178cf96062ce91aa4d4bbd18f2cab74b7b560652",
+    "contract_hash": "7a51dfdf863525c5e60dbf3499998560164badd465ad71ac17633aa5defcc427",
     "created_at": "2025-11-28T03:50:13.381382+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 91,
-    "updated_at": "2025-12-15T20:21:11.029435+00:00"
+    "updated_at": "2025-12-15T21:42:31.566479+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -172,7 +172,12 @@
         "flags": "i",
         "id": "PAT-Q091-000",
         "match_type": "REGEX",
-        "pattern": "línea base ambiental|diagnóstico de riesgo|situación inicial"
+        "pattern": "línea base ambiental|diagnóstico de riesgo|situación inicial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +185,12 @@
         "flags": "i",
         "id": "PAT-Q091-001",
         "match_type": "REGEX",
-        "pattern": "fuente:|según|reporte de|con datos de"
+        "pattern": "fuente:|según|reporte de|con datos de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +198,12 @@
         "flags": "i",
         "id": "PAT-Q091-002",
         "match_type": "LITERAL",
-        "pattern": "IDEAM|CAR|MinAmbiente|SINA|Parques Nacionales Naturales|PNN"
+        "pattern": "IDEAM|CAR|MinAmbiente|SINA|Parques Nacionales Naturales|PNN",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +211,12 @@
         "flags": "i",
         "id": "PAT-Q091-003",
         "match_type": "LITERAL",
-        "pattern": "UNGRD|Servicio Geológico Colombiano|SGC|CMGRD"
+        "pattern": "UNGRD|Servicio Geológico Colombiano|SGC|CMGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +224,12 @@
         "flags": "i",
         "id": "PAT-Q091-004",
         "match_type": "REGEX",
-        "pattern": "SUI|SSPD|SIVICAP|Secretaría de Salud"
+        "pattern": "SUI|SSPD|SIVICAP|Secretaría de Salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +237,12 @@
         "flags": "i",
         "id": "PAT-Q091-005",
         "match_type": "REGEX",
-        "pattern": "tasa de deforestación|hectáreas deforestadas|Ha/año"
+        "pattern": "tasa de deforestación|hectáreas deforestadas|Ha/año",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +250,12 @@
         "flags": "i",
         "id": "PAT-Q091-006",
         "match_type": "REGEX",
-        "pattern": "Índice de Riesgo de Calidad del Agua|IRCA"
+        "pattern": "Índice de Riesgo de Calidad del Agua|IRCA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +263,12 @@
         "flags": "i",
         "id": "PAT-Q091-007",
         "match_type": "REGEX",
-        "pattern": "Índice de Calidad del Aire|ICA|PM2.5"
+        "pattern": "Índice de Calidad del Aire|ICA|PM2.5",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +276,12 @@
         "flags": "i",
         "id": "PAT-Q091-008",
         "match_type": "REGEX",
-        "pattern": "toneladas de residuos sólidos generadas|aprovechamiento de residuos"
+        "pattern": "toneladas de residuos sólidos generadas|aprovechamiento de residuos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +289,12 @@
         "flags": "i",
         "id": "PAT-Q091-009",
         "match_type": "REGEX",
-        "pattern": "familias en zona de amenaza alta|población expuesta a riesgo"
+        "pattern": "familias en zona de amenaza alta|población expuesta a riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +302,12 @@
         "flags": "i",
         "id": "PAT-Q091-010",
         "match_type": "REGEX",
-        "pattern": "caudal|oferta hídrica|Índice de Uso del Agua|IUA"
+        "pattern": "caudal|oferta hídrica|Índice de Uso del Agua|IUA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +315,12 @@
         "flags": "i",
         "id": "PAT-Q091-011",
         "match_type": "LITERAL",
-        "pattern": "2021|2022|2023|vigencia anterior|serie histórica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0001"
       },
       {
         "category": "GENERAL",
@@ -268,7 +328,12 @@
         "flags": "i",
         "id": "PAT-Q091-012",
         "match_type": "REGEX",
-        "pattern": "mapa de riesgo|zonificación de amenazas"
+        "pattern": "mapa de riesgo|zonificación de amenazas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -1948,6 +2013,83 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    },
+    "evidence_structure_post_nexus": {
+      "type": "graph",
+      "nodes": {
+        "text_mining": {
+          "type": "source",
+          "provides": [
+            "critical_links",
+            "patterns"
+          ]
+        },
+        "industrial_policy": {
+          "type": "source",
+          "provides": [
+            "processed_evidence",
+            "patterns"
+          ]
+        },
+        "causal_extraction": {
+          "type": "source",
+          "provides": [
+            "goals",
+            "contexts"
+          ]
+        },
+        "financial_audit": {
+          "type": "source",
+          "provides": [
+            "amounts",
+            "totals"
+          ]
+        },
+        "bayesian_analysis": {
+          "type": "analysis",
+          "provides": [
+            "metrics",
+            "comparisons"
+          ]
+        },
+        "semantic_processing": {
+          "type": "processing",
+          "provides": [
+            "chunks",
+            "embeddings"
+          ]
+        },
+        "final_evidence": {
+          "type": "sink",
+          "aggregates": "all"
+        }
+      },
+      "edges": [
+        {
+          "from": "text_mining",
+          "to": "final_evidence"
+        },
+        {
+          "from": "industrial_policy",
+          "to": "final_evidence"
+        },
+        {
+          "from": "causal_extraction",
+          "to": "final_evidence"
+        },
+        {
+          "from": "financial_audit",
+          "to": "final_evidence"
+        },
+        {
+          "from": "bayesian_analysis",
+          "to": "final_evidence"
+        },
+        {
+          "from": "semantic_processing",
+          "to": "final_evidence"
+        }
+      ]
     }
   },
   "method_outputs": {

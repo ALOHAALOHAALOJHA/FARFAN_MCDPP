@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "5073481a92ed7f09d7b9e80701aea4af63ddc7e8d4ee8d775d68b40205c5e839",
+    "contract_hash": "bb1039872660c559593b1701baab06ea378f87f328b0607420cc09ffbf7ce8de",
     "created_at": "2025-11-28T03:50:31.551638+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 144,
-    "updated_at": "2025-12-15T20:32:12.522048+00:00"
+    "updated_at": "2025-12-15T21:42:31.966616+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q144-000",
         "match_type": "REGEX",
-        "pattern": "visión de largo plazo del país|Agenda 2030"
+        "pattern": "visión de largo plazo del país|Agenda\\\\s+2030",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q144-001",
         "match_type": "REGEX",
-        "pattern": "riesgo sistémico|choque externo|crisis económica|desempleo masivo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0094"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q144-002",
         "match_type": "REGEX",
-        "pattern": "pandemia|emergencia sanitaria|desastre natural"
+        "pattern": "pandemia|emergencia sanitaria|desastre natural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q144-003",
         "match_type": "LITERAL",
-        "pattern": "una crisis fiscal que recorte el SGP"
+        "pattern": "una crisis fiscal que recorte el SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q144-004",
         "match_type": "REGEX",
-        "pattern": "estos factores podrían revertir los avances en reducción de pobreza"
+        "pattern": "estos factores podrían revertir los avances en reducción de pobreza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q144-005",
         "match_type": "LITERAL",
-        "pattern": "el mecanismo causal es vulnerable a|sensible a la situación macroeconómica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0054"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q144-006",
         "match_type": "REGEX",
-        "pattern": "estrategias de resiliencia social|redes de apoyo"
+        "pattern": "estrategias de resiliencia social|redes de apoyo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q294"
+          "const": "Q144"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

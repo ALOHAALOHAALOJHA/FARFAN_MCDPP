@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "be18b669ce8838d7d986b6911c58e6985bff21641a4626cf77b40d3ee0b0b0bd",
+    "contract_hash": "0c8ff912a284d9822652d7415b07b7f057f33f1815e2f2d7856917669bc07754",
     "created_at": "2025-11-28T03:50:31.600877+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 158,
-    "updated_at": "2025-12-15T20:32:11.406448+00:00"
+    "updated_at": "2025-12-15T21:42:32.039304+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q158-000",
         "match_type": "REGEX",
-        "pattern": "para abordar el daño causado|en respuesta a la necesidad de"
+        "pattern": "para abordar el daño causado|en respuesta a la necesidad de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q158-001",
         "match_type": "REGEX",
-        "pattern": "esta actividad de memoria contribuye a la satisfacción y no repetición"
+        "pattern": "esta actividad de memoria contribuye a la satisfacción y no repetición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q158-002",
         "match_type": "REGEX",
-        "pattern": "causa estructural del conflicto|factor de persistencia de la violencia"
+        "pattern": "causa estructural del conflicto|factor de persistencia de la violencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q158-003",
         "match_type": "REGEX",
-        "pattern": "necesidades de rehabilitación psicosocial|requerimientos de generación de ingresos"
+        "pattern": "necesidades de rehabilitación psicosocial|requerimientos de generación de ingresos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q158-004",
         "match_type": "REGEX",
-        "pattern": "dignificación de las víctimas|reconocimiento del buen nombre"
+        "pattern": "dignificación de las víctimas|reconocimiento del buen nombre",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TEMPORAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q158-005",
         "match_type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico del daño"
+        "pattern": "árbol de problemas|diagnóstico del daño",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +300,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q278"
+          "const": "Q158"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +313,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

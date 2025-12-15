@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "c6231ba809370d763bd90c93bef9b34bbbeadc1c376fdde9a0e0a0319031bf40",
+    "contract_hash": "70cd964d11974646b81a27369dbecad5445049e58ddae0dccd29f2f781a082ba",
     "created_at": "2025-11-28T03:50:31.851939+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 182,
-    "updated_at": "2025-12-15T20:32:11.010919+00:00"
+    "updated_at": "2025-12-15T21:42:32.186659+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -132,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q182-000",
         "match_type": "REGEX",
-        "pattern": "déficit de cupos en primera infancia|población desescolarizada"
+        "pattern": "déficit de cupos en primera infancia|población desescolarizada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q182-001",
         "match_type": "REGEX",
-        "pattern": "magnitud del problema del consumo de SPA|población juvenil en riesgo"
+        "pattern": "magnitud del problema del consumo de SPA|población juvenil en riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q182-002",
         "match_type": "REGEX",
-        "pattern": "el número de NNA sin esquema de vacunación completo es de"
+        "pattern": "el número de NNA sin esquema de vacunación completo es de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q182-003",
         "match_type": "REGEX",
-        "pattern": "comparado con el promedio departamental de embarazo adolescente"
+        "pattern": "comparado con el promedio departamental de embarazo adolescente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +184,12 @@
         "flags": "i",
         "id": "PAT-Q182-004",
         "match_type": "REGEX",
-        "pattern": "aumento de los casos de violencia intrafamiliar reportados"
+        "pattern": "aumento de los casos de violencia intrafamiliar reportados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +197,12 @@
         "flags": "i",
         "id": "PAT-Q182-005",
         "match_type": "REGEX",
-        "pattern": "información insuficiente sobre salud mental en adolescentes"
+        "pattern": "información insuficiente sobre salud mental en adolescentes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +210,12 @@
         "flags": "i",
         "id": "PAT-Q182-006",
         "match_type": "REGEX",
-        "pattern": "subregistro de casos de violencia sexual|cifra negra"
+        "pattern": "subregistro de casos de violencia sexual|cifra negra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +223,12 @@
         "flags": "i",
         "id": "PAT-Q182-007",
         "match_type": "REGEX",
-        "pattern": "falta de caracterización de la población NINI"
+        "pattern": "falta de caracterización de la población NINI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q182-008",
         "match_type": "REGEX",
-        "pattern": "causas de la deserción|factores de riesgo para el reclutamiento"
+        "pattern": "causas de la deserción|factores de riesgo para el reclutamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -322,7 +367,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q272"
+          "const": "Q182"
         },
         "question_global": {
           "type": "integer",
@@ -335,7 +380,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

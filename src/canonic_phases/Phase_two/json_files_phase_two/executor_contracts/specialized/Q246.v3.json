@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "cb549d6bc8d5aa8c35beefd5ae7dddf9116190a355029174e55a73e8a2547988",
+    "contract_hash": "6f3c753ca3c31aad6e282fc6bfa310b62e9ac086b1b82af7186d5e1fd08df0da",
     "created_at": "2025-11-28T03:50:42.202548+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 246,
-    "updated_at": "2025-12-15T20:32:11.211419+00:00"
+    "updated_at": "2025-12-15T21:42:32.541417+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q1_Executor",
@@ -92,7 +92,13 @@
         "flags": "i",
         "id": "PAT-Q246-000",
         "match_type": "REGEX",
-        "pattern": "tabla de actividades|cuadro de seguimiento|matriz de plan de acción"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0105"
       },
       {
         "category": "GENERAL",
@@ -100,7 +106,12 @@
         "flags": "i",
         "id": "PAT-Q246-001",
         "match_type": "REGEX",
-        "pattern": "columna responsable|entidad a cargo|ejecutor"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0039"
       },
       {
         "category": "GENERAL",
@@ -108,7 +119,12 @@
         "flags": "i",
         "id": "PAT-Q246-002",
         "match_type": "REGEX",
-        "pattern": "columna producto|entregable|output|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0038"
       },
       {
         "category": "TEMPORAL",
@@ -116,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q246-003",
         "match_type": "LITERAL",
-        "pattern": "columna cronograma|plazo|vigencia|año 1|trimestre"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0037"
       },
       {
         "category": "GENERAL",
@@ -124,15 +145,36 @@
         "flags": "i",
         "id": "PAT-Q246-004",
         "match_type": "LITERAL",
-        "pattern": "columna costo|presupuesto|valor|recursos|monto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0036"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q246-005",
-        "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Personería|Comando de Policía"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Personería|Comando de Policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +182,12 @@
         "flags": "i",
         "id": "PAT-Q246-006",
         "match_type": "REGEX",
-        "pattern": "Plan Indicativo|Anexo de metas"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0015"
       }
     ],
     "expected_elements": [
@@ -274,7 +321,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q276"
+          "const": "Q246"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +334,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

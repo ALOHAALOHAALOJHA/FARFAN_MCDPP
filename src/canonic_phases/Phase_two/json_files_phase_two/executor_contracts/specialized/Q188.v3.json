@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "c94197d951cc1ee72fa160d5a642ca9a7e74880b14e42e90cb80f58efcc7c1b1",
+    "contract_hash": "2c18eb1f6a15e0844509aa1a33c51c219a69b5809a4d9d7bc575a43bcb466f39",
     "created_at": "2025-11-28T03:50:31.871631+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 188,
-    "updated_at": "2025-12-15T20:32:11.415708+00:00"
+    "updated_at": "2025-12-15T21:42:32.225654+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q188-000",
         "match_type": "REGEX",
-        "pattern": "para abordar la causa de la deserción|en respuesta al problema de"
+        "pattern": "para abordar la causa de la deserción|en respuesta al problema de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q188-001",
         "match_type": "REGEX",
-        "pattern": "esta actividad ataca el determinante del embarazo adolescente"
+        "pattern": "esta actividad ataca el determinante del embarazo adolescente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q188-002",
         "match_type": "REGEX",
-        "pattern": "causa estructural|factor de riesgo|nudo crítico"
+        "pattern": "causa estructural|factor de riesgo|nudo crítico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q188-003",
         "match_type": "REGEX",
-        "pattern": "barreras de acceso geográfico a la educación"
+        "pattern": "barreras de acceso geográfico a la educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q188-004",
         "match_type": "REGEX",
-        "pattern": "falta de oportunidades laborales para jóvenes"
+        "pattern": "falta de oportunidades laborales para jóvenes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q188-005",
         "match_type": "REGEX",
-        "pattern": "entornos familiares violentos|vulnerabilidad socioeconómica"
+        "pattern": "entornos familiares violentos|vulnerabilidad socioeconómica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q188-006",
         "match_type": "REGEX",
-        "pattern": "falta de información sobre salud sexual y reproductiva"
+        "pattern": "falta de información sobre salud sexual y reproductiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +199,12 @@
         "flags": "i",
         "id": "PAT-Q188-007",
         "match_type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico causal de infancia y juventud"
+        "pattern": "árbol de problemas|diagnóstico causal de infancia y juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -286,7 +326,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q278"
+          "const": "Q188"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +339,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

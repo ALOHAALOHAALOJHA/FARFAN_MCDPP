@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "e390e165f68bfb951e7f5a9d26db67ac1cd9ea75e3beb2140cec66385cbecd93",
+    "contract_hash": "ff44964e995946d9ea3b0c381c26b17cb2754b73f9a8e9a48fb3fed3c7155700",
     "created_at": "2025-11-28T03:50:42.406995+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 280,
-    "updated_at": "2025-12-15T20:32:11.563467+00:00"
+    "updated_at": "2025-12-15T21:42:32.703907+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q280-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de atención al PPL|de manera articulada"
+        "pattern": "estrategia integral de atención al PPL|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q280-001",
         "match_type": "REGEX",
-        "pattern": "la atención en salud se complementa con los programas de resocialización"
+        "pattern": "la atención en salud se complementa con los programas de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q280-002",
         "match_type": "REGEX",
-        "pattern": "sinergia entre la oferta educativa y los talleres productivos"
+        "pattern": "sinergia entre la oferta educativa y los talleres productivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q280-003",
         "match_type": "REGEX",
-        "pattern": "la mejora de la infraestructura es prerrequisito para ampliar los programas"
+        "pattern": "la mejora de la infraestructura es prerrequisito para ampliar los programas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q280-004",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se garantizarán las condiciones básicas, luego la resocialización"
+        "pattern": "en una primera fase se garantizarán las condiciones básicas, luego la resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q280-005",
         "match_type": "LITERAL",
-        "pattern": "la estrategia combina atención básica, acceso a la justicia y resocialización"
+        "pattern": "la estrategia combina atención básica, acceso a la justicia y resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

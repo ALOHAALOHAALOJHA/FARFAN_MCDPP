@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "526892705b01f0f947294482d9084506e7c0fab46704d123dda799b0083ffcde",
+    "contract_hash": "e63135994d1d79b3733f3353f73ff13bf0f7afaf4369671e3b034fcced844a24",
     "created_at": "2025-11-28T03:50:42.209141+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 248,
-    "updated_at": "2025-12-15T20:32:11.431563+00:00"
+    "updated_at": "2025-12-15T21:42:32.549619+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q248-000",
         "match_type": "REGEX",
-        "pattern": "para abordar la causa de la estigmatización|en respuesta a la presencia de"
+        "pattern": "para abordar la causa de la estigmatización|en respuesta a la presencia de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q248-001",
         "match_type": "REGEX",
-        "pattern": "esta actividad ataca el factor de riesgo de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0061"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q248-002",
         "match_type": "REGEX",
-        "pattern": "causa estructural|factor de amenaza|nudo crítico"
+        "pattern": "causa estructural|factor de amenaza|nudo crítico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q248-003",
         "match_type": "LITERAL",
-        "pattern": "estigmatización y señalamientos"
+        "pattern": "estigmatización y señalamientos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q248-004",
         "match_type": "REGEX",
-        "pattern": "presencia y control territorial de grupos armados"
+        "pattern": "presencia y control territorial de grupos armados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q248-005",
         "match_type": "LITERAL",
-        "pattern": "intereses sobre la tierra o economías ilegales"
+        "pattern": "intereses sobre la tierra o economías ilegales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q248-006",
         "match_type": "REGEX",
-        "pattern": "falta de respuesta estatal|impunidad"
+        "pattern": "falta de respuesta estatal|impunidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +199,12 @@
         "flags": "i",
         "id": "PAT-Q248-007",
         "match_type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico de riesgo para defensores"
+        "pattern": "árbol de problemas|diagnóstico de riesgo para defensores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -286,7 +326,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q278"
+          "const": "Q248"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +339,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

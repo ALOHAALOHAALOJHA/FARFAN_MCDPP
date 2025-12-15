@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "8d105b725ecdd9b3ce6e2595c61b77e61947b20cde10752b619020b9322febb1",
+    "contract_hash": "53e6e9c6e8eaa42049f73863e3fecaa7bf3e9a5ae6b14a2c4466071978171be0",
     "created_at": "2025-11-28T03:50:42.521987+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 288,
-    "updated_at": "2025-12-15T20:32:12.230904+00:00"
+    "updated_at": "2025-12-15T21:42:32.752744+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q288-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0083"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q288-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por la construcción del nuevo centro de detención"
+        "pattern": "la meta se justifica por la construcción del nuevo centro de detención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q288-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión de X se espera crear Y cupos"
+        "pattern": "con la inversión de X se espera crear Y cupos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q288-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad de la Secretaría de Salud permite garantizar la atención"
+        "pattern": "la capacidad de la Secretaría de Salud permite garantizar la atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q288-004",
         "match_type": "REGEX",
-        "pattern": "en comparación con los estándares de las Reglas Mandela"
+        "pattern": "en comparación con los estándares de las Reglas Mandela",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q288-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|experiencias de otras ciudades en la gestión de sindicados"
+        "pattern": "benchmark|experiencias de otras ciudades en la gestión de sindicados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q288-006",
         "match_type": "REGEX",
-        "pattern": "análisis de viabilidad de la meta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0025"
       }
     ],
     "expected_elements": [

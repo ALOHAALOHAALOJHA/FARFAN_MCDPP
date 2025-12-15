@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "76cf00cf7c6fd07d3a60749938f1fc3fe2d52e166dae5282eface5e37c766308",
+    "contract_hash": "02df64684b93c9833644a857844f59654bd8460026c4beffc4b5d2385d196661",
     "created_at": "2025-11-28T03:50:31.607200+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 160,
-    "updated_at": "2025-12-15T20:32:11.545633+00:00"
+    "updated_at": "2025-12-15T21:42:32.049317+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q160-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de reparación|de manera articulada"
+        "pattern": "estrategia integral de reparación|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q160-001",
         "match_type": "REGEX",
-        "pattern": "la rehabilitación psicosocial complementa la indemnización"
+        "pattern": "la rehabilitación psicosocial complementa la indemnización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q160-002",
         "match_type": "REGEX",
-        "pattern": "sinergia entre las medidas individuales y colectivas"
+        "pattern": "sinergia entre las medidas individuales y colectivas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q160-003",
         "match_type": "REGEX",
-        "pattern": "la atención humanitaria es el primer paso antes de la reparación"
+        "pattern": "la atención humanitaria es el primer paso antes de la reparación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q160-004",
         "match_type": "LITERAL",
-        "pattern": "en una primera fase se garantiza la asistencia, luego la reparación"
+        "pattern": "en una primera fase se garantiza la asistencia, luego la reparación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q160-005",
         "match_type": "REGEX",
-        "pattern": "la estrategia combina los cinco componentes de la reparación integral"
+        "pattern": "la estrategia combina los cinco componentes de la reparación integral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q160"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

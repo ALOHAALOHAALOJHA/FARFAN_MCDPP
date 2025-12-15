@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "76170cc4ee3eda5608e87be21c4e62f603854350161dfc92084b3d42f6169891",
+    "contract_hash": "3a76c0c6639c5782c55a15c24bdf287220424dd2ab6c701512150ee8c690cff8",
     "created_at": "2025-11-28T03:50:01.885757+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 40,
-    "updated_at": "2025-12-15T20:32:11.525557+00:00"
+    "updated_at": "2025-12-15T21:42:31.256403+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q040-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de atención e integración|de manera articulada"
+        "pattern": "estrategia integral de atención e integración|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q040-001",
         "match_type": "LITERAL",
-        "pattern": "la regularización se complementa con la inclusión laboral y el acceso a servicios"
+        "pattern": "la regularización se complementa con la inclusión laboral y el acceso a servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q040-002",
         "match_type": "REGEX",
-        "pattern": "sinergia entre la atención humanitaria y las soluciones duraderas"
+        "pattern": "sinergia entre la atención humanitaria y las soluciones duraderas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q040-003",
         "match_type": "REGEX",
-        "pattern": "la atención de emergencia es el primer paso, seguido por la estabilización"
+        "pattern": "la atención de emergencia es el primer paso, seguido por la estabilización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q040-004",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se dará respuesta humanitaria, luego se promoverá la integración"
+        "pattern": "en una primera fase se dará respuesta humanitaria, luego se promoverá la integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q040-005",
         "match_type": "LITERAL",
-        "pattern": "la estrategia combina asistencia, protección e integración"
+        "pattern": "la estrategia combina asistencia, protección e integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q040"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

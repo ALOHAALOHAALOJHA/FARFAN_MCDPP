@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "58da9dac58776fedffe11737494c1790685ca65cc5f34b8d74d78270ed71e3a4",
+    "contract_hash": "2526ba262e671ff1cb037681c096cb0479acf17be6d8020b4c4bbe936a83b00b",
     "created_at": "2025-11-28T03:50:09.600821+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 66,
-    "updated_at": "2025-12-15T20:32:11.185854+00:00"
+    "updated_at": "2025-12-15T21:42:31.430026+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q1_Executor",
@@ -92,7 +92,13 @@
         "flags": "i",
         "id": "PAT-Q066-000",
         "match_type": "REGEX",
-        "pattern": "tabla de actividades|cuadro de seguimiento|matriz de plan de acción"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0105"
       },
       {
         "category": "GENERAL",
@@ -100,7 +106,12 @@
         "flags": "i",
         "id": "PAT-Q066-001",
         "match_type": "REGEX",
-        "pattern": "columna responsable|entidad a cargo|ejecutor"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0039"
       },
       {
         "category": "GENERAL",
@@ -108,7 +119,12 @@
         "flags": "i",
         "id": "PAT-Q066-002",
         "match_type": "REGEX",
-        "pattern": "columna producto|entregable|output|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0038"
       },
       {
         "category": "TEMPORAL",
@@ -116,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q066-003",
         "match_type": "LITERAL",
-        "pattern": "columna cronograma|plazo|vigencia|año 1|trimestre"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0037"
       },
       {
         "category": "GENERAL",
@@ -124,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q066-004",
         "match_type": "LITERAL",
-        "pattern": "columna costo|presupuesto|valor|recursos|monto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0036"
       },
       {
         "category": "GENERAL",
@@ -132,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q066-005",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Enlace de Víctimas|Personería"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0019"
       },
       {
         "category": "GENERAL",
@@ -140,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q066-006",
         "match_type": "REGEX",
-        "pattern": "Plan Indicativo|Anexo de metas"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0015"
       }
     ],
     "expected_elements": [
@@ -274,7 +310,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q276"
+          "const": "Q066"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +323,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

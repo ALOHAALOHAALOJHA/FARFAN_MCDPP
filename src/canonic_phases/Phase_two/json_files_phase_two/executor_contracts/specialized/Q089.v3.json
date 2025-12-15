@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "40b715f4b2f117461a79c1106cf9a53dad4b5a630e37e54783351c094da24560",
+    "contract_hash": "1603f154c742855c2299b30c706e3e7532b9bb280dc00c9bda14b4ddf1da81d7",
     "created_at": "2025-11-28T03:50:13.374775+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 89,
-    "updated_at": "2025-12-15T20:32:12.715400+00:00"
+    "updated_at": "2025-12-15T21:42:31.556224+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q089-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E de seguridad"
+        "pattern": "sistema de seguimiento y evaluación|M&E de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q089-001",
         "match_type": "REGEX",
-        "pattern": "monitoreo en tiempo real|sala de crisis|PMU"
+        "pattern": "monitoreo en tiempo real|sala de crisis|PMU",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q089-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana|indicadores de alerta|semáforo de seguridad"
+        "pattern": "alerta temprana|indicadores de alerta|semáforo de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q089-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste|medida correctiva|reorientación de la estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0079"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q089-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación desde la comunidad|Consejos de Seguridad periódicos"
+        "pattern": "retroalimentación desde la comunidad|Consejos de Seguridad periódicos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q089-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones de revisión estratégica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0033"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q089-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas|gestión del conocimiento en seguridad"
+        "pattern": "lecciones aprendidas|gestión del conocimiento en seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +301,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q089"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +314,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

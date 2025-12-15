@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "097d54770e47d86709fef0677bebfaea6c283464d28058dbf74be998705b2be1",
+    "contract_hash": "a53077cbb3b8e64b7fed8795c73ac50d7bfb13c3a2d6ff6c9da3a35d0e2b6f87",
     "created_at": "2025-11-28T03:50:13.401886+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 97,
-    "updated_at": "2025-12-15T20:32:11.238674+00:00"
+    "updated_at": "2025-12-15T21:42:31.613839+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q2_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q097-000",
         "match_type": "REGEX",
-        "pattern": "mediante|a través de|con la implementación de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0081"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q097-001",
         "match_type": "REGEX",
-        "pattern": "construcción de obras de mitigación|jarillón|muro de contención"
+        "pattern": "construcción de obras de mitigación|jarillón|muro de contención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q097-002",
         "match_type": "LITERAL",
-        "pattern": "incentivos a la conservación|Pagos por Servicios Ambientales|PSA"
+        "pattern": "incentivos a la conservación|Pagos por Servicios Ambientales|PSA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q097-003",
         "match_type": "REGEX",
-        "pattern": "programas de educación ambiental|comparendos ambientales"
+        "pattern": "programas de educación ambiental|comparendos ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q097-004",
         "match_type": "REGEX",
-        "pattern": "población objetivo:|dirigido a|beneficiarios serán"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q097-005",
         "match_type": "REGEX",
-        "pattern": "familias en zonas de riesgo|comunidades ribereñas"
+        "pattern": "familias en zonas de riesgo|comunidades ribereñas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q097-006",
         "match_type": "REGEX",
-        "pattern": "propietarios de predios en cuencas|sector productivo"
+        "pattern": "propietarios de predios en cuencas|sector productivo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q097-007",
         "match_type": "REGEX",
-        "pattern": "con el fin de reducir la vulnerabilidad|para proteger las fuentes hídricas"
+        "pattern": "con el fin de reducir la vulnerabilidad|para proteger las fuentes hídricas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q097-008",
         "match_type": "REGEX",
-        "pattern": "lo cual genera resiliencia|porque reduce la contaminación"
+        "pattern": "lo cual genera resiliencia|porque reduce la contaminación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +359,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q277"
+          "const": "Q097"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +372,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

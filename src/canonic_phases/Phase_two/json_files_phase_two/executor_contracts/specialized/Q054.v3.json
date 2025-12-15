@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "e1eb0ecb54670133865f9b293ed5e6b805762d8b20432559862c193fe0951cd2",
+    "contract_hash": "de23de2cd73b84047c68537cb0dd2886135632e4f4570bbcd4f00575ed2d8e2c",
     "created_at": "2025-11-28T03:50:05.968308+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 54,
-    "updated_at": "2025-12-15T20:32:12.509149+00:00"
+    "updated_at": "2025-12-15T21:42:31.368637+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q054-000",
         "match_type": "REGEX",
-        "pattern": "visión de largo plazo del Pacto Mundial sobre Migración"
+        "pattern": "visión de largo plazo del Pacto Mundial sobre Migración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q054-001",
         "match_type": "LITERAL",
-        "pattern": "riesgo sistémico|choque externo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0092"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q054-002",
         "match_type": "REGEX",
-        "pattern": "cambios abruptos en la política migratoria del país de origen o de Colombia"
+        "pattern": "cambios abruptos en la política migratoria del país de origen o de Colombia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q054-003",
         "match_type": "LITERAL",
-        "pattern": "crisis económica regional que intensifique los flujos"
+        "pattern": "crisis económica regional que intensifique los flujos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q054-004",
         "match_type": "REGEX",
-        "pattern": "estos factores podrían revertir los avances en integración"
+        "pattern": "estos factores podrían revertir los avances en integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q054-005",
         "match_type": "REGEX",
-        "pattern": "el mecanismo causal es vulnerable a|sensible a las decisiones de política exterior"
+        "pattern": "el mecanismo causal es vulnerable a|sensible a las decisiones de política exterior",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q054-006",
         "match_type": "REGEX",
-        "pattern": "estrategias de resiliencia|flexibilidad en la respuesta humanitaria"
+        "pattern": "estrategias de resiliencia|flexibilidad en la respuesta humanitaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q294"
+          "const": "Q054"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

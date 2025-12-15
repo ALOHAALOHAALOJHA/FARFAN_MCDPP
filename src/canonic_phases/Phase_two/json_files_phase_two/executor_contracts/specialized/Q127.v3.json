@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "239e24b569b777118734d40bbfa59f56ac04a2eb82df45276169739a3100cc99",
+    "contract_hash": "bf5dfe9a0cd69f0a94221855ddcaea188fdbdb1f78ba393b3b195987926003f2",
     "created_at": "2025-11-28T03:50:31.404877+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 127,
-    "updated_at": "2025-12-15T20:32:11.244400+00:00"
+    "updated_at": "2025-12-15T21:42:31.840355+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q2_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q127-000",
         "match_type": "REGEX",
-        "pattern": "mediante|a través de|con la implementación de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0081"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q127-001",
         "match_type": "REGEX",
-        "pattern": "subsidios de vivienda|mejoramientos de vivienda"
+        "pattern": "subsidios de vivienda|mejoramientos de vivienda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q127-002",
         "match_type": "REGEX",
-        "pattern": "construcción de aulas|dotación escolar|brigadas de salud"
+        "pattern": "construcción de aulas|dotación escolar|brigadas de salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q127-003",
         "match_type": "REGEX",
-        "pattern": "población objetivo:|dirigido a|beneficiarios serán"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
       },
       {
         "category": "GENERAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q127-004",
         "match_type": "REGEX",
-        "pattern": "hogares clasificados en SISBEN|población en pobreza extrema"
+        "pattern": "hogares clasificados en SISBEN|población en pobreza extrema",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q127-005",
         "match_type": "REGEX",
-        "pattern": "estudiantes de zonas rurales|primera infancia|adulto mayor"
+        "pattern": "estudiantes de zonas rurales|primera infancia|adulto mayor",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q127-006",
         "match_type": "REGEX",
-        "pattern": "población migrante|personas con discapacidad"
+        "pattern": "población migrante|personas con discapacidad|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q127-007",
         "match_type": "REGEX",
-        "pattern": "con el fin de mejorar el acceso|para garantizar la permanencia"
+        "pattern": "con el fin de mejorar el acceso|para garantizar la permanencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q127-008",
         "match_type": "REGEX",
-        "pattern": "lo cual reduce las barreras|porque mejora la calidad de vida"
+        "pattern": "lo cual reduce las barreras|porque mejora la calidad de vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +359,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q277"
+          "const": "Q127"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +372,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

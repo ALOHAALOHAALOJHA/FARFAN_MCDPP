@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "53af590e5904bb7ceaa7ce287ffd7ce4c9330170545479fadb86dea16083bd57",
+    "contract_hash": "e84e9c2decfd61c087185e9a48cc7f06e909f9c667c2acf555171a8859cbfdd3",
     "created_at": "2025-11-28T03:50:31.435385+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 135,
-    "updated_at": "2025-12-15T20:32:11.979677+00:00"
+    "updated_at": "2025-12-15T21:42:31.888234+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -236,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q135-000",
         "match_type": "REGEX",
-        "pattern": "esto permitirá que|lo cual contribuirá a|generando una reducción de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0063"
       },
       {
         "category": "GENERAL",
@@ -244,7 +249,12 @@
         "flags": "i",
         "id": "PAT-Q135-001",
         "match_type": "REGEX",
-        "pattern": "el mecanismo es que el PAE reduce los costos de asistencia para las familias"
+        "pattern": "el mecanismo es que el PAE reduce los costos de asistencia para las familias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +262,12 @@
         "flags": "i",
         "id": "PAT-Q135-002",
         "match_type": "REGEX",
-        "pattern": "la construcción de aulas permite ampliar la cobertura, lo que resulta en..."
+        "pattern": "la construcción de aulas permite ampliar la cobertura, lo que resulta en...",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +275,12 @@
         "flags": "i",
         "id": "PAT-Q135-003",
         "match_type": "REGEX",
-        "pattern": "la afiliación a salud elimina las barreras de acceso, mejorando el estado de salud"
+        "pattern": "la afiliación a salud elimina las barreras de acceso, mejorando el estado de salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +288,12 @@
         "flags": "i",
         "id": "PAT-Q135-004",
         "match_type": "REGEX",
-        "pattern": "variable intermedia|mediador|eslabón causal|permanencia escolar"
+        "pattern": "variable intermedia|mediador|eslabón causal|permanencia escolar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q135-005",
         "match_type": "REGEX",
-        "pattern": "cadena de valor|ruta de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0030"
       }
     ],
     "expected_elements": [
@@ -398,7 +428,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q285"
+          "const": "Q135"
         },
         "question_global": {
           "type": "integer",
@@ -411,7 +441,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

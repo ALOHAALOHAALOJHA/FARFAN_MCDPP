@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "bebb424f540e8421b6c4bd130191fa6d29741ac3aae403d10e56396c4576f76c",
+    "contract_hash": "7c8d5e0fdb42a707de13631ddb2652fa035169d31cb3e4c53457a9dbf2c3c181",
     "created_at": "2025-11-28T03:50:31.548540+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 143,
-    "updated_at": "2025-12-15T20:32:12.481359+00:00"
+    "updated_at": "2025-12-15T21:42:31.959091+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q143-000",
         "match_type": "REGEX",
-        "pattern": "dado que es difícil medir el tejido social|para aproximar la medición de"
+        "pattern": "dado que es difícil medir el tejido social|para aproximar la medición de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q143-001",
         "match_type": "REGEX",
-        "pattern": "se utilizará como proxy|medición indirecta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q143-002",
         "match_type": "REGEX",
-        "pattern": "el número de organizaciones comunitarias activas como proxy de capital social"
+        "pattern": "el número de organizaciones comunitarias activas como proxy de capital social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q143-003",
         "match_type": "REGEX",
-        "pattern": "este proxy es validado por estudios de sociología|evidencia académica"
+        "pattern": "este proxy es validado por estudios de sociología|evidencia académica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q143-004",
         "match_type": "REGEX",
-        "pattern": "una limitación es que no captura la calidad de las interacciones"
+        "pattern": "una limitación es que no captura la calidad de las interacciones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +149,12 @@
         "flags": "i",
         "id": "PAT-Q143-005",
         "match_type": "REGEX",
-        "pattern": "aunque imperfecto, este proxy nos da una señal de cohesión"
+        "pattern": "aunque imperfecto, este proxy nos da una señal de cohesión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -250,7 +280,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q293"
+          "const": "Q143"
         },
         "question_global": {
           "type": "integer",
@@ -263,7 +293,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

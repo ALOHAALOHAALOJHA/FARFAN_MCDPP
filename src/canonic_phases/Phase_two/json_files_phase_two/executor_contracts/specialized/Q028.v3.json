@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "7c065fdea38d3e271e49400b95acfb0c6cb7a5db1d15b49b6b534611721c7912",
+    "contract_hash": "0100a84c2a8daff690aeadb1ff9c6d0981a250b0eda2c41f31b9592b751a54b6",
     "created_at": "2025-11-28T03:50:01.841357+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 28,
-    "updated_at": "2025-12-15T20:32:12.669785+00:00"
+    "updated_at": "2025-12-15T21:42:31.182589+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q028-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q028-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar|es necesario probar si"
+        "pattern": "se requiere validar|es necesario probar si",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q028-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto|fase experimental|prueba de concepto"
+        "pattern": "plan piloto|fase experimental|prueba de concepto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q028-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto|validar la hipótesis"
+        "pattern": "testear el supuesto|validar la hipótesis",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q028-004",
         "match_type": "REGEX",
-        "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q028-005",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0026"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q298"
+          "const": "Q028"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

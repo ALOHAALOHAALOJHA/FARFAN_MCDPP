@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "708d71b86a0494ab1ad83610897c041ec8935c4eab416b203aec05197f0fa419",
+    "contract_hash": "2196c2504f14a2cf0d20327e2a7dde67b209d4d73b6d117888f0367460e300bd",
     "created_at": "2025-11-28T03:50:13.371689+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 88,
-    "updated_at": "2025-12-15T20:32:12.677333+00:00"
+    "updated_at": "2025-12-15T21:42:31.552006+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q088-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q088-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar|es necesario probar si la estrategia funciona"
+        "pattern": "se requiere validar|es necesario probar si la estrategia funciona",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q088-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto en una vereda|fase experimental|prueba de concepto"
+        "pattern": "plan piloto en una vereda|fase experimental|prueba de concepto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q088-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto de la colaboración ciudadana"
+        "pattern": "testear el supuesto de la colaboración ciudadana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q088-004",
         "match_type": "REGEX",
-        "pattern": "validar la hipótesis de disuasión"
+        "pattern": "validar la hipótesis de disuasión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q088-005",
         "match_type": "REGEX",
-        "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q088-006",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa de la seguridad"
+        "pattern": "aprendizaje adaptativo|gestión adaptativa de la seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +305,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q298"
+          "const": "Q088"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +318,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "6a5286341acade9d5f2aefe53a9488561095b2ad64c48421cb120a4653a42321",
+    "contract_hash": "712870599cba32568ad520abb86764e1a22ae92b945d012ed1b680006230be93",
     "created_at": "2025-11-28T03:50:42.515264+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 286,
-    "updated_at": "2025-12-15T20:32:12.128700+00:00"
+    "updated_at": "2025-12-15T21:42:32.742593+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q286-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "INDICADOR",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q286-001",
         "match_type": "REGEX",
-        "pattern": "tasa de hacinamiento en centros de detención transitoria"
+        "pattern": "tasa de hacinamiento en centros de detención transitoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q286-002",
         "match_type": "REGEX",
-        "pattern": "porcentaje de PPL (sindicados) con acceso efectivo a salud"
+        "pattern": "porcentaje de PPL (sindicados) con acceso efectivo a salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q286-003",
         "match_type": "REGEX",
-        "pattern": "porcentaje de PPL participando en programas de resocialización"
+        "pattern": "porcentaje de PPL participando en programas de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q286-004",
         "match_type": "REGEX",
-        "pattern": "tasa de reincidencia (si se proyecta)"
+        "pattern": "tasa de reincidencia (si se proyecta)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q286-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q286-006",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera reducir a|llegar a un X%"
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera reducir a|llegar a un X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q286-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -228,7 +268,12 @@
         "flags": "i",
         "id": "PAT-Q286-008",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT del DNP)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
       }
     ],
     "expected_elements": [

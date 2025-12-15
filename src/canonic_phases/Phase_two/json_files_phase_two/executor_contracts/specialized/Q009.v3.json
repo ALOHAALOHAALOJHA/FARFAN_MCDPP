@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "8b2f615fdbf26ad0998e33588d4e01ac70653d9261e9a98756bbbefede023e2b",
+    "contract_hash": "dddadce96ef5588dfd459718e41933991ca89e6046ce3e06f1efd6a42effab4e",
     "created_at": "2025-11-28T03:49:29.807482+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 9,
-    "updated_at": "2025-12-15T20:32:11.447542+00:00"
+    "updated_at": "2025-12-15T21:42:31.065976+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q4_Executor",
@@ -116,7 +116,12 @@
         "flags": "i",
         "id": "PAT-Q009-000",
         "match_type": "REGEX",
-        "pattern": "riesgos:|posibles dificultades:|barreras a la implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
       },
       {
         "category": "GENERAL",
@@ -124,7 +129,12 @@
         "flags": "i",
         "id": "PAT-Q009-001",
         "match_type": "REGEX",
-        "pattern": "obstáculos|desafíos"
+        "pattern": "obstáculos|desafíos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +142,12 @@
         "flags": "i",
         "id": "PAT-Q009-002",
         "match_type": "REGEX",
-        "pattern": "baja participación de las mujeres|poca asistencia"
+        "pattern": "baja participación de las mujeres|poca asistencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +155,12 @@
         "flags": "i",
         "id": "PAT-Q009-003",
         "match_type": "REGEX",
-        "pattern": "revictimización|riesgos de seguridad para las víctimas"
+        "pattern": "revictimización|riesgos de seguridad para las víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +168,12 @@
         "flags": "i",
         "id": "PAT-Q009-004",
         "match_type": "LITERAL",
-        "pattern": "resistencia cultural|reacciones machistas"
+        "pattern": "resistencia cultural|reacciones machistas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +181,12 @@
         "flags": "i",
         "id": "PAT-Q009-005",
         "match_type": "REGEX",
-        "pattern": "sostenibilidad de los emprendimientos"
+        "pattern": "sostenibilidad de los emprendimientos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +194,12 @@
         "flags": "i",
         "id": "PAT-Q009-006",
         "match_type": "REGEX",
-        "pattern": "falta de articulación interinstitucional"
+        "pattern": "falta de articulación interinstitucional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +207,24 @@
         "flags": "i",
         "id": "PAT-Q009-007",
         "match_type": "REGEX",
-        "pattern": "medidas de mitigación|plan de contingencia|para mitigar"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "disambiguation_rules": {
+          "PA03": [
+            "desastre",
+            "emergencia natural",
+            "clima"
+          ],
+          "PA01": [
+            "protección",
+            "violencia",
+            "víctima"
+          ]
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
       },
       {
         "category": "GENERAL",
@@ -180,7 +232,12 @@
         "flags": "i",
         "id": "PAT-Q009-008",
         "match_type": "REGEX",
-        "pattern": "se realizará seguimiento|estrategia de monitoreo de riesgos"
+        "pattern": "se realizará seguimiento|estrategia de monitoreo de riesgos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -302,7 +359,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q279"
+          "const": "Q009"
         },
         "question_global": {
           "type": "integer",
@@ -315,7 +372,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

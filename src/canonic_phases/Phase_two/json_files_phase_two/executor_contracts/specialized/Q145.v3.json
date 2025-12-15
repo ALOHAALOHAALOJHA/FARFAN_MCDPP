@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "db082e66b3645d60fe2b2b4a1143d9d4e2d5f4aa86bcaeee0c8a8efa63ac7401",
+    "contract_hash": "7640615609aad4efa879651d715952e9609020192832e3e9054f9befc71fc78f",
     "created_at": "2025-11-28T03:50:31.554660+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 145,
-    "updated_at": "2025-12-15T20:32:12.565013+00:00"
+    "updated_at": "2025-12-15T21:42:31.975277+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q145-000",
         "match_type": "REGEX",
-        "pattern": "la ambición del impacto es realista si se mantiene el crecimiento económico"
+        "pattern": "la ambición del impacto es realista si se mantiene el crecimiento económico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q145-001",
         "match_type": "REGEX",
-        "pattern": "efecto no deseado|consecuencia imprevista|externalidad negativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q145-002",
         "match_type": "REGEX",
-        "pattern": "riesgo de dependencia de los subsidios"
+        "pattern": "riesgo de dependencia de los subsidios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q145-003",
         "match_type": "REGEX",
-        "pattern": "posible congestión de los servicios de salud por mayor acceso"
+        "pattern": "posible congestión de los servicios de salud por mayor acceso",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q145-004",
         "match_type": "REGEX",
-        "pattern": "trade-off entre cobertura y calidad"
+        "pattern": "trade-off entre cobertura y calidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q145-005",
         "match_type": "REGEX",
-        "pattern": "hipótesis límite|el modelo funciona mientras haya recursos del SGP"
+        "pattern": "hipótesis límite|el modelo funciona mientras haya recursos del SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q145-006",
         "match_type": "LITERAL",
-        "pattern": "supuesto crítico para el impacto a largo plazo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q295"
+          "const": "Q145"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

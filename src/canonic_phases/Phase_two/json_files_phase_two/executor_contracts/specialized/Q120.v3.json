@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "4fd92158735df531d0bd3e1aec0159ed4c6d7cd2d5959b0ec1f37538b71135bf",
+    "contract_hash": "20b75d1e3326b25421a8999c6ae0e20fff57c5852b9297eff01efe80dbf240cf",
     "created_at": "2025-11-28T03:50:31.300816+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 120,
-    "updated_at": "2025-12-15T20:32:12.756858+00:00"
+    "updated_at": "2025-12-15T21:42:31.802208+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q120-000",
         "match_type": "REGEX",
-        "pattern": "enfoque diferencial|enfoque territorial"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0059"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q120-001",
         "match_type": "REGEX",
-        "pattern": "comunidades ribereñas|pescadores artesanales|campesinos"
+        "pattern": "comunidades ribereñas|pescadores artesanales|campesinos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q120-002",
         "match_type": "REGEX",
-        "pattern": "comunidades indígenas|territorios colectivos afrodescendientes"
+        "pattern": "comunidades indígenas|territorios colectivos afrodescendientes|afrodescendiente|comunidad negra|palenquero|raizal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q120-003",
         "match_type": "REGEX",
-        "pattern": "restricciones por zonas de reserva forestal|parques nacionales"
+        "pattern": "restricciones por zonas de reserva forestal|parques nacionales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q120-004",
         "match_type": "REGEX",
-        "pattern": "contexto de frontera agrícola|minería"
+        "pattern": "contexto de frontera agrícola|minería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q120-005",
         "match_type": "REGEX",
-        "pattern": "conflictos por el uso del agua|restricciones normativas de la CAR"
+        "pattern": "conflictos por el uso del agua|restricciones normativas de la CAR",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q120-006",
         "match_type": "REGEX",
-        "pattern": "estrategias territorializadas|acciones adaptadas a la cuenca"
+        "pattern": "estrategias territorializadas|acciones adaptadas a la cuenca",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -282,7 +317,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q300"
+          "const": "Q120"
         },
         "question_global": {
           "type": "integer",
@@ -295,7 +330,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

@@ -49,6 +49,10 @@ class CriticalIssueFixer:
             # Apply fixes
             fixes = []
             
+            # Fix 0: Identity consistency (dimension_id.const, cluster_id.const)
+            if self._fix_identity_consistency(contract):
+                fixes.append("identity_consistency")
+            
             # Fix 1: Method-evidence alignment
             if self._fix_method_evidence_alignment(contract):
                 fixes.append("method_evidence_alignment")

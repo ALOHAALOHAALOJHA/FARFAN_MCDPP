@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "da0c08a70bdb0779d3e362a6b164abfd90b04737c89092af1fce0964d86f79c8",
+    "contract_hash": "fc086b1d98af13f42066b26a61d2758dcf652f50139e9a312470bd7ac49969d4",
     "created_at": "2025-11-28T03:50:09.594499+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 64,
-    "updated_at": "2025-12-15T20:32:11.092755+00:00"
+    "updated_at": "2025-12-15T21:42:31.420701+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q064-000",
         "match_type": "REGEX",
-        "pattern": "Enlace Municipal de Víctimas|equipo del punto de atención (PAV)"
+        "pattern": "Enlace Municipal de Víctimas|equipo del punto de atención (PAV)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q064-001",
         "match_type": "REGEX",
-        "pattern": "Comité Territorial de Justicia Transicional|CTJT"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0002"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q064-002",
         "match_type": "REGEX",
-        "pattern": "Mesa de Participación Efectiva de las Víctimas|MPEV"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0010"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q064-003",
         "match_type": "REGEX",
-        "pattern": "Consejo de Seguridad|Puesto de Mando Unificado|PMU"
+        "pattern": "Consejo de Seguridad|Puesto de Mando Unificado|PMU",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q064-004",
         "match_type": "REGEX",
-        "pattern": "capacidad instalada para la respuesta humanitaria"
+        "pattern": "capacidad instalada para la respuesta humanitaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q064-005",
         "match_type": "REGEX",
-        "pattern": "ruta de protección|protocolo de atención a VBG en el conflicto"
+        "pattern": "ruta de protección|protocolo de atención a VBG en el conflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q064-006",
         "match_type": "REGEX",
-        "pattern": "Sistema de Alertas Tempranas|SAT|flujo de información"
+        "pattern": "Sistema de Alertas Tempranas|SAT|flujo de información",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q064-007",
         "match_type": "REGEX",
-        "pattern": "articulación con la UARIV|coordinación con la UNP|Fuerza Pública"
+        "pattern": "articulación con la UARIV|coordinación con la UNP|Fuerza Pública",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q064-008",
         "match_type": "REGEX",
-        "pattern": "falta de personal|limitada capacidad técnica|necesidad de fortalecer"
+        "pattern": "falta de personal|limitada capacidad técnica|necesidad de fortalecer",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +241,12 @@
         "flags": "i",
         "id": "PAT-Q064-009",
         "match_type": "REGEX",
-        "pattern": "cuello de botella|barrera de acceso|obstáculo institucional"
+        "pattern": "(?:cuello de botella|restricción crítica|limitante)(?!\\s+(?:\\w+\\s+){0,5}(?:administración|logística|trámite))",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +380,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q274"
+          "const": "Q064"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +393,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

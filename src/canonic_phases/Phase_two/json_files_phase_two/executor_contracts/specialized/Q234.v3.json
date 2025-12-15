@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "935ac0a5f7a76f8e4a4b091763ba80d639b3d1cca3c90876a49e9355343b040c",
+    "contract_hash": "5758f4d0c8e2b24f17542de65fb5252c64eb7b05df868f288a5042e2749ae35b",
     "created_at": "2025-11-28T03:50:42.080076+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 234,
-    "updated_at": "2025-12-15T20:32:12.534938+00:00"
+    "updated_at": "2025-12-15T21:42:32.484828+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q234-000",
         "match_type": "REGEX",
-        "pattern": "visión de la Misión para la Transformación del Campo|Agenda 2030"
+        "pattern": "visión de la Misión para la Transformación del Campo|Agenda\\\\s+2030",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q234-001",
         "match_type": "LITERAL",
-        "pattern": "riesgo sistémico|choque externo|crisis climática"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0093"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q234-002",
         "match_type": "REGEX",
-        "pattern": "cambios en los precios internacionales de los commodities agrícolas"
+        "pattern": "cambios en los precios internacionales de los commodities agrícolas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q234-003",
         "match_type": "REGEX",
-        "pattern": "expansión de economías ilegales o megaproyectos"
+        "pattern": "expansión de economías ilegales o megaproyectos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q234-004",
         "match_type": "REGEX",
-        "pattern": "estos factores podrían revertir los avances en desarrollo rural"
+        "pattern": "estos factores podrían revertir los avances en desarrollo rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q234-005",
         "match_type": "LITERAL",
-        "pattern": "el mecanismo causal es vulnerable a|sensible a las políticas macroeconómicas"
+        "pattern": "el mecanismo causal es vulnerable a|sensible a las políticas macroeconómicas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q234-006",
         "match_type": "REGEX",
-        "pattern": "estrategias de diversificación productiva|resiliencia"
+        "pattern": "estrategias de diversificación productiva|resiliencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q294"
+          "const": "Q234"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

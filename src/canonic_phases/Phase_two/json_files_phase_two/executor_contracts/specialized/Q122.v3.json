@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "aecfb9d99d4f580a66841d10e624df325f8e425dc2ca6c694d4fa1c34a8b0997",
+    "contract_hash": "b3b5b9fc2e1e4f254c9d833c4baedbe5005dd7ee5deb681fbc3d158df2fd7472",
     "created_at": "2025-11-28T03:50:31.388098+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 122,
-    "updated_at": "2025-12-15T20:32:11.001351+00:00"
+    "updated_at": "2025-12-15T21:42:31.814310+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -132,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q122-000",
         "match_type": "REGEX",
-        "pattern": "déficit de|población sin acceso a|hogares sin cobertura"
+        "pattern": "déficit de|población sin acceso a|hogares sin cobertura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q122-001",
         "match_type": "REGEX",
-        "pattern": "barreras de acceso a la salud|barreras geográficas para la educación"
+        "pattern": "barreras de acceso a la salud|barreras geográficas para la educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -148,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q122-002",
         "match_type": "REGEX",
-        "pattern": "la magnitud del problema de la desnutrición es de X%"
+        "pattern": "la magnitud del problema de la desnutrición es de X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q122-003",
         "match_type": "REGEX",
-        "pattern": "el número de familias sin vivienda digna asciende a"
+        "pattern": "el número de familias sin vivienda digna asciende a",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +184,12 @@
         "flags": "i",
         "id": "PAT-Q122-004",
         "match_type": "REGEX",
-        "pattern": "información desactualizada del SISBEN|falta de caracterización"
+        "pattern": "información desactualizada del SISBEN|falta de caracterización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +197,12 @@
         "flags": "i",
         "id": "PAT-Q122-005",
         "match_type": "REGEX",
-        "pattern": "no se cuenta con datos sobre salud mental|vacío de información"
+        "pattern": "no se cuenta con datos sobre salud mental|vacío de información",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +210,12 @@
         "flags": "i",
         "id": "PAT-Q122-006",
         "match_type": "REGEX",
-        "pattern": "subregistro de|dificultad en la medición de la calidad"
+        "pattern": "subregistro de|dificultad en la medición de la calidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +223,12 @@
         "flags": "i",
         "id": "PAT-Q122-007",
         "match_type": "REGEX",
-        "pattern": "causas de la deserción escolar|determinantes sociales de la salud"
+        "pattern": "causas de la deserción escolar|determinantes sociales de la salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +354,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q272"
+          "const": "Q122"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +367,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

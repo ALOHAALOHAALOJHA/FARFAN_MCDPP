@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "2c13e569f92ec3098360d60c24a9fe946ded3ec278bcf991105f82bc17972fe4",
+    "contract_hash": "5a27c5dcf7f1a421b7930718b28932160ac45b79e840ea19edd2f7581e171e6e",
     "created_at": "2025-11-28T03:50:31.263157+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 108,
-    "updated_at": "2025-12-15T20:32:12.203527+00:00"
+    "updated_at": "2025-12-15T21:42:31.729121+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q108-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0083"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q108-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por la nueva tecnología de la PTAR"
+        "pattern": "la meta se justifica por la nueva tecnología de la PTAR",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q108-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión de X se espera lograr una reducción de Y"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0040"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q108-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad técnica de la CAR permite aspirar a esta meta"
+        "pattern": "la capacidad técnica de la CAR permite aspirar a esta meta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q108-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias similares de otros municipios de la región"
+        "pattern": "en experiencias similares de otros municipios de la región",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q108-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente nacional|meta del PND en saneamiento"
+        "pattern": "benchmark|referente nacional|meta del PND en saneamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q108-006",
         "match_type": "REGEX",
-        "pattern": "análisis de viabilidad de la meta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0025"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q108"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

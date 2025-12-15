@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "a30054ea7df9472d1a000cdd123e4acd9aa54dbda705f0a4e575ead203a8239b",
+    "contract_hash": "bad612dec0f660fd0182867844eb2fe68355221ff7c8db51db09aff2cc408291",
     "created_at": "2025-11-28T03:50:31.286093+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 115,
-    "updated_at": "2025-12-15T20:32:12.560500+00:00"
+    "updated_at": "2025-12-15T21:42:31.769523+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q115-000",
         "match_type": "REGEX",
-        "pattern": "la ambición del impacto es realista si se logra la cofinanciación"
+        "pattern": "la ambición del impacto es realista si se logra la cofinanciación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q115-001",
         "match_type": "REGEX",
-        "pattern": "efecto no deseado|consecuencia imprevista|externalidad negativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q115-002",
         "match_type": "REGEX",
-        "pattern": "riesgo de 'gentrificación verde'|desplazamiento de comunidades"
+        "pattern": "riesgo de 'gentrificación verde'|desplazamiento de comunidades",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q115-003",
         "match_type": "REGEX",
-        "pattern": "conflictos por la restricción de usos del suelo en zonas protegidas"
+        "pattern": "conflictos por la restricción de usos del suelo en zonas protegidas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q115-004",
         "match_type": "REGEX",
-        "pattern": "trade-off entre conservación y desarrollo económico"
+        "pattern": "trade-off entre conservación y desarrollo económico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q115-005",
         "match_type": "REGEX",
-        "pattern": "hipótesis límite|el modelo funciona mientras los incentivos económicos se mantengan"
+        "pattern": "hipótesis límite|el modelo funciona mientras los incentivos económicos se mantengan",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q115-006",
         "match_type": "LITERAL",
-        "pattern": "supuesto crítico para el impacto a largo plazo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q295"
+          "const": "Q115"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

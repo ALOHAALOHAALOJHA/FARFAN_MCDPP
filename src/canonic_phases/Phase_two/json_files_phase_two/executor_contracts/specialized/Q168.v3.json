@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "5208c9106c59422c302e911c8589d6f368820143d390368fccbb5ffe7cf1bc46",
+    "contract_hash": "145fa45f4f002d7b80dc3abfd4ed4c6ce0e5d18867c53fe28232aea721655324",
     "created_at": "2025-11-28T03:50:31.720464+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 168,
-    "updated_at": "2025-12-15T20:32:12.213202+00:00"
+    "updated_at": "2025-12-15T21:42:32.099854+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q168-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dada la magnitud del universo"
+        "pattern": "meta ambiciosa pero factible|meta realista dada la magnitud del universo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q168-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por la concurrencia de recursos de la UARIV"
+        "pattern": "la meta se justifica por la concurrencia de recursos de la UARIV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q168-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión de X se espera lograr la reparación de Y víctimas"
+        "pattern": "con la inversión de X se espera lograr la reparación de Y víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q168-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad del Enlace de Víctimas permite gestionar este número de casos"
+        "pattern": "la capacidad del Enlace de Víctimas permite gestionar este número de casos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q168-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias similares de otros municipios PDET"
+        "pattern": "en experiencias similares de otros municipios PDET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q168-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente departamental|meta del PND para víctimas"
+        "pattern": "benchmark|referente departamental|meta del PND para víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q168"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

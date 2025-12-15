@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "ae975b4538e21bfff42feceef4b20bfa5513dce6f3f3ed1e0df68dafb84f5f8e",
+    "contract_hash": "33fea72f32c2397b262712d9fb88fda443c2c658537433e8e5200f11c41ad38f",
     "created_at": "2025-11-28T03:50:42.354365+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 265,
-    "updated_at": "2025-12-15T20:32:12.582460+00:00"
+    "updated_at": "2025-12-15T21:42:32.633095+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q265-000",
         "match_type": "REGEX",
-        "pattern": "la ambición del impacto es realista si se mantiene el compromiso de todos los actores armados"
+        "pattern": "la ambición del impacto es realista si se mantiene el compromiso de todos los actores armados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q265-001",
         "match_type": "REGEX",
-        "pattern": "efecto no deseado|consecuencia imprevista|externalidad negativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q265-002",
         "match_type": "REGEX",
-        "pattern": "riesgo de crear una dependencia de los líderes hacia el Estado para su seguridad"
+        "pattern": "riesgo de crear una dependencia de los líderes hacia el Estado para su seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q265-003",
         "match_type": "REGEX",
-        "pattern": "posible fragmentación del movimiento social"
+        "pattern": "posible fragmentación del movimiento social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q265-004",
         "match_type": "REGEX",
-        "pattern": "trade-off entre seguridad y autonomía"
+        "pattern": "trade-off entre seguridad y autonomía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q265-005",
         "match_type": "REGEX",
-        "pattern": "hipótesis límite|el modelo funciona mientras exista una voluntad de paz verificable"
+        "pattern": "hipótesis límite|el modelo funciona mientras exista una voluntad de paz verificable",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q265-006",
         "match_type": "LITERAL",
-        "pattern": "supuesto crítico para el impacto a largo plazo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q295"
+          "const": "Q265"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

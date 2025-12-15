@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "bffa6cf3dd97db4dd33bca453a2f4d3012e7820157359eb1ddcf1e286efade21",
+    "contract_hash": "27a8db4a109a36cfcaf7ad282a29b3aa7628530059966f2b83e85b5ab2f759ad",
     "created_at": "2025-11-28T03:50:05.956346+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 51,
-    "updated_at": "2025-12-15T20:32:12.335246+00:00"
+    "updated_at": "2025-12-15T21:42:31.343515+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q051-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación social"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0069"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q051-001",
         "match_type": "LITERAL",
-        "pattern": "integración socioeconómica sostenible|cohesión social"
+        "pattern": "integración socioeconómica sostenible|cohesión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q051-002",
         "match_type": "REGEX",
-        "pattern": "una sociedad intercultural y sin xenofobia"
+        "pattern": "una sociedad intercultural y sin xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q051-003",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados de regularización e inclusión generará el impacto de"
+        "pattern": "la suma de los resultados de regularización e inclusión generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q051-004",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "TEMPORAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q051-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en una generación|8-10 años"
+        "pattern": "tiempo de maduración|se espera observar en una generación|8-10 años",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q051"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

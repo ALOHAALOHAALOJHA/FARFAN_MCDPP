@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "0d141ed0340807ad9e8542cc8ae86adf95924a513d13f74cd42bce21376935ca",
+    "contract_hash": "caeea43d431f60d2c02ce25aad5334e4775faea50a6c646576be9df4d2827362",
     "created_at": "2025-11-28T03:50:42.544722+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 295,
-    "updated_at": "2025-12-15T20:32:12.586884+00:00"
+    "updated_at": "2025-12-15T21:42:32.783467+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q295-000",
         "match_type": "REGEX",
-        "pattern": "la ambición del impacto es realista si se logra la cofinanciación de la USPEC"
+        "pattern": "la ambición del impacto es realista si se logra la cofinanciación de la USPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q295-001",
         "match_type": "REGEX",
-        "pattern": "efecto no deseado|consecuencia imprevista|externalidad negativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q295-002",
         "match_type": "REGEX",
-        "pattern": "riesgo de que mejores condiciones carcelarias reduzcan el efecto disuasorio"
+        "pattern": "riesgo de que mejores condiciones carcelarias reduzcan el efecto disuasorio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q295-003",
         "match_type": "REGEX",
-        "pattern": "posible estigmatización de la comunidad hacia los pospenados"
+        "pattern": "posible estigmatización de la comunidad hacia los pospenados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q295-004",
         "match_type": "REGEX",
-        "pattern": "trade-off entre seguridad y derechos de los PPL"
+        "pattern": "trade-off entre seguridad y derechos de los PPL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q295-005",
         "match_type": "REGEX",
-        "pattern": "hipótesis límite|el modelo de resocialización funciona si el sector privado ofrece empleo"
+        "pattern": "hipótesis límite|el modelo de resocialización funciona si el sector privado ofrece empleo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q295-006",
         "match_type": "LITERAL",
-        "pattern": "supuesto crítico para el impacto a largo plazo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
       }
     ],
     "expected_elements": [

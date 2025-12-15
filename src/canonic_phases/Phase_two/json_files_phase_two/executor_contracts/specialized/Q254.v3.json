@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "655e91b427d0c31a5886c9e12f9659c66c23fd7ae243ad3ed75ceb5fcf1abbc0",
+    "contract_hash": "995e16a38660e15be984db02b392375be2cfa0f5205af1bdd6873832ec89adb9",
     "created_at": "2025-11-28T03:50:42.232385+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 254,
-    "updated_at": "2025-12-15T20:32:11.916088+00:00"
+    "updated_at": "2025-12-15T21:42:32.580646+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -244,7 +244,12 @@
         "flags": "i",
         "id": "PAT-Q254-000",
         "match_type": "REGEX",
-        "pattern": "factibilidad|viabilidad|es realista esperar que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0066"
       },
       {
         "category": "GENERAL",
@@ -252,7 +257,12 @@
         "flags": "i",
         "id": "PAT-Q254-001",
         "match_type": "REGEX",
-        "pattern": "la capacidad de gestión del municipio puede acelerar la respuesta de la UNP"
+        "pattern": "la capacidad de gestión del municipio puede acelerar la respuesta de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +270,12 @@
         "flags": "i",
         "id": "PAT-Q254-002",
         "match_type": "REGEX",
-        "pattern": "el plazo para implementar una ruta de protección"
+        "pattern": "el plazo para implementar una ruta de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +283,12 @@
         "flags": "i",
         "id": "PAT-Q254-003",
         "match_type": "REGEX",
-        "pattern": "la meta de respuesta depende de la capacidad y voluntad de la UNP"
+        "pattern": "la meta de respuesta depende de la capacidad y voluntad de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +296,12 @@
         "flags": "i",
         "id": "PAT-Q254-004",
         "match_type": "REGEX",
-        "pattern": "contradictorio|poco probable|desproporcionado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0045"
       },
       {
         "category": "GENERAL",
@@ -284,7 +309,12 @@
         "flags": "i",
         "id": "PAT-Q254-005",
         "match_type": "REGEX",
-        "pattern": "con el personal asignado se puede lograr el seguimiento de casos"
+        "pattern": "con el personal asignado se puede lograr el seguimiento de casos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -410,7 +440,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q284"
+          "const": "Q254"
         },
         "question_global": {
           "type": "integer",
@@ -423,7 +453,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

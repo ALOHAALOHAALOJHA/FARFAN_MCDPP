@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "3c3411c6996ad392f12b18abd881958a6c6046c5db7111503060776922e0ab70",
+    "contract_hash": "7bd6183a958b9084b75d2b46d3d1d165dd183e50dea8bbef2247ed4ef56be8bd",
     "created_at": "2025-11-28T03:50:31.723478+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 169,
-    "updated_at": "2025-12-15T20:32:12.258486+00:00"
+    "updated_at": "2025-12-15T21:42:32.104342+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q169-000",
         "match_type": "REGEX",
-        "pattern": "este resultado responde a la necesidad de reparación psicosocial"
+        "pattern": "este resultado responde a la necesidad de reparación psicosocial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q169-001",
         "match_type": "REGEX",
-        "pattern": "para avanzar en las garantías de no repetición"
+        "pattern": "para avanzar en las garantías de no repetición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TEMPORAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q169-002",
         "match_type": "REGEX",
-        "pattern": "el resultado atiende directamente el daño colectivo"
+        "pattern": "el resultado atiende directamente el daño colectivo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q169-003",
         "match_type": "REGEX",
-        "pattern": "criterio de éxito|se considerará un logro si mejora la convivencia"
+        "pattern": "criterio de éxito|se considerará un logro si mejora la convivencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q169-004",
         "match_type": "REGEX",
-        "pattern": "umbral de cumplimiento|mínimo aceptable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,13 @@
         "flags": "i",
         "id": "PAT-Q169-005",
         "match_type": "REGEX",
-        "pattern": "matriz de coherencia|alineación diagnóstico-estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
       }
     ],
     "expected_elements": [
@@ -254,7 +285,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q289"
+          "const": "Q169"
         },
         "question_global": {
           "type": "integer",
@@ -267,7 +298,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

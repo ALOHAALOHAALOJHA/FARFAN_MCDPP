@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "0d32b9a72a6def3ab83eb3fef24419844aafd1d16f1675080b0135c07f0ca29d",
+    "contract_hash": "52e836b613dce60f0ce82f1fc0bdd3326e4165a86d000bb3344ff83b2e760259",
     "created_at": "2025-11-28T03:50:31.297860+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 119,
-    "updated_at": "2025-12-15T20:32:12.719244+00:00"
+    "updated_at": "2025-12-15T21:42:31.797880+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q119-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación ambiental|M&E"
+        "pattern": "sistema de seguimiento y evaluación ambiental|M&E",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q119-001",
         "match_type": "LITERAL",
-        "pattern": "monitoreo en tiempo real con imágenes satelitales"
+        "pattern": "monitoreo en tiempo real con imágenes satelitales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q119-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana de deforestación|alerta por calidad del aire"
+        "pattern": "alerta temprana de deforestación|alerta por calidad del aire",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q119-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste|medida correctiva|reorientación de la estrategia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0079"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q119-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación de las comunidades|guardabosques"
+        "pattern": "retroalimentación de las comunidades|guardabosques",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q119-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones del CMGRD para revisar avances"
+        "pattern": "ciclos de aprendizaje|reuniones del CMGRD para revisar avances",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q119-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en atención de emergencias"
+        "pattern": "lecciones aprendidas en atención de emergencias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +301,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q119"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +314,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

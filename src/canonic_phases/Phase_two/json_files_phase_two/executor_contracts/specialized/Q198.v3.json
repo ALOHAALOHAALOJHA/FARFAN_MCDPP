@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "4058b71541ed7da62e77cfba5b19829bbe7ba8d87420e7f3cc2429e36d97a668",
+    "contract_hash": "7309d75b758502e3d83a13f14442b77258f4279432fde9935c587c101e43481d",
     "created_at": "2025-11-28T03:50:31.910401+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 198,
-    "updated_at": "2025-12-15T20:32:12.217558+00:00"
+    "updated_at": "2025-12-15T21:42:32.297519+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q198-000",
         "match_type": "REGEX",
-        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto de SGP"
+        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto de SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q198-001",
         "match_type": "REGEX",
-        "pattern": "la meta se justifica por la ampliación de la cobertura del PAE"
+        "pattern": "la meta se justifica por la ampliación de la cobertura del PAE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q198-002",
         "match_type": "REGEX",
-        "pattern": "con la inversión en X se espera lograr una reducción de Y"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0041"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q198-003",
         "match_type": "REGEX",
-        "pattern": "la capacidad de los orientadores escolares permite esta meta"
+        "pattern": "la capacidad de los orientadores escolares permite esta meta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q198-004",
         "match_type": "REGEX",
-        "pattern": "en experiencias similares de otros municipios con programas de prevención"
+        "pattern": "en experiencias similares de otros municipios con programas de prevención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q198-005",
         "match_type": "REGEX",
-        "pattern": "benchmark|referente departamental|meta del Plan Decenal de Educación"
+        "pattern": "benchmark|referente departamental|meta del Plan Decenal de Educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q288"
+          "const": "Q198"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

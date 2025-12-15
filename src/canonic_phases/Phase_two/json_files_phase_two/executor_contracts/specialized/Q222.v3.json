@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "167ce149338dff419632209249503a8ff0102f6721be15542fdc8818f23cef53",
+    "contract_hash": "13e917a5dc8eff2e04bb3f838bdbca041af63cd3173ab0713f786355eb8aea65",
     "created_at": "2025-11-28T03:50:42.032481+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 222,
-    "updated_at": "2025-12-15T20:32:11.667817+00:00"
+    "updated_at": "2025-12-15T21:42:32.415315+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q222-000",
         "match_type": "REGEX",
-        "pattern": "la meta de formalización cubre un X% del total de predios informales"
+        "pattern": "la meta de formalización cubre un X% del total de predios informales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q222-001",
         "match_type": "REGEX",
-        "pattern": "se intervendrá el \\d+% de la red vial terciaria en mal estado"
+        "pattern": "se intervendrá el \\d+% de la red vial terciaria en mal estado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q222-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|total de predios rurales"
+        "pattern": "universo de atención|total de predios rurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q222-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de la capacidad operativa de la ANT y el municipio"
+        "pattern": "la meta se establece en función de la capacidad operativa de la ANT y el municipio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q222-004",
         "match_type": "REGEX",
-        "pattern": "se priorizarán las veredas con mayor informalidad|vías más críticas"
+        "pattern": "se priorizarán las veredas con mayor informalidad|vías más críticas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -354,7 +379,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q222"
         },
         "question_global": {
           "type": "integer",
@@ -367,7 +392,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

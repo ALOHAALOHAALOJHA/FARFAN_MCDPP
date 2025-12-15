@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "376bb6a8ef13a143267f9005f553c2fd4a283cd932629e3f508df693f7a4f5fe",
+    "contract_hash": "041ff5c9a9eb1748e4eede38e3b977709f97f86ce25f7b775209789f4d9521cd",
     "created_at": "2025-11-28T03:50:31.280144+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 113,
-    "updated_at": "2025-12-15T20:32:12.477376+00:00"
+    "updated_at": "2025-12-15T21:42:31.761065+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q113-000",
         "match_type": "REGEX",
-        "pattern": "dado que es difícil medir la cultura ambiental|para aproximar la medición"
+        "pattern": "dado que es difícil medir la cultura ambiental|para aproximar la medición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q113-001",
         "match_type": "REGEX",
-        "pattern": "se utilizará como proxy|medición indirecta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
       },
       {
         "category": "INDICADOR",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q113-002",
         "match_type": "REGEX",
-        "pattern": "el porcentaje de aprovechamiento de residuos como proxy de la conciencia"
+        "pattern": "el porcentaje de aprovechamiento de residuos como proxy de la conciencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q113-003",
         "match_type": "REGEX",
-        "pattern": "este proxy es validado por estudios de comportamiento ambiental"
+        "pattern": "este proxy es validado por estudios de comportamiento ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q113-004",
         "match_type": "REGEX",
-        "pattern": "una limitación es que no captura las motivaciones individuales"
+        "pattern": "una limitación es que no captura las motivaciones individuales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +149,12 @@
         "flags": "i",
         "id": "PAT-Q113-005",
         "match_type": "REGEX",
-        "pattern": "aunque imperfecto, este proxy nos da una señal de cambio cultural"
+        "pattern": "aunque imperfecto, este proxy nos da una señal de cambio cultural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -250,7 +280,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q293"
+          "const": "Q113"
         },
         "question_global": {
           "type": "integer",
@@ -263,7 +293,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

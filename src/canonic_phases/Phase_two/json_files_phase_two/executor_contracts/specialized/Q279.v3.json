@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "38ac22c87632a0864861866350db63246ff594eba4ce0f593bbcda1a809debc5",
+    "contract_hash": "35beb615f3b8037d39cb8737c34d3db673526609698a2a3129898b5f38559787",
     "created_at": "2025-11-28T03:50:42.403491+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 279,
-    "updated_at": "2025-12-15T20:32:11.514359+00:00"
+    "updated_at": "2025-12-15T21:42:32.699394+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q4_Executor",
@@ -116,7 +116,12 @@
         "flags": "i",
         "id": "PAT-Q279-000",
         "match_type": "REGEX",
-        "pattern": "riesgos:|posibles dificultades:|barreras a la implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
       },
       {
         "category": "GENERAL",
@@ -124,7 +129,12 @@
         "flags": "i",
         "id": "PAT-Q279-001",
         "match_type": "REGEX",
-        "pattern": "riesgos de seguridad|motines|riñas"
+        "pattern": "riesgos de seguridad|motines|riñas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +142,12 @@
         "flags": "i",
         "id": "PAT-Q279-002",
         "match_type": "REGEX",
-        "pattern": "dificultades en la articulación con el INPEC y la USPEC"
+        "pattern": "dificultades en la articulación con el INPEC y la USPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +155,12 @@
         "flags": "i",
         "id": "PAT-Q279-003",
         "match_type": "REGEX",
-        "pattern": "sostenibilidad de los programas de resocialización"
+        "pattern": "sostenibilidad de los programas de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +168,12 @@
         "flags": "i",
         "id": "PAT-Q279-004",
         "match_type": "REGEX",
-        "pattern": "baja participación de los PPL en las actividades"
+        "pattern": "baja participación de los PPL en las actividades",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +181,12 @@
         "flags": "i",
         "id": "PAT-Q279-005",
         "match_type": "REGEX",
-        "pattern": "problemas de corrupción en la administración de los centros"
+        "pattern": "problemas de corrupción en la administración de los centros",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +194,12 @@
         "flags": "i",
         "id": "PAT-Q279-006",
         "match_type": "REGEX",
-        "pattern": "medidas de mitigación|plan de contingencia|para mitigar"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
       },
       {
         "category": "GENERAL",
@@ -172,7 +207,12 @@
         "flags": "i",
         "id": "PAT-Q279-007",
         "match_type": "REGEX",
-        "pattern": "protocolos de seguridad|mesas de trabajo permanentes con INPEC"
+        "pattern": "protocolos de seguridad|mesas de trabajo permanentes con INPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

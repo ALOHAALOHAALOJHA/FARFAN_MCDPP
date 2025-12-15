@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "bf6fbd08f054e79ea83ea488991abb1e329cfa945b2247e51d15f179de79ccb5",
+    "contract_hash": "b218242331c5fd0909ca26db102fb2acaa2a8700621dcbea9b560c6516332c09",
     "created_at": "2025-11-28T03:49:29.779617+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 1,
-    "updated_at": "2025-12-15T20:21:11.009782+00:00"
+    "updated_at": "2025-12-15T21:42:31.019066+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -172,7 +172,12 @@
         "flags": "i",
         "id": "PAT-Q001-000",
         "match_type": "REGEX",
-        "pattern": "línea base|año base|situación inicial|diagnóstico de género"
+        "pattern": "línea base|año base|situación inicial|diagnóstico de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,15 +185,48 @@
         "flags": "i",
         "id": "PAT-Q001-001",
         "match_type": "REGEX",
-        "pattern": "fuente:|según|reportado por|con datos de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0067"
       },
       {
         "category": "FUENTE_OFICIAL",
-        "confidence_weight": 0.85,
+        "confidence_weight": 0.95,
         "flags": "i",
         "id": "PAT-Q001-002",
-        "match_type": "REGEX",
-        "pattern": "DANE|Medicina Legal|Fiscalía|Policía Nacional|SIVIGILA|SISPRO"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "DANE|Medicina Legal|Fiscalía|Policía Nacional|SIVIGILA|SISPRO",
+        "specificity": "HIGH",
+        "validation_rule": "must_be_capitalized",
+        "context_requirement": "within_diagnostic_section",
+        "semantic_expansion": {
+          "DANE": [
+            "Departamento Administrativo Nacional de Estadística",
+            "estadísticas oficiales"
+          ],
+          "SIVIGILA": [
+            "Sistema de Vigilancia en Salud Pública",
+            "vigilancia epidemiológica"
+          ],
+          "SISPRO": [
+            "Sistema Integral de Información de la Protección Social"
+          ]
+        },
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "SENTENCE"
       },
       {
         "category": "GENERAL",
@@ -196,7 +234,12 @@
         "flags": "i",
         "id": "PAT-Q001-003",
         "match_type": "REGEX",
-        "pattern": "Observatorio de Asuntos de Género|Secretaría de la Mujer|Comisaría de Familia"
+        "pattern": "Observatorio de Asuntos de Género|Secretaría de la Mujer|Comisaría de Familia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +247,12 @@
         "flags": "i",
         "id": "PAT-Q001-004",
         "match_type": "REGEX",
-        "pattern": "Encuesta Nacional de Demografía y Salud|ENDS"
+        "pattern": "Encuesta Nacional de Demografía y Salud|ENDS",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -212,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q001-005",
         "match_type": "REGEX",
-        "pattern": "violencia intrafamiliar|VBG|violencia basada en género|delitos sexuales|feminicidio"
+        "pattern": "violencia intrafamiliar|VBG|violencia basada en género|delitos sexuales|feminicidio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -220,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q001-006",
         "match_type": "REGEX",
-        "pattern": "tasa de|porcentaje de|número de casos|brecha salarial de"
+        "pattern": "brecha salarial|diferencia salarial|inequidad salarial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q001-007",
         "match_type": "REGEX",
-        "pattern": "participación política de las mujeres|mujeres en cargos directivos"
+        "pattern": "participación política de las mujeres|mujeres en cargos directivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -236,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q001-008",
         "match_type": "REGEX",
-        "pattern": "autonomía económica|tasa de desempleo femenina"
+        "pattern": "autonomía económica|tasa de desempleo femenina",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q001-009",
         "match_type": "REGEX",
-        "pattern": "madres adolescentes|embarazo en adolescentes"
+        "pattern": "madres adolescentes|embarazo en adolescentes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q001-010",
         "match_type": "LITERAL",
-        "pattern": "2021|2022|2023|vigencia anterior|cuatrienio anterior"
+        "pattern": "(?:19|20)\\\\d{2}|vigencia anterior|cuatrienio anterior",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -260,7 +338,12 @@
         "flags": "i",
         "id": "PAT-Q001-011",
         "match_type": "REGEX",
-        "pattern": "\\d+(\\.\\d+)?\\s*%"
+        "pattern": "\\d+(\\.\\d+)?\\s*%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "UNIDAD_MEDIDA",
@@ -268,7 +351,12 @@
         "flags": "i",
         "id": "PAT-Q001-012",
         "match_type": "REGEX",
-        "pattern": "por cada 100\\.000 mujeres|por 100 mil habitantes"
+        "pattern": "por cada 100\\.000 mujeres|por 100 mil habitantes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TEMPORAL",
@@ -276,7 +364,13 @@
         "flags": "i",
         "id": "PAT-Q001-013",
         "match_type": "REGEX",
-        "pattern": "serie histórica|evolución 20\\d{2}-20\\d{2}|tendencia de los últimos"
+        "pattern": "serie histórica|evolución 20\\d{2}-20\\d{2}|tendencia de los últimos|el año pasado|desde \\d{4}|tendencia reciente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "dynamic_update": "CURRENT_YEAR_WINDOW",
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -2151,6 +2245,83 @@
       "for_validators": "Verify that actual execution produces: evidence (legacy compatible), synthesized_answer (full narrative), human_readable_output (Carver-formatted), overall_confidence and completeness for Phase 3 scoring.",
       "for_auditors": "Full traceability: method outputs → evidence graph (SHA-256 hashed nodes) → belief propagation → validation report → doctoral narrative with citations.",
       "architecture_notes": "EvidenceAssembler REPLACED by EvidenceNexus (graph-native reasoning). Manual assembly_rules REPLACED by causal graph construction + Dempster-Shafer inference. Template-based output REPLACED by DoctoralCarverSynthesizer (PhD-level narrative generation)."
+    },
+    "evidence_structure_post_nexus": {
+      "type": "graph",
+      "nodes": {
+        "text_mining": {
+          "type": "source",
+          "provides": [
+            "critical_links",
+            "patterns"
+          ]
+        },
+        "industrial_policy": {
+          "type": "source",
+          "provides": [
+            "processed_evidence",
+            "patterns"
+          ]
+        },
+        "causal_extraction": {
+          "type": "source",
+          "provides": [
+            "goals",
+            "contexts"
+          ]
+        },
+        "financial_audit": {
+          "type": "source",
+          "provides": [
+            "amounts",
+            "totals"
+          ]
+        },
+        "bayesian_analysis": {
+          "type": "analysis",
+          "provides": [
+            "metrics",
+            "comparisons"
+          ]
+        },
+        "semantic_processing": {
+          "type": "processing",
+          "provides": [
+            "chunks",
+            "embeddings"
+          ]
+        },
+        "final_evidence": {
+          "type": "sink",
+          "aggregates": "all"
+        }
+      },
+      "edges": [
+        {
+          "from": "text_mining",
+          "to": "final_evidence"
+        },
+        {
+          "from": "industrial_policy",
+          "to": "final_evidence"
+        },
+        {
+          "from": "causal_extraction",
+          "to": "final_evidence"
+        },
+        {
+          "from": "financial_audit",
+          "to": "final_evidence"
+        },
+        {
+          "from": "bayesian_analysis",
+          "to": "final_evidence"
+        },
+        {
+          "from": "semantic_processing",
+          "to": "final_evidence"
+        }
+      ]
     }
   },
   "method_outputs": {

@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "9880abb0f1ba73819c19f8726aadf126311a4bf55f8c9dec8cb3621fa55094f4",
+    "contract_hash": "a6c2799116414ef35ae50cf7f43088f19d04f044abee941f6018093313d4b7bc",
     "created_at": "2025-11-28T03:50:13.347137+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 81,
-    "updated_at": "2025-12-15T20:32:12.339763+00:00"
+    "updated_at": "2025-12-15T21:42:31.517609+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q081-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación territorial"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0070"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q081-001",
         "match_type": "REGEX",
-        "pattern": "consolidación de la paz|paz estable y duradera|seguridad humana"
+        "pattern": "consolidación de la paz|paz estable y duradera|seguridad humana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q081-002",
         "match_type": "REGEX",
-        "pattern": "restablecimiento del tejido social|reconciliación"
+        "pattern": "restablecimiento del tejido social|reconciliación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q081-003",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados de seguridad y sociales generará"
+        "pattern": "la suma de los resultados de seguridad y sociales generará",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q081-004",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q081-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en una década|más allá del cuatrienio"
+        "pattern": "tiempo de maduración|se espera observar en una década|más allá del cuatrienio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q081-006",
         "match_type": "REGEX",
-        "pattern": "rezago temporal|efectos de largo aliento"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0091"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q081"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

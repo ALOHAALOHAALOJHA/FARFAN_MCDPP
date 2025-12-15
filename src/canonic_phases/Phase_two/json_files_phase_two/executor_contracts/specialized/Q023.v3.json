@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "bfc3baba8c592d840e515fddd58daa88d7b7019a0267072cb64dd7787467a8cf",
+    "contract_hash": "1cb6f97917802f09717c34261fc8cdfb40462da97aa190d297e5c46ee7010c0c",
     "created_at": "2025-11-28T03:50:01.826087+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 23,
-    "updated_at": "2025-12-15T20:32:12.465699+00:00"
+    "updated_at": "2025-12-15T21:42:31.159471+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q023-000",
         "match_type": "REGEX",
-        "pattern": "dado que es difícil medir|para aproximar la medición de"
+        "pattern": "dado que es difícil medir|para aproximar la medición de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q023-001",
         "match_type": "REGEX",
-        "pattern": "se utilizará como proxy|medición indirecta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q023-002",
         "match_type": "REGEX",
-        "pattern": "encuestas de percepción sobre roles de género"
+        "pattern": "encuestas de percepción sobre roles de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q023-003",
         "match_type": "REGEX",
-        "pattern": "este proxy es validado por estudios de|evidencia internacional"
+        "pattern": "este proxy es validado por estudios de|evidencia internacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -116,15 +136,62 @@
         "flags": "i",
         "id": "PAT-Q023-004",
         "match_type": "REGEX",
-        "pattern": "una limitación de este indicador es que no captura|es sensible a"
+        "pattern": "una limitación de este indicador es que no captura|es sensible a",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q023-005",
-        "match_type": "LITERAL",
-        "pattern": "aunque imperfecto, este proxy nos permite"
+        "match_type": "REGEX",
+        "pattern": "aunque imperfecto, este proxy|reconociendo sus limitaciones|con las limitaciones propias|consciente de sus restricciones|no obstante su imprecisión|pese a ser aproximado|aun con sus deficiencias|reconociendo que es aproximado|si bien no es exacto|a pesar de sus limitaciones|asumiendo su carácter parcial|con reservas metodológicas|admitiendo su imperfección|siendo conscientes de que|entendiendo sus alcances limitados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": {
+          "hedging_phrases": [
+            "aunque imperfecto",
+            "pese a ser aproximado",
+            "si bien no es exacto",
+            "aun con sus deficiencias",
+            "admitiendo su imperfección"
+          ],
+          "limitation_recognition": [
+            "reconociendo sus limitaciones",
+            "con las limitaciones propias",
+            "consciente de sus restricciones",
+            "asumiendo su carácter parcial",
+            "entendiendo sus alcances limitados"
+          ],
+          "qualification_markers": [
+            "no obstante su imprecisión",
+            "a pesar de sus limitaciones",
+            "con reservas metodológicas",
+            "siendo conscientes de que",
+            "reconociendo que es aproximado"
+          ]
+        },
+        "semantic_analysis": {
+          "detect_hedging": true,
+          "uncertainty_markers": [
+            "posiblemente",
+            "se estima",
+            "podría",
+            "sugiere",
+            "presumiblemente",
+            "probablemente",
+            "aproximadamente",
+            "en principio",
+            "en teoría",
+            "potencialmente"
+          ]
+        },
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -250,7 +317,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q293"
+          "const": "Q023"
         },
         "question_global": {
           "type": "integer",
@@ -263,7 +330,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

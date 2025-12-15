@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "89fe24443339563946d49581adbb96bc9acddd67859f9daedf437a1e022c57ba",
+    "contract_hash": "600d9c9a9f2d07730582a37030237f880c17c7c80bb146f59e9a20da27a16e8d",
     "created_at": "2025-11-28T03:50:31.439971+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 136,
-    "updated_at": "2025-12-15T20:32:12.090271+00:00"
+    "updated_at": "2025-12-15T21:42:31.896648+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q136-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "INDICADOR",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q136-001",
         "match_type": "REGEX",
-        "pattern": "tasa de cobertura neta|tasa de deserción escolar"
+        "pattern": "tasa de cobertura neta|tasa de deserción escolar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q136-002",
         "match_type": "REGEX",
-        "pattern": "tasa de mortalidad infantil|razón de mortalidad materna"
+        "pattern": "tasa de mortalidad infantil|razón de mortalidad materna",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q136-003",
         "match_type": "REGEX",
-        "pattern": "porcentaje de hogares con déficit habitacional|IPM"
+        "pattern": "porcentaje de hogares con déficit habitacional|IPM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q136-004",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "GENERAL",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q136-005",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera reducir a"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0012"
       },
       {
         "category": "GENERAL",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q136-006",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q136-007",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT del DNP)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
       },
       {
         "category": "TEMPORAL",
@@ -228,7 +268,12 @@
         "flags": "i",
         "id": "PAT-Q136-008",
         "match_type": "REGEX",
-        "pattern": "horizonte temporal|ventana de maduración|al final del periodo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0068"
       }
     ],
     "expected_elements": [
@@ -360,7 +405,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q286"
+          "const": "Q136"
         },
         "question_global": {
           "type": "integer",
@@ -373,7 +418,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

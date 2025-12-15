@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "c7536ec0653f47c5e833b00557265c35ffe55effb358db9a4c34d66dc73f9cf8",
+    "contract_hash": "09b3c54370a76fae7997d00f9fe4f800658dd6eea698733038d3801081c5ca59",
     "created_at": "2025-11-28T03:49:29.842799+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 17,
-    "updated_at": "2025-12-15T20:32:12.135070+00:00"
+    "updated_at": "2025-12-15T21:42:31.125829+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q017-000",
         "match_type": "REGEX",
-        "pattern": "cadena causal|lógica de intervención|si... entonces..."
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0028"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q017-001",
         "match_type": "REGEX",
-        "pattern": "el resultado se logrará siempre y cuando|asumiendo que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0057"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q017-002",
         "match_type": "REGEX",
-        "pattern": "supuesto clave|premisa fundamental"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0101"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q017-003",
         "match_type": "REGEX",
-        "pattern": "condición habilitante|factor crítico|requiere de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0043"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q017-004",
         "match_type": "REGEX",
-        "pattern": "depende de la articulación con|necesita de la participación de"
+        "pattern": "depende de la articulación con|necesita de la participación de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q017-005",
         "match_type": "REGEX",
-        "pattern": "un supuesto es que las mujeres se apropien de las herramientas"
+        "pattern": "un supuesto es que las mujeres se apropien de las herramientas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q017-006",
         "match_type": "LITERAL",
-        "pattern": "se requiere un cambio cultural para que"
+        "pattern": "se requiere un cambio cultural para que",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q287"
+          "const": "Q017"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

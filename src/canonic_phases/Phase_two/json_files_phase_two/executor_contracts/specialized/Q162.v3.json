@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "0bf61e276dd501cb7fbd1e0f0a6c1189d03a56cd5760979c3b3c35e4bfc5f67d",
+    "contract_hash": "e10db1888a6b8567ab0892b636982f8eb17ca05d9b7b9e8e40eaf93a581f49e7",
     "created_at": "2025-11-28T03:50:31.694815+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 162,
-    "updated_at": "2025-12-15T20:32:11.653808+00:00"
+    "updated_at": "2025-12-15T21:42:32.059609+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q162-000",
         "match_type": "REGEX",
-        "pattern": "la meta de indemnización cubre un X% del universo por indemnizar"
+        "pattern": "la meta de indemnización cubre un X% del universo por indemnizar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q162-001",
         "match_type": "REGEX",
-        "pattern": "se atenderá al \\d+% de las familias que solicitaron retorno"
+        "pattern": "se atenderá al \\d+% de las familias que solicitaron retorno",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q162-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|población víctima total en el RUV"
+        "pattern": "universo de atención|población víctima total en el RUV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q162-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de la concurrencia de la UARIV"
+        "pattern": "la meta se establece en función de la concurrencia de la UARIV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q162-004",
         "match_type": "REGEX",
-        "pattern": "se priorizarán las víctimas de mayor edad o con discapacidad"
+        "pattern": "se priorizarán las víctimas de mayor edad o con discapacidad|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +269,12 @@
         "flags": "i",
         "id": "PAT-Q162-005",
         "match_type": "REGEX",
-        "pattern": "la dosificación de la ayuda humanitaria sigue los estándares"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0075"
       }
     ],
     "expected_elements": [
@@ -362,7 +392,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q162"
         },
         "question_global": {
           "type": "integer",
@@ -375,7 +405,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

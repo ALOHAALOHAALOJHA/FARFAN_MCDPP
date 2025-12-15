@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "2077e22683bbb55c7ce097089d156def94ac3b1539140cf7c7e5bb5c68d6e76e",
+    "contract_hash": "df85b4eabd6feb5e5db332ad440c78e51ce8ac3670ae9912de431af7f32a9a5e",
     "created_at": "2025-11-28T03:50:42.242144+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 256,
-    "updated_at": "2025-12-15T20:32:12.121259+00:00"
+    "updated_at": "2025-12-15T21:42:32.593847+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q256-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "GENERAL",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q256-001",
         "match_type": "REGEX",
-        "pattern": "número de agresiones (amenazas, atentados, homicidios) contra defensores"
+        "pattern": "número de agresiones (amenazas, atentados, homicidios) contra defensores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q256-002",
         "match_type": "REGEX",
-        "pattern": "tasa de homicidios de líderes sociales"
+        "pattern": "tasa de homicidios de líderes sociales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q256-003",
         "match_type": "REGEX",
-        "pattern": "porcentaje de casos de amenaza que no se materializan"
+        "pattern": "porcentaje de casos de amenaza que no se materializan",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q256-004",
         "match_type": "REGEX",
-        "pattern": "Índice de Riesgo para Defensores"
+        "pattern": "Índice de Riesgo para Defensores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q256-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q256-006",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera reducir a cero|reducir en X%"
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera reducir a cero|reducir en X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q256-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -228,7 +268,12 @@
         "flags": "i",
         "id": "PAT-Q256-008",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT del DNP)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
       }
     ],
     "expected_elements": [
@@ -360,7 +405,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q286"
+          "const": "Q256"
         },
         "question_global": {
           "type": "integer",
@@ -373,7 +418,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

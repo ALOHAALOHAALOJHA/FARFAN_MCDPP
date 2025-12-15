@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "4959985831a4885f0242ee9c2f0b2b978a9d23b774895555a6a4a94f1be7c3a4",
+    "contract_hash": "2a0e3735c077c42a73d878075b4bfd23559987bfd4f440acb05d61e733166faa",
     "created_at": "2025-11-28T03:50:31.726301+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 170,
-    "updated_at": "2025-12-15T20:32:12.307802+00:00"
+    "updated_at": "2025-12-15T21:42:32.108968+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q170-000",
         "match_type": "REGEX",
-        "pattern": "alineado con el Plan Nacional de Desarrollo|PND"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0023"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q170-001",
         "match_type": "REGEX",
-        "pattern": "contribuye al Punto 5 del Acuerdo de Paz|Paz Total"
+        "pattern": "contribuye al Punto 5 del Acuerdo de Paz|Paz Total",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q170-002",
         "match_type": "REGEX",
-        "pattern": "implementación de iniciativas PDET|Programas de Desarrollo con Enfoque Territorial"
+        "pattern": "implementación de iniciativas PDET|Programas de Desarrollo con Enfoque Territorial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q170-003",
         "match_type": "REGEX",
-        "pattern": "aporta al ODS 16|Paz, Justicia e Instituciones Sólidas"
+        "pattern": "aporta al ODS 16|Paz, Justicia e Instituciones Sólidas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q170-004",
         "match_type": "REGEX",
-        "pattern": "en concordancia con la Ley 1448 de 2011"
+        "pattern": "en concordancia con la Ley 1448 de 2011",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -242,7 +267,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q290"
+          "const": "Q170"
         },
         "question_global": {
           "type": "integer",
@@ -255,7 +280,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "2eaf8c2d3bc58de5e06ff8ec5e8a4c9fcd7a568969cf1237b9a126342b3c25a0",
+    "contract_hash": "1f995c5a43ac45c12d3d4f5aa0846852e0443bab582fc2e7781df514c9eccd09",
     "created_at": "2025-11-28T03:50:31.877743+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 190,
-    "updated_at": "2025-12-15T20:32:11.550374+00:00"
+    "updated_at": "2025-12-15T21:42:32.235337+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q190-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de protección|atención articulada"
+        "pattern": "estrategia integral de protección|atención articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q190-001",
         "match_type": "REGEX",
-        "pattern": "la jornada complementaria se articula con la prevención del consumo de SPA"
+        "pattern": "la jornada complementaria se articula con la prevención del consumo de SPA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q190-002",
         "match_type": "REGEX",
-        "pattern": "sinergia entre la oferta cultural y la prevención de la violencia"
+        "pattern": "sinergia entre la oferta cultural y la prevención de la violencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q190-003",
         "match_type": "REGEX",
-        "pattern": "la atención en primera infancia es prerrequisito para una trayectoria educativa exitosa"
+        "pattern": "la atención en primera infancia es prerrequisito para una trayectoria educativa exitosa",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q190-004",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se fortalecerá la oferta, luego se promoverá la demanda"
+        "pattern": "en una primera fase se fortalecerá la oferta, luego se promoverá la demanda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q190-005",
         "match_type": "LITERAL",
-        "pattern": "la estrategia combina promoción, prevención y atención"
+        "pattern": "la estrategia combina promoción, prevención y atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q190"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

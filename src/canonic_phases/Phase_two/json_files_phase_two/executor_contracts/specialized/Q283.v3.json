@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "e0d2bedd667e8a05a03ae11a8e1ae6bbba93995c30e92acc177565b8e8fe40bf",
+    "contract_hash": "548adf907c5d44315b8c84e55056de8acfc8ba3c2169683432821f92d6af53a2",
     "created_at": "2025-11-28T03:50:42.500636+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 283,
-    "updated_at": "2025-12-15T20:32:11.758319+00:00"
+    "updated_at": "2025-12-15T21:42:32.720409+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q283-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión para infraestructura carcelaria"
+        "pattern": "código BPIN|proyecto de inversión para infraestructura carcelaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q283-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión en seguridad y justicia"
+        "pattern": "programa del PPI|línea de inversión en seguridad y justicia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q283-002",
         "match_type": "REGEX",
-        "pattern": "recursos del proyecto|presupuesto para atención a PPL"
+        "pattern": "recursos del proyecto|presupuesto para atención a PPL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q283-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "TERRITORIAL",
@@ -244,7 +264,12 @@
         "flags": "i",
         "id": "PAT-Q283-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Secretaría de Salud|Personería Municipal"
+        "pattern": "Secretaría de Gobierno|Secretaría de Salud|Personería Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +277,12 @@
         "flags": "i",
         "id": "PAT-Q283-005",
         "match_type": "REGEX",
-        "pattern": "articulado con el INPEC|convenio con la ESE del municipio"
+        "pattern": "articulado con el INPEC|convenio con la ESE del municipio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +290,12 @@
         "flags": "i",
         "id": "PAT-Q283-006",
         "match_type": "REGEX",
-        "pattern": "contrato de obra No.|contrato de suministro de alimentos"
+        "pattern": "contrato de obra No.|contrato de suministro de alimentos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

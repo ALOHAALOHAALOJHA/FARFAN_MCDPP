@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "e8284bfab313a52721fdcc580a85cd45cc6fc5e9b60cf0cc7c91b7f401960e79",
+    "contract_hash": "f7bc74f5240832503b8e488a0d2f6afcd19afdb1212665927ac610917bec882a",
     "created_at": "2025-11-28T03:49:29.823196+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 13,
-    "updated_at": "2025-12-15T20:32:11.690615+00:00"
+    "updated_at": "2025-12-15T21:42:31.092506+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q013-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión asociado"
+        "pattern": "código BPIN|proyecto de inversión asociado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q013-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión"
+        "pattern": "programa del PPI|línea de inversión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q013-002",
         "match_type": "REGEX",
-        "pattern": "recursos del proyecto|presupuesto del producto"
+        "pattern": "recursos del proyecto|presupuesto del producto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q013-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "GENERAL",
@@ -244,7 +264,12 @@
         "flags": "i",
         "id": "PAT-Q013-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de la Mujer|Oficina de la Mujer|Secretaría de Desarrollo Social"
+        "pattern": "Secretaría de la Mujer|Oficina de la Mujer|Secretaría de Desarrollo Social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +277,12 @@
         "flags": "i",
         "id": "PAT-Q013-005",
         "match_type": "REGEX",
-        "pattern": "articulado con la Comisaría de Familia"
+        "pattern": "articulado con la Comisaría de Familia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +290,12 @@
         "flags": "i",
         "id": "PAT-Q013-006",
         "match_type": "REGEX",
-        "pattern": "corresponsabilidad de|en alianza con"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0049"
       }
     ],
     "expected_elements": [
@@ -382,7 +417,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q283"
+          "const": "Q013"
         },
         "question_global": {
           "type": "integer",
@@ -395,7 +430,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

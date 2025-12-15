@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "b752ab543ed67b8d49a84e16fd645d7ba6c91b7658324d5b57a0cc91ac8c7bcc",
+    "contract_hash": "420bec7ce01cdc919de9653b69acf378f12b0eeabb10da723fdba63bdd01593f",
     "created_at": "2025-11-28T03:50:13.395962+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 95,
-    "updated_at": "2025-12-15T20:32:11.144198+00:00"
+    "updated_at": "2025-12-15T21:42:31.602396+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q095-000",
         "match_type": "REGEX",
-        "pattern": "en el marco de la Ley 99 de 1993|Ley 1523 de 2012|Ley 388 de 1997"
+        "pattern": "en el marco de la Ley 99 de 1993|Ley 1523 de 2012|Ley 388 de 1997",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q095-001",
         "match_type": "REGEX",
-        "pattern": "Decreto 1076 de 2015|Decreto 1077 de 2015"
+        "pattern": "Decreto 1076 de 2015|Decreto 1077 de 2015",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q095-002",
         "match_type": "REGEX",
-        "pattern": "Política Nacional de Gestión del Riesgo de Desastres"
+        "pattern": "Política Nacional de Gestión del Riesgo de Desastres",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q095-003",
         "match_type": "REGEX",
-        "pattern": "competencia de la CAR en|responsabilidad del municipio en"
+        "pattern": "competencia de la CAR en|responsabilidad del municipio en",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q095-004",
         "match_type": "REGEX",
-        "pattern": "conflictos por uso del suelo|determinantes ambientales"
+        "pattern": "conflictos por uso del suelo|determinantes ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q095-005",
         "match_type": "REGEX",
-        "pattern": "límite fiscal|disponibilidad de recursos para grandes obras"
+        "pattern": "límite fiscal|disponibilidad de recursos para grandes obras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q095-006",
         "match_type": "REGEX",
-        "pattern": "restricción presupuestal para la compra de predios"
+        "pattern": "restricción presupuestal para la compra de predios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +183,12 @@
         "flags": "i",
         "id": "PAT-Q095-007",
         "match_type": "REGEX",
-        "pattern": "complejidad técnica de los estudios de riesgo"
+        "pattern": "complejidad técnica de los estudios de riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +196,12 @@
         "flags": "i",
         "id": "PAT-Q095-008",
         "match_type": "REGEX",
-        "pattern": "durante el cuatrienio|plazo de ejecución del POT"
+        "pattern": "durante el cuatrienio|plazo de ejecución del POT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -286,7 +331,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q275"
+          "const": "Q095"
         },
         "question_global": {
           "type": "integer",
@@ -299,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "ce2e7ad398b18495a9f042dfbd3ad664019039696b36d8942fb7059bf281de45",
+    "contract_hash": "e2614d29e274f14d8d427301dc6a60a005013865dc222d25e31a644a7dd83086",
     "created_at": "2025-11-28T03:50:41.904857+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 210,
-    "updated_at": "2025-12-15T20:32:12.768971+00:00"
+    "updated_at": "2025-12-15T21:42:32.353532+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q210-000",
         "match_type": "REGEX",
-        "pattern": "enfoque diferencial|enfoque de derechos|curso de vida"
+        "pattern": "enfoque diferencial|enfoque de derechos|curso de vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q210-001",
         "match_type": "REGEX",
-        "pattern": "jóvenes rurales|jóvenes en condición de discapacidad"
+        "pattern": "jóvenes rurales|jóvenes en condición de discapacidad|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q210-002",
         "match_type": "REGEX",
-        "pattern": "NNA migrantes|NNA víctimas del conflicto|NNA de grupos étnicos"
+        "pattern": "NNA migrantes|NNA víctimas del conflicto|NNA de grupos étnicos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q210-003",
         "match_type": "REGEX",
-        "pattern": "restricciones de acceso a la oferta en zonas rurales dispersas"
+        "pattern": "restricciones de acceso a la oferta en zonas rurales dispersas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q210-004",
         "match_type": "REGEX",
-        "pattern": "contexto cultural|barreras culturales para la salud sexual"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0044"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q210-005",
         "match_type": "REGEX",
-        "pattern": "dinámicas de economías ilegales que afectan a los jóvenes"
+        "pattern": "dinámicas de economías ilegales que afectan a los jóvenes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q210-006",
         "match_type": "REGEX",
-        "pattern": "estrategias territorializadas|acciones adaptadas a la comuna/corregimiento"
+        "pattern": "estrategias territorializadas|acciones adaptadas a la comuna/corregimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -282,7 +317,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q300"
+          "const": "Q210"
         },
         "question_global": {
           "type": "integer",
@@ -295,7 +330,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

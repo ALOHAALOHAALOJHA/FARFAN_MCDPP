@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "01490b760dd7c39ab79d1e773c5b9812e3c093b7803b2881d8e33bfe5befb6aa",
+    "contract_hash": "00f58792a4053f263ea948b2fe6b71c9001f6e95c688df6e19904beef5c0e7d6",
     "created_at": "2025-11-28T03:50:42.360796+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 267,
-    "updated_at": "2025-12-15T20:32:12.662212+00:00"
+    "updated_at": "2025-12-15T21:42:32.640773+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q2_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q267-000",
         "match_type": "REGEX",
-        "pattern": "proporcionalidad entre|magnitud del efecto esperado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0088"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q267-001",
         "match_type": "REGEX",
-        "pattern": "salto lógico|brecha en la argumentación|milagro de implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0097"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q267-002",
         "match_type": "LITERAL",
-        "pattern": "es realista esperar que|es factible que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0060"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q267-003",
         "match_type": "REGEX",
-        "pattern": "la escala de la intervención es coherente con la ambición del resultado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0076"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q267-004",
         "match_type": "REGEX",
-        "pattern": "se requieren pasos intermedios para generar confianza"
+        "pattern": "se requieren pasos intermedios para generar confianza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q267-005",
         "match_type": "REGEX",
-        "pattern": "el resultado es de mayor alcance que el producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0056"
       }
     ],
     "expected_elements": [
@@ -254,7 +284,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q297"
+          "const": "Q267"
         },
         "question_global": {
           "type": "integer",
@@ -267,7 +297,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

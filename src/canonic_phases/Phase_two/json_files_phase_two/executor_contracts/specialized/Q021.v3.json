@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "6b398d386fe7ff3a98eae19cc68ea7cd7e2509598193f38fd614aced8ef8e2f7",
+    "contract_hash": "03937030c2b7aa56ce1fdb2dad631e375b979176d81c035b298869c8b8874c2e",
     "created_at": "2025-11-28T03:50:01.816277+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 21,
-    "updated_at": "2025-12-15T20:32:12.330851+00:00"
+    "updated_at": "2025-12-15T21:42:31.144559+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q021-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación cultural"
+        "pattern": "impacto esperado|visión de largo plazo|transformación cultural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q021-001",
         "match_type": "REGEX",
-        "pattern": "cambio estructural|erradicación de la VBG"
+        "pattern": "cambio estructural|erradicación de la VBG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q021-002",
         "match_type": "REGEX",
-        "pattern": "sociedad más equitativa|igualdad real y efectiva"
+        "pattern": "sociedad más equitativa|igualdad real y efectiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q021-003",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados generará el impacto de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0077"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q021-004",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "TEMPORAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q021-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en 8 años|más allá del cuatrienio"
+        "pattern": "tiempo de maduración|se espera observar en 8 años|más allá del cuatrienio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q021-006",
         "match_type": "REGEX",
-        "pattern": "rezago temporal|efectos de segunda generación"
+        "pattern": "rezago temporal|efectos de segunda generación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q021"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

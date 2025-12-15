@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "bb973ecce209c307580931c44f62b7aaf1547dbb6cd5254f03f3b39a22c83e18",
+    "contract_hash": "0f2f28c10b20129d70358b288f83a2a9598b77c00c871be6e3cd7aa0036974c0",
     "created_at": "2025-11-28T03:50:42.094801+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 239,
-    "updated_at": "2025-12-15T20:32:12.733466+00:00"
+    "updated_at": "2025-12-15T21:42:32.505744+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q239-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E del POT/PDET"
+        "pattern": "sistema de seguimiento y evaluación|M&E del POT/PDET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q239-001",
         "match_type": "REGEX",
-        "pattern": "monitoreo a través de sistemas de información geográfica (SIG)"
+        "pattern": "monitoreo a través de sistemas de información geográfica (SIG)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q239-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana sobre nuevos focos de informalidad o conflicto"
+        "pattern": "alerta temprana sobre nuevos focos de informalidad o conflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q239-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste del plan vial|medida correctiva"
+        "pattern": "mecanismo de ajuste del plan vial|medida correctiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q239-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación desde el Consejo Municipal de Desarrollo Rural (CMDR)"
+        "pattern": "retroalimentación desde el Consejo Municipal de Desarrollo Rural (CMDR)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q239-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones de revisión de la estrategia rural"
+        "pattern": "ciclos de aprendizaje|reuniones de revisión de la estrategia rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q239-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en la implementación de proyectos"
+        "pattern": "lecciones aprendidas en la implementación de proyectos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +301,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q239"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +314,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

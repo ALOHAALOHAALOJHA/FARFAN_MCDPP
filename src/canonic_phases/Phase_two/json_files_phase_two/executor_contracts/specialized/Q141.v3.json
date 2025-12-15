@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "997c742f0b675af0fe12df14ba77b0b23552cf4b29a7d852b532d17e07bf5fbf",
+    "contract_hash": "4199a8ecb7f7af47ff070a54a331240cf99c76a1d69b229ec5224e4cb12d304f",
     "created_at": "2025-11-28T03:50:31.539286+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 141,
-    "updated_at": "2025-12-15T20:32:12.348780+00:00"
+    "updated_at": "2025-12-15T21:42:31.929666+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q141-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación social"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0069"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q141-001",
         "match_type": "REGEX",
-        "pattern": "mejora del capital humano|desarrollo humano integral"
+        "pattern": "mejora del capital humano|desarrollo humano integral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q141-002",
         "match_type": "REGEX",
-        "pattern": "reducción de la pobreza multidimensional y monetaria"
+        "pattern": "reducción de la pobreza multidimensional y monetaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q141-003",
         "match_type": "REGEX",
-        "pattern": "cierre de brechas sociales|mayor equidad"
+        "pattern": "cierre de brechas sociales|mayor equidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q141-004",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados en salud y educación generará el impacto de"
+        "pattern": "la suma de los resultados en salud y educación generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q141-005",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "TEMPORAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q141-006",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|efectos intergeneracionales|se espera observar en 10 años"
+        "pattern": "tiempo de maduración|efectos intergeneracionales|se espera observar en 10 años",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -274,7 +309,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q141"
         },
         "question_global": {
           "type": "integer",
@@ -287,7 +322,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

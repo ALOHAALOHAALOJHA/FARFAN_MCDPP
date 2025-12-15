@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "c2389c021085914a9a88584285c65cc946174263689fa6288586389591a5cb85",
+    "contract_hash": "342ce27f42e16fa30924a2303578b97f902bd4639a1868af85afe91bf458f632",
     "created_at": "2025-11-28T03:50:42.385400+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 274,
-    "updated_at": "2025-12-15T20:32:11.125747+00:00"
+    "updated_at": "2025-12-15T21:42:32.677371+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -123,8 +123,24 @@
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q274-000",
-        "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Comando de Policía Municipal"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Comando de Policía Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -132,7 +148,12 @@
         "flags": "i",
         "id": "PAT-Q274-001",
         "match_type": "REGEX",
-        "pattern": "Personería Municipal|Defensoría del Pueblo Regional"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0014"
       },
       {
         "category": "GENERAL",
@@ -140,7 +161,12 @@
         "flags": "i",
         "id": "PAT-Q274-002",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Salud|ESE Hospital"
+        "pattern": "Secretaría de Salud|ESE Hospital",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +174,12 @@
         "flags": "i",
         "id": "PAT-Q274-003",
         "match_type": "REGEX",
-        "pattern": "capacidad instalada en centros de detención transitoria|cupos disponibles"
+        "pattern": "capacidad instalada en centros de detención transitoria|cupos disponibles",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +187,12 @@
         "flags": "i",
         "id": "PAT-Q274-004",
         "match_type": "REGEX",
-        "pattern": "protocolo para el traslado de PPL|ruta de atención en salud"
+        "pattern": "protocolo para el traslado de PPL|ruta de atención en salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +200,12 @@
         "flags": "i",
         "id": "PAT-Q274-005",
         "match_type": "REGEX",
-        "pattern": "sistema de información de la población reclusa local"
+        "pattern": "sistema de información de la población reclusa local",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +213,12 @@
         "flags": "i",
         "id": "PAT-Q274-006",
         "match_type": "REGEX",
-        "pattern": "Comité de seguimiento al sistema penitenciario y carcelario"
+        "pattern": "Comité de seguimiento al sistema penitenciario y carcelario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +226,12 @@
         "flags": "i",
         "id": "PAT-Q274-007",
         "match_type": "REGEX",
-        "pattern": "articulación con el INPEC|convenio con la USPEC|coordinación con la rama judicial"
+        "pattern": "articulación con el INPEC|convenio con la USPEC|coordinación con la rama judicial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +239,12 @@
         "flags": "i",
         "id": "PAT-Q274-008",
         "match_type": "REGEX",
-        "pattern": "falta de infraestructura|insuficiencia de cupos|limitada capacidad de la Personería"
+        "pattern": "falta de infraestructura|insuficiencia de cupos|limitada capacidad de la Personería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +252,12 @@
         "flags": "i",
         "id": "PAT-Q274-009",
         "match_type": "REGEX",
-        "pattern": "cuello de botella|barrera de acceso a la justicia|limitaciones de competencia"
+        "pattern": "cuello de botella|barrera de acceso a la justicia|limitaciones de competencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

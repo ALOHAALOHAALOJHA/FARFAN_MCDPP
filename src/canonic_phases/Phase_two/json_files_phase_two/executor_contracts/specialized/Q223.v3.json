@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "b3a3bc56a2a6b55f77e55a65c2d04af09dea80040e103bcf921f883b92857e81",
+    "contract_hash": "fd3e83e6273f146f92e29be473ea86ee03fd10278ca3ae411451bbc890641290",
     "created_at": "2025-11-28T03:50:42.037322+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 223,
-    "updated_at": "2025-12-15T20:32:11.743351+00:00"
+    "updated_at": "2025-12-15T21:42:32.422321+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q223-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión para catastro multipropósito"
+        "pattern": "código BPIN|proyecto de inversión para catastro multipropósito",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q223-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión en desarrollo rural"
+        "pattern": "programa del PPI|línea de inversión en desarrollo rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q223-002",
         "match_type": "REGEX",
-        "pattern": "recursos del proyecto|presupuesto para la red vial"
+        "pattern": "recursos del proyecto|presupuesto para la red vial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q223-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "GENERAL",
@@ -244,7 +264,12 @@
         "flags": "i",
         "id": "PAT-Q223-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Planeación|Infraestructura|UMATA"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0020"
       },
       {
         "category": "GENERAL",
@@ -252,7 +277,12 @@
         "flags": "i",
         "id": "PAT-Q223-005",
         "match_type": "REGEX",
-        "pattern": "articulado con el IGAC|convenio con INVIAS|operado por"
+        "pattern": "articulado con el IGAC|convenio con INVIAS|operado por",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -374,7 +404,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q283"
+          "const": "Q223"
         },
         "question_global": {
           "type": "integer",
@@ -387,7 +417,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

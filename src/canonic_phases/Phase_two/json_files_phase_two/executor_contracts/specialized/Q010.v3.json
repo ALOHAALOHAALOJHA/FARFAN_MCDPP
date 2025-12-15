@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "edf624376faf50a45336e0ce48705bd4bfc4ea7e6f0f82027cf89b4ec30a5fe5",
+    "contract_hash": "7bd88bc56daf801fb81560f51b65c587d71b4c8691d70c8118c69dbd7048135b",
     "created_at": "2025-11-28T03:49:29.810814+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 10,
-    "updated_at": "2025-12-15T20:32:11.520089+00:00"
+    "updated_at": "2025-12-15T21:42:31.072035+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q010-000",
         "match_type": "REGEX",
-        "pattern": "de manera articulada|en complemento a|integralmente"
+        "pattern": "de manera articulada|en complemento a|integralmente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q010-001",
         "match_type": "LITERAL",
-        "pattern": "sinergia entre|se refuerza con"
+        "pattern": "sinergia entre|se refuerza con",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q010-002",
         "match_type": "REGEX",
-        "pattern": "la actividad X es prerrequisito para la actividad Y"
+        "pattern": "la actividad X es prerrequisito para la actividad Y",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q010-003",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se realizará... y luego..."
+        "pattern": "en una primera fase se realizará... y luego...",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q010-004",
         "match_type": "LITERAL",
-        "pattern": "la estrategia combina prevención, atención y acceso a la justicia"
+        "pattern": "la estrategia combina prevención, atención y acceso a la justicia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q010-005",
         "match_type": "REGEX",
-        "pattern": "el programa de autonomía económica se complementa con el de prevención de VBG"
+        "pattern": "el programa de autonomía económica se complementa con el de prevención de VBG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q010-006",
         "match_type": "REGEX",
-        "pattern": "evitando duplicidad de esfuerzos|no redundancia"
+        "pattern": "evitando duplicidad de esfuerzos|no redundancia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +305,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q010"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +318,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

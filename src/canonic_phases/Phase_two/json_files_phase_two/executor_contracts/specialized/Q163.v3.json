@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "b605ceffd73193206a5a72d3754fab32dbaa483b8d444bcb7ced16a183a58853",
+    "contract_hash": "ddeba6fb6957be18db6757c584873c52d4d7654eb53f3cb48f98871c8d8c222e",
     "created_at": "2025-11-28T03:50:31.699662+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 163,
-    "updated_at": "2025-12-15T20:32:11.728112+00:00"
+    "updated_at": "2025-12-15T21:42:32.066662+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q163-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión para la paz y reconciliación"
+        "pattern": "código BPIN|proyecto de inversión para la paz y reconciliación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q163-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión en víctimas"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0087"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q163-002",
         "match_type": "REGEX",
-        "pattern": "recursos del FONSET|presupuesto para el PAT"
+        "pattern": "recursos del FONSET|presupuesto para el PAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q163-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "TERRITORIAL",
@@ -244,7 +264,12 @@
         "flags": "i",
         "id": "PAT-Q163-004",
         "match_type": "REGEX",
-        "pattern": "Enlace Municipal de Víctimas|Secretaría de Gobierno"
+        "pattern": "Enlace Municipal de Víctimas|Secretaría de Gobierno",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -252,7 +277,12 @@
         "flags": "i",
         "id": "PAT-Q163-005",
         "match_type": "REGEX",
-        "pattern": "articulado con la Personería|UARIV territorial"
+        "pattern": "articulado con la Personería|UARIV territorial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +290,12 @@
         "flags": "i",
         "id": "PAT-Q163-006",
         "match_type": "REGEX",
-        "pattern": "convenio con|operado por"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0048"
       }
     ],
     "expected_elements": [
@@ -382,7 +417,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q283"
+          "const": "Q163"
         },
         "question_global": {
           "type": "integer",
@@ -395,7 +430,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

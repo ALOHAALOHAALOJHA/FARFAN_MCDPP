@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "f473ad358e7b734acbcc1c1a128694a627dc50079d6c552ec6ff92e3b376e1d5",
+    "contract_hash": "0cf07a196d236a15327101e58f8e0b923523bc15a31ef880dc0def0712284622",
     "created_at": "2025-11-28T03:50:42.373732+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 271,
-    "updated_at": "2025-12-15T20:21:11.073483+00:00"
+    "updated_at": "2025-12-15T21:42:32.658048+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -172,7 +172,12 @@
         "flags": "i",
         "id": "PAT-Q271-000",
         "match_type": "REGEX",
-        "pattern": "línea base|diagnóstico del sistema penitenciario y carcelario|situación de los derechos de PPL"
+        "pattern": "línea base|diagnóstico del sistema penitenciario y carcelario|situación de los derechos de PPL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +185,12 @@
         "flags": "i",
         "id": "PAT-Q271-001",
         "match_type": "REGEX",
-        "pattern": "fuente:|según|reportado por|con datos de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0067"
       },
       {
         "category": "GENERAL",
@@ -188,7 +198,12 @@
         "flags": "i",
         "id": "PAT-Q271-002",
         "match_type": "LITERAL",
-        "pattern": "INPEC|Instituto Nacional Penitenciario y Carcelario|USPEC"
+        "pattern": "INPEC|Instituto Nacional Penitenciario y Carcelario|USPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -196,7 +211,12 @@
         "flags": "i",
         "id": "PAT-Q271-003",
         "match_type": "REGEX",
-        "pattern": "Personería Municipal|Defensoría del Pueblo|Procuraduría"
+        "pattern": "Personería Municipal|Defensoría del Pueblo|Procuraduría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -204,7 +224,12 @@
         "flags": "i",
         "id": "PAT-Q271-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Secretaría de Salud Municipal|ESE"
+        "pattern": "Secretaría de Gobierno|Secretaría de Salud Municipal|ESE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,15 +237,36 @@
         "flags": "i",
         "id": "PAT-Q271-005",
         "match_type": "REGEX",
-        "pattern": "tasa de hacinamiento|sobrepoblación carcelaria|déficit de cupos"
+        "pattern": "tasa de hacinamiento|sobrepoblación carcelaria|déficit de cupos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q271-006",
-        "match_type": "REGEX",
-        "pattern": "centros de detención transitoria|estaciones de policía|URI"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "centros de detención transitoria|estaciones de policía|URI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +274,12 @@
         "flags": "i",
         "id": "PAT-Q271-007",
         "match_type": "REGEX",
-        "pattern": "establecimiento de reclusión del orden nacional|ERON"
+        "pattern": "establecimiento de reclusión del orden nacional|ERON",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +287,12 @@
         "flags": "i",
         "id": "PAT-Q271-008",
         "match_type": "REGEX",
-        "pattern": "número de personas privadas de la libertad|PPL"
+        "pattern": "número de personas privadas de la libertad|PPL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +300,12 @@
         "flags": "i",
         "id": "PAT-Q271-009",
         "match_type": "REGEX",
-        "pattern": "distinción entre sindicados y condenados|población sindicada"
+        "pattern": "distinción entre sindicados y condenados|población sindicada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +313,12 @@
         "flags": "i",
         "id": "PAT-Q271-010",
         "match_type": "REGEX",
-        "pattern": "prevalencia de enfermedades (VIH, TBC)|salud mental intramural"
+        "pattern": "prevalencia de enfermedades (VIH, TBC)|salud mental intramural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +326,12 @@
         "flags": "i",
         "id": "PAT-Q271-011",
         "match_type": "REGEX",
-        "pattern": "2021|2022|2023|vigencia anterior|serie histórica de hacinamiento"
+        "pattern": "(?:19|20)\\\\d{2}|vigencia anterior|serie histórica de hacinamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +339,12 @@
         "flags": "i",
         "id": "PAT-Q271-012",
         "match_type": "REGEX",
-        "pattern": "porcentaje|tasa|número de PPL|número de cupos"
+        "pattern": "porcentaje|tasa|número de PPL|número de cupos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -1948,6 +2024,83 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    },
+    "evidence_structure_post_nexus": {
+      "type": "graph",
+      "nodes": {
+        "text_mining": {
+          "type": "source",
+          "provides": [
+            "critical_links",
+            "patterns"
+          ]
+        },
+        "industrial_policy": {
+          "type": "source",
+          "provides": [
+            "processed_evidence",
+            "patterns"
+          ]
+        },
+        "causal_extraction": {
+          "type": "source",
+          "provides": [
+            "goals",
+            "contexts"
+          ]
+        },
+        "financial_audit": {
+          "type": "source",
+          "provides": [
+            "amounts",
+            "totals"
+          ]
+        },
+        "bayesian_analysis": {
+          "type": "analysis",
+          "provides": [
+            "metrics",
+            "comparisons"
+          ]
+        },
+        "semantic_processing": {
+          "type": "processing",
+          "provides": [
+            "chunks",
+            "embeddings"
+          ]
+        },
+        "final_evidence": {
+          "type": "sink",
+          "aggregates": "all"
+        }
+      },
+      "edges": [
+        {
+          "from": "text_mining",
+          "to": "final_evidence"
+        },
+        {
+          "from": "industrial_policy",
+          "to": "final_evidence"
+        },
+        {
+          "from": "causal_extraction",
+          "to": "final_evidence"
+        },
+        {
+          "from": "financial_audit",
+          "to": "final_evidence"
+        },
+        {
+          "from": "bayesian_analysis",
+          "to": "final_evidence"
+        },
+        {
+          "from": "semantic_processing",
+          "to": "final_evidence"
+        }
+      ]
     }
   },
   "method_outputs": {

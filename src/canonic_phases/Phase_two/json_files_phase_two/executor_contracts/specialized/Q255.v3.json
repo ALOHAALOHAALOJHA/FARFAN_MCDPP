@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "58a6d95838b2bcb5d2f0331ee8e0c9eb49d7309bd2b94ff572b6268b25528816",
+    "contract_hash": "0c87487c4cbfc6349c293a4613474c1e4277d35d9d16f172ff680c621e533664",
     "created_at": "2025-11-28T03:50:42.237316+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 255,
-    "updated_at": "2025-12-15T20:32:12.030495+00:00"
+    "updated_at": "2025-12-15T21:42:32.587621+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -236,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q255-000",
         "match_type": "REGEX",
-        "pattern": "esto permitirá que|lo cual contribuirá a|generando una disuasión"
+        "pattern": "esto permitirá que|lo cual contribuirá a|generando una disuasión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +249,12 @@
         "flags": "i",
         "id": "PAT-Q255-001",
         "match_type": "REGEX",
-        "pattern": "el mecanismo es que la protección material disuade a los agresores"
+        "pattern": "el mecanismo es que la protección material disuade a los agresores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +262,12 @@
         "flags": "i",
         "id": "PAT-Q255-002",
         "match_type": "REGEX",
-        "pattern": "a través de las campañas de no estigmatización, se reduce la legitimación de la violencia"
+        "pattern": "a través de las campañas de no estigmatización, se reduce la legitimación de la violencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +275,12 @@
         "flags": "i",
         "id": "PAT-Q255-003",
         "match_type": "REGEX",
-        "pattern": "la respuesta rápida a las alertas permite prevenir que las amenazas se materialicen"
+        "pattern": "la respuesta rápida a las alertas permite prevenir que las amenazas se materialicen",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +288,12 @@
         "flags": "i",
         "id": "PAT-Q255-004",
         "match_type": "REGEX",
-        "pattern": "variable intermedia|mediador|eslabón causal|disuasión|prevención"
+        "pattern": "variable intermedia|mediador|eslabón causal|disuasión|prevención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q255-005",
         "match_type": "REGEX",
-        "pattern": "cadena de valor de la protección|ruta de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0029"
       }
     ],
     "expected_elements": [
@@ -398,7 +428,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q285"
+          "const": "Q255"
         },
         "question_global": {
           "type": "integer",
@@ -411,7 +441,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "573477b8fae681abd40cb6d779d4390d59dc18d6f1a30f2721b69a079f4de05e",
+    "contract_hash": "ac5c6de963edda07796697cc9c1f6523fe1b2184d47d1bff1a092ee18b07259c",
     "created_at": "2025-11-28T03:50:31.571934+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 150,
-    "updated_at": "2025-12-15T20:32:12.760807+00:00"
+    "updated_at": "2025-12-15T21:42:31.998883+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q150-000",
         "match_type": "REGEX",
-        "pattern": "enfoque diferencial|enfoque interseccional"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0058"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q150-001",
         "match_type": "REGEX",
-        "pattern": "población rural dispersa|comunidades étnicas"
+        "pattern": "población rural dispersa|comunidades étnicas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q150-002",
         "match_type": "REGEX",
-        "pattern": "personas con discapacidad|población migrante|víctimas del conflicto"
+        "pattern": "personas con discapacidad|población migrante|víctimas del conflicto|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,15 +147,26 @@
         "flags": "i",
         "id": "PAT-Q150-003",
         "match_type": "REGEX",
-        "pattern": "primera infancia|adulto mayor|jóvenes"
+        "pattern": "primera infancia|adulto mayor|jóvenes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
-        "category": "GENERAL",
+        "category": "CAUSAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q150-004",
         "match_type": "REGEX",
-        "pattern": "restricciones de acceso geográfico a escuelas y hospitales"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
       },
       {
         "category": "GENERAL",
@@ -148,7 +174,12 @@
         "flags": "i",
         "id": "PAT-Q150-005",
         "match_type": "REGEX",
-        "pattern": "contexto cultural|barreras culturales para la salud sexual"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0044"
       },
       {
         "category": "GENERAL",
@@ -156,7 +187,12 @@
         "flags": "i",
         "id": "PAT-Q150-006",
         "match_type": "REGEX",
-        "pattern": "restricciones normativas del SGP"
+        "pattern": "restricciones normativas del SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -164,7 +200,12 @@
         "flags": "i",
         "id": "PAT-Q150-007",
         "match_type": "REGEX",
-        "pattern": "estrategias territorializadas|modelos de salud y educación rural"
+        "pattern": "estrategias territorializadas|modelos de salud y educación rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -290,7 +331,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q300"
+          "const": "Q150"
         },
         "question_global": {
           "type": "integer",
@@ -303,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

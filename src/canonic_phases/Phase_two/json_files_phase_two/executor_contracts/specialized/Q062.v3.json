@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "6a0f0e4c10a7286c7f8f0db1a0627434a749ce711d20d836acb0df43dea1ce48",
+    "contract_hash": "aca26a61a411bb274fecc471cca987072e5fe570a7a5a510d0cf3360316d8d1f",
     "created_at": "2025-11-28T03:50:09.587273+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 62,
-    "updated_at": "2025-12-15T20:32:10.991897+00:00"
+    "updated_at": "2025-12-15T21:42:31.409478+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -132,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q062-000",
         "match_type": "REGEX",
-        "pattern": "aumento de los homicidios|incremento del desplazamiento"
+        "pattern": "aumento de los homicidios|incremento del desplazamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q062-001",
         "match_type": "REGEX",
-        "pattern": "magnitud del problema|dimensión del conflicto"
+        "pattern": "magnitud del problema|dimensión del conflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q062-002",
         "match_type": "REGEX",
-        "pattern": "brecha de atención a víctimas|población sin reparar"
+        "pattern": "brecha de atención a víctimas|población sin reparar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -156,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q062-003",
         "match_type": "REGEX",
-        "pattern": "subregistro de la violencia sexual|cifra negra de la extorsión"
+        "pattern": "subregistro de la violencia sexual|cifra negra de la extorsión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +184,12 @@
         "flags": "i",
         "id": "PAT-Q062-004",
         "match_type": "REGEX",
-        "pattern": "dificultad para documentar|miedo a denunciar"
+        "pattern": "dificultad para documentar|miedo a denunciar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +197,12 @@
         "flags": "i",
         "id": "PAT-Q062-005",
         "match_type": "REGEX",
-        "pattern": "información fragmentada|datos insuficientes sobre confinamiento"
+        "pattern": "información fragmentada|datos insuficientes sobre confinamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +210,12 @@
         "flags": "i",
         "id": "PAT-Q062-006",
         "match_type": "REGEX",
-        "pattern": "falta de caracterización de los grupos armados"
+        "pattern": "falta de caracterización de los grupos armados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -188,7 +223,12 @@
         "flags": "i",
         "id": "PAT-Q062-007",
         "match_type": "REGEX",
-        "pattern": "se desconoce el número real de|se estima que la cifra podría ser mayor"
+        "pattern": "se desconoce el número real de|se estima que la cifra podría ser mayor",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +354,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q272"
+          "const": "Q062"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +367,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

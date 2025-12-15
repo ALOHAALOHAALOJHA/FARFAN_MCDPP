@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "eff71c70c3728a93a5a030c1358abb2932509cb2d3fd5645e8f15245cafa375f",
+    "contract_hash": "29dfe43778f03c255a7394cc36e1791ad5e2cb7fecf45da9492b7e702612b958",
     "created_at": "2025-11-28T03:50:09.582772+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 61,
-    "updated_at": "2025-12-15T20:21:11.023179+00:00"
+    "updated_at": "2025-12-15T21:42:31.402671+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -172,7 +172,12 @@
         "flags": "i",
         "id": "PAT-Q061-000",
         "match_type": "REGEX",
-        "pattern": "línea base|diagnóstico de seguridad|situación inicial del conflicto"
+        "pattern": "línea base|diagnóstico de seguridad|situación inicial del conflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,15 +185,36 @@
         "flags": "i",
         "id": "PAT-Q061-001",
         "match_type": "REGEX",
-        "pattern": "fuente:|según|reportado por|con datos de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0067"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q061-002",
-        "match_type": "REGEX",
-        "pattern": "UARIV|RUV|Registro Único de Víctimas|Policía Nacional|SIEDCO|Medicina Legal"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "UARIV|RUV|Registro Único de Víctimas|Policía Nacional|SIEDCO|Medicina Legal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -196,15 +222,36 @@
         "flags": "i",
         "id": "PAT-Q061-003",
         "match_type": "REGEX",
-        "pattern": "Defensoría del Pueblo|Sistema de Alertas Tempranas|SAT|Personería Municipal"
+        "pattern": "Defensoría del Pueblo|Sistema de Alertas Tempranas|SAT|Personería Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q061-004",
-        "match_type": "REGEX",
-        "pattern": "Fiscalía|SPOA|Observatorio de DDHH|Somos Defensores|INDEPAZ"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "Fiscalía|SPOA|Observatorio de DDHH|Somos Defensores|INDEPAZ",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +259,12 @@
         "flags": "i",
         "id": "PAT-Q061-005",
         "match_type": "REGEX",
-        "pattern": "homicidio|tasa de homicidios|muertes violentas"
+        "pattern": "homicidio|tasa de homicidios|muertes violentas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +272,12 @@
         "flags": "i",
         "id": "PAT-Q061-006",
         "match_type": "REGEX",
-        "pattern": "desplazamiento forzado|población desplazada|eventos masivos"
+        "pattern": "desplazamiento forzado|población desplazada|eventos masivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +285,12 @@
         "flags": "i",
         "id": "PAT-Q061-007",
         "match_type": "REGEX",
-        "pattern": "confinamiento|restricción a la movilidad"
+        "pattern": "confinamiento|restricción a la movilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +298,12 @@
         "flags": "i",
         "id": "PAT-Q061-008",
         "match_type": "LITERAL",
-        "pattern": "amenaza|extorsión|secuestro"
+        "pattern": "amenaza|extorsión|secuestro",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +311,12 @@
         "flags": "i",
         "id": "PAT-Q061-009",
         "match_type": "REGEX",
-        "pattern": "reclutamiento forzado|uso y utilización de NNA"
+        "pattern": "reclutamiento forzado|uso y utilización de NNA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +324,12 @@
         "flags": "i",
         "id": "PAT-Q061-010",
         "match_type": "LITERAL",
-        "pattern": "minas antipersonal|MAP|MUSE|artefactos explosivos"
+        "pattern": "minas antipersonal|MAP|MUSE|artefactos explosivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +337,12 @@
         "flags": "i",
         "id": "PAT-Q061-011",
         "match_type": "REGEX",
-        "pattern": "violencia sexual en el marco del conflicto"
+        "pattern": "violencia sexual en el marco del conflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +350,12 @@
         "flags": "i",
         "id": "PAT-Q061-012",
         "match_type": "LITERAL",
-        "pattern": "2021|2022|2023|vigencia anterior|serie histórica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0001"
       },
       {
         "category": "UNIDAD_MEDIDA",
@@ -276,7 +363,12 @@
         "flags": "i",
         "id": "PAT-Q061-013",
         "match_type": "REGEX",
-        "pattern": "por cada 100\\.000 habitantes|número de casos|número de víctimas|familias"
+        "pattern": "por cada 100\\.000 habitantes|número de casos|número de víctimas|familias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -1960,6 +2052,83 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    },
+    "evidence_structure_post_nexus": {
+      "type": "graph",
+      "nodes": {
+        "text_mining": {
+          "type": "source",
+          "provides": [
+            "critical_links",
+            "patterns"
+          ]
+        },
+        "industrial_policy": {
+          "type": "source",
+          "provides": [
+            "processed_evidence",
+            "patterns"
+          ]
+        },
+        "causal_extraction": {
+          "type": "source",
+          "provides": [
+            "goals",
+            "contexts"
+          ]
+        },
+        "financial_audit": {
+          "type": "source",
+          "provides": [
+            "amounts",
+            "totals"
+          ]
+        },
+        "bayesian_analysis": {
+          "type": "analysis",
+          "provides": [
+            "metrics",
+            "comparisons"
+          ]
+        },
+        "semantic_processing": {
+          "type": "processing",
+          "provides": [
+            "chunks",
+            "embeddings"
+          ]
+        },
+        "final_evidence": {
+          "type": "sink",
+          "aggregates": "all"
+        }
+      },
+      "edges": [
+        {
+          "from": "text_mining",
+          "to": "final_evidence"
+        },
+        {
+          "from": "industrial_policy",
+          "to": "final_evidence"
+        },
+        {
+          "from": "causal_extraction",
+          "to": "final_evidence"
+        },
+        {
+          "from": "financial_audit",
+          "to": "final_evidence"
+        },
+        {
+          "from": "bayesian_analysis",
+          "to": "final_evidence"
+        },
+        {
+          "from": "semantic_processing",
+          "to": "final_evidence"
+        }
+      ]
     }
   },
   "method_outputs": {

@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "339546783fdf637b68116afa8b42ba2078720984f33173dfc6d64777a8307917",
+    "contract_hash": "5a1c0d5949f9396c081aa62550e550ed09bd894d042f7395b7762100b4ad12c7",
     "created_at": "2025-11-28T03:49:29.800929+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 7,
-    "updated_at": "2025-12-15T20:32:11.220619+00:00"
+    "updated_at": "2025-12-15T21:42:31.055459+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q2_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q007-000",
         "match_type": "REGEX",
-        "pattern": "mediante|a través de|con la implementación de|por medio de"
+        "pattern": "mediante|a través de|con la implementación de|por medio de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q007-001",
         "match_type": "REGEX",
-        "pattern": "talleres de|capacitaciones en|jornadas de|mesas de trabajo"
+        "pattern": "talleres de|capacitaciones en|jornadas de|mesas de trabajo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q007-002",
         "match_type": "REGEX",
-        "pattern": "capital semilla|incentivos económicos|apoyo a emprendimientos"
+        "pattern": "capital semilla|incentivos económicos|apoyo a emprendimientos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q007-003",
         "match_type": "REGEX",
-        "pattern": "población objetivo:|dirigido a|beneficiarias serán"
+        "pattern": "población objetivo:|dirigido a|beneficiarias serán",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q007-004",
         "match_type": "REGEX",
-        "pattern": "mujeres rurales|madres cabeza de familia|mujeres víctimas de VBG"
+        "pattern": "mujeres rurales|madres cabeza de familia|mujeres víctimas de VBG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q007-005",
         "match_type": "REGEX",
-        "pattern": "mujeres cuidadoras|mujeres en extrema pobreza|mujeres LBT"
+        "pattern": "mujeres cuidadoras|mujeres en extrema pobreza|mujeres LBT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q007-006",
         "match_type": "REGEX",
-        "pattern": "con el fin de|para lograr que|lo cual genera|porque permite"
+        "pattern": "con el fin de|para lograr que|lo cual genera|porque permite",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q007-007",
         "match_type": "REGEX",
-        "pattern": "para fortalecer la autonomía económica|para reducir la dependencia"
+        "pattern": "para fortalecer la autonomía económica|para reducir la dependencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q007-008",
         "match_type": "LITERAL",
-        "pattern": "para prevenir la VBG|para promover la participación política"
+        "pattern": "para prevenir la VBG|para promover la participación política",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +359,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q277"
+          "const": "Q007"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +372,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

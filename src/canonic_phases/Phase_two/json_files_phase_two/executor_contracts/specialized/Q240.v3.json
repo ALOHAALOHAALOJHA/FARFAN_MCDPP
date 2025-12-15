@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "03992ca3a0034bc7523488c90df7c0b4933d91e3f2f1742649267caedf06ae7c",
+    "contract_hash": "343ca8babb8ac2fe921c8361cbf2c8135943df2c5deeec1cd62d556102ad3765",
     "created_at": "2025-11-28T03:50:42.097726+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 240,
-    "updated_at": "2025-12-15T20:32:12.773269+00:00"
+    "updated_at": "2025-12-15T21:42:32.510018+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q240-000",
         "match_type": "REGEX",
-        "pattern": "enfoque diferencial|enfoque territorial"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0059"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q240-001",
         "match_type": "REGEX",
-        "pattern": "campesinos sin tierra|pequeños productores|mujeres rurales"
+        "pattern": "campesinos sin tierra|pequeños productores|mujeres rurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q240-002",
         "match_type": "REGEX",
-        "pattern": "comunidades indígenas y sus resguardos|territorios colectivos afrodescendientes"
+        "pattern": "comunidades indígenas y sus resguardos|territorios colectivos afrodescendientes|afrodescendiente|comunidad negra|palenquero|raizal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q240-003",
         "match_type": "REGEX",
-        "pattern": "población víctima de despojo y abandono de tierras"
+        "pattern": "población víctima de despojo y abandono de tierras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q240-004",
         "match_type": "REGEX",
-        "pattern": "restricciones por zonas de reserva forestal|parques nacionales|determinantes ambientales"
+        "pattern": "restricciones por zonas de reserva forestal|parques nacionales|determinantes ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q240-005",
         "match_type": "REGEX",
-        "pattern": "contexto de conflicto armado y presencia de economías ilegales"
+        "pattern": "contexto de conflicto armado y presencia de economías ilegales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q240-006",
         "match_type": "REGEX",
-        "pattern": "estrategias territorializadas|acciones adaptadas a la vocación del suelo"
+        "pattern": "estrategias territorializadas|acciones adaptadas a la vocación del suelo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -282,7 +317,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q300"
+          "const": "Q240"
         },
         "question_global": {
           "type": "integer",
@@ -295,7 +330,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

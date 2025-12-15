@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "6bbe1032806ecb4900df36054101af6c4449a634d14705daaa9229327369cbc9",
+    "contract_hash": "6a8041d0a6f7174693508c5194faee8d1870a0968dcab0742ce770b1a147ba27",
     "created_at": "2025-11-28T03:50:41.939993+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 220,
-    "updated_at": "2025-12-15T20:32:11.554649+00:00"
+    "updated_at": "2025-12-15T21:42:32.405148+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q220-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de desarrollo rural|de manera articulada"
+        "pattern": "estrategia integral de desarrollo rural|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q220-001",
         "match_type": "REGEX",
-        "pattern": "la formalización se complementa con el acceso a crédito y asistencia técnica"
+        "pattern": "la formalización se complementa con el acceso a crédito y asistencia técnica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q220-002",
         "match_type": "REGEX",
-        "pattern": "sinergia entre la mejora de vías y la comercialización"
+        "pattern": "sinergia entre la mejora de vías y la comercialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q220-003",
         "match_type": "REGEX",
-        "pattern": "la actualización catastral es prerrequisito para fortalecer el impuesto predial"
+        "pattern": "la actualización catastral es prerrequisito para fortalecer el impuesto predial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q220-004",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se formalizará, luego se entregarán proyectos productivos"
+        "pattern": "en una primera fase se formalizará, luego se entregarán proyectos productivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q220-005",
         "match_type": "REGEX",
-        "pattern": "la estrategia combina seguridad jurídica, infraestructura y productividad"
+        "pattern": "la estrategia combina seguridad jurídica, infraestructura y productividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q220"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "6a7f5e8a5f03df64aad41f1aba30f54758f1ef29ca9fa4336136dd9f4ebc49e9",
+    "contract_hash": "310d2f42415063c1ab44c1c1f234b664b7bd21b1c8e9eb74c5eac9cb5e3ecba8",
     "created_at": "2025-11-28T03:50:42.351287+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 264,
-    "updated_at": "2025-12-15T20:32:12.538959+00:00"
+    "updated_at": "2025-12-15T21:42:32.628886+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q264-000",
         "match_type": "REGEX",
-        "pattern": "visión de Paz Total|Acuerdo de Paz a largo plazo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0111"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q264-001",
         "match_type": "LITERAL",
-        "pattern": "riesgo sistémico|choque externo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0092"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q264-002",
         "match_type": "REGEX",
-        "pattern": "reconfiguración del conflicto armado|cooptación de liderazgos por actores ilegales"
+        "pattern": "reconfiguración del conflicto armado|cooptación de liderazgos por actores ilegales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q264-003",
         "match_type": "REGEX",
-        "pattern": "crisis de legitimidad democrática a nivel nacional"
+        "pattern": "crisis de legitimidad democrática a nivel nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q264-004",
         "match_type": "REGEX",
-        "pattern": "estos factores podrían revertir los avances en la apertura del espacio cívico"
+        "pattern": "estos factores podrían revertir los avances en la apertura del espacio cívico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q264-005",
         "match_type": "REGEX",
-        "pattern": "el mecanismo causal es vulnerable a|sensible a la voluntad política del gobierno nacional"
+        "pattern": "el mecanismo causal es vulnerable a|sensible a la voluntad política del gobierno nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q264-006",
         "match_type": "REGEX",
-        "pattern": "estrategias de resiliencia de la sociedad civil"
+        "pattern": "estrategias de resiliencia de la sociedad civil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q294"
+          "const": "Q264"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

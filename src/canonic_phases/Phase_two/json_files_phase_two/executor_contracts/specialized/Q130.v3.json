@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "10ef3ceeecd1f4f4f434cdf4467e84390b90aa8217cc9e2e44e54489bdf2e707",
+    "contract_hash": "efbbddfc4e75bda49bea6ae5e16a8551aa970d574e5edbcbb0b5517ae45bf3f1",
     "created_at": "2025-11-28T03:50:31.414459+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 130,
-    "updated_at": "2025-12-15T20:32:11.540821+00:00"
+    "updated_at": "2025-12-15T21:42:31.855151+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q130-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral|de manera articulada|intersectorial"
+        "pattern": "estrategia integral|de manera articulada|intersectorial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q130-001",
         "match_type": "REGEX",
-        "pattern": "la mejora de la vivienda se complementa con el acceso a servicios"
+        "pattern": "la mejora de la vivienda se complementa con el acceso a servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q130-002",
         "match_type": "REGEX",
-        "pattern": "sinergia entre educación y cultura"
+        "pattern": "sinergia entre educación y cultura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q130-003",
         "match_type": "REGEX",
-        "pattern": "la atención en salud es un prerrequisito para la permanencia escolar"
+        "pattern": "la atención en salud es un prerrequisito para la permanencia escolar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q130-004",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se construirá la infraestructura y luego la dotación"
+        "pattern": "en una primera fase se construirá la infraestructura y luego la dotación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q130-005",
         "match_type": "REGEX",
-        "pattern": "la estrategia combina acceso, calidad y permanencia"
+        "pattern": "la estrategia combina acceso, calidad y permanencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q130"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

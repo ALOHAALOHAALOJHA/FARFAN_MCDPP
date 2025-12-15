@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "9d53ba3a63da1ffa9aaee6c1913fa9fe959270825b915bc88e33a9f15153d162",
+    "contract_hash": "0bfd842b1225eafe4ccc106f89962a31dc15425952b52c817744ddb9bd8feaba",
     "created_at": "2025-11-28T03:50:01.844393+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 29,
-    "updated_at": "2025-12-15T20:32:12.707753+00:00"
+    "updated_at": "2025-12-15T21:42:31.187355+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q029-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E"
+        "pattern": "sistema de seguimiento y evaluación|M&E",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q029-001",
         "match_type": "REGEX",
-        "pattern": "monitoreo de indicadores de proceso"
+        "pattern": "monitoreo de indicadores de proceso",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q029-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana|semáforo de indicadores"
+        "pattern": "alerta temprana|semáforo de indicadores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q029-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste|medida correctiva|plan de mejora"
+        "pattern": "mecanismo de ajuste|medida correctiva|plan de mejora",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q029-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación|feedback"
+        "pattern": "retroalimentación|feedback",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q029-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones de revisión estratégica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0033"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q029-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas|gestión del conocimiento"
+        "pattern": "lecciones aprendidas|gestión del conocimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +301,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q029"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +314,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

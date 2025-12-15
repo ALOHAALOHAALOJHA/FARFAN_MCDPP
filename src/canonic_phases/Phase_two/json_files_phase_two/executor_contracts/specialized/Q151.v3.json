@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "145d7129aedca5f0b747cf55268063c442710fd23581726a945e5e1d4482cc1b",
+    "contract_hash": "ca6ff8782eaf1a7ff495970dfff9b32e9b3bbc8c4550fa2bd5b633bc8238c2b0",
     "created_at": "2025-11-28T03:50:31.575793+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 151,
-    "updated_at": "2025-12-15T20:21:11.044940+00:00"
+    "updated_at": "2025-12-15T21:42:32.004285+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -172,7 +172,12 @@
         "flags": "i",
         "id": "PAT-Q151-000",
         "match_type": "REGEX",
-        "pattern": "línea base|diagnóstico de víctimas|caracterización de la población víctima"
+        "pattern": "línea base|diagnóstico de víctimas|caracterización de la población víctima",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +185,12 @@
         "flags": "i",
         "id": "PAT-Q151-001",
         "match_type": "REGEX",
-        "pattern": "fuente:|según|reportado por|con datos de|corte a (fecha)"
+        "pattern": "fuente:|según|reportado por|con datos de|corte a (fecha)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +198,12 @@
         "flags": "i",
         "id": "PAT-Q151-002",
         "match_type": "REGEX",
-        "pattern": "UARIV|Red Nacional de Información|RNI|Registro Único de Víctimas|RUV"
+        "pattern": "UARIV|Red Nacional de Información|RNI|Registro Único de Víctimas|RUV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -196,7 +211,12 @@
         "flags": "i",
         "id": "PAT-Q151-003",
         "match_type": "REGEX",
-        "pattern": "Personería Municipal|Defensoría del Pueblo|Observatorio de DDHH"
+        "pattern": "Personería Municipal|Defensoría del Pueblo|Observatorio de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +224,12 @@
         "flags": "i",
         "id": "PAT-Q151-004",
         "match_type": "REGEX",
-        "pattern": "JEP|UBPD|CNMH|Centro Nacional de Memoria Histórica"
+        "pattern": "JEP|UBPD|CNMH|Centro Nacional de Memoria Histórica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -212,7 +237,12 @@
         "flags": "i",
         "id": "PAT-Q151-005",
         "match_type": "REGEX",
-        "pattern": "número total de víctimas|personas incluidas en el RUV"
+        "pattern": "número total de víctimas|personas incluidas en el RUV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +250,12 @@
         "flags": "i",
         "id": "PAT-Q151-006",
         "match_type": "REGEX",
-        "pattern": "hecho victimizante|desplazamiento forzado|homicidio|desaparición forzada"
+        "pattern": "hecho victimizante|desplazamiento forzado|homicidio|desaparición forzada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +263,12 @@
         "flags": "i",
         "id": "PAT-Q151-007",
         "match_type": "REGEX",
-        "pattern": "víctimas de violencia sexual|minas antipersonal|reclutamiento"
+        "pattern": "víctimas de violencia sexual|minas antipersonal|reclutamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +276,12 @@
         "flags": "i",
         "id": "PAT-Q151-008",
         "match_type": "REGEX",
-        "pattern": "universo por indemnizar|víctimas por atender"
+        "pattern": "universo por indemnizar|víctimas por atender",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +289,12 @@
         "flags": "i",
         "id": "PAT-Q151-009",
         "match_type": "REGEX",
-        "pattern": "Sujetos de Reparación Colectiva|SRC|comunidades étnicas víctimas"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0021"
       },
       {
         "category": "GENERAL",
@@ -252,7 +302,12 @@
         "flags": "i",
         "id": "PAT-Q151-010",
         "match_type": "REGEX",
-        "pattern": "2021|2022|2023|vigencia anterior|serie histórica de victimización"
+        "pattern": "(?:19|20)\\\\d{2}|vigencia anterior|serie histórica de victimización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +315,12 @@
         "flags": "i",
         "id": "PAT-Q151-011",
         "match_type": "REGEX",
-        "pattern": "\\d+\\s*víctimas|\\d+\\s*hogares|\\d+\\s*personas"
+        "pattern": "\\d+\\s*víctimas|\\d+\\s*hogares|\\d+\\s*personas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -1940,6 +2000,83 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    },
+    "evidence_structure_post_nexus": {
+      "type": "graph",
+      "nodes": {
+        "text_mining": {
+          "type": "source",
+          "provides": [
+            "critical_links",
+            "patterns"
+          ]
+        },
+        "industrial_policy": {
+          "type": "source",
+          "provides": [
+            "processed_evidence",
+            "patterns"
+          ]
+        },
+        "causal_extraction": {
+          "type": "source",
+          "provides": [
+            "goals",
+            "contexts"
+          ]
+        },
+        "financial_audit": {
+          "type": "source",
+          "provides": [
+            "amounts",
+            "totals"
+          ]
+        },
+        "bayesian_analysis": {
+          "type": "analysis",
+          "provides": [
+            "metrics",
+            "comparisons"
+          ]
+        },
+        "semantic_processing": {
+          "type": "processing",
+          "provides": [
+            "chunks",
+            "embeddings"
+          ]
+        },
+        "final_evidence": {
+          "type": "sink",
+          "aggregates": "all"
+        }
+      },
+      "edges": [
+        {
+          "from": "text_mining",
+          "to": "final_evidence"
+        },
+        {
+          "from": "industrial_policy",
+          "to": "final_evidence"
+        },
+        {
+          "from": "causal_extraction",
+          "to": "final_evidence"
+        },
+        {
+          "from": "financial_audit",
+          "to": "final_evidence"
+        },
+        {
+          "from": "bayesian_analysis",
+          "to": "final_evidence"
+        },
+        {
+          "from": "semantic_processing",
+          "to": "final_evidence"
+        }
+      ]
     }
   },
   "method_outputs": {

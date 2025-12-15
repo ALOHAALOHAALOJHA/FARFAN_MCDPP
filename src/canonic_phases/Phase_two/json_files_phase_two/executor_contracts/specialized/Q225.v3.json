@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "7f9e8eada2bcf106bcb04828d46fd3eeae98f7531502f30e9e8d08eb58b43838",
+    "contract_hash": "4d684e7331ce0721bc0e858cc95e5317e205f206acf41e7c032c8f3fac2e0434",
     "created_at": "2025-11-28T03:50:42.047541+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 225,
-    "updated_at": "2025-12-15T20:32:12.018761+00:00"
+    "updated_at": "2025-12-15T21:42:32.437348+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -236,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q225-000",
         "match_type": "REGEX",
-        "pattern": "esto permitirá que|lo cual contribuirá a|generando una reducción de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0063"
       },
       {
         "category": "GENERAL",
@@ -244,7 +249,12 @@
         "flags": "i",
         "id": "PAT-Q225-001",
         "match_type": "REGEX",
-        "pattern": "el mecanismo es que la formalización da acceso a crédito y mercados"
+        "pattern": "el mecanismo es que la formalización da acceso a crédito y mercados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +262,12 @@
         "flags": "i",
         "id": "PAT-Q225-002",
         "match_type": "REGEX",
-        "pattern": "al mejorar las vías, se reducen los costos de transporte de los productos agrícolas"
+        "pattern": "al mejorar las vías, se reducen los costos de transporte de los productos agrícolas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -260,7 +275,12 @@
         "flags": "i",
         "id": "PAT-Q225-003",
         "match_type": "LITERAL",
-        "pattern": "la actualización catastral fortalece las finanzas municipales, lo que permite mayor inversión"
+        "pattern": "la actualización catastral fortalece las finanzas municipales, lo que permite mayor inversión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +288,12 @@
         "flags": "i",
         "id": "PAT-Q225-004",
         "match_type": "REGEX",
-        "pattern": "variable intermedia|mediador|eslabón causal|acceso a mercados|seguridad en la inversión"
+        "pattern": "variable intermedia|mediador|eslabón causal|acceso a mercados|seguridad en la inversión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q225-005",
         "match_type": "REGEX",
-        "pattern": "cadena de valor|ruta de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0030"
       }
     ],
     "expected_elements": [
@@ -398,7 +428,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q285"
+          "const": "Q225"
         },
         "question_global": {
           "type": "integer",
@@ -411,7 +441,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

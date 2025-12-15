@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "44d41c5ed8abaf3b4cc47ae4e2408c35476522fc41b9a5ef0909f6f9f228a674",
+    "contract_hash": "c85bb8b24c0598d7787ee4b1da626fd7e0fcf93b93e772f7c6da141034517e3c",
     "created_at": "2025-11-28T03:50:42.215568+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 250,
-    "updated_at": "2025-12-15T20:32:11.558837+00:00"
+    "updated_at": "2025-12-15T21:42:32.558014+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q250-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de garantías|de manera articulada"
+        "pattern": "estrategia integral de garantías|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q250-001",
         "match_type": "REGEX",
-        "pattern": "la protección material se complementa con la protección política (no estigmatización)"
+        "pattern": "la protección material se complementa con la protección política (no estigmatización)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q250-002",
         "match_type": "REGEX",
-        "pattern": "sinergia entre la respuesta individual y las garantías colectivas"
+        "pattern": "sinergia entre la respuesta individual y las garantías colectivas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q250-003",
         "match_type": "REGEX",
-        "pattern": "la activación de la ruta es el primer paso para la evaluación del riesgo"
+        "pattern": "la activación de la ruta es el primer paso para la evaluación del riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q250-004",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se prevendrá, luego se protegerá y se investigará"
+        "pattern": "en una primera fase se prevendrá, luego se protegerá y se investigará",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q250-005",
         "match_type": "LITERAL",
-        "pattern": "la estrategia combina prevención, protección e investigación"
+        "pattern": "la estrategia combina prevención, protección e investigación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q250"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

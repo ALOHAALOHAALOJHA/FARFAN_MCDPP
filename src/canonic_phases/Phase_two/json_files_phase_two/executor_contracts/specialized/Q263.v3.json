@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "1de25ccdffeac590278a116ef51cfecd298ffe3f2d48bdc3b990a3350b962aed",
+    "contract_hash": "f9129f079bc740e2b336908f58411325a6eeb0287ec0df6295ee1fcfd8a819d6",
     "created_at": "2025-11-28T03:50:42.348332+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 263,
-    "updated_at": "2025-12-15T20:32:12.497278+00:00"
+    "updated_at": "2025-12-15T21:42:32.625234+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q263-000",
         "match_type": "REGEX",
-        "pattern": "dado que es difícil medir la legitimidad|para aproximar la medición de"
+        "pattern": "dado que es difícil medir la legitimidad|para aproximar la medición de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q263-001",
         "match_type": "REGEX",
-        "pattern": "se utilizará como proxy|medición indirecta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q263-002",
         "match_type": "REGEX",
-        "pattern": "el nivel de convocatoria de las organizaciones sociales como proxy de legitimidad"
+        "pattern": "el nivel de convocatoria de las organizaciones sociales como proxy de legitimidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q263-003",
         "match_type": "REGEX",
-        "pattern": "este proxy es validado por estudios de ciencia política"
+        "pattern": "este proxy es validado por estudios de ciencia política",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q263-004",
         "match_type": "REGEX",
-        "pattern": "una limitación es que no captura las tensiones internas de los movimientos"
+        "pattern": "una limitación es que no captura las tensiones internas de los movimientos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +149,12 @@
         "flags": "i",
         "id": "PAT-Q263-005",
         "match_type": "REGEX",
-        "pattern": "aunque imperfecto, este proxy nos da una señal de representatividad"
+        "pattern": "aunque imperfecto, este proxy nos da una señal de representatividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -250,7 +280,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q293"
+          "const": "Q263"
         },
         "question_global": {
           "type": "integer",
@@ -263,7 +293,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

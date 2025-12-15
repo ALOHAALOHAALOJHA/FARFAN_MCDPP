@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "1f5ca813b6da545272e7e49d7d7ceb5b369c841b904080654bfde738b71f99ad",
+    "contract_hash": "7cb508426905b193c5763cef8ab07dd1b4229fd7d83c0cc960a04c4517bd8819",
     "created_at": "2025-11-28T03:50:42.339025+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 261,
-    "updated_at": "2025-12-15T20:32:12.368088+00:00"
+    "updated_at": "2025-12-15T21:42:32.613219+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q261-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación"
+        "pattern": "impacto esperado|visión de largo plazo|transformación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q261-001",
         "match_type": "REGEX",
-        "pattern": "fortalecimiento de la democracia local|gobernanza democrática"
+        "pattern": "fortalecimiento de la democracia local|gobernanza democrática",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q261-002",
         "match_type": "REGEX",
-        "pattern": "un espacio cívico abierto y seguro|pleno ejercicio de la ciudadanía"
+        "pattern": "un espacio cívico abierto y seguro|pleno ejercicio de la ciudadanía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q261-003",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados de protección y participación generará el impacto de"
+        "pattern": "la suma de los resultados de protección y participación generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q261-004",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "TEMPORAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q261-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 8-10 años"
+        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 8-10 años",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +296,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q291"
+          "const": "Q261"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +309,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

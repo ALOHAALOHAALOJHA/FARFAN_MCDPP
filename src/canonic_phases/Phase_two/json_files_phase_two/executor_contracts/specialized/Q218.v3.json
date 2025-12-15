@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "f368293eb433dbccddae6a54f7ee7afae01a25f0f2143193a567617622a58b3a",
+    "contract_hash": "5df4899f3a989be6c1db4c0f9d5422366d83bc0c278b968a1c97f70c24ffc140",
     "created_at": "2025-11-28T03:50:41.933465+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 218,
-    "updated_at": "2025-12-15T20:32:11.423185+00:00"
+    "updated_at": "2025-12-15T21:42:32.395657+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q218-000",
         "match_type": "REGEX",
-        "pattern": "para abordar la causa de la informalidad|en respuesta al mal estado vial"
+        "pattern": "para abordar la causa de la informalidad|en respuesta al mal estado vial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q218-001",
         "match_type": "REGEX",
-        "pattern": "la actualización catastral ataca el problema de la desfinanciación municipal"
+        "pattern": "la actualización catastral ataca el problema de la desfinanciación municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q218-002",
         "match_type": "REGEX",
-        "pattern": "causa estructural|factor determinante|nudo crítico"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q218-003",
         "match_type": "REGEX",
-        "pattern": "desactualización catastral|inseguridad jurídica en la tenencia"
+        "pattern": "desactualización catastral|inseguridad jurídica en la tenencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q218-004",
         "match_type": "REGEX",
-        "pattern": "falta de conectividad vial|aislamiento de las zonas rurales"
+        "pattern": "falta de conectividad vial|aislamiento de las zonas rurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q218-005",
         "match_type": "REGEX",
-        "pattern": "baja productividad agropecuaria|conflictos de uso del suelo"
+        "pattern": "baja productividad agropecuaria|conflictos de uso del suelo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q218-006",
         "match_type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico causal del sector rural"
+        "pattern": "árbol de problemas|diagnóstico causal del sector rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -278,7 +313,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q278"
+          "const": "Q218"
         },
         "question_global": {
           "type": "integer",
@@ -291,7 +326,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "d58bb686d5b9b161a30c3e1bf9023f574409cffd81a8f85abd334f7ca3d49bad",
+    "contract_hash": "48f554a6ddb2533a5f53cd78720fb88cb6f06ec75ec6151c859bd4bcdbe990e5",
     "created_at": "2025-11-28T03:50:09.621674+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 72,
-    "updated_at": "2025-12-15T20:32:11.632088+00:00"
+    "updated_at": "2025-12-15T21:42:31.460607+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q072-000",
         "match_type": "REGEX",
-        "pattern": "cobertura del|atenderá al \\d+% de las alertas emitidas"
+        "pattern": "cobertura del|atenderá al \\d+% de las alertas emitidas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q072-001",
         "match_type": "REGEX",
-        "pattern": "la meta es atender a todas las familias desplazadas"
+        "pattern": "la meta es atender a todas las familias desplazadas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q072-002",
         "match_type": "REGEX",
-        "pattern": "universo de atención|población en riesgo"
+        "pattern": "universo de atención|población en riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q072-003",
         "match_type": "REGEX",
-        "pattern": "la meta se define en función de la capacidad de respuesta"
+        "pattern": "la meta se define en función de la capacidad de respuesta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q072-004",
         "match_type": "REGEX",
-        "pattern": "frecuencia de la atención|periodicidad del seguimiento"
+        "pattern": "frecuencia de la atención|periodicidad del seguimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +269,12 @@
         "flags": "i",
         "id": "PAT-Q072-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de respuesta a emergencias"
+        "pattern": "tiempo de respuesta a emergencias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +282,12 @@
         "flags": "i",
         "id": "PAT-Q072-006",
         "match_type": "REGEX",
-        "pattern": "la dosificación de la ayuda humanitaria sigue los estándares"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0075"
       }
     ],
     "expected_elements": [
@@ -374,7 +409,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q072"
         },
         "question_global": {
           "type": "integer",
@@ -387,7 +422,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

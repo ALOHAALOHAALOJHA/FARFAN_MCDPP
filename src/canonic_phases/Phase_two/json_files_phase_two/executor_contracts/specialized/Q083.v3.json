@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "1f5281cf30d63afb99a8e813f2d4a439da0e259c3fc9452a0f70f33ec40f9723",
+    "contract_hash": "144850666f6bdbcb31243016a348d6ee89c6d55f9d868d0333b2678692dc14fc",
     "created_at": "2025-11-28T03:50:13.356251+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 83,
-    "updated_at": "2025-12-15T20:32:12.473479+00:00"
+    "updated_at": "2025-12-15T21:42:31.531463+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q083-000",
         "match_type": "REGEX",
-        "pattern": "dado que es difícil medir la reconciliación|para aproximar la medición de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0050"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q083-001",
         "match_type": "REGEX",
-        "pattern": "se utilizará como proxy|medición indirecta"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q083-002",
         "match_type": "REGEX",
-        "pattern": "encuestas de confianza interpersonal|participación en eventos comunitarios"
+        "pattern": "encuestas de confianza interpersonal|participación en eventos comunitarios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q083-003",
         "match_type": "REGEX",
-        "pattern": "este proxy es validado por estudios de paz|evidencia internacional"
+        "pattern": "este proxy es validado por estudios de paz|evidencia internacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q083-004",
         "match_type": "LITERAL",
-        "pattern": "una limitación es que no captura las tensiones latentes"
+        "pattern": "una limitación es que no captura las tensiones latentes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +149,12 @@
         "flags": "i",
         "id": "PAT-Q083-005",
         "match_type": "REGEX",
-        "pattern": "aunque imperfecto, este proxy nos da una señal de"
+        "pattern": "aunque imperfecto, este proxy nos da una señal de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -250,7 +280,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q293"
+          "const": "Q083"
         },
         "question_global": {
           "type": "integer",
@@ -263,7 +293,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

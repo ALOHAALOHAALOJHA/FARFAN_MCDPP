@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "2f8e4585dceb4d8eaea704a1cb21525fe8802b717a7e08e5492930c1242b27bf",
+    "contract_hash": "f30f4da947337cd6125184dc6b16e460e71631964e1fb5812df83df956ca49e4",
     "created_at": "2025-11-28T03:50:42.505438+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 284,
-    "updated_at": "2025-12-15T20:32:11.924877+00:00"
+    "updated_at": "2025-12-15T21:42:32.727731+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -244,7 +244,12 @@
         "flags": "i",
         "id": "PAT-Q284-000",
         "match_type": "REGEX",
-        "pattern": "factibilidad|viabilidad|es realista esperar que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0066"
       },
       {
         "category": "GENERAL",
@@ -252,7 +257,12 @@
         "flags": "i",
         "id": "PAT-Q284-001",
         "match_type": "REGEX",
-        "pattern": "capacidad del SENA para ofertar programas intramurales"
+        "pattern": "capacidad del SENA para ofertar programas intramurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +270,12 @@
         "flags": "i",
         "id": "PAT-Q284-002",
         "match_type": "REGEX",
-        "pattern": "plazo para la construcción del nuevo centro de detención"
+        "pattern": "plazo para la construcción del nuevo centro de detención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +283,12 @@
         "flags": "i",
         "id": "PAT-Q284-003",
         "match_type": "REGEX",
-        "pattern": "la meta de PPL formados depende de la disponibilidad de espacios"
+        "pattern": "la meta de PPL formados depende de la disponibilidad de espacios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +296,12 @@
         "flags": "i",
         "id": "PAT-Q284-004",
         "match_type": "REGEX",
-        "pattern": "contradictorio|poco probable|desproporcionado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0045"
       },
       {
         "category": "GENERAL",
@@ -284,7 +309,12 @@
         "flags": "i",
         "id": "PAT-Q284-005",
         "match_type": "REGEX",
-        "pattern": "con los recursos asignados se puede lograr"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0042"
       }
     ],
     "expected_elements": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "832cc5d92324d3348ce3f505cbcd2692044b552587cd003a6f7b07359de2623f",
+    "contract_hash": "e5720791331b4bb185ad3c1e87f4dec7666f5124ea78f57f40d982a80be4d7aa",
     "created_at": "2025-11-28T03:50:42.553535+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 298,
-    "updated_at": "2025-12-15T20:32:12.704070+00:00"
+    "updated_at": "2025-12-15T21:42:32.794855+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q298-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q298-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar si los programas de trabajo realmente mejoran la empleabilidad"
+        "pattern": "se requiere validar si los programas de trabajo realmente mejoran la empleabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q298-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto de justicia restaurativa|fase experimental"
+        "pattern": "plan piloto de justicia restaurativa|fase experimental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q298-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto de que la educación reduce la reincidencia"
+        "pattern": "testear el supuesto de que la educación reduce la reincidencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q298-004",
         "match_type": "REGEX",
-        "pattern": "validar la hipótesis sobre la efectividad de la terapia psicosocial"
+        "pattern": "validar la hipótesis sobre la efectividad de la terapia psicosocial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q298-005",
         "match_type": "REGEX",
-        "pattern": "evaluación de impacto|evaluación de mecanismos"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0064"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q298-006",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0026"
       }
     ],
     "expected_elements": [

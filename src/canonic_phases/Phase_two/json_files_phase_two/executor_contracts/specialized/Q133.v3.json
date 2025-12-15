@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "954607fe0cda73d81b80b2cdc98dbd29aca5595f82e6e49f2ee09edde0599473",
+    "contract_hash": "a44dd3df57c71962c10b7ff13a8a3090f2566cff1d8068ca04e10101dec30493",
     "created_at": "2025-11-28T03:50:31.425587+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 133,
-    "updated_at": "2025-12-15T20:32:11.720652+00:00"
+    "updated_at": "2025-12-15T21:42:31.872344+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q133-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión para educación/salud/vivienda"
+        "pattern": "código BPIN|proyecto de inversión para educación/salud/vivienda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q133-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión en desarrollo social"
+        "pattern": "programa del PPI|línea de inversión en desarrollo social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q133-002",
         "match_type": "REGEX",
-        "pattern": "recursos del proyecto|presupuesto del PAE"
+        "pattern": "recursos del proyecto|presupuesto del PAE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q133-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "GENERAL",
@@ -244,7 +264,12 @@
         "flags": "i",
         "id": "PAT-Q133-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Educación|Secretaría de Salud|Oficina de Vivienda"
+        "pattern": "Secretaría de Educación|Secretaría de Salud|Oficina de Vivienda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +277,12 @@
         "flags": "i",
         "id": "PAT-Q133-005",
         "match_type": "REGEX",
-        "pattern": "articulado con la ESE Hospital|ICBF"
+        "pattern": "articulado con la ESE Hospital|ICBF",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +290,12 @@
         "flags": "i",
         "id": "PAT-Q133-006",
         "match_type": "REGEX",
-        "pattern": "convenio con|contrato de obra No."
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0047"
       }
     ],
     "expected_elements": [
@@ -382,7 +417,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q283"
+          "const": "Q133"
         },
         "question_global": {
           "type": "integer",
@@ -395,7 +430,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "b1fd2a7a91f5c18c268d9444d3d37af72ef3ff591e95b36dcc4b74322536051a",
+    "contract_hash": "ab13b4e99cf51799e61b0734c9af6697106e6551c6dccee94fd0f87edd5b5ac5",
     "created_at": "2025-11-28T03:50:31.754833+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 179,
-    "updated_at": "2025-12-15T20:32:12.726356+00:00"
+    "updated_at": "2025-12-15T21:42:32.158545+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q179-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E del PAT"
+        "pattern": "sistema de seguimiento y evaluación|M&E del PAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q179-001",
         "match_type": "REGEX",
-        "pattern": "monitoreo a través del RUV y otros registros"
+        "pattern": "monitoreo a través del RUV y otros registros",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q179-002",
         "match_type": "LITERAL",
-        "pattern": "alerta temprana sobre riesgos en retornos"
+        "pattern": "alerta temprana sobre riesgos en retornos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q179-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste del PIRC|medida correctiva"
+        "pattern": "mecanismo de ajuste del PIRC|medida correctiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q179-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación desde la Mesa de Participación de Víctimas"
+        "pattern": "retroalimentación desde la Mesa de Participación de Víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q179-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|sesiones del CTJT para revisar avances"
+        "pattern": "ciclos de aprendizaje|sesiones del CTJT para revisar avances",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q179-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en la implementación de la Ley 1448"
+        "pattern": "lecciones aprendidas en la implementación de la Ley 1448",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +301,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q179"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +314,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

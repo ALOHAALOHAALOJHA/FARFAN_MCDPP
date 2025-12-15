@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "89e31652977719872efe8242a697822f09aa8c302d1df2c1c95ba6b3b3d09c85",
+    "contract_hash": "375bcdb6e16fae06c13c16ab5a4b451f943af06f8c6e880601f0cd44e07f8169",
     "created_at": "2025-11-28T03:50:31.256212+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 106,
-    "updated_at": "2025-12-15T20:32:12.081450+00:00"
+    "updated_at": "2025-12-15T21:42:31.715124+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q106-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "GENERAL",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q106-001",
         "match_type": "REGEX",
-        "pattern": "IRCA|Índice de Riesgo de Calidad del Agua"
+        "pattern": "IRCA|Índice de Riesgo de Calidad del Agua",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q106-002",
         "match_type": "REGEX",
-        "pattern": "Tasa de deforestación|Reducción de emisiones de GEI"
+        "pattern": "Tasa de deforestación|Reducción de emisiones de GEI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q106-003",
         "match_type": "REGEX",
-        "pattern": "Porcentaje de población en riesgo mitigado"
+        "pattern": "Porcentaje de población en riesgo mitigado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q106-004",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "GENERAL",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q106-005",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera reducir a"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0012"
       },
       {
         "category": "GENERAL",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q106-006",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q106-007",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0005"
       },
       {
         "category": "TEMPORAL",
@@ -228,7 +268,12 @@
         "flags": "i",
         "id": "PAT-Q106-008",
         "match_type": "REGEX",
-        "pattern": "horizonte temporal|ventana de maduración|al final del periodo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0068"
       }
     ],
     "expected_elements": [
@@ -360,7 +405,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q286"
+          "const": "Q106"
         },
         "question_global": {
           "type": "integer",
@@ -373,7 +418,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

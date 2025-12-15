@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "ac1a70715b5ddf4b1a4627b824bd211dbd19021f2413b5452cf4e901c04ae04c",
+    "contract_hash": "434513c385ac675f5c9cc07bfb4f62fa11d47a42ec9aa64d269a66a1af0af238",
     "created_at": "2025-11-28T03:50:31.746232+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 176,
-    "updated_at": "2025-12-15T20:32:12.613544+00:00"
+    "updated_at": "2025-12-15T21:42:32.140776+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -100,15 +100,26 @@
         "flags": "i",
         "id": "PAT-Q176-000",
         "match_type": "REGEX",
-        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de paz"
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
-        "category": "GENERAL",
+        "category": "CAUSAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q176-001",
         "match_type": "REGEX",
-        "pattern": "diagrama causal|gráfico de la teoría|esquema de intervención|figura"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
       },
       {
         "category": "GENERAL",
@@ -116,7 +127,12 @@
         "flags": "i",
         "id": "PAT-Q176-002",
         "match_type": "REGEX",
-        "pattern": "causa raíz del conflicto|determinante estructural de la violencia"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0032"
       },
       {
         "category": "GENERAL",
@@ -124,7 +140,12 @@
         "flags": "i",
         "id": "PAT-Q176-003",
         "match_type": "REGEX",
-        "pattern": "mediador|variable intermedia|eslabón|confianza institucional|reconciliación"
+        "pattern": "mediador|variable intermedia|eslabón|confianza institucional|reconciliación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +153,12 @@
         "flags": "i",
         "id": "PAT-Q176-004",
         "match_type": "REGEX",
-        "pattern": "moderador|factor contextual|voluntad política"
+        "pattern": "moderador|factor contextual|voluntad política",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +166,12 @@
         "flags": "i",
         "id": "PAT-Q176-005",
         "match_type": "LITERAL",
-        "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
       }
     ],
     "expected_elements": [
@@ -266,7 +297,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q296"
+          "const": "Q176"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +310,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

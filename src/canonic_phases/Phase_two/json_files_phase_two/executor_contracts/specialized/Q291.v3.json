@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "d39b4c72c1b4b6cd9e3fa4385f63799d779655746ed7d06f614ab8c5cfd2dadd",
+    "contract_hash": "02e9f40f88a3894ff417ec4d3df27b30473c5bac342be79c5634337814144931",
     "created_at": "2025-11-28T03:50:42.530624+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 291,
-    "updated_at": "2025-12-15T20:32:12.372274+00:00"
+    "updated_at": "2025-12-15T21:42:32.764139+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q291-000",
         "match_type": "REGEX",
-        "pattern": "impacto esperado|visión de largo plazo|transformación del sistema"
+        "pattern": "impacto esperado|visión de largo plazo|transformación del sistema",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q291-001",
         "match_type": "REGEX",
-        "pattern": "contribución a la reducción de la criminalidad|mejora de la seguridad ciudadana"
+        "pattern": "contribución a la reducción de la criminalidad|mejora de la seguridad ciudadana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q291-002",
         "match_type": "REGEX",
-        "pattern": "un sistema carcelario enfocado en la resocialización y la dignidad humana"
+        "pattern": "un sistema carcelario enfocado en la resocialización y la dignidad humana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q291-003",
         "match_type": "REGEX",
-        "pattern": "la suma de los resultados de resocialización y mejora de condiciones generará"
+        "pattern": "la suma de los resultados de resocialización y mejora de condiciones generará",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q291-004",
         "match_type": "REGEX",
-        "pattern": "ruta de transmisión|cadena de impacto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
       },
       {
         "category": "TEMPORAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q291-005",
         "match_type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en 5-10 años|efectos post-penitenciarios"
+        "pattern": "tiempo de maduración|se espera observar en 5-10 años|efectos post-penitenciarios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

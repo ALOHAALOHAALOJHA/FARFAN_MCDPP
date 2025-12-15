@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "efa6511a63b3ba9e2d6811d1aac656f37eb2662deec89d7b4f5f8f2a9525d60a",
+    "contract_hash": "f79a9056e4f4a79041bd0f0353dc94aba1546f0d0ac7ea3d3845a8220b01e890",
     "created_at": "2025-11-28T03:50:42.343527+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 262,
-    "updated_at": "2025-12-15T20:32:12.449927+00:00"
+    "updated_at": "2025-12-15T21:42:32.618880+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q262-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Participación Ciudadana|Índice de Democracia Local|Índice de Estado de Derecho"
+        "pattern": "Índice de Participación Ciudadana|Índice de Democracia Local|Índice de Estado de Derecho",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q262-001",
         "match_type": "REGEX",
-        "pattern": "indicador compuesto|indicador sintético"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q262-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "GENERAL",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q262-003",
         "match_type": "REGEX",
-        "pattern": "el número de organizaciones sociales activas como proxy de un espacio cívico vibrante"
+        "pattern": "el número de organizaciones sociales activas como proxy de un espacio cívico vibrante",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q262-004",
         "match_type": "REGEX",
-        "pattern": "la participación electoral como proxy de confianza democrática"
+        "pattern": "la participación electoral como proxy de confianza democrática",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -300,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q262-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque refleja|captura la vitalidad de la sociedad civil"
+        "pattern": "este indicador es válido porque refleja|captura la vitalidad de la sociedad civil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -426,7 +456,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q292"
+          "const": "Q262"
         },
         "question_global": {
           "type": "integer",
@@ -439,7 +469,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

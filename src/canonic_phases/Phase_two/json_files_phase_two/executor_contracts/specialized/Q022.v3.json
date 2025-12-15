@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "bcc141e8d830cc61c9a5430097ebaec26d57c0eb8c96f1bf35d1d05797fc7a82",
+    "contract_hash": "bea8cab90cf6dc47b16a63f6fcb6bdd3e22a079411b39fa382a65e9cbe9f790e",
     "created_at": "2025-11-28T03:50:01.821125+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 22,
-    "updated_at": "2025-12-15T20:32:12.378341+00:00"
+    "updated_at": "2025-12-15T21:42:31.151718+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q022-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Equidad de Género|Índice de Desigualdad de Género"
+        "pattern": "Índice de Equidad de Género|Índice de Desigualdad de Género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q022-001",
         "match_type": "REGEX",
-        "pattern": "indicador compuesto|indicador sintético"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q022-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "INDICADOR",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q022-003",
         "match_type": "REGEX",
-        "pattern": "la tasa de participación laboral femenina se usa como proxy de la autonomía económica"
+        "pattern": "la tasa de participación laboral femenina se usa como proxy de la autonomía económica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q022-004",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque refleja|captura la esencia del cambio"
+        "pattern": "este indicador es válido porque refleja|captura la esencia del cambio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -418,7 +443,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q292"
+          "const": "Q022"
         },
         "question_global": {
           "type": "integer",
@@ -431,7 +456,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

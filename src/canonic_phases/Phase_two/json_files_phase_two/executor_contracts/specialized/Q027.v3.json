@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "ad85b03c2de0dc11148d7717892dafb59d6886a2bb95350390cc46520299ca21",
+    "contract_hash": "b06d28eff42dc1475fc57e3e61792acb30c7ace7acc1e58672b05ebf1bf161cd",
     "created_at": "2025-11-28T03:50:01.838385+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 27,
-    "updated_at": "2025-12-15T20:32:12.633420+00:00"
+    "updated_at": "2025-12-15T21:42:31.178068+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q2_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q027-000",
         "match_type": "REGEX",
-        "pattern": "proporcionalidad entre|magnitud del efecto"
+        "pattern": "proporcionalidad entre|magnitud del efecto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,15 @@
         "flags": "i",
         "id": "PAT-Q027-001",
         "match_type": "REGEX",
-        "pattern": "salto lógico|brecha en la argumentación|milagro de implementación"
+        "pattern": "salto lógico|falta de conexión|no se sigue que|vacío argumentativo|conexión débil|relación no justificada|inferencia inválida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "variants": [
+          "non_critical_phrases_included"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q027-002",
         "match_type": "LITERAL",
-        "pattern": "es realista esperar que|es factible que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0060"
       },
       {
         "category": "GENERAL",
@@ -116,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q027-003",
         "match_type": "REGEX",
-        "pattern": "la escala de la intervención es coherente con la ambición del resultado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0076"
       },
       {
         "category": "GENERAL",
@@ -124,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q027-004",
         "match_type": "REGEX",
-        "pattern": "se requieren pasos intermedios|el resultado es de mayor alcance que el producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0098"
       }
     ],
     "expected_elements": [
@@ -246,7 +274,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q297"
+          "const": "Q027"
         },
         "question_global": {
           "type": "integer",
@@ -259,7 +287,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

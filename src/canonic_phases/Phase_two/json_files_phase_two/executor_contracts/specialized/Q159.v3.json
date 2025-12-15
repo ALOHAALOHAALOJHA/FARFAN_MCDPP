@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "2bb8d994b8a5a604d12e2d11acfad6abda51ace9321542c0cd4d22257eb813fc",
+    "contract_hash": "76ddbad5f902e4b4cd93c43ae80f3720b8d84a13cce1c290ea1ba787ae507bdd",
     "created_at": "2025-11-28T03:50:31.603962+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 159,
-    "updated_at": "2025-12-15T20:32:11.486092+00:00"
+    "updated_at": "2025-12-15T21:42:32.044215+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q4_Executor",
@@ -116,7 +116,12 @@
         "flags": "i",
         "id": "PAT-Q159-000",
         "match_type": "REGEX",
-        "pattern": "riesgos:|posibles dificultades:|barreras a la implementación"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
       },
       {
         "category": "GENERAL",
@@ -124,7 +129,12 @@
         "flags": "i",
         "id": "PAT-Q159-001",
         "match_type": "REGEX",
-        "pattern": "riesgos de seguridad para los retornados|falta de garantías de no repetición"
+        "pattern": "riesgos de seguridad para los retornados|falta de garantías de no repetición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +142,12 @@
         "flags": "i",
         "id": "PAT-Q159-002",
         "match_type": "REGEX",
-        "pattern": "revictimización institucional|barreras administrativas"
+        "pattern": "revictimización institucional|barreras administrativas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +155,12 @@
         "flags": "i",
         "id": "PAT-Q159-003",
         "match_type": "REGEX",
-        "pattern": "sostenibilidad de los proyectos productivos"
+        "pattern": "sostenibilidad de los proyectos productivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +168,12 @@
         "flags": "i",
         "id": "PAT-Q159-004",
         "match_type": "REGEX",
-        "pattern": "conflictos entre víctimas y comunidad de acogida"
+        "pattern": "conflictos entre víctimas y comunidad de acogida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +181,12 @@
         "flags": "i",
         "id": "PAT-Q159-005",
         "match_type": "REGEX",
-        "pattern": "agotamiento de los recursos para ayuda humanitaria"
+        "pattern": "agotamiento de los recursos para ayuda humanitaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +194,12 @@
         "flags": "i",
         "id": "PAT-Q159-006",
         "match_type": "REGEX",
-        "pattern": "medidas de mitigación|plan de contingencia|para mitigar"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
       },
       {
         "category": "GENERAL",
@@ -172,7 +207,12 @@
         "flags": "i",
         "id": "PAT-Q159-007",
         "match_type": "REGEX",
-        "pattern": "protocolos de seguridad|acompañamiento psicosocial permanente"
+        "pattern": "protocolos de seguridad|acompañamiento psicosocial permanente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -294,7 +334,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q279"
+          "const": "Q159"
         },
         "question_global": {
           "type": "integer",
@@ -307,7 +347,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

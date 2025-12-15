@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "28db387aa9b51ed15dbf9d352943584675f6cc8243852de420bb5ab06a472767",
+    "contract_hash": "28ac962b1412e6dcad7e12ff4f185f627c01864ecf81e057fcc6a846bd27b0ff",
     "created_at": "2025-11-28T03:50:13.412036+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 100,
-    "updated_at": "2025-12-15T20:32:11.536401+00:00"
+    "updated_at": "2025-12-15T21:42:31.635841+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q100-000",
         "match_type": "REGEX",
-        "pattern": "estrategia integral de gestión ambiental|de manera articulada"
+        "pattern": "estrategia integral de gestión ambiental|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q100-001",
         "match_type": "REGEX",
-        "pattern": "la protección de cuencas se complementa con|sinergia entre"
+        "pattern": "la protección de cuencas se complementa con|sinergia entre",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q100-002",
         "match_type": "REGEX",
-        "pattern": "la reubicación es el paso previo a la restauración del área"
+        "pattern": "la reubicación es el paso previo a la restauración del área",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q100-003",
         "match_type": "REGEX",
-        "pattern": "en una primera fase se realizarán los estudios... y luego la obra"
+        "pattern": "en una primera fase se realizarán los estudios... y luego la obra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q100-004",
         "match_type": "REGEX",
-        "pattern": "la estrategia combina conocimiento del riesgo, reducción y manejo"
+        "pattern": "la estrategia combina conocimiento del riesgo, reducción y manejo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q100-005",
         "match_type": "REGEX",
-        "pattern": "el PGIRS se articula con los programas de economía circular"
+        "pattern": "el PGIRS se articula con los programas de economía circular",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -262,7 +292,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q280"
+          "const": "Q100"
         },
         "question_global": {
           "type": "integer",
@@ -275,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "a36d5dfa2188e1f2b7252fb869fab80650d40f77ac80364da7322c195507413e",
+    "contract_hash": "dcc5dcac94b04086a7da6cb6651c89d1205ed84cbdb73677dd9037247fb77860",
     "created_at": "2025-11-28T03:50:31.732987+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 172,
-    "updated_at": "2025-12-15T20:32:12.424365+00:00"
+    "updated_at": "2025-12-15T21:42:32.119467+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q172-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Paz Territorial|Índice de Reconciliación|Índice de Confianza Institucional"
+        "pattern": "Índice de Paz Territorial|Índice de Reconciliación|Índice de Confianza Institucional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q172-001",
         "match_type": "REGEX",
-        "pattern": "indicador compuesto|indicador sintético"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q172-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "GENERAL",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q172-003",
         "match_type": "REGEX",
-        "pattern": "las encuestas de confianza interpersonal como proxy del tejido social"
+        "pattern": "las encuestas de confianza interpersonal como proxy del tejido social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q172-004",
         "match_type": "REGEX",
-        "pattern": "el número de acciones colectivas entre excombatientes y víctimas como proxy de reconciliación"
+        "pattern": "el número de acciones colectivas entre excombatientes y víctimas como proxy de reconciliación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -300,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q172-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque refleja|captura la percepción de paz"
+        "pattern": "este indicador es válido porque refleja|captura la percepción de paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -426,7 +456,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q292"
+          "const": "Q172"
         },
         "question_global": {
           "type": "integer",
@@ -439,7 +469,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

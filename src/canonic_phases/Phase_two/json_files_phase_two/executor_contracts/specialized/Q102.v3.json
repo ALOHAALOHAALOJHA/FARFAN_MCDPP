@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "3d153a06bd301a137e1bf26ef631a98b1d4609ae4c511a822fe0d2488d156954",
+    "contract_hash": "27529115cc70193de11fb117da9db064597ed360a7159bb613f6a7bf3aade1b1",
     "created_at": "2025-11-28T03:50:31.237125+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 102,
-    "updated_at": "2025-12-15T20:32:11.639488+00:00"
+    "updated_at": "2025-12-15T21:42:31.653092+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -204,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q102-000",
         "match_type": "REGEX",
-        "pattern": "la meta de reforestación busca compensar un X% de la tasa de deforestación"
+        "pattern": "la meta de reforestación busca compensar un X% de la tasa de deforestación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q102-001",
         "match_type": "REGEX",
-        "pattern": "la cobertura de la obra protege al \\d+% de la población en riesgo"
+        "pattern": "la cobertura de la obra protege al \\d+% de la población en riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +230,12 @@
         "flags": "i",
         "id": "PAT-Q102-002",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en función de la capacidad operativa y el presupuesto"
+        "pattern": "la meta se establece en función de la capacidad operativa y el presupuesto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +243,12 @@
         "flags": "i",
         "id": "PAT-Q102-003",
         "match_type": "REGEX",
-        "pattern": "universo de atención|área total a intervenir"
+        "pattern": "universo de atención|área total a intervenir",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +256,12 @@
         "flags": "i",
         "id": "PAT-Q102-004",
         "match_type": "LITERAL",
-        "pattern": "se priorizarán las microcuencas más críticas"
+        "pattern": "se priorizarán las microcuencas más críticas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +269,12 @@
         "flags": "i",
         "id": "PAT-Q102-005",
         "match_type": "REGEX",
-        "pattern": "análisis de costo-beneficio de la intervención"
+        "pattern": "análisis de costo-beneficio de la intervención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -362,7 +392,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q282"
+          "const": "Q102"
         },
         "question_global": {
           "type": "integer",
@@ -375,7 +405,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

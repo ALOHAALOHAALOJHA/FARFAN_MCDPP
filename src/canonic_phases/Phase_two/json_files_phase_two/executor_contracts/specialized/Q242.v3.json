@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "caf39de0b382bbe0f256e3db7fc03933223bf166586822a3055b6d248f30c9e6",
+    "contract_hash": "ce011f46e98d62e4fd406fad9acd1463e378ec46a80472134748aa500b192ff1",
     "created_at": "2025-11-28T03:50:42.188392+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 242,
-    "updated_at": "2025-12-15T20:32:11.020652+00:00"
+    "updated_at": "2025-12-15T21:42:32.522164+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -132,7 +132,12 @@
         "flags": "i",
         "id": "PAT-Q242-000",
         "match_type": "REGEX",
-        "pattern": "magnitud del riesgo|nivel de amenaza|aumento de las agresiones"
+        "pattern": "magnitud del riesgo|nivel de amenaza|aumento de las agresiones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +145,12 @@
         "flags": "i",
         "id": "PAT-Q242-001",
         "match_type": "REGEX",
-        "pattern": "universo de líderes en riesgo|población defensora expuesta"
+        "pattern": "universo de líderes en riesgo|población defensora expuesta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +158,12 @@
         "flags": "i",
         "id": "PAT-Q242-002",
         "match_type": "REGEX",
-        "pattern": "la situación es crítica|alto nivel de vulnerabilidad"
+        "pattern": "la situación es crítica|alto nivel de vulnerabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -156,7 +171,12 @@
         "flags": "i",
         "id": "PAT-Q242-003",
         "match_type": "REGEX",
-        "pattern": "subregistro por miedo a denunciar|cifra negra de amenazas"
+        "pattern": "subregistro por miedo a denunciar|cifra negra de amenazas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +184,12 @@
         "flags": "i",
         "id": "PAT-Q242-004",
         "match_type": "REGEX",
-        "pattern": "dificultad para documentar casos en zonas rurales"
+        "pattern": "dificultad para documentar casos en zonas rurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +197,12 @@
         "flags": "i",
         "id": "PAT-Q242-005",
         "match_type": "REGEX",
-        "pattern": "falta de una caracterización completa del liderazgo social"
+        "pattern": "falta de una caracterización completa del liderazgo social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +210,12 @@
         "flags": "i",
         "id": "PAT-Q242-006",
         "match_type": "REGEX",
-        "pattern": "vacío de información sobre los autores de las amenazas"
+        "pattern": "vacío de información sobre los autores de las amenazas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +223,12 @@
         "flags": "i",
         "id": "PAT-Q242-007",
         "match_type": "REGEX",
-        "pattern": "causas del riesgo|factores de amenaza|estigmatización"
+        "pattern": "causas del riesgo|factores de amenaza|estigmatización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -314,7 +354,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q272"
+          "const": "Q242"
         },
         "question_global": {
           "type": "integer",
@@ -327,7 +367,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "dd785dde66cca935875d6e2c4e90b5088a6be72c823e21d7611fef0cf23b1c66",
+    "contract_hash": "5445e9f9e9c36ed5f09637c8c7e39544181b65871058383004db99123c908322",
     "created_at": "2025-11-28T03:49:29.804254+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 8,
-    "updated_at": "2025-12-15T20:32:11.310169+00:00"
+    "updated_at": "2025-12-15T21:42:31.060931+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q008-000",
         "match_type": "REGEX",
-        "pattern": "para abordar la causa relacionada con|en respuesta al problema de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0085"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q008-001",
         "match_type": "REGEX",
-        "pattern": "la actividad X atiende el determinante Y"
+        "pattern": "la actividad X atiende el determinante Y",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q008-002",
         "match_type": "REGEX",
-        "pattern": "causa estructural|factor determinante|nudo crítico"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q008-003",
         "match_type": "REGEX",
-        "pattern": "dependencia económica|falta de oportunidades laborales"
+        "pattern": "dependencia económica|falta de oportunidades laborales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q008-004",
         "match_type": "REGEX",
-        "pattern": "patrones culturales machistas|estereotipos de género"
+        "pattern": "patrones culturales machistas|estereotipos de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q008-005",
         "match_type": "REGEX",
-        "pattern": "barreras de acceso a la justicia|desconocimiento de las rutas"
+        "pattern": "barreras de acceso a la justicia|desconocimiento de las rutas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q008-006",
         "match_type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico causal"
+        "pattern": "árbol de problemas|diagnóstico causal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -278,7 +313,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q278"
+          "const": "Q008"
         },
         "question_global": {
           "type": "integer",
@@ -291,7 +326,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

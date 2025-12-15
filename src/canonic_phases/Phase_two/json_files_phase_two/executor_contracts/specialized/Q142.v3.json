@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "dcfa0ffd4a0cd8b651d8e9ec1eac6a5b1ef3cef68bdd420af0b2662d089a06a8",
+    "contract_hash": "cf7db318572707dbec8fcd6cdea3acfa18ab8c75fba4703d6b8f1e1597fc29a0",
     "created_at": "2025-11-28T03:50:31.543666+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 142,
-    "updated_at": "2025-12-15T20:32:12.414356+00:00"
+    "updated_at": "2025-12-15T21:42:31.939089+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q142-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Desarrollo Humano|IDH|Índice de Pobreza Multidimensional|IPM"
+        "pattern": "Índice de Desarrollo Humano|IDH|Índice de Pobreza Multidimensional|IPM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q142-001",
         "match_type": "REGEX",
-        "pattern": "Coeficiente de Gini|indicador compuesto de calidad de vida"
+        "pattern": "Coeficiente de Gini|indicador compuesto de calidad de vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q142-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "TEMPORAL",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q142-003",
         "match_type": "REGEX",
-        "pattern": "los años promedio de escolaridad como proxy del capital humano"
+        "pattern": "los años promedio de escolaridad como proxy del capital humano",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q142-004",
         "match_type": "REGEX",
-        "pattern": "la esperanza de vida al nacer como proxy del bienestar general"
+        "pattern": "la esperanza de vida al nacer como proxy del bienestar general",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -300,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q142-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque es un estándar internacional"
+        "pattern": "este indicador es válido porque es un estándar internacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -426,7 +456,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q292"
+          "const": "Q142"
         },
         "question_global": {
           "type": "integer",
@@ -439,7 +469,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

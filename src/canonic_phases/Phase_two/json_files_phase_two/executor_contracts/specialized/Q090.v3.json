@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "952d0bc9cdacab110a6c2b42d0ae472f7e50635397320e1b8c7319f15ac31b66",
+    "contract_hash": "f7bd0ceb0d46831d8c93dcb7fc42d73689c0444d98cf88fc8f15547d07218a2c",
     "created_at": "2025-11-28T03:50:13.377702+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 90,
-    "updated_at": "2025-12-15T20:32:12.752969+00:00"
+    "updated_at": "2025-12-15T21:42:31.560782+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q090-000",
         "match_type": "REGEX",
-        "pattern": "enfoque diferencial|enfoque territorial"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0059"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q090-001",
         "match_type": "REGEX",
-        "pattern": "jóvenes en riesgo de reclutamiento|NNA"
+        "pattern": "jóvenes en riesgo de reclutamiento|NNA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q090-002",
         "match_type": "REGEX",
-        "pattern": "líderes sociales|firmantes del acuerdo de paz|población en reincorporación"
+        "pattern": "líderes sociales|firmantes del acuerdo de paz|población en reincorporación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,15 +147,26 @@
         "flags": "i",
         "id": "PAT-Q090-003",
         "match_type": "REGEX",
-        "pattern": "comunidades étnicas|guardia indígena"
+        "pattern": "comunidades étnicas|guardia indígena",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
-        "category": "GENERAL",
+        "category": "CAUSAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q090-004",
         "match_type": "REGEX",
-        "pattern": "restricciones de acceso geográfico|zonas de difícil acceso"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
       },
       {
         "category": "GENERAL",
@@ -148,7 +174,12 @@
         "flags": "i",
         "id": "PAT-Q090-005",
         "match_type": "REGEX",
-        "pattern": "corredores estratégicos para grupos armados"
+        "pattern": "corredores estratégicos para grupos armados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -156,7 +187,12 @@
         "flags": "i",
         "id": "PAT-Q090-006",
         "match_type": "REGEX",
-        "pattern": "contexto de frontera|cultura de la ilegalidad"
+        "pattern": "contexto de frontera|cultura de la ilegalidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -164,7 +200,12 @@
         "flags": "i",
         "id": "PAT-Q090-007",
         "match_type": "REGEX",
-        "pattern": "estrategias territorializadas|acciones adaptadas a la vereda"
+        "pattern": "estrategias territorializadas|acciones adaptadas a la vereda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -290,7 +331,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q300"
+          "const": "Q090"
         },
         "question_global": {
           "type": "integer",
@@ -303,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

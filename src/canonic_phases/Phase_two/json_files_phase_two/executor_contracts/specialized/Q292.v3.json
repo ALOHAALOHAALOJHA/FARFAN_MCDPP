@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "6e305f2cca4f3d5be082ae449770c5f47dc19550194eec62ef4c08521f650868",
+    "contract_hash": "583b4a0584857dd103d80fd5ae9c3be164fca6f12aea7287ee79313934edf198",
     "created_at": "2025-11-28T03:50:42.534351+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 292,
-    "updated_at": "2025-12-15T20:32:12.458296+00:00"
+    "updated_at": "2025-12-15T21:42:32.769843+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q292-000",
         "match_type": "REGEX",
-        "pattern": "tasa de reincidencia|Índice de Seguridad Ciudadana"
+        "pattern": "tasa de reincidencia|Índice de Seguridad Ciudadana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q292-001",
         "match_type": "REGEX",
-        "pattern": "indicador compuesto|indicador sintético"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q292-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "INDICADOR",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q292-003",
         "match_type": "REGEX",
-        "pattern": "la tasa de empleo de la población pospenada como proxy de resocialización"
+        "pattern": "la tasa de empleo de la población pospenada como proxy de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q292-004",
         "match_type": "REGEX",
-        "pattern": "la percepción de seguridad de la ciudadanía como proxy del impacto en la criminalidad"
+        "pattern": "la percepción de seguridad de la ciudadanía como proxy del impacto en la criminalidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -300,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q292-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque refleja|captura los efectos a largo plazo"
+        "pattern": "este indicador es válido porque refleja|captura los efectos a largo plazo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

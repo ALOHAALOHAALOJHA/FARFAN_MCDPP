@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "76674cabc09d98eb0a058844a02933750069eef06c73841dd95ba3bae00a462f",
+    "contract_hash": "4d91be4f12aa4ac90bdc4c7ef1fecb898aceb092af2ffa29ae35d198857faf61",
     "created_at": "2025-11-28T03:50:31.568080+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 149,
-    "updated_at": "2025-12-15T20:32:12.722861+00:00"
+    "updated_at": "2025-12-15T21:42:31.994283+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,15 +92,36 @@
         "flags": "i",
         "id": "PAT-Q149-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E social"
+        "pattern": "sistema de seguimiento y evaluación|M&E social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q149-001",
-        "match_type": "REGEX",
-        "pattern": "monitoreo a través de los sistemas de información (SIMAT, SIVIGILA)"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "monitoreo a través de los sistemas de información (SIMAT, SIVIGILA)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +129,12 @@
         "flags": "i",
         "id": "PAT-Q149-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana sobre deserción|alerta por brote epidemiológico"
+        "pattern": "alerta temprana sobre deserción|alerta por brote epidemiológico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +142,12 @@
         "flags": "i",
         "id": "PAT-Q149-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste del PAE|medida correctiva en la focalización"
+        "pattern": "mecanismo de ajuste del PAE|medida correctiva en la focalización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +155,12 @@
         "flags": "i",
         "id": "PAT-Q149-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación desde los usuarios|veedurías ciudadanas en salud"
+        "pattern": "retroalimentación desde los usuarios|veedurías ciudadanas en salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +168,12 @@
         "flags": "i",
         "id": "PAT-Q149-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Política Social para revisar avances"
+        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Política Social para revisar avances",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +181,12 @@
         "flags": "i",
         "id": "PAT-Q149-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en la implementación de programas"
+        "pattern": "lecciones aprendidas en la implementación de programas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +312,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q149"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +325,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

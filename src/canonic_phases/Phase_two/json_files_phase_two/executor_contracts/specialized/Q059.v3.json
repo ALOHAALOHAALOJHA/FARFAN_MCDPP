@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "3a3569fddf17043f9468f225ec71e6db863c0fc974bbcfa9b29d762a3e150e36",
+    "contract_hash": "5e7629f57a59737ee9e94d2ac193e7f0401cec842693524a90791d15052ba903",
     "created_at": "2025-11-28T03:50:05.983632+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 59,
-    "updated_at": "2025-12-15T20:32:12.711674+00:00"
+    "updated_at": "2025-12-15T21:42:31.393197+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q059-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E de la respuesta migratoria"
+        "pattern": "sistema de seguimiento y evaluación|M&E de la respuesta migratoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q059-001",
         "match_type": "REGEX",
-        "pattern": "monitoreo de flujos en tiempo real|monitoreo en frontera"
+        "pattern": "monitoreo de flujos en tiempo real|monitoreo en frontera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q059-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana sobre aumento de flujos o brotes de xenofobia"
+        "pattern": "alerta temprana sobre aumento de flujos o brotes de xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q059-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste de la respuesta humanitaria|escalamiento de la ayuda"
+        "pattern": "mecanismo de ajuste de la respuesta humanitaria|escalamiento de la ayuda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q059-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación desde la población migrante y la comunidad de acogida"
+        "pattern": "retroalimentación desde la población migrante y la comunidad de acogida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q059-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones de la Mesa de Migración para revisar estrategia"
+        "pattern": "ciclos de aprendizaje|reuniones de la Mesa de Migración para revisar estrategia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q059-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en la gestión de crisis migratorias"
+        "pattern": "lecciones aprendidas en la gestión de crisis migratorias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -266,7 +301,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q299"
+          "const": "Q059"
         },
         "question_global": {
           "type": "integer",
@@ -279,7 +314,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

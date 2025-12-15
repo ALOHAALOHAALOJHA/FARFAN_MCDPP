@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "19d0ec8e2b566a7c82c7cd7807bb326f36a958264f30337b9142c4fa2edb7b67",
+    "contract_hash": "8361872944ced3aee9e83dcd3fb0faeb466cde29ea43cfb251b057efc94ef548",
     "created_at": "2025-11-28T03:50:42.363812+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 268,
-    "updated_at": "2025-12-15T20:32:12.700389+00:00"
+    "updated_at": "2025-12-15T21:42:32.644899+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q268-000",
         "match_type": "REGEX",
-        "pattern": "inconsistencia|debilidad en la teoría|supuesto débil"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q268-001",
         "match_type": "REGEX",
-        "pattern": "se requiere validar si las campañas de no estigmatización son efectivas"
+        "pattern": "se requiere validar si las campañas de no estigmatización son efectivas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q268-002",
         "match_type": "REGEX",
-        "pattern": "plan piloto de protección colectiva en una comunidad"
+        "pattern": "plan piloto de protección colectiva en una comunidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q268-003",
         "match_type": "REGEX",
-        "pattern": "testear el supuesto de que la respuesta institucional disuade"
+        "pattern": "testear el supuesto de que la respuesta institucional disuade",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q268-004",
         "match_type": "REGEX",
-        "pattern": "validar la hipótesis sobre la efectividad de las medidas blandas"
+        "pattern": "validar la hipótesis sobre la efectividad de las medidas blandas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q268-005",
         "match_type": "REGEX",
-        "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q268-006",
         "match_type": "REGEX",
-        "pattern": "aprendizaje adaptativo|gestión adaptativa de la protección"
+        "pattern": "aprendizaje adaptativo|gestión adaptativa de la protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -270,7 +305,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q298"
+          "const": "Q268"
         },
         "question_global": {
           "type": "integer",
@@ -283,7 +318,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

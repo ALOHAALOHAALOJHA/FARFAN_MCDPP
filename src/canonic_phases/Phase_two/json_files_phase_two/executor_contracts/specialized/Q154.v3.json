@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "9e4e88bf6c96c775bd11d015c05fc14cd1521d05f86bc8708f235030e0df61a3",
+    "contract_hash": "cde76a82412eb210048a5cedfcc0e05695ca78039b2db87508604dc1afc8130d",
     "created_at": "2025-11-28T03:50:31.587421+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 154,
-    "updated_at": "2025-12-15T20:32:11.107141+00:00"
+    "updated_at": "2025-12-15T21:42:32.020638+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q154-000",
         "match_type": "REGEX",
-        "pattern": "Enlace Municipal de Víctimas|equipo del Enlace"
+        "pattern": "Enlace Municipal de Víctimas|equipo del Enlace",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q154-001",
         "match_type": "REGEX",
-        "pattern": "Punto de Atención a Víctimas|PAV|Centro Regional de Atención|CRAV"
+        "pattern": "Punto de Atención a Víctimas|PAV|Centro Regional de Atención|CRAV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q154-002",
         "match_type": "REGEX",
-        "pattern": "Mesa de Participación Efectiva de las Víctimas|MPEV"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0010"
       },
       {
         "category": "TERRITORIAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q154-003",
         "match_type": "REGEX",
-        "pattern": "Comité Territorial de Justicia Transicional|CTJT"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0002"
       },
       {
         "category": "GENERAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q154-004",
         "match_type": "REGEX",
-        "pattern": "capacidad instalada para la atención|talento humano con enfoque psicosocial"
+        "pattern": "capacidad instalada para la atención|talento humano con enfoque psicosocial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q154-005",
         "match_type": "REGEX",
-        "pattern": "ruta de atención y asistencia|protocolo de declaración"
+        "pattern": "ruta de atención y asistencia|protocolo de declaración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q154-006",
         "match_type": "REGEX",
-        "pattern": "sistema de información para seguimiento de casos|articulación con Vivanto/RNI"
+        "pattern": "sistema de información para seguimiento de casos|articulación con Vivanto/RNI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q154-007",
         "match_type": "REGEX",
-        "pattern": "articulación con el SNARIV|coordinación con la UARIV"
+        "pattern": "articulación con el SNARIV|coordinación con la UARIV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q154-008",
         "match_type": "REGEX",
-        "pattern": "falta de personal|limitada capacidad técnica|necesidad de fortalecer el Enlace"
+        "pattern": "falta de personal|limitada capacidad técnica|necesidad de fortalecer el Enlace",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +241,12 @@
         "flags": "i",
         "id": "PAT-Q154-009",
         "match_type": "REGEX",
-        "pattern": "cuello de botella|barrera de acceso|insuficiencia del PAV"
+        "pattern": "cuello de botella|barrera de acceso|insuficiencia del PAV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +380,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q274"
+          "const": "Q154"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +393,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

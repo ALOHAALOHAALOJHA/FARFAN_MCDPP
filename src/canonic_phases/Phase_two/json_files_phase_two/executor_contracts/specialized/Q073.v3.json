@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "5767cdce8f7609d2ee30ceef1d982fc0974fc044a31499a1cdefd356ec52922e",
+    "contract_hash": "b4ae207d7824bb6b2b743e2aa3af3aa7e01aa9e11e01ce1a1eff6c19f846d70b",
     "created_at": "2025-11-28T03:50:09.626483+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 73,
-    "updated_at": "2025-12-15T20:32:11.705973+00:00"
+    "updated_at": "2025-12-15T21:42:31.468605+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -212,7 +212,12 @@
         "flags": "i",
         "id": "PAT-Q073-000",
         "match_type": "REGEX",
-        "pattern": "código BPIN|proyecto de inversión para la paz"
+        "pattern": "código BPIN|proyecto de inversión para la paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +225,12 @@
         "flags": "i",
         "id": "PAT-Q073-001",
         "match_type": "REGEX",
-        "pattern": "programa del PPI|línea de inversión en víctimas"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0087"
       },
       {
         "category": "GENERAL",
@@ -228,7 +238,12 @@
         "flags": "i",
         "id": "PAT-Q073-002",
         "match_type": "REGEX",
-        "pattern": "recursos del proyecto|presupuesto para prevención"
+        "pattern": "recursos del proyecto|presupuesto para prevención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +251,12 @@
         "flags": "i",
         "id": "PAT-Q073-003",
         "match_type": "REGEX",
-        "pattern": "responsable:|dependencia a cargo:|entidad ejecutora"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0090"
       },
       {
         "category": "TERRITORIAL",
@@ -244,15 +264,36 @@
         "flags": "i",
         "id": "PAT-Q073-004",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Enlace de Víctimas|Personería Municipal"
+        "pattern": "Secretaría de Gobierno|Enlace de Víctimas|Personería Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q073-005",
-        "match_type": "REGEX",
-        "pattern": "articulado con la Defensoría del Pueblo|Policía Nacional"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "articulado con la Defensoría del Pueblo|Policía Nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q073-006",
         "match_type": "REGEX",
-        "pattern": "corresponsabilidad de|en alianza con"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0049"
       }
     ],
     "expected_elements": [
@@ -382,7 +428,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q283"
+          "const": "Q073"
         },
         "question_global": {
           "type": "integer",
@@ -395,7 +441,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

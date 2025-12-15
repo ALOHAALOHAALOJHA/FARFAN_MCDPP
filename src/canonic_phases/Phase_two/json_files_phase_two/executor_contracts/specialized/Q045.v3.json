@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "24b1bf69503850426213e2e55ad87ba4ab766fbc08c87d20ef3998cce5e4fbde",
+    "contract_hash": "17f8b1be59e66bbd3595308cda4c6adf6787539f081470b09cc856b37cf2e9fb",
     "created_at": "2025-11-28T03:50:05.934458+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 45,
-    "updated_at": "2025-12-15T20:32:11.944984+00:00"
+    "updated_at": "2025-12-15T21:42:31.300890+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -236,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q045-000",
         "match_type": "REGEX",
-        "pattern": "esto permitirá que|lo cual contribuirá a|facilitando la"
+        "pattern": "esto permitirá que|lo cual contribuirá a|facilitando la",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +249,12 @@
         "flags": "i",
         "id": "PAT-Q045-001",
         "match_type": "REGEX",
-        "pattern": "el mecanismo es que la regularización (PPT) es la puerta de entrada al mercado laboral formal y a los servicios"
+        "pattern": "el mecanismo es que la regularización (PPT) es la puerta de entrada al mercado laboral formal y a los servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +262,12 @@
         "flags": "i",
         "id": "PAT-Q045-002",
         "match_type": "REGEX",
-        "pattern": "al recibir atención humanitaria, se reduce la vulnerabilidad inmediata de los caminantes"
+        "pattern": "al recibir atención humanitaria, se reduce la vulnerabilidad inmediata de los caminantes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +275,12 @@
         "flags": "i",
         "id": "PAT-Q045-003",
         "match_type": "REGEX",
-        "pattern": "la matrícula escolar de NNA migrantes promueve su integración y protege sus derechos"
+        "pattern": "la matrícula escolar de NNA migrantes promueve su integración y protege sus derechos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +288,12 @@
         "flags": "i",
         "id": "PAT-Q045-004",
         "match_type": "REGEX",
-        "pattern": "variable intermedia|mediador|eslabón causal|regularización|acceso a servicios"
+        "pattern": "variable intermedia|mediador|eslabón causal|regularización|acceso a servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q045-005",
         "match_type": "REGEX",
-        "pattern": "cadena de valor|ruta de cambio de la integración"
+        "pattern": "cadena de valor|ruta de cambio de la integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -398,7 +428,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q285"
+          "const": "Q045"
         },
         "question_global": {
           "type": "integer",
@@ -411,7 +441,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

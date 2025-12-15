@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "ccd33525699f7907bce68d55db082d986d651ffa38ebf478f6f2527fc0a2b211",
+    "contract_hash": "1125417c4dedc6b1905f0e6101d17039c1af3fd91c24a30bfb43069c6e16bc82",
     "created_at": "2025-11-28T03:50:42.196085+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 244,
-    "updated_at": "2025-12-15T20:32:11.120423+00:00"
+    "updated_at": "2025-12-15T21:42:32.532769+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -124,7 +124,12 @@
         "flags": "i",
         "id": "PAT-Q244-000",
         "match_type": "REGEX",
-        "pattern": "Mesa Territorial de Garantías|Comité de Evaluación de Riesgo y Recomendación de Medidas|CERREM"
+        "pattern": "Mesa Territorial de Garantías|Comité de Evaluación de Riesgo y Recomendación de Medidas|CERREM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -132,7 +137,12 @@
         "flags": "i",
         "id": "PAT-Q244-001",
         "match_type": "REGEX",
-        "pattern": "Personería Municipal|Defensoría del Pueblo Regional"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0014"
       },
       {
         "category": "GENERAL",
@@ -140,7 +150,12 @@
         "flags": "i",
         "id": "PAT-Q244-002",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Gobierno|Enlace de DDHH"
+        "pattern": "Secretaría de Gobierno|Enlace de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +163,12 @@
         "flags": "i",
         "id": "PAT-Q244-003",
         "match_type": "REGEX",
-        "pattern": "capacidad instalada para la respuesta rápida|personal capacitado"
+        "pattern": "capacidad instalada para la respuesta rápida|personal capacitado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -156,7 +176,12 @@
         "flags": "i",
         "id": "PAT-Q244-004",
         "match_type": "REGEX",
-        "pattern": "ruta de protección municipal|protocolo de atención a amenazas"
+        "pattern": "ruta de protección municipal|protocolo de atención a amenazas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -164,7 +189,12 @@
         "flags": "i",
         "id": "PAT-Q244-005",
         "match_type": "REGEX",
-        "pattern": "sistema de alertas tempranas local|flujo de información con el SAT"
+        "pattern": "sistema de alertas tempranas local|flujo de información con el SAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -172,7 +202,12 @@
         "flags": "i",
         "id": "PAT-Q244-006",
         "match_type": "REGEX",
-        "pattern": "Observatorio Municipal de DDHH"
+        "pattern": "Observatorio Municipal de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +215,12 @@
         "flags": "i",
         "id": "PAT-Q244-007",
         "match_type": "REGEX",
-        "pattern": "articulación con la UNP|coordinación con la Fuerza Pública"
+        "pattern": "articulación con la UNP|coordinación con la Fuerza Pública",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +228,12 @@
         "flags": "i",
         "id": "PAT-Q244-008",
         "match_type": "REGEX",
-        "pattern": "falta de articulación con el nivel nacional|demoras en la respuesta de la UNP"
+        "pattern": "falta de articulación con el nivel nacional|demoras en la respuesta de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +241,12 @@
         "flags": "i",
         "id": "PAT-Q244-009",
         "match_type": "REGEX",
-        "pattern": "cuello de botella|limitación presupuestal|barrera de confianza"
+        "pattern": "cuello de botella|limitación presupuestal|barrera de confianza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -330,7 +380,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q274"
+          "const": "Q244"
         },
         "question_global": {
           "type": "integer",
@@ -343,7 +393,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

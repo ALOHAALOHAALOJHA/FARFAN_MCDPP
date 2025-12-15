@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "3712b33731b5b6d2ecd5d205535812526f247709abbd8715d4d8a5c86324c5db",
+    "contract_hash": "c7de625dd9505c30ac5cbf7edd0cb1ad90792e038fab7faf663ac58b38ce05de",
     "created_at": "2025-11-28T03:50:09.640982+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 76,
-    "updated_at": "2025-12-15T20:32:12.071967+00:00"
+    "updated_at": "2025-12-15T21:42:31.495094+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -164,7 +164,12 @@
         "flags": "i",
         "id": "PAT-Q076-000",
         "match_type": "REGEX",
-        "pattern": "indicador de resultado|indicador de efecto|outcome"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
       },
       {
         "category": "INDICADOR",
@@ -172,7 +177,12 @@
         "flags": "i",
         "id": "PAT-Q076-001",
         "match_type": "REGEX",
-        "pattern": "tasa de homicidios|tasa de desplazamiento|tasa de confinamiento"
+        "pattern": "tasa de homicidios|tasa de desplazamiento|tasa de confinamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +190,12 @@
         "flags": "i",
         "id": "PAT-Q076-002",
         "match_type": "REGEX",
-        "pattern": "reducción del número de víctimas|disminución de eventos"
+        "pattern": "reducción del número de víctimas|disminución de eventos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -188,7 +203,12 @@
         "flags": "i",
         "id": "PAT-Q076-003",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|valor 2023:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
       },
       {
         "category": "INDICADOR",
@@ -196,7 +216,12 @@
         "flags": "i",
         "id": "PAT-Q076-004",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta 2027:|se espera reducir en un X%"
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera reducir en un X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +229,12 @@
         "flags": "i",
         "id": "PAT-Q076-005",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
       },
       {
         "category": "INDICADOR",
@@ -212,7 +242,12 @@
         "flags": "i",
         "id": "PAT-Q076-006",
         "match_type": "REGEX",
-        "pattern": "Ficha de Indicador de Resultado (KPT)"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0005"
       },
       {
         "category": "TEMPORAL",
@@ -220,7 +255,12 @@
         "flags": "i",
         "id": "PAT-Q076-007",
         "match_type": "REGEX",
-        "pattern": "horizonte temporal|ventana de maduración|al final del periodo"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0068"
       }
     ],
     "expected_elements": [
@@ -352,7 +392,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q286"
+          "const": "Q076"
         },
         "question_global": {
           "type": "integer",
@@ -365,7 +405,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

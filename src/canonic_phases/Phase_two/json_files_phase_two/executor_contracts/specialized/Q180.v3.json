@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "ed6bf66adf20a3039dac87adb9b4f9f12b86f2ac78e206006b690a0ea4f953b8",
+    "contract_hash": "b0a087ce620f0ddfdda19adb644f26b15a39204075f4f1c012ea9903a5829c87",
     "created_at": "2025-11-28T03:50:31.758700+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 180,
-    "updated_at": "2025-12-15T20:32:12.765016+00:00"
+    "updated_at": "2025-12-15T21:42:32.164986+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -108,7 +108,12 @@
         "flags": "i",
         "id": "PAT-Q180-000",
         "match_type": "REGEX",
-        "pattern": "enfoque diferencial|Decretos Ley Étnicos"
+        "pattern": "enfoque diferencial|Decretos Ley Étnicos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +121,12 @@
         "flags": "i",
         "id": "PAT-Q180-001",
         "match_type": "REGEX",
-        "pattern": "Sujetos de Reparación Colectiva|comunidades campesinas|pueblos indígenas"
+        "pattern": "Sujetos de Reparación Colectiva|comunidades campesinas|pueblos indígenas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +134,12 @@
         "flags": "i",
         "id": "PAT-Q180-002",
         "match_type": "REGEX",
-        "pattern": "víctimas en el exterior|mujeres víctimas de violencia sexual"
+        "pattern": "víctimas en el exterior|mujeres víctimas de violencia sexual",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +147,12 @@
         "flags": "i",
         "id": "PAT-Q180-003",
         "match_type": "REGEX",
-        "pattern": "personas en situación de discapacidad por el conflicto"
+        "pattern": "personas en situación de discapacidad por el conflicto|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +160,12 @@
         "flags": "i",
         "id": "PAT-Q180-004",
         "match_type": "REGEX",
-        "pattern": "restricciones de seguridad en la zona|presencia de actores armados"
+        "pattern": "restricciones de seguridad en la zona|presencia de actores armados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -148,7 +173,12 @@
         "flags": "i",
         "id": "PAT-Q180-005",
         "match_type": "REGEX",
-        "pattern": "contexto de despojo de tierras|cultura local"
+        "pattern": "contexto de despojo de tierras|cultura local",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TEMPORAL",
@@ -156,7 +186,12 @@
         "flags": "i",
         "id": "PAT-Q180-006",
         "match_type": "REGEX",
-        "pattern": "estrategias territorializadas|medidas adaptadas al daño"
+        "pattern": "estrategias territorializadas|medidas adaptadas al daño",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -282,7 +317,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q300"
+          "const": "Q180"
         },
         "question_global": {
           "type": "integer",
@@ -295,7 +330,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

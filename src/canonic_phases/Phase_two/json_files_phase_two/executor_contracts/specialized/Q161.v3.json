@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "507748d14529baf43b04fc9770d65827a71a7cd96ebfd8cbedaf1f4e8c6b8744",
+    "contract_hash": "0d0ffc2adce391f4214b57719a25bbdbc68ced08b8d7ace4cc8b851f9042f635",
     "created_at": "2025-11-28T03:50:31.690877+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 161,
-    "updated_at": "2025-12-15T20:32:11.591490+00:00"
+    "updated_at": "2025-12-15T21:42:32.053509+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -100,7 +100,12 @@
         "flags": "i",
         "id": "PAT-Q161-000",
         "match_type": "REGEX",
-        "pattern": "indicador de producto|meta de producto"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0073"
       },
       {
         "category": "GENERAL",
@@ -108,7 +113,12 @@
         "flags": "i",
         "id": "PAT-Q161-001",
         "match_type": "REGEX",
-        "pattern": "número de víctimas indemnizadas|giros de indemnización realizados"
+        "pattern": "número de víctimas indemnizadas|giros de indemnización realizados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +126,12 @@
         "flags": "i",
         "id": "PAT-Q161-002",
         "match_type": "REGEX",
-        "pattern": "familias retornadas o reubicadas|planes de retorno aprobados"
+        "pattern": "familias retornadas o reubicadas|planes de retorno aprobados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +139,12 @@
         "flags": "i",
         "id": "PAT-Q161-003",
         "match_type": "REGEX",
-        "pattern": "Sujetos de Reparación Colectiva con PIRC implementado"
+        "pattern": "Sujetos de Reparación Colectiva con PIRC implementado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +152,12 @@
         "flags": "i",
         "id": "PAT-Q161-004",
         "match_type": "REGEX",
-        "pattern": "víctimas que accedieron a rehabilitación"
+        "pattern": "víctimas que accedieron a rehabilitación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +165,12 @@
         "flags": "i",
         "id": "PAT-Q161-005",
         "match_type": "LITERAL",
-        "pattern": "Línea Base:|LB:|Valor inicial:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0008"
       },
       {
         "category": "GENERAL",
@@ -148,7 +178,12 @@
         "flags": "i",
         "id": "PAT-Q161-006",
         "match_type": "REGEX",
-        "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0013"
       },
       {
         "category": "GENERAL",
@@ -156,7 +191,12 @@
         "flags": "i",
         "id": "PAT-Q161-007",
         "match_type": "REGEX",
-        "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0007"
       },
       {
         "category": "GENERAL",
@@ -164,7 +204,12 @@
         "flags": "i",
         "id": "PAT-Q161-008",
         "match_type": "REGEX",
-        "pattern": "RUV|Red Nacional de Información|Vivanto"
+        "pattern": "RUV|Red Nacional de Información|Vivanto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -172,7 +217,12 @@
         "flags": "i",
         "id": "PAT-Q161-009",
         "match_type": "REGEX",
-        "pattern": "informes de la UARIV|actas del CTJT|listados de beneficiarios"
+        "pattern": "informes de la UARIV|actas del CTJT|listados de beneficiarios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -302,7 +352,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q281"
+          "const": "Q161"
         },
         "question_global": {
           "type": "integer",
@@ -315,7 +365,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

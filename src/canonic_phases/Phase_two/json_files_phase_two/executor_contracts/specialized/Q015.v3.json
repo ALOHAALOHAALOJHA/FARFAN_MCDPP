@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "4a36c84cd4bd10c87d99431fb4addcbfaa36e0c0a55c01f3fbf44a5e289d2bb1",
+    "contract_hash": "a9d3d7b52cbcdf9a150b25d88954be00a586b1cfd72dbc07435029d98e4cc07b",
     "created_at": "2025-11-28T03:49:29.833727+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 15,
-    "updated_at": "2025-12-15T20:32:11.935450+00:00"
+    "updated_at": "2025-12-15T21:42:31.111548+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -236,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q015-000",
         "match_type": "REGEX",
-        "pattern": "esto permitirá que|lo cual contribuirá a|generando así"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0062"
       },
       {
         "category": "GENERAL",
@@ -244,7 +249,12 @@
         "flags": "i",
         "id": "PAT-Q015-001",
         "match_type": "LITERAL",
-        "pattern": "el mecanismo es|la lógica es que"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0055"
       },
       {
         "category": "GENERAL",
@@ -252,7 +262,12 @@
         "flags": "i",
         "id": "PAT-Q015-002",
         "match_type": "REGEX",
-        "pattern": "a través de las capacitaciones, las mujeres mejorarán sus ingresos"
+        "pattern": "a través de las capacitaciones, las mujeres mejorarán sus ingresos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +275,12 @@
         "flags": "i",
         "id": "PAT-Q015-003",
         "match_type": "REGEX",
-        "pattern": "el fortalecimiento de las Comisarías se traducirá en una mejor atención"
+        "pattern": "el fortalecimiento de las Comisarías se traducirá en una mejor atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +288,12 @@
         "flags": "i",
         "id": "PAT-Q015-004",
         "match_type": "REGEX",
-        "pattern": "variable intermedia|mediador|eslabón causal"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0109"
       },
       {
         "category": "GENERAL",
@@ -276,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q015-005",
         "match_type": "REGEX",
-        "pattern": "cadena de valor|ruta de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0030"
       }
     ],
     "expected_elements": [
@@ -398,7 +428,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q285"
+          "const": "Q015"
         },
         "question_global": {
           "type": "integer",
@@ -411,7 +441,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA01"
         },
         "dimension_id": {
           "type": [

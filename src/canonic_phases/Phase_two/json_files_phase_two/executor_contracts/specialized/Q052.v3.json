@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "c4e4a0b916ee12f4a955302b604e8996f3177d71a70ed2552edd34ee7c1ddafb",
+    "contract_hash": "e969a0cf3949f4920f7df52f924c3b2f29047d48f1287900d899eb91b32eb38e",
     "created_at": "2025-11-28T03:50:05.960450+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 52,
-    "updated_at": "2025-12-15T20:32:12.387002+00:00"
+    "updated_at": "2025-12-15T21:42:31.353936+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -260,7 +260,12 @@
         "flags": "i",
         "id": "PAT-Q052-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Integración Migrante|Índice de Cohesión Social"
+        "pattern": "Índice de Integración Migrante|Índice de Cohesión Social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +273,12 @@
         "flags": "i",
         "id": "PAT-Q052-001",
         "match_type": "REGEX",
-        "pattern": "indicador compuesto|indicador sintético"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +286,12 @@
         "flags": "i",
         "id": "PAT-Q052-002",
         "match_type": "REGEX",
-        "pattern": "se usará como proxy|indicador aproximado"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
       },
       {
         "category": "INDICADOR",
@@ -284,7 +299,12 @@
         "flags": "i",
         "id": "PAT-Q052-003",
         "match_type": "REGEX",
-        "pattern": "las tasas de matrimonios mixtos como proxy de integración cultural"
+        "pattern": "las tasas de matrimonios mixtos como proxy de integración cultural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -292,7 +312,12 @@
         "flags": "i",
         "id": "PAT-Q052-004",
         "match_type": "REGEX",
-        "pattern": "la percepción de la comunidad de acogida sobre la migración"
+        "pattern": "la percepción de la comunidad de acogida sobre la migración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -300,7 +325,12 @@
         "flags": "i",
         "id": "PAT-Q052-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque refleja|captura las dinámicas de convivencia"
+        "pattern": "este indicador es válido porque refleja|captura las dinámicas de convivencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -426,7 +456,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q292"
+          "const": "Q052"
         },
         "question_global": {
           "type": "integer",
@@ -439,7 +469,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

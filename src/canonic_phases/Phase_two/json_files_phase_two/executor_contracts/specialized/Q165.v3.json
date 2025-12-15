@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "19c71af66d6386201ec9e8f103cdf45eaca07833707f5fe7480f75f3242a4bd4",
+    "contract_hash": "2f279cfd930283ab686d8bba059e1ec21510a600689a8f52458b61ebf563231e",
     "created_at": "2025-11-28T03:50:31.709450+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 165,
-    "updated_at": "2025-12-15T20:32:11.993612+00:00"
+    "updated_at": "2025-12-15T21:42:32.082500+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -236,7 +236,12 @@
         "flags": "i",
         "id": "PAT-Q165-000",
         "match_type": "REGEX",
-        "pattern": "esto permitirá que|lo cual contribuirá a|generando así"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0062"
       },
       {
         "category": "GENERAL",
@@ -244,7 +249,12 @@
         "flags": "i",
         "id": "PAT-Q165-001",
         "match_type": "LITERAL",
-        "pattern": "el mecanismo es que la reparación material facilita la estabilización socioeconómica"
+        "pattern": "el mecanismo es que la reparación material facilita la estabilización socioeconómica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +262,12 @@
         "flags": "i",
         "id": "PAT-Q165-002",
         "match_type": "REGEX",
-        "pattern": "a través de los actos de memoria, se avanza en la dignificación y la no repetición"
+        "pattern": "a través de los actos de memoria, se avanza en la dignificación y la no repetición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +275,12 @@
         "flags": "i",
         "id": "PAT-Q165-003",
         "match_type": "REGEX",
-        "pattern": "la participación en la Mesa fortalece la ciudadanía de las víctimas"
+        "pattern": "la participación en la Mesa fortalece la ciudadanía de las víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +288,12 @@
         "flags": "i",
         "id": "PAT-Q165-004",
         "match_type": "REGEX",
-        "pattern": "variable intermedia|mediador|eslabón causal|confianza|dignificación"
+        "pattern": "variable intermedia|mediador|eslabón causal|confianza|dignificación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -276,7 +301,12 @@
         "flags": "i",
         "id": "PAT-Q165-005",
         "match_type": "REGEX",
-        "pattern": "cadena de valor|ruta de cambio"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0030"
       }
     ],
     "expected_elements": [
@@ -398,7 +428,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q285"
+          "const": "Q165"
         },
         "question_global": {
           "type": "integer",
@@ -411,7 +441,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

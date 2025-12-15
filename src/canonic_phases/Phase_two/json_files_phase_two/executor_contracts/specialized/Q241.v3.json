@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "613b3d0dd2d886fa3ab0cdb40ec205d006273688ad5b5fcb16af738b5c56fde3",
+    "contract_hash": "028ccf3c938c14035a5e67a758b07d512aa344cb86b4ee17a112c53beac33b17",
     "created_at": "2025-11-28T03:50:42.183265+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 241,
-    "updated_at": "2025-12-15T20:21:11.066514+00:00"
+    "updated_at": "2025-12-15T21:42:32.515479+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -172,7 +172,12 @@
         "flags": "i",
         "id": "PAT-Q241-000",
         "match_type": "REGEX",
-        "pattern": "línea base|diagnóstico de riesgo para líderes|situación de personas defensoras"
+        "pattern": "línea base|diagnóstico de riesgo para líderes|situación de personas defensoras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +185,12 @@
         "flags": "i",
         "id": "PAT-Q241-001",
         "match_type": "REGEX",
-        "pattern": "fuente:|según|reportado por|con datos de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0067"
       },
       {
         "category": "GENERAL",
@@ -188,7 +198,12 @@
         "flags": "i",
         "id": "PAT-Q241-002",
         "match_type": "REGEX",
-        "pattern": "Defensoría del Pueblo|Sistema de Alertas Tempranas|SAT"
+        "pattern": "Defensoría del Pueblo|Sistema de Alertas Tempranas|SAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "TERRITORIAL",
@@ -196,15 +211,36 @@
         "flags": "i",
         "id": "PAT-Q241-003",
         "match_type": "REGEX",
-        "pattern": "Personería Municipal|Procuraduría General de la Nación"
+        "pattern": "Personería Municipal|Procuraduría General de la Nación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "FUENTE_OFICIAL",
         "confidence_weight": 0.85,
         "flags": "i",
         "id": "PAT-Q241-004",
-        "match_type": "REGEX",
-        "pattern": "UNP|Unidad Nacional de Protección|Fiscalía|Policía Nacional|SIEDCO"
+        "match_type": "NER_OR_REGEX",
+        "pattern": "UNP|Unidad Nacional de Protección|Fiscalía|Policía Nacional|SIEDCO",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -212,7 +248,12 @@
         "flags": "i",
         "id": "PAT-Q241-005",
         "match_type": "REGEX",
-        "pattern": "Somos Defensores|INDEPAZ|Plataformas de DDHH"
+        "pattern": "Somos Defensores|INDEPAZ|Plataformas de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +261,12 @@
         "flags": "i",
         "id": "PAT-Q241-006",
         "match_type": "REGEX",
-        "pattern": "número de amenazas|casos de hostigamiento|atentados|homicidios"
+        "pattern": "número de amenazas|casos de hostigamiento|atentados|homicidios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +274,12 @@
         "flags": "i",
         "id": "PAT-Q241-007",
         "match_type": "REGEX",
-        "pattern": "líderes sociales|lideresas|defensores de derechos humanos"
+        "pattern": "líderes sociales|lideresas|defensores de derechos humanos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -236,7 +287,12 @@
         "flags": "i",
         "id": "PAT-Q241-008",
         "match_type": "REGEX",
-        "pattern": "líder comunal|ambiental|étnico|firmante del acuerdo"
+        "pattern": "líder comunal|ambiental|étnico|firmante del acuerdo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +300,12 @@
         "flags": "i",
         "id": "PAT-Q241-009",
         "match_type": "REGEX",
-        "pattern": "solicitudes de protección|medidas de protección implementadas"
+        "pattern": "solicitudes de protección|medidas de protección implementadas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +313,12 @@
         "flags": "i",
         "id": "PAT-Q241-010",
         "match_type": "REGEX",
-        "pattern": "mapa de riesgo|zonas de mayor amenaza"
+        "pattern": "mapa de riesgo|zonas de mayor amenaza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +326,12 @@
         "flags": "i",
         "id": "PAT-Q241-011",
         "match_type": "REGEX",
-        "pattern": "2021|2022|2023|vigencia anterior|serie histórica de agresiones"
+        "pattern": "(?:19|20)\\\\d{2}|vigencia anterior|serie histórica de agresiones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -268,7 +339,12 @@
         "flags": "i",
         "id": "PAT-Q241-012",
         "match_type": "REGEX",
-        "pattern": "número de casos|número de líderes|tasa por cada 100.000"
+        "pattern": "número de casos|número de líderes|tasa por cada 100.000",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -1948,6 +2024,83 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    },
+    "evidence_structure_post_nexus": {
+      "type": "graph",
+      "nodes": {
+        "text_mining": {
+          "type": "source",
+          "provides": [
+            "critical_links",
+            "patterns"
+          ]
+        },
+        "industrial_policy": {
+          "type": "source",
+          "provides": [
+            "processed_evidence",
+            "patterns"
+          ]
+        },
+        "causal_extraction": {
+          "type": "source",
+          "provides": [
+            "goals",
+            "contexts"
+          ]
+        },
+        "financial_audit": {
+          "type": "source",
+          "provides": [
+            "amounts",
+            "totals"
+          ]
+        },
+        "bayesian_analysis": {
+          "type": "analysis",
+          "provides": [
+            "metrics",
+            "comparisons"
+          ]
+        },
+        "semantic_processing": {
+          "type": "processing",
+          "provides": [
+            "chunks",
+            "embeddings"
+          ]
+        },
+        "final_evidence": {
+          "type": "sink",
+          "aggregates": "all"
+        }
+      },
+      "edges": [
+        {
+          "from": "text_mining",
+          "to": "final_evidence"
+        },
+        {
+          "from": "industrial_policy",
+          "to": "final_evidence"
+        },
+        {
+          "from": "causal_extraction",
+          "to": "final_evidence"
+        },
+        {
+          "from": "financial_audit",
+          "to": "final_evidence"
+        },
+        {
+          "from": "bayesian_analysis",
+          "to": "final_evidence"
+        },
+        {
+          "from": "semantic_processing",
+          "to": "final_evidence"
+        }
+      ]
     }
   },
   "method_outputs": {

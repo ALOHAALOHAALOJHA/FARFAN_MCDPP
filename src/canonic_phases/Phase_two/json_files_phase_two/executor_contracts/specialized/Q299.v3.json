@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "d6219810774c4631f360fd9180ab95b09e34e463af395e874a8257d9feccd5b9",
+    "contract_hash": "cdc73ea4aa081150d0a5e94217919cc044b0534e24b02e459f52eb65ac57b870",
     "created_at": "2025-11-28T03:50:42.557767+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 299,
-    "updated_at": "2025-12-15T20:32:12.740655+00:00"
+    "updated_at": "2025-12-15T21:42:32.798664+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -92,7 +92,12 @@
         "flags": "i",
         "id": "PAT-Q299-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluación|M&E carcelario"
+        "pattern": "sistema de seguimiento y evaluación|M&E carcelario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +105,12 @@
         "flags": "i",
         "id": "PAT-Q299-001",
         "match_type": "REGEX",
-        "pattern": "monitoreo a través de los reportes del INPEC y la Personería"
+        "pattern": "monitoreo a través de los reportes del INPEC y la Personería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +118,12 @@
         "flags": "i",
         "id": "PAT-Q299-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana sobre brotes de enfermedades o motines"
+        "pattern": "alerta temprana sobre brotes de enfermedades o motines",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +131,12 @@
         "flags": "i",
         "id": "PAT-Q299-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste de los programas de resocialización"
+        "pattern": "mecanismo de ajuste de los programas de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -124,7 +144,12 @@
         "flags": "i",
         "id": "PAT-Q299-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentación desde la población PPL|comités de DDHH"
+        "pattern": "retroalimentación desde la población PPL|comités de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -132,7 +157,12 @@
         "flags": "i",
         "id": "PAT-Q299-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones del comité de seguimiento"
+        "pattern": "ciclos de aprendizaje|reuniones del comité de seguimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -140,7 +170,12 @@
         "flags": "i",
         "id": "PAT-Q299-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en la gestión de centros de detención"
+        "pattern": "lecciones aprendidas en la gestión de centros de detención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [

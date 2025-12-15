@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "2513c15e04d890fd10432c3c688b3f0bdb15265afbefac2750062e1568dd3b97",
+    "contract_hash": "e99aabcbceaa50b90502eca91061f82b2edb91c4b695ccd246ba6fb3c8d40eb4",
     "created_at": "2025-11-28T03:50:42.255317+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 260,
-    "updated_at": "2025-12-15T20:32:12.321562+00:00"
+    "updated_at": "2025-12-15T21:42:32.609644+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -84,7 +84,12 @@
         "flags": "i",
         "id": "PAT-Q260-000",
         "match_type": "REGEX",
-        "pattern": "alineado con el Plan Nacional de Desarrollo|PND"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0023"
       },
       {
         "category": "GENERAL",
@@ -92,7 +97,12 @@
         "flags": "i",
         "id": "PAT-Q260-001",
         "match_type": "REGEX",
-        "pattern": "contribuye al Punto 2.1 del Acuerdo de Paz|Garantías de Seguridad"
+        "pattern": "contribuye al Punto 2.1 del Acuerdo de Paz|Garantías de Seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -100,7 +110,12 @@
         "flags": "i",
         "id": "PAT-Q260-002",
         "match_type": "REGEX",
-        "pattern": "en cumplimiento de las Alertas Tempranas de la Defensoría"
+        "pattern": "en cumplimiento de las Alertas Tempranas de la Defensoría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -108,7 +123,12 @@
         "flags": "i",
         "id": "PAT-Q260-003",
         "match_type": "REGEX",
-        "pattern": "acata las órdenes de la Corte Constitucional en sentencias sobre líderes"
+        "pattern": "acata las órdenes de la Corte Constitucional en sentencias sobre líderes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -116,7 +136,12 @@
         "flags": "i",
         "id": "PAT-Q260-004",
         "match_type": "REGEX",
-        "pattern": "implementación del Plan de Acción Oportuna|PAO"
+        "pattern": "implementación del Plan de Acción Oportuna|PAO",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -242,7 +267,7 @@
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q290"
+          "const": "Q260"
         },
         "question_global": {
           "type": "integer",
@@ -255,7 +280,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

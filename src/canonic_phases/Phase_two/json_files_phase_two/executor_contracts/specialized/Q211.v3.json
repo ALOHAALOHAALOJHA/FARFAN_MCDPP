@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "52362432030b714fbad58c8efb8755e246067b133f54c7881c7a0c37ee6916ae",
+    "contract_hash": "6c49f309a4d2e2d930fe330031038a97e7813fff35bf7bbc51bd86d9d68cbe47",
     "created_at": "2025-11-28T03:50:41.908742+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 211,
-    "updated_at": "2025-12-15T20:21:11.059832+00:00"
+    "updated_at": "2025-12-15T21:42:32.360136+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -172,7 +172,12 @@
         "flags": "i",
         "id": "PAT-Q211-000",
         "match_type": "REGEX",
-        "pattern": "línea base|diagnóstico rural|caracterización predial|situación actual"
+        "pattern": "línea base|diagnóstico rural|caracterización predial|situación actual",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -180,7 +185,12 @@
         "flags": "i",
         "id": "PAT-Q211-001",
         "match_type": "REGEX",
-        "pattern": "fuente:|según|reportado por|con datos de"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0067"
       },
       {
         "category": "GENERAL",
@@ -188,7 +198,12 @@
         "flags": "i",
         "id": "PAT-Q211-002",
         "match_type": "REGEX",
-        "pattern": "IGAC|Instituto Geográfico Agustín Codazzi|Catastro"
+        "pattern": "IGAC|Instituto Geográfico Agustín Codazzi|Catastro",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -196,7 +211,12 @@
         "flags": "i",
         "id": "PAT-Q211-003",
         "match_type": "REGEX",
-        "pattern": "ANT|Agencia Nacional de Tierras|URT|Unidad de Restitución de Tierras"
+        "pattern": "ANT|Agencia Nacional de Tierras|URT|Unidad de Restitución de Tierras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -204,7 +224,12 @@
         "flags": "i",
         "id": "PAT-Q211-004",
         "match_type": "REGEX",
-        "pattern": "ADR|Agencia de Desarrollo Rural|UPRA|INVIAS|MinAgricultura"
+        "pattern": "ADR|Agencia de Desarrollo Rural|UPRA|INVIAS|MinAgricultura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -212,7 +237,12 @@
         "flags": "i",
         "id": "PAT-Q211-005",
         "match_type": "REGEX",
-        "pattern": "SNR|Superintendencia de Notariado y Registro"
+        "pattern": "SNR|Superintendencia de Notariado y Registro",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -220,7 +250,12 @@
         "flags": "i",
         "id": "PAT-Q211-006",
         "match_type": "REGEX",
-        "pattern": "Secretaría de Planeación|UMATA|Secretaría de Infraestructura"
+        "pattern": "Secretaría de Planeación|UMATA|Secretaría de Infraestructura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -228,7 +263,12 @@
         "flags": "i",
         "id": "PAT-Q211-007",
         "match_type": "REGEX",
-        "pattern": "informalidad predial|predios sin formalizar|tenencia de la tierra"
+        "pattern": "informalidad predial|predios sin formalizar|tenencia de la tierra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "INDICADOR",
@@ -236,7 +276,12 @@
         "flags": "i",
         "id": "PAT-Q211-008",
         "match_type": "REGEX",
-        "pattern": "porcentaje de desactualización catastral|catastro multipropósito"
+        "pattern": "porcentaje de desactualización catastral|catastro multipropósito",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -244,7 +289,12 @@
         "flags": "i",
         "id": "PAT-Q211-009",
         "match_type": "REGEX",
-        "pattern": "kilómetros de vías terciarias en mal estado|estado de la red vial"
+        "pattern": "kilómetros de vías terciarias en mal estado|estado de la red vial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -252,7 +302,12 @@
         "flags": "i",
         "id": "PAT-Q211-010",
         "match_type": "REGEX",
-        "pattern": "hectáreas (Ha) en conflicto de uso del suelo|frontera agrícola"
+        "pattern": "hectáreas (Ha) en conflicto de uso del suelo|frontera agrícola",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -260,7 +315,12 @@
         "flags": "i",
         "id": "PAT-Q211-011",
         "match_type": "REGEX",
-        "pattern": "déficit de infraestructura de riego|distritos de riego"
+        "pattern": "déficit de infraestructura de riego|distritos de riego",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       },
       {
         "category": "GENERAL",
@@ -268,7 +328,12 @@
         "flags": "i",
         "id": "PAT-Q211-012",
         "match_type": "LITERAL",
-        "pattern": "2021|2022|2023|vigencia anterior|serie histórica"
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0001"
       },
       {
         "category": "INDICADOR",
@@ -276,7 +341,12 @@
         "flags": "i",
         "id": "PAT-Q211-013",
         "match_type": "REGEX",
-        "pattern": "porcentaje|hectáreas|kilómetros|número de predios|familias"
+        "pattern": "porcentaje|hectáreas|kilómetros|número de predios|familias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
       }
     ],
     "expected_elements": [
@@ -1956,6 +2026,83 @@
       "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    },
+    "evidence_structure_post_nexus": {
+      "type": "graph",
+      "nodes": {
+        "text_mining": {
+          "type": "source",
+          "provides": [
+            "critical_links",
+            "patterns"
+          ]
+        },
+        "industrial_policy": {
+          "type": "source",
+          "provides": [
+            "processed_evidence",
+            "patterns"
+          ]
+        },
+        "causal_extraction": {
+          "type": "source",
+          "provides": [
+            "goals",
+            "contexts"
+          ]
+        },
+        "financial_audit": {
+          "type": "source",
+          "provides": [
+            "amounts",
+            "totals"
+          ]
+        },
+        "bayesian_analysis": {
+          "type": "analysis",
+          "provides": [
+            "metrics",
+            "comparisons"
+          ]
+        },
+        "semantic_processing": {
+          "type": "processing",
+          "provides": [
+            "chunks",
+            "embeddings"
+          ]
+        },
+        "final_evidence": {
+          "type": "sink",
+          "aggregates": "all"
+        }
+      },
+      "edges": [
+        {
+          "from": "text_mining",
+          "to": "final_evidence"
+        },
+        {
+          "from": "industrial_policy",
+          "to": "final_evidence"
+        },
+        {
+          "from": "causal_extraction",
+          "to": "final_evidence"
+        },
+        {
+          "from": "financial_audit",
+          "to": "final_evidence"
+        },
+        {
+          "from": "bayesian_analysis",
+          "to": "final_evidence"
+        },
+        {
+          "from": "semantic_processing",
+          "to": "final_evidence"
+        }
+      ]
     }
   },
   "method_outputs": {
