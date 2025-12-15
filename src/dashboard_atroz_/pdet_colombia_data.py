@@ -38,12 +38,14 @@ class PDETMunicipality:
     population: int = 0
     area_km2: float = 0.0
     dane_code: str = ""
+    latitude: float = 0.0
+    longitude: float = 0.0
 
 
 # Complete PDET Municipality Dataset (170 municipalities)
 PDET_MUNICIPALITIES: list[PDETMunicipality] = [
     # ALTO PATÍA Y NORTE DEL CAUCA (24 municipalities)
-    PDETMunicipality("Argelia", "Cauca", PDETSubregion.ALTO_PATIA, 31000, 661.0, "19050"),
+    PDETMunicipality("Argelia", "Cauca", PDETSubregion.ALTO_PATIA, 31000, 661.0, "19050", 2.263, -77.194),
     PDETMunicipality("Balboa", "Cauca", PDETSubregion.ALTO_PATIA, 22000, 388.0, "19075"),
     PDETMunicipality("Buenos Aires", "Cauca", PDETSubregion.ALTO_PATIA, 32000, 519.0, "19100"),
     PDETMunicipality("Cajibío", "Cauca", PDETSubregion.ALTO_PATIA, 38000, 440.0, "19110"),

@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS regions (
     subregion_id TEXT, -- Can reference pdet_subregions
     population INTEGER,
     area_km2 FLOAT,
+    latitude FLOAT,
+    longitude FLOAT,
 
     -- Metadata from Pipeline
     latest_job_id TEXT,

@@ -9,13 +9,24 @@ sys.path.insert(0, str(ROOT))
 from src.dashboard_atroz_.ingestion import DashboardIngester
 
 async def main():
-    print("Verifying Dashboard Wiring...")
+    print("Verifying Dashboard Wiring and Data Availability...")
     ingester = DashboardIngester()
 
-    # Mock Context
+    # 1. Populate Ref Data
+    try:
+        ingester.populate_reference_data()
+        print("✅ Reference data population triggered (Simulated DB).")
+    except Exception as e:
+        print(f"❌ Reference data population failed: {e}")
+
+    # 2. Test Ingestion with Fuzzy Name Matching
+    print("\nTesting Matching Logic:")
+
+    # Mock Context with filename-based identification
     class MockInputData:
-        document_id = "DOC-19050"
-        pdf_path = "data/19050_Argelia.pdf"
+        document_id = "DOC-UNKNOWN-ID"
+        # "Argelia" should match Argelia (Cauca) 19050
+        pdf_path = "data/Plan_De_Desarrollo_Argelia_Cauca_2024.pdf"
 
     class MockDoc:
         input_data = MockInputData()
@@ -39,9 +50,9 @@ async def main():
 
     success = await ingester.ingest_results(context)
     if success:
-        print("✅ Wiring verification passed: Ingestion triggered successfully.")
+        print("✅ Fuzzy matching & Ingestion successful.")
     else:
-        print("❌ Wiring verification failed.")
+        print("❌ Fuzzy matching failed.")
 
 if __name__ == "__main__":
     asyncio.run(main())

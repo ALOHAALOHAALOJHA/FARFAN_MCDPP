@@ -3,7 +3,7 @@ API v2 Endpoints
 High-performance endpoints serving data from the PostgreSQL aggregation pyramid.
 """
 from fastapi import APIRouter, HTTPException, Depends
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel
 import uuid
 
@@ -15,6 +15,7 @@ class RegionSummary(BaseModel):
     name: str
     macro_score: Optional[float]
     macro_band: Optional[str]
+    coordinates: Optional[Dict[str, float]] = None
 
 class ComparisonRequest(BaseModel):
     region_ids: List[str]
@@ -39,9 +40,9 @@ async def list_regions(subregion_id: Optional[str] = None):
 
     # Mock data for demonstration of API contract
     mock_regions = [
-        RegionSummary(id="19050", name="ARGELIA", macro_score=75.5, macro_band="HIGH"),
-        RegionSummary(id="19075", name="BALBOA", macro_score=62.0, macro_band="MEDIUM"),
-        RegionSummary(id="19100", name="BUENOS AIRES", macro_score=None, macro_band=None),
+        RegionSummary(id="19050", name="ARGELIA", macro_score=75.5, macro_band="HIGH", coordinates={"lat": 2.263, "lon": -77.194}),
+        RegionSummary(id="19075", name="BALBOA", macro_score=62.0, macro_band="MEDIUM", coordinates={"lat": 2.0, "lon": -77.0}),
+        RegionSummary(id="19100", name="BUENOS AIRES", macro_score=None, macro_band=None, coordinates={"lat": 3.0, "lon": -76.0}),
     ]
 
     if subregion_id:
