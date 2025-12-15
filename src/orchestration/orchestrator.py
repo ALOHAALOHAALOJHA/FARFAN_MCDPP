@@ -64,6 +64,7 @@ from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
+from canonic_phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
 
 logger = structlog.get_logger(__name__)
 _CORE_MODULE_DIR = Path(__file__).resolve().parent
@@ -1736,6 +1737,9 @@ class Orchestrator:
         # Get signal registry for scoring signals if available
         signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
         
+        # Initialize SignalEnrichedScorer
+        scorer_engine = SignalEnrichedScorer(signal_registry=signal_registry)
+
         logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results using EvidenceNexus outputs")
         
         for idx, micro_result in enumerate(micro_results):
@@ -1802,17 +1806,43 @@ class Orchestrator:
                     validation = evidence.get("validation", {})
                     quality_level = validation.get("quality_level", "INSUFICIENTE")
                 
-                # Build scoring details with signal enrichment
-                scoring_details = {
+                # === SIGNAL ENRICHED SCORING INTEGRATION ===
+                # Use SignalEnrichedScorer to validate quality level and enrich details
+                validated_quality, validation_details = scorer_engine.validate_quality_level(
+                    question_id=micro_result.question_id,
+                    quality_level=quality_level,
+                    score=score_float,
+                    completeness=str(completeness).lower() if completeness else None,
+                )
+
+                # Get threshold adjustment (for reporting/transparency, even if not used for score extraction)
+                # Phase 3 extracts score, but knowing the adjusted threshold helps explain the quality validation
+                _, adjustment_details = scorer_engine.adjust_threshold_for_question(
+                    question_id=micro_result.question_id,
+                    base_threshold=0.7,  # Default base threshold for reference
+                    score=score_float,
+                    metadata=metadata
+                )
+
+                # Build base scoring details
+                base_scoring_details = {
                     "source": "evidence_nexus",
                     "method": "overall_confidence",
                     "completeness": completeness,
                     "calibrated_interval": metadata.get("calibrated_interval"),
                 }
                 
-                # Add signal enrichment metadata if available
+                # Enrich scoring details
+                scoring_details = scorer_engine.enrich_scoring_details(
+                    question_id=micro_result.question_id,
+                    base_scoring_details=base_scoring_details,
+                    threshold_adjustment=adjustment_details,
+                    quality_validation=validation_details
+                )
+
+                # Add raw signal info if available (for legacy compatibility)
                 if scoring_signals is not None:
-                    scoring_details["signal_enrichment"] = {
+                    scoring_details["signal_enrichment_raw"] = {
                         "modality": scoring_signals.question_modalities.get(micro_result.question_id),
                         "source_hash": getattr(scoring_signals, 'source_hash', None),
                         "signal_source": "sisas_registry"
@@ -1825,7 +1855,7 @@ class Orchestrator:
                     base_slot=micro_result.base_slot,
                     score=score_float,
                     normalized_score=score_float,  # Already normalized 0.0-1.0
-                    quality_level=quality_level,
+                    quality_level=validated_quality,  # Use signal-validated quality
                     evidence=micro_result.evidence,
                     scoring_details=scoring_details,
                     metadata=micro_result.metadata,
