@@ -29,6 +29,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.orchestrator import MethodExecutor
+# Fix: Import build_processor from orchestration.factory instead of non-existent farfan_pipeline.processing
+# The user reported issue with "from farfan_pipeline.processing import build_processor"
 from orchestration.factory import build_processor
 from orchestration.memory_safety import (
     MemorySafetyGuard,
@@ -36,7 +38,7 @@ from orchestration.memory_safety import (
     ExecutorType,
     create_default_guard,
 )
-from farfan_pipeline.processing.policy_processor import CausalDimension
+from methods_dispensary.policy_processor import CausalDimension
 
 try:
     from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
