@@ -457,8 +457,8 @@ class Phase1FailureHandler:
         try:
             with open('phase1_error_manifest.json', 'w') as f:
                 json.dump(error_report, f, indent=2)
-        except Exception:
-            pass # Best effort
+        except Exception as e:
+            logger.error(f"Failed to write error manifest: {e}")
         
         # RAISE WITH FULL CONTEXT
         raise Phase1FatalError(
@@ -795,7 +795,7 @@ class Phase1SPCIngestionFullContract:
             pa_dim_chunks = self._execute_sp4_segmentation(
                 preprocessed, structure, knowledge_graph
             )
-            self._assert_chunk_count(pa_dim_chunks, 60)  # HARD STOP IF FAILS
+            self._assert_chunk_count(4, pa_dim_chunks, 60)  # HARD STOP IF FAILS
             
             # CHECKPOINT: Validate SP4 output (constitutional invariant)
             checkpoint_passed, checkpoint_errors = self.checkpoint_validator.validate_checkpoint(
@@ -850,7 +850,7 @@ class Phase1SPCIngestionFullContract:
             smart_chunks = self._execute_sp11_smart_chunks(
                 pa_dim_chunks, self.subphase_results
             )
-            self._assert_smart_chunk_invariants(smart_chunks)  # HARD STOP IF FAILS
+            self._assert_smart_chunk_invariants(11, smart_chunks)  # HARD STOP IF FAILS
             
             # CHECKPOINT: Validate SP11 output (constitutional invariant)
             checkpoint_passed, checkpoint_errors = self.checkpoint_validator.validate_checkpoint(
@@ -881,7 +881,7 @@ class Phase1SPCIngestionFullContract:
             
             # SP13: Integrity Validation [CRITICAL GATE] - WEIGHT: 10000
             validated = self._execute_sp13_validation(irrigated)
-            self._assert_validation_pass(validated)  # HARD STOP IF FAILS
+            self._assert_validation_pass(13, validated)  # HARD STOP IF FAILS
             
             # CHECKPOINT: Validate SP13 output (validation gate)
             checkpoint_passed, checkpoint_errors = self.checkpoint_validator.validate_checkpoint(
@@ -1080,7 +1080,8 @@ class Phase1SPCIngestionFullContract:
                 doc = nlp(normalized_text[:1000000])  # Limit for memory
                 tokens = [token.text for token in doc if token.text.strip()]
                 sentences = [sent.text.strip() for sent in doc.sents if sent.text.strip()]
-            except Exception:
+            except Exception as e:
+                logger.warning(f"SP1: spaCy tokenization failed: {e}, using fallback")
                 # Fallback tokenization
                 tokens = [t for t in normalized_text.split() if t.strip()]
                 sentences = [s.strip() + '.' for s in normalized_text.split('.') if s.strip()]
@@ -1435,15 +1436,29 @@ class Phase1SPCIngestionFullContract:
                 # Convert string IDs to enum types for type-safe aggregation in CPP cycle
                 policy_area_enum = None
                 dimension_enum = None
-                if TYPES_AVAILABLE and PolicyArea is not None and DimensionCausal is not None:
+
+                # Define dim_mapping for enum conversion
+                dim_mapping = {}
+                if CANONICAL_TYPES_AVAILABLE and DimensionCausal is not None:
+                    dim_mapping = {
+                        'DIM01': DimensionCausal.DIM01_INSUMOS,
+                        'DIM02': DimensionCausal.DIM02_ACTIVIDADES,
+                        'DIM03': DimensionCausal.DIM03_PRODUCTOS,
+                        'DIM04': DimensionCausal.DIM04_RESULTADOS,
+                        'DIM05': DimensionCausal.DIM05_IMPACTOS,
+                        'DIM06': DimensionCausal.DIM06_CAUSALIDAD,
+                    }
+
+                if CANONICAL_TYPES_AVAILABLE and PolicyArea is not None and DimensionCausal is not None:
                     try:
                         # Map PA01-PA10 to PolicyArea enum
                         policy_area_enum = getattr(PolicyArea, pa, None)
                         
                         # Map DIM01-DIM06 to DimensionCausal enum
                         dimension_enum = dim_mapping.get(dim)
-                    except (AttributeError, KeyError):
-                        pass  # Keep as None if conversion fails
+                    except (AttributeError, KeyError) as e:
+                        logger.warning(f"SP4: Enum conversion failed for {pa}-{dim}: {e}")
+                        # Keep as None if conversion fails
                 
                 # Create chunk with validated format and enum types
                 chunk = Chunk(
@@ -2585,9 +2600,22 @@ class Phase1SPCIngestionFullContract:
             if weight >= Phase1MissionContract.HIGH_PRIORITY_THRESHOLD:
                 high_priority_count += 1
         
+        # Ensure subphase_results contains keys 0-15
+        subphase_results_complete = {}
+        for i in range(16):
+            if i in self.subphase_results:
+                # We store a simplified representation if the object is complex/large
+                # For validation, we just need to know it exists.
+                # However, validate_final_state checks len(subphase_results) == 16
+                # So we must ensure self.subphase_results has all keys.
+                # But self.subphase_results is populated in _record_subphase.
+                # If we are here, all subphases should have run.
+                subphase_results_complete[str(i)] = "Completed" # Simplified for metadata
+
         metadata = {
             'execution_trace': self.execution_trace,
             'run_id': str(hash(datetime.now(timezone.utc).isoformat())),
+            'subphase_results': subphase_results_complete, # Add this for validation
             'subphase_count': len(self.subphase_results),
             'final_rankings': final_rankings,
             'irrigation_map': irrigation_map,
@@ -2646,7 +2674,7 @@ class Phase1SPCIngestionFullContract:
         metadata_copy['type_propagation'] = {
             'chunks_with_enums': chunks_with_enums,
             'coverage_percentage': type_coverage_pct,
-            'canonical_types_available': TYPES_AVAILABLE,
+            'canonical_types_available': CANONICAL_TYPES_AVAILABLE,
             'enum_ready_for_aggregation': chunks_with_enums == 60
         }
         # Update metadata via object.__setattr__ since CPP is frozen
