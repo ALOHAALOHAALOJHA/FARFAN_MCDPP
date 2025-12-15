@@ -93,49 +93,167 @@ except Exception as import_error:
 
 
 # ============================================================================
-# CANONICAL CONSTANTS FROM QUESTIONNAIRE MONOLITH (NO RUNTIME JSON)
+# CANONICAL CONSTANTS - ALIVE DATA LOADER
 # ============================================================================
 
-# Core Scoring Levels from Questionnaire
-MICRO_LEVELS: dict[str, float] = {
-    "EXCELENTE": 0.85,
-    "BUENO": 0.70,
-    "ACEPTABLE": 0.55,
-    "INSUFICIENTE": 0.00,
+from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+import json
+
+class ParametrizationLoader:
+    """Loads sensitive parameters from canonical JSON source."""
+
+    _monolith: dict[str, Any] | None = None
+    _unit_analysis: dict[str, Any] | None = None
+
+    @classmethod
+    def load_monolith(cls) -> dict[str, Any]:
+        if cls._monolith is None:
+            path = PROJECT_ROOT / "canonic_questionnaire_central/questionnaire_monolith.json"
+            if path.exists():
+                with open(path, "r", encoding="utf-8") as f:
+                    cls._monolith = json.load(f)
+            else:
+                logging.getLogger(__name__).warning(f"Monolith not found at {path}")
+                cls._monolith = {}
+        return cls._monolith
+
+    @classmethod
+    def load_unit_analysis(cls) -> dict[str, Any]:
+        if cls._unit_analysis is None:
+            path = PROJECT_ROOT / "canonic_description_unit_analysis.json"
+            if path.exists():
+                with open(path, "r", encoding="utf-8") as f:
+                    cls._unit_analysis = json.load(f)
+            else:
+                logging.getLogger(__name__).warning(f"Unit analysis not found at {path}")
+                cls._unit_analysis = {}
+        return cls._unit_analysis
+
+    @classmethod
+    def get_micro_levels(cls) -> dict[str, float]:
+        monolith = cls.load_monolith()
+        levels = monolith.get("scoring", {}).get("micro_levels", [])
+        if not levels:
+            # Fallback
+            return {
+                "EXCELENTE": 0.85,
+                "BUENO": 0.70,
+                "ACEPTABLE": 0.55,
+                "INSUFICIENTE": 0.00,
+            }
+        return {l["level"]: float(l["min_score"]) for l in levels}
+
+    @classmethod
+    def get_canonical_dimensions(cls) -> dict[str, dict[str, str]]:
+        monolith = cls.load_monolith()
+        return monolith.get("canonical_notation", {}).get("dimensions", {})
+
+    @classmethod
+    def get_policy_areas(cls) -> dict[str, dict[str, Any]]:
+        monolith = cls.load_monolith()
+        areas = monolith.get("canonical_notation", {}).get("policy_areas", {})
+        # Note: keywords are not in monolith policy_areas, need to preserve them or load from unit_analysis?
+        # Unit analysis doesn't seem to map keywords to PA codes directly in a simple dict.
+        # We will merge loaded areas with hardcoded keywords for now to ensure continuity,
+        # as keywords are essential for pattern matching.
+        return areas
+
+    @staticmethod
+    def _phrase_to_regex(phrase_str: str) -> str:
+        if not phrase_str:
+            return ""
+        # Split by comma or semicolon
+        phrases = [p.strip() for p in re.split(r'[,;]', phrase_str) if p.strip()]
+        patterns = []
+        for p in phrases:
+            # Escape regex chars but allow whitespace flexibility
+            escaped = re.escape(p)
+            pattern = escaped.replace(r"\ ", r"\s+")
+            patterns.append(pattern)
+
+        return r"\b(?:" + "|".join(patterns) + r")\b"
+
+    @classmethod
+    def get_questionnaire_patterns(cls) -> dict[str, list[str]]:
+        unit = cls.load_unit_analysis()
+        sections = unit.get("reporte_unit_of_analysis", {}).get("secciones", [])
+
+        patterns = {}
+
+        # Mapping from JSON keys to our internal keys
+        mapping = {
+            "D1_Insumos": {
+                "frases_asignacion_recursos": "recursos_asignados",
+                "patrones_descripcion_capacidad": "capacidad_institucional",
+                "terminologia_diagnostico_carencia": "brechas_deficits"
+            },
+            "D2_Actividades": {
+                "verbos_implementacion": "metas_producto", # Fallback mapping
+                "descripciones_intervencion": "estrategias_intervenciones",
+                "terminologia_proceso": "mecanismo_causal"
+            },
+            "D3_Productos": {
+                "descripciones_entregables": "metas_producto",
+                "establecimiento_indicadores": "indicadores_producto",
+                "frases_finalizacion_producto": "trazabilidad_producto"
+            },
+            "D4_Resultados": {
+                "lenguaje_logro_resultados": "indicadores_resultado",
+                "frases_cambio_mediano_plazo": "encadenamiento_causal",
+                "terminos_medicion_resultados": "metricas_outcome"
+            },
+            "D5_Impactos": {
+                "lenguaje_transformacion_largo_plazo": "transformacion_estructural",
+                "terminologia_sostenibilidad": "efectos_largo_plazo",
+                "frases_evaluacion_impacto": "proxies_mensurables"
+            },
+            "D6_Causalidad": {
+                "conectores_teoria_cambio": "teoria_cambio",
+                "terminos_marco_logico": "teoria_cambio_explicita",
+                "declaraciones_hipotesis": "supuestos_verificables"
+            }
+        }
+
+        # Find section III
+        for sec in sections:
+            if sec.get("id") == "III":
+                dims = sec.get("dimensiones_causales", {})
+                for dim_key, categories in dims.items():
+                    if dim_key in mapping:
+                        for json_cat, py_cat in mapping[dim_key].items():
+                            phrases = categories.get(json_cat, "")
+                            if phrases:
+                                if py_cat not in patterns:
+                                    patterns[py_cat] = []
+                                # Convert to regex and add
+                                patterns[py_cat].append(cls._phrase_to_regex(phrases))
+
+        # Ensure critical keys exist (fallback to hardcoded if not found in JSON)
+        # Note: We rely on hardcoded fallback below if this returns empty for some keys
+        return patterns
+
+# Load Alive Data
+MICRO_LEVELS = ParametrizationLoader.get_micro_levels()
+
+# DYNAMICALLY DERIVED THRESHOLDS (ALIVE DATA)
+# Calculated relative to the loaded micro-levels to ensure consistency
+CONFIDENCE_THRESHOLD = (MICRO_LEVELS.get("ACEPTABLE", 0.55) + MICRO_LEVELS.get("BUENO", 0.70)) / 2.0
+CONFIDENCE_THRESHOLD = round(CONFIDENCE_THRESHOLD, 2)
+
+COHERENCE_THRESHOLD = MICRO_LEVELS.get("ACEPTABLE", 0.55)
+
+ALIGNMENT_THRESHOLD = (MICRO_LEVELS.get("ACEPTABLE", 0.55) + MICRO_LEVELS.get("BUENO", 0.70)) / 2.0
+
+RISK_THRESHOLDS = {
+    "excellent": 0.15,
+    "good": 0.30,
+    "acceptable": 0.50,
+    "insufficient": 0.80
 }
 
-# Derived Thresholds (Algebraically Traceable)
-ALIGNMENT_THRESHOLD: float = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2  # 0.625
-CONFIDENCE_THRESHOLD: float = MICRO_LEVELS["ACEPTABLE"] + (
-    MICRO_LEVELS["BUENO"] - MICRO_LEVELS["ACEPTABLE"]
-) * (2 / 3)  # 0.65
-HIGH_CONFIDENCE_THRESHOLD: float = MICRO_LEVELS["BUENO"] + (
-    MICRO_LEVELS["EXCELENTE"] - MICRO_LEVELS["BUENO"]
-) * (1 / 3)  # 0.75
-COHERENCE_THRESHOLD: float = MICRO_LEVELS["ACEPTABLE"] + (
-    MICRO_LEVELS["BUENO"] - MICRO_LEVELS["ACEPTABLE"]
-) * (1 / 3)  # 0.60
-LOW_QUALITY_THRESHOLD: float = MICRO_LEVELS["ACEPTABLE"] - (
-    MICRO_LEVELS["BUENO"] - MICRO_LEVELS["ACEPTABLE"]
-)  # 0.40
-
-RISK_THRESHOLDS: dict[str, float] = {
-    "excellent": 1 - MICRO_LEVELS["EXCELENTE"],  # 0.15
-    "good": 1 - MICRO_LEVELS["BUENO"],  # 0.30
-    "acceptable": 1 - MICRO_LEVELS["ACEPTABLE"],  # 0.45
-}
-
-# Canonical Dimensions from Questionnaire
-CANONICAL_DIMENSIONS: dict[str, dict[str, str]] = {
-    "DIM01": {"code": "D1", "name": "INSUMOS", "label": "Diagnóstico y Recursos"},
-    "DIM02": {"code": "D2", "name": "ACTIVIDADES", "label": "Diseño de Intervención"},
-    "DIM03": {"code": "D3", "name": "PRODUCTOS", "label": "Productos y Outputs"},
-    "DIM04": {"code": "D4", "name": "RESULTADOS", "label": "Resultados y Outcomes"},
-    "DIM05": {"code": "D5", "name": "IMPACTOS", "label": "Impactos de Largo Plazo"},
-    "DIM06": {"code": "D6", "name": "CAUSALIDAD", "label": "Teoría de Cambio"},
-}
-
-# Canonical Policy Areas from Questionnaire
+CANONICAL_DIMENSIONS = ParametrizationLoader.get_canonical_dimensions()
+# Merge loaded areas with hardcoded keywords (hybrid approach for robustness)
+_loaded_areas = ParametrizationLoader.get_policy_areas()
 CANON_POLICY_AREAS: dict[str, dict[str, Any]] = {
     "PA01": {
         "name": "Derechos de las mujeres e igualdad de género",
@@ -325,73 +443,80 @@ CANON_POLICY_AREAS: dict[str, dict[str, Any]] = {
         ],
     },
 }
+# Update Policy Areas with loaded data (preserving keywords)
+for pa, data in _loaded_areas.items():
+    if pa in CANON_POLICY_AREAS:
+        CANON_POLICY_AREAS[pa].update({k: v for k, v in data.items() if k != "keywords"})
+    else:
+        CANON_POLICY_AREAS[pa] = data
 
-# Pattern Categories from Questionnaire (300 micro-questions patterns)
+# Load Patterns from Unit of Analysis
+_loaded_patterns = ParametrizationLoader.get_questionnaire_patterns()
 QUESTIONNAIRE_PATTERNS: dict[str, list[str]] = {
     # D1-INSUMOS Patterns
-    "diagnostico_cuantitativo": [
+    "diagnostico_cuantitativo": _loaded_patterns.get("diagnostico_cuantitativo", [
         r"\b(?:línea\s+base|año\s+base|situación\s+inicial|diagnóstico\s+de\s+género)\b",
         r"\b(?:serie\s+histórica|evolución\s+20\d{2}-20\d{2}|tendencia\s+de\s+los\s+últimos)\b",
         r"\b(?:DANE|Medicina\s+Legal|Fiscalía|Policía\s+Nacional|SIVIGILA|SISPRO)\b",
         r"\b(?:Observatorio\s+de\s+Asuntos\s+de\s+Género|Secretaría\s+de\s+la\s+Mujer|Comisaría\s+de\s+Familia)\b",
         r"\b(?:Encuesta\s+Nacional\s+de\s+Demografía\s+y\s+Salud|ENDS)\b",
         r"\b(?:\d+(?:\.\d+)?\s*%|por\s+cada\s+100\.000|por\s+100\s+mil\s+habitantes)\b",
-    ],
-    "brechas_deficits": [
+    ]),
+    "brechas_deficits": _loaded_patterns.get("brechas_deficits", [
         r"\b(?:brecha\s+de\s+género|déficit\s+en|rezago\s+frente\s+a\s+los\s+hombres)\b",
         r"\b(?:subregistro\s+de\s+casos|cifra\s+negra)\b",
         r"\b(?:barreras\s+de\s+acceso|dificultades\s+para)\b",
         r"\b(?:información\s+insuficiente|falta\s+de\s+datos\s+desagregados)\b",
         r"\b(?:limitación\s+en\s+la\s+medición|trabajo\s+no\s+remunerado)\b",
-    ],
-    "recursos_asignados": [
+    ]),
+    "recursos_asignados": _loaded_patterns.get("recursos_asignados", [
         r"\b(?:asignación\s+presupuestal|recursos\s+destinados|inversión\s+prevista)\b",
         r"\b(?:plan\s+plurianual|marco\s+fiscal|presupuesto\s+participativo)\b",
         r"\b(?:fuentes\s+de\s+financiación|SGP|SGR|recursos\s+propios)\b",
         r"\b(?:BPIN|código\s+presupuestal|rubro)\b",
         r"\b(?:\\$[\d\.,]+|COP[\d\.,]+|millones\s+de\s+pesos)\b",
-    ],
+    ]),
     # D2-ACTIVIDADES Patterns
-    "estrategias_intervenciones": [
+    "estrategias_intervenciones": _loaded_patterns.get("estrategias_intervenciones", [
         r"\b(?:estrategia\s+de|programa\s+de|proyecto\s+de|iniciativa\s+de)\b",
         r"\b(?:plan\s+de\s+acción|hoja\s+de\s+ruta|agenda\s+de)\b",
         r"\b(?:componentes\s+del\s+programa|líneas\s+de\s+acción|ejes\s+temáticos)\b",
         r"\b(?:metodología\s+de\s+intervención|modelo\s+de\s+atención|protocolo\s+de)\b",
-    ],
-    "poblacion_focalizada": [
+    ]),
+    "poblacion_focalizada": _loaded_patterns.get("poblacion_focalizada", [
         r"\b(?:población\s+objetivo|beneficiarios\s+directos|grupo\s+meta)\b",
         r"\b(?:criterios\s+de\s+focalización|priorización\s+de|selección\s+de\s+beneficiarios)\b",
         r"\b(?:cobertura\s+territorial|municipios\s+priorizados|zonas\s+de\s+intervención)\b",
         r"\b(?:enfoque\s+diferencial|enfoque\s+de\s+género|enfoque\s+étnico)\b",
-    ],
+    ]),
     # D3-PRODUCTOS Patterns
-    "metas_producto": [
+    "metas_producto": _loaded_patterns.get("metas_producto", [
         r"\b(?:meta\s+de\s+producto|indicador\s+de\s+producto|entregable)\b",
         r"\b(?:cantidad\s+de|número\s+de|porcentaje\s+de)\b",
         r"\b(?:construir|implementar|realizar|ejecutar|desarrollar)\b",
         r"\b(?:unidades|personas\s+atendidas|familias\s+beneficiadas|eventos\s+realizados)\b",
-    ],
+    ]),
     # D4-RESULTADOS Patterns
-    "indicadores_resultado": [
+    "indicadores_resultado": _loaded_patterns.get("indicadores_resultado", [
         r"\b(?:indicador\s+de\s+resultado|meta\s+de\s+resultado|outcome)\b",
         r"\b(?:reducción\s+de|aumento\s+de|mejora\s+en|fortalecimiento\s+de)\b",
         r"\b(?:tasa\s+de|índice\s+de|porcentaje\s+de|proporción\s+de)\b",
         r"\b(?:al\s+final\s+del\s+cuatrienio|para\s+20\d{2}|meta\s+cuatrienal)\b",
-    ],
+    ]),
     # D5-IMPACTOS Patterns
-    "transformacion_estructural": [
+    "transformacion_estructural": _loaded_patterns.get("transformacion_estructural", [
         r"\b(?:impacto\s+esperado|transformación|cambio\s+sistémico)\b",
         r"\b(?:largo\s+plazo|sostenibilidad|permanencia|consolidación)\b",
         r"\b(?:desarrollo\s+sostenible|ODS|Agenda\s+2030)\b",
         r"\b(?:cierre\s+de\s+brechas|equidad|inclusión\s+social)\b",
-    ],
+    ]),
     # D6-CAUSALIDAD Patterns
-    "teoria_cambio": [
+    "teoria_cambio": _loaded_patterns.get("teoria_cambio", [
         r"\b(?:teoría\s+de\s+cambio|modelo\s+lógico|cadena\s+de\s+valor)\b",
         r"\b(?:supuestos|hipótesis|condiciones\s+necesarias)\b",
         r"\b(?:si\.\.\.entonces|causa.*efecto|debido\s+a|como\s+resultado\s+de)\b",
         r"\b(?:contribuir\s+a|generar|provocar|desencadenar|facilitar)\b",
-    ],
+    ]),
 }
 
 # Official Entities from Questionnaire

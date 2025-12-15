@@ -933,7 +933,7 @@
                 "Calculate composite_likelihood = ∏ P(evidence_i | complete) for i in [baseline, target, horizon, specificity]",
                 "Normalize by prior P(complete) ≈ 0.3 (estimated from corpus analysis)",
                 "Return dict with composite_likelihood, component_likelihoods"
-              },
+              ],
               "assumptions": [
                 "Evidence sources are conditionally independent given completeness (strong assumption, likely violated)",
                 "Likelihood values are calibrated (currently using rough estimates)"
@@ -993,7 +993,7 @@
                 "  Total score per indicator = sum of points (max 1.0)",
                 "Calculate aggregate statistics: completeness_score = mean(indicator_scores), indicators_with_baseline = count(has_baseline), etc.",
                 "Return dict with completeness_score, counts, score distribution"
-              },
+              ],
               "assumptions": [
                 "Equal weighting of baseline/target/horizon (debatable; baseline may be more critical)",
                 "Linear aggregation is appropriate (alternatives: minimum score, product)"
