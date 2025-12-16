@@ -102,7 +102,7 @@ class CriticalIssueFixer:
                     # Check if source maps to a method
                     # Handle both full paths and base paths
                     if "." in source:
-                        base_source = ". ".join(source.split(".")[:2])
+                        base_source = ".".join(source.split(".")[:2])
                     else:
                         base_source = source
                     
