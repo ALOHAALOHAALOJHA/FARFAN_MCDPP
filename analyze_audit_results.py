@@ -24,7 +24,7 @@ def load_audit_results(audit_path: str = "contract_audit_Q005_Q020.json") -> dic
         print("Run ./audit_contracts_Q005_Q020.py first to generate the report.")
         sys.exit(1)
 
-    with open(audit_file) as f:
+    with open(audit_file, encoding="utf-8") as f:
         return json.load(f)
 
 
