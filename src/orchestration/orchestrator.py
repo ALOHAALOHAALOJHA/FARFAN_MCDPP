@@ -771,6 +771,7 @@ class MethodExecutor:
         dispatcher: Any | None = None,
         signal_registry: Any | None = None,
         method_registry: Any | None = None,
+        arg_router: Any | None = None,
     ) -> None:
         from orchestration.method_registry import (
             MethodRegistry,
@@ -795,17 +796,21 @@ class MethodExecutor:
                 logger.error(f"DEGRADED MODE: {reason}")
                 self._method_registry = MethodRegistry(class_paths={})
         
-        try:
-            from orchestration.class_registry import build_class_registry
-            registry = build_class_registry()
-        except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
-            self.degraded_mode = True
-            reason = f"Could not build class registry: {exc}"
-            self.degraded_reasons.append(reason)
-            logger.warning(f"DEGRADED MODE: {reason}")
-            registry = {}
-        
-        self._router = ExtendedArgRouter(registry)
+        if arg_router is not None:
+            self._router = arg_router
+        else:
+            try:
+                from orchestration.class_registry import build_class_registry
+                registry = build_class_registry()
+            except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
+                self.degraded_mode = True
+                reason = f"Could not build class registry: {exc}"
+                self.degraded_reasons.append(reason)
+                logger.warning(f"DEGRADED MODE: {reason}")
+                registry = {}
+
+            self._router = ExtendedArgRouter(registry)
+
         self.instances = _LazyInstanceDict(self._method_registry)
     
     @staticmethod
@@ -984,6 +989,8 @@ class Orchestrator:
         resource_snapshot_interval: int = 10,
         recommendation_engine_port: RecommendationEnginePort | None = None,
         processor_bundle: Any | None = None,
+        validation_constants: dict[str, Any] | None = None,
+        signal_registry: Any | None = None,
     ) -> None:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
@@ -996,6 +1003,8 @@ class Orchestrator:
         self.executor_config = executor_config
         self.runtime_config = runtime_config
         self.phase0_validation = phase0_validation
+        self.validation_constants = validation_constants or {}
+        # signal_registry is already in executor, but we can store it if needed
         
         if phase0_validation is not None:
             if not phase0_validation.all_passed:
@@ -1539,7 +1548,7 @@ class Orchestrator:
                     f"got {actual_chunk_count}"
                 )
             
-            for i, chunk in enumerate(canon_package.chunk_graph.chunks):
+            for i, chunk in enumerate(canon_package.chunk_graph.chunks.values()):
                 if not hasattr(chunk, "policy_area") or not chunk.policy_area:
                     raise ValueError(f"Chunk {i} missing policy_area")
                 if not hasattr(chunk, "dimension") or not chunk.dimension:
@@ -1575,7 +1584,7 @@ class Orchestrator:
 
             base_slot = question.get("base_slot")
             if not base_slot:
-                logger.warning(f"Question missing base_slot: {question.get('id')}")
+                logger.warning(f"Question missing base_slot: {question.get('question_id')}")
                 continue
 
             executor_class = self.executors.get(base_slot)
@@ -1594,8 +1603,8 @@ class Orchestrator:
                 )
 
                 q_context = {
-                    "question_id": question.get("id"),
-                    "question_global": question.get("global_id"),
+                    "question_id": question.get("question_id"),
+                    "question_global": question.get("question_global"),
                     "base_slot": base_slot,
                     "patterns": question.get("patterns", []),
                     "expected_elements": question.get("expected_elements", []),
@@ -1614,8 +1623,8 @@ class Orchestrator:
                 duration = (time.perf_counter() - start_q) * 1000
 
                 run_result = MicroQuestionRun(
-                    question_id=question.get("id"),
-                    question_global=question.get("global_id"),
+                    question_id=question.get("question_id"),
+                    question_global=question.get("question_global"),
                     base_slot=base_slot,
                     metadata=result_data.get("metadata", {}),
                     evidence=result_data.get("evidence"),
@@ -1628,8 +1637,8 @@ class Orchestrator:
                 logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
                 instrumentation.record_error("execution", str(e))
                 results.append(MicroQuestionRun(
-                    question_id=question.get("id"),
-                    question_global=question.get("global_id"),
+                    question_id=question.get("question_id"),
+                    question_global=question.get("question_global"),
                     base_slot=base_slot,
                     metadata={},
                     evidence=None,
@@ -1832,7 +1841,7 @@ class Orchestrator:
         micro_questions_config = config.get("micro_questions", [])
         q_map = {}
         for q in micro_questions_config:
-            qid = q.get("id")
+            qid = q.get("question_id")
             if qid:
                 q_map[qid] = {
                     "dimension": q.get("dimension_id"),

@@ -81,6 +81,11 @@ class ExecutorConfig:
         return cls(**filtered)
 
     @classmethod
+    def default(cls) -> ExecutorConfig:
+        """Create ExecutorConfig with conservative defaults."""
+        return cls.from_dict(cls._get_conservative_defaults())
+
+    @classmethod
     def load_from_sources(
         cls,
         executor_id: str,
