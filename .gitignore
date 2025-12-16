@@ -175,4 +175,7 @@ src/canonic_phases/Phase_three
 src/canonic_phases/Phase_four_five_six_seven
 src/canonic_phases/Phase_eight
 src/canonic_phases/Phase_nine
+
+# Symbolic links in cross_cutting_infrastructure
+src/cross_cutting_infrastructure/irrigation_using_signals
 *.py

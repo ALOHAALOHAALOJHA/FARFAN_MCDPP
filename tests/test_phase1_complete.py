@@ -71,7 +71,7 @@ def test_import_chain():
         ('canonic_phases.Phase_one.phase1_models', 'Phase 1 Models'),
         ('canonic_phases.Phase_one.cpp_models', 'CPP Models'),
         ('canonic_phases.Phase_one.structural', 'Structural Normalizer'),
-        ('canonic_phases.Phase_one.phase1_spc_ingestion_full', 'Phase 1 SPC Ingestion'),
+        ('canonic_phases.Phase_one.phase1_cpp_ingestion_full', 'Phase 1 CPP Ingestion'),
         ('canonic_phases.Phase_one', 'Phase One Package'),
     ]
     
@@ -96,9 +96,9 @@ def test_import_chain():
 @test_section("3. CONSTITUTIONAL INVARIANTS [FORCING ROUTE]")
 def test_constitutional_invariants():
     """Verify all FORCING ROUTE constitutional invariants"""
-    from canonic_phases.Phase_one import phase1_spc_ingestion_full
+    from canonic_phases.Phase_one import phase1_cpp_ingestion_full
     
-    grid_spec = phase1_spc_ingestion_full.PADimGridSpecification
+    grid_spec = phase1_cpp_ingestion_full.PADimGridSpecification
     
     tests_passed = True
     
