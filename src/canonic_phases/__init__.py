@@ -11,17 +11,7 @@ New code should prefer:
 
 from __future__ import annotations
 
-<<<<<<< HEAD
 from pathlib import Path
-=======
-- Phase 0: Input Validation
-- Phase 1: CPP Ingestion (CanonicalInput → CanonPolicyPackage)
-- Phase 2: Signal-Driven Analysis
-- Phase 3: Micro-answering and Integration
-- Phase 4-7: Advanced Processing
-- Phase 8: Strategic Integration
-- Phase 9: Output Generation
->>>>>>> 1738f0eae4f67a51d31bb3e035e302d789b3050f
 
 
 # Redirect package submodule resolution to the new location.

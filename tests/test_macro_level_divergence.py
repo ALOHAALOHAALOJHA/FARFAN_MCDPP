@@ -145,7 +145,7 @@ class TestCarverCapabilities:
     
     def test_carver_file_exists(self):
         """Test that carver.py exists."""
-        carver_path = Path(__file__).parent.parent / "src" / "canonic_phases" / "Phase_two" / "carver.py"
+        carver_path = Path(__file__).parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "carver.py"
         assert carver_path.exists(), "carver.py should exist"
     
     def test_carver_dimension_support(self):
