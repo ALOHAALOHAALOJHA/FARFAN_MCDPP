@@ -43,7 +43,6 @@ def mock_runtime_config_prod():
         "allow_spacy_fallback": False,
         "allow_dev_ingestion_fallbacks": False,
         "allow_aggregation_defaults": False,
-        "allow_missing_base_weights": False,
     })
     return config
 
@@ -60,7 +59,6 @@ def mock_runtime_config_dev():
         "allow_spacy_fallback": True,
         "allow_dev_ingestion_fallbacks": True,
         "allow_aggregation_defaults": True,
-        "allow_missing_base_weights": True,
     })
     return config
 

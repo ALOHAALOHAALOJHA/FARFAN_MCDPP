@@ -9,11 +9,23 @@ import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from collections.abc import Callable
+from typing import Any, ParamSpec, TypeVar
 
 import jsonschema
 from pydantic import BaseModel, ConfigDict, Field
-from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
+
+P = ParamSpec("P")
+R = TypeVar("R")
+
+
+def calibrated_method(_tag: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
+    """No-op legacy decorator (calibration system removed)."""
+
+    def _decorator(fn: Callable[P, R]) -> Callable[P, R]:
+        return fn
+
+    return _decorator
 
 
 class SchemaInitializationError(Exception):
@@ -65,7 +77,7 @@ class MonolithSchemaValidator:
         if schema_path:
             self._load_schema()
 
-    @calibrated_method("farfan_core.utils.validation.schema_validator.MonolithSchemaValidator._load_schema")
+    @calibrated_method("legacy.noop.schema_validator._load_schema")
     def _load_schema(self, **kwargs: Any) -> None:
         """
         Load JSON schema from file.

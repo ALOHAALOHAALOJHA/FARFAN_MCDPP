@@ -1,71 +1,23 @@
-"""
-Methods Dispensary - Critical Methodological Infrastructure
+"""Compatibility shim for legacy imports.
 
-This package contains production-grade implementations of methodological frameworks
-required for rigorous policy analysis:
+The methods dispensary implementation moved to `farfan_pipeline.methods`.
+This module preserves historical imports like:
 
-- Derek Beach's Process Tracing and Evidential Tests (Beach & Pedersen 2019)
-- Theory of Change DAG Validation (Goertz & Mahoney 2012)
-- Financial Viability Analysis
-- Policy Processing and Analysis
+- `from methods_dispensary.derek_beach import DerekBeachProducer`
 
-These are REQUIRED components, not optional. The pipeline cannot function without them.
+New code should prefer:
+- `from farfan_pipeline.methods.derek_beach import DerekBeachProducer`
 """
 
-__version__ = "2.0.0"
-__author__ = "F.A.R.F.A.N Development Team"
+from __future__ import annotations
 
-# Expose key classes for easier imports
-try:
-    from methods_dispensary.derek_beach import (
-        BeachEvidentialTest,
-        CausalExtractor,
-        MechanismPartExtractor,
-        DerekBeachProducer,
-    )
-    DEREK_BEACH_AVAILABLE = True
-except ImportError as e:
-    import warnings
-    warnings.warn(
-        f"CRITICAL: Derek Beach methods unavailable: {e}. "
-        f"This is REQUIRED infrastructure. Install all dependencies.",
-        ImportWarning
-    )
-    BeachEvidentialTest = None
-    CausalExtractor = None
-    MechanismPartExtractor = None
-    DerekBeachProducer = None
-    DEREK_BEACH_AVAILABLE = False
+from pathlib import Path
 
-try:
-    from methods_dispensary.teoria_cambio import (
-        TeoriaCambio,
-        ValidacionResultado,
-        AdvancedDAGValidator,
-    )
-    TEORIA_CAMBIO_AVAILABLE = True
-except ImportError as e:
-    import warnings
-    warnings.warn(
-        f"CRITICAL: Theory of Change methods unavailable: {e}. "
-        f"This is REQUIRED infrastructure. Install all dependencies.",
-        ImportWarning
-    )
-    TeoriaCambio = None
-    ValidacionResultado = None
-    AdvancedDAGValidator = None
-    TEORIA_CAMBIO_AVAILABLE = False
 
-__all__ = [
-    # Derek Beach
-    'BeachEvidentialTest',
-    'CausalExtractor',
-    'MechanismPartExtractor',
-    'DerekBeachProducer',
-    'DEREK_BEACH_AVAILABLE',
-    # Theory of Change
-    'TeoriaCambio',
-    'ValidacionResultado',
-    'AdvancedDAGValidator',
-    'TEORIA_CAMBIO_AVAILABLE',
+# Redirect package submodule resolution to the new location.
+__path__ = [
+    str((Path(__file__).resolve().parent.parent / "farfan_pipeline" / "methods").resolve())
 ]
+
+# Preserve the legacy convenience exports by delegating.
+from farfan_pipeline.methods import *  # noqa: F403,E402

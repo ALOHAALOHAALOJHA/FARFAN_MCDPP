@@ -7,9 +7,21 @@ parameterization specification.
 import ast
 import json
 from pathlib import Path
-from typing import Any
+from collections.abc import Callable
+from typing import Any, ParamSpec, TypeVar
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
+
+P = ParamSpec("P")
+R = TypeVar("R")
+
+
+def calibrated_method(_tag: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
+    """No-op legacy decorator (calibration system removed)."""
+
+    def _decorator(fn: Callable[P, R]) -> Callable[P, R]:
+        return fn
+
+    return _decorator
 
 
 class MethodConfigLoader:
@@ -42,7 +54,7 @@ class MethodConfigLoader:
             for method in self.spec["methods"]
         }
 
-    @calibrated_method("farfan_core.utils.method_config_loader.MethodConfigLoader.validate_spec_schema")
+    @calibrated_method("legacy.noop.method_config_loader.validate_spec_schema")
     def validate_spec_schema(self) -> None:
         """
         Validate JSON spec matches expected schema.
@@ -87,12 +99,12 @@ class MethodConfigLoader:
 
         raise KeyError(f"Parameter {param_name} not found for method {canonical_id}")
 
-    @calibrated_method("farfan_core.utils.method_config_loader.MethodConfigLoader.get_method_description")
+    @calibrated_method("legacy.noop.method_config_loader.get_method_description")
     def get_method_description(self, canonical_id: str) -> str:
         """Get method description."""
         return self._method_index[canonical_id]["description"]
 
-    @calibrated_method("farfan_core.utils.method_config_loader.MethodConfigLoader.get_parameter_spec")
+    @calibrated_method("legacy.noop.method_config_loader.get_parameter_spec")
     def get_parameter_spec(self, canonical_id: str, param_name: str) -> dict:
         """Get full parameter specification including allowed values."""
         method = self._method_index[canonical_id]

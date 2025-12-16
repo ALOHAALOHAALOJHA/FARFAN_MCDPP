@@ -162,19 +162,6 @@ class TestRuntimeConfiguration:
         assert config.expected_method_count == 416
         print("  ✓ Expected counts parsed correctly")
     
-    def test_strict_calibration_default(self):
-        """Test STRICT_CALIBRATION defaults to True."""
-        config = RuntimeConfig.from_env()
-        assert config.strict_calibration is True
-        print("  ✓ STRICT_CALIBRATION defaults to True")
-    
-    def test_strict_calibration_override(self):
-        """Test STRICT_CALIBRATION can be overridden."""
-        os.environ["STRICT_CALIBRATION"] = "false"
-        config = RuntimeConfig.from_env()
-        assert config.strict_calibration is False
-        print("  ✓ STRICT_CALIBRATION can be overridden")
-    
     def test_preferred_spacy_model_default(self):
         """Test PREFERRED_SPACY_MODEL has default value."""
         config = RuntimeConfig.from_env()
