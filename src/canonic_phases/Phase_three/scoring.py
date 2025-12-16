@@ -131,7 +131,7 @@ def extract_score_from_evidence(evidence: dict[str, Any] | None) -> float:
             logger.warning(f"Invalid score type in validation: {type(score)}")
     
     # Try confidence_scores.mean as fallback
-    if is instance(evidence, dict):
+    if isinstance(evidence, dict):
         conf_scores = evidence.get("confidence_scores", {})
         mean_conf = conf_scores.get("mean")
         if mean_conf is not None:
