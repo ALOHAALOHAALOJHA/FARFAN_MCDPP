@@ -10,16 +10,10 @@ from canonic_phases.Phase_two.contract_validator_cqvr import CQVRValidator
 
 def transform_q006():
     contract_path = "src/canonic_phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json"
-    q001_path = "src/canonic_phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json"
-    q002_path = "src/canonic_phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json"
     output_path = "src/canonic_phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.transformed.json"
     
     with open(contract_path) as f:
         contract = json.load(f)
-    with open(q001_path) as f:
-        q001 = json.load(f)
-    with open(q002_path) as f:
-        q002 = json.load(f)
     
     validator = CQVRValidator()
     initial = validator.validate_contract(contract)
