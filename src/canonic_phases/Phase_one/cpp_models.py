@@ -11,7 +11,7 @@ These models are wired to:
 - Canonical questionnaire for PA×DIM validation
 
 Author: FARFAN Pipeline Team
-Version: SPC-2025.1
+Version: CPP-2025.1
 """
 
 from __future__ import annotations
@@ -363,13 +363,13 @@ class CanonPolicyPackage:
     Canonical Policy Package - PRODUCTION MODEL.
     
     [INV-010] This dataclass MUST be frozen (immutable).
-    [POST-005] schema_version MUST be "SPC-2025.1"
+    [POST-005] schema_version MUST be "CPP-2025.1"
     [INT-POST-004] chunk_graph MUST contain EXACTLY 60 chunks
     
-    This is the OUTPUT CONTRACT for Phase 1 SPC Ingestion.
+    This is the OUTPUT CONTRACT for Phase 1 CPP Ingestion.
     
     Attributes:
-        schema_version: Must be "SPC-2025.1"
+        schema_version: Must be "CPP-2025.1"
         document_id: Unique document identifier
         chunk_graph: Graph of 60 PA×DIM chunks
         quality_metrics: SISAS-computed quality metrics
@@ -387,9 +387,9 @@ class CanonPolicyPackage:
     
     def __post_init__(self):
         # [POST-005] Validate schema_version
-        if self.schema_version != "SPC-2025.1":
+        if self.schema_version != "CPP-2025.1":
             raise ValueError(
-                f"[POST-005] schema_version must be 'SPC-2025.1', got '{self.schema_version}'"
+                f"[POST-005] schema_version must be 'CPP-2025.1', got '{self.schema_version}'"
             )
         
         # [INT-POST-004] Validate exactly 60 chunks
@@ -444,7 +444,7 @@ class CanonPolicyPackageValidator:
             True if all validations pass
         """
         # [POST-005] schema_version
-        if cpp.schema_version != "SPC-2025.1":
+        if cpp.schema_version != "CPP-2025.1":
             raise ValueError(f"[POST-005] Invalid schema_version: {cpp.schema_version}")
         
         # [INT-POST-004] chunk_count

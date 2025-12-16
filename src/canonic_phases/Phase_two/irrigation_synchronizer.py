@@ -35,8 +35,7 @@ if TYPE_CHECKING:
 
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from orchestration.task_planner import ExecutableTask
+from orchestration.task_planner import ExecutableTask
 from canonic_phases.Phase_two.phase6_validation import (
     validate_phase6_schema_compatibility,
 )

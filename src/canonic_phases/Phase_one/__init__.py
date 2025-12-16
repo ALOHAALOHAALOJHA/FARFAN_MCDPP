@@ -1,10 +1,10 @@
 """
-Phase One: SPC Ingestion - F.A.R.F.A.N Pipeline
+Phase One: CPP Ingestion - F.A.R.F.A.N Pipeline
 ================================================
 
 This package contains the canonical implementation of Phase 1:
 
-Phase 1: SPC Ingestion (CanonicalInput → CanonPolicyPackage)
+Phase 1: CPP Ingestion (CanonicalInput → CanonPolicyPackage)
     - 16 sub-phases (SP0-SP15)
     - EXACTLY 60 chunks (10 Policy Areas × 6 Dimensions)
     - Full provenance tracking
@@ -18,7 +18,7 @@ CANONICAL SOURCES:
 INVARIANTS:
 - chunk_count == 60
 - execution_trace entries == 16
-- schema_version == "SPC-2025.1"
+- schema_version == "CPP-2025.1"
 """
 
 # Phase Protocol
@@ -50,8 +50,8 @@ from canonic_phases.Phase_one.phase1_models import (
 )
 
 # Phase 1: Main Executor
-from canonic_phases.Phase_one.phase1_spc_ingestion_full import (
-    Phase1SPCIngestionFullContract,
+from canonic_phases.Phase_one.phase1_cpp_ingestion_full import (
+    Phase1CPPIngestionFullContract,
     execute_phase_1_with_full_contract,
     PADimGridSpecification,
     Phase1FatalError,
@@ -92,7 +92,7 @@ __all__ = [
     "ValidationResult",
     "CausalGraph",
     # Phase 1 Executor
-    "Phase1SPCIngestionFullContract",
+    "Phase1CPPIngestionFullContract",
     "execute_phase_1_with_full_contract",
     "PADimGridSpecification",
     "Phase1FatalError",

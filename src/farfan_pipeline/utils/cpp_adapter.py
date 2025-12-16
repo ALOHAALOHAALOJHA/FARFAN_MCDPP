@@ -3,8 +3,7 @@
 This adapter converts Canon Policy Package (CPP) documents from the ingestion pipeline 
 into the orchestrator's PreprocessedDocument format.
 
-Note: This is the canonical adapter implementation. SPC (Smart Policy Chunks) is the 
-precursor to CPP.
+Note: This is the canonical adapter implementation.
 
 Design Principles:
 - Preserves complete provenance information
@@ -92,7 +91,7 @@ class CPPAdapter:
                 - chunk_graph.chunks: dict of chunk objects with .text and .text_span
 
             Optional (handled with hasattr checks):
-                - schema_version: str (default: 'SPC-2025.1')
+                - schema_version: str (default: 'CPP-2025.1')
                 - quality_metrics: object with metrics like provenance_completeness,
                   structural_consistency, boundary_f1, kpi_linkage_rate,
                   budget_consistency_score, temporal_robustness, chunk_context_coverage
@@ -186,7 +185,7 @@ class CPPAdapter:
         )
 
         # === PHASE 2 HARDENING: STRICT CARDINALITY & METADATA ===
-        # Enforce exactly 60 chunks for SPC/CPP canonical documents as per Jobfront 1
+        # Enforce exactly 60 chunks for CPP canonical documents as per Jobfront 1
         processing_mode = "chunked"
         degradation_reason = None
 
@@ -194,7 +193,7 @@ class CPPAdapter:
             raise CPPAdapterError(
                 f"Cardinality mismatch: Expected 60 chunks for 'chunked' processing mode, "
                 f"but found {len(sorted_chunks)}. This is a critical violation of the "
-                f"SPC canonical format."
+                f"CPP canonical format."
             )
 
         # Enforce metadata integrity
@@ -523,7 +522,7 @@ class CPPAdapter:
             "schema_version": (
                 canon_package.schema_version
                 if hasattr(canon_package, "schema_version")
-                else "SPC-2025.1"
+                else "CPP-2025.1"
             ),
             "chunk_count": len(sorted_chunks),
             "processing_mode": "chunked",
@@ -610,7 +609,7 @@ class CPPAdapter:
                 "territories": pm.territories if hasattr(pm, "territories") else [],
             }
 
-        # Add SPC rich data if available in metadata
+        # Add CPP rich data if available in metadata
         if hasattr(canon_package, "metadata") and canon_package.metadata:
             if "spc_rich_data" in canon_package.metadata:
                 metadata_dict["spc_rich_data"] = canon_package.metadata["spc_rich_data"]

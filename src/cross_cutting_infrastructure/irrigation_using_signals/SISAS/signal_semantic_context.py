@@ -193,7 +193,20 @@ def extract_semantic_context(
         SemanticContext with disambiguation rules and configuration
     """
     # Extract entity linking
-    entity_linking_data = semantic_layers.get("disambiguation", {}).get("entity_linker", {})
+    disambiguation = semantic_layers.get("disambiguation", {})
+    if isinstance(disambiguation, dict):
+        entity_linking_data = disambiguation.get("entity_linker", {})
+    else:
+        entity_linking_data = {}
+
+    if not isinstance(entity_linking_data, dict):
+        # Handle legacy or malformed configuration
+        logger.warning(
+            "semantic_context_warning invalid_entity_linker_config",
+            config_type=type(entity_linking_data).__name__
+        )
+        entity_linking_data = {}
+
     entity_linking = EntityLinking(
         enabled=entity_linking_data.get("enabled", True),
         confidence_threshold=entity_linking_data.get("confidence_threshold", 0.7),

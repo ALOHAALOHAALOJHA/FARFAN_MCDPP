@@ -2,7 +2,7 @@
 Phase 1 Models - Strict Data Structures
 =======================================
 
-Data models for the Phase 1 SPC Ingestion Execution Contract.
+Data models for the Phase 1 CPP Ingestion Execution Contract.
 These models enforce strict typing and validation for the pipeline.
 """
 

@@ -22,12 +22,16 @@ Benefits:
 """
 from __future__ import annotations
 
-import logging
 import threading
 from importlib import import_module
 from typing import Any, Callable
 
-logger = logging.getLogger(__name__)
+try:
+    import structlog
+    logger = structlog.get_logger(__name__)
+except ImportError:
+    import logging
+    logger = logging.getLogger(__name__)
 
 
 class MethodRegistryError(RuntimeError):
@@ -249,7 +253,7 @@ class MethodRegistry:
             logger.debug(
                 "method_retrieved_direct",
                 class_name=class_name,
-                method_name=method_name,
+                target_method=method_name,
             )
             return self._direct_methods[key]
 
@@ -266,7 +270,7 @@ class MethodRegistry:
             logger.debug(
                 "method_retrieved_from_instance",
                 class_name=class_name,
-                method_name=method_name,
+                target_method=method_name,
             )
             return method
 

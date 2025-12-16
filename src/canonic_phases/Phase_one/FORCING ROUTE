@@ -147,7 +147,7 @@ SECCIÓN 12: CONSTRUCCIÓN DE CanonPolicyPackage
 12.1 CPP CONSTRUCTION
 [EXEC-CPP-001] | INVOCACIÓN | _construct_cpp_with_verification() DEBE ejecutarse sin excepciones | No raise Exception | FATAL: Terminar pipeline
 [EXEC-CPP-002] | RETORNO | DEBE retornar CanonPolicyPackage | isinstance(cpp_output, CanonPolicyPackage) == True | FATAL: Terminar pipeline
-[EXEC-CPP-003] | SCHEMA | schema_version DEBE ser "SPC-2025.1" | cpp_output.schema_version == "SPC-2025.1" | FATAL: Terminar pipeline
+[EXEC-CPP-003] | SCHEMA | schema_version DEBE ser "CPP-2025.1" | cpp_output.schema_version == "CPP-2025.1" | FATAL: Terminar pipeline
 [EXEC-CPP-004] | DOCUMENT_ID | document_id DEBE coincidir con entrada | cpp_output.document_id == input.document_id | FATAL: Terminar pipeline
 [EXEC-CPP-005] | CHUNK_GRAPH | chunk_graph DEBE existir | hasattr(cpp_output, 'chunk_graph') and cpp_output.chunk_graph is not None | FATAL: Terminar pipeline
 [EXEC-CPP-006] | CHUNK_GRAPH | chunk_graph DEBE ser ChunkGraph | isinstance(cpp_output.chunk_graph, ChunkGraph) == True | FATAL: Terminar pipeline
@@ -167,11 +167,11 @@ SECCIÓN 13: VALIDACIÓN POSTCONDICIÓN (CanonPolicyPackageValidator)
 [POST-002] | PROVENANCE | provenance_completeness DEBE ser >= 0.8 | cpp.quality_metrics.provenance_completeness >= 0.8 | FATAL: SLA VIOLADO - Terminar pipeline
 [POST-003] | STRUCTURAL | structural_consistency DEBE ser >= 0.85 | cpp.quality_metrics.structural_consistency >= 0.85 | FATAL: SLA VIOLADO - Terminar pipeline
 [INT-POST-004] | CHUNK_COUNT | chunk_count en QualityMetrics DEBE ser EXACTAMENTE 60 | cpp.quality_metrics.chunk_count == 60 | FATAL: INVARIANTE CONSTITUCIONAL VIOLADO - Terminar pipeline
-[POST-005] | SCHEMA | schema_version DEBE ser "SPC-2025.1" | cpp.schema_version == "SPC-2025.1" | FATAL: Terminar pipeline
+[POST-005] | SCHEMA | schema_version DEBE ser "CPP-2025.1" | cpp.schema_version == "CPP-2025.1" | FATAL: Terminar pipeline
 [POST-006] | IMMUTABILITY | CanonPolicyPackage DEBE ser frozen dataclass | cpp.__class__.__dataclass_params__.frozen == True | FATAL: Terminar pipeline
 
 SECCIÓN 14: ADAPTADOR PHASE 1 → PHASE 2
-14.1 SPCAdapter.to_preprocessed_document()
+14.1 CPPAdapter.to_preprocessed_document()
 [ADAPT-001] | INVOCACIÓN | Phase1ToPhase2Adapter.adapt(cpp) DEBE ejecutarse sin excepciones | No raise Exception | FATAL: Terminar pipeline
 [ADAPT-002] | RETORNO | DEBE retornar PreprocessedDocument | isinstance(adapted_output, PreprocessedDocument) == True | FATAL: Terminar pipeline
 [ADAPT-003] | SENTENCES | PreprocessedDocument.sentences DEBE existir | hasattr(adapted_output, 'sentences') == True | FATAL: Terminar pipeline
@@ -223,7 +223,7 @@ SECCIÓN 14: ADAPTADOR PHASE 1 → PHASE 2
 [INV-002] | COBERTURA PA×DIM | TODAS las 60 combinaciones (PA01-PA10 × DIM01-DIM06) DEBEN estar presentes sin duplicados | verify set comprehension == 60 combinaciones únicas | FATAL: INVARIANTE CONSTITUCIONAL ABSOLUTO VIOLADO - PIPELINE TERMINADO
 [INV-003] | FORMATO CHUNK_ID | TODOS los chunk_ids DEBEN ser PA{01-10}-DIM{01-06} sin excepciones | all(re.match(r'^PA(0[1-9]|10)-DIM0[1-6]$', cid) for cid in all_chunk_ids) | FATAL: INVARIANTE CONSTITUCIONAL ABSOLUTO VIOLADO - PIPELINE TERMINADO
 [INV-004] | UNICIDAD | NO DEBE haber chunk_ids duplicados en ninguna etapa | len(set(chunk_ids)) == len(chunk_ids) == 60 | FATAL: INVARIANTE CONSTITUCIONAL ABSOLUTO VIOLADO - PIPELINE TERMINADO
-[INV-005] | SCHEMA VERSION | schema_version DEBE ser "SPC-2025.1" en CPP | cpp.schema_version == "SPC-2025.1" | FATAL: INVARIANTE CONSTITUCIONAL ABSOLUTO VIOLADO - PIPELINE TERMINADO
+[INV-005] | SCHEMA VERSION | schema_version DEBE ser "CPP-2025.1" en CPP | cpp.schema_version == "CPP-2025.1" | FATAL: INVARIANTE CONSTITUCIONAL ABSOLUTO VIOLADO - PIPELINE TERMINADO
 [INV-006] | PROVENANCE SLA | provenance_completeness >= 0.8 | cpp.quality_metrics.provenance_completeness >= 0.8 | FATAL: SLA VIOLADO - PIPELINE TERMINADO
 [INV-007] | STRUCTURAL SLA | structural_consistency >= 0.85 | cpp.quality_metrics.structural_consistency >= 0.85 | FATAL: SLA VIOLADO - PIPELINE TERMINADO
 [INV-008] | INTEGRIDAD HASH | blake2b_root DEBE ser hash válido no vacío | len(cpp.integrity_index.blake2b_root) > 0 | FATAL: INTEGRIDAD CRIPTOGRÁFICA VIOLADA - PIPELINE TERMINADO
@@ -236,10 +236,10 @@ SECCIÓN 14: ADAPTADOR PHASE 1 → PHASE 2
 
 ### 18.1 PROMPT DE FORZAMIENTO DE CÓDIGO
 ````markdown
-# IMPLEMENTACIÓN OBLIGATORIA: PHASE 1 SPC INGESTION
+# IMPLEMENTACIÓN OBLIGATORIA: PHASE 1 CPP INGESTION
 
 ## CONTEXTO
-Eres un ingeniero de software senior implementando la Fase 1 del pipeline SPC Ingestion.
+Eres un ingeniero de software senior implementando la Fase 1 del pipeline CPP Ingestion.
 Tu objetivo de resultado es implementar un sistema que NUNCA falle los invariantes constitucionales.
 
 ## INVARIANTES CONSTITUCIONALES (NO NEGOCIABLES)
@@ -351,7 +351,7 @@ def construct_cpp_with_verification(
     
     # Construir CPP
     cpp = CanonPolicyPackage(
-        schema_version="SPC-2025.1",
+        schema_version="CPP-2025.1",
         document_id=document_id,
         chunk_graph=chunk_graph,
         policy_manifest=policy_manifest,
@@ -506,7 +506,7 @@ Tu implementación es EXITOSA si y solo si:
 
 ## IMPLEMENTA AHORA
 
-Implementa Phase1SPCIngestionFullContract siguiendo este checklist al pie de la letra.
+Implementa Phase1CPPIngestionFullContract siguiendo este checklist al pie de la letra.
 Cada item marcado [FATAL] es un HARD STOP - si falla, el pipeline NO puede continuar.
 
 Zero ambiguity. Zero tolerance. Fail fast, fail clean, fail deterministically.
