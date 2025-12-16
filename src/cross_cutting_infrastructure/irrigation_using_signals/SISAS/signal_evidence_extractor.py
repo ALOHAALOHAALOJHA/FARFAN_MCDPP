@@ -48,7 +48,8 @@ class EvidenceExtractionResult:
 def extract_structured_evidence(
     text: str,
     signal_node: dict[str, Any],
-    document_context: dict[str, Any] | None = None
+    document_context: dict[str, Any] | None = None,
+    consumption_tracker: Any | None = None
 ) -> EvidenceExtractionResult:
     """
     Extract structured evidence using monolith patterns.
@@ -119,7 +120,8 @@ def extract_structured_evidence(
             element_type=element_type,
             text=text,
             all_patterns=all_patterns,
-            validations=validations
+            validations=validations,
+            consumption_tracker=consumption_tracker
         )
         
         evidence[element_type] = matches
@@ -174,7 +176,8 @@ def extract_evidence_for_element_type(
     element_type: str,
     text: str,
     all_patterns: list[dict[str, Any]],
-    validations: dict[str, Any]
+    validations: dict[str, Any],
+    consumption_tracker: Any | None = None
 ) -> list[dict[str, Any]]:
     """
     Extract evidence for a specific element type using monolith patterns.
@@ -183,12 +186,14 @@ def extract_evidence_for_element_type(
     1. Filter patterns by category/flags that match element type
     2. Apply each pattern with its confidence_weight
     3. Return all matches with metadata
+    4. Record pattern matches in consumption tracker (if provided)
     
     Args:
         element_type: Type from expected_elements (e.g., 'fuentes_oficiales')
         text: Source text
         all_patterns: All patterns from signal node
         validations: Validation rules
+        consumption_tracker: Optional consumption tracker for recording matches
     
     Returns:
         List of evidence matches with confidence scores
@@ -225,13 +230,16 @@ def extract_evidence_for_element_type(
             
             try:
                 for match in re.finditer(regex_pattern, text, re.IGNORECASE):
-                    matches.append({
-                        'value': match.group(0),
-                        'raw_text': match.group(0),
+                    match_text = match.group(0)
+                    match_span = match.span()
+                    
+                    match_item = {
+                        'value': match_text,
+                        'raw_text': match_text,
                         'confidence': confidence_weight,
                         'pattern_id': pattern_id,
                         'category': category,
-                        'span': match.span(),
+                        'span': match_span,
                         # Signal lineage tracking
                         'lineage': {
                             'pattern_id': pattern_id,
@@ -241,7 +249,23 @@ def extract_evidence_for_element_type(
                             'element_type': element_type,
                             'extraction_phase': 'microanswering',
                         }
-                    })
+                    }
+                    matches.append(match_item)
+                    
+                    # Record pattern match in consumption tracker (if provided)
+                    if consumption_tracker is not None:
+                        try:
+                            consumption_tracker.record_pattern_match(
+                                pattern=pattern_spec,
+                                text_segment=text[match_span[0]:match_span[1]],
+                                produced_evidence=True,
+                            )
+                        except Exception as e:
+                            logger.warning(
+                                "consumption_tracking_failed",
+                                pattern_id=pattern_id,
+                                error=str(e),
+                            )
             except re.error as e:
                 logger.warning(
                     "pattern_regex_error",
