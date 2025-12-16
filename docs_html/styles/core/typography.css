@@ -1,0 +1,62 @@
+/* FARFAN Visual Protocol: Typography */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--atroz-ink);
+    background-color: var(--atroz-bg);
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+/* LEVEL 1 (Project/Book Titles) */
+.fvp-level-1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 200;
+    font-size: 28px;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    color: var(--atroz-ink);
+    text-shadow: 0 0 15px var(--atroz-green-toxic);
+}
+
+/* LEVEL 2 (Section/Phase Headers) */
+.fvp-level-2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--atroz-blue-electric);
+}
+
+/* LEVEL 3 (Subsection/Component Labels) */
+.fvp-level-3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgba(229, 231, 235, 0.7); /* ink with 70% opacity */
+}
+
+/* LEVEL 4 (Body/Technical Content) */
+.fvp-level-4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: rgba(229, 231, 235, 0.8); /* ink with 80% opacity */
+}
+
+/* LEVEL 5 (Metadata/Citations/Evidence) */
+.fvp-level-5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(178, 100, 46, 0.7); /* copper-500 with 70% opacity */
+}

@@ -1,0 +1,48 @@
+/* FARFAN Visual Protocol: README Page Specific Styles */
+
+body {
+    background-image: url('../assets/texture_blue.svg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.fvp-header-zone .logo {
+    text-shadow: 0 0 10px var(--atroz-green-toxic);
+}
+
+.fvp-content-zone {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-section {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-section .tagline {
+    margin-top: 1rem;
+    color: var(--atroz-ink-darker);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.feature-card {
+    border-color: var(--atroz-copper-700);
+}
+
+.feature-card .icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+}
