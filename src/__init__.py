@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-"""Workspace src root (legacy)."""
-=======
 """
 F.A.R.F.A.N Pipeline - Source Root Package
 ==========================================
@@ -16,4 +13,3 @@ This package contains the core pipeline implementation including:
 """
 
 __version__ = "CPP-2025.1"
->>>>>>> 1738f0eae4f67a51d31bb3e035e302d789b3050f
