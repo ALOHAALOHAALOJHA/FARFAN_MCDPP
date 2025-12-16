@@ -5,7 +5,11 @@ import sys
 from pathlib import Path
 
 def main():
-    venv_python = Path("farfan-env/bin/python3.12")
+    venv_dir = Path("farfan-env")
+    if sys.platform == "win32":
+        venv_python = venv_dir / "Scripts" / "python.exe"
+    else:
+        venv_python = venv_dir / "bin" / "python3.12"
     
     if not venv_python.exists():
         print("Error: Virtual environment not found")
