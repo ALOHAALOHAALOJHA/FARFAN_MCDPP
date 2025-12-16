@@ -25,6 +25,10 @@ def test_section(name):
     print('='*80)
     return lambda f: f
 
+# pytest will try to collect any function starting with `test_` as a test.
+# This helper is a decorator, not a test.
+test_section.__test__ = False  # type: ignore[attr-defined]
+
 @test_section("1. PACKAGE STRUCTURE VALIDATION")
 def test_package_structure():
     """Verify all required __init__.py files exist"""
