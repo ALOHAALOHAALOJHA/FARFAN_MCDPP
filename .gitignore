@@ -178,4 +178,7 @@ src/canonic_phases/Phase_nine
 
 # Symbolic links in cross_cutting_infrastructure
 src/cross_cutting_infrastructure/irrigation_using_signals
-*.py
+
+# LOCAL DEVELOPMENT FILES (not tracked) - add specific patterns here
+# *.py  # REMOVED: Was blocking all Python files incorrectly
+
