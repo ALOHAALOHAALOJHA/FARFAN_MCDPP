@@ -1,0 +1,9 @@
+{
+  "phase": "PHASE_1_SPC_INGESTION",
+  "subphase": "SP15",
+  "error_type": "AttributeError",
+  "error_message": "'list' object has no attribute 'get'",
+  "timestamp": "2025-12-16T06:54:55.375214",
+  "fatal": true,
+  "recovery_possible": false
+}

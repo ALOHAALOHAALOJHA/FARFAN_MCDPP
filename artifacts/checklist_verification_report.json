@@ -1,11 +1,11 @@
 {
   "summary": {
-    "total_checks": 17,
-    "passed": 17,
-    "fatal_failures": 0,
+    "total_checks": 20,
+    "passed": 18,
+    "fatal_failures": 2,
     "warnings": 0,
-    "duration_seconds": 0.48429083824157715,
-    "all_fatal_passed": true
+    "duration_seconds": 224.99160385131836,
+    "all_fatal_passed": false
   },
   "results": [
     {
@@ -48,7 +48,7 @@
       "category": "SISAS_PRECONDITION",
       "passed": true,
       "severity": "FATAL",
-      "message": "Questionnaire at /app/canonic_questionnaire_central/questionnaire_monolith.json: exists=True"
+      "message": "Questionnaire at /Users/recovered/Applications/F.A.R.F.A.N -MECHANISTIC-PIPELINE/canonic_questionnaire_central/questionnaire_monolith.json: exists=True"
     },
     {
       "check_id": "SISAS-PRE-003",
@@ -58,25 +58,46 @@
       "message": "Found 10 policy areas"
     },
     {
+      "check_id": "SISAS-PRE-002",
+      "category": "SISAS_PRECONDITION",
+      "passed": true,
+      "severity": "WARNING",
+      "message": "Warmup completed successfully. Metrics: {'cache_hits': 0, 'cache_misses': 306, 'hit_rate': 0.0, 'estimated_cache_size_bytes': 192, 'total_requests': 306, 'signal_loads': 306, 'errors': 300, 'cached_micro_answering': 0, 'cached_validation': 0, 'cached_assembly': 5, 'cached_scoring': 0, 'source_hash': 'f168bfc090f6aa83', 'questionnaire_version': '1.0.0', 'last_cache_clear': 0.0, 'circuit_breaker': {'state': 'closed', 'failure_count': 0, 'success_count': 0, 'time_since_last_failure': 5202.394848108292, 'time_in_current_state': 0.0010497570037841797}}"
+    },
+    {
+      "check_id": "SISAS-PRE-004",
+      "category": "SISAS_PRECONDITION",
+      "passed": true,
+      "severity": "WARNING",
+      "message": "Valid packs: 10/10, Invalid: 0"
+    },
+    {
+      "check_id": "SISAS-PRE-005",
+      "category": "SISAS_PRECONDITION",
+      "passed": true,
+      "severity": "WARNING",
+      "message": "Valid hashes: 10/10, Errors: 0"
+    },
+    {
       "check_id": "CONTRACT-001",
       "category": "CONTRACT",
-      "passed": true,
+      "passed": false,
       "severity": "FATAL",
-      "message": "Found 300/300 contracts (minimum required: 30)"
+      "message": "Found 0/300 contracts (minimum required: 30)"
     },
     {
       "check_id": "CONTRACT-002",
       "category": "CONTRACT",
-      "passed": true,
+      "passed": false,
       "severity": "FATAL",
-      "message": "Checked 300 V3 contracts, 0 invalid"
+      "message": "Checked 0 V3 contracts, 0 invalid"
     },
     {
       "check_id": "CONTRACT-003",
       "category": "CONTRACT",
       "passed": true,
       "severity": "FATAL",
-      "message": "Checked 300 contracts, 0 mismatches"
+      "message": "Checked 0 contracts, 0 mismatches"
     },
     {
       "check_id": "TASK-001",
@@ -104,7 +125,7 @@
       "category": "MANIFEST",
       "passed": true,
       "severity": "WARNING",
-      "message": "Manifest at /app/artifacts/manifests/verification_manifest.json: exists=True"
+      "message": "Manifest at /Users/recovered/Applications/F.A.R.F.A.N -MECHANISTIC-PIPELINE/artifacts/manifests/verification_manifest.json: exists=True"
     },
     {
       "check_id": "MANIFEST-001",

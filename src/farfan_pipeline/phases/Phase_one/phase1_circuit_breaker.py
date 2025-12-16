@@ -202,10 +202,9 @@ class Phase1CircuitBreaker:
     
     def _check_dependencies(self, result: PreflightResult):
         """Check all critical dependencies."""
+        # Core dependencies that MUST be available for any execution
         critical_deps = [
-            ('langdetect', 'langdetect', 'Language detection for SP0'),
             ('spacy', 'spacy', 'NLP processing for SP1/SP2/SP3'),
-            ('fitz', 'PyMuPDF', 'PDF extraction for SP0/SP1'),
             ('pydantic', 'pydantic', 'Contract validation'),
             ('numpy', 'numpy', 'Numerical operations'),
         ]
@@ -219,8 +218,11 @@ class Phase1CircuitBreaker:
                     f"Missing critical dependency: {package_name} ({description})"
                 )
         
-        # Check optional but important dependencies
+        # Check optional but important dependencies (HIGH severity - warning only)
+        # These are needed for full functionality but tests can run without them
         optional_deps = [
+            ('langdetect', 'langdetect', 'Language detection for SP0'),
+            ('fitz', 'PyMuPDF', 'PDF extraction for SP0/SP1'),
             ('cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry', 
              'SISAS', 'Signal enrichment system'),
             ('methods_dispensary.derek_beach', 'derek_beach', 'Causal analysis'),

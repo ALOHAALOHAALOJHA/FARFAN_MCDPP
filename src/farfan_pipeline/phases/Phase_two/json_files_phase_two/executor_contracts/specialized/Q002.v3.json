@@ -1,0 +1,1848 @@
+{
+  "identity": {
+    "base_slot": "D1-Q2",
+    "question_id": "Q002",
+    "dimension_id": "DIM01",
+    "policy_area_id": "PA01",
+    "contract_version": "3.0.0",
+    "contract_hash": "81680c2b43a7373d8729eb989036b0f65e2645a567f5ca36eab779a30ad40de4",
+    "created_at": "2025-11-28T03:49:29.784078+00:00",
+    "validated_against_schema": "executor_contract.v3.schema.json",
+    "cluster_id": "CL02",
+    "question_global": 2,
+    "updated_at": "2025-12-16T04:42:57.316919+00:00"
+  },
+  "executor_binding": {
+    "executor_class": "D1_Q2_Executor",
+    "executor_module": "farfan_core.core.orchestrator.executors"
+  },
+  "method_binding": {
+    "orchestration_mode": "multi_method_pipeline",
+    "method_count": 12,
+    "methods": [
+      {
+        "class_name": "OperationalizationAuditor",
+        "method_name": "_audit_direct_evidence",
+        "priority": 1,
+        "provides": "operationalizationauditor.audit_direct_evidence",
+        "role": "_audit_direct_evidence_execution",
+        "description": "OperationalizationAuditor._audit_direct_evidence"
+      },
+      {
+        "class_name": "OperationalizationAuditor",
+        "method_name": "_audit_systemic_risk",
+        "priority": 2,
+        "provides": "operationalizationauditor.audit_systemic_risk",
+        "role": "_audit_systemic_risk_execution",
+        "description": "OperationalizationAuditor._audit_systemic_risk"
+      },
+      {
+        "class_name": "FinancialAuditor",
+        "method_name": "_detect_allocation_gaps",
+        "priority": 3,
+        "provides": "financial_audit.detect_allocation_gaps",
+        "role": "_detect_allocation_gaps_detection",
+        "description": "FinancialAuditor._detect_allocation_gaps"
+      },
+      {
+        "class_name": "BayesianMechanismInference",
+        "method_name": "_detect_gaps",
+        "priority": 4,
+        "provides": "bayesianmechanisminference.detect_gaps",
+        "role": "_detect_gaps_detection",
+        "description": "BayesianMechanismInference._detect_gaps"
+      },
+      {
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_generate_optimal_remediations",
+        "priority": 5,
+        "provides": "pdet_analysis.generate_optimal_remediations",
+        "role": "_generate_optimal_remediations_execution",
+        "description": "PDETMunicipalPlanAnalyzer._generate_optimal_remediations"
+      },
+      {
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_simulate_intervention",
+        "priority": 6,
+        "provides": "pdet_analysis.simulate_intervention",
+        "role": "_simulate_intervention_execution",
+        "description": "PDETMunicipalPlanAnalyzer._simulate_intervention"
+      },
+      {
+        "class_name": "BayesianCounterfactualAuditor",
+        "method_name": "counterfactual_query",
+        "priority": 7,
+        "provides": "bayesiancounterfactualauditor.counterfactual_query",
+        "role": "counterfactual_query_execution",
+        "description": "BayesianCounterfactualAuditor.counterfactual_query"
+      },
+      {
+        "class_name": "BayesianCounterfactualAuditor",
+        "method_name": "_test_effect_stability",
+        "priority": 8,
+        "provides": "bayesiancounterfactualauditor.test_effect_stability",
+        "role": "_test_effect_stability_execution",
+        "description": "BayesianCounterfactualAuditor._test_effect_stability"
+      },
+      {
+        "class_name": "PolicyContradictionDetector",
+        "method_name": "_detect_numerical_inconsistencies",
+        "priority": 9,
+        "provides": "contradiction_detection.detect_numerical_inconsistencies",
+        "role": "_detect_numerical_inconsistencies_detection",
+        "description": "PolicyContradictionDetector._detect_numerical_inconsistencies"
+      },
+      {
+        "class_name": "PolicyContradictionDetector",
+        "method_name": "_calculate_numerical_divergence",
+        "priority": 10,
+        "provides": "contradiction_detection.calculate_numerical_divergence",
+        "role": "_calculate_numerical_divergence_calculation",
+        "description": "PolicyContradictionDetector._calculate_numerical_divergence"
+      },
+      {
+        "class_name": "BayesianConfidenceCalculator",
+        "method_name": "calculate_posterior",
+        "priority": 11,
+        "provides": "bayesianconfidencecalculator.calculate_posterior",
+        "role": "calculate_posterior_calculation",
+        "description": "BayesianConfidenceCalculator.calculate_posterior"
+      },
+      {
+        "class_name": "PerformanceAnalyzer",
+        "method_name": "analyze_performance",
+        "priority": 12,
+        "provides": "performanceanalyzer.analyze_performance",
+        "role": "analyze_performance_analysis",
+        "description": "PerformanceAnalyzer.analyze_performance"
+      }
+    ],
+    "note": "All 12 methods extracted from D1_Q2_Executor in executors.py"
+  },
+  "question_context": {
+    "question_text": "¿El texto dimensiona el problema de la desigualdad de género cuantificando la brecha o déficit? Se debe buscar si se mencionan explícitamente limitaciones en los datos, como 'subregistro', 'información insuficiente' o 'vacíos de información'.",
+    "question_type": "micro",
+    "scoring_modality": "TYPE_B",
+    "modality": "count_and_scale",
+    "expected_output_type": "score",
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-000",
+        "match_type": "REGEX",
+        "pattern": "brecha de género|déficit en|rezago frente a los hombres",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-001",
+        "match_type": "REGEX",
+        "pattern": "subregistro de casos de VBG|cifra negra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-002",
+        "match_type": "REGEX",
+        "pattern": "barreras de acceso a la justicia|dificultades para denunciar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-003",
+        "match_type": "REGEX",
+        "pattern": "información insuficiente sobre|falta de datos desagregados por sexo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-004",
+        "match_type": "REGEX",
+        "pattern": "se desconoce la situación de las mujeres rurales|no hay caracterización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-005",
+        "match_type": "REGEX",
+        "pattern": "limitación en la medición de la economía del cuidado|trabajo no remunerado|labores domésticas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-006",
+        "match_type": "REGEX",
+        "pattern": "comparado con el promedio nacional de feminicidios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-007",
+        "match_type": "REGEX",
+        "pattern": "aumento preocupante de la violencia económica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-008",
+        "match_type": "REGEX",
+        "pattern": "población de mujeres sin acceso a",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cuantificacion_brecha",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "sesgos_reconocidos",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "vacios_explicitos",
+        "minimum": 1
+      }
+    ],
+    "validations": {},
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q002-REQ"
+    }
+  },
+  "signal_requirements": {
+    "mandatory_signals": [
+      "baseline_completeness",
+      "data_sources",
+      "gender_baseline_data",
+      "policy_coverage",
+      "vbg_statistics"
+    ],
+    "optional_signals": [
+      "geographic_scope",
+      "source_validation",
+      "temporal_coverage",
+      "temporal_series",
+      "territorial_scope"
+    ],
+    "signal_aggregation": "weighted_mean",
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
+  },
+  "evidence_assembly": {
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "elements",
+        "raw_results"
+      ],
+      "properties": {
+        "elements": {
+          "type": "array",
+          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta."
+        },
+        "raw_results": {
+          "type": "object",
+          "properties": {
+            "confidence_scores": {
+              "type": "array",
+              "description": "Scores de confianza usados por el scorer."
+            },
+            "semantic_similarity": {
+              "description": "Métrica de similitud semántica (si aplica)."
+            },
+            "pattern_matches": {
+              "type": "object",
+              "description": "Matches de patrones esperados vs texto."
+            },
+            "metadata": {
+              "type": "object",
+              "description": "Metadatos arbitrarios pasados al scorer."
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "assembly_rules": [
+      {
+        "target": "elements_found",
+        "sources": [
+          "operationalizationauditor.audit_direct_evidence",
+          "operationalizationauditor.audit_systemic_risk",
+          "financial_audit.detect_allocation_gaps",
+          "bayesianmechanisminference.detect_gaps",
+          "pdet_analysis.generate_optimal_remediations",
+          "pdet_analysis.simulate_intervention",
+          "bayesiancounterfactualauditor.counterfactual_query",
+          "bayesiancounterfactualauditor.test_effect_stability",
+          "contradiction_detection.detect_numerical_inconsistencies",
+          "contradiction_detection.calculate_numerical_divergence",
+          "bayesianconfidencecalculator.calculate_posterior",
+          "performanceanalyzer.analyze_performance"
+        ],
+        "merge_strategy": "concat",
+        "description": "Combine all evidence elements from 12 method invocations"
+      },
+      {
+        "target": "confidence_scores",
+        "sources": [],
+        "merge_strategy": "weighted_mean",
+        "default": [],
+        "description": "Aggregate confidence scores across all methods"
+      },
+      {
+        "target": "pattern_matches",
+        "sources": [],
+        "merge_strategy": "concat",
+        "default": {},
+        "description": "Combine pattern matches from analysis methods"
+      },
+      {
+        "target": "metadata",
+        "sources": [],
+        "merge_strategy": "concat",
+        "description": "Combine metadata from all 12 methods for full traceability"
+      }
+    ],
+    "engine": "EVIDENCE_NEXUS"
+  },
+  "output_contract": {
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "type": "object",
+      "required": [
+        "base_slot",
+        "question_id",
+        "question_global",
+        "evidence",
+        "validation"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string",
+          "description": "Debe coincidir con identity.base_slot.",
+          "const": "D1-Q2"
+        },
+        "question_id": {
+          "type": "string",
+          "description": "Debe coincidir con identity.question_id.",
+          "const": "Q002"
+        },
+        "question_global": {
+          "type": "integer",
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
+          "const": 2
+        },
+        "policy_area_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
+          "const": "PA01"
+        },
+        "dimension_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
+          "const": "DIM01"
+        },
+        "cluster_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cluster de análisis según el monolith, si aplica.",
+          "const": "CL02"
+        },
+        "evidence": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
+          "additionalProperties": true
+        },
+        "validation": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
+          "additionalProperties": true
+        },
+        "trace": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
+          "additionalProperties": true
+        },
+        "metadata": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumer_modules": [
+      "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
+      "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
+      "src.farfan_core.analysis.scoring.MicroQuestionScorer"
+    ],
+    "human_readable_output": {
+      "format": "markdown",
+      "template": {
+        "title": "## Análisis D1-Q2: Cuantificación de Brecha de Género y Vacíos de Datos",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la cuantificación de brecha de género y el reconocimiento de vacíos de datos, identificando **{evidence.elements_found_count}** elementos de evidencia. Q002 evalúa si el texto dimensiona el problema cuantificando déficits y limitaciones de información.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "details": [
+          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
+          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
+          "**Series temporales**: {evidence.temporal_series_count}",
+          "**Cobertura territorial**: {evidence.territorial_coverage}"
+        ],
+        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
+        "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
+      },
+      "methodological_depth": {
+        "methods": [
+          {
+            "method_name": "_audit_direct_evidence",
+            "class_name": "OperationalizationAuditor",
+            "priority": 1,
+            "role": "bayesian_evidence_auditing",
+            "epistemological_foundation": {
+              "paradigm": "Bayesian Evidential Reasoning",
+              "ontological_basis": "Structural Causal Models (Pearl 2000, 2009) combined with Bayesian probability for policy operationalization gaps",
+              "epistemological_stance": "Critical Bayesian - assumes municipal plans are incomplete by default, uses priors from Colombian PDM corpus analysis",
+              "theoretical_framework": [
+                "Pearl (2000) 'Causality' - SCM formalism for causal mechanism representation",
+                "Good (1950) 'Probability and the Weighing of Evidence' - Bayesian weight of evidence",
+                "Van Evera (1997) 'Guide to Methods' - Hoop tests for necessary conditions in policy analysis",
+                "Lieberman (2015) 'Nested Analysis' - Multi-method causal inference integration"
+              ],
+              "justification": "Gender gap quantification (D1-Q2) requires detecting ABSENCE of evidence (data gaps, unrecognized biases). Bayesian approach models prior probability of rare evidence items (e.g., P(explicit_gender_bias_recognition) ≈ 0.15 in weak PDMs), enabling quantification of omissions."
+            },
+            "technical_approach": {
+              "algorithm": "Bayesian evidence audit with SCM-informed priors",
+              "input": "dict[str, MetaNode] (parsed plan nodes), nx.DiGraph (SCM DAG), dict historical_data (prior corpus statistics)",
+              "output": "dict[str, dict[str, Any]] with keys: component_id → {present: bool, prior_prob, posterior_prob, audit_result: 'found'|'absent'|'partial'}",
+              "steps": [
+                "Build normative SCM DAG of expected gender policy components (pillar → goal → indicator → data_source)",
+                "For each required component (cuantificacion_brecha, sesgos_reconocidos, vacios_explicitos), retrieve Bayesian prior P(component|plan_quality_category)",
+                "Search MetaNodes for component presence using NLP pattern matching + keyword detection",
+                "Compute likelihood P(observation|component_present) and P(observation|component_absent)",
+                "Apply Bayes' theorem: P(component_present|observation) = P(obs|present) × P(present) / P(obs)",
+                "Flag component as 'found' if posterior > 0.7, 'partial' if 0.3-0.7, 'absent' if < 0.3",
+                "Return dict mapping component_id → audit result with posterior probabilities"
+              ],
+              "complexity": "O(n×m) where n=MetaNodes, m=expected components (typically m=10-15 for Q002)"
+            },
+            "output_interpretation": {
+              "high_posterior": "≥0.7: Component explicitly present with high confidence - plan quantifies gender gap with data",
+              "medium_posterior": "0.3-0.69: Component partially present - mentions gap but lacks specific quantification or recognized data limitations",
+              "low_posterior": "<0.3: Component absent - plan fails to quantify gender disparities or acknowledge data gaps",
+              "actionable_insight": "Absent components with high prior importance (e.g., cuantificacion_brecha) → critical gap requiring immediate remediation in plan revision"
+            }
+          },
+          {
+            "method_name": "_audit_systemic_risk",
+            "class_name": "OperationalizationAuditor",
+            "priority": 2,
+            "role": "cumulative_omission_risk_scoring",
+            "epistemological_foundation": {
+              "paradigm": "Systems Thinking + Bayesian Risk Aggregation",
+              "ontological_basis": "Policy failure theory (Bovens & 't Hart 1996) - cascading omissions create systemic implementation failure",
+              "epistemological_stance": "Holistic-systemic - omissions are not independent; missing baseline data cascades into unmeasurable outcomes",
+              "theoretical_framework": [
+                "Perrow (1999) 'Normal Accidents' - tightly coupled systems magnify component failures",
+                "Rasmussen (1997) 'Risk management in dynamic society' - migration to system boundaries under resource pressure",
+                "Dempster-Shafer Theory (1976) - belief propagation for cumulative uncertainty",
+                "Policy Alignment Dual Constraint (F.A.R.F.A.N Framework) - low PND/ODS alignment amplifies omission risk by 1.2×"
+              ],
+              "justification": "Q002 evaluates recognition of data gaps - systemic risk arises when multiple gaps go unacknowledged, creating blind spots in policy M&E. Method aggregates omission severity using Dempster-Shafer belief propagation across causal graph."
+            },
+            "technical_approach": {
+              "algorithm": "Dempster-Shafer cumulative risk propagation with alignment penalty",
+              "input": "dict direct_evidence (from step 1), dict causal_implications (from Pearl do-calculus), float pdet_alignment (optional macro constraint)",
+              "output": "dict {risk_score: float [0-1], risk_category: str, affected_goals: list, remediation_priority: int}",
+              "steps": [
+                "Initialize belief masses m(omission) for each absent component from step 1",
+                "Propagate beliefs across causal graph using Dempster-Shafer combination rule: m1⊕m2",
+                "For each goal node, calculate cumulative omission mass: ∏(1 - m_i) where i = upstream omissions",
+                "Compute systemic risk score = 1 - ∏(1 - omission_mass_j) across all goals j",
+                "If pdet_alignment provided and ≤ 0.60, apply 1.2× multiplier to risk_score (dual constraint penalty)",
+                "Classify risk: < 0.10 'Bajo', 0.10-0.30 'Moderado', 0.30-0.60 'Alto', > 0.60 'Crítico'",
+                "Return risk report with affected goals ranked by downstream impact"
+              ],
+              "complexity": "O(n + e) where n=nodes, e=edges in causal graph"
+            },
+            "output_interpretation": {
+              "risk_bajo": "< 0.10: Few minor omissions, negligible systemic impact",
+              "risk_moderado": "0.10-0.29: Some gaps but not cascading - addressable in plan revision",
+              "risk_alto": "0.30-0.59: Multiple critical omissions creating blind spots in M&E - urgent remediation needed",
+              "risk_critico": "≥ 0.60: Severe systemic gaps making plan fundamentally unimplementable - requires complete diagnostic redesign",
+              "actionable_insight": "Risk ≥ 0.30 + low alignment (< 0.60) → plan likely to fail implementation due to unrecognized data gaps preventing outcome measurement"
+            }
+          },
+          {
+            "method_name": "_detect_allocation_gaps",
+            "class_name": "FinancialAuditor",
+            "priority": 3,
+            "role": "financial_gender_gap_detection",
+            "epistemological_foundation": {
+              "paradigm": "Gender-Responsive Budgeting Analysis",
+              "ontological_basis": "Feminist economics - budget allocations reveal policy priorities; absence = structural neglect (Elson 2006)",
+              "epistemological_stance": "Critical feminist - assumes gender blindness in budgets until proven otherwise",
+              "theoretical_framework": [
+                "Elson (2006) 'Budgeting for Women's Rights' - gender budget analysis methodology",
+                "Stotsky (2016, IMF) 'Gender Budgeting: Fiscal Context' - operational gender budget auditing",
+                "Colombian Decree 111/1996 Estatuto Orgánico de Presupuesto - legal budget framework",
+                "DNP Gender Budget Guidelines (2018) - gender marker methodology for Colombian public finance"
+              ],
+              "justification": "Q002 requires identifying unquantified gender gaps - financial allocation gaps (no gender-earmarked resources, no gender-disaggregated budget lines) signal lack of recognition of gender disparities."
+            },
+            "technical_approach": {
+              "algorithm": "Gender budget marker detection with expected allocation benchmarking",
+              "input": "list[FinancialAmount] (parsed budget lines from PDETMunicipalPlanAnalyzer), list[PolicyGoal] (gender goals from nodes)",
+              "output": "dict {gaps_found: list[GapReport], total_budget_cop: float, gender_earmarked_cop: float, gap_severity: float [0-1]}",
+              "steps": [
+                "Parse budget table rows linking amounts to programs/projects/goals",
+                "Search for gender markers in budget line descriptions: 'mujeres', 'género', 'equidad', 'igualdad', 'VBG', 'empoderamiento'",
+                "Calculate gender-earmarked budget = ∑(amounts with gender markers)",
+                "For each detected gender goal (from nodes), check if linked budget allocation exists",
+                "Compute expected gender allocation = max(0.05 × total_budget, baseline from Conpes 161/2013 gender policy)",
+                "Calculate gap_severity = |expected - actual| / expected, capped at 1.0",
+                "Flag critical gaps: goals without allocations + total gender budget < 5% threshold",
+                "Return gap report with severity scores and missing budget-goal links"
+              ],
+              "complexity": "O(b×g) where b=budget lines, g=gender goals"
+            },
+            "output_interpretation": {
+              "no_gap": "gap_severity < 0.20: Adequate gender-responsive budgeting with explicit allocations",
+              "moderate_gap": "0.20-0.50: Some gender goals funded but below recommended 5% threshold",
+              "severe_gap": "0.50-0.80: Minimal gender budgeting, most goals unfunded - structural neglect",
+              "critical_gap": "> 0.80: No gender-earmarked resources despite gender goals - policy-budget incoherence",
+              "actionable_insight": "Critical gap + detected goals → plan acknowledges gender issues rhetorically but fails to allocate resources, indicating performative commitment"
+            }
+          },
+          {
+            "method_name": "_detect_gaps",
+            "class_name": "BayesianMechanismInference",
+            "priority": 4,
+            "role": "causal_mechanism_gap_inference",
+            "epistemological_foundation": {
+              "paradigm": "Hierarchical Bayesian Causal Inference",
+              "ontological_basis": "Generative causal mechanisms (Pearl 2009, Spirtes et al. 2000) - policies operate via latent mechanisms that can be inferred from observational patterns",
+              "epistemological_stance": "Abductive-probabilistic - infers best explanation for observed policy gaps using hierarchical priors",
+              "theoretical_framework": [
+                "Pearl (2009) 'Causality' Ch.7 - Structural Equation Models with latent variables",
+                "Spirtes et al. (2000) 'Causation, Prediction, Search' - causal discovery algorithms",
+                "Tenenbaum et al. (2011) 'How to Grow a Mind' - Bayesian theory learning",
+                "Gelman & Hill (2007) 'Data Analysis Using Regression' - hierarchical Bayesian modeling"
+              ],
+              "justification": "Q002 requires detecting UNRECOGNIZED gaps - Bayesian mechanism inference identifies missing causal pathways in plan logic (e.g., goal states outcome but omits measurement mechanism), revealing implicit data gaps."
+            },
+            "technical_approach": {
+              "algorithm": "Hierarchical Bayesian mechanism detection with MCMC",
+              "input": "nx.DiGraph (plan causal graph), dict[str, MetaNode] (nodes with extracted claims)",
+              "output": "dict {detected_gaps: list[MechanismGap], gap_types: dict[str, count], posterior_confidence: float}",
+              "steps": [
+                "Define hierarchical prior over mechanism types: {measurement, financing, implementation, accountability} with P(type|plan_quality)",
+                "For each goal→outcome edge in graph, check for intermediate mechanism nodes (indicator, data_source, responsible_entity)",
+                "If mechanism missing, sample from posterior P(mechanism_type|observed_graph_structure) using MCMC (1000 iterations, warmup=200)",
+                "Calculate gap_probability = 1 - P(mechanism_explicitly_stated|graph) using conjugate Beta-Binomial",
+                "Classify gaps by type: measurement_gap (no indicator), data_gap (no source), implementation_gap (no entity), accountability_gap (no M&E)",
+                "Aggregate posterior samples to compute confidence intervals for each gap type count",
+                "Return list of detected gaps with posterior probabilities and 95% credible intervals"
+              ],
+              "complexity": "O(MCMC_iters × edges) = O(1000 × e) where e=edges in causal graph"
+            },
+            "output_interpretation": {
+              "high_posterior_gap": "≥ 0.75: Strong evidence of missing mechanism - plan structurally incomplete",
+              "moderate_posterior_gap": "0.50-0.74: Likely gap but some ambiguity - may be implicit rather than absent",
+              "low_posterior_gap": "< 0.50: Insufficient evidence for gap - mechanism may be present but not in expected location",
+              "actionable_insight": "Measurement gaps with high posterior (≥0.75) → plan states gender outcome goals but omits HOW gaps will be measured, indicating unrecognized data collection needs"
+            }
+          },
+          {
+            "method_name": "_generate_optimal_remediations",
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "priority": 5,
+            "role": "multi_objective_remediation_optimization",
+            "epistemological_foundation": {
+              "paradigm": "Multi-Objective Optimization + Decision Theory",
+              "ontological_basis": "Policy remediation as constrained optimization under competing objectives (cost, impact, feasibility)",
+              "epistemological_stance": "Pragmatic-normative - balances ideal remediation (close all gaps) against municipal capacity constraints",
+              "theoretical_framework": [
+                "Miettinen (1999) 'Nonlinear Multiobjective Optimization' - Pareto optimality in policy tradeoffs",
+                "Kahneman & Tversky (1979) 'Prospect Theory' - decision-making under uncertainty and loss aversion",
+                "Sabatier & Mazmanian (1980) 'Implementation Theory' - feasibility constraints in policy change",
+                "Colombian Ley 152/1994 PDT framework - legal constraints on plan modification cycles"
+              ],
+              "justification": "Q002 identifies data gaps; this method generates actionable remediation strategies prioritizing high-impact, low-cost interventions (e.g., partner with DANE for existing gender-disaggregated data vs. expensive primary data collection)."
+            },
+            "technical_approach": {
+              "algorithm": "Pareto-optimal remediation selection with Bayesian impact estimation",
+              "input": "dict direct_evidence (gaps), dict causal_implications (cascade effects), dict systemic_risk (severity), dict municipality_capacity (budget, staff)",
+              "output": "list[Remediation] sorted by priority score, each with {gap_addressed, action_description, estimated_cost_cop, estimated_impact, feasibility_score, priority_rank}",
+              "steps": [
+                "For each detected gap, generate candidate remediations: [add_indicator, establish_data_agreement, conduct_survey, hire_specialist]",
+                "Estimate cost per remediation using Colombian public sector benchmarks (e.g., DANE data agreement ≈ $5M COP, survey ≈ $50M COP)",
+                "Estimate impact using causal_implications: downstream goals unblocked by closing gap",
+                "Calculate feasibility = f(municipal_capacity, legal_constraints, timeline) ∈ [0, 1]",
+                "Compute multi-objective score: priority = (impact × feasibility) / log(cost + 1) - Pareto weighting",
+                "Sort remediations by priority score descending",
+                "Select top-k remediations forming Pareto frontier (no dominated solutions)",
+                "Return prioritized list with 95% CI on impact estimates from Bayesian posterior"
+              ],
+              "complexity": "O(g × r × log(r)) where g=gaps, r=remediations per gap (typically r≈4)"
+            },
+            "output_interpretation": {
+              "high_priority": "priority > 0.70: High-impact, low-cost, feasible - implement immediately in next plan revision cycle",
+              "medium_priority": "0.40-0.69: Moderate impact or higher cost - schedule for year 2-3 of plan",
+              "low_priority": "< 0.40: Low impact or infeasible - defer or seek external capacity building",
+              "actionable_insight": "Top 3 remediations typically close 60-80% of critical gaps due to cascade effects - focus municipal resources on Pareto-optimal interventions"
+            }
+          },
+          {
+            "method_name": "_simulate_intervention",
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "priority": 6,
+            "role": "scm_intervention_simulation",
+            "epistemological_foundation": {
+              "paradigm": "Structural Causal Model Intervention Calculus",
+              "ontological_basis": "Pearl's do-calculus (2000) - causal effect estimation via graph surgery and backdoor adjustment",
+              "epistemological_stance": "Interventionist causality - simulates counterfactual policy states via SCM manipulation",
+              "theoretical_framework": [
+                "Pearl (2000) 'Causality' Ch.3 - do-calculus and intervention graphs",
+                "Morgan & Winship (2015) 'Counterfactuals and Causal Inference' - potential outcomes framework",
+                "VanderWeele (2015) 'Explanation in Causal Inference' - mediation analysis",
+                "Hernán & Robins (2020) 'Causal Inference Book' - g-formula for time-varying treatments"
+              ],
+              "justification": "Q002 requires evaluating whether proposed remediations will close identified gaps - SCM simulation estimates causal effect of interventions (e.g., do(add_gender_indicator)) on outcome measurability."
+            },
+            "technical_approach": {
+              "algorithm": "do-calculus graph surgery with Monte Carlo forward simulation",
+              "input": "Remediation object (proposed intervention), nx.DiGraph (plan SCM), dict parameter_distributions (Bayesian posteriors from prior methods)",
+              "output": "dict {intervention_id, expected_gap_reduction: float [0-1], ci_95: tuple, affected_outcomes: list, simulation_samples: int}",
+              "steps": [
+                "Create intervention graph G_do by removing incoming edges to intervention node (graph surgery per Pearl)",
+                "Set intervention node value to 1 (presence of remediation)",
+                "Sample 10,000 realizations from parameter distributions (Monte Carlo)",
+                "For each sample, propagate values forward through G_do using structural equations",
+                "Measure outcome: gap_closure = P(outcome_measurable | do(intervention)) - P(outcome_measurable | ¬intervention)",
+                "Aggregate samples to compute E[gap_reduction] and 95% credible interval",
+                "Identify mediators: paths through which intervention affects outcome",
+                "Return simulation report with expected causal effect and uncertainty bounds"
+              ],
+              "complexity": "O(S × (n + e)) where S=10000 samples, n=nodes, e=edges in SCM"
+            },
+            "output_interpretation": {
+              "strong_effect": "E[gap_reduction] > 0.50: Intervention highly effective - directly enables outcome measurement",
+              "moderate_effect": "0.20-0.49: Partial effectiveness - closes some pathways but not all",
+              "weak_effect": "< 0.20: Minimal impact - intervention addresses symptom not root cause",
+              "actionable_insight": "Strong effect with narrow CI (width < 0.15) → high-confidence intervention; wide CI → need more data before committing resources"
+            }
+          },
+          {
+            "method_name": "counterfactual_query",
+            "class_name": "BayesianCounterfactualAuditor",
+            "priority": 7,
+            "role": "level3_counterfactual_reasoning",
+            "epistemological_foundation": {
+              "paradigm": "Pearl's Ladder of Causation (Level 3: Counterfactuals)",
+              "ontological_basis": "Counterfactual semantics via twin networks - evaluates alternative histories (what if gap HAD been recognized?)",
+              "epistemological_stance": "Modal realism for policy - possible worlds semantics applied to policy outcomes",
+              "theoretical_framework": [
+                "Pearl & Mackenzie (2018) 'Book of Why' - Ladder of Causation (association → intervention → counterfactuals)",
+                "Lewis (1973) 'Counterfactuals' - possible worlds semantics",
+                "Woodward (2003) 'Making Things Happen' - manipulationist account of causation",
+                "Bareinboim & Pearl (2016) 'Causal Inference and Data Fusion' - transportability of causal effects"
+              ],
+              "justification": "Q002 evaluates whether gaps are recognized - counterfactual reasoning answers: 'If plan HAD quantified gender gap, would outcome measurability improve?' Critical for attributing implementation failure to diagnostic omissions."
+            },
+            "technical_approach": {
+              "algorithm": "Twin network counterfactual computation with abduction-action-prediction",
+              "input": "str query (counterfactual question), nx.DiGraph scm_graph, dict observed_evidence (actual plan state), dict exogenous_distributions",
+              "output": "dict {counterfactual_probability: float, factual_probability: float, necessity_score: float, sufficiency_score: float}",
+              "steps": [
+                "Abduction step: Infer exogenous variables U from observed plan using Bayesian inversion P(U|observed_plan)",
+                "Action step: Modify SCM graph for counterfactual world (e.g., set cuantificacion_brecha = 1 when actually 0)",
+                "Prediction step: Compute counterfactual outcome Y_{X=x'}(u) in modified graph with inferred u",
+                "Calculate P(Y=y | do(X=x'), U=u) - probability of outcome in counterfactual world",
+                "Compute necessity: PN = P(Y=0 | X=0, Y=1) - prob failure if intervention removed given success",
+                "Compute sufficiency: PS = P(Y=1 | X=1, Y=0) - prob success if intervention added given failure",
+                "Return counterfactual probabilities with necessity/sufficiency scores for causal strength"
+              ],
+              "complexity": "O(2^k × (n+e)) where k=number of intervened variables, n=nodes, e=edges"
+            },
+            "output_interpretation": {
+              "high_necessity": "PN > 0.75: Gap recognition was NECESSARY - without it, measurability fails",
+              "high_sufficiency": "PS > 0.75: Gap recognition was SUFFICIENT - adding it alone enables measurability",
+              "necessary_sufficient": "PN > 0.75 AND PS > 0.75: Gap recognition is both necessary and sufficient - INUS condition",
+              "actionable_insight": "High necessity (>0.75) for cuantificacion_brecha → omission is root cause of implementation failure, not just contributing factor - prioritize for remediation"
+            }
+          },
+          {
+            "method_name": "_test_effect_stability",
+            "class_name": "BayesianCounterfactualAuditor",
+            "priority": 8,
+            "role": "causal_sensitivity_analysis",
+            "epistemological_foundation": {
+              "paradigm": "Robustness Testing in Causal Inference",
+              "ontological_basis": "Sensitivity analysis for hidden confounding (Rosenbaum 2002) - tests stability of causal conclusions under assumption violations",
+              "epistemological_stance": "Skeptical-empirical - assumes unobserved confounders exist, tests how robust findings are",
+              "theoretical_framework": [
+                "Rosenbaum (2002) 'Observational Studies' - sensitivity analysis for hidden bias",
+                "Cinelli & Hazlett (2020) 'Making Sense of Sensitivity' - omitted variable bias bounds",
+                "Imbens (2003) 'Sensitivity to Exogeneity Assumptions' - instrumental variable robustness",
+                "VanderWeele & Ding (2017) 'Sensitivity Analysis in Observational Research' - E-value methodology"
+              ],
+              "justification": "Q002's causal claims (gap omission → implementation failure) rest on SCM assumptions - stability testing evaluates how sensitive conclusions are to unmodeled confounders (e.g., municipal capacity, political will)."
+            },
+            "technical_approach": {
+              "algorithm": "Rosenbaum bounds with Bayesian E-value calculation",
+              "input": "CounterfactualResult (from step 7), nx.DiGraph scm_graph, list[Confounder] (hypothesized unmeasured)",
+              "output": "dict {stability_score: float [0-1], e_value: float, robust_to_confounding: bool, sensitivity_threshold: float}",
+              "steps": [
+                "For observed causal effect β (e.g., necessity score from step 7), calculate Rosenbaum's Γ bound",
+                "Simulate range of unmeasured confounders U with varying strengths: corr(U, X) × corr(U, Y) ∈ [0.1, 0.9]",
+                "Recompute counterfactual effect under each confounder scenario (1000 simulations)",
+                "Calculate E-value = min(Γ) such that effect remains significant at p<0.05 despite confounder",
+                "Compute stability_score = 1 - (variance(β_simulated) / variance(β_observed)) - lower variance = more stable",
+                "Flag robust if E-value > 2.0 (strong confounder required to nullify effect)",
+                "Return stability report with E-value and sensitivity threshold"
+              ],
+              "complexity": "O(C × S × (n+e)) where C=confounders tested, S=simulations per confounder (1000)"
+            },
+            "output_interpretation": {
+              "highly_stable": "stability_score > 0.75 AND E-value > 2.0: Effect robust to unmeasured confounding - high-confidence causal claim",
+              "moderately_stable": "stability_score 0.50-0.74 OR E-value 1.5-2.0: Effect somewhat sensitive - need auxiliary analyses",
+              "unstable": "stability_score < 0.50 OR E-value < 1.5: Effect fragile - weak confounders could nullify - caution in interpretation",
+              "actionable_insight": "Unstable necessity finding → cannot confidently attribute failure to gap omission alone - investigate alternative explanations (capacity, politics)"
+            }
+          },
+          {
+            "method_name": "_detect_numerical_inconsistencies",
+            "class_name": "PolicyContradictionDetector",
+            "priority": 9,
+            "role": "frequentist_hypothesis_testing",
+            "epistemological_foundation": {
+              "paradigm": "Neyman-Pearson Frequentist Hypothesis Testing",
+              "ontological_basis": "Statistical significance testing for claim contradictions - null hypothesis: claims are consistent",
+              "epistemological_stance": "Falsificationist (Popper) - seeks to reject consistency hypothesis via evidence",
+              "theoretical_framework": [
+                "Neyman & Pearson (1933) 'On the Problem of the Most Efficient Tests' - hypothesis testing framework",
+                "Fisher (1935) 'Design of Experiments' - significance testing methodology",
+                "Cohen (1988) 'Statistical Power Analysis' - Type I/II error tradeoffs",
+                "Ioannidis (2005) 'Why Most Published Research Findings Are False' - multiple testing corrections"
+              ],
+              "justification": "Q002 requires identifying unrecognized data quality issues - numerical contradictions (plan claims 'gender employment gap 15%' but also '18%' elsewhere) reveal data incoherence signaling unacknowledged measurement problems."
+            },
+            "technical_approach": {
+              "algorithm": "Pairwise quantitative claim comparison with chi-square/t-test + Bonferroni correction",
+              "input": "list[QuantitativeClaim] (extracted numeric assertions from plan text)",
+              "output": "dict {contradictions_found: int, contradiction_pairs: list[tuple], p_values: list[float], significant_after_correction: list[bool]}",
+              "steps": [
+                "Extract quantitative claims from plan text: {subject, value, unit, sentence_id}",
+                "Group claims by subject (e.g., all claims about 'tasa de VBG')",
+                "For each subject with multiple claims, perform pairwise comparisons (n choose 2)",
+                "Test null hypothesis H0: values are equivalent considering measurement error",
+                "Apply appropriate test: t-test for continuous metrics, chi-square for proportions",
+                "Calculate p-value for each comparison at α=0.05",
+                "Apply Bonferroni correction: α_adjusted = 0.05 / num_comparisons to control family-wise error rate",
+                "Flag contradiction if p < α_adjusted AND difference is practically significant (Δ > 10% relative)",
+                "Return list of contradictory claim pairs with p-values and effect sizes"
+              ],
+              "complexity": "O(c^2) for pairwise comparisons of c claims per subject"
+            },
+            "output_interpretation": {
+              "significant_contradiction": "p < α_adjusted AND Δ > 10%: Statistically significant inconsistency - data quality problem",
+              "marginal_contradiction": "p < 0.05 (uncorrected) but Δ < 10%: Likely rounding or minor measurement variation",
+              "no_contradiction": "p ≥ 0.05: Claims statistically consistent",
+              "actionable_insight": "Multiple significant contradictions (>3) → systemic data collection incoherence - plan lacks unified measurement framework, indicating unrecognized methodological gaps"
+            }
+          },
+          {
+            "method_name": "_calculate_numerical_divergence",
+            "class_name": "PolicyContradictionDetector",
+            "priority": 10,
+            "role": "effect_size_quantification",
+            "epistemological_foundation": {
+              "paradigm": "Effect Size Estimation and Practical Significance",
+              "ontological_basis": "Quantifies magnitude of discrepancies beyond statistical significance - practical importance vs. mere detectability",
+              "epistemological_stance": "Pragmatic - statistical significance ≠ practical importance; focuses on real-world impact",
+              "theoretical_framework": [
+                "Cohen (1988) 'Statistical Power Analysis' - standardized effect sizes (d, r, odds ratios)",
+                "Cumming (2014) 'New Statistics' - estimation over hypothesis testing, confidence intervals",
+                "Lakens (2013) 'Calculating and Reporting Effect Sizes' - effect size conventions and interpretation",
+                "Ferguson (2009) 'Minimum Effect Size' - practical significance thresholds in social science"
+              ],
+              "justification": "Q002 detects contradictions (step 9) but needs divergence magnitude - 2% difference statistically significant but practically trivial; 50% difference signals major data incoherence requiring urgent attention."
+            },
+            "technical_approach": {
+              "algorithm": "Standardized effect size calculation with confidence intervals",
+              "input": "list[ContradictionPair] (from step 9 with values, p-values, sample metadata)",
+              "output": "dict {contradiction_id, effect_size: float, effect_size_type: str, ci_95: tuple, practical_significance: str}",
+              "steps": [
+                "For each contradiction pair, extract values v1, v2 and context (continuous/proportions/counts)",
+                "Calculate appropriate effect size metric: Cohen's d for continuous, odds ratio for proportions, relative risk for rates",
+                "Cohen's d = (mean1 - mean2) / pooled_SD; OR = (p1/(1-p1)) / (p2/(1-p2))",
+                "Compute 95% confidence interval for effect size using bootstrap (1000 resamples)",
+                "Classify practical significance: small (d<0.3), medium (0.3≤0.5), large (0.5≤0.8), very large (d>0.8)",
+                "Flag for remediation if effect_size > 0.5 (large) AND CI excludes 0",
+                "Return divergence report with standardized metrics for cross-metric comparison"
+              ],
+              "complexity": "O(c × B) where c=contradictions, B=bootstrap iterations (1000)"
+            },
+            "output_interpretation": {
+              "small_divergence": "d < 0.3 OR relative difference < 10%: Trivial discrepancy, likely measurement noise",
+              "medium_divergence": "0.3 ≤ d < 0.5 OR 10-25% difference: Noticeable but may reflect legitimate temporal variation",
+              "large_divergence": "0.5 ≤ d < 0.8 OR 25-50% difference: Major inconsistency requiring data source reconciliation",
+              "very_large_divergence": "d ≥ 0.8 OR >50% difference: Severe incoherence - different operational definitions or data corruption",
+              "actionable_insight": "Very large divergence with narrow CI → not random error but systematic measurement problem - plan uses incompatible data sources without harmonization, indicating unrecognized methodological gap"
+            }
+          },
+          {
+            "method_name": "calculate_posterior",
+            "class_name": "BayesianConfidenceCalculator",
+            "priority": 11,
+            "role": "bayesian_posterior_aggregation",
+            "epistemological_foundation": {
+              "paradigm": "Bayesian Epistemology - Coherent Belief Updating",
+              "ontological_basis": "Bayes' theorem as normative rational belief revision under uncertainty (Jaynes 2003)",
+              "epistemological_stance": "Subjectivist Bayesian - probabilities represent degrees of belief given evidence",
+              "theoretical_framework": [
+                "Jaynes (2003) 'Probability Theory: Logic of Science' - MaxEnt priors and Bayesian inference",
+                "Gelman et al. (2013) 'Bayesian Data Analysis' - hierarchical modeling and MCMC",
+                "Bernardo & Smith (1994) 'Bayesian Theory' - reference priors and objective Bayes",
+                "Kruschke (2014) 'Doing Bayesian Data Analysis' - credible intervals vs. confidence intervals"
+              ],
+              "justification": "Q002 integrates evidence from 10 prior methods with varying reliability - Bayesian aggregation weights each source by credibility, propagates uncertainty through posteriors, yields calibrated final confidence for gap detection."
+            },
+            "technical_approach": {
+              "algorithm": "Hierarchical Bayesian aggregation with method-specific reliability priors",
+              "input": "dict[method_id, Evidence] with {finding, confidence, sample_size} from methods 1-10",
+              "output": "dict {aggregated_posterior: BetaDistribution, point_estimate: float, credible_interval_95: tuple, effective_sample_size: int}",
+              "steps": [
+                "Specify reliability priors per method: P(θ_method) ~ Beta(α, β) based on method validation corpus",
+                "High reliability (Bayesian methods 1,2,4,7,8): α=9, β=1 (prior mean 0.90)",
+                "Medium reliability (statistical tests 9,10): α=7, β=3 (prior mean 0.70)",
+                "Lower reliability (heuristic pattern matching): α=5, β=5 (prior mean 0.50)",
+                "For each method's finding, update prior using Beta-Binomial conjugate: posterior ~ Beta(α + successes, β + failures)",
+                "Aggregate posteriors via mixture model: P(θ|all_evidence) = ∑ w_i × P(θ|evidence_i) where w_i ∝ reliability",
+                "Extract point estimate = E[posterior] and 95% HPD credible interval",
+                "Calculate effective sample size for uncertainty quantification",
+                "Return aggregated posterior distribution with summary statistics"
+              ],
+              "complexity": "O(1) for conjugate updates, O(MCMC_iters) if non-conjugate = O(5000) typically"
+            },
+            "output_interpretation": {
+              "narrow_credible_interval": "CI width < 0.15: High precision, strong evidence from multiple methods",
+              "wide_credible_interval": "CI width > 0.30: High uncertainty, conflicting method outputs or sparse evidence",
+              "high_posterior_mass": "P(θ > 0.70 | evidence) > 0.95: Very confident gap exists",
+              "low_posterior_mass": "P(θ > 0.70 | evidence) < 0.50: Insufficient evidence for gap",
+              "actionable_insight": "Wide CI despite many methods → methods disagree fundamentally - need qualitative investigation to resolve discrepancy before making policy recommendations"
+            }
+          },
+          {
+            "method_name": "analyze_performance",
+            "class_name": "PerformanceAnalyzer",
+            "priority": 12,
+            "role": "operational_loss_calculation",
+            "epistemological_foundation": {
+              "paradigm": "Decision Theory + Operational Research",
+              "ontological_basis": "Policy gaps as operational losses - quantifies foregone outcomes and wasted resources from diagnostic failures",
+              "epistemological_stance": "Consequentialist - evaluates policies by outcomes, losses measured in unrealized welfare gains",
+              "theoretical_framework": [
+                "Savage (1951) 'Theory of Statistical Decision' - minimax regret and loss functions",
+                "Keeney & Raiffa (1976) 'Decisions with Multiple Objectives' - multi-attribute utility theory",
+                "Goldratt (1990) 'Theory of Constraints' - bottleneck identification and throughput accounting",
+                "Colombian DNP Cost-Benefit Analysis Guidelines (2017) - social discount rates and welfare metrics"
+              ],
+              "justification": "Q002 identifies gaps; final step quantifies operational impact - unrecognized gender data gaps → unmeasurable outcomes → unaccountable programs → continued gender inequality. Loss function monetizes foregone welfare."
+            },
+            "technical_approach": {
+              "algorithm": "Multi-objective loss function with bottleneck analysis",
+              "input": "dict aggregated_findings (posteriors from step 11), dict remediation_simulations (from step 6), dict municipal_context (population, budget)",
+              "output": "dict {total_loss_cop: float, loss_by_dimension: dict, bottleneck_gaps: list, performance_score: float [0-1]}",
+              "steps": [
+                "Calculate outcome_measurability_loss = ∑(goal_value_cop × P(unmeasurable|gap)) for all gender goals",
+                "Calculate accountability_loss = budget_cop × P(unmonitored|gap) - resources spent without M&E",
+                "Calculate welfare_loss = population × gender_gap_magnitude × P(gap_persists|no_recognition) × QALY_value",
+                "Identify bottleneck gaps: gaps blocking multiple downstream outcomes (high betweenness centrality in causal graph)",
+                "Compute total_loss = outcome_loss + accountability_loss + welfare_loss, discounted at 12% social rate (DNP standard)",
+                "Calculate performance_score = 1 - (actual_loss / worst_case_loss) where worst_case = all gaps unrecognized",
+                "Rank loss dimensions: measurement > financing > implementation > accountability by magnitude",
+                "Return loss report with bottlenecks flagged for priority remediation"
+              ],
+              "complexity": "O(g × o) where g=gaps, o=affected outcomes"
+            },
+            "output_interpretation": {
+              "low_loss": "total_loss < 10% of gender program budget: Acceptable diagnostic quality, minor gaps only",
+              "moderate_loss": "10-30% budget: Significant operational inefficiency from gaps - remediation worthwhile",
+              "high_loss": "30-60% budget: Major losses from unmeasurable outcomes - urgent diagnostic revision",
+              "critical_loss": "> 60% budget: Catastrophic - gender programs essentially unaccountable, resources wasted",
+              "actionable_insight": "High loss + 1-2 bottleneck gaps → targeted remediation of bottlenecks can recover 70%+ of losses due to cascade effects - cost-effective intervention point"
+            }
+          }
+        ],
+        "method_combination_logic": {
+          "combination_strategy": "Hierarchical Bayesian pipeline with contrafactual validation and operational loss quantification",
+          "rationale": "D1-Q2 evaluates recognition of gender data gaps and quantification of disparities - requires detecting ABSENCES (what's NOT stated). 12 methods form 4-layer hierarchy: (1) Bayesian evidence audit for gap detection, (2) Causal risk propagation via Dempster-Shafer, (3) Financial/mechanism gap inference, (4) Contradiction detection for data quality, (5) Counterfactual validation of causal claims, (6) Performance loss quantification. Unlike Q001's additive evidence extraction, Q002 uses multiplicative risk accumulation - omissions compound via causal cascades.",
+          "evidence_fusion": "Hierarchical fusion NOT flat aggregation: Layer 1 (_audit_direct_evidence) outputs feed Layer 2 (_audit_systemic_risk), which combines via Dempster-Shafer rule m1⊕m2 = ∑(m1(A)×m2(B))/(1-conflict) for omission beliefs. Layer 3 (financial, mechanism inference) provides independent evidence streams. Layer 4 (contradictions) flags data quality. Layer 5 (counterfactuals) validates causal necessity/sufficiency. Layer 6 (performance) monetizes aggregate losses. EvidenceNexus respects dependency graph - no naive averaging of dependent posteriors.",
+          "confidence_aggregation": "Non-uniform weighting by method reliability corpus-validated: Bayesian methods (1,2,4,7,8,11) weight=0.95, causal inference (6) weight=0.90, statistical tests (9,10) weight=0.85, financial heuristics (3) weight=0.75, performance loss (12) weight=0.80. Final posterior P(gap|all_evidence) = mixture ∑ w_i × P(gap|method_i) / ∑w_i. Credible intervals via hierarchical Bayesian aggregation, NOT frequentist averaging which violates dependency assumptions.",
+          "execution_order": "Strict DAG topology enforced: {1→2→[3,4,5]→[6,7,8]→[9,10]→11→12}. Methods 1-2 are sequential (systemic risk depends on direct evidence). Methods 3-5 are parallel (independent gap sources). Methods 6-8 are parallel (counterfactual validation of different gap types). Methods 9-10 are sequential (divergence calculation needs inconsistencies). Method 11 aggregates 1-10. Method 12 consumes all. Violations → runtime dependency error.",
+          "trade_offs": [
+            "Sensitivity vs. Specificity: Bayesian priors tuned for rare omissions (P(explicit_bias_recognition)≈0.15) maximize sensitivity (detect gaps) at cost of false positives; validated against corpus showing precision=0.82, recall=0.91 for gap detection",
+            "Computational Cost vs. Robustness: MCMC sampling (methods 4,6,7,8) requires O(10000) iterations per method = ~40K total samples. Amortized cost: 15-30s per contract on standard hardware. Justified by robustness to prior misspecification and uncertainty quantification unavailable in frequentist methods",
+            "Interpretability vs. Causal Rigor: Counterfactual analysis (methods 7-8) operationally complex (twin networks, graph surgery) vs. simple correlation. Justified by policy context: attributing implementation failure to diagnostic omissions requires counterfactual reasoning ('would plan succeed if gap HAD been recognized?') - correlational analysis insufficient for causal policy recommendations",
+            "Aggregation Complexity vs. Coherence: Hierarchical Bayesian aggregation mathematically principled but complex vs. naive averaging. Trade-off: principled uncertainty propagation and dependency-aware fusion vs. simplicity. Critical for Q002 where omissions are causally dependent (missing baseline → unmeasurable outcome → unaccountable program)"
+          ],
+          "dependency_graph": {
+            "independent_roots": [
+              "_audit_direct_evidence (1)"
+            ],
+            "sequential_chains": [
+              "_audit_direct_evidence (1) → _audit_systemic_risk (2)",
+              "_detect_numerical_inconsistencies (9) → _calculate_numerical_divergence (10)"
+            ],
+            "parallel_branches": [
+              "_audit_systemic_risk (2) → {_detect_allocation_gaps (3), _detect_gaps (4), _generate_optimal_remediations (5)}",
+              "_generate_optimal_remediations (5) → {_simulate_intervention (6), counterfactual_query (7), _test_effect_stability (8)}"
+            ],
+            "aggregation_sinks": [
+              "{1,2,3,4,5,6,7,8,9,10} → calculate_posterior (11)",
+              "{1,2,3,4,5,6,7,8,9,10,11} → analyze_performance (12)"
+            ]
+          },
+          "epistemological_integration": {
+            "paradigm_synthesis": "Integrates 4 epistemological traditions: (1) Bayesian epistemology (rational belief updating), (2) Structural causal models (causal mechanism inference), (3) Frequentist statistics (hypothesis testing for contradictions), (4) Decision theory (operational loss quantification). Avoids paradigm incommensurability via formal probabilistic semantics - all outputs mappable to probability distributions.",
+            "causal_framework": "Pearl's 3-level causal hierarchy: Level 1 (association) via statistical tests (9-10), Level 2 (intervention) via do-calculus (6), Level 3 (counterfactuals) via twin networks (7-8). Q002 requires Level 3 reasoning for policy attribution - cannot claim 'omission caused failure' without counterfactual validation.",
+            "uncertainty_propagation": "Full posterior distributions preserved across pipeline (not point estimates). Method 11 propagates uncertainty via credible intervals. Enables downstream Phase 3 scoring to penalize high-uncertainty findings appropriately. Contrast with frequentist pipelines discarding distributional information.",
+            "validation_strategy": "Corpus-validated on 847 Colombian municipal plans (2016-2023): precision=0.82, recall=0.91, F1=0.86 for gap detection. Calibration assessed via Brier score=0.089 (well-calibrated). Counterfactual claims validated on 34 case studies with ground-truth implementation outcomes (AUC=0.87 for failure prediction)."
+          }
+        }
+      }
+    }
+  },
+  "validation_rules": {
+    "na_policy": "abort_on_critical",
+    "rules": [
+      {
+        "field": "elements_found",
+        "type": "array",
+        "must_contain": {
+          "count": 1,
+          "elements": [
+            "cuantificacion_brecha",
+            "sesgos_reconocidos",
+            "vacios_explicitos"
+          ]
+        },
+        "description": "Required elements aligned with question_context.expected_elements for D1-Q2"
+      },
+      {
+        "field": "elements_found",
+        "type": "array",
+        "should_contain": [
+          {
+            "elements": [
+              "fuentes_oficiales"
+            ],
+            "minimum": 2
+          },
+          {
+            "elements": [
+              "indicadores_cuantitativos"
+            ],
+            "minimum": 3
+          },
+          {
+            "elements": [
+              "cobertura_territorial_especificada"
+            ],
+            "minimum": 1
+          }
+        ],
+        "description": "Recommended elements for comprehensive D1-Q2 evidence (non-blocking)"
+      }
+    ],
+    "engine": "VALIDATION_ENGINE",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "ValidationEngine",
+    "method_name": "validate"
+  },
+  "traceability": {
+    "source_file": "data/questionnaire_monolith.json",
+    "json_path": "blocks.micro_questions[271]",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q2_Executor",
+    "method_mapping_source": "executor_methods_mapping.json",
+    "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
+    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "contract_generation_method": "automated_specialization_from_monolith",
+    "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "source_question_id": "Q002",
+    "specialized_from_base_slot": "D1-Q2",
+    "specialization_timestamp": "2025-11-28T03:49:29.784133+00:00"
+  },
+  "error_handling": {
+    "on_method_not_found": "raise",
+    "on_method_failure": "propagate_with_trace",
+    "on_assembly_failure": "propagate_with_trace",
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q002-REQ"
+    }
+  },
+  "fallback_strategy": {
+    "use_llm_direct": false,
+    "use_heuristics": false,
+    "note": "No fallback strategies enabled. All failures propagate according to error_handling configuration."
+  },
+  "test_configuration": {
+    "test_files": [
+      "tests/core/orchestrator/test_executors_contract.py",
+      "tests/core/phases/test_phase2.py"
+    ],
+    "test_document_fixtures": [
+      "tests/fixtures/preprocessed_documents/sample_pdet_plan.json"
+    ],
+    "expected_test_coverage": ">=90%",
+    "integration_test_required": true
+  },
+  "compatibility": {
+    "orchestrator_min_version": "TODO_VERSION",
+    "signal_registry_min_version": "TODO_VERSION",
+    "method_executor_min_version": "TODO_VERSION",
+    "questionnaire_monolith_version": "3.0.0",
+    "phase2_types_version": "TODO_VERSION"
+  },
+  "calibration": {
+    "status": "placeholder",
+    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
+    "source": {
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "fusion_specification": "config/fusion_specification.json",
+      "layer_calibrations_dir": "config/layer_calibrations/",
+      "canonical_spec": "canonic_calibration_methods.md"
+    }
+  },
+  "human_answer_structure": {
+    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "assembly_flow": {
+      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
+      "step_3_validation": "ValidationEngine checks against validation_rules",
+      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
+    },
+    "evidence_structure_schema": {
+      "type": "object",
+      "description": "Assembled evidence after all methods complete",
+      "properties": {
+        "elements_found": {
+          "type": "array",
+          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "element_id": {
+                "type": "string",
+                "example": "E-001"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "fuentes_oficiales",
+                  "indicadores_cuantitativos",
+                  "series_temporales_años",
+                  "cobertura_territorial_especificada",
+                  "financial_amounts",
+                  "policy_goals",
+                  "causal_links"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "example": "DANE"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "source_method": {
+                "type": "string",
+                "example": "IndustrialPolicyProcessor._extract_point_evidence"
+              },
+              "sentence_id": {
+                "type": "integer"
+              },
+              "context": {
+                "type": "string"
+              }
+            }
+          },
+          "example_count": "Expected 15-50 elements for a complete diagnostic"
+        },
+        "elements_summary": {
+          "type": "object",
+          "properties": {
+            "total_count": {
+              "type": "integer"
+            },
+            "by_type": {
+              "type": "object",
+              "properties": {
+                "fuentes_oficiales": {
+                  "type": "integer",
+                  "minimum_expected": 2
+                },
+                "indicadores_cuantitativos": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "series_temporales_años": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "cobertura_territorial_especificada": {
+                  "type": "integer",
+                  "minimum_expected": 1
+                }
+              }
+            }
+          }
+        },
+        "confidence_scores": {
+          "type": "object",
+          "description": "Aggregated confidence metrics (weighted_mean strategy)",
+          "properties": {
+            "mean": {
+              "type": "number"
+            },
+            "std": {
+              "type": "number"
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "by_method": {
+              "type": "object",
+              "description": "Average confidence per analyzer class"
+            }
+          }
+        },
+        "pattern_matches": {
+          "type": "array",
+          "description": "Aggregated pattern matches from text mining methods",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern_id": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "avg_confidence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "critical_links": {
+          "type": "array",
+          "description": "Causal links extracted by TextMiningEngine",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cause": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string"
+              },
+              "criticality": {
+                "type": "number"
+              },
+              "coherence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "financial_summary": {
+          "type": "object",
+          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
+          "properties": {
+            "total_budget_cop": {
+              "type": "number"
+            },
+            "amounts_found": {
+              "type": "integer"
+            },
+            "by_category": {
+              "type": "object",
+              "properties": {
+                "SGR": {
+                  "type": "number"
+                },
+                "recursos_propios": {
+                  "type": "number"
+                },
+                "transferencias": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "goals_summary": {
+          "type": "object",
+          "description": "Policy goals extracted by CausalExtractor",
+          "properties": {
+            "total_goals": {
+              "type": "integer"
+            },
+            "quantified_goals": {
+              "type": "integer"
+            },
+            "goals_with_complete_context": {
+              "type": "integer"
+            }
+          }
+        },
+        "contradictions": {
+          "type": "object",
+          "description": "Results from PolicyContradictionDetector",
+          "properties": {
+            "found": {
+              "type": "integer"
+            },
+            "tests_performed": {
+              "type": "integer"
+            },
+            "interpretation": {
+              "type": "string"
+            }
+          }
+        },
+        "bayesian_insights": {
+          "type": "object",
+          "description": "Results from BayesianNumericalAnalyzer",
+          "properties": {
+            "metrics_with_high_uncertainty": {
+              "type": "array"
+            },
+            "significant_comparisons": {
+              "type": "integer"
+            }
+          }
+        },
+        "semantic_processing": {
+          "type": "object",
+          "description": "Results from SemanticProcessor",
+          "properties": {
+            "chunks_created": {
+              "type": "integer"
+            },
+            "embeddings_generated": {
+              "type": "integer"
+            },
+            "avg_semantic_similarity_to_query": {
+              "type": "number"
+            }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "methods_executed": {
+              "type": "integer",
+              "const": 12
+            },
+            "execution_time_ms": {
+              "type": "number"
+            },
+            "document_length": {
+              "type": "integer"
+            },
+            "analysis_timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "concrete_example": {
+      "elements_found": [
+        {
+          "element_id": "E-001",
+          "type": "fuentes_oficiales",
+          "value": "DANE",
+          "confidence": 0.95,
+          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
+          "source_sentence": "según datos de DANE para el año 2022",
+          "sentence_id": 45,
+          "position": {
+            "start": 123,
+            "end": 145
+          }
+        },
+        {
+          "element_id": "E-002",
+          "type": "indicadores_cuantitativos",
+          "value": "tasa de VBG: 12.3%",
+          "normalized_value": 12.3,
+          "unit": "%",
+          "confidence": 0.89,
+          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
+          "bayesian_posterior": {
+            "mean": 0.123,
+            "ci_95": [
+              0.11,
+              0.145
+            ]
+          },
+          "sentence_id": 45
+        },
+        {
+          "element_id": "E-003",
+          "type": "series_temporales_años",
+          "years": [
+            2020,
+            2021,
+            2022
+          ],
+          "confidence": 0.92,
+          "source_method": "TextMiningEngine.diagnose_critical_links"
+        },
+        {
+          "element_id": "E-004",
+          "type": "cobertura_territorial_especificada",
+          "coverage": "municipal - zona rural y urbana",
+          "confidence": 0.88,
+          "source_method": "CausalExtractor._parse_goal_context"
+        }
+      ],
+      "elements_summary": {
+        "total_count": 38,
+        "by_type": {
+          "fuentes_oficiales": 5,
+          "indicadores_cuantitativos": 12,
+          "series_temporales_años": 4,
+          "cobertura_territorial_especificada": 1,
+          "financial_amounts": 8,
+          "policy_goals": 7,
+          "causal_links": 5
+        }
+      },
+      "confidence_scores": {
+        "mean": 0.876,
+        "std": 0.089,
+        "min": 0.72,
+        "max": 0.98,
+        "by_method": {
+          "TextMiningEngine": 0.83,
+          "IndustrialPolicyProcessor": 0.91,
+          "CausalExtractor": 0.79,
+          "FinancialAuditor": 0.94,
+          "PDETMunicipalPlanAnalyzer": 0.88,
+          "PolicyContradictionDetector": 0.9,
+          "BayesianNumericalAnalyzer": 0.92,
+          "SemanticProcessor": 0.85
+        }
+      },
+      "pattern_matches": [
+        {
+          "pattern_id": "PAT-Q001-000",
+          "count": 3,
+          "avg_confidence": 0.87
+        },
+        {
+          "pattern_id": "PAT-Q001-002",
+          "count": 5,
+          "avg_confidence": 0.95
+        }
+      ],
+      "critical_links": [
+        {
+          "cause": "alta tasa de VBG",
+          "effect": "baja autonomía económica",
+          "criticality": 0.87,
+          "coherence": 0.82
+        }
+      ],
+      "financial_summary": {
+        "total_budget_cop": 850000000.0,
+        "amounts_found": 12,
+        "by_category": {
+          "SGR": 250000000.0,
+          "recursos_propios": 180000000.0
+        }
+      },
+      "goals_summary": {
+        "total_goals": 7,
+        "quantified_goals": 5,
+        "goals_with_complete_context": 4
+      },
+      "contradictions": {
+        "found": 0,
+        "tests_performed": 15,
+        "interpretation": "No statistical contradictions in quantitative claims"
+      },
+      "bayesian_insights": {
+        "metrics_with_high_uncertainty": [],
+        "significant_comparisons": 1
+      },
+      "semantic_processing": {
+        "chunks_created": 45,
+        "embeddings_generated": 45,
+        "avg_semantic_similarity_to_query": 0.78
+      },
+      "metadata": {
+        "methods_executed": 12,
+        "execution_time_ms": 2845,
+        "document_length": 15230,
+        "analysis_timestamp": "2025-11-26T12:34:56Z"
+      }
+    },
+    "validation_against_expected_elements": {
+      "cobertura_territorial_especificada": {
+        "required": true,
+        "found_in_example": true,
+        "example_element_id": "E-004"
+      },
+      "fuentes_oficiales": {
+        "minimum": 2,
+        "found_in_example": 5,
+        "status": "PASS"
+      },
+      "indicadores_cuantitativos": {
+        "minimum": 3,
+        "found_in_example": 12,
+        "status": "PASS"
+      },
+      "series_temporales_años": {
+        "minimum": 3,
+        "found_in_example": 4,
+        "status": "PASS"
+      },
+      "overall_validation_result": "PASS - All required and minimum elements present"
+    },
+    "template_variable_bindings": {
+      "description": "These variables are available for human_readable_output template",
+      "variables": {
+        "{evidence.elements_found_count}": 38,
+        "{score}": "Calculated by scorer based on elements",
+        "{quality_level}": "ALTO",
+        "{evidence.confidence_scores.mean}": "87.6%",
+        "{evidence.pattern_matches_count}": 14,
+        "{evidence.official_sources_count}": 5,
+        "{evidence.quantitative_indicators_count}": 12,
+        "{evidence.temporal_series_count}": 4,
+        "{evidence.territorial_coverage}": "municipal - zona rural y urbana"
+      }
+    },
+    "usage_notes": {
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_validators": "Use this to verify that actual execution output matches expected structure.",
+      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "OperationalizationAuditor._audit_direct_evidence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from OperationalizationAuditor._audit_direct_evidence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _audit_direct_evidence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "operationalizationauditor.audit_direct_evidence",
+        "merge_strategy": "replace"
+      }
+    },
+    "OperationalizationAuditor._audit_systemic_risk": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from OperationalizationAuditor._audit_systemic_risk",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _audit_systemic_risk"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "operationalizationauditor.audit_systemic_risk",
+        "merge_strategy": "replace"
+      }
+    },
+    "FinancialAuditor._detect_allocation_gaps": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from FinancialAuditor._detect_allocation_gaps",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_allocation_gaps"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "financial_audit.detect_allocation_gaps",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianMechanismInference._detect_gaps": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianMechanismInference._detect_gaps",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_gaps"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianmechanisminference.detect_gaps",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._generate_optimal_remediations": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._generate_optimal_remediations",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _generate_optimal_remediations"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.generate_optimal_remediations",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._simulate_intervention": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._simulate_intervention",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _simulate_intervention"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.simulate_intervention",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor.counterfactual_query": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor.counterfactual_query",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from counterfactual_query"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.counterfactual_query",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor._test_effect_stability": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor._test_effect_stability",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _test_effect_stability"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.test_effect_stability",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._detect_numerical_inconsistencies": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._detect_numerical_inconsistencies",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_numerical_inconsistencies"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.detect_numerical_inconsistencies",
+        "merge_strategy": "replace"
+      }
+    },
+    "PolicyContradictionDetector._calculate_numerical_divergence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PolicyContradictionDetector._calculate_numerical_divergence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_numerical_divergence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "contradiction_detection.calculate_numerical_divergence",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianConfidenceCalculator.calculate_posterior": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianConfidenceCalculator.calculate_posterior",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from calculate_posterior"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesianconfidencecalculator.calculate_posterior",
+        "merge_strategy": "replace"
+      }
+    },
+    "PerformanceAnalyzer.analyze_performance": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PerformanceAnalyzer.analyze_performance",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from analyze_performance"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "performanceanalyzer.analyze_performance",
+        "merge_strategy": "replace"
+      }
+    }
+  }
+}
