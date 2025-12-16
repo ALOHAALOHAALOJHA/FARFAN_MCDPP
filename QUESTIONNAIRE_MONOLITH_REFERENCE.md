@@ -1078,3 +1078,243 @@ questionnaire_monolith.json
 ---
 
 > **NOTA:** Este documento es generado automáticamente. Para actualizaciones, regenerar desde `questionnaire_monolith.json`.
+
+-----------------------------------------------
+DETALLE GRANULAR: 
+1. RESUMEN EJECUTIVO
+
+1.1 Propósito del Sistema
+
+Este JSON implementa un sistema integral de análisis y validación de políticas públicas colombianas, específicamente diseñado para evaluar planes de desarrollo territorial (PDET), políticas municipales y documentos gubernamentales mediante técnicas de inferencia causal bayesiana, minería de textos y validación de coherencia lógica.
+
+1.2 Métricas Clave
+
+Tamaño estructural: 58,408 paths únicos
+Densidad de datos: 83.8% (48,961 valores / 58,408 paths)
+Profundidad máxima: 9 niveles
+Componentes principales: 7,970 objetos, 1,478 arrays
+Volumen textual: 35,145 strings (longitud promedio: 19 chars)
+2. ARQUITECTURA TÉCNICA
+
+2.1 Topología Estructural
+
+Nivel    Nodos      %        Función
+─────────────────────────────────────────────
+  1         7      0.01%    Raíz principal
+  2        12      0.02%    Categorías mayores
+  3       344      0.59%    Subcategorías
+  4      4,334     7.42%    Grupos de validación
+  5      7,699    13.18%    Definiciones de reglas
+  6     45,110    77.23%    ⚠️ CAPA CRÍTICA: Patrones y metadatos
+  7       670      1.15%    Expansiones semánticas
+  8       228      0.39%    Metadatos auxiliares
+  9         4      0.01%    Hojas profundas
+Observación: El 77% de la estructura se concentra en el nivel 6, indicando un diseño de "expansión masiva" donde cada regla de validación tiene múltiples atributos asociados.
+
+2.2 Distribución de Tipos de Datos
+
+Tipo	Cantidad	Porcentaje	Uso Principal
+string	35,145	60.2%	Patrones regex, descripciones, nombres de funciones
+object	7,970	13.6%	Estructuras de configuración
+null	6,588	11.3%	Campos opcionales no poblados
+number	6,402	11.0%	Prioridades, pesos, especificidad
+array	1,478	2.5%	Colecciones de patrones
+boolean	826	1.4%	Flags de validación
+Insight: La alta proporción de strings (60%) y nulls (11%) sugiere un sistema extensible con muchos campos opcionales para futuras expansiones.
+
+3. TAXONOMÍA DE CAMPOS
+
+3.1 Top 20 Campos por Frecuencia
+
+Rank	Campo	Ocurrencias	Naturaleza	Cardinalidad
+1	description	3,514	Metadata	Variable
+2	priority	3,485	Ordenamiento	1-999
+3	method_type	3,481	Clasificación	4 valores
+4	function	3,481	Referencia Python	~120 únicas
+5	class	3,481	Referencia Python	30 clases
+6	specificity	2,263	Calificación	4 niveles
+7	validation_rule	2,208	Regla de validación	Variable
+8	semantic_expansion	2,208	Expansión semántica	Variable
+9	match_type	2,208	Tipo de matching	3 valores
+10	id	2,208	Identificador	Único
+11	flags	2,208	Opciones regex	Homogéneo
+12	context_scope	2,208	Alcance contextual	2 valores
+13	context_requirement	2,208	Requisito contextual	Variable
+14	confidence_weight	2,208	Peso probabilístico	0.85-0.95
+15	category	2,208	Categoría temática	12 valores
+16	pattern	1,610	Expresión regex	Único
+17	type	1,147	Tipo de objeto	Variable
+18	required	812	Obligatoriedad	Boolean
+19	pattern_ref	599	Referencia cruzada	Único
+20	patterns	360	Colección patrones	Array
+3.2 Análisis de Cardinalidad
+
+Campos Homogéneos (baja varianza):
+
+flags: "i" (100% de casos) - case-insensitive universal
+context_scope: PARAGRAPH (99.5%) vs SENTENCE (0.5%)
+match_type: REGEX (91.5%), LITERAL (7.6%), NER_OR_REGEX (0.9%)
+Campos Heterogéneos (alta varianza):
+
+function: 120+ funciones únicas, distribución Zipf (top función: 40 ocurrencias)
+description: Altamente variable, longitud 1-500 chars
+pattern: 1,610 patrones únicos (regex mayormente)
+5. SISTEMA DE PATRONES
+
+5.1 Categorías de Patrones (12 tipos)
+
+Categoría	Count	% Total	Propósito
+GENERAL	1,902	86.1%	Patrones genéricos de validación
+INDICADOR	157	7.1%	Identificación de indicadores/métricas
+TERRITORIAL	70	3.2%	Referencias geográficas
+TEMPORAL	34	1.5%	Referencias temporales
+FUENTE_OFICIAL	19	0.9%	Entidades oficiales (DANE, etc.)
+CAUSAL	14	0.6%	Conectores causales
+CAUSAL_OUTCOME	3	0.1%	Resultados causales
+POBLACION	3	0.1%	Referencias poblacionales
+INSTRUMENTO	2	0.1%	Instrumentos de política
+UNIDAD_MEDIDA	2	0.1%	Unidades de medición
+CAUSAL_CONNECTOR	1	<0.1%	Conectores causales específicos
+MECANISMO_COMPLETO	1	<0.1%	Mecanismos causales completos
+Insight: La categoría GENERAL domina abrumadoramente (86%), sugiriendo un sistema con muchas reglas de propósito general y pocas especializadas.
+
+5.2 Tipos de Matching
+
+Match Type	Count	% Total	Descripción
+REGEX	2,020	91.5%	Expresiones regulares
+LITERAL	169	7.6%	Coincidencias literales
+NER_OR_REGEX	19	0.9%	Named Entity Recognition + regex
+5.3 Niveles de Especificidad
+
+Distribución ajustada por contexto:
+
+VERY_HIGH: Patrones altamente específicos (ej: nombres propios)
+HIGH:      Patrones con contexto claro
+MEDIUM:    Patrones balanceados (DOMINANTE)
+LOW:       Patrones amplios/ambiguos
+5.4 Context Scopes
+
+PARAGRAPH (99.5%): Evaluación a nivel de párrafo completo
+SENTENCE (0.5%): Evaluación a nivel de oración (casos especiales)
+6. SISTEMA DE CONTEXTOS
+
+6.1 Context Requirements (Top 20)
+
+Representan condiciones que deben cumplirse para aplicar una validación:
+
+Contexto	Count	Tema
+completeness	289	Completitud de información
+coherencia_demostrada	10	Coherencia lógica
+analisis_contextual	10	Análisis de contexto
+analisis_realismo	10	Realismo de propuestas
+asignacion_explicita	10	Asignación de recursos
+cadena_causal_explicita	10	Cadenas causales explícitas
+ciclos_aprendizaje	10	Ciclos de retroalimentación
+coherencia_recursos	9	Coherencia en recursos
+enfoque_diferencial	10	Enfoque diferenciado
+evidencia_comparada	10	Evidencia comparativa
+gobernanza	10	Estructura de gobernanza
+horizonte_temporal	10	Plazos y temporalidad
+mecanismo_causal_explicito	10	Mecanismos causales claros
+poblacion_objetivo_definida	10	Población objetivo clara
+restricciones_presupuestales	10	Límites presupuestarios
+riesgos_identificados	10	Identificación de riesgos
+supuestos_identificados	10	Supuestos explicitados
+teoria_cambio_explicita	10	Teoría del cambio explícita
+trazabilidad_presupuestal	10	Trazabilidad de recursos
+vinculo_diagnostico_actividad	10	Vínculo diagnóstico-acción
+Clusters temáticos identificados:
+
+Cluster Causal (30 referencias): cadena_causal, mecanismo_causal, ruta_transmision
+Cluster Financiero (29 referencias): restricciones_presupuestales, trazabilidad, coherencia_recursos
+Cluster Temporal (20 referencias): horizonte_temporal, rezago_temporal, secuenciacion_logica
+Cluster de Rigor (30 referencias): evidencia_comparada, justifica_validez, documenta_validez
+7. SISTEMA DE CONFIANZA
+
+7.1 Confidence Weights
+
+Rango: 0.85 - 0.95
+
+Estadísticas:
+- Mínimo:   0.85
+- Máximo:   0.95
+- Promedio: 0.850 (altamente sesgado hacia el mínimo)
+Interpretación:
+
+Sistema conservador: la mayoría de validaciones tienen peso 0.85
+Pesos altos (0.95) reservados para patrones de alta certeza (ej: FUENTE_OFICIAL con NER)
+8. ANÁLISIS DE STRINGS
+
+8.1 Estadísticas Generales
+
+Total de strings: 35,145
+Longitud mínima: 1 char
+Longitud máxima: 500 chars
+Longitud promedio: 19.02 chars
+Mediana estimada: ~15 chars
+8.2 Distribución de Longitudes
+
+Rango      Estimado     Tipo de contenido
+──────────────────────────────────────────────
+1-10       ~15,000      IDs, keywords, flags
+11-30      ~12,000      Nombres de funciones, descripciones cortas
+31-100     ~6,000       Descripciones medianas, patrones regex
+101-200    ~1,500       Descripciones largas
+201-500    ~645         Descripciones muy detalladas, documentación
+9. HETEROGENEIDAD Y VARIANZA
+
+9.1 Coeficiente de Heterogeneidad por Campo
+
+Campo	Valores únicos	Total	Heterogeneidad
+id	2,208	2,208	100.0% (único)
+pattern	1,610	1,610	100.0% (único)
+function	~120	3,481	3.4% (alta reutilización)
+description	~2,000	3,514	56.9% (media-alta)
+class	30	3,481	0.9% (muy baja)
+category	12	2,208	0.5% (muy baja)
+match_type	3	2,208	0.1% (extremadamente baja)
+context_scope	2	2,208	<0.1% (binario)
+flags	1	2,208	0% (constante)
+9.2 Índice de Reutilización
+
+Funciones más reutilizadas:
+
+Función	Usos	Clase
+PDETMunicipalPlanAnalyzer._compute_robustness_value	40	PDETMunicipalPlanAnalyzer
+BayesianMechanismInference._test_necessity	40	BayesianMechanismInference
+PerformanceAnalyzer.analyze_performance	40	PerformanceAnalyzer
+Observación: Alta reutilización sugiere métodos polimórficos que se aplican a múltiples contextos de validación.
+
+10. RELACIONES Y DEPENDENCIAS
+
+11. PATRONES DE DISEÑO IDENTIFICADOS
+
+11.1 Strategy Pattern
+
+Cada clase implementa diferentes estrategias de análisis (analysis, extraction, validation, scoring).
+
+11.2 Chain of Responsibility
+
+El sistema de prioridades (1-999) sugiere procesamiento en cadena donde validaciones de mayor prioridad se ejecutan primero.
+
+11.3 Template Method
+
+Los campos method_type, class, function indican métodos template que se personalizan según contexto.
+
+11.4 Repository Pattern
+
+El uso de pattern_ref y id únicos sugiere un repositorio central de patrones reutilizables.
+
+12. ANÁLISIS DE CALIDAD
+
+12.1 Indicadores Positivos
+
+✅ Alta densidad (83.8%): Sistema bien poblado, poco desperdicio estructural
+✅ IDs únicos: Sistema trazable y auditable
+✅ Modularidad: 599 referencias cruzadas indican reutilización
+✅ Extensibilidad: 11.3% de nulls permiten expansión futura
+✅ Documentación: 3,514 descripciones (cobertura ~100%)
+
+Documento generado: Diciembre 15, 2025
+Versión: 1.0
+Analista: Claude (Anthropic)
