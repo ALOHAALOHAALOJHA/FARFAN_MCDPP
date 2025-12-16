@@ -237,7 +237,7 @@ def project_root() -> Path:
 @pytest.fixture(scope="module")
 def executor_contracts_dir(project_root: Path) -> Path:
     """Return the executor contracts directory."""
-    return project_root / "src" / "canonic_phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
+    return project_root / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
 
 
 @pytest.fixture(scope="module")
