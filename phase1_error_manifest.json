@@ -1,9 +1,0 @@
-{
-  "phase": "PHASE_1_SPC_INGESTION",
-  "subphase": "SP1",
-  "error_type": "Phase1FatalError",
-  "error_message": "SP1: Cannot extract PDF text: Failed to open file 'test_document.pdf'.",
-  "timestamp": "2025-12-16T00:58:18.248737",
-  "fatal": true,
-  "recovery_possible": false
-}

@@ -709,19 +709,19 @@ def cli() -> None:
 
     async def run_spc_ingestion(self) -> Optional[Any]:
         """
-        Run SPC (Smart Policy Chunks) ingestion phase - canonical phase-one.
+        Run CPP (Canon Policy Package) ingestion phase - canonical phase-one.
 
         Returns:
-            SPC object if successful, None otherwise
+            CPP object if successful, None otherwise
         """
-        self.log_claim("start", "spc_ingestion", "Starting SPC ingestion (phase-one)")
+        self.log_claim("start", "cpp_ingestion", "Starting CPP ingestion (phase-one)")
 
         try:
             from canonic_phases.Phase_one.phase0_input_validation import (
                 Phase0Input,
                 Phase0ValidationContract,
             )
-            from canonic_phases.Phase_one.phase1_spc_ingestion_full import (
+            from canonic_phases.Phase_one.phase1_cpp_ingestion_full import (
                 execute_phase_1_with_full_contract,
             )
 
@@ -740,18 +740,18 @@ def cli() -> None:
             self.phases_completed += 1
             self.log_claim(
                 "complete",
-                "spc_ingestion",
-                "SPC ingestion (phase-one) completed successfully",
+                "cpp_ingestion",
+                "CPP ingestion (phase-one) completed successfully",
                 {"phases_completed": self.phases_completed},
             )
             return cpp
 
         except Exception as e:
             self.phases_failed += 1
-            error_msg = f"SPC ingestion failed: {str(e)}"
+            error_msg = f"CPP ingestion failed: {str(e)}"
             self.log_claim(
                 "error",
-                "spc_ingestion",
+                "cpp_ingestion",
                 error_msg,
                 {"traceback": traceback.format_exc()},
             )

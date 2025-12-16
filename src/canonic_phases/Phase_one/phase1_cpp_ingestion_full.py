@@ -1,5 +1,5 @@
 """
-Phase 1 SPC Ingestion - Full Execution Contract
+Phase 1 CPP Ingestion - Full Execution Contract
 ===============================================
 
 Implementation of the strict Phase 1 contract with zero ambiguity.
@@ -48,7 +48,7 @@ Weights are NOT ornamental - they actively contribute to phase stabilization by:
 - Supporting risk-based testing strategies
 
 Author: FARFAN Pipeline Team
-Version: SPC-2025.1
+Version: CPP-2025.1
 Last Updated: 2025-12-11 - Weight contract enhancement
 """
 
@@ -438,7 +438,7 @@ class Phase1FailureHandler:
         HANDLE SUBPHASE FAILURE - ALWAYS FATAL
         """
         error_report = {
-            'phase': 'PHASE_1_SPC_INGESTION',
+            'phase': 'PHASE_1_CPP_INGESTION',
             'subphase': f'SP{sp_num}',
             'error_type': type(error).__name__,
             'error_message': str(error),
@@ -500,7 +500,7 @@ class Phase1FailureHandler:
         
         return all_valid
 
-class Phase1SPCIngestionFullContract:
+class Phase1CPPIngestionFullContract:
     """
     CRITICAL EXECUTION CONTRACT - WEIGHT: 10000
     EVERY LINE IS MANDATORY.  NO SHORTCUTS. NO ASSUMPTIONS.
@@ -2620,7 +2620,7 @@ class Phase1SPCIngestionFullContract:
             'final_rankings': final_rankings,
             'irrigation_map': irrigation_map,
             'created_at': datetime.now(timezone.utc).isoformat() + 'Z',
-            'phase1_version': 'SPC-2025.1',
+            'phase1_version': 'CPP-2025.1',
             'sisas_available': SISAS_AVAILABLE,
             'derek_beach_available': DEREK_BEACH_AVAILABLE,
             'teoria_cambio_available': TEORIA_CAMBIO_AVAILABLE,
@@ -2646,9 +2646,9 @@ class Phase1SPCIngestionFullContract:
             dimensions=tuple(PADimGridSpecification.DIMENSIONS),
         )
         
-        # [EXEC-CPP-003] schema_version MUST be "SPC-2025.1"
+        # [EXEC-CPP-003] schema_version MUST be "CPP-2025.1"
         cpp = CanonPolicyPackage(
-            schema_version="SPC-2025.1",
+            schema_version="CPP-2025.1",
             document_id=self.document_id,
             chunk_graph=chunk_graph,
             quality_metrics=quality_metrics,
@@ -2697,9 +2697,9 @@ class Phase1SPCIngestionFullContract:
         if chunk_count != 60:
             raise Phase1FatalError(f"POST FATAL: chunk_count={chunk_count}, MUST be 60")
         
-        # [POST-005] schema_version MUST be "SPC-2025.1"
-        if cpp.schema_version != "SPC-2025.1":
-            raise Phase1FatalError(f"POST FATAL: schema_version={cpp.schema_version}, MUST be 'SPC-2025.1'")
+        # [POST-005] schema_version MUST be "CPP-2025.1"
+        if cpp.schema_version != "CPP-2025.1":
+            raise Phase1FatalError(f"POST FATAL: schema_version={cpp.schema_version}, MUST be 'CPP-2025.1'")
         
         # [TRACE-002] execution_trace MUST have EXACTLY 16 entries (SP0-SP15)
         trace = cpp.metadata.get('execution_trace', [])
@@ -2749,7 +2749,7 @@ class Phase1SPCIngestionFullContract:
         
         logger.info("Postcondition Verification: ALL INVARIANTS PASSED")
         logger.info(f"  ✓ chunk_count = 60")
-        logger.info(f"  ✓ schema_version = SPC-2025.1")
+        logger.info(f"  ✓ schema_version = CPP-2025.1")
         logger.info(f"  ✓ execution_trace = 16 entries (SP0-SP15)")
         logger.info(f"  ✓ PA×DIM coverage = COMPLETE")
         logger.info(f"  ✓ Weight-based contract compliance = VERIFIED")
@@ -2777,7 +2777,7 @@ def execute_phase_1_with_full_contract(
     """
     try:
         # INITIALIZE EXECUTOR WITH SIGNAL REGISTRY (DI)
-        executor = Phase1SPCIngestionFullContract(signal_registry=signal_registry)
+        executor = Phase1CPPIngestionFullContract(signal_registry=signal_registry)
         
         # Log policy compliance
         if signal_registry is not None:
