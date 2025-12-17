@@ -383,7 +383,7 @@ class TestPhase2EvidenceValidation:
         document = Mock()
         config = {}
         
-        with patch("orchestration.orchestrator.logger") as mock_logger:
+        with patch("farfan_pipeline.orchestration.orchestrator.logger") as mock_logger:
             results = await orchestrator._execute_micro_questions_async(document, config)
             
             mock_logger.warning.assert_any_call(

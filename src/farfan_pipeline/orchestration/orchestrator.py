@@ -1589,6 +1589,7 @@ class Orchestrator:
         results: list[MicroQuestionRun] = []
         MAX_RETRIES = 3
         RETRY_BACKOFF_BASE = 0.5
+        MAX_RETRY_BACKOFF_SECONDS = 10.0
         
         for task_idx, task in enumerate(tasks):
             self._ensure_not_aborted()
@@ -1716,7 +1717,10 @@ class Orchestrator:
                     instrumentation.record_error("execution", str(e))
                     
                     if attempt < MAX_RETRIES - 1:
-                        backoff_time = min(RETRY_BACKOFF_BASE * (2 ** attempt), 10.0)
+                        backoff_time = min(
+                            RETRY_BACKOFF_BASE * (2 ** attempt),
+                            MAX_RETRY_BACKOFF_SECONDS
+                        )
                         logger.info(
                             "retrying_task",
                             task_id=task.task_id,
