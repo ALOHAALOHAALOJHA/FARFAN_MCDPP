@@ -240,6 +240,7 @@ class QuestionAnalysis(BaseModel):
     evidence: list[str] = Field(default_factory=list, description="Evidence list")
     patterns_applied: list[str] = Field(default_factory=list, description="Applied pattern IDs")
     recommendation: str | None = Field(default=None, description="Analysis recommendation")
+    human_answer: str | None = Field(default=None, description="Carver-synthesized human-readable answer")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
     @field_validator('score')
@@ -760,6 +761,7 @@ class ReportAssembler:
                     evidence=result.get('evidence', []) if isinstance(result.get('evidence'), list) else [],
                     patterns_applied=pattern_names,
                     recommendation=result.get('recommendation'),
+                    human_answer=result.get('human_answer'),
                     metadata={
                         'dimension': question.get('dimension'),
                         'policy_area': question.get('policy_area')

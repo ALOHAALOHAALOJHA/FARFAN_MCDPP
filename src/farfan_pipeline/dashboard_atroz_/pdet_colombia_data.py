@@ -89,7 +89,6 @@ PDET_MUNICIPALITIES: list[PDETMunicipality] = [
     PDETMunicipality("Segovia", "Antioquia", PDETSubregion.BAJO_CAUCA, 40000, 1234.0, "05756"),
     PDETMunicipality("Valdivia", "Antioquia", PDETSubregion.BAJO_CAUCA, 20000, 1088.0, "05854"),
     PDETMunicipality("Vegachí", "Antioquia", PDETSubregion.BAJO_CAUCA, 9000, 582.0, "05858"),
-    PDETMunicipality("Yondó", "Antioquia", PDETSubregion.BAJO_CAUCA, 18000, 1635.0, "05893"),
 
     # CUENCA DEL CAGUÁN Y PIEDEMONTE CAQUETEÑO (17 municipalities)
     PDETMunicipality("Albania", "Caquetá", PDETSubregion.CAGUAN, 5000, 1149.0, "18029"),
@@ -221,7 +220,6 @@ PDET_MUNICIPALITIES: list[PDETMunicipality] = [
     PDETMunicipality("San Pablo", "Bolívar", PDETSubregion.SUR_BOLIVAR, 44000, 979.0, "13667"),
     PDETMunicipality("Santa Rosa del Sur", "Bolívar", PDETSubregion.SUR_BOLIVAR, 39000, 1749.0, "13688"),
     PDETMunicipality("Simití", "Bolívar", PDETSubregion.SUR_BOLIVAR, 20000, 2814.0, "13744"),
-    PDETMunicipality("Yondó", "Antioquia", PDETSubregion.SUR_BOLIVAR, 18000, 1635.0, "05893"),
 
     # SUR DE CÓRDOBA (5 municipalities)
     PDETMunicipality("Montelíbano", "Córdoba", PDETSubregion.SUR_CORDOBA, 83000, 2515.0, "23466"),
@@ -240,7 +238,7 @@ PDET_MUNICIPALITIES: list[PDETMunicipality] = [
     PDETMunicipality("Apartadó", "Antioquia", PDETSubregion.URABA, 195000, 607.0, "05045"),
     PDETMunicipality("Carepa", "Antioquia", PDETSubregion.URABA, 58000, 197.0, "05147"),
     PDETMunicipality("Chigorodó", "Antioquia", PDETSubregion.URABA, 79000, 615.0, "05172"),
-    PDETMunicipality("Mutatá", "Antioquia", PDETSubregion.URABA, 20000, 1185.0, "05490"),
+    PDETMunicipality("Mutatá", "Antioquia", PDETSubregion.URABA, 20000, 1185.0, "05480"),
     PDETMunicipality("Necoclí", "Antioquia", PDETSubregion.URABA, 66000, 1387.0, "05490"),
     PDETMunicipality("San Juan de Urabá", "Antioquia", PDETSubregion.URABA, 23000, 672.0, "05659"),
     PDETMunicipality("San Pedro de Urabá", "Antioquia", PDETSubregion.URABA, 37000, 401.0, "05664"),

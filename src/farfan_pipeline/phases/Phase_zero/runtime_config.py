@@ -429,6 +429,19 @@ class RuntimeConfig:
             and not self.allow_validator_disable
         )
     
+    @property
+    def strict_calibration(self) -> bool:
+        """
+        Check if strict calibration is required.
+        
+        In PROD mode, strict calibration is enforced unless explicitly relaxed.
+        This means no missing base weights are allowed.
+        
+        Returns:
+            True if strict calibration is required (PROD without allow_missing_base_weights)
+        """
+        return self.mode == RuntimeMode.PROD and not self.allow_missing_base_weights
+    
     def get_fallback_summary(self) -> dict[str, dict[str, bool]]:
         """
         Get summary of all fallback configurations grouped by category.
