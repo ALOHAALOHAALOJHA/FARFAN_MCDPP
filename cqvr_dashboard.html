@@ -712,10 +712,21 @@
             `;
         }
 
+        function normalizeDecisionForStatusClass(decision) {
+            if (!decision) {
+                return '';
+            }
+            // Normalize to NFD form, strip combining diacritics, then lowercase for stable CSS class names
+            return decision
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase();
+        }
+
         function renderTable() {
             const tbody = document.getElementById('contractsTableBody');
             const html = filteredContracts.map(contract => {
-                const statusClass = contract.decision.toLowerCase().replace('á', 'a').replace('ó', 'o');
+                const statusClass = normalizeDecisionForStatusClass(contract.decision);
                 const totalIssues = contract.blockers_count + contract.warnings_count;
                 return `
                     <tr onclick="showContractDetails('${contract.contract_id}')">
