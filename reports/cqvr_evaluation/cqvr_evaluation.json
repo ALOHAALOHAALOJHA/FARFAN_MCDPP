@@ -1,17 +1,17 @@
 {
-  "evaluation_timestamp": "2025-12-17T18:47:41.338714",
+  "evaluation_timestamp": "2025-12-17T18:50:28.583974",
   "cqvr_version": "2.0",
-  "total_contracts": 25,
+  "total_contracts": 10,
   "statistics": {
-    "avg_score": 65.16,
+    "avg_score": 71.4,
     "production_ready": 2,
     "need_patches": 6,
-    "need_reformulation": 17
+    "need_reformulation": 2
   },
   "evaluations": [
     {
       "contract_id": "Q001",
-      "evaluation_timestamp": "2025-12-17T18:47:41.325247",
+      "evaluation_timestamp": "2025-12-17T18:50:28.578490",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -88,7 +88,7 @@
     },
     {
       "contract_id": "Q002",
-      "evaluation_timestamp": "2025-12-17T18:47:41.326034",
+      "evaluation_timestamp": "2025-12-17T18:50:28.579365",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -165,7 +165,7 @@
     },
     {
       "contract_id": "Q003",
-      "evaluation_timestamp": "2025-12-17T18:47:41.326593",
+      "evaluation_timestamp": "2025-12-17T18:50:28.579953",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -221,7 +221,7 @@
         "warnings": [
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'suficiencia_justificada', 'asignacion_explicita', 'trazabilidad_ppi_bpin'}",
+          "B3: Required elements not in validation rules: {'asignacion_explicita', 'trazabilidad_ppi_bpin', 'suficiencia_justificada'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -235,7 +235,7 @@
         ],
         "tier2": [
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'suficiencia_justificada', 'asignacion_explicita', 'trazabilidad_ppi_bpin'}"
+          "B3: Required elements not in validation rules: {'asignacion_explicita', 'trazabilidad_ppi_bpin', 'suficiencia_justificada'}"
         ],
         "tier3": [
           "C1: No methodological_depth for documentation check",
@@ -247,7 +247,7 @@
           "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'suficiencia_justificada', 'asignacion_explicita', 'trazabilidad_ppi_bpin'}",
+          "B3: Required elements not in validation rules: {'asignacion_explicita', 'trazabilidad_ppi_bpin', 'suficiencia_justificada'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -256,7 +256,7 @@
     },
     {
       "contract_id": "Q004",
-      "evaluation_timestamp": "2025-12-17T18:47:41.327765",
+      "evaluation_timestamp": "2025-12-17T18:50:28.581139",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -312,7 +312,7 @@
         "warnings": [
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'talento_humano', 'procesos', 'cuellos_botella', 'datos_sistemas', 'gobernanza'}",
+          "B3: Required elements not in validation rules: {'talento_humano', 'gobernanza', 'datos_sistemas', 'procesos', 'cuellos_botella'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -326,7 +326,7 @@
         ],
         "tier2": [
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'talento_humano', 'procesos', 'cuellos_botella', 'datos_sistemas', 'gobernanza'}"
+          "B3: Required elements not in validation rules: {'talento_humano', 'gobernanza', 'datos_sistemas', 'procesos', 'cuellos_botella'}"
         ],
         "tier3": [
           "C1: No methodological_depth for documentation check",
@@ -338,7 +338,7 @@
           "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'talento_humano', 'procesos', 'cuellos_botella', 'datos_sistemas', 'gobernanza'}",
+          "B3: Required elements not in validation rules: {'talento_humano', 'gobernanza', 'datos_sistemas', 'procesos', 'cuellos_botella'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -347,7 +347,7 @@
     },
     {
       "contract_id": "Q005",
-      "evaluation_timestamp": "2025-12-17T18:47:41.328222",
+      "evaluation_timestamp": "2025-12-17T18:50:28.581623",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -401,7 +401,7 @@
         "warnings": [
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'coherencia_demostrada', 'restricciones_presupuestales', 'restricciones_temporales', 'restricciones_legales'}",
+          "B3: Required elements not in validation rules: {'coherencia_demostrada', 'restricciones_legales', 'restricciones_temporales', 'restricciones_presupuestales'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -414,7 +414,7 @@
         ],
         "tier2": [
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'coherencia_demostrada', 'restricciones_presupuestales', 'restricciones_temporales', 'restricciones_legales'}"
+          "B3: Required elements not in validation rules: {'coherencia_demostrada', 'restricciones_legales', 'restricciones_temporales', 'restricciones_presupuestales'}"
         ],
         "tier3": [
           "C1: No methodological_depth for documentation check",
@@ -425,7 +425,7 @@
           "A2: Low method usage ratio: 0.0% (0/7)",
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'coherencia_demostrada', 'restricciones_presupuestales', 'restricciones_temporales', 'restricciones_legales'}",
+          "B3: Required elements not in validation rules: {'coherencia_demostrada', 'restricciones_legales', 'restricciones_temporales', 'restricciones_presupuestales'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -434,7 +434,7 @@
     },
     {
       "contract_id": "Q006",
-      "evaluation_timestamp": "2025-12-17T18:47:41.328636",
+      "evaluation_timestamp": "2025-12-17T18:50:28.582088",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -488,7 +488,7 @@
         "warnings": [
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'columna_responsable', 'columna_producto', 'columna_cronograma', 'columna_costo', 'formato_tabular'}",
+          "B3: Required elements not in validation rules: {'columna_costo', 'formato_tabular', 'columna_responsable', 'columna_producto', 'columna_cronograma'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -501,7 +501,7 @@
         ],
         "tier2": [
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'columna_responsable', 'columna_producto', 'columna_cronograma', 'columna_costo', 'formato_tabular'}"
+          "B3: Required elements not in validation rules: {'columna_costo', 'formato_tabular', 'columna_responsable', 'columna_producto', 'columna_cronograma'}"
         ],
         "tier3": [
           "C1: No methodological_depth for documentation check",
@@ -512,7 +512,7 @@
           "A2: Low method usage ratio: 0.0% (0/7)",
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'columna_responsable', 'columna_producto', 'columna_cronograma', 'columna_costo', 'formato_tabular'}",
+          "B3: Required elements not in validation rules: {'columna_costo', 'formato_tabular', 'columna_responsable', 'columna_producto', 'columna_cronograma'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -521,7 +521,7 @@
     },
     {
       "contract_id": "Q007",
-      "evaluation_timestamp": "2025-12-17T18:47:41.329128",
+      "evaluation_timestamp": "2025-12-17T18:50:28.582567",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -575,7 +575,7 @@
         "warnings": [
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'poblacion_objetivo_definida', 'logica_causal_explicita', 'instrumento_especificado'}",
+          "B3: Required elements not in validation rules: {'logica_causal_explicita', 'poblacion_objetivo_definida', 'instrumento_especificado'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -588,7 +588,7 @@
         ],
         "tier2": [
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'poblacion_objetivo_definida', 'logica_causal_explicita', 'instrumento_especificado'}"
+          "B3: Required elements not in validation rules: {'logica_causal_explicita', 'poblacion_objetivo_definida', 'instrumento_especificado'}"
         ],
         "tier3": [
           "C1: No methodological_depth for documentation check",
@@ -599,7 +599,7 @@
           "A2: Low method usage ratio: 0.0% (0/11)",
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'poblacion_objetivo_definida', 'logica_causal_explicita', 'instrumento_especificado'}",
+          "B3: Required elements not in validation rules: {'logica_causal_explicita', 'poblacion_objetivo_definida', 'instrumento_especificado'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
@@ -608,7 +608,7 @@
     },
     {
       "contract_id": "Q008",
-      "evaluation_timestamp": "2025-12-17T18:47:41.329564",
+      "evaluation_timestamp": "2025-12-17T18:50:28.583052",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -695,7 +695,7 @@
     },
     {
       "contract_id": "Q009",
-      "evaluation_timestamp": "2025-12-17T18:47:41.330032",
+      "evaluation_timestamp": "2025-12-17T18:50:28.583518",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -782,7 +782,7 @@
     },
     {
       "contract_id": "Q010",
-      "evaluation_timestamp": "2025-12-17T18:47:41.330452",
+      "evaluation_timestamp": "2025-12-17T18:50:28.583961",
       "cqvr_version": "2.0",
       "scores": {
         "tier1": {
@@ -861,1371 +861,6 @@
           "A4: source_hash is placeholder or missing",
           "B2: No methodological_depth.methods defined",
           "B3: Required elements not in validation rules: {'complementariedad_explicita', 'secuenciacion_logica'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q011",
-      "evaluation_timestamp": "2025-12-17T18:47:41.330899",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 12.5% (1/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'linea_base_producto', 'meta_cuantitativa', 'fuente_verificacion'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 12.5% (1/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'linea_base_producto', 'meta_cuantitativa', 'fuente_verificacion'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 12.5% (1/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'linea_base_producto', 'meta_cuantitativa', 'fuente_verificacion'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q012",
-      "evaluation_timestamp": "2025-12-17T18:47:41.331588",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/21)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'proporcionalidad_meta_brecha', 'dosificacion_definida'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/21)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'proporcionalidad_meta_brecha', 'dosificacion_definida'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/21)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'proporcionalidad_meta_brecha', 'dosificacion_definida'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q013",
-      "evaluation_timestamp": "2025-12-17T18:47:41.332354",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/22)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'trazabilidad_presupuestal', 'trazabilidad_organizacional'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/22)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'trazabilidad_presupuestal', 'trazabilidad_organizacional'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/22)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'trazabilidad_presupuestal', 'trazabilidad_organizacional'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q014",
-      "evaluation_timestamp": "2025-12-17T18:47:41.333088",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/26)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'coherencia_recursos', 'realismo_plazos', 'factibilidad_tecnica'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/26)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'coherencia_recursos', 'realismo_plazos', 'factibilidad_tecnica'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/26)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'coherencia_recursos', 'realismo_plazos', 'factibilidad_tecnica'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q015",
-      "evaluation_timestamp": "2025-12-17T18:47:41.333878",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/25)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'mecanismo_causal_explicito', 'conexion_producto_resultado'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/25)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'mecanismo_causal_explicito', 'conexion_producto_resultado'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/25)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'mecanismo_causal_explicito', 'conexion_producto_resultado'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q016",
-      "evaluation_timestamp": "2025-12-17T18:47:41.334440",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 6.2% (1/16)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'linea_base_resultado', 'horizonte_temporal', 'metrica_outcome', 'meta_resultado'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 6.2% (1/16)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'linea_base_resultado', 'horizonte_temporal', 'metrica_outcome', 'meta_resultado'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 6.2% (1/16)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'linea_base_resultado', 'horizonte_temporal', 'metrica_outcome', 'meta_resultado'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q017",
-      "evaluation_timestamp": "2025-12-17T18:47:41.334888",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'supuestos_identificados', 'cadena_causal_explicita', 'condiciones_habilitantes'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'supuestos_identificados', 'cadena_causal_explicita', 'condiciones_habilitantes'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'supuestos_identificados', 'cadena_causal_explicita', 'condiciones_habilitantes'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q018",
-      "evaluation_timestamp": "2025-12-17T18:47:41.335307",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'justificacion_capacidad', 'evidencia_comparada', 'justificacion_recursos'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'justificacion_capacidad', 'evidencia_comparada', 'justificacion_recursos'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'justificacion_capacidad', 'evidencia_comparada', 'justificacion_recursos'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q019",
-      "evaluation_timestamp": "2025-12-17T18:47:41.335743",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/7)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'criterios_exito_definidos', 'vinculo_resultado_problema'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/7)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'criterios_exito_definidos', 'vinculo_resultado_problema'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/7)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'criterios_exito_definidos', 'vinculo_resultado_problema'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q020",
-      "evaluation_timestamp": "2025-12-17T18:47:41.336133",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/6)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'alineacion_pnd', 'alineacion_ods'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/6)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'alineacion_pnd', 'alineacion_ods'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/6)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'alineacion_pnd', 'alineacion_ods'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q021",
-      "evaluation_timestamp": "2025-12-17T18:47:41.336546",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'ruta_transmision', 'rezago_temporal', 'impacto_definido'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'ruta_transmision', 'rezago_temporal', 'impacto_definido'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'ruta_transmision', 'rezago_temporal', 'impacto_definido'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q022",
-      "evaluation_timestamp": "2025-12-17T18:47:41.337426",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/28)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'usa_proxies', 'justifica_validez', 'usa_indices_compuestos'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/28)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'usa_proxies', 'justifica_validez', 'usa_indices_compuestos'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/28)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'usa_proxies', 'justifica_validez', 'usa_indices_compuestos'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q023",
-      "evaluation_timestamp": "2025-12-17T18:47:41.337868",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/6)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'proxy_para_intangibles', 'documenta_validez', 'reconoce_limitaciones'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/6)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'proxy_para_intangibles', 'documenta_validez', 'reconoce_limitaciones'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/6)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'proxy_para_intangibles', 'documenta_validez', 'reconoce_limitaciones'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q024",
-      "evaluation_timestamp": "2025-12-17T18:47:41.338270",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/7)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'riesgos_sistemicos', 'alineacion_marcos'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/7)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'riesgos_sistemicos', 'alineacion_marcos'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/7)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'riesgos_sistemicos', 'alineacion_marcos'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      }
-    },
-    {
-      "contract_id": "Q025",
-      "evaluation_timestamp": "2025-12-17T18:47:41.338699",
-      "cqvr_version": "2.0",
-      "scores": {
-        "tier1": {
-          "score": 39,
-          "max": 55,
-          "percentage": 70.9,
-          "components": {
-            "A1_identity_schema": 20,
-            "A2_method_assembly": 15,
-            "A3_signal_requirements": 0,
-            "A4_output_schema": 4
-          }
-        },
-        "tier2": {
-          "score": 15,
-          "max": 30,
-          "percentage": 50.0,
-          "components": {
-            "B1_pattern_coverage": 10,
-            "B2_method_specificity": 0,
-            "B3_validation_rules": 5
-          }
-        },
-        "tier3": {
-          "score": 7,
-          "max": 15,
-          "percentage": 46.7,
-          "components": {
-            "C1_documentation_quality": 0,
-            "C2_human_template": 2,
-            "C3_metadata_completeness": 5
-          }
-        },
-        "total": {
-          "score": 61,
-          "max": 100,
-          "percentage": 61.0
-        }
-      },
-      "decision": {
-        "status": "REFORMULAR",
-        "rationale": "Contract requires reformulation: Tier 1: 39/55, Total: 61/100. Blockers: 2. Failed decision criteria.",
-        "remediation": [
-          "Analyze critical blockers",
-          "Consider regeneration from monolith",
-          "Fix tier 1 component issues",
-          "Re-run CQVR post-reformulation"
-        ],
-        "blockers": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation."
-        ],
-        "warnings": [
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'analisis_realismo', 'efectos_no_deseados', 'hipotesis_limite'}",
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ]
-      },
-      "issues": {
-        "tier1": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing"
-        ],
-        "tier2": [
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'analisis_realismo', 'efectos_no_deseados', 'hipotesis_limite'}"
-        ],
-        "tier3": [
-          "C1: No methodological_depth for documentation check",
-          "C2: Template title does not reference base_slot or question_id",
-          "C3: source_hash is placeholder - breaks provenance chain"
-        ],
-        "all": [
-          "A2: Low method usage ratio: 0.0% (0/8)",
-          "A3: CRITICAL - minimum_signal_threshold=0.0 but mandatory_signals defined. This allows zero-strength signals to pass validation.",
-          "A4: source_hash is placeholder or missing",
-          "B2: No methodological_depth.methods defined",
-          "B3: Required elements not in validation rules: {'analisis_realismo', 'efectos_no_deseados', 'hipotesis_limite'}",
           "C1: No methodological_depth for documentation check",
           "C2: Template title does not reference base_slot or question_id",
           "C3: source_hash is placeholder - breaks provenance chain"
