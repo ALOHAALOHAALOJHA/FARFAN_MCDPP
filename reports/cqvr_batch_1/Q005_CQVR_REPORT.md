@@ -41,7 +41,7 @@
 
 ## RATIONALE
 
-Contract requires reformulation: Tier 1: 39.0/55.0 (70.9%) < threshold 35.0, Total: 61.0/100.0 (61.0%). Critical blockers: 1. Contract needs substantial rework.
+Contract requires reformulation: Tier 1: 39.0/55.0 (70.9%), Total: 61.0/100.0 (61.0%). Reasons: Tier 1 score below production threshold (45.0); Total score below production threshold (80.0); 1 critical blocker(s). Contract needs substantial rework.
 
 ---
 
@@ -131,7 +131,7 @@ Contract requires reformulation: Tier 1: 39.0/55.0 (70.9%) < threshold 35.0, Tot
 1. A2: Low method usage ratio: 0.0% (0/7)
 2. A4: source_hash is placeholder or missing
 3. B2: No methodological_depth.methods defined
-4. B3: Required elements not in validation rules: {'coherencia_demostrada', 'restricciones_temporales', 'restricciones_presupuestales', 'restricciones_legales'}
+4. B3: Required elements not in validation rules: {'restricciones_legales', 'restricciones_temporales', 'coherencia_demostrada', 'restricciones_presupuestales'}
 5. C1: No methodological_depth for documentation check
 6. C2: Template title does not reference base_slot or question_id
 7. C3: source_hash is placeholder - breaks provenance chain

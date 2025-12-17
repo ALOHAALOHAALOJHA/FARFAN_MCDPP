@@ -41,7 +41,7 @@
 
 ## RATIONALE
 
-Contract requires reformulation: Tier 1: 39.0/55.0 (70.9%) < threshold 35.0, Total: 61.0/100.0 (61.0%). Critical blockers: 1. Contract needs substantial rework.
+Contract requires reformulation: Tier 1: 39.0/55.0 (70.9%), Total: 61.0/100.0 (61.0%). Reasons: Tier 1 score below production threshold (45.0); Total score below production threshold (80.0); 1 critical blocker(s). Contract needs substantial rework.
 
 ---
 

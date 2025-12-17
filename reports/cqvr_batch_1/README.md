@@ -72,8 +72,8 @@ This issue causes:
 
 ### Decision Matrix
 - **PRODUCCION** (≥80 pts, Tier 1 ≥45): Ready for deployment
-- **PARCHEAR** (≥70 pts, Tier 1 ≥35): Needs minor fixes
-- **REFORMULAR** (<70 pts or Tier 1 <35): Needs substantial rework
+- **PARCHEAR** (≥70 pts, Tier 1 ≥35, ≤2 blockers): Needs minor fixes
+- **REFORMULAR** (<70 pts or Tier 1 <35 or >2 blockers): Needs substantial rework
 
 ## Remediation Strategy
 

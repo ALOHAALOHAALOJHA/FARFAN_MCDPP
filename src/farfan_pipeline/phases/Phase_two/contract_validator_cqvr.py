@@ -647,13 +647,24 @@ class CQVRValidator:
                 f"Apply recommended patches to reach production threshold."
             )
         else:
+            reason_parts = []
+            if score.tier1_score < self.TIER1_THRESHOLD:
+                reason_parts.append(f"Tier 1 score below minimum threshold ({self.TIER1_THRESHOLD})")
+            if score.tier1_score < self.TIER1_PRODUCTION_THRESHOLD:
+                reason_parts.append(f"Tier 1 score below production threshold ({self.TIER1_PRODUCTION_THRESHOLD})")
+            if score.total_score < self.TOTAL_PRODUCTION_THRESHOLD:
+                reason_parts.append(f"Total score below production threshold ({self.TOTAL_PRODUCTION_THRESHOLD})")
+            if len(self.blockers) > 0:
+                reason_parts.append(f"{len(self.blockers)} critical blocker(s)")
+            
+            reason_str = "; ".join(reason_parts) if reason_parts else "Failed decision criteria"
+            
             return (
                 f"Contract requires reformulation: "
                 f"Tier 1: {score.tier1_score:.1f}/{score.tier1_max} "
-                f"({score.tier1_percentage:.1f}%) "
-                f"< threshold {self.TIER1_THRESHOLD}, "
+                f"({score.tier1_percentage:.1f}%), "
                 f"Total: {score.total_score:.1f}/{score.total_max} "
                 f"({score.total_percentage:.1f}%). "
-                f"Critical blockers: {len(self.blockers)}. "
+                f"Reasons: {reason_str}. "
                 f"Contract needs substantial rework."
             )
