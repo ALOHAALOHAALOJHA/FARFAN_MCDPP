@@ -12,6 +12,11 @@ Date: 2025-12-11
 import pytest
 from unittest.mock import patch, MagicMock
 
+try:
+    import psutil  # noqa: F401
+except Exception:
+    pytest.skip("psutil not installed in this environment", allow_module_level=True)
+
 from canonic_phases.Phase_one.phase1_circuit_breaker import (
     Phase1CircuitBreaker,
     CircuitState,

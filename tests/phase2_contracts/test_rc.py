@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from cross_cutting_infrastrucuture.contractual.dura_lex.risk_certificate import (
+from cross_cutting_infrastructure.contractual.dura_lex.risk_certificate import (
     RiskCertificateContract,
 )
 

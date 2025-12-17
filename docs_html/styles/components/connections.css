@@ -1,0 +1,14 @@
+/* FARFAN Visual Protocol: Connection Components */
+
+.fvp-neural-connection {
+    stroke-width: 1.5px;
+    stroke: var(--atroz-blue-electric);
+    fill: none;
+    stroke-dasharray: 10;
+    animation: dataFlow 1s linear infinite;
+}
+
+/* Color variations */
+.fvp-neural-connection.red { stroke: var(--atroz-red-500); }
+.fvp-neural-connection.green { stroke: var(--atroz-green-toxic); }
+.fvp-neural-connection.copper { stroke: var(--atroz-copper-500); }

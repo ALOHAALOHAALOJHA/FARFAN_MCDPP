@@ -25,6 +25,10 @@ def test_section(name):
     print('='*80)
     return lambda f: f
 
+# pytest will try to collect any function starting with `test_` as a test.
+# This helper is a decorator, not a test.
+test_section.__test__ = False  # type: ignore[attr-defined]
+
 @test_section("1. PACKAGE STRUCTURE VALIDATION")
 def test_package_structure():
     """Verify all required __init__.py files exist"""
@@ -38,9 +42,9 @@ def test_package_structure():
         'src/canonic_phases/Phase_four_five_six_seven/__init__.py',
         'src/canonic_phases/Phase_eight/__init__.py',
         'src/canonic_phases/Phase_nine/__init__.py',
-        'src/cross_cutting_infrastrucuture/__init__.py',
-        'src/cross_cutting_infrastrucuture/irrigation_using_signals/__init__.py',
-        'src/cross_cutting_infrastrucuture/irrigation_using_signals/SISAS/__init__.py',
+        'src/cross_cutting_infrastructure/__init__.py',
+        'src/cross_cutting_infrastructure/irrigation_using_signals/__init__.py',
+        'src/cross_cutting_infrastructure/irrigation_using_signals/SISAS/__init__.py',
     ]
     
     missing = []
@@ -67,7 +71,7 @@ def test_import_chain():
         ('canonic_phases.Phase_one.phase1_models', 'Phase 1 Models'),
         ('canonic_phases.Phase_one.cpp_models', 'CPP Models'),
         ('canonic_phases.Phase_one.structural', 'Structural Normalizer'),
-        ('canonic_phases.Phase_one.phase1_spc_ingestion_full', 'Phase 1 SPC Ingestion'),
+        ('canonic_phases.Phase_one.phase1_cpp_ingestion_full', 'Phase 1 CPP Ingestion'),
         ('canonic_phases.Phase_one', 'Phase One Package'),
     ]
     
@@ -92,9 +96,9 @@ def test_import_chain():
 @test_section("3. CONSTITUTIONAL INVARIANTS [FORCING ROUTE]")
 def test_constitutional_invariants():
     """Verify all FORCING ROUTE constitutional invariants"""
-    from canonic_phases.Phase_one import phase1_spc_ingestion_full
+    from canonic_phases.Phase_one import phase1_cpp_ingestion_full
     
-    grid_spec = phase1_spc_ingestion_full.PADimGridSpecification
+    grid_spec = phase1_cpp_ingestion_full.PADimGridSpecification
     
     tests_passed = True
     
@@ -171,14 +175,14 @@ def test_dura_lex_integration():
     
     # Test 1: Verify dura_lex modules can be imported
     try:
-        from cross_cutting_infrastrucuture.contractual.dura_lex import idempotency_dedup
+        from cross_cutting_infrastructure.contractual.dura_lex import idempotency_dedup
         print("  ✓ idempotency_dedup module accessible")
     except ImportError as e:
         print(f"  ✗ idempotency_dedup not accessible: {e}")
         tests_passed = False
     
     try:
-        from cross_cutting_infrastrucuture.contractual.dura_lex import traceability
+        from cross_cutting_infrastructure.contractual.dura_lex import traceability
         print("  ✓ traceability module accessible")
     except ImportError as e:
         print(f"  ✗ traceability not accessible: {e}")

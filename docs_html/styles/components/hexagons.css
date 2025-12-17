@@ -1,0 +1,30 @@
+/* FARFAN Visual Protocol: Hexagonal Components */
+
+.fvp-hexagon {
+    position: relative;
+    width: 80px;
+    height: 92.38px;
+    background-color: var(--atroz-blue-700);
+    margin: 46.19px 0;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.fvp-hexagon:hover {
+    transform: scale(1.1) rotate(5deg);
+    background-color: var(--atroz-blue-electric);
+}
+
+.fvp-hexagon-inner {
+    color: var(--atroz-ink);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Color variations */
+.fvp-hexagon.red { background-color: var(--atroz-red-700); }
+.fvp-hexagon.green { background-color: var(--atroz-green-900); }
+.fvp-hexagon.copper { background-color: var(--atroz-copper-700); }

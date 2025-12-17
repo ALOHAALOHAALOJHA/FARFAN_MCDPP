@@ -200,16 +200,15 @@ def test_build_join_table_duplicate_chunk(sample_contracts):
 
 
 def test_build_join_table_chunk_already_bound(sample_contracts, sample_chunks):
-    """Test ABORT when chunk already bound to another contract."""
+    """Test that multiple contracts can share the same PA×DIM chunk."""
     # Modify contracts to have duplicates
     modified_contracts = sample_contracts.copy()
     modified_contracts[1]["identity"]["policy_area_id"] = "PA01"
     modified_contracts[1]["identity"]["dimension_id"] = "DIM01"
-    
-    with pytest.raises(ExecutorChunkSynchronizationError) as exc:
-        build_join_table(modified_contracts, sample_chunks)
-    
-    assert "already bound" in str(exc.value)
+
+    bindings = build_join_table(modified_contracts, sample_chunks)
+    assert len(bindings) == EXPECTED_CONTRACT_COUNT
+    assert sum(1 for b in bindings if b.policy_area_id == "PA01" and b.dimension_id == "DIM01") >= 2
 
 
 def test_build_join_table_extracts_patterns(sample_contracts, sample_chunks):
@@ -499,7 +498,8 @@ def test_chunk_without_ids():
     
     chunks = [{"policy_area_id": "PA01", "dimension_id": "DIM01"}]  # No chunk_id
     
-    # Should generate chunk_id from PA and DIM
-    # Will fail because only 1 chunk for EXPECTED_CONTRACT_COUNT contracts
-    with pytest.raises(ExecutorChunkSynchronizationError):
-        build_join_table(contracts, chunks)
+    # Should generate chunk_id from PA and DIM (per-binding) and succeed since all
+    # contracts target the same PA×DIM cell and reuse of the underlying chunk is allowed.
+    bindings = build_join_table(contracts, chunks)
+    assert len(bindings) == EXPECTED_CONTRACT_COUNT
+    assert all(b.chunk_id is not None for b in bindings)

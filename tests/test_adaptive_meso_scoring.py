@@ -9,7 +9,7 @@ Validates that the adaptive scoring mechanism:
 """
 
 import pytest
-from src.canonic_phases.Phase_four_five_six_seven.adaptive_meso_scoring import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     AdaptiveScoringConfig,
     ScoringMetrics,

@@ -1,0 +1,26 @@
+:root {
+  /* Red Band (Chaos/Input/Problem Space) */
+  --atroz-red-500: #C41E3A;
+  --atroz-red-700: #7A0F0F;
+  --atroz-red-900: #3A0E0E;
+
+  /* Blue Band (Structure/Analysis/System) */
+  --atroz-blue-electric: #00D4FF;
+  --atroz-blue-700: #102F56;
+  --atroz-blue-900: #04101A;
+
+  /* Green Band (Synthesis/Output/Solution) */
+  --atroz-green-toxic: #39FF14;
+  --atroz-green-300: #BFEFCB;
+  --atroz-green-900: #0B231B;
+
+  /* Copper Band (Evidence/Provenance/Memory) */
+  --atroz-copper-500: #B2642E;
+  --atroz-copper-700: #7B3F1D;
+  --atroz-copper-oxide: #17A589;
+
+  /* Typography & Base */
+  --atroz-ink: #E5E7EB;
+  --atroz-ink-darker: #b5b7bb;
+  --atroz-bg: #0A0A0A;
+}

@@ -7,13 +7,25 @@ import hashlib
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from collections.abc import Callable
+from typing import Any, ParamSpec, TypeVar
 
 import yaml
 
 from farfan_pipeline.utils.paths import proj_root
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration.decorators import calibrated_method
+
+P = ParamSpec("P")
+R = TypeVar("R")
+
+
+def calibrated_method(_tag: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
+    """No-op legacy decorator (calibration system removed)."""
+
+    def _decorator(fn: Callable[P, R]) -> Callable[P, R]:
+        return fn
+
+    return _decorator
 
 try:
     import jsonschema

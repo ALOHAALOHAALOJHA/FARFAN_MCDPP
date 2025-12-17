@@ -217,7 +217,7 @@ class TestEnhancedClusterAggregator:
         penalty = enhanced.adaptive_penalty(metrics)
         
         # High dispersion should have increased penalty (1.5× multiplier)
-        assert penalty == 0.3 * 1.5
+        assert penalty == round(0.3 * 1.5, 2)
         assert penalty == 0.45
     
     def test_adaptive_penalty_extreme(self):

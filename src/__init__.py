@@ -12,4 +12,4 @@ This package contains the core pipeline implementation including:
 - Methods dispensary
 """
 
-__version__ = "SPC-2025.1"
+__version__ = "CPP-2025.1"

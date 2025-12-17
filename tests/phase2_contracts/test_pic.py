@@ -11,7 +11,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from cross_cutting_infrastrucuture.contractual.dura_lex.permutation_invariance import (
+from cross_cutting_infrastructure.contractual.dura_lex.permutation_invariance import (
     PermutationInvarianceContract,
 )
 

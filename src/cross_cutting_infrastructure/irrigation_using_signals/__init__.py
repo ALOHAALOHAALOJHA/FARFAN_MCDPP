@@ -1,14 +1,14 @@
-"""
-Irrigation Using Signals
-========================
+"""Compatibility shim for legacy imports.
 
-Signal-based infrastructure for enriching pipeline processing with structured
-metadata and intelligence.
-
-This package provides the SISAS (Signal Intelligence System for Advanced Structuring)
-framework used throughout the F.A.R.F.A.N pipeline.
+The irrigation_using_signals implementation moved to farfan_pipeline.infrastructure.irrigation_using_signals.
+This module preserves historical imports.
 """
 
-__all__ = [
-    "SISAS",
+from __future__ import annotations
+
+from pathlib import Path
+
+# Redirect package submodule resolution to the new location.
+__path__ = [
+    str((Path(__file__).resolve().parent.parent.parent / "farfan_pipeline" / "infrastructure" / "irrigation_using_signals").resolve())
 ]

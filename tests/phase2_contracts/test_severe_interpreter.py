@@ -42,24 +42,24 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 # Import contracts
-from cross_cutting_infrastrucuture.contractual.dura_lex.budget_monotonicity import (
+from cross_cutting_infrastructure.contractual.dura_lex.budget_monotonicity import (
     BudgetMonotonicityContract,
 )
-from cross_cutting_infrastrucuture.contractual.dura_lex.concurrency_determinism import (
+from cross_cutting_infrastructure.contractual.dura_lex.concurrency_determinism import (
     ConcurrencyDeterminismContract,
 )
-from cross_cutting_infrastrucuture.contractual.dura_lex.context_immutability import (
+from cross_cutting_infrastructure.contractual.dura_lex.context_immutability import (
     ContextImmutabilityContract,
 )
-from cross_cutting_infrastrucuture.contractual.dura_lex.idempotency_dedup import (
+from cross_cutting_infrastructure.contractual.dura_lex.idempotency_dedup import (
     EvidenceStore,
     IdempotencyContract,
 )
-from cross_cutting_infrastrucuture.contractual.dura_lex.monotone_compliance import (
+from cross_cutting_infrastructure.contractual.dura_lex.monotone_compliance import (
     Label,
     MonotoneComplianceContract,
 )
-from cross_cutting_infrastrucuture.contractual.dura_lex.traceability import (
+from cross_cutting_infrastructure.contractual.dura_lex.traceability import (
     MerkleTree,
     TraceabilityContract,
 )
@@ -779,7 +779,7 @@ class TestFlowControlInvariants:
 
     def test_flow_003_validation_errors_not_swallowed(self) -> None:
         """FLOW-003 [CRITICAL]: Validation errors MUST propagate."""
-        from cross_cutting_infrastrucuture.contractual.dura_lex.refusal import (
+        from cross_cutting_infrastructure.contractual.dura_lex.refusal import (
             RefusalContract,
             RefusalError,
         )
@@ -1231,7 +1231,7 @@ class TestFullFlowVerification:
 
     def test_integration_009_error_recovery_complete(self) -> None:
         """INTEGRATION-009 [CRITICAL]: Error recovery MUST complete."""
-        from cross_cutting_infrastrucuture.contractual.dura_lex.failure_fallback import (
+        from cross_cutting_infrastructure.contractual.dura_lex.failure_fallback import (
             FailureFallbackContract,
         )
 

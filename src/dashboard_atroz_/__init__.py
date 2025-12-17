@@ -1,9 +1,20 @@
-"""Dashboard Atroz package
+"""Compatibility shim for legacy imports.
 
-This package groups and labels the modules orchestrating the current dashboard
-without moving original sources. It provides stable import paths while
-preserving existing module locations.
+The dashboard moved to `farfan_pipeline.dashboard_atroz_`.
+This module preserves historical imports like:
+
+- `import dashboard_atroz_.signals_service`
+
+New code should prefer:
+- `import farfan_pipeline.dashboard_atroz_.signals_service`
 """
 
-# Re-export key orchestrator components for convenience
-from ..api.api_server import app as flask_app  # type: ignore
+from __future__ import annotations
+
+from pathlib import Path
+
+
+# Redirect package submodule resolution to the new location.
+__path__ = [
+    str((Path(__file__).resolve().parent.parent / "farfan_pipeline" / "dashboard_atroz_").resolve())
+]

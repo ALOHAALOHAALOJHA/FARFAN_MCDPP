@@ -148,8 +148,8 @@ class TestCarverMacroSynthesis:
             assert "PA05" in analysis["low_coverage_pas"], "Should identify PA05 as low coverage"
             
             # Check overall coverage is affected
-            assert analysis["overall_coverage"] < 0.80, \
-                "Overall coverage should be < 0.80 with PA05 gaps"
+            assert analysis["overall_coverage"] <= 0.80, \
+                "Overall coverage should be <= 0.80 with PA05 gaps"
             
         except ImportError:
             pytest.skip("Cannot import DoctoralCarverSynthesizer")

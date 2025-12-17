@@ -80,8 +80,16 @@ farfan_core-api = "farfan_pipeline.api.api_server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["*"]
-namespaces = true
+include = [
+    "farfan_pipeline*",
+    # Temporary compatibility shims (legacy top-level import paths)
+    "canonic_phases",
+    "orchestration",
+    "cross_cutting_infrastructure",
+    "methods_dispensary",
+    "dashboard_atroz_",
+]
+namespaces = false
 
 [tool.pyright]
 typeCheckingMode = "strict"
@@ -212,7 +220,6 @@ target-version = ['py312']
 minversion = "7.0"
 addopts = "-v --strict-markers --tb=short -m 'not obsolete'"
 testpaths = ["tests"]
-pythonpath = ["src"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

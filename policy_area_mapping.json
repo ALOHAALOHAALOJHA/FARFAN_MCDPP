@@ -1,0 +1,62 @@
+[
+  {
+    "legacy_id": "P1",
+    "canonical_id": "PA01",
+    "canonical_name": "Derechos de las mujeres e igualdad de género",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P2",
+    "canonical_id": "PA02",
+    "canonical_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P3",
+    "canonical_id": "PA03",
+    "canonical_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P4",
+    "canonical_id": "PA04",
+    "canonical_name": "Derechos económicos, sociales y culturales",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P5",
+    "canonical_id": "PA05",
+    "canonical_name": "Derechos de las víctimas y construcción de paz",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P6",
+    "canonical_id": "PA06",
+    "canonical_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P7",
+    "canonical_id": "PA07",
+    "canonical_name": "Tierras y territorios",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P8",
+    "canonical_id": "PA08",
+    "canonical_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P9",
+    "canonical_id": "PA09",
+    "canonical_name": "Crisis de derechos de personas privadas de la libertad",
+    "source_of_truth": "monolith"
+  },
+  {
+    "legacy_id": "P10",
+    "canonical_id": "PA10",
+    "canonical_name": "Migración transfronteriza",
+    "source_of_truth": "monolith"
+  }
+]

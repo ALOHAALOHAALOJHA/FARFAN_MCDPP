@@ -2521,8 +2521,7 @@
               "is_async": false,
               "mapped_questions": [],
               "usage_count": 0
-            }
-          ]
+|          ]
         },
         {
           "class_name": "DocumentProcessor",

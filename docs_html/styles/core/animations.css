@@ -1,0 +1,72 @@
+/* FARFAN Visual Protocol: Animations & Interactions */
+
+/* --- Keyframes --- */
+
+/* Text Glow & Glitch */
+@keyframes glitch {
+  0%, 100% { text-shadow: 0 0 5px var(--atroz-green-toxic); opacity: 1; }
+  50% { text-shadow: 0 0 20px var(--atroz-green-toxic), 0 0 30px var(--atroz-ink); opacity: 0.8; }
+}
+
+@keyframes text-glow {
+    0%, 100% { text-shadow: 0 0 2px var(--atroz-green-toxic); }
+    50% { text-shadow: 0 0 10px var(--atroz-green-toxic); }
+}
+
+/* Scanline Effects */
+@keyframes scanline {
+  0% { transform: translateY(-5px); }
+  100% { transform: translateY(5px); }
+}
+
+/* Pulsate Animation for Nodes/Metrics */
+@keyframes pulsate {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 10px 15px rgba(57, 255, 20, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); }
+}
+
+/* Blink Animation for Citations */
+@keyframes blink {
+  50% { opacity: 0.5; }
+}
+
+/* Data Flow for Neural Connections */
+@keyframes dataFlow {
+  from { stroke-dashoffset: 20; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Entrance Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --- Animation Classes --- */
+
+.animate-glitch {
+    animation: glitch 3s ease-in-out infinite;
+}
+
+.animate-glow {
+    animation: text-glow 2s ease-in-out infinite;
+}
+
+.animate-pulsate {
+    animation: pulsate 2s infinite;
+}
+
+.animate-blink {
+    animation: blink 1s step-end infinite;
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 1s ease;
+}

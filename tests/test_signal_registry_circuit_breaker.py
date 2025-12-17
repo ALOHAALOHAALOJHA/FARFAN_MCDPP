@@ -17,7 +17,7 @@ from unittest.mock import Mock, MagicMock, patch
 import pytest
 
 # Import circuit breaker components
-from cross_cutting_infrastrucuture.irrigation_using_signals.SISAS.signal_registry import (
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     CircuitBreaker,
     CircuitState,
     CircuitBreakerConfig,

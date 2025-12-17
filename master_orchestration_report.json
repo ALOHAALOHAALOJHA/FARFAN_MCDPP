@@ -1,0 +1,3750 @@
+{
+  "timestamp": "2025-12-15T18:08:42.069942+00:00",
+  "orchestration_mode": "SOTA_PARALLEL",
+  "summary": {
+    "total_groups": 30,
+    "total_contracts": 300,
+    "total_issues_found": 4473,
+    "total_repairs_applied": 4473,
+    "repair_success_rate": 100.0,
+    "cross_group_insights": 4
+  },
+  "dimension_statistics": {
+    "1": {
+      "groups": 10,
+      "issues": 1493,
+      "repairs": 1493
+    },
+    "2": {
+      "groups": 10,
+      "issues": 1490,
+      "repairs": 1490
+    },
+    "3": {
+      "groups": 10,
+      "issues": 1490,
+      "repairs": 1490
+    }
+  },
+  "group_results": {
+    "0": {
+      "group_id": 0,
+      "base_slot": "D1-Q1",
+      "contracts_processed": 10,
+      "golden_contract": "Q001",
+      "issues_found": {
+        "Q001": 23,
+        "Q031": 14,
+        "Q061": 14,
+        "Q091": 14,
+        "Q121": 14,
+        "Q151": 14,
+        "Q181": 14,
+        "Q211": 14,
+        "Q241": 14,
+        "Q271": 14
+      },
+      "repairs_applied": {
+        "Q001": 23,
+        "Q031": 14,
+        "Q061": 14,
+        "Q091": 14,
+        "Q121": 14,
+        "Q151": 14,
+        "Q181": 14,
+        "Q211": 14,
+        "Q241": 14,
+        "Q271": 14
+      },
+      "verification_results": {
+        "Q001": {
+          "initial_issues": 23,
+          "remaining_issues": 23,
+          "fixed": 0
+        },
+        "Q031": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q061": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q091": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q121": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q151": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q181": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q211": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q241": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        },
+        "Q271": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "1": {
+      "group_id": 1,
+      "base_slot": "D1-Q2",
+      "contracts_processed": 10,
+      "golden_contract": "Q002",
+      "issues_found": {
+        "Q002": 18,
+        "Q032": 15,
+        "Q062": 15,
+        "Q092": 15,
+        "Q122": 15,
+        "Q152": 15,
+        "Q182": 15,
+        "Q212": 15,
+        "Q242": 15,
+        "Q272": 14
+      },
+      "repairs_applied": {
+        "Q002": 18,
+        "Q032": 15,
+        "Q062": 15,
+        "Q092": 15,
+        "Q122": 15,
+        "Q152": 15,
+        "Q182": 15,
+        "Q212": 15,
+        "Q242": 15,
+        "Q272": 14
+      },
+      "verification_results": {
+        "Q002": {
+          "initial_issues": 18,
+          "remaining_issues": 17,
+          "fixed": 1
+        },
+        "Q032": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q062": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q092": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q122": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q152": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q182": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q212": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q242": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q272": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "2": {
+      "group_id": 2,
+      "base_slot": "D1-Q3",
+      "contracts_processed": 10,
+      "golden_contract": "Q003",
+      "issues_found": {
+        "Q003": 15,
+        "Q033": 15,
+        "Q063": 15,
+        "Q093": 15,
+        "Q123": 15,
+        "Q153": 15,
+        "Q183": 15,
+        "Q213": 15,
+        "Q243": 15,
+        "Q273": 14
+      },
+      "repairs_applied": {
+        "Q003": 15,
+        "Q033": 15,
+        "Q063": 15,
+        "Q093": 15,
+        "Q123": 15,
+        "Q153": 15,
+        "Q183": 15,
+        "Q213": 15,
+        "Q243": 15,
+        "Q273": 14
+      },
+      "verification_results": {
+        "Q003": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q033": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q063": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q093": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q123": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q153": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q183": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q213": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q243": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q273": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "3": {
+      "group_id": 3,
+      "base_slot": "D1-Q4",
+      "contracts_processed": 10,
+      "golden_contract": "Q274",
+      "issues_found": {
+        "Q004": 15,
+        "Q034": 15,
+        "Q064": 15,
+        "Q094": 15,
+        "Q124": 15,
+        "Q154": 15,
+        "Q184": 15,
+        "Q214": 15,
+        "Q244": 15,
+        "Q274": 14
+      },
+      "repairs_applied": {
+        "Q004": 15,
+        "Q034": 15,
+        "Q064": 15,
+        "Q094": 15,
+        "Q124": 15,
+        "Q154": 15,
+        "Q184": 15,
+        "Q214": 15,
+        "Q244": 15,
+        "Q274": 14
+      },
+      "verification_results": {
+        "Q004": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q034": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q064": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q094": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q124": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q154": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q184": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q214": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q244": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q274": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "4": {
+      "group_id": 4,
+      "base_slot": "D1-Q5",
+      "contracts_processed": 10,
+      "golden_contract": "Q005",
+      "issues_found": {
+        "Q005": 15,
+        "Q035": 15,
+        "Q065": 15,
+        "Q095": 15,
+        "Q125": 15,
+        "Q155": 15,
+        "Q185": 15,
+        "Q215": 15,
+        "Q245": 15,
+        "Q275": 14
+      },
+      "repairs_applied": {
+        "Q005": 15,
+        "Q035": 15,
+        "Q065": 15,
+        "Q095": 15,
+        "Q125": 15,
+        "Q155": 15,
+        "Q185": 15,
+        "Q215": 15,
+        "Q245": 15,
+        "Q275": 14
+      },
+      "verification_results": {
+        "Q005": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q035": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q065": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q095": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q125": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q155": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q185": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q215": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q245": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q275": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "5": {
+      "group_id": 5,
+      "base_slot": "D1-Q6",
+      "contracts_processed": 10,
+      "golden_contract": "Q006",
+      "issues_found": {
+        "Q006": 15,
+        "Q036": 15,
+        "Q066": 15,
+        "Q096": 15,
+        "Q126": 15,
+        "Q156": 15,
+        "Q186": 15,
+        "Q216": 15,
+        "Q246": 15,
+        "Q276": 14
+      },
+      "repairs_applied": {
+        "Q006": 15,
+        "Q036": 15,
+        "Q066": 15,
+        "Q096": 15,
+        "Q126": 15,
+        "Q156": 15,
+        "Q186": 15,
+        "Q216": 15,
+        "Q246": 15,
+        "Q276": 14
+      },
+      "verification_results": {
+        "Q006": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q036": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q066": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q096": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q126": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q156": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q186": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q216": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q246": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q276": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "6": {
+      "group_id": 6,
+      "base_slot": "D1-Q7",
+      "contracts_processed": 10,
+      "golden_contract": "Q007",
+      "issues_found": {
+        "Q007": 15,
+        "Q037": 15,
+        "Q067": 15,
+        "Q097": 15,
+        "Q127": 15,
+        "Q157": 15,
+        "Q187": 15,
+        "Q217": 15,
+        "Q247": 15,
+        "Q277": 14
+      },
+      "repairs_applied": {
+        "Q007": 15,
+        "Q037": 15,
+        "Q067": 15,
+        "Q097": 15,
+        "Q127": 15,
+        "Q157": 15,
+        "Q187": 15,
+        "Q217": 15,
+        "Q247": 15,
+        "Q277": 14
+      },
+      "verification_results": {
+        "Q007": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q037": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q067": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q097": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q127": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q157": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q187": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q217": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q247": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q277": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "7": {
+      "group_id": 7,
+      "base_slot": "D1-Q8",
+      "contracts_processed": 10,
+      "golden_contract": "Q008",
+      "issues_found": {
+        "Q008": 15,
+        "Q038": 15,
+        "Q068": 15,
+        "Q098": 15,
+        "Q128": 15,
+        "Q158": 15,
+        "Q188": 15,
+        "Q218": 15,
+        "Q248": 15,
+        "Q278": 14
+      },
+      "repairs_applied": {
+        "Q008": 15,
+        "Q038": 15,
+        "Q068": 15,
+        "Q098": 15,
+        "Q128": 15,
+        "Q158": 15,
+        "Q188": 15,
+        "Q218": 15,
+        "Q248": 15,
+        "Q278": 14
+      },
+      "verification_results": {
+        "Q008": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q038": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q068": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q098": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q128": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q158": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q188": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q218": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q248": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q278": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "8": {
+      "group_id": 8,
+      "base_slot": "D1-Q9",
+      "contracts_processed": 10,
+      "golden_contract": "Q009",
+      "issues_found": {
+        "Q009": 15,
+        "Q039": 15,
+        "Q069": 15,
+        "Q099": 15,
+        "Q129": 15,
+        "Q159": 15,
+        "Q189": 15,
+        "Q219": 15,
+        "Q249": 15,
+        "Q279": 14
+      },
+      "repairs_applied": {
+        "Q009": 15,
+        "Q039": 15,
+        "Q069": 15,
+        "Q099": 15,
+        "Q129": 15,
+        "Q159": 15,
+        "Q189": 15,
+        "Q219": 15,
+        "Q249": 15,
+        "Q279": 14
+      },
+      "verification_results": {
+        "Q009": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q039": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q069": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q099": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q129": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q159": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q189": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q219": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q249": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q279": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "9": {
+      "group_id": 9,
+      "base_slot": "D1-Q10",
+      "contracts_processed": 10,
+      "golden_contract": "Q010",
+      "issues_found": {
+        "Q010": 15,
+        "Q040": 15,
+        "Q070": 15,
+        "Q100": 15,
+        "Q130": 15,
+        "Q160": 15,
+        "Q190": 15,
+        "Q220": 15,
+        "Q250": 15,
+        "Q280": 14
+      },
+      "repairs_applied": {
+        "Q010": 15,
+        "Q040": 15,
+        "Q070": 15,
+        "Q100": 15,
+        "Q130": 15,
+        "Q160": 15,
+        "Q190": 15,
+        "Q220": 15,
+        "Q250": 15,
+        "Q280": 14
+      },
+      "verification_results": {
+        "Q010": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q040": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q070": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q100": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q130": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q160": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q190": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q220": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q250": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q280": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "10": {
+      "group_id": 10,
+      "base_slot": "D2-Q1",
+      "contracts_processed": 10,
+      "golden_contract": "Q251",
+      "issues_found": {
+        "Q011": 15,
+        "Q041": 15,
+        "Q071": 15,
+        "Q101": 15,
+        "Q131": 15,
+        "Q161": 15,
+        "Q191": 15,
+        "Q221": 15,
+        "Q251": 15,
+        "Q281": 14
+      },
+      "repairs_applied": {
+        "Q011": 15,
+        "Q041": 15,
+        "Q071": 15,
+        "Q101": 15,
+        "Q131": 15,
+        "Q161": 15,
+        "Q191": 15,
+        "Q221": 15,
+        "Q251": 15,
+        "Q281": 14
+      },
+      "verification_results": {
+        "Q011": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q041": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q071": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q101": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q131": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q161": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q191": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q221": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q251": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q281": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "11": {
+      "group_id": 11,
+      "base_slot": "D2-Q2",
+      "contracts_processed": 10,
+      "golden_contract": "Q012",
+      "issues_found": {
+        "Q012": 15,
+        "Q042": 15,
+        "Q072": 15,
+        "Q102": 15,
+        "Q132": 15,
+        "Q162": 15,
+        "Q192": 15,
+        "Q222": 15,
+        "Q252": 15,
+        "Q282": 14
+      },
+      "repairs_applied": {
+        "Q012": 15,
+        "Q042": 15,
+        "Q072": 15,
+        "Q102": 15,
+        "Q132": 15,
+        "Q162": 15,
+        "Q192": 15,
+        "Q222": 15,
+        "Q252": 15,
+        "Q282": 14
+      },
+      "verification_results": {
+        "Q012": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q042": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q072": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q102": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q132": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q162": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q192": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q222": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q252": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q282": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "12": {
+      "group_id": 12,
+      "base_slot": "D2-Q3",
+      "contracts_processed": 10,
+      "golden_contract": "Q013",
+      "issues_found": {
+        "Q013": 15,
+        "Q043": 15,
+        "Q073": 15,
+        "Q103": 15,
+        "Q133": 15,
+        "Q163": 15,
+        "Q193": 15,
+        "Q223": 15,
+        "Q253": 15,
+        "Q283": 14
+      },
+      "repairs_applied": {
+        "Q013": 15,
+        "Q043": 15,
+        "Q073": 15,
+        "Q103": 15,
+        "Q133": 15,
+        "Q163": 15,
+        "Q193": 15,
+        "Q223": 15,
+        "Q253": 15,
+        "Q283": 14
+      },
+      "verification_results": {
+        "Q013": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q043": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q073": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q103": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q133": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q163": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q193": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q223": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q253": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q283": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "13": {
+      "group_id": 13,
+      "base_slot": "D2-Q4",
+      "contracts_processed": 10,
+      "golden_contract": "Q014",
+      "issues_found": {
+        "Q014": 15,
+        "Q044": 15,
+        "Q074": 15,
+        "Q104": 15,
+        "Q134": 15,
+        "Q164": 15,
+        "Q194": 15,
+        "Q224": 15,
+        "Q254": 15,
+        "Q284": 14
+      },
+      "repairs_applied": {
+        "Q014": 15,
+        "Q044": 15,
+        "Q074": 15,
+        "Q104": 15,
+        "Q134": 15,
+        "Q164": 15,
+        "Q194": 15,
+        "Q224": 15,
+        "Q254": 15,
+        "Q284": 14
+      },
+      "verification_results": {
+        "Q014": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q044": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q074": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q104": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q134": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q164": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q194": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q224": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q254": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q284": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "14": {
+      "group_id": 14,
+      "base_slot": "D2-Q5",
+      "contracts_processed": 10,
+      "golden_contract": "Q015",
+      "issues_found": {
+        "Q015": 15,
+        "Q045": 15,
+        "Q075": 15,
+        "Q105": 15,
+        "Q135": 15,
+        "Q165": 15,
+        "Q195": 15,
+        "Q225": 15,
+        "Q255": 15,
+        "Q285": 14
+      },
+      "repairs_applied": {
+        "Q015": 15,
+        "Q045": 15,
+        "Q075": 15,
+        "Q105": 15,
+        "Q135": 15,
+        "Q165": 15,
+        "Q195": 15,
+        "Q225": 15,
+        "Q255": 15,
+        "Q285": 14
+      },
+      "verification_results": {
+        "Q015": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q045": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q075": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q105": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q135": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q165": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q195": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q225": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q255": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q285": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "15": {
+      "group_id": 15,
+      "base_slot": "D2-Q6",
+      "contracts_processed": 10,
+      "golden_contract": "Q046",
+      "issues_found": {
+        "Q016": 15,
+        "Q046": 15,
+        "Q076": 15,
+        "Q106": 15,
+        "Q136": 15,
+        "Q166": 15,
+        "Q196": 15,
+        "Q226": 15,
+        "Q256": 15,
+        "Q286": 14
+      },
+      "repairs_applied": {
+        "Q016": 15,
+        "Q046": 15,
+        "Q076": 15,
+        "Q106": 15,
+        "Q136": 15,
+        "Q166": 15,
+        "Q196": 15,
+        "Q226": 15,
+        "Q256": 15,
+        "Q286": 14
+      },
+      "verification_results": {
+        "Q016": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q046": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q076": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q106": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q136": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q166": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q196": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q226": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q256": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q286": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "16": {
+      "group_id": 16,
+      "base_slot": "D2-Q7",
+      "contracts_processed": 10,
+      "golden_contract": "Q017",
+      "issues_found": {
+        "Q017": 15,
+        "Q047": 15,
+        "Q077": 15,
+        "Q107": 15,
+        "Q137": 15,
+        "Q167": 15,
+        "Q197": 15,
+        "Q227": 15,
+        "Q257": 15,
+        "Q287": 14
+      },
+      "repairs_applied": {
+        "Q017": 15,
+        "Q047": 15,
+        "Q077": 15,
+        "Q107": 15,
+        "Q137": 15,
+        "Q167": 15,
+        "Q197": 15,
+        "Q227": 15,
+        "Q257": 15,
+        "Q287": 14
+      },
+      "verification_results": {
+        "Q017": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q047": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q077": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q107": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q137": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q167": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q197": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q227": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q257": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q287": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "17": {
+      "group_id": 17,
+      "base_slot": "D2-Q8",
+      "contracts_processed": 10,
+      "golden_contract": "Q018",
+      "issues_found": {
+        "Q018": 15,
+        "Q048": 15,
+        "Q078": 15,
+        "Q108": 15,
+        "Q138": 15,
+        "Q168": 15,
+        "Q198": 15,
+        "Q228": 15,
+        "Q258": 15,
+        "Q288": 14
+      },
+      "repairs_applied": {
+        "Q018": 15,
+        "Q048": 15,
+        "Q078": 15,
+        "Q108": 15,
+        "Q138": 15,
+        "Q168": 15,
+        "Q198": 15,
+        "Q228": 15,
+        "Q258": 15,
+        "Q288": 14
+      },
+      "verification_results": {
+        "Q018": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q048": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q078": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q108": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q138": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q168": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q198": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q228": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q258": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q288": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "18": {
+      "group_id": 18,
+      "base_slot": "D2-Q9",
+      "contracts_processed": 10,
+      "golden_contract": "Q019",
+      "issues_found": {
+        "Q019": 15,
+        "Q049": 15,
+        "Q079": 15,
+        "Q109": 15,
+        "Q139": 15,
+        "Q169": 15,
+        "Q199": 15,
+        "Q229": 15,
+        "Q259": 15,
+        "Q289": 14
+      },
+      "repairs_applied": {
+        "Q019": 15,
+        "Q049": 15,
+        "Q079": 15,
+        "Q109": 15,
+        "Q139": 15,
+        "Q169": 15,
+        "Q199": 15,
+        "Q229": 15,
+        "Q259": 15,
+        "Q289": 14
+      },
+      "verification_results": {
+        "Q019": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q049": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q079": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q109": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q139": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q169": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q199": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q229": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q259": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q289": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "19": {
+      "group_id": 19,
+      "base_slot": "D2-Q10",
+      "contracts_processed": 10,
+      "golden_contract": "Q020",
+      "issues_found": {
+        "Q020": 15,
+        "Q050": 15,
+        "Q080": 15,
+        "Q110": 15,
+        "Q140": 15,
+        "Q170": 15,
+        "Q200": 15,
+        "Q230": 15,
+        "Q260": 15,
+        "Q290": 14
+      },
+      "repairs_applied": {
+        "Q020": 15,
+        "Q050": 15,
+        "Q080": 15,
+        "Q110": 15,
+        "Q140": 15,
+        "Q170": 15,
+        "Q200": 15,
+        "Q230": 15,
+        "Q260": 15,
+        "Q290": 14
+      },
+      "verification_results": {
+        "Q020": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q050": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q080": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q110": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q140": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q170": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q200": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q230": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q260": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q290": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "20": {
+      "group_id": 20,
+      "base_slot": "D3-Q1",
+      "contracts_processed": 10,
+      "golden_contract": "Q021",
+      "issues_found": {
+        "Q021": 15,
+        "Q051": 15,
+        "Q081": 15,
+        "Q111": 15,
+        "Q141": 15,
+        "Q171": 15,
+        "Q201": 15,
+        "Q231": 15,
+        "Q261": 15,
+        "Q291": 14
+      },
+      "repairs_applied": {
+        "Q021": 15,
+        "Q051": 15,
+        "Q081": 15,
+        "Q111": 15,
+        "Q141": 15,
+        "Q171": 15,
+        "Q201": 15,
+        "Q231": 15,
+        "Q261": 15,
+        "Q291": 14
+      },
+      "verification_results": {
+        "Q021": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q051": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q081": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q111": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q141": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q171": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q201": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q231": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q261": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q291": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "21": {
+      "group_id": 21,
+      "base_slot": "D3-Q2",
+      "contracts_processed": 10,
+      "golden_contract": "Q022",
+      "issues_found": {
+        "Q022": 15,
+        "Q052": 15,
+        "Q082": 15,
+        "Q112": 15,
+        "Q142": 15,
+        "Q172": 15,
+        "Q202": 15,
+        "Q232": 15,
+        "Q262": 15,
+        "Q292": 14
+      },
+      "repairs_applied": {
+        "Q022": 15,
+        "Q052": 15,
+        "Q082": 15,
+        "Q112": 15,
+        "Q142": 15,
+        "Q172": 15,
+        "Q202": 15,
+        "Q232": 15,
+        "Q262": 15,
+        "Q292": 14
+      },
+      "verification_results": {
+        "Q022": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q052": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q082": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q112": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q142": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q172": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q202": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q232": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q262": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q292": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "22": {
+      "group_id": 22,
+      "base_slot": "D3-Q3",
+      "contracts_processed": 10,
+      "golden_contract": "Q023",
+      "issues_found": {
+        "Q023": 15,
+        "Q053": 15,
+        "Q083": 15,
+        "Q113": 15,
+        "Q143": 15,
+        "Q173": 15,
+        "Q203": 15,
+        "Q233": 15,
+        "Q263": 15,
+        "Q293": 14
+      },
+      "repairs_applied": {
+        "Q023": 15,
+        "Q053": 15,
+        "Q083": 15,
+        "Q113": 15,
+        "Q143": 15,
+        "Q173": 15,
+        "Q203": 15,
+        "Q233": 15,
+        "Q263": 15,
+        "Q293": 14
+      },
+      "verification_results": {
+        "Q023": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q053": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q083": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q113": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q143": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q173": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q203": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q233": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q263": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q293": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "23": {
+      "group_id": 23,
+      "base_slot": "D3-Q4",
+      "contracts_processed": 10,
+      "golden_contract": "Q024",
+      "issues_found": {
+        "Q024": 15,
+        "Q054": 15,
+        "Q084": 15,
+        "Q114": 15,
+        "Q144": 15,
+        "Q174": 15,
+        "Q204": 15,
+        "Q234": 15,
+        "Q264": 15,
+        "Q294": 14
+      },
+      "repairs_applied": {
+        "Q024": 15,
+        "Q054": 15,
+        "Q084": 15,
+        "Q114": 15,
+        "Q144": 15,
+        "Q174": 15,
+        "Q204": 15,
+        "Q234": 15,
+        "Q264": 15,
+        "Q294": 14
+      },
+      "verification_results": {
+        "Q024": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q054": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q084": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q114": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q144": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q174": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q204": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q234": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q264": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q294": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "24": {
+      "group_id": 24,
+      "base_slot": "D3-Q5",
+      "contracts_processed": 10,
+      "golden_contract": "Q025",
+      "issues_found": {
+        "Q025": 15,
+        "Q055": 15,
+        "Q085": 15,
+        "Q115": 15,
+        "Q145": 15,
+        "Q175": 15,
+        "Q205": 15,
+        "Q235": 15,
+        "Q265": 15,
+        "Q295": 14
+      },
+      "repairs_applied": {
+        "Q025": 15,
+        "Q055": 15,
+        "Q085": 15,
+        "Q115": 15,
+        "Q145": 15,
+        "Q175": 15,
+        "Q205": 15,
+        "Q235": 15,
+        "Q265": 15,
+        "Q295": 14
+      },
+      "verification_results": {
+        "Q025": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q055": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q085": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q115": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q145": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q175": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q205": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q235": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q265": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q295": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "25": {
+      "group_id": 25,
+      "base_slot": "D3-Q6",
+      "contracts_processed": 10,
+      "golden_contract": "Q026",
+      "issues_found": {
+        "Q026": 15,
+        "Q056": 15,
+        "Q086": 15,
+        "Q116": 15,
+        "Q146": 15,
+        "Q176": 15,
+        "Q206": 15,
+        "Q236": 15,
+        "Q266": 15,
+        "Q296": 14
+      },
+      "repairs_applied": {
+        "Q026": 15,
+        "Q056": 15,
+        "Q086": 15,
+        "Q116": 15,
+        "Q146": 15,
+        "Q176": 15,
+        "Q206": 15,
+        "Q236": 15,
+        "Q266": 15,
+        "Q296": 14
+      },
+      "verification_results": {
+        "Q026": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q056": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q086": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q116": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q146": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q176": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q206": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q236": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q266": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q296": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "26": {
+      "group_id": 26,
+      "base_slot": "D3-Q7",
+      "contracts_processed": 10,
+      "golden_contract": "Q027",
+      "issues_found": {
+        "Q027": 15,
+        "Q057": 15,
+        "Q087": 15,
+        "Q117": 15,
+        "Q147": 15,
+        "Q177": 15,
+        "Q207": 15,
+        "Q237": 15,
+        "Q267": 15,
+        "Q297": 14
+      },
+      "repairs_applied": {
+        "Q027": 15,
+        "Q057": 15,
+        "Q087": 15,
+        "Q117": 15,
+        "Q147": 15,
+        "Q177": 15,
+        "Q207": 15,
+        "Q237": 15,
+        "Q267": 15,
+        "Q297": 14
+      },
+      "verification_results": {
+        "Q027": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q057": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q087": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q117": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q147": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q177": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q207": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q237": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q267": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q297": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "27": {
+      "group_id": 27,
+      "base_slot": "D3-Q8",
+      "contracts_processed": 10,
+      "golden_contract": "Q028",
+      "issues_found": {
+        "Q028": 15,
+        "Q058": 15,
+        "Q088": 15,
+        "Q118": 15,
+        "Q148": 15,
+        "Q178": 15,
+        "Q208": 15,
+        "Q238": 15,
+        "Q268": 15,
+        "Q298": 14
+      },
+      "repairs_applied": {
+        "Q028": 15,
+        "Q058": 15,
+        "Q088": 15,
+        "Q118": 15,
+        "Q148": 15,
+        "Q178": 15,
+        "Q208": 15,
+        "Q238": 15,
+        "Q268": 15,
+        "Q298": 14
+      },
+      "verification_results": {
+        "Q028": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q058": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q088": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q118": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q148": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q178": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q208": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q238": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q268": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q298": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "28": {
+      "group_id": 28,
+      "base_slot": "D3-Q9",
+      "contracts_processed": 10,
+      "golden_contract": "Q029",
+      "issues_found": {
+        "Q029": 15,
+        "Q059": 15,
+        "Q089": 15,
+        "Q119": 15,
+        "Q149": 15,
+        "Q179": 15,
+        "Q209": 15,
+        "Q239": 15,
+        "Q269": 15,
+        "Q299": 14
+      },
+      "repairs_applied": {
+        "Q029": 15,
+        "Q059": 15,
+        "Q089": 15,
+        "Q119": 15,
+        "Q149": 15,
+        "Q179": 15,
+        "Q209": 15,
+        "Q239": 15,
+        "Q269": 15,
+        "Q299": 14
+      },
+      "verification_results": {
+        "Q029": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q059": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q089": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q119": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q149": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q179": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q209": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q239": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q269": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q299": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    },
+    "29": {
+      "group_id": 29,
+      "base_slot": "D3-Q10",
+      "contracts_processed": 10,
+      "golden_contract": "Q030",
+      "issues_found": {
+        "Q030": 15,
+        "Q060": 15,
+        "Q090": 15,
+        "Q120": 15,
+        "Q150": 15,
+        "Q180": 15,
+        "Q210": 15,
+        "Q240": 15,
+        "Q270": 15,
+        "Q300": 14
+      },
+      "repairs_applied": {
+        "Q030": 15,
+        "Q060": 15,
+        "Q090": 15,
+        "Q120": 15,
+        "Q150": 15,
+        "Q180": 15,
+        "Q210": 15,
+        "Q240": 15,
+        "Q270": 15,
+        "Q300": 14
+      },
+      "verification_results": {
+        "Q030": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q060": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q090": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q120": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q150": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q180": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q210": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q240": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q270": {
+          "initial_issues": 15,
+          "remaining_issues": 12,
+          "fixed": 3
+        },
+        "Q300": {
+          "initial_issues": 14,
+          "remaining_issues": 12,
+          "fixed": 2
+        }
+      }
+    }
+  },
+  "cross_group_insights": [
+    {
+      "pattern": "missing_execution_sequence",
+      "prevalence": "1000.0%",
+      "affected_groups": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "confidence": 0.9
+    },
+    {
+      "pattern": "missing_method_outputs",
+      "prevalence": "1000.0%",
+      "affected_groups": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "confidence": 0.9
+    },
+    {
+      "pattern": "mismatch_dimension_id",
+      "prevalence": "993.3%",
+      "affected_groups": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "confidence": 0.9
+    },
+    {
+      "pattern": "mismatch_cluster_id",
+      "prevalence": "996.7%",
+      "affected_groups": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "confidence": 0.9
+    }
+  ],
+  "golden_contracts": {
+    "0": "Q001",
+    "1": "Q002",
+    "2": "Q003",
+    "3": "Q274",
+    "4": "Q005",
+    "5": "Q006",
+    "6": "Q007",
+    "7": "Q008",
+    "8": "Q009",
+    "9": "Q010",
+    "10": "Q251",
+    "11": "Q012",
+    "12": "Q013",
+    "13": "Q014",
+    "14": "Q015",
+    "15": "Q046",
+    "16": "Q017",
+    "17": "Q018",
+    "18": "Q019",
+    "19": "Q020",
+    "20": "Q021",
+    "21": "Q022",
+    "22": "Q023",
+    "23": "Q024",
+    "24": "Q025",
+    "25": "Q026",
+    "26": "Q027",
+    "27": "Q028",
+    "28": "Q029",
+    "29": "Q030"
+  }
+}
