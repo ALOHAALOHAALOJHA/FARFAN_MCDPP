@@ -1,0 +1,3313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced CQVR Evaluation Dashboard - v2.1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+        
+        header .version {
+            font-size: 0.9em;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+        
+        .severity-notice {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        
+        .severity-notice h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+        
+        .severity-notice ul {
+            margin-left: 20px;
+            color: #78350f;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+        
+        .card.total { border-left-color: #3b82f6; }
+        .card.produccion { border-left-color: #10b981; }
+        .card.parchear { border-left-color: #f59e0b; }
+        .card.reformular { border-left-color: #ef4444; }
+        .card.avg { border-left-color: #8b5cf6; }
+        
+        .card-title {
+            font-size: 0.9em;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        .card-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .card-percentage {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+        
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+        
+        .score-badge {
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .total-score {
+            background: #ddd6fe;
+            color: #6d28d9;
+            font-size: 1em;
+        }
+        
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: white;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+        
+        .filter-container {
+            padding: 20px 30px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn.all { background: #3b82f6; color: white; }
+        .filter-btn.produccion { background: #10b981; color: white; }
+        .filter-btn.parchear { background: #f59e0b; color: white; }
+        .filter-btn.reformular { background: #ef4444; color: white; }
+        .filter-btn:hover { opacity: 0.8; }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #f9fafb;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 CQVR Evaluation Dashboard</h1>
+            <p class="subtitle">Enhanced Contract Quality Validation Report</p>
+            <p class="version">Version 2.1 - Increased Severity | Generated: 2025-12-17 21:17:52</p>
+        </header>
+        
+        <div class="severity-notice">
+            <h3>⚠️ Enhanced Severity Thresholds (v2.1)</h3>
+            <ul>
+                <li>TIER1_THRESHOLD raised to 40 (was 35) - Stricter critical components</li>
+                <li>PRODUCTION_THRESHOLD raised to 50/85 (was 45/80) - Higher quality bar</li>
+                <li>Added TIER2_MINIMUM=20 and TIER3_MINIMUM=8 requirements</li>
+                <li>Production requires ZERO blockers (was allowing some)</li>
+                <li>PARCHEAR allows max 1 blocker, requires tier1≥45 and total≥75</li>
+                <li>Source hash validation stricter (must be ≥32 chars, no placeholders)</li>
+            </ul>
+        </div>
+        
+        <div class="summary-cards">
+            <div class="card total">
+                <div class="card-title">Total Contracts</div>
+                <div class="card-value">300</div>
+            </div>
+            
+            <div class="card produccion">
+                <div class="card-title">✓ Production Ready</div>
+                <div class="card-value">25</div>
+                <div class="card-percentage">8.3% of total</div>
+            </div>
+            
+            <div class="card parchear">
+                <div class="card-title">⚠ Need Patches</div>
+                <div class="card-value">2</div>
+                <div class="card-percentage">0.7% of total</div>
+            </div>
+            
+            <div class="card reformular">
+                <div class="card-title">✗ Need Reformulation</div>
+                <div class="card-value">273</div>
+                <div class="card-percentage">91.0% of total</div>
+            </div>
+            
+            <div class="card avg">
+                <div class="card-title">Average Score</div>
+                <div class="card-value">65.9</div>
+                <div class="card-percentage">out of 100</div>
+            </div>
+        </div>
+        
+        <div class="filter-container">
+            <div class="filter-buttons">
+                <button class="filter-btn all" onclick="filterTable('all')">Show All (300)</button>
+                <button class="filter-btn produccion" onclick="filterTable('PRODUCCION')">Production (25)</button>
+                <button class="filter-btn parchear" onclick="filterTable('PARCHEAR')">Patches (2)</button>
+                <button class="filter-btn reformular" onclick="filterTable('REFORMULAR')">Reformulation (273)</button>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table id="contractsTable">
+                <thead>
+                    <tr>
+                        <th>Contract ID</th>
+                        <th>Tier 1 (Critical)</th>
+                        <th>Tier 2 (Functional)</th>
+                        <th>Tier 3 (Quality)</th>
+                        <th>Total Score</th>
+                        <th>Decision</th>
+                        <th>Issues</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td>Q001</td>
+                <td><span class="score-badge">51/55</span></td>
+                <td><span class="score-badge">20/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">81/100</span></td>
+                <td><span class="status-badge" style="background-color: #f59e0b">⚠ PARCHEAR</span></td>
+                <td>4</td>
+            </tr>
+        
+            <tr>
+                <td>Q002</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">20/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">83/100</span></td>
+                <td><span class="status-badge" style="background-color: #f59e0b">⚠ PARCHEAR</span></td>
+                <td>4</td>
+            </tr>
+        
+            <tr>
+                <td>Q003</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q004</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q005</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q006</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q007</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q008</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q009</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q010</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q011</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q012</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q013</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q014</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q015</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q016</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q017</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q018</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q019</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q020</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q021</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q022</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q023</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q024</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q025</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q026</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q027</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q028</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q029</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q030</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q031</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">63/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q032</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q033</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q034</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q035</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q036</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q037</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q038</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q039</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q040</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q041</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q042</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q043</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q044</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q045</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q046</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q047</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q048</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q049</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q050</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q051</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q052</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q053</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q054</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q055</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q056</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q057</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q058</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q059</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q060</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q061</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">20/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">68/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q062</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q063</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q064</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q065</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q066</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q067</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q068</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q069</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q070</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q071</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q072</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q073</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q074</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q075</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q076</td>
+                <td><span class="score-badge">50/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">72/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>5</td>
+            </tr>
+        
+            <tr>
+                <td>Q077</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q078</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q079</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q080</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q081</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q082</td>
+                <td><span class="score-badge">50/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">72/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>5</td>
+            </tr>
+        
+            <tr>
+                <td>Q083</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q084</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q085</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q086</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q087</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q088</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q089</td>
+                <td><span class="score-badge">50/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">72/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>5</td>
+            </tr>
+        
+            <tr>
+                <td>Q090</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q091</td>
+                <td><span class="score-badge">50/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>3</td>
+            </tr>
+        
+            <tr>
+                <td>Q092</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q093</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q094</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q095</td>
+                <td><span class="score-badge">50/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">72/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>5</td>
+            </tr>
+        
+            <tr>
+                <td>Q096</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q097</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q098</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q099</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q100</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q101</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q102</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q103</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q104</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q105</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q106</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q107</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q108</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q109</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q110</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q111</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q112</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q113</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q114</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q115</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q116</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q117</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q118</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q119</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q120</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q121</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">63/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q122</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q123</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q124</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q125</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q126</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q127</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q128</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q129</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q130</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q131</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q132</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q133</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q134</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q135</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q136</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q137</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q138</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q139</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q140</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q141</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q142</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q143</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q144</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q145</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q146</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q147</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q148</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q149</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q150</td>
+                <td><span class="score-badge">55/55</span></td>
+                <td><span class="score-badge">28/30</span></td>
+                <td><span class="score-badge">15/15</span></td>
+                <td><span class="score-badge total-score">98/100</span></td>
+                <td><span class="status-badge" style="background-color: #10b981">✓ PRODUCCION</span></td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td>Q151</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">63/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q152</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q153</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q154</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q155</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q156</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q157</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q158</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q159</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q160</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q161</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q162</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q163</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q164</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q165</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q166</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q167</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q168</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q169</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q170</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q171</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q172</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q173</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q174</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q175</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q176</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q177</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q178</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q179</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q180</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q181</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">73/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>5</td>
+            </tr>
+        
+            <tr>
+                <td>Q182</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q183</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q184</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q185</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q186</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q187</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q188</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q189</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q190</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q191</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q192</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q193</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q194</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q195</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q196</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q197</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q198</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q199</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q200</td>
+                <td><span class="score-badge">48/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">70/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>7</td>
+            </tr>
+        
+            <tr>
+                <td>Q201</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q202</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q203</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q204</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q205</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q206</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q207</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q208</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q209</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q210</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q211</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">78/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>4</td>
+            </tr>
+        
+            <tr>
+                <td>Q212</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q213</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q214</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q215</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q216</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q217</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q218</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q219</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q220</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q221</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q222</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q223</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q224</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q225</td>
+                <td><span class="score-badge">53/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">75/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q226</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q227</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q228</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q229</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q230</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q231</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q232</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q233</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q234</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q235</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q236</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q237</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q238</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q239</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q240</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q241</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">63/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q242</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q243</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q244</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q245</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q246</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q247</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q248</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q249</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q250</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q251</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q252</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q253</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q254</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q255</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q256</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q257</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q258</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q259</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q260</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q261</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q262</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q263</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q264</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q265</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q266</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q267</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q268</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q269</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q270</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q271</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">10/15</span></td>
+                <td><span class="score-badge total-score">63/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>6</td>
+            </tr>
+        
+            <tr>
+                <td>Q272</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q273</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q274</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q275</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q276</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q277</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q278</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q279</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q280</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q281</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q282</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q283</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q284</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q285</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q286</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q287</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q288</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q289</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q290</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q291</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q292</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q293</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q294</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q295</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q296</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q297</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q298</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q299</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+            <tr>
+                <td>Q300</td>
+                <td><span class="score-badge">38/55</span></td>
+                <td><span class="score-badge">15/30</span></td>
+                <td><span class="score-badge">7/15</span></td>
+                <td><span class="score-badge total-score">60/100</span></td>
+                <td><span class="status-badge" style="background-color: #ef4444">✗ REFORMULAR</span></td>
+                <td>8</td>
+            </tr>
+        
+                </tbody>
+            </table>
+        </div>
+        
+        <footer>
+            <p><strong>F.A.R.F.A.N Mechanistic Policy Pipeline</strong></p>
+            <p>CQVR v2.1 Enhanced Severity Evaluation | 300 contracts evaluated</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                Thresholds: TIER1≥40, PRODUCTION(TIER1≥50, TIER2≥20, TIER3≥8, TOTAL≥85, blockers=0)
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        function filterTable(status) {
+            const rows = document.querySelectorAll('#contractsTable tbody tr');
+            rows.forEach(row => {
+                if (status === 'all') {
+                    row.style.display = '';
+                } else {
+                    const statusCell = row.cells[5].textContent;
+                    row.style.display = statusCell.includes(status) ? '' : 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

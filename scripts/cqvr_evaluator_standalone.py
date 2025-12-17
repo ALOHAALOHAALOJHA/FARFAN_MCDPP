@@ -3,6 +3,17 @@
 CQVR Evaluator Script - Contract Quality Validation and Remediation
 Implements all scoring functions with explicit return signatures
 Supports single contract, batch (25), and full (300) evaluation modes
+
+SEVERITY ENHANCEMENTS (v2.1 - 2025-12-17):
+- Raised TIER1_THRESHOLD from 35 to 40 (stricter critical component requirements)
+- Raised TIER1_PRODUCTION_THRESHOLD from 45 to 50 (near-perfect Tier 1 required)
+- Raised TOTAL_PRODUCTION_THRESHOLD from 80 to 85 (higher overall quality bar)
+- Added TIER2_MINIMUM=20 requirement (functional components must meet minimum)
+- Added TIER3_MINIMUM=8 requirement (quality standards must meet minimum)
+- Production now requires ZERO blockers (was allowing some blockers)
+- PARCHEAR now allows max 1 blocker (was 2), requires tier1≥45 and total≥75
+- A4 source_hash validation stricter: must be ≥32 chars, placeholder is CRITICAL
+- These changes reduce error probability in production implementation
 """
 import argparse
 import json
@@ -244,14 +255,19 @@ def verify_output_schema(contract: Dict[str, Any]) -> Tuple[int, List[str]]:
         missing = [f for f in required if f not in properties]
         issues.append(f"A4: Required fields not in properties: {missing}")
     
-    # Traceability source_hash (2 pts)
+    # Traceability source_hash (2 pts) - STRICTER: now mandatory
     traceability = contract.get("traceability", {})
     source_hash = traceability.get("source_hash", "")
-    if source_hash and not source_hash.startswith("TODO"):
+    if source_hash and not source_hash.startswith("TODO") and len(source_hash) >= 32:
         score += 2
-    else:
-        issues.append("A4: source_hash is placeholder or missing")
+    elif source_hash and not source_hash.startswith("TODO"):
+        # Has hash but too short
+        issues.append("A4: source_hash too short (minimum 32 characters)")
         score += 1
+    else:
+        # Missing or placeholder - now a critical issue
+        issues.append("A4: CRITICAL - source_hash is placeholder or missing (breaks provenance chain)")
+        # No points awarded for missing provenance
     
     return score, issues
 
@@ -681,14 +697,17 @@ def make_triage_decision(
     blockers = [i for i in all_issues if "CRITICAL" in i or i.startswith("A1:") or i.startswith("A2:")]
     blocker_count = len(blockers)
     
-    # Decision thresholds
-    TIER1_THRESHOLD = 35
-    TIER1_PRODUCTION_THRESHOLD = 45
-    TOTAL_PRODUCTION_THRESHOLD = 80
+    # Decision thresholds - INCREASED SEVERITY for production safety
+    # These stricter thresholds reduce error probability in implementation
+    TIER1_THRESHOLD = 40  # Raised from 35: Require stronger critical components
+    TIER1_PRODUCTION_THRESHOLD = 50  # Raised from 45: Demand near-perfect Tier 1
+    TIER2_MINIMUM = 20  # NEW: Require minimum functional component quality
+    TIER3_MINIMUM = 8  # NEW: Require minimum quality standards
+    TOTAL_PRODUCTION_THRESHOLD = 85  # Raised from 80: Higher overall bar
     
     decision = {}
     
-    # REFORMULAR: Tier 1 below minimum threshold
+    # REFORMULAR: Critical component failures
     if tier1_score < TIER1_THRESHOLD:
         decision["status"] = "REFORMULAR"
         decision["rationale"] = (
@@ -703,12 +722,31 @@ def make_triage_decision(
             "Re-run CQVR evaluation"
         ]
     
-    # PRODUCCION: High tier 1 + high total
+    # REFORMULAR: Insufficient tier 2 or tier 3 (NEW SEVERITY CHECK)
+    elif tier2_score < TIER2_MINIMUM or tier3_score < TIER3_MINIMUM:
+        decision["status"] = "REFORMULAR"
+        decision["rationale"] = (
+            f"Contract requires reformulation: Tier 2 ({tier2_score}/30) or "
+            f"Tier 3 ({tier3_score}/15) below minimum thresholds "
+            f"(Tier2≥{TIER2_MINIMUM}, Tier3≥{TIER3_MINIMUM}). "
+            f"Total: {total_score}/100."
+        )
+        decision["remediation"] = [
+            "Enhance pattern coverage and validation rules" if tier2_score < TIER2_MINIMUM else "Improve documentation and metadata",
+            "Address quality components systematically",
+            "Re-run CQVR evaluation"
+        ]
+    
+    # PRODUCCION: Meets all strict thresholds
     elif (tier1_score >= TIER1_PRODUCTION_THRESHOLD and 
-          total_score >= TOTAL_PRODUCTION_THRESHOLD):
+          tier2_score >= TIER2_MINIMUM and
+          tier3_score >= TIER3_MINIMUM and
+          total_score >= TOTAL_PRODUCTION_THRESHOLD and
+          blocker_count == 0):  # NEW: Zero blockers required for production
         decision["status"] = "PRODUCCION"
         decision["rationale"] = (
             f"Contract approved for production: Tier 1: {tier1_score}/55, "
+            f"Tier 2: {tier2_score}/30, Tier 3: {tier3_score}/15, "
             f"Total: {total_score}/100. Blockers: {blocker_count}."
         )
         decision["remediation"] = [
@@ -717,28 +755,15 @@ def make_triage_decision(
             "Deploy to production"
         ]
     
-    # PARCHEAR: Acceptable with fixable issues
-    elif blocker_count == 0 and total_score >= 70:
-        decision["status"] = "PARCHEAR"
-        decision["rationale"] = (
-            f"Contract can be patched: Tier 1: {tier1_score}/55, "
-            f"Total: {total_score}/100. No critical blockers."
-        )
-        decision["remediation"] = [
-            "Apply recommended patches",
-            "Address warnings",
-            "Re-run CQVR to verify improvements"
-        ]
-    
-    # PARCHEAR: Few blockers, acceptable tier 1
-    elif blocker_count <= 2 and tier1_score >= 40:
+    # PARCHEAR: Good scores but minor issues (STRICTER: only 1 blocker allowed)
+    elif blocker_count <= 1 and tier1_score >= 45 and total_score >= 75:
         decision["status"] = "PARCHEAR"
         decision["rationale"] = (
             f"Contract can be patched: Tier 1: {tier1_score}/55, "
             f"Total: {total_score}/100. Blockers: {blocker_count} (resolvable)."
         )
         decision["remediation"] = [
-            f"Resolve {blocker_count} identified blocker(s)",
+            f"Resolve the {blocker_count} identified blocker" if blocker_count > 0 else "Address warnings",
             "Apply recommended corrections",
             "Re-run CQVR evaluation"
         ]
