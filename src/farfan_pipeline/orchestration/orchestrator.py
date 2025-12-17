@@ -83,6 +83,10 @@ PHASE_TIMEOUT_DEFAULT = int(os.getenv("PHASE_TIMEOUT_SECONDS", "300"))
 P01_EXPECTED_CHUNK_COUNT = 60
 TIMEOUT_SYNC_PHASES: set[int] = {1}
 
+# Phase 2 ExecutionPlan constants
+UNKNOWN_BASE_SLOT = "UNKNOWN"
+UNKNOWN_QUESTION_GLOBAL = -1
+
 P = ParamSpec("P")
 T = TypeVar("T")
 
@@ -1629,8 +1633,8 @@ class Orchestrator:
                     
                     results.append(MicroQuestionRun(
                         question_id=task.question_id,
-                        question_global=0,
-                        base_slot="UNKNOWN",
+                        question_global=UNKNOWN_QUESTION_GLOBAL,
+                        base_slot=UNKNOWN_BASE_SLOT,
                         metadata={"task_id": task_id, "error": "question_not_found"},
                         evidence=None,
                         error=error_msg,
@@ -1648,8 +1652,8 @@ class Orchestrator:
                     
                     results.append(MicroQuestionRun(
                         question_id=question.get("id"),
-                        question_global=question.get("global_id"),
-                        base_slot="UNKNOWN",
+                        question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                        base_slot=UNKNOWN_BASE_SLOT,
                         metadata={"task_id": task_id, "error": "missing_base_slot"},
                         evidence=None,
                         error=error_msg,
@@ -1703,6 +1707,15 @@ class Orchestrator:
                             "chunk_index": task.chunk_index,
                         }
                     }
+                    
+                    # Validate dimension_id consistency
+                    question_dimension = question.get("dimension_id")
+                    if question_dimension and question_dimension != task.dimension:
+                        logger.warning(
+                            f"Task {task_id}: dimension_id mismatch - "
+                            f"question has '{question_dimension}' but task has '{task.dimension}'. "
+                            f"Using question dimension_id."
+                        )
 
                     result_data = instance.execute(
                         document=document,
@@ -1748,8 +1761,12 @@ class Orchestrator:
                 error_msg = f"Orphan tasks detected (not executed): {orphan_tasks}"
                 logger.error(error_msg)
                 instrumentation.record_error("orphan_tasks", str(len(orphan_tasks)))
+                # Orphan tasks indicate a serious logic error - fail in all modes
+                # In PROD mode, this is a hard failure; in DEV, log as critical warning
                 if self.runtime_config.mode == RuntimeMode.PRODUCTION:
                     self.request_abort(error_msg)
+                else:
+                    logger.critical(f"DEVELOPMENT MODE WARNING: {error_msg}")
             
             # In PROD mode, fail Phase 2 if any tasks failed
             if tasks_failed and self.runtime_config.mode == RuntimeMode.PRODUCTION:
