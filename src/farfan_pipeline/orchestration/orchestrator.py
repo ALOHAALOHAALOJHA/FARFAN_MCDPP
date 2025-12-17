@@ -95,7 +95,7 @@ EXPECTED_QUESTION_COUNT = int(os.getenv("EXPECTED_QUESTION_COUNT", "305"))
 EXPECTED_METHOD_COUNT = int(os.getenv("EXPECTED_METHOD_COUNT", "416"))
 PHASE_TIMEOUT_DEFAULT = int(os.getenv("PHASE_TIMEOUT_SECONDS", "300"))
 P01_EXPECTED_CHUNK_COUNT = 60
-TIMEOUT_SYNC_PHASES: set[int] = {1}
+TIMEOUT_SYNC_PHASES: set[int] = {0, 1, 6, 7, 9}
 
 # Phase 2 ExecutionPlan constants
 UNKNOWN_BASE_SLOT = "UNKNOWN"
@@ -717,13 +717,26 @@ class PhaseInstrumentation:
 # ============================================================================
 
 class PhaseTimeoutError(RuntimeError):
-    """Phase timeout exception."""
+    """Phase timeout exception with enhanced context."""
     
-    def __init__(self, phase_id: int | str, phase_name: str, timeout_s: float) -> None:
+    def __init__(
+        self,
+        phase_id: int | str,
+        phase_name: str,
+        timeout_s: float,
+        elapsed_s: float | None = None,
+        partial_result: Any = None
+    ) -> None:
         self.phase_id = phase_id
         self.phase_name = phase_name
         self.timeout_s = timeout_s
-        super().__init__(f"Phase {phase_id} ({phase_name}) timed out after {timeout_s}s")
+        self.elapsed_s = elapsed_s
+        self.partial_result = partial_result
+        
+        message = f"Phase {phase_id} ({phase_name}) timed out after {timeout_s}s"
+        if elapsed_s is not None:
+            message += f" (elapsed: {elapsed_s:.2f}s)"
+        super().__init__(message)
 
 
 async def execute_phase_with_timeout(
@@ -733,9 +746,28 @@ async def execute_phase_with_timeout(
     handler: Callable[P, T] | None = None,
     args: tuple | None = None,
     timeout_s: float = 300.0,
+    instrumentation: PhaseInstrumentation | None = None,
     **kwargs: P.kwargs,
 ) -> T:
-    """Execute phase with timeout."""
+    """Execute phase with timeout and 80% warning threshold.
+    
+    Args:
+        phase_id: Phase identifier
+        phase_name: Human-readable phase name
+        coro: Coroutine to execute (for async context)
+        handler: Handler function to execute
+        args: Arguments to pass to handler
+        timeout_s: Timeout in seconds
+        instrumentation: Optional instrumentation for recording warnings
+        **kwargs: Additional keyword arguments
+    
+    Returns:
+        Result from phase execution
+    
+    Raises:
+        PhaseTimeoutError: If phase exceeds timeout
+        asyncio.TimeoutError: If underlying operation times out
+    """
     target = coro or handler
     if target is None:
         raise ValueError("Either 'coro' or 'handler' must be provided")
@@ -743,21 +775,60 @@ async def execute_phase_with_timeout(
     call_args = args or ()
     
     start = time.perf_counter()
-    logger.info(f"Phase {phase_id} ({phase_name}) started, timeout={timeout_s}s")
+    warning_threshold = timeout_s * 0.8
+    warning_logged = False
+    
+    logger.info(
+        f"Phase {phase_id} ({phase_name}) started",
+        timeout_s=timeout_s,
+        warning_threshold_s=warning_threshold,
+        phase_id=phase_id,
+        phase_name=phase_name
+    )
     
     if not callable(target):
-         raise TypeError(f"Phase {phase_name} function is not callable: {type(target)}")
+        raise TypeError(f"Phase {phase_name} function is not callable: {type(target)}")
+    
+    # Create monitoring task for 80% warning
+    async def monitor_timeout() -> None:
+        """Monitor execution and log warning at 80% threshold."""
+        nonlocal warning_logged
+        await asyncio.sleep(warning_threshold)
+        if not warning_logged:
+            elapsed = time.perf_counter() - start
+            warning_logged = True
+            logger.warning(
+                f"Phase {phase_id} ({phase_name}) approaching timeout",
+                phase_id=phase_id,
+                phase_name=phase_name,
+                elapsed_s=elapsed,
+                timeout_s=timeout_s,
+                threshold_percent=80,
+                remaining_s=timeout_s - elapsed,
+                category="timeout_warning"
+            )
+            if instrumentation is not None:
+                instrumentation.record_warning(
+                    "timeout_threshold",
+                    f"Phase approaching timeout: {elapsed:.2f}s / {timeout_s}s (80% threshold)",
+                    phase_id=phase_id,
+                    phase_name=phase_name,
+                    elapsed_s=elapsed,
+                    timeout_s=timeout_s
+                )
+    
     try:
-        # Improved execution with proper context
+        # Start monitoring task
+        monitor_task = asyncio.create_task(monitor_timeout())
+        
+        # Execute phase with proper handling
         if asyncio.iscoroutinefunction(target):
-            # Handle args
             call_args = args or ()
             if isinstance(call_args, dict):
                 result = await asyncio.wait_for(target(**call_args), timeout=timeout_s)
             else:
                 result = await asyncio.wait_for(target(*call_args), timeout=timeout_s)
         else:
-            # Use functools.partial for cleaner argument binding
             from functools import partial
             call_args = args or ()
             if isinstance(call_args, dict):
@@ -768,16 +839,55 @@ async def execute_phase_with_timeout(
                 bound_func = partial(target, call_args)
             result = await asyncio.wait_for(asyncio.to_thread(bound_func), timeout=timeout_s)
         
-        logger.info(f"Phase {phase_name} completed successfully")
+        # Cancel monitoring task if completed successfully
+        if not monitor_task.done():
+            monitor_task.cancel()
+        
+        elapsed = time.perf_counter() - start
+        logger.info(
+            f"Phase {phase_id} ({phase_name}) completed successfully",
+            phase_id=phase_id,
+            phase_name=phase_name,
+            elapsed_s=elapsed,
+            timeout_s=timeout_s
+        )
         return result
         
     except asyncio.TimeoutError:
-        logger.error(f"Phase {phase_name} timed out after {timeout_s}s")
-        # Record failure structure if needed, but orchestrator should handle it
-        raise
+        elapsed = time.perf_counter() - start
+        logger.error(
+            f"Phase {phase_id} ({phase_name}) timed out",
+            phase_id=phase_id,
+            phase_name=phase_name,
+            timeout_s=timeout_s,
+            elapsed_s=elapsed,
+            category="timeout_error"
+        )
+        raise PhaseTimeoutError(
+            phase_id=phase_id,
+            phase_name=phase_name,
+            timeout_s=timeout_s,
+            elapsed_s=elapsed
+        )
     except Exception as e:
-        logger.error(f"Phase {phase_name} failed with {type(e).__name__}: {str(e)}")
+        elapsed = time.perf_counter() - start
+        logger.error(
+            f"Phase {phase_id} ({phase_name}) failed",
+            phase_id=phase_id,
+            phase_name=phase_name,
+            error_type=type(e).__name__,
+            error_message=str(e),
+            elapsed_s=elapsed
+        )
         raise
+    finally:
+        # Ensure monitoring task is cancelled
+        if 'monitor_task' in locals() and not monitor_task.done():
+            monitor_task.cancel()
+            try:
+                await monitor_task
+            except asyncio.CancelledError:
+                pass
 
 
 
@@ -1185,7 +1295,27 @@ class Orchestrator:
         self.abort_signal.reset()
     
     def _get_phase_timeout(self, phase_id: int) -> float:
-        return self.PHASE_TIMEOUTS.get(phase_id, 300.0)
+        """Get phase timeout with RuntimeMode multiplier applied.
+        
+        Multipliers:
+        - PROD: 1x (no multiplier)
+        - DEV: 2x (more relaxed for debugging)
+        - EXPLORATORY: 4x (maximum flexibility for research)
+        """
+        base_timeout = self.PHASE_TIMEOUTS.get(phase_id, 300.0)
+        
+        if self.runtime_config is None:
+            return base_timeout
+        
+        mode = self.runtime_config.mode
+        if mode == RuntimeMode.PROD:
+            multiplier = 1.0
+        elif mode == RuntimeMode.DEV:
+            multiplier = 2.0
+        else:  # EXPLORATORY
+            multiplier = 4.0
+        
+        return base_timeout * multiplier
     
     async def process_development_plan_async(
         self, pdf_path: str, preprocessed_document: Any | None = None
@@ -1243,6 +1373,7 @@ class Orchestrator:
                             timeout_s=self._get_phase_timeout(phase_id),
                             coro=asyncio.to_thread,
                             args=(handler,) + tuple(args),
+                            instrumentation=instrumentation,
                         )
                     else:
                         data = handler(*args)
@@ -1253,6 +1384,7 @@ class Orchestrator:
                         timeout_s=self._get_phase_timeout(phase_id),
                         handler=handler,
                         args=tuple(args),
+                        instrumentation=instrumentation,
                     )
                 success = True
                 
@@ -1260,6 +1392,15 @@ class Orchestrator:
                 error = exc
                 instrumentation.record_error("timeout", str(exc))
                 self.request_abort(f"Phase {phase_id} timed out")
+                
+                # Extract partial result if available
+                if hasattr(exc, 'partial_result') and exc.partial_result is not None:
+                    data = exc.partial_result
+                    logger.warning(
+                        f"Phase {phase_id} timed out, but partial result available",
+                        phase_id=phase_id,
+                        has_partial=True
+                    )
                 
             except AbortRequested as exc:
                 error = exc
@@ -1406,11 +1547,76 @@ class Orchestrator:
             for phase_id, instr in self._phase_instrumentation.items()
         }
     
+    def _build_execution_manifest(self) -> dict[str, Any]:
+        """Build execution manifest with success/failure status.
+        
+        In PROD mode, timeout causes manifest to have success=false.
+        """
+        # Check if any phase timed out or failed
+        has_timeout = any(
+            isinstance(pr.error, PhaseTimeoutError) 
+            for pr in self.phase_results
+        )
+        has_failure = any(
+            not pr.success and pr.error is not None
+            for pr in self.phase_results
+        )
+        
+        all_phases_completed = all(
+            status == "completed" 
+            for status in self._phase_status.values()
+        )
+        
+        # In PROD mode, timeouts should cause failure
+        is_prod = (
+            self.runtime_config is not None and 
+            self.runtime_config.mode == RuntimeMode.PROD
+        )
+        
+        success = all_phases_completed and not has_failure
+        if is_prod and has_timeout:
+            success = False
+        
+        manifest = {
+            "success": success,
+            "timestamp": datetime.utcnow().isoformat(),
+            "runtime_mode": (
+                self.runtime_config.mode.value 
+                if self.runtime_config else "unknown"
+            ),
+            "phases_completed": sum(
+                1 for status in self._phase_status.values() 
+                if status == "completed"
+            ),
+            "phases_total": len(self.FASES),
+            "has_timeout": has_timeout,
+            "has_failure": has_failure,
+            "aborted": self.abort_signal.is_aborted(),
+            "abort_reason": self.abort_signal.get_reason(),
+        }
+        
+        # Add timeout details if present
+        if has_timeout:
+            timeout_phases = [
+                {
+                    "phase_id": pr.phase_id,
+                    "phase_name": self.FASES[int(pr.phase_id)][3] if int(pr.phase_id) < len(self.FASES) else "Unknown",
+                    "timeout_s": pr.error.timeout_s if isinstance(pr.error, PhaseTimeoutError) else None,
+                    "elapsed_s": pr.error.elapsed_s if isinstance(pr.error, PhaseTimeoutError) else None,
+                }
+                for pr in self.phase_results
+                if isinstance(pr.error, PhaseTimeoutError)
+            ]
+            manifest["timeout_phases"] = timeout_phases
+        
+        return manifest
+    
     def export_metrics(self) -> dict[str, Any]:
         abort_timestamp = self.abort_signal.get_timestamp()
         
         return {
             "timestamp": datetime.utcnow().isoformat(),
+            "manifest": self._build_execution_manifest(),
             "phase_metrics": self.get_phase_metrics(),
             "resource_usage": self.resource_limits.get_usage_history(),
             "abort_status": {
