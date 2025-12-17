@@ -1,9 +1,9 @@
 # PHASE 2: COMPREHENSIVE SPECIFICATION
 ## Question Execution & Analysis - F.A.R.F.A.N Mechanistic Pipeline
 
-**Version**: 2.0.0  
+**Version**: 2.1.0  
 **Date**: 2025-12-17  
-**Status**: ✅ CANONICALIZED & FROZEN  
+**Status**: ✅ CONTRACT-DRIVEN EXECUTION  
 **Repository**: victorelsalvadorveneco/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL
 
 ---
@@ -27,26 +27,27 @@
 
 ### 1.1 Purpose
 
-Phase 2 is the **Question Execution & Analysis Engine** that processes 300 questions (30 base questions × 10 policy areas) through contract-driven method execution, evidence assembly, and narrative synthesis. It acts as the **Core Analytical Processor** that transforms policy document chunks into PhD-level analytical responses.
+Phase 2 is the **Question Execution & Analysis Engine** that processes 309 questions through **direct contract-driven execution**. Each question has its own contract (Q001-Q309.v3.json) that defines methods, evidence assembly, and output requirements. It acts as the **Core Analytical Processor** that transforms policy document chunks into PhD-level analytical responses.
 
 ### 1.2 Core Responsibilities
 
-1. ✅ **Contract-Driven Execution** - Route questions through 30 specialized executors (D1-D6, Q1-Q5)
+1. ✅ **Contract-Driven Execution** - Direct loading of 309 contracts (Q001-Q309.v3.json)
 2. ✅ **Method Orchestration** - Execute 240+ analytical methods via MethodExecutor
 3. ✅ **Evidence Assembly** - Build causal evidence graphs with EvidenceNexus
 4. ✅ **Narrative Synthesis** - Generate PhD-level responses via DoctoralCarverSynthesizer
 5. ✅ **SISAS Integration** - Coordinate with satellital component for smart irrigation
 6. ✅ **Schema Validation** - Validate question-chunk schema compatibility
-7. ✅ **Execution Planning** - Generate deterministic 300-task execution plans
+7. ✅ **Execution Planning** - Generate deterministic execution plans
 8. ✅ **Quality Scoring** - Capture runtime metrics and calibration scores
+9. ✅ **Dura Lex Compliance** - 15 contractual tests with certificates
 
 ### 1.3 Design Principles
 
-- **Contract-Driven**: All execution flows through validated contracts (v2 and v3 formats)
+- **Contract-Driven**: ALL execution through individual JSON contracts (NO hardcoded executor classes)
 - **Deterministic**: Same inputs produce identical outputs via ExecutionPlan with integrity_hash
 - **Observable**: All operations logged with correlation_id tracking through 10 phases
-- **Verifiable**: Evidence graphs ensure traceability of analytical claims
-- **Modular**: 30 independent executors with clear dimensional boundaries (D1-D6)
+- **Verifiable**: Evidence graphs ensure traceability of analytical claims + 15 Dura Lex certificates
+- **Generic**: Single GenericContractExecutor handles ALL 309 questions dynamically
 
 ---
 
