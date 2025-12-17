@@ -30,6 +30,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 # CORE SCORING FUNCTIONS (TIER 1: CRITICAL COMPONENTS - 55 pts)
 # ============================================================================
 
+# Constants for validation
+MINIMUM_SOURCE_HASH_LENGTH = 32  # Minimum length for SHA256 or similar hashes
+
 
 def verify_identity_schema_coherence(contract: Dict[str, Any]) -> Tuple[int, List[str]]:
     """
@@ -258,11 +261,11 @@ def verify_output_schema(contract: Dict[str, Any]) -> Tuple[int, List[str]]:
     # Traceability source_hash (2 pts) - STRICTER: now mandatory
     traceability = contract.get("traceability", {})
     source_hash = traceability.get("source_hash", "")
-    if source_hash and not source_hash.startswith("TODO") and len(source_hash) >= 32:
+    if source_hash and not source_hash.startswith("TODO") and len(source_hash) >= MINIMUM_SOURCE_HASH_LENGTH:
         score += 2
     elif source_hash and not source_hash.startswith("TODO"):
         # Has hash but too short
-        issues.append("A4: source_hash too short (minimum 32 characters)")
+        issues.append(f"A4: source_hash too short (minimum {MINIMUM_SOURCE_HASH_LENGTH} characters)")
         score += 1
     else:
         # Missing or placeholder - now a critical issue
@@ -758,12 +761,13 @@ def make_triage_decision(
     # PARCHEAR: Good scores but minor issues (STRICTER: only 1 blocker allowed)
     elif blocker_count <= 1 and tier1_score >= 45 and total_score >= 75:
         decision["status"] = "PARCHEAR"
+        blocker_text = f"Resolve the {blocker_count} identified blocker" if blocker_count == 1 else "Address warnings"
         decision["rationale"] = (
             f"Contract can be patched: Tier 1: {tier1_score}/55, "
             f"Total: {total_score}/100. Blockers: {blocker_count} (resolvable)."
         )
         decision["remediation"] = [
-            f"Resolve the {blocker_count} identified blocker" if blocker_count > 0 else "Address warnings",
+            blocker_text,
             "Apply recommended corrections",
             "Re-run CQVR evaluation"
         ]

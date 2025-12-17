@@ -9,14 +9,22 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
-# Import the standalone evaluator
+# Add scripts directory to path for evaluator import
 sys.path.insert(0, str(Path(__file__).parent))
 from cqvr_evaluator_standalone import evaluate_contract
+
+# Configuration
+CONTRACTS_DIR_RELATIVE = "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized"
+
+
+def get_contracts_directory() -> Path:
+    """Get the absolute path to contracts directory."""
+    return Path(__file__).parent.parent / CONTRACTS_DIR_RELATIVE
 
 
 def evaluate_all_contracts() -> List[Dict[str, Any]]:
     """Evaluate all 300 contracts using the enhanced standalone evaluator."""
-    contracts_dir = Path(__file__).parent.parent / "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized"
+    contracts_dir = get_contracts_directory()
     
     contract_files = sorted(contracts_dir.glob("Q*.v3.json"))
     print(f"Found {len(contract_files)} contracts to evaluate")
