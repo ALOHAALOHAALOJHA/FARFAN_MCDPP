@@ -1,0 +1,252 @@
+[
+  {
+    "question_id": "Q151",
+    "score": 64.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 10.0,
+    "blockers": 1,
+    "warnings": 5
+  },
+  {
+    "question_id": "Q152",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q153",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q154",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q155",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q156",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q157",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q158",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q159",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q160",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q161",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q162",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q163",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q164",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q165",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q166",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q167",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q168",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q169",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q170",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q171",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q172",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q173",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q174",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  },
+  {
+    "question_id": "Q175",
+    "score": 61.0,
+    "decision": "REFORMULAR",
+    "tier1": 39.0,
+    "tier2": 15.0,
+    "tier3": 7.0,
+    "blockers": 1,
+    "warnings": 7
+  }
+]
