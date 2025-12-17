@@ -650,7 +650,7 @@ class CQVRValidator:
             reason_parts = []
             if score.tier1_score < self.TIER1_THRESHOLD:
                 reason_parts.append(f"Tier 1 score below minimum threshold ({self.TIER1_THRESHOLD})")
-            if score.tier1_score < self.TIER1_PRODUCTION_THRESHOLD:
+            elif score.tier1_score < self.TIER1_PRODUCTION_THRESHOLD:
                 reason_parts.append(f"Tier 1 score below production threshold ({self.TIER1_PRODUCTION_THRESHOLD})")
             if score.total_score < self.TOTAL_PRODUCTION_THRESHOLD:
                 reason_parts.append(f"Total score below production threshold ({self.TOTAL_PRODUCTION_THRESHOLD})")

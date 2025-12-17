@@ -131,7 +131,7 @@ Contract requires reformulation: Tier 1: 39.0/55.0 (70.9%), Total: 61.0/100.0 (6
 1. A2: Low method usage ratio: 0.0% (0/7)
 2. A4: source_hash is placeholder or missing
 3. B2: No methodological_depth.methods defined
-4. B3: Required elements not in validation rules: {'restricciones_legales', 'restricciones_temporales', 'coherencia_demostrada', 'restricciones_presupuestales'}
+4. B3: Required elements not in validation rules: {'restricciones_temporales', 'coherencia_demostrada', 'restricciones_presupuestales', 'restricciones_legales'}
 5. C1: No methodological_depth for documentation check
 6. C2: Template title does not reference base_slot or question_id
 7. C3: source_hash is placeholder - breaks provenance chain
