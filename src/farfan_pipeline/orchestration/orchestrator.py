@@ -289,6 +289,60 @@ class ScoredMicroQuestion:
     error: str | None = None
 
 
+@dataclass
+class ErrorTolerance:
+    """Error tolerance configuration and tracking per phase."""
+    phase_id: int
+    max_failure_rate: float = 0.10
+    total_questions: int = 0
+    failed_questions: int = 0
+    successful_questions: int = 0
+    
+    def record_success(self) -> None:
+        """Record successful question processing."""
+        self.successful_questions += 1
+    
+    def record_failure(self) -> None:
+        """Record failed question processing."""
+        self.failed_questions += 1
+    
+    def current_failure_rate(self) -> float:
+        """Calculate current failure rate."""
+        total = self.successful_questions + self.failed_questions
+        if total == 0:
+            return 0.0
+        return self.failed_questions / total
+    
+    def threshold_exceeded(self) -> bool:
+        """Check if failure threshold exceeded."""
+        return self.current_failure_rate() > self.max_failure_rate
+    
+    def can_mark_success(self, runtime_mode: RuntimeMode | None = None) -> bool:
+        """Determine if phase can be marked as success.
+        
+        PRODUCTION/CI: Require failure rate <= threshold
+        DEV/EXPLORATORY: Allow partial success if at least 50% succeeded
+        """
+        failure_rate = self.current_failure_rate()
+        
+        if runtime_mode in (RuntimeMode.DEV, RuntimeMode.EXPLORATORY):
+            return self.successful_questions >= (self.total_questions * 0.5)
+        
+        return failure_rate <= self.max_failure_rate
+    
+    def to_dict(self) -> dict[str, Any]:
+        """Export error tolerance state."""
+        return {
+            "phase_id": self.phase_id,
+            "max_failure_rate": self.max_failure_rate,
+            "total_questions": self.total_questions,
+            "failed_questions": self.failed_questions,
+            "successful_questions": self.successful_questions,
+            "current_failure_rate": self.current_failure_rate(),
+            "threshold_exceeded": self.threshold_exceeded(),
+        }
+
+
 # ============================================================================
 # ABORT MECHANISM
 # ============================================================================
@@ -1084,6 +1138,11 @@ class Orchestrator:
         self._context: dict[str, Any] = {}
         self._start_time: float | None = None
         self._execution_plan: ExecutionPlan | None = None
+        self._error_tolerance: dict[int, ErrorTolerance] = {
+            2: ErrorTolerance(phase_id=2, max_failure_rate=0.10),
+            3: ErrorTolerance(phase_id=3, max_failure_rate=0.10),
+        }
+        self.runtime_config = runtime_config
         
         self.dependency_lockdown = get_dependency_lockdown()
         logger.info(f"Orchestrator initialized: {self.dependency_lockdown.get_mode_description()}")
@@ -1206,8 +1265,19 @@ class Orchestrator:
             aborted = self.abort_signal.is_aborted()
             duration_ms = instrumentation.duration_ms() or 0.0
             
+            final_success = success and not aborted
+            if phase_id in (2, 3) and phase_id in self._error_tolerance:
+                error_tracker = self._error_tolerance[phase_id]
+                runtime_mode = self.runtime_config.mode if self.runtime_config else None
+                if not error_tracker.can_mark_success(runtime_mode):
+                    final_success = False
+                    logger.warning(
+                        f"Phase {phase_id} marked as failed due to error threshold: "
+                        f"{error_tracker.current_failure_rate():.2%} failure rate"
+                    )
+            
             phase_result = PhaseResult(
-                success=success and not aborted,
+                success=final_success,
                 phase_id=str(phase_id),
                 data=data,
                 error=error,
@@ -1563,8 +1633,10 @@ class Orchestrator:
         # Implementation from previous file
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
+        error_tracker = self._error_tolerance[2]
         
         micro_questions = config.get("micro_questions", [])
+        error_tracker.total_questions = len(micro_questions)
         instrumentation.start(items_total=len(micro_questions))
         
         results: list[MicroQuestionRun] = []
@@ -1576,11 +1648,13 @@ class Orchestrator:
             base_slot = question.get("base_slot")
             if not base_slot:
                 logger.warning(f"Question missing base_slot: {question.get('id')}")
+                error_tracker.record_failure()
                 continue
 
             executor_class = self.executors.get(base_slot)
             if not executor_class:
                 logger.warning(f"No executor found for {base_slot}")
+                error_tracker.record_failure()
                 continue
 
             try:
@@ -1623,10 +1697,12 @@ class Orchestrator:
                 )
                 results.append(run_result)
                 instrumentation.increment(latency=duration)
+                error_tracker.record_success()
 
             except Exception as e:
                 logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
                 instrumentation.record_error("execution", str(e))
+                error_tracker.record_failure()
                 results.append(MicroQuestionRun(
                     question_id=question.get("id"),
                     question_global=question.get("global_id"),
@@ -1636,7 +1712,23 @@ class Orchestrator:
                     error=str(e),
                     aborted=False
                 ))
+                
+                if error_tracker.threshold_exceeded():
+                    runtime_mode = self.runtime_config.mode if self.runtime_config else None
+                    if not error_tracker.can_mark_success(runtime_mode):
+                        logger.error(
+                            f"Phase 2 error threshold exceeded: "
+                            f"{error_tracker.current_failure_rate():.2%} > "
+                            f"{error_tracker.max_failure_rate:.2%}"
+                        )
+                        if runtime_mode not in (RuntimeMode.DEV, RuntimeMode.EXPLORATORY):
+                            self.request_abort("Phase 2 error threshold exceeded")
+                            raise AbortRequested("Phase 2 error threshold exceeded")
 
+        logger.info(
+            f"Phase 2 completed: {error_tracker.successful_questions}/{error_tracker.total_questions} "
+            f"questions succeeded, failure rate: {error_tracker.current_failure_rate():.2%}"
+        )
         return results
 
     async def _score_micro_results_async(
@@ -1645,7 +1737,9 @@ class Orchestrator:
         # Implementation from previous file
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[3]
+        error_tracker = self._error_tolerance[3]
         
+        error_tracker.total_questions = len(micro_results)
         instrumentation.start(items_total=len(micro_results))
         
         scored_results: list[ScoredMicroQuestion] = []
@@ -1777,32 +1871,15 @@ class Orchestrator:
                 
                 scored_results. append(scored)
                 instrumentation.increment(latency=0.0)
+                error_tracker.record_success()
                 
             except Exception as e:
                 logger.error(
                     f"Phase 3: Failed to score question {micro_result.question_global}: {e}",
                     exc_info=True
                 )
-                scored = ScoredMicroQuestion(
-                    question_id=micro_result.question_id,
-                    question_global=micro_result.question_global,
-                    base_slot=micro_result.base_slot,
-                    score=0.0,
-                    normalized_score=0.0,
-                    quality_level="ERROR",
-                    evidence=micro_result.evidence,
-                    scoring_details={"error":  str(e)},
-                    metadata=micro_result.metadata,
-                    error=f"Scoring error: {e}",
-                )
-                scored_results. append(scored)
-                instrumentation.increment(latency=0.0)
-                
-            except Exception as e:
-                logger.error(
-                    f"Phase 3: Failed to score question {micro_result.question_global}: {e}",
-                    exc_info=True
-                )
+                instrumentation.record_error("scoring", str(e))
+                error_tracker.record_failure()
                 scored = ScoredMicroQuestion(
                     question_id=micro_result.question_id,
                     question_global=micro_result.question_global,
@@ -1817,7 +1894,23 @@ class Orchestrator:
                 )
                 scored_results.append(scored)
                 instrumentation.increment(latency=0.0)
+                
+                if error_tracker.threshold_exceeded():
+                    runtime_mode = self.runtime_config.mode if self.runtime_config else None
+                    if not error_tracker.can_mark_success(runtime_mode):
+                        logger.error(
+                            f"Phase 3 error threshold exceeded: "
+                            f"{error_tracker.current_failure_rate():.2%} > "
+                            f"{error_tracker.max_failure_rate:.2%}"
+                        )
+                        if runtime_mode not in (RuntimeMode.DEV, RuntimeMode.EXPLORATORY):
+                            self.request_abort("Phase 3 error threshold exceeded")
+                            raise AbortRequested("Phase 3 error threshold exceeded")
         
+        logger.info(
+            f"Phase 3 completed: {error_tracker.successful_questions}/{error_tracker.total_questions} "
+            f"questions scored, failure rate: {error_tracker.current_failure_rate():.2%}"
+        )
         return scored_results
     
     async def _aggregate_dimensions_async(
@@ -2093,9 +2186,27 @@ class Orchestrator:
         
         logger.warning("Phase 9 stub - add your report logic here")
         
+        error_tolerance_report = {
+            phase_id: tracker.to_dict()
+            for phase_id, tracker in self._error_tolerance.items()
+        }
+        
+        all_phases_succeeded = all(pr.success for pr in self.phase_results)
+        runtime_mode = self.runtime_config.mode if self.runtime_config else None
+        
+        partial_success = False
+        if runtime_mode in (RuntimeMode.DEV, RuntimeMode.EXPLORATORY):
+            phase2_ok = self._error_tolerance[2].can_mark_success(runtime_mode)
+            phase3_ok = self._error_tolerance[3].can_mark_success(runtime_mode)
+            partial_success = phase2_ok and phase3_ok and not all_phases_succeeded
+        
         report = {
             "status": "stub",
             "recommendations": recommendations,
+            "error_tolerance": error_tolerance_report,
+            "pipeline_success": all_phases_succeeded,
+            "partial_success": partial_success,
+            "runtime_mode": runtime_mode.value if runtime_mode else "PRODUCTION",
         }
         return report
     
