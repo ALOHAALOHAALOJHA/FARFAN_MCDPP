@@ -106,6 +106,7 @@ class VerifiedPipelineRunner:
         self.phases_completed = 0
         self.phases_failed = 0
         self.errors: List[str] = []
+        self.orchestrator: Any = None  # Store orchestrator instance for metrics export
 
         # Set questionnaire path (explicit input, SIN_CARRETA compliance)
         if questionnaire_path is None:
@@ -319,6 +320,9 @@ class VerifiedPipelineRunner:
             processor = build_processor()
             orchestrator = Orchestrator(processor=processor)
             
+            # Store orchestrator instance for metrics export
+            self.orchestrator = orchestrator
+            
             # Run all phases
             results = await orchestrator.process(preprocessed_doc)
             
@@ -345,6 +349,72 @@ class VerifiedPipelineRunner:
                           {"traceback": traceback.format_exc()})
             self.errors.append(error_msg)
             return None
+    
+    def persist_orchestrator_metrics(self) -> tuple[List[str], Dict[str, str]]:
+        """
+        Persist orchestrator metrics to artifacts directory.
+        
+        Exports and persists:
+        - phase_metrics.json: Full PhaseInstrumentation.build_metrics() for each phase
+        - resource_usage.jsonl: Serialized ResourceLimits.get_usage_history() snapshots
+        - latency_histograms.json: Per-phase latency percentiles
+        
+        Returns:
+            Tuple of (list of artifact paths, dict of artifact hashes)
+        """
+        self.log_claim("start", "metrics_persistence", "Persisting orchestrator metrics")
+        
+        artifacts = []
+        artifact_hashes = {}
+        
+        if self.orchestrator is None:
+            self.log_claim("error", "metrics_persistence", 
+                          "Orchestrator not available for metrics export")
+            return artifacts, artifact_hashes
+        
+        try:
+            # Import metrics persistence module
+            sys.path.insert(0, str(REPO_ROOT / 'src'))
+            from farfan_pipeline.orchestration.metrics_persistence import (
+                persist_all_metrics,
+                validate_metrics_schema
+            )
+            
+            # Export metrics from orchestrator
+            metrics = self.orchestrator.export_metrics()
+            
+            # Validate metrics schema
+            validation_errors = validate_metrics_schema(metrics)
+            if validation_errors:
+                error_msg = f"Metrics validation failed: {validation_errors}"
+                self.log_claim("error", "metrics_persistence", error_msg,
+                              {"validation_errors": validation_errors})
+                self.errors.append(error_msg)
+                return artifacts, artifact_hashes
+            
+            # Persist all metrics to artifacts directory
+            written_files = persist_all_metrics(metrics, self.artifacts_dir)
+            
+            # Add written files to artifacts list and compute hashes
+            for metric_type, file_path in written_files.items():
+                artifacts.append(str(file_path))
+                artifact_hashes[str(file_path)] = self.compute_sha256(file_path)
+                self.log_claim("artifact", "metrics_persistence",
+                              f"Persisted {metric_type} metrics",
+                              {"file": str(file_path), "metric_type": metric_type})
+            
+            self.log_claim("complete", "metrics_persistence",
+                          f"Successfully persisted {len(written_files)} metrics files",
+                          {"files": list(written_files.keys())})
+            
+            return artifacts, artifact_hashes
+            
+        except Exception as e:
+            error_msg = f"Failed to persist metrics: {str(e)}"
+            self.log_claim("error", "metrics_persistence", error_msg,
+                          {"traceback": traceback.format_exc()})
+            self.errors.append(error_msg)
+            return artifacts, artifact_hashes
     
     def save_artifacts(self, cpp: Any, preprocessed_doc: Any, 
                       results: Any) -> tuple[List[str], Dict[str, str]]:
@@ -766,10 +836,17 @@ class VerifiedPipelineRunner:
             self.generate_verification_manifest([], {})
             return False
         
-        # Step 5: Save artifacts
+        # Step 5: Persist orchestrator metrics
+        metrics_artifacts, metrics_hashes = self.persist_orchestrator_metrics()
+        
+        # Step 6: Save artifacts
         artifacts, artifact_hashes = self.save_artifacts(cpp, preprocessed_doc, results)
         
-        # Step 6: Generate verification manifest with chunk metrics
+        # Merge metrics artifacts into main artifacts list
+        artifacts.extend(metrics_artifacts)
+        artifact_hashes.update(metrics_hashes)
+        
+        # Step 7: Generate verification manifest with chunk metrics
         manifest_path = self.generate_verification_manifest(
             artifacts, artifact_hashes, preprocessed_doc, results
         )
