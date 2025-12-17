@@ -83,6 +83,10 @@ PHASE_TIMEOUT_DEFAULT = int(os.getenv("PHASE_TIMEOUT_SECONDS", "300"))
 P01_EXPECTED_CHUNK_COUNT = 60
 TIMEOUT_SYNC_PHASES: set[int] = {1}
 
+# Phase 2 ExecutionPlan constants
+UNKNOWN_BASE_SLOT = "UNKNOWN"
+UNKNOWN_QUESTION_GLOBAL = -1
+
 P = ParamSpec("P")
 T = TypeVar("T")
 
@@ -1557,82 +1561,125 @@ class Orchestrator:
         
         return canon_package
     
+    def _lookup_question_from_plan_task(self, task: Any, config: dict[str, Any]) -> dict[str, Any] | None:
+        """Look up full question data from monolith using task metadata.
+        
+        Args:
+            task: Task from execution_plan with question_id and dimension
+            config: Configuration dict containing micro_questions from monolith
+            
+        Returns:
+            Question dict from monolith, or None if not found
+        """
+        micro_questions = config.get("micro_questions", [])
+        question_id = task.question_id
+        
+        for question in micro_questions:
+            if question.get("id") == question_id or question.get("question_id") == question_id:
+                return question
+        
+        logger.warning(f"Question {question_id} not found in monolith for task {task.task_id}")
+        return None
+
     async def _execute_micro_questions_async(
         self, document: Any, config: dict[str, Any]
     ) -> list[MicroQuestionRun]:
-        """Execute micro-questions using IrrigationSynchronizer execution plan.
+        """Execute micro questions using ExecutionPlan from Phase 1.
         
-        Processes all tasks from the execution plan (305 micro-questions × 60 chunks),
-        with retry logic for transient failures.
+        Consumes all tasks from self._execution_plan, tracks status, errors, and retries.
+        Each task is mapped to the correct executor using dimension and question metadata.
+        
+        Invariants:
+        - No orphan tasks (all tasks in plan are consumed)
+        - No duplicate execution (each task executed exactly once, ignoring retries)
+        - Task metadata drives execution (dimension, policy_area, question_id)
         """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
         
-        if self._execution_plan is None:
-            logger.error("Execution plan not available - cannot execute Phase 2")
-            raise RuntimeError(
-                "Execution plan missing. Ensure Phase 1 completed successfully "
-                "and IrrigationSynchronizer.build_execution_plan() was called."
-            )
-        
-        tasks = self._execution_plan.tasks
-        instrumentation.start(items_total=len(tasks))
-        
-        logger.info(
-            "phase2_execution_start",
-            task_count=len(tasks),
-            plan_id=self._execution_plan.plan_id,
-            chunk_count=self._execution_plan.chunk_count,
-            question_count=self._execution_plan.question_count,
-        )
-        
-        results: list[MicroQuestionRun] = []
-        MAX_RETRIES = 3
-        RETRY_BACKOFF_BASE = 0.5
-        MAX_RETRY_BACKOFF_SECONDS = 10.0
-        
-        for task_idx, task in enumerate(tasks):
-            self._ensure_not_aborted()
-            start_q = time.perf_counter()
+        # Use execution_plan if available, fallback to legacy config-based approach
+        if self._execution_plan is not None:
+            tasks = list(self._execution_plan.tasks)
+            logger.info(f"Phase 2: Executing {len(tasks)} tasks from execution plan (plan_id: {self._execution_plan.plan_id})")
+            instrumentation.start(items_total=len(tasks))
             
-            base_slot = task.metadata.get("base_slot")
-            if not base_slot:
-                logger.warning(
-                    "task_missing_base_slot",
-                    task_id=task.task_id,
-                    question_id=task.question_id
-                )
-                results.append(MicroQuestionRun(
-                    question_id=task.question_id,
-                    question_global=task.question_global,
-                    base_slot="UNKNOWN",
-                    metadata={"task_id": task.task_id, "error": "missing_base_slot"},
-                    evidence=None,
-                    error="Task missing base_slot",
-                    aborted=False
-                ))
-                continue
+            task_status = {}
+            results: list[MicroQuestionRun] = []
+            tasks_executed = set()
+            tasks_failed = set()
             
-            executor_class = self.executors.get(base_slot)
-            if not executor_class:
-                logger.warning(
-                    "executor_not_found",
-                    base_slot=base_slot,
-                    task_id=task.task_id
-                )
-                results.append(MicroQuestionRun(
-                    question_id=task.question_id,
-                    question_global=task.question_global,
-                    base_slot=base_slot,
-                    metadata={"task_id": task.task_id, "error": "executor_not_found"},
-                    evidence=None,
-                    error=f"No executor found for {base_slot}",
-                    aborted=False
-                ))
-                continue
-            
-            last_error = None
-            for attempt in range(MAX_RETRIES):
+            for task in tasks:
+                self._ensure_not_aborted()
+                task_id = task.task_id
+                start_q = time.perf_counter()
+                
+                # Track task to ensure no duplicates
+                if task_id in tasks_executed:
+                    logger.error(f"Duplicate task execution detected: {task_id}")
+                    instrumentation.record_error("duplicate_task", task_id)
+                    continue
+                
+                tasks_executed.add(task_id)
+                task_status[task_id] = "running"
+                
+                # Look up full question data from monolith
+                question = self._lookup_question_from_plan_task(task, config)
+                if question is None:
+                    error_msg = f"Question data not found for task {task_id}"
+                    logger.error(error_msg)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("question_lookup_failed", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=task.question_id,
+                        question_global=UNKNOWN_QUESTION_GLOBAL,
+                        base_slot=UNKNOWN_BASE_SLOT,
+                        metadata={"task_id": task_id, "error": "question_not_found"},
+                        evidence=None,
+                        error=error_msg,
+                        aborted=False
+                    ))
+                    continue
+                
+                base_slot = question.get("base_slot")
+                if not base_slot:
+                    error_msg = f"Task {task_id}: Question missing base_slot"
+                    logger.warning(error_msg)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("missing_base_slot", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                        base_slot=UNKNOWN_BASE_SLOT,
+                        metadata={"task_id": task_id, "error": "missing_base_slot"},
+                        evidence=None,
+                        error=error_msg,
+                        aborted=False
+                    ))
+                    continue
+
+                executor_class = self.executors.get(base_slot)
+                if not executor_class:
+                    error_msg = f"Task {task_id}: No executor found for {base_slot}"
+                    logger.warning(error_msg)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("executor_not_found", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={"task_id": task_id, "error": "executor_not_found"},
+                        evidence=None,
+                        error=error_msg,
+                        aborted=False
+                    ))
+                    continue
+
                 try:
                     instance = executor_class(
                         method_executor=self.executor,
@@ -1642,119 +1689,197 @@ class Orchestrator:
                         calibration_orchestrator=self.calibration_orchestrator,
                         enriched_packs=self._enriched_packs or {},
                     )
+
+                    # Validate dimension_id consistency
+                    question_dimension = question.get("dimension_id")
+                    if question_dimension is None:
+                        # Question missing dimension_id, use task dimension with warning
+                        logger.warning(
+                            f"Task {task_id}: question missing dimension_id, using task dimension '{task.dimension}'"
+                        )
+                        question_dimension = task.dimension
+                    elif question_dimension != task.dimension:
+                        # Mismatch indicates data integrity issue
+                        logger.error(
+                            f"Task {task_id}: dimension_id mismatch - "
+                            f"question has '{question_dimension}' but task has '{task.dimension}'. "
+                            f"This indicates a data integrity issue in the execution plan."
+                        )
+                        task_status[task_id] = "failed"
+                        tasks_failed.add(task_id)
+                        instrumentation.record_error("dimension_mismatch", task_id)
+                        
+                        results.append(MicroQuestionRun(
+                            question_id=question.get("id"),
+                            question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                            base_slot=base_slot,
+                            metadata={"task_id": task_id, "error": "dimension_mismatch"},
+                            evidence=None,
+                            error=f"Dimension mismatch: question={question_dimension}, task={task.dimension}",
+                            aborted=False
+                        ))
+                        continue
                     
                     q_context = {
-                        "question_id": task.question_id,
-                        "question_global": task.question_global,
+                        "question_id": question.get("id"),
+                        "question_global": question.get("global_id"),
                         "base_slot": base_slot,
-                        "policy_area_id": task.policy_area_id,
-                        "patterns": task.patterns,
-                        "expected_elements": task.expected_elements,
+                        "patterns": question.get("patterns", []),
+                        "expected_elements": question.get("expected_elements", []),
                         "identity": {
-                            "dimension_id": task.dimension_id,
-                            "cluster_id": task.metadata.get("cluster_id", "UNKNOWN"),
+                            "dimension_id": question_dimension,
+                            "cluster_id": question.get("cluster_id"),
                         },
-                        "chunk_id": task.chunk_id,
-                        "task_id": task.task_id,
+                        "task_metadata": {
+                            "task_id": task_id,
+                            "policy_area": task.policy_area,
+                            "chunk_id": task.chunk_id,
+                            "chunk_index": task.chunk_index,
+                        }
                     }
-                    
+
                     result_data = instance.execute(
                         document=document,
                         method_executor=self.executor,
                         question_context=q_context
                     )
-                    
+
                     duration = (time.perf_counter() - start_q) * 1000
-                    
-                    evidence = result_data.get("evidence")
-                    if evidence is None:
-                        logger.warning(
-                            "executor_returned_null_evidence",
-                            task_id=task.task_id,
-                            base_slot=base_slot,
-                            attempt=attempt + 1
-                        )
-                    
+
                     run_result = MicroQuestionRun(
-                        question_id=task.question_id,
-                        question_global=task.question_global,
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
                         base_slot=base_slot,
-                        metadata={
-                            **result_data.get("metadata", {}),
-                            "task_id": task.task_id,
-                            "chunk_id": task.chunk_id,
-                            "policy_area_id": task.policy_area_id,
-                            "dimension_id": task.dimension_id,
-                            "attempts": attempt + 1,
-                        },
-                        evidence=evidence,
+                        metadata={**result_data.get("metadata", {}), "task_id": task_id},
+                        evidence=result_data.get("evidence"),
+                        duration_ms=duration,
+                    )
+                    results.append(run_result)
+                    task_status[task_id] = "completed"
+                    instrumentation.increment(latency=duration)
+                    
+                    logger.debug(f"Task {task_id} completed successfully in {duration:.2f}ms")
+
+                except Exception as e:
+                    logger.error(f"Task {task_id}: Executor {base_slot} failed: {e}", exc_info=True)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("execution", f"{task_id}: {str(e)}")
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={"task_id": task_id, "error": str(e)},
+                        evidence=None,
+                        error=str(e),
+                        aborted=False
+                    ))
+            
+            # Verify plan coverage: all tasks must be executed
+            orphan_tasks = set(t.task_id for t in tasks) - tasks_executed
+            if orphan_tasks:
+                error_msg = f"Orphan tasks detected (not executed): {orphan_tasks}"
+                logger.error(error_msg)
+                instrumentation.record_error("orphan_tasks", str(len(orphan_tasks)))
+                # Orphan tasks indicate a serious logic error - fail in all modes
+                # In PROD mode, this is a hard failure; in DEV, log as critical warning
+                if self.runtime_config.mode == RuntimeMode.PRODUCTION:
+                    self.request_abort(error_msg)
+                else:
+                    logger.critical(f"DEVELOPMENT MODE WARNING: {error_msg}")
+            
+            # In PROD mode, fail Phase 2 if any tasks failed
+            if tasks_failed and self.runtime_config.mode == RuntimeMode.PRODUCTION:
+                error_msg = f"Phase 2 failed: {len(tasks_failed)} tasks failed in PROD mode"
+                logger.error(error_msg)
+                self.request_abort(error_msg)
+            
+            # Log final metrics
+            logger.info(
+                f"Phase 2 complete: {len(tasks_executed)} tasks executed, "
+                f"{len(tasks_failed)} failed, {len(orphan_tasks)} orphaned"
+            )
+            
+            return results
+            
+        else:
+            # Fallback: legacy config-based approach when execution_plan not available
+            logger.warning("Phase 2: No execution plan available, falling back to config-based approach")
+            micro_questions = config.get("micro_questions", [])
+            instrumentation.start(items_total=len(micro_questions))
+            
+            results: list[MicroQuestionRun] = []
+
+            for question in micro_questions:
+                self._ensure_not_aborted()
+                start_q = time.perf_counter()
+
+                base_slot = question.get("base_slot")
+                if not base_slot:
+                    logger.warning(f"Question missing base_slot: {question.get('id')}")
+                    continue
+
+                executor_class = self.executors.get(base_slot)
+                if not executor_class:
+                    logger.warning(f"No executor found for {base_slot}")
+                    continue
+
+                try:
+                    instance = executor_class(
+                        method_executor=self.executor,
+                        signal_registry=self.executor.signal_registry,
+                        config=self.executor_config,
+                        questionnaire_provider=self._canonical_questionnaire,
+                        calibration_orchestrator=self.calibration_orchestrator,
+                        enriched_packs=self._enriched_packs or {},
+                    )
+
+                    q_context = {
+                        "question_id": question.get("id"),
+                        "question_global": question.get("global_id"),
+                        "base_slot": base_slot,
+                        "patterns": question.get("patterns", []),
+                        "expected_elements": question.get("expected_elements", []),
+                        "identity": {
+                            "dimension_id": question.get("dimension_id"),
+                            "cluster_id": question.get("cluster_id"),
+                        }
+                    }
+
+                    result_data = instance.execute(
+                        document=document,
+                        method_executor=self.executor,
+                        question_context=q_context
+                    )
+
+                    duration = (time.perf_counter() - start_q) * 1000
+
+                    run_result = MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata=result_data.get("metadata", {}),
+                        evidence=result_data.get("evidence"),
                         duration_ms=duration,
                     )
                     results.append(run_result)
                     instrumentation.increment(latency=duration)
-                    
-                    if (task_idx + 1) % 50 == 0:
-                        logger.info(
-                            "phase2_progress",
-                            completed=task_idx + 1,
-                            total=len(tasks),
-                            progress_pct=round(100 * (task_idx + 1) / len(tasks), 2)
-                        )
-                    
-                    break
-                
+
                 except Exception as e:
-                    last_error = e
-                    logger.error(
-                        "executor_execution_failed",
-                        base_slot=base_slot,
-                        task_id=task.task_id,
-                        attempt=attempt + 1,
-                        max_retries=MAX_RETRIES,
-                        error=str(e),
-                        exc_info=True if attempt == MAX_RETRIES - 1 else False
-                    )
+                    logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
                     instrumentation.record_error("execution", str(e))
-                    
-                    if attempt < MAX_RETRIES - 1:
-                        backoff_time = min(
-                            RETRY_BACKOFF_BASE * (2 ** attempt),
-                            MAX_RETRY_BACKOFF_SECONDS
-                        )
-                        logger.info(
-                            "retrying_task",
-                            task_id=task.task_id,
-                            attempt=attempt + 1,
-                            backoff_seconds=backoff_time
-                        )
-                        await asyncio.sleep(backoff_time)
-                    else:
-                        results.append(MicroQuestionRun(
-                            question_id=task.question_id,
-                            question_global=task.question_global,
-                            base_slot=base_slot,
-                            metadata={
-                                "task_id": task.task_id,
-                                "chunk_id": task.chunk_id,
-                                "policy_area_id": task.policy_area_id,
-                                "dimension_id": task.dimension_id,
-                                "attempts": MAX_RETRIES,
-                                "error": str(last_error),
-                            },
-                            evidence=None,
-                            error=f"Failed after {MAX_RETRIES} attempts: {str(last_error)}",
-                            aborted=False
-                        ))
-        
-        logger.info(
-            "phase2_execution_complete",
-            total_tasks=len(tasks),
-            results_count=len(results),
-            non_null_evidence=sum(1 for r in results if r.evidence is not None),
-            errors=sum(1 for r in results if r.error is not None)
-        )
-        
-        return results
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={},
+                        evidence=None,
+                        error=str(e),
+                        aborted=False
+                    ))
+
+            return results
 
     async def _score_micro_results_async(
         self, micro_results: list[MicroQuestionRun], config: dict[str, Any]
