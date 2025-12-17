@@ -1192,6 +1192,7 @@ class Orchestrator:
         runtime_config: RuntimeConfig | None = None,
         phase0_validation: Phase0ValidationResult | None = None,
         calibration_orchestrator: Any | None = None,
+        calibration_policy: Any | None = None,
         resource_limits: ResourceLimits | None = None,
         resource_snapshot_interval: int = 10,
         recommendation_engine_port: RecommendationEnginePort | None = None,
@@ -1199,6 +1200,7 @@ class Orchestrator:
     ) -> None:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
+        from canonic_phases.Phase_two.calibration_policy import create_default_policy
         
         validate_phase_definitions(self.FASES, self.__class__)
         
@@ -1244,6 +1246,10 @@ class Orchestrator:
             logger.info("CalibrationOrchestrator injected into main orchestrator")
         else:
             self.calibration_orchestrator = None
+        
+        strict_calibration = runtime_config.is_strict_mode() if runtime_config else False
+        self.calibration_policy = calibration_policy or create_default_policy(strict_mode=strict_calibration)
+        logger.info(f"CalibrationPolicy initialized (strict_mode={strict_calibration})")
         
         self.resource_limits = resource_limits or ResourceLimits()
         self.resource_snapshot_interval = max(1, resource_snapshot_interval)
@@ -1749,6 +1755,8 @@ class Orchestrator:
     def export_metrics(self) -> dict[str, Any]:
         abort_timestamp = self.abort_signal.get_timestamp()
         
+        calibration_metrics = self.calibration_policy.get_metrics_summary()
+        
         return {
             "timestamp": datetime.utcnow().isoformat(),
             "manifest": self._build_execution_manifest(),
@@ -1760,7 +1768,17 @@ class Orchestrator:
                 "timestamp": abort_timestamp.isoformat() if abort_timestamp else None,
             },
             "phase_status": dict(self._phase_status),
+            "calibration_metrics": calibration_metrics,
+            "calibration_detailed": self.calibration_policy.export_metrics() if calibration_metrics["total_metrics"] > 0 else [],
         }
+    
+    def get_calibration_summary(self) -> dict[str, Any]:
+        """Get calibration influence summary.
+        
+        Returns:
+            Summary of calibration metrics and drift detection
+        """
+        return self.calibration_policy.get_metrics_summary()
     
     def calibrate_method(
         self,
