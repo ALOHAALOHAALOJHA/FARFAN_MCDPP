@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
+from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
 
 
 class D1Q1_Executor_Contract(BaseExecutorWithContract):
