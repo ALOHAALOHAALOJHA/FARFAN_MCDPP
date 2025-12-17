@@ -1496,6 +1496,254 @@ class QuestionnaireSignalRegistry:
         self._circuit_breaker.success_count = 0
         self._circuit_breaker.last_state_change = time.time()
 
+    def validate_signals_for_questionnaire(
+        self, 
+        expected_question_count: int = 300,
+        check_modalities: list[str] | None = None
+    ) -> dict[str, Any]:
+        """Validate signal registry health for all micro-questions.
+        
+        This method performs comprehensive validation of the signal registry
+        to ensure all required signals are present and properly shaped before
+        pipeline execution. It is designed to be called during bootstrap (Phase 0)
+        or Orchestrator initialization.
+        
+        Args:
+            expected_question_count: Expected number of micro-questions (default: 300)
+            check_modalities: Signal modalities to check (default: all standard modalities)
+        
+        Returns:
+            Dictionary containing:
+                - valid: bool indicating if validation passed
+                - total_questions: int number of questions found
+                - expected_questions: int expected question count
+                - missing_questions: list of question IDs without signals
+                - malformed_signals: dict of question_id -> list of issues
+                - signal_coverage: dict of modality -> coverage percentage
+                - stale_signals: list of issues indicating stale registry state
+                - timestamp: float validation timestamp
+        
+        Raises:
+            SignalRegistryError: In production mode if critical validation fails
+        """
+        start_time = time.time()
+        
+        if check_modalities is None:
+            check_modalities = ["micro_answering", "validation", "scoring"]
+        
+        logger.info(
+            "signal_validation_started",
+            expected_count=expected_question_count,
+            modalities=check_modalities,
+        )
+        
+        # Extract all micro-question IDs
+        blocks = dict(self._questionnaire.data.get("blocks", {}))
+        micro_questions = blocks.get("micro_questions", [])
+        question_ids: list[str] = []
+        
+        for q in micro_questions:
+            if isinstance(q, dict):
+                q_id = str(q.get("question_id", "")).strip()
+            else:
+                q_id = str(q).strip()
+            if q_id:
+                question_ids.append(q_id)
+        
+        total_questions = len(question_ids)
+        missing_questions: list[str] = []
+        malformed_signals: dict[str, list[str]] = {}
+        signal_coverage: dict[str, dict[str, int]] = {
+            modality: {"success": 0, "failed": 0} 
+            for modality in check_modalities
+        }
+        stale_signals: list[str] = []
+        
+        # Validate each question across all modalities
+        for q_id in question_ids:
+            q_missing_modalities: list[str] = []
+            q_issues: list[str] = []
+            
+            # Check micro_answering signals
+            if "micro_answering" in check_modalities:
+                try:
+                    signals = self.get_micro_answering_signals(q_id)
+                    
+                    # Validate signal pack structure
+                    if not signals.question_patterns or q_id not in signals.question_patterns:
+                        q_issues.append(f"micro_answering: no patterns found for {q_id}")
+                        signal_coverage["micro_answering"]["failed"] += 1
+                    elif not signals.question_patterns[q_id]:
+                        q_issues.append(f"micro_answering: empty pattern list for {q_id}")
+                        signal_coverage["micro_answering"]["failed"] += 1
+                    else:
+                        signal_coverage["micro_answering"]["success"] += 1
+                        logger.debug(
+                            "signal_lookup",
+                            question_id=q_id,
+                            modality="micro_answering",
+                            pattern_count=len(signals.question_patterns[q_id]),
+                        )
+                    
+                    # Check expected_elements
+                    if not signals.expected_elements or q_id not in signals.expected_elements:
+                        q_issues.append(f"micro_answering: no expected_elements for {q_id}")
+                    
+                except QuestionNotFoundError:
+                    q_missing_modalities.append("micro_answering")
+                    signal_coverage["micro_answering"]["failed"] += 1
+                    logger.warning(
+                        "signal_lookup_failed",
+                        question_id=q_id,
+                        modality="micro_answering",
+                        reason="QuestionNotFoundError",
+                    )
+                except SignalExtractionError as e:
+                    q_issues.append(f"micro_answering: extraction error - {str(e)}")
+                    signal_coverage["micro_answering"]["failed"] += 1
+                    logger.error(
+                        "signal_lookup_failed",
+                        question_id=q_id,
+                        modality="micro_answering",
+                        reason=str(e),
+                    )
+            
+            # Check validation signals
+            if "validation" in check_modalities:
+                try:
+                    signals = self.get_validation_signals(q_id)
+                    
+                    if not signals.validation_rules:
+                        q_issues.append(f"validation: no validation_rules for {q_id}")
+                        signal_coverage["validation"]["failed"] += 1
+                    else:
+                        signal_coverage["validation"]["success"] += 1
+                        logger.debug(
+                            "signal_lookup",
+                            question_id=q_id,
+                            modality="validation",
+                            rule_count=len(signals.validation_rules),
+                        )
+                    
+                except QuestionNotFoundError:
+                    q_missing_modalities.append("validation")
+                    signal_coverage["validation"]["failed"] += 1
+                    logger.warning(
+                        "signal_lookup_failed",
+                        question_id=q_id,
+                        modality="validation",
+                        reason="QuestionNotFoundError",
+                    )
+                except SignalExtractionError as e:
+                    q_issues.append(f"validation: extraction error - {str(e)}")
+                    signal_coverage["validation"]["failed"] += 1
+                    logger.error(
+                        "signal_lookup_failed",
+                        question_id=q_id,
+                        modality="validation",
+                        reason=str(e),
+                    )
+            
+            # Check scoring signals
+            if "scoring" in check_modalities:
+                try:
+                    signals = self.get_scoring_signals(q_id)
+                    
+                    if not signals.scoring_modality:
+                        q_issues.append(f"scoring: no scoring_modality for {q_id}")
+                        signal_coverage["scoring"]["failed"] += 1
+                    else:
+                        signal_coverage["scoring"]["success"] += 1
+                        logger.debug(
+                            "signal_lookup",
+                            question_id=q_id,
+                            modality="scoring",
+                            scoring_modality=signals.scoring_modality,
+                        )
+                    
+                except QuestionNotFoundError:
+                    q_missing_modalities.append("scoring")
+                    signal_coverage["scoring"]["failed"] += 1
+                    logger.warning(
+                        "signal_lookup_failed",
+                        question_id=q_id,
+                        modality="scoring",
+                        reason="QuestionNotFoundError",
+                    )
+                except SignalExtractionError as e:
+                    q_issues.append(f"scoring: extraction error - {str(e)}")
+                    signal_coverage["scoring"]["failed"] += 1
+                    logger.error(
+                        "signal_lookup_failed",
+                        question_id=q_id,
+                        modality="scoring",
+                        reason=str(e),
+                    )
+            
+            # Record issues for this question
+            if q_missing_modalities:
+                missing_questions.append(q_id)
+                q_issues.append(f"missing modalities: {', '.join(q_missing_modalities)}")
+            
+            if q_issues:
+                malformed_signals[q_id] = q_issues
+        
+        # Check for stale registry state
+        if self._circuit_breaker.state == CircuitState.OPEN:
+            stale_signals.append("circuit_breaker_open")
+        
+        if self._metrics.errors > 0:
+            stale_signals.append(f"registry_has_{self._metrics.errors}_errors")
+        
+        # Calculate coverage percentages
+        coverage_percentages: dict[str, float] = {}
+        for modality, counts in signal_coverage.items():
+            total = counts["success"] + counts["failed"]
+            coverage_percentages[modality] = (
+                (counts["success"] / total * 100.0) if total > 0 else 0.0
+            )
+        
+        # Determine validation result
+        is_valid = (
+            total_questions == expected_question_count
+            and len(missing_questions) == 0
+            and len(malformed_signals) == 0
+            and all(pct == 100.0 for pct in coverage_percentages.values())
+        )
+        
+        elapsed_time = time.time() - start_time
+        
+        result = {
+            "valid": is_valid,
+            "total_questions": total_questions,
+            "expected_questions": expected_question_count,
+            "missing_questions": missing_questions,
+            "malformed_signals": malformed_signals,
+            "signal_coverage": signal_coverage,
+            "coverage_percentages": coverage_percentages,
+            "stale_signals": stale_signals,
+            "timestamp": start_time,
+            "elapsed_seconds": elapsed_time,
+            "circuit_breaker_state": (
+                self._circuit_breaker.state.value 
+                if hasattr(self._circuit_breaker.state, 'value') 
+                else str(self._circuit_breaker.state)
+            ),
+        }
+        
+        logger.info(
+            "signal_validation_completed",
+            valid=is_valid,
+            total_questions=total_questions,
+            expected_questions=expected_question_count,
+            missing_count=len(missing_questions),
+            malformed_count=len(malformed_signals),
+            coverage=coverage_percentages,
+            elapsed_seconds=elapsed_time,
+        )
+        
+        return result
+
     def clear_cache(self) -> None:
         """Clear all caches (for testing or hot-reload)."""
         self._chunking_signals = None
