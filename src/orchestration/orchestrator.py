@@ -1,1 +1,1 @@
-/Users/recovered/Applications/F.A.R.F.A.N -MECHANISTIC-PIPELINE/src/farfan_pipeline/orchestration/orchestrator.py
+../farfan_pipeline/orchestration/orchestrator.py
