@@ -161,8 +161,13 @@ class CQVRValidator:
         for method in methods[:5]:
             steps = method.get('technical_approach', {}).get('steps', [])
             total_steps += len(steps)
-            non_generic_steps += sum(1 for s in steps
-                                    if not any(g in s.get('description', '') for g in generic_phrases))
+            for s in steps:
+                if isinstance(s, dict):
+                    desc = s.get('description', '')
+                else:
+                    desc = str(s)
+                if not any(g in desc for g in generic_phrases):
+                    non_generic_steps += 1
 
         if total_steps == 0:
             return 5
