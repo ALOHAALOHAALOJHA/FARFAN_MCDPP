@@ -75,10 +75,7 @@ class TestResourceLimitsBypassPrevention:
         ):
             # Attempt to execute a phase
             # We expect it to fail quickly due to mock, but check should be called
-            try:
-                await orchestrator._check_and_enforce_resource_limits(0, "Test Phase")
-            except Exception:
-                pass
+            await orchestrator._check_and_enforce_resource_limits(0, "Test Phase")
         
         # Verify check was invoked
         assert check_called, "Resource limit check was not invoked during phase execution"
