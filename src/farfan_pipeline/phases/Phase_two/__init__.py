@@ -2,6 +2,12 @@
 
 This phase implements contract-driven question execution with evidence assembly,
 narrative synthesis, and SISAS integration for deterministic policy analysis.
+
+Architecture:
+- 309 individual question contracts (Q001-Q309.v3.json)
+- BaseExecutorWithContract loads contracts by question_id
+- NO hardcoded D1Q1-D6Q5 executor classes
+- Direct contract execution without class intermediaries
 """
 
 from __future__ import annotations
@@ -22,44 +28,11 @@ from canonic_phases.Phase_two.carver import (
     CarverAnswer,
 )
 
-# Executor implementations - Moved to executors/ subfolder
+# Executor configuration and base class
 from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
-from canonic_phases.Phase_two.executors import (
-    D1Q1_Executor,
-    D1Q2_Executor,
-    D1Q3_Executor,
-    D1Q4_Executor,
-    D1Q5_Executor,
-    D2Q1_Executor,
-    D2Q2_Executor,
-    D2Q3_Executor,
-    D2Q4_Executor,
-    D2Q5_Executor,
-    D3Q1_Executor,
-    D3Q2_Executor,
-    D3Q3_Executor,
-    D3Q4_Executor,
-    D3Q5_Executor,
-    D4Q1_Executor,
-    D4Q2_Executor,
-    D4Q3_Executor,
-    D4Q4_Executor,
-    D4Q5_Executor,
-    D5Q1_Executor,
-    D5Q2_Executor,
-    D5Q3_Executor,
-    D5Q4_Executor,
-    D5Q5_Executor,
-    D6Q1_Executor,
-    D6Q2_Executor,
-    D6Q3_Executor,
-    D6Q4_Executor,
-    D6Q5_Executor,
+from canonic_phases.Phase_two.executors.base_executor_with_contract import (
+    BaseExecutorWithContract,
 )
-
-# Re-export executors module for backward compatibility with orchestrator
-# (orchestrator imports "from canonic_phases.Phase_two import executors")
-from canonic_phases.Phase_two import executors
 
 __all__ = [
     # Evidence processing (EvidenceNexus)
@@ -72,37 +45,5 @@ __all__ = [
     "CarverAnswer",
     # Executor configuration
     "ExecutorConfig",
-    # Executors (30 total: D1-D6, Q1-Q5)
-    "D1Q1_Executor",
-    "D1Q2_Executor",
-    "D1Q3_Executor",
-    "D1Q4_Executor",
-    "D1Q5_Executor",
-    "D2Q1_Executor",
-    "D2Q2_Executor",
-    "D2Q3_Executor",
-    "D2Q4_Executor",
-    "D2Q5_Executor",
-    "D3Q1_Executor",
-    "D3Q2_Executor",
-    "D3Q3_Executor",
-    "D3Q4_Executor",
-    "D3Q5_Executor",
-    "D4Q1_Executor",
-    "D4Q2_Executor",
-    "D4Q3_Executor",
-    "D4Q4_Executor",
-    "D4Q5_Executor",
-    "D5Q1_Executor",
-    "D5Q2_Executor",
-    "D5Q3_Executor",
-    "D5Q4_Executor",
-    "D5Q5_Executor",
-    "D6Q1_Executor",
-    "D6Q2_Executor",
-    "D6Q3_Executor",
-    "D6Q4_Executor",
-    "D6Q5_Executor",
-    # Module re-export for backward compatibility
-    "executors",
+    "BaseExecutorWithContract",
 ]

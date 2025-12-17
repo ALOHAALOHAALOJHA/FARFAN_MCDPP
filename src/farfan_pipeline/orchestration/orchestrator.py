@@ -67,7 +67,7 @@ from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
     EnhancedClusterAggregator,
     EnhancedMacroAggregator,
 )
-from canonic_phases.Phase_two import executors
+from canonic_phases.Phase_two.executors import GenericContractExecutor
 from canonic_phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,
@@ -1286,23 +1286,8 @@ class Orchestrator:
         if not self.executor.instances:
             raise RuntimeError("MethodExecutor.instances is empty")
         
-        self.executors = {
-            "D1-Q1": executors.D1Q1_Executor, "D1-Q2": executors.D1Q2_Executor,
-            "D1-Q3": executors.D1Q3_Executor, "D1-Q4": executors.D1Q4_Executor,
-            "D1-Q5": executors.D1Q5_Executor, "D2-Q1": executors.D2Q1_Executor,
-            "D2-Q2": executors.D2Q2_Executor, "D2-Q3": executors.D2Q3_Executor,
-            "D2-Q4": executors.D2Q4_Executor, "D2-Q5": executors.D2Q5_Executor,
-            "D3-Q1": executors.D3Q1_Executor, "D3-Q2": executors.D3Q2_Executor,
-            "D3-Q3": executors.D3Q3_Executor, "D3-Q4": executors.D3Q4_Executor,
-            "D3-Q5": executors.D3Q5_Executor, "D4-Q1": executors.D4Q1_Executor,
-            "D4-Q2": executors.D4Q2_Executor, "D4-Q3": executors.D4Q3_Executor,
-            "D4-Q4": executors.D4Q4_Executor, "D4-Q5": executors.D4Q5_Executor,
-            "D5-Q1": executors.D5Q1_Executor, "D5-Q2": executors.D5Q2_Executor,
-            "D5-Q3": executors.D5Q3_Executor, "D5-Q4": executors.D5Q4_Executor,
-            "D5-Q5": executors.D5Q5_Executor, "D6-Q1": executors.D6Q1_Executor,
-            "D6-Q2": executors.D6Q2_Executor, "D6-Q3": executors.D6Q3_Executor,
-            "D6-Q4": executors.D6Q4_Executor, "D6-Q5": executors.D6Q5_Executor,
-        }
+        # REMOVED: self.executors dictionary - now using GenericContractExecutor
+        # with direct question_id loading for all 309 contracts (Q001-Q309)
         
         self.abort_signal = AbortSignal()
         self.phase_results: list[PhaseResult] = []
@@ -2170,19 +2155,20 @@ class Orchestrator:
                     ))
                     continue
 
-                executor_class = self.executors.get(base_slot)
-                if not executor_class:
-                    error_msg = f"Task {task_id}: No executor found for {base_slot}"
+                # Use GenericContractExecutor with question_id for direct contract loading
+                question_id = question.get("id")
+                if not question_id:
+                    error_msg = f"Task {task_id}: Question missing 'id' field"
                     logger.warning(error_msg)
                     task_status[task_id] = "failed"
                     tasks_failed.add(task_id)
-                    instrumentation.record_error("executor_not_found", task_id)
+                    instrumentation.record_error("question_missing_id", task_id)
                     
                     results.append(MicroQuestionRun(
-                        question_id=question.get("id"),
-                        question_global=question.get("global_id"),
+                        question_id="UNKNOWN",
+                        question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
                         base_slot=base_slot,
-                        metadata={"task_id": task_id, "error": "executor_not_found"},
+                        metadata={"task_id": task_id, "error": "question_missing_id"},
                         evidence=None,
                         error=error_msg,
                         aborted=False
@@ -2190,11 +2176,14 @@ class Orchestrator:
                     continue
 
                 try:
-                    instance = executor_class(
+                    # Create GenericContractExecutor with question_id
+                    # This loads the contract from executor_contracts/specialized/{question_id}.v3.json
+                    instance = GenericContractExecutor(
                         method_executor=self.executor,
                         signal_registry=getattr(self.executor, "signal_registry", None),
                         config=self.executor_config,
                         questionnaire_provider=self._canonical_questionnaire,
+                        question_id=question_id,  # Direct contract loading by question_id
                         calibration_orchestrator=self.calibration_orchestrator,
                         enriched_packs=self._enriched_packs or {},
                     )
@@ -2327,28 +2316,30 @@ class Orchestrator:
                 self._ensure_not_aborted()
                 start_q = time.perf_counter()
 
-                base_slot = question.get("base_slot")
-                if not base_slot:
-                    logger.warning(f"Question missing base_slot: {question.get('id')}")
+                question_id = question.get("id")
+                if not question_id:
+                    logger.warning(f"Question missing 'id': {question}")
                     continue
 
-                executor_class = self.executors.get(base_slot)
-                if not executor_class:
-                    logger.warning(f"No executor found for {base_slot}")
+                base_slot = question.get("base_slot")
+                if not base_slot:
+                    logger.warning(f"Question missing base_slot: {question_id}")
                     continue
 
                 try:
-                    instance = executor_class(
+                    # Use GenericContractExecutor with question_id
+                    instance = GenericContractExecutor(
                         method_executor=self.executor,
                         signal_registry=self.executor.signal_registry,
                         config=self.executor_config,
                         questionnaire_provider=self._canonical_questionnaire,
+                        question_id=question_id,  # Direct contract loading
                         calibration_orchestrator=self.calibration_orchestrator,
                         enriched_packs=self._enriched_packs or {},
                     )
 
                     q_context = {
-                        "question_id": question.get("id"),
+                        "question_id": question_id,
                         "question_global": question.get("global_id"),
                         "base_slot": base_slot,
                         "patterns": question.get("patterns", []),
@@ -2368,7 +2359,7 @@ class Orchestrator:
                     duration = (time.perf_counter() - start_q) * 1000
 
                     run_result = MicroQuestionRun(
-                        question_id=question.get("id"),
+                        question_id=question_id,
                         question_global=question.get("global_id"),
                         base_slot=base_slot,
                         metadata=result_data.get("metadata", {}),
