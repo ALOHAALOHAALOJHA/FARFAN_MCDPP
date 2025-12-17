@@ -68,16 +68,40 @@ artifacts/plan1/
    - Micro score counts per cluster
 
 6. **Micro-Level Analysis**
-   - Question-by-question results
-   - Dimensions and policy areas
-   - Scores and patterns applied
-   - Evidence counts
+   - **Detailed Answers (First 10 Questions)**
+     - Carver-synthesized human-readable narratives
+     - PhD-level analysis with evidence backing
+     - Dimension, policy area, and scores
+     - Patterns applied
+   - **Summary Table (Remaining Questions)**
+     - Question-by-question scores
+     - Dimensions and policy areas
+     - Pattern counts
 
 7. **Provenance & Verification**
    - Report digest (SHA256)
    - Evidence chain hash
    - Questionnaire hash
    - Timestamp and version info
+
+## Carver Integration
+
+The report generation system integrates **Carver-synthesized human-readable narratives** from Phase 2 (micro question execution). These narratives are:
+
+- **PhD-level analysis** with Raymond Carver writing style (precise, evidence-backed, no rhetoric)
+- **Generated during Phase 2** by the `DoctoralCarverSynthesizer` 
+- **Stored in execution results** as `human_answer` field
+- **Displayed in reports** for the first 10 detailed questions
+- **Evidence-grounded** with explicit gap identification and confidence quantification
+
+### Human Answer Features:
+- Verdict statements based on dimensional strategy
+- Evidence statements with corroboration tracking
+- Gap statements identifying missing elements
+- Bayesian confidence quantification
+- Method metadata for reproducibility
+
+This ensures that reports not only show scores but also provide **expert-level explanations** of what was found, what's missing, and why the score was assigned.
 
 ## Dependencies
 

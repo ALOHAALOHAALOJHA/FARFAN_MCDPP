@@ -53,6 +53,7 @@ class TestReportGenerator:
                 base_slot=f"slot{i}",
                 score=0.8,
                 patterns_applied=[f"pattern{j}" for j in range(3)],
+                human_answer=f"Esta es una respuesta de prueba Carver-style para la pregunta Q{i:03d}. La evidencia muestra resultados claros. Los datos confirman la tendencia.",
                 metadata={"dimension": "DIM1", "policy_area": "PA1"},
             )
             for i in range(1, 11)

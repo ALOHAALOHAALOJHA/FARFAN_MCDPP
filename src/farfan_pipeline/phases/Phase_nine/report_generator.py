@@ -286,24 +286,46 @@ def generate_markdown_report(report: AnalysisReport) -> str:
     lines.append("\n## Análisis Micro: Preguntas\n")
     lines.append(f"\nTotal de preguntas analizadas: {len(report.micro_analyses)}\n")
     
-    # Show first 20 questions
-    lines.append("\n### Primeras 20 Preguntas\n")
-    lines.append("\n| ID | # Global | Dimensión | Área | Puntuación | Patrones |\n")
-    lines.append("|----|----------|-----------|------|------------|----------|\n")
+    # Detailed answers section - show first 10 with human answers
+    lines.append("\n### Respuestas Detalladas (Primeras 10 Preguntas)\n")
     
-    for analysis in report.micro_analyses[:20]:
+    for i, analysis in enumerate(report.micro_analyses[:10], 1):
         dimension = analysis.metadata.get("dimension", "N/A") if analysis.metadata else "N/A"
         policy_area = analysis.metadata.get("policy_area", "N/A") if analysis.metadata else "N/A"
         score_str = f"{analysis.score:.4f}" if analysis.score is not None else "N/A"
-        pattern_count = len(analysis.patterns_applied)
         
-        lines.append(
-            f"| {analysis.question_id} | {analysis.question_global} | "
-            f"{dimension} | {policy_area} | {score_str} | {pattern_count} |\n"
-        )
+        lines.append(f"\n#### {i}. {analysis.question_id} - {analysis.base_slot}\n")
+        lines.append(f"**Dimensión:** {dimension} | **Área de Política:** {policy_area} | **Puntuación:** {score_str}\n")
+        
+        # Include human answer if available
+        if analysis.human_answer:
+            lines.append(f"\n**Respuesta:**\n\n{analysis.human_answer}\n")
+        else:
+            lines.append(f"\n*Respuesta no disponible*\n")
+        
+        # Show patterns if any
+        if analysis.patterns_applied:
+            lines.append(f"\n**Patrones aplicados:** {len(analysis.patterns_applied)}\n")
     
-    if len(report.micro_analyses) > 20:
-        lines.append(f"\n*... y {len(report.micro_analyses) - 20} preguntas más*\n")
+    # Show summary table for remaining questions
+    if len(report.micro_analyses) > 10:
+        lines.append(f"\n### Resumen Adicional ({len(report.micro_analyses) - 10} Preguntas)\n")
+        lines.append("\n| ID | # Global | Dimensión | Área | Puntuación | Patrones |\n")
+        lines.append("|----|----------|-----------|------|------------|----------|\n")
+        
+        for analysis in report.micro_analyses[10:30]:  # Show next 20 in table
+            dimension = analysis.metadata.get("dimension", "N/A") if analysis.metadata else "N/A"
+            policy_area = analysis.metadata.get("policy_area", "N/A") if analysis.metadata else "N/A"
+            score_str = f"{analysis.score:.4f}" if analysis.score is not None else "N/A"
+            pattern_count = len(analysis.patterns_applied)
+            
+            lines.append(
+                f"| {analysis.question_id} | {analysis.question_global} | "
+                f"{dimension} | {policy_area} | {score_str} | {pattern_count} |\n"
+            )
+    
+        if len(report.micro_analyses) > 30:
+            lines.append(f"\n*... y {len(report.micro_analyses) - 30} preguntas más*\n")
     
     # Provenance
     lines.append("\n---\n")
@@ -376,6 +398,7 @@ def generate_html_report(
                 "base_slot": a.base_slot,
                 "score": a.score,
                 "patterns_applied": a.patterns_applied,
+                "human_answer": a.human_answer,
                 "metadata": a.metadata or {},
             }
             for a in report.micro_analyses

@@ -365,6 +365,45 @@
     
     <p>Total de preguntas analizadas: {{ micro_analyses|length }}</p>
     
+    <!-- Detailed Answers Section -->
+    <h2>Respuestas Detalladas (Primeras 10 Preguntas)</h2>
+    
+    {% for analysis in micro_analyses[:10] %}
+    <div style="border-left: 3px solid #2c5aa0; padding-left: 15px; margin: 20px 0; page-break-inside: avoid;">
+        <h3>{{ loop.index }}. {{ analysis.question_id }} - {{ analysis.base_slot }}</h3>
+        <p style="color: #666; font-size: 9pt;">
+            <strong>Dimensión:</strong> {{ analysis.metadata.get('dimension', 'N/A') }} | 
+            <strong>Área:</strong> {{ analysis.metadata.get('policy_area', 'N/A') }} | 
+            <strong>Puntuación:</strong> 
+            {% if analysis.score is not none %}
+                {{ "%.4f"|format(analysis.score) }}
+            {% else %}
+                N/A
+            {% endif %}
+        </p>
+        
+        {% if analysis.human_answer %}
+        <div style="background-color: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4 style="margin-top: 0; color: #2c5aa0;">Respuesta:</h4>
+            <div style="white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; line-height: 1.6;">{{ analysis.human_answer }}</div>
+        </div>
+        {% else %}
+        <p style="color: #999; font-style: italic;">Respuesta no disponible</p>
+        {% endif %}
+        
+        {% if analysis.patterns_applied %}
+        <p style="font-size: 9pt; color: #666;">
+            <strong>Patrones aplicados:</strong> {{ analysis.patterns_applied|length }}
+        </p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <!-- Summary Table for Remaining Questions -->
+    {% if micro_analyses|length > 10 %}
+    <div class="page-break"></div>
+    <h2>Resumen Adicional ({{ micro_analyses|length - 10 }} Preguntas)</h2>
+    
     <table>
         <thead>
             <tr>
@@ -373,11 +412,11 @@
                 <th>Dimensión</th>
                 <th>Área de Política</th>
                 <th>Puntuación</th>
-                <th>Patrones Aplicados</th>
+                <th>Patrones</th>
             </tr>
         </thead>
         <tbody>
-            {% for analysis in micro_analyses[:50] %}
+            {% for analysis in micro_analyses[10:50] %}
             <tr>
                 <td><strong>{{ analysis.question_id }}</strong></td>
                 <td>{{ analysis.question_global }}</td>
@@ -402,6 +441,7 @@
             {% endif %}
         </tbody>
     </table>
+    {% endif %}
 
     <!-- Provenance and Integrity -->
     <div class="page-break"></div>
