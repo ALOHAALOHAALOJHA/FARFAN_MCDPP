@@ -86,7 +86,8 @@ def main() -> None:
         / "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized"
     )
     
-    backup_dir = base_path / "backups" / f"contracts_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}"
+    timestamp = datetime.now(UTC)
+    backup_dir = base_path / "backups" / f"contracts_{timestamp.strftime('%Y%m%d_%H%M%S')}"
     backup_dir.mkdir(parents=True, exist_ok=True)
     
     print(f"Creating backups in: {backup_dir}")
@@ -94,7 +95,7 @@ def main() -> None:
     contracts = sorted(contracts_dir.glob("Q*.v3.json"))
     
     results = {
-        "timestamp": datetime.now(UTC).isoformat(),
+        "timestamp": timestamp.isoformat(),
         "backup_dir": str(backup_dir),
         "total": len(contracts),
         "improved": 0,

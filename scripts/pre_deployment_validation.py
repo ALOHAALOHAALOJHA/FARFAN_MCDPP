@@ -83,6 +83,8 @@ def validate_backup_exists() -> dict[str, Any]:
 
 def validate_scripts_executable() -> dict[str, Any]:
     """Validate deployment scripts are executable."""
+    import os
+    
     print("Checking deployment scripts...")
     
     base_path = Path(__file__).parent
@@ -101,7 +103,7 @@ def validate_scripts_executable() -> dict[str, Any]:
         script_path = base_path / script
         if not script_path.exists():
             missing.append(script)
-        elif not script_path.stat().st_mode & 0o111:
+        elif not os.access(script_path, os.X_OK):
             not_executable.append(script)
     
     if missing:

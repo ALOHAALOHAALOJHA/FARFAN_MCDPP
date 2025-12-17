@@ -7,7 +7,7 @@ import json
 import sys
 from pathlib import Path
 from typing import Any
-from datetime import datetime
+from datetime import datetime, UTC
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
@@ -28,8 +28,10 @@ def evaluate_all_contracts() -> dict[str, Any]:
     validator = CQVRValidator()
     contracts = sorted(contracts_dir.glob("Q*.v3.json"))
 
+    timestamp = datetime.now(UTC).isoformat()
+    
     results = {
-        "timestamp": datetime.now(datetime.UTC).isoformat(),
+        "timestamp": timestamp,
         "total_contracts": 0,
         "evaluated": 0,
         "skipped": 0,
