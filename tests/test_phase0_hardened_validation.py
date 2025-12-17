@@ -18,10 +18,15 @@ Test Coverage:
 
 import pytest
 import os
+import sys
 import hashlib
 import json
+from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
 from dataclasses import dataclass
+
+# Add src to path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Phase 0 imports
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
@@ -512,13 +517,16 @@ class TestAllGatesIntegration:
         mock_method_executor_healthy
     ):
         """Test gates fail fast when questionnaire integrity fails."""
+        # Use a valid hash format but wrong value
+        wrong_hash = "f" * 64  # Valid format but different hash
+        
         runner = MockPhase0Runner(
             errors=[],
             _bootstrap_failed=False,
             runtime_config=mock_runtime_config_prod,
             seed_snapshot={"python": 42, "numpy": 42},
             input_pdf_sha256="a" * 64,
-            questionnaire_sha256="wrong_hash_" + ("0" * 54),
+            questionnaire_sha256=wrong_hash,  # Valid format but wrong value
             method_executor=mock_method_executor_healthy,
         )
         
@@ -529,7 +537,7 @@ class TestAllGatesIntegration:
             all_passed, results = check_all_gates(runner)
         
         assert all_passed is False
-        # Should stop after gate 5 fails
+        # Should stop after gate 5 fails (gates 1-4 pass, gate 5 fails)
         assert len(results) == 5
         assert results[4].passed is False
         assert results[4].gate_name == "questionnaire_integrity"
