@@ -2203,13 +2203,11 @@ class Orchestrator:
                     # Validate dimension_id consistency
                     question_dimension = question.get("dimension_id")
                     if question_dimension is None:
-                        # Question missing dimension_id, use task dimension with warning
                         logger.warning(
                             f"Task {task_id}: question missing dimension_id, using task dimension '{task.dimension}'"
                         )
                         question_dimension = task.dimension
                     elif question_dimension != task.dimension:
-                        # Mismatch indicates data integrity issue
                         logger.error(
                             f"Task {task_id}: dimension_id mismatch - "
                             f"question has '{question_dimension}' but task has '{task.dimension}'. "
@@ -2218,18 +2216,23 @@ class Orchestrator:
                         task_status[task_id] = "failed"
                         tasks_failed.add(task_id)
                         instrumentation.record_error("dimension_mismatch", task_id)
-                        
-                        results.append(MicroQuestionRun(
-                            question_id=question.get("id"),
-                            question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
-                            base_slot=base_slot,
-                            metadata={"task_id": task_id, "error": "dimension_mismatch"},
-                            evidence=None,
-                            error=f"Dimension mismatch: question={question_dimension}, task={task.dimension}",
-                            aborted=False
-                        ))
+
+                        results.append(
+                            MicroQuestionRun(
+                                question_id=question.get("id"),
+                                question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                                base_slot=base_slot,
+                                metadata={"task_id": task_id, "error": "dimension_mismatch"},
+                                evidence=None,
+                                error=(
+                                    f"Dimension mismatch: question={question_dimension}, "
+                                    f"task={task.dimension}"
+                                ),
+                                aborted=False,
+                            )
+                        )
                         continue
-                    
+
                     q_context = {
                         "question_id": question.get("id"),
                         "question_global": question.get("global_id"),
@@ -2245,13 +2248,13 @@ class Orchestrator:
                             "policy_area": task.policy_area,
                             "chunk_id": task.chunk_id,
                             "chunk_index": task.chunk_index,
-                        }
+                        },
                     }
 
                     result_data = instance.execute(
                         document=document,
                         method_executor=self.executor,
-                        question_context=q_context
+                        question_context=q_context,
                     )
 
                     duration = (time.perf_counter() - start_q) * 1000
@@ -2267,7 +2270,7 @@ class Orchestrator:
                     results.append(run_result)
                     task_status[task_id] = "completed"
                     instrumentation.increment(latency=duration)
-                    
+
                     logger.debug(f"Task {task_id} completed successfully in {duration:.2f}ms")
 
                 except Exception as e:
@@ -3012,16 +3015,20 @@ class Orchestrator:
         
         instrumentation.start(items_total=1)
         
-        # Dashboard Ingestion Integration
-        # We perform this here to ensure the dashboard is updated immediately after analysis
+        dashboard_updated = False
         try:
             from dashboard_atroz_.ingestion import DashboardIngester
             ingester = DashboardIngester()
-            # Pass the full context which contains all artifacts (macro_result, cluster_scores, etc.)
-            await ingester.ingest_results(self._context)
+            dashboard_updated = await ingester.ingest_results(self._context)
+            if not dashboard_updated:
+                msg = "Dashboard update reported failure"
+                logger.error(msg)
+                instrumentation.record_warning("ingestion", msg)
         except Exception as e:
             logger.error(f"Dashboard ingestion failed in Phase 10: {e}")
             instrumentation.record_warning("ingestion", f"Dashboard update failed: {e}")
+            if os.getenv("ATROZ_DASHBOARD_INGEST_REQUIRED", "false").lower() == "true":
+                raise
         
         try:
             from farfan_pipeline.phases.Phase_nine.report_generator import (
@@ -3067,7 +3074,7 @@ class Orchestrator:
                 "status": "success",
                 "report": report,
                 "artifacts": {k: str(v) for k, v in artifacts.items()},
-                "dashboard_updated": True
+                    "dashboard_updated": dashboard_updated
             }
             
             return export_payload
