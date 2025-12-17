@@ -1,0 +1,439 @@
+{
+  "phase_contract": {
+    "phase_id": 11,
+    "phase_name": "Contract Quality Validation",
+    "phase_designation": "FASE 11 - Calidad de Contratos",
+    "version": "1.0.0",
+    "status": "production_ready",
+    "creation_date": "2025-12-17T20:00:00Z",
+    "last_updated": "2025-12-17T20:00:00Z"
+  },
+  
+  "execution_characteristics": {
+    "mode": "sync",
+    "timeout_seconds": 300,
+    "retry_policy": "none",
+    "parallel_execution": false,
+    "resource_requirements": {
+      "memory_mb": 512,
+      "cpu_cores": 1,
+      "disk_space_mb": 100
+    }
+  },
+  
+  "ignition_point": {
+    "trigger_condition": "Phase 10 (Export) completes with success=true",
+    "trigger_mode": "post_pipeline_validation",
+    "can_run_standalone": true,
+    "prerequisites": [
+      {
+        "phase": "Phase 2",
+        "artifact": "executor_contracts",
+        "required": true
+      }
+    ],
+    "optional_triggers": [
+      {
+        "event": "contract_modified",
+        "action": "re_evaluate_contract"
+      },
+      {
+        "event": "quality_audit_requested",
+        "action": "evaluate_all_contracts"
+      }
+    ]
+  },
+  
+  "input_contract": {
+    "required_inputs": [
+      {
+        "name": "contracts_dir",
+        "type": "Path",
+        "description": "Directory containing executor contracts from Phase 2",
+        "location": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/",
+        "format": "directory",
+        "validation": [
+          "must_exist",
+          "must_be_readable",
+          "must_contain_Q_files"
+        ]
+      }
+    ],
+    "optional_inputs": [
+      {
+        "name": "contract_range",
+        "type": "Tuple[int, int]",
+        "description": "Range of contracts to evaluate (start_q, end_q)",
+        "default": [1, 300],
+        "validation": [
+          "start_q >= 1",
+          "end_q <= 300",
+          "start_q <= end_q"
+        ]
+      },
+      {
+        "name": "config",
+        "type": "Dict[str, Any]",
+        "description": "CQVR configuration parameters",
+        "default": null,
+        "schema": {
+          "detailed_reports": {
+            "type": "boolean",
+            "default": false
+          },
+          "json_only": {
+            "type": "boolean",
+            "default": false
+          },
+          "threshold_overrides": {
+            "type": "object",
+            "properties": {
+              "tier1_minimum": {"type": "number", "minimum": 0, "maximum": 55},
+              "total_production": {"type": "number", "minimum": 0, "maximum": 100}
+            }
+          }
+        }
+      }
+    ],
+    "data_dependencies": [
+      {
+        "phase_id": 2,
+        "output_key": "micro_results",
+        "usage": "Executor contracts generated during Phase 2 execution"
+      }
+    ]
+  },
+  
+  "output_contract": {
+    "primary_output": {
+      "name": "contract_quality_result",
+      "type": "ContractQualityResult",
+      "description": "Comprehensive quality assessment of executor contracts",
+      "schema": {
+        "phase_id": {"type": "integer", "const": 11},
+        "phase_name": {"type": "string", "const": "Contract Quality Validation"},
+        "timestamp": {"type": "string", "format": "iso8601"},
+        "contracts_evaluated": {"type": "integer", "minimum": 0},
+        "average_score": {"type": "number", "minimum": 0, "maximum": 100},
+        "production_ready": {"type": "integer", "minimum": 0},
+        "need_patches": {"type": "integer", "minimum": 0},
+        "need_reformulation": {"type": "integer", "minimum": 0},
+        "contract_decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "contract_id": {"type": "string"},
+              "decision": {"type": "string", "enum": ["PRODUCCION", "PARCHEAR", "REFORMULAR"]},
+              "score": {"type": "number", "minimum": 0, "maximum": 100},
+              "blockers_count": {"type": "integer", "minimum": 0}
+            }
+          }
+        },
+        "summary_report_path": {"type": "string"}
+      },
+      "location": "context['contract_quality_result']",
+      "persistence": "reports/contract_quality/phase_11_contract_quality_report.json"
+    },
+    "secondary_outputs": [
+      {
+        "name": "quality_reports",
+        "type": "JSON",
+        "description": "Detailed per-contract evaluation reports",
+        "location": "reports/contract_quality/",
+        "format": "Q{NNN}_evaluation.json",
+        "generated_when": "config.detailed_reports == true"
+      },
+      {
+        "name": "quality_metrics",
+        "type": "Dict[str, Any]",
+        "description": "Aggregate quality metrics for monitoring",
+        "location": "context['quality_metrics']",
+        "schema": {
+          "mean_score": "float",
+          "std_dev": "float",
+          "percentiles": "Dict[int, float]",
+          "tier_distributions": "Dict[str, Dict[str, float]]"
+        }
+      }
+    ],
+    "guarantees": [
+      "contracts_evaluated == production_ready + need_patches + need_reformulation",
+      "0 <= average_score <= 100",
+      "All decisions in {PRODUCCION, PARCHEAR, REFORMULAR}",
+      "summary_report_path points to valid JSON file",
+      "Deterministic: same input yields same output"
+    ]
+  },
+  
+  "node_interactions": {
+    "reads_from": [
+      {
+        "node": "Phase 2",
+        "artifact_type": "executor_contracts",
+        "artifact_location": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/",
+        "access_pattern": "sequential_read",
+        "error_handling": "log_and_continue"
+      }
+    ],
+    "writes_to": [
+      {
+        "node": "File System",
+        "artifact_type": "quality_reports",
+        "artifact_location": "reports/contract_quality/",
+        "access_pattern": "sequential_write",
+        "error_handling": "raise_exception"
+      },
+      {
+        "node": "Pipeline Context",
+        "artifact_type": "contract_quality_result",
+        "artifact_location": "context['contract_quality_result']",
+        "access_pattern": "single_write",
+        "error_handling": "raise_exception"
+      }
+    ],
+    "notifies": [
+      {
+        "target": "Orchestrator",
+        "event": "quality_gate_status",
+        "payload_type": "Dict[str, Any]",
+        "payload_schema": {
+          "gate_passed": "boolean",
+          "production_rate": "float",
+          "critical_issues": "List[str]"
+        },
+        "delivery_mode": "synchronous"
+      },
+      {
+        "target": "Monitoring System",
+        "event": "phase_11_metrics",
+        "payload_type": "Dict[str, float]",
+        "delivery_mode": "asynchronous"
+      }
+    ]
+  },
+  
+  "mathematical_basis": {
+    "scoring_model": {
+      "type": "hierarchical_additive",
+      "formula": "S(C) = Σᵢ sᵢ where sᵢ ∈ [0, mᵢ]",
+      "properties": [
+        "additivity",
+        "boundedness",
+        "monotonicity",
+        "decomposability"
+      ],
+      "reference": "README.md Section 2.1"
+    },
+    "decision_theory": {
+      "type": "multi_threshold_classification",
+      "decision_space": "D = [0,55] × [0,30] × [0,15] × ℕ₀ × ℕ₀",
+      "regions": {
+        "PRODUCCION": "t₁ ≥ 45 ∧ total ≥ 80 ∧ blockers = 0",
+        "PARCHEAR": "(t₁ ≥ 35 ∧ ((blockers = 0 ∧ total ≥ 70) ∨ (blockers ≤ 2 ∧ t₁ ≥ 40))) \\ R_P",
+        "REFORMULAR": "D \\ (R_P ∪ R_A)"
+      },
+      "reference": "README.md Section 2.3"
+    },
+    "determinism": {
+      "property": "∀c₁,c₂ ∈ C: c₁ = c₂ ⟹ f(c₁) = f(c₂)",
+      "implementation": "pure_functions_no_side_effects",
+      "verification": "test_determinism in test suite",
+      "reference": "README.md Section 2.2"
+    }
+  },
+  
+  "quality_gates": {
+    "individual_contract": {
+      "gate_name": "production_readiness",
+      "conditions": [
+        "total_score >= 80",
+        "tier1_score >= 45",
+        "blockers_count == 0"
+      ],
+      "action_on_pass": "approve_for_production",
+      "action_on_fail": "flag_for_review"
+    },
+    "batch_quality": {
+      "gate_name": "batch_quality_threshold",
+      "conditions": [
+        "production_ready_percentage >= 80"
+      ],
+      "action_on_pass": "approve_batch_deployment",
+      "action_on_fail": "require_quality_improvement"
+    },
+    "critical_integrity": {
+      "gate_name": "critical_component_integrity",
+      "conditions": [
+        "all_contracts.tier1_score >= 35"
+      ],
+      "action_on_pass": "pipeline_proceeds",
+      "action_on_fail": "halt_for_remediation"
+    }
+  },
+  
+  "threshold_configuration": {
+    "tier1_minimum": {
+      "value": 35,
+      "rationale": "Critical components must achieve 64% (35/55) for basic integrity",
+      "calibration_method": "empirical_analysis"
+    },
+    "tier1_production": {
+      "value": 45,
+      "rationale": "Production requires 82% (45/55) on critical components",
+      "calibration_method": "risk_tolerance_analysis"
+    },
+    "total_production": {
+      "value": 80,
+      "rationale": "Overall quality standard of 80% for deployment",
+      "calibration_method": "80th_percentile_empirical"
+    },
+    "total_patchable": {
+      "value": 70,
+      "rationale": "Contracts achieving 70% with fixable issues are patchable",
+      "calibration_method": "operational_requirements"
+    },
+    "blocker_tolerance": {
+      "value": 2,
+      "rationale": "Maximum 2 blockers for patchable classification",
+      "calibration_method": "remediation_effort_analysis"
+    }
+  },
+  
+  "error_handling": {
+    "file_not_found": {
+      "exception": "FileNotFoundError",
+      "action": "log_warning_continue",
+      "recovery": "exclude_from_statistics"
+    },
+    "malformed_json": {
+      "exception": "json.JSONDecodeError",
+      "action": "log_error_continue",
+      "recovery": "exclude_from_statistics"
+    },
+    "missing_required_field": {
+      "exception": "KeyError",
+      "action": "log_error_continue",
+      "recovery": "mark_as_reformulation"
+    },
+    "phase_timeout": {
+      "exception": "PhaseTimeoutError",
+      "action": "abort_phase",
+      "recovery": "report_partial_results"
+    }
+  },
+  
+  "performance_characteristics": {
+    "execution_time": {
+      "single_contract": "0.01s",
+      "batch_25": "0.5s",
+      "full_corpus_300": "6s"
+    },
+    "throughput": "50 contracts/second",
+    "memory_usage": {
+      "baseline": "50 MB",
+      "per_contract": "1 MB",
+      "peak": "350 MB (300 contracts)"
+    },
+    "scalability": "O(n) where n = number of contracts"
+  },
+  
+  "testing_requirements": {
+    "unit_tests": {
+      "coverage": "100%",
+      "count": 41,
+      "categories": [
+        "scoring_functions: 30 tests",
+        "decision_engine: 5 tests",
+        "integration: 3 tests",
+        "error_handling: 3 tests"
+      ]
+    },
+    "integration_tests": {
+      "phase_execution": "required",
+      "orchestrator_integration": "required",
+      "file_system_interaction": "required"
+    },
+    "validation_tests": {
+      "determinism": "required",
+      "idempotency": "required",
+      "boundary_conditions": "required"
+    }
+  },
+  
+  "monitoring_and_observability": {
+    "metrics": [
+      {
+        "name": "contracts_evaluated_total",
+        "type": "counter",
+        "description": "Total number of contracts evaluated"
+      },
+      {
+        "name": "average_score",
+        "type": "gauge",
+        "description": "Average quality score across all contracts"
+      },
+      {
+        "name": "production_ready_rate",
+        "type": "gauge",
+        "description": "Percentage of contracts ready for production"
+      },
+      {
+        "name": "phase_execution_duration_seconds",
+        "type": "histogram",
+        "description": "Duration of phase execution"
+      }
+    ],
+    "logging": {
+      "level": "INFO",
+      "structured": true,
+      "fields": [
+        "phase_id",
+        "contract_id",
+        "score",
+        "decision",
+        "blockers_count"
+      ]
+    },
+    "tracing": {
+      "enabled": true,
+      "span_name": "phase_11_contract_quality",
+      "parent_span": "orchestrator_execution"
+    }
+  },
+  
+  "deployment_configuration": {
+    "environments": {
+      "development": {
+        "contract_range": [1, 50],
+        "detailed_reports": true,
+        "timeout_multiplier": 2.0
+      },
+      "staging": {
+        "contract_range": [1, 300],
+        "detailed_reports": true,
+        "timeout_multiplier": 1.5
+      },
+      "production": {
+        "contract_range": [1, 300],
+        "detailed_reports": false,
+        "timeout_multiplier": 1.0
+      }
+    }
+  },
+  
+  "version_history": [
+    {
+      "version": "1.0.0",
+      "date": "2025-12-17",
+      "changes": [
+        "Initial production release",
+        "10 scoring functions implemented",
+        "Decision engine with 3-tier classification",
+        "Comprehensive academic documentation",
+        "Full orchestrator integration"
+      ],
+      "author": "F.A.R.F.A.N Pipeline Team"
+    }
+  ]
+}
