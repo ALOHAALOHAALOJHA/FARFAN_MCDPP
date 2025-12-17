@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "6553e450fafce697f2170427d196086be1e77f793f6050f6767fd255b17a3198",
+    "contract_hash": "9f1c867a97e2137d55e3f0c073e724973858be299771edccfd3314870702a3bd",
     "created_at": "2025-11-28T03:50:31.417438+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 131,
-    "updated_at": "2025-12-17T10:21:52.390555+00:00"
+    "updated_at": "2025-12-17T23:49:38.507297+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -484,15 +484,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _score_indicators"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._score_indicators` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.score_indicators'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -515,7 +515,8 @@
               "actionable_insights": [
                 "Use _score_indicators results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.score_indicators"
           },
           {
             "method_name": "audit_evidence_traceability",
@@ -537,15 +538,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute audit_evidence_traceability"
+                  "description": "Invocar `OperationalizationAuditor.audit_evidence_traceability` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='operationalizationauditor.audit_evidence_traceability'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -568,7 +569,8 @@
               "actionable_insights": [
                 "Use audit_evidence_traceability results for downstream analysis"
               ]
-            }
+            },
+            "provides": "operationalizationauditor.audit_evidence_traceability"
           },
           {
             "method_name": "assign_probative_value",
@@ -590,15 +592,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute assign_probative_value"
+                  "description": "Invocar `CausalInferenceSetup.assign_probative_value` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.assign_probative_value'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -621,7 +623,8 @@
               "actionable_insights": [
                 "Use assign_probative_value results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causalinferencesetup.assign_probative_value"
           },
           {
             "method_name": "apply_test_logic",
@@ -643,15 +646,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute apply_test_logic"
+                  "description": "Invocar `BeachEvidentialTest.apply_test_logic` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='beachevidentialtest.apply_test_logic'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -674,7 +677,8 @@
               "actionable_insights": [
                 "Use apply_test_logic results for downstream analysis"
               ]
-            }
+            },
+            "provides": "beachevidentialtest.apply_test_logic"
           },
           {
             "method_name": "diagnose_critical_links",
@@ -732,7 +736,8 @@
                 "If few critical links found: Diagnosis lacks causal depth, may be purely descriptive",
                 "If many links but low criticality: Diagnosis discusses tangential issues, not core gender inequalities"
               ]
-            }
+            },
+            "provides": "text_mining.diagnose_critical_links"
           },
           {
             "method_name": "_extract_metadata",

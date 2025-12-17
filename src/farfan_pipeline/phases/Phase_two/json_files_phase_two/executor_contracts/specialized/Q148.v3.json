@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "ff4a91cfc3c08892e1f48c653fda9d598a93d704cb5bb287042bd9acc0dda098",
+    "contract_hash": "27ef26eb4b8a22b317c5733bbd5124f24719231c9c0959b493d0640153392ce7",
     "created_at": "2025-11-28T03:50:31.564674+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 148,
-    "updated_at": "2025-12-17T10:18:09.537633+00:00"
+    "updated_at": "2025-12-17T23:49:38.592057+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -447,15 +447,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute execute_suite"
+                  "description": "Invocar `IndustrialGradeValidator.execute_suite` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='industrialgradevalidator.execute_suite'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -478,7 +478,8 @@
               "actionable_insights": [
                 "Use execute_suite results for downstream analysis"
               ]
-            }
+            },
+            "provides": "industrialgradevalidator.execute_suite"
           },
           {
             "method_name": "validate_engine_readiness",
@@ -500,15 +501,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute validate_engine_readiness"
+                  "description": "Invocar `IndustrialGradeValidator.validate_engine_readiness` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='industrialgradevalidator.validate_engine_readiness'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -531,7 +532,8 @@
               "actionable_insights": [
                 "Use validate_engine_readiness results for downstream analysis"
               ]
-            }
+            },
+            "provides": "industrialgradevalidator.validate_engine_readiness"
           },
           {
             "method_name": "_benchmark_operation",
@@ -553,15 +555,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _benchmark_operation"
+                  "description": "Invocar `IndustrialGradeValidator._benchmark_operation` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='industrialgradevalidator.benchmark_operation'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -584,7 +586,8 @@
               "actionable_insights": [
                 "Use _benchmark_operation results for downstream analysis"
               ]
-            }
+            },
+            "provides": "industrialgradevalidator.benchmark_operation"
           },
           {
             "method_name": "validate_quality_criteria",
@@ -606,15 +609,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute validate_quality_criteria"
+                  "description": "Invocar `AdaptivePriorCalculator.validate_quality_criteria` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='adaptivepriorcalculator.validate_quality_criteria'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -637,7 +640,8 @@
               "actionable_insights": [
                 "Use validate_quality_criteria results for downstream analysis"
               ]
-            }
+            },
+            "provides": "adaptivepriorcalculator.validate_quality_criteria"
           },
           {
             "method_name": "_calculate_r_hat",
@@ -659,15 +663,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_r_hat"
+                  "description": "Invocar `HierarchicalGenerativeModel._calculate_r_hat` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='hierarchicalgenerativemodel.calculate_r_hat'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -690,7 +694,8 @@
               "actionable_insights": [
                 "Use _calculate_r_hat results for downstream analysis"
               ]
-            }
+            },
+            "provides": "hierarchicalgenerativemodel.calculate_r_hat"
           },
           {
             "method_name": "_calculate_ess",

@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "81d517eae619cbfb14eb7b30375b05e89bcb5c1fe35b37dac412403eb50aadba",
+    "contract_hash": "314f8778cd3d455a7da752cb2556a5d37349da2c13ee658cd24cf5a7c302862e",
     "created_at": "2025-11-28T03:49:29.794908+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 5,
-    "updated_at": "2025-12-17T02:00:32.487065+00:00"
+    "updated_at": "2025-12-17T23:49:37.910452+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -320,7 +320,15 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "temporallogicverifier.check_deadline_constraints",
+          "temporallogicverifier.verify_temporal_consistency",
+          "causalinferencesetup.identify_failure_points",
+          "causal_extraction.assess_temporal_coherence",
+          "text_mining.analyze_link_text",
+          "industrial_policy.analyze_causal_dimensions",
+          "industrial_policy.extract_metadata"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -441,7 +449,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q005 | Análisis D1-Q5: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -476,15 +484,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _check_deadline_constraints"
+                  "description": "Invocar `TemporalLogicVerifier._check_deadline_constraints` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='temporallogicverifier.check_deadline_constraints'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -507,7 +515,8 @@
               "actionable_insights": [
                 "Use _check_deadline_constraints results for downstream analysis"
               ]
-            }
+            },
+            "provides": "temporallogicverifier.check_deadline_constraints"
           },
           {
             "method_name": "verify_temporal_consistency",
@@ -529,15 +538,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute verify_temporal_consistency"
+                  "description": "Invocar `TemporalLogicVerifier.verify_temporal_consistency` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='temporallogicverifier.verify_temporal_consistency'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -560,7 +569,8 @@
               "actionable_insights": [
                 "Use verify_temporal_consistency results for downstream analysis"
               ]
-            }
+            },
+            "provides": "temporallogicverifier.verify_temporal_consistency"
           },
           {
             "method_name": "identify_failure_points",
@@ -582,15 +592,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute identify_failure_points"
+                  "description": "Invocar `CausalInferenceSetup.identify_failure_points` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.identify_failure_points'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -613,7 +623,8 @@
               "actionable_insights": [
                 "Use identify_failure_points results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causalinferencesetup.identify_failure_points"
           },
           {
             "method_name": "_assess_temporal_coherence",
@@ -635,15 +646,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _assess_temporal_coherence"
+                  "description": "Invocar `CausalExtractor._assess_temporal_coherence` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.assess_temporal_coherence'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -666,7 +677,8 @@
               "actionable_insights": [
                 "Use _assess_temporal_coherence results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.assess_temporal_coherence"
           },
           {
             "method_name": "_analyze_link_text",
@@ -724,7 +736,8 @@
                 "Low coherence + many links: Document has scattered causal claims without substantiation",
                 "High coherence: Causal claims are evidence-based and well-argued"
               ]
-            }
+            },
+            "provides": "text_mining.analyze_link_text"
           },
           {
             "method_name": "_analyze_causal_dimensions",

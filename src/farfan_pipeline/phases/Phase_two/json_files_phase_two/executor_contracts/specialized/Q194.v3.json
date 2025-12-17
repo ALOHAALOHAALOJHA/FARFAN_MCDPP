@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "4f383d3110e932c206173af1c3a504321a41dcf062fdeb888ffa1f2d7ee693b1",
+    "contract_hash": "5b3f2c1d26779537d00ff69e376219fba694d7a4e9c409ea8215d36d5f01f61c",
     "created_at": "2025-11-28T03:50:31.893927+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 194,
-    "updated_at": "2025-12-17T14:44:57.294565+00:00"
+    "updated_at": "2025-12-17T23:49:38.870012+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -413,7 +413,34 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "advanceddagvalidator.calculate_acyclicity_pvalue",
+          "advanceddagvalidator.is_acyclic",
+          "advanceddagvalidator.get_graph_stats",
+          "advanceddagvalidator.calculate_node_importance",
+          "advanceddagvalidator.generate_subgraph",
+          "advanceddagvalidator.add_node",
+          "advanceddagvalidator.add_edge",
+          "advanceddagvalidator.export_nodes",
+          "advanceddagvalidator.initialize_rng",
+          "advanceddagvalidator.calculate_statistical_power",
+          "advanceddagvalidator.get_node_validator",
+          "advanceddagvalidator.create_empty_result",
+          "bayesianmechanisminference.test_necessity",
+          "industrialgradevalidator.execute_suite",
+          "industrialgradevalidator.validate_connection_matrix",
+          "industrialgradevalidator.run_performance_benchmarks",
+          "industrialgradevalidator.benchmark_operation",
+          "industrialgradevalidator.log_metric",
+          "industrialgradevalidator.validate_engine_readiness",
+          "performanceanalyzer.analyze_performance",
+          "performanceanalyzer.calculate_loss_functions",
+          "hierarchicalgenerativemodel.calculate_likelihood",
+          "hierarchicalgenerativemodel.calculate_ess",
+          "hierarchicalgenerativemodel.calculate_r_hat",
+          "industrialgradevalidator.validate_causal_categories",
+          "teoriacambio.extraer_categorias"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -534,7 +561,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q194 | Análisis D3-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -569,15 +596,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute calculate_acyclicity_pvalue"
+                  "description": "Invocar `AdvancedDAGValidator.calculate_acyclicity_pvalue` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.calculate_acyclicity_pvalue'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -600,7 +627,8 @@
               "actionable_insights": [
                 "Use calculate_acyclicity_pvalue results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.calculate_acyclicity_pvalue"
           },
           {
             "method_name": "_is_acyclic",
@@ -622,15 +650,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _is_acyclic"
+                  "description": "Invocar `AdvancedDAGValidator._is_acyclic` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.is_acyclic'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -653,7 +681,8 @@
               "actionable_insights": [
                 "Use _is_acyclic results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.is_acyclic"
           },
           {
             "method_name": "get_graph_stats",
@@ -675,15 +704,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute get_graph_stats"
+                  "description": "Invocar `AdvancedDAGValidator.get_graph_stats` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.get_graph_stats'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -706,7 +735,8 @@
               "actionable_insights": [
                 "Use get_graph_stats results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.get_graph_stats"
           },
           {
             "method_name": "_calculate_node_importance",
@@ -728,15 +758,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_node_importance"
+                  "description": "Invocar `AdvancedDAGValidator._calculate_node_importance` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.calculate_node_importance'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -759,7 +789,8 @@
               "actionable_insights": [
                 "Use _calculate_node_importance results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.calculate_node_importance"
           },
           {
             "method_name": "_generate_subgraph",
@@ -781,15 +812,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_subgraph"
+                  "description": "Invocar `AdvancedDAGValidator._generate_subgraph` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.generate_subgraph'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -812,7 +843,8 @@
               "actionable_insights": [
                 "Use _generate_subgraph results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.generate_subgraph"
           },
           {
             "method_name": "add_node",

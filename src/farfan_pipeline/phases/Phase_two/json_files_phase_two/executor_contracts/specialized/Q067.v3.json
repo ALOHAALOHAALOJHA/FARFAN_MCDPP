@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "d3a32b718554b54553085b49ac76ab188c34d9ba31826b6921f0534dee3e7473",
+    "contract_hash": "c31300f8f726771eff415ac617e80038b69ad1595e4b6de5b66b2826fd1878c7",
     "created_at": "2025-11-28T03:50:09.603862+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 67,
-    "updated_at": "2025-12-16T04:42:57.639158+00:00"
+    "updated_at": "2025-12-17T23:49:38.215050+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q2_Executor",
@@ -275,7 +275,7 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -320,7 +320,19 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "bayesianmechanisminference.infer_mechanisms",
+          "bayesianmechanisminference.infer_single_mechanism",
+          "bayesianmechanisminference.infer_mechanism_type",
+          "bayesianmechanisminference.test_sufficiency",
+          "bayesianmechanisminference.test_necessity",
+          "causal_extraction.extract_causal_hierarchy",
+          "teoriacambio.construir_grafo_causal",
+          "teoriacambio.es_conexion_valida",
+          "pdet_analysis.construct_causal_dag",
+          "beachevidentialtest.classify_test",
+          "industrial_policy.analyze_causal_dimensions"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -441,7 +453,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q067 | Análisis D2-Q2: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -476,15 +488,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute infer_mechanisms"
+                  "description": "Invocar `BayesianMechanismInference.infer_mechanisms` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.infer_mechanisms'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -507,7 +519,8 @@
               "actionable_insights": [
                 "Use infer_mechanisms results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.infer_mechanisms"
           },
           {
             "method_name": "_infer_single_mechanism",
@@ -529,15 +542,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _infer_single_mechanism"
+                  "description": "Invocar `BayesianMechanismInference._infer_single_mechanism` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.infer_single_mechanism'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -560,7 +573,8 @@
               "actionable_insights": [
                 "Use _infer_single_mechanism results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.infer_single_mechanism"
           },
           {
             "method_name": "_infer_mechanism_type",
@@ -582,15 +596,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _infer_mechanism_type"
+                  "description": "Invocar `BayesianMechanismInference._infer_mechanism_type` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.infer_mechanism_type'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -613,7 +627,8 @@
               "actionable_insights": [
                 "Use _infer_mechanism_type results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.infer_mechanism_type"
           },
           {
             "method_name": "_test_sufficiency",
@@ -635,15 +650,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_sufficiency"
+                  "description": "Invocar `BayesianMechanismInference._test_sufficiency` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.test_sufficiency'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -666,7 +681,8 @@
               "actionable_insights": [
                 "Use _test_sufficiency results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.test_sufficiency"
           },
           {
             "method_name": "_test_necessity",
@@ -688,15 +704,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_necessity"
+                  "description": "Invocar `BayesianMechanismInference._test_necessity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.test_necessity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -719,7 +735,8 @@
               "actionable_insights": [
                 "Use _test_necessity results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.test_necessity"
           },
           {
             "method_name": "extract_causal_hierarchy",

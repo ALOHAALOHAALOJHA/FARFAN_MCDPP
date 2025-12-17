@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "6ea8761711ecf023fa2c865fdc6855f32408ef1c8db08a572b08150b2e64d76b",
+    "contract_hash": "dc127689ef78a7665c6e9aed04d5750f5c63f43f481e5be74c3be9b94e381db3",
     "created_at": "2025-11-28T03:50:42.348332+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 263,
-    "updated_at": "2025-12-16T04:42:58.661220+00:00"
+    "updated_at": "2025-12-17T23:49:39.304019+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q3_Executor",
@@ -196,7 +196,7 @@
       "long_term_vision",
       "participation_mechanisms",
       "transformative_potential",
-      "transparency"
+      "policy_transparency"
     ],
     "optional_signals": [
       "citizen_satisfaction",
@@ -206,7 +206,7 @@
       "sustainability_mechanisms"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -251,7 +251,14 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "causal_extraction.calculate_semantic_distance",
+          "semanticanalyzer.extract_semantic_cube",
+          "bayesianmechanisminference.quantify_uncertainty",
+          "pdet_analysis.find_mediator_mentions",
+          "policyanalysisembedder.get_diagnostics",
+          "adaptivepriorcalculator.perturb_evidence"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -372,7 +379,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q263 | Análisis D5-Q3: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -407,15 +414,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_semantic_distance"
+                  "description": "Invocar `CausalExtractor._calculate_semantic_distance` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.calculate_semantic_distance'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -438,7 +445,8 @@
               "actionable_insights": [
                 "Use _calculate_semantic_distance results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.calculate_semantic_distance"
           },
           {
             "method_name": "extract_semantic_cube",
@@ -460,15 +468,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute extract_semantic_cube"
+                  "description": "Invocar `SemanticAnalyzer.extract_semantic_cube` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='semanticanalyzer.extract_semantic_cube'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -491,7 +499,8 @@
               "actionable_insights": [
                 "Use extract_semantic_cube results for downstream analysis"
               ]
-            }
+            },
+            "provides": "semanticanalyzer.extract_semantic_cube"
           },
           {
             "method_name": "_quantify_uncertainty",
@@ -513,15 +522,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _quantify_uncertainty"
+                  "description": "Invocar `BayesianMechanismInference._quantify_uncertainty` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.quantify_uncertainty'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -544,7 +553,8 @@
               "actionable_insights": [
                 "Use _quantify_uncertainty results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.quantify_uncertainty"
           },
           {
             "method_name": "_find_mediator_mentions",
@@ -566,15 +576,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _find_mediator_mentions"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._find_mediator_mentions` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.find_mediator_mentions'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -597,7 +607,8 @@
               "actionable_insights": [
                 "Use _find_mediator_mentions results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.find_mediator_mentions"
           },
           {
             "method_name": "get_diagnostics",
@@ -619,15 +630,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute get_diagnostics"
+                  "description": "Invocar `PolicyAnalysisEmbedder.get_diagnostics` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='policyanalysisembedder.get_diagnostics'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -650,7 +661,8 @@
               "actionable_insights": [
                 "Use get_diagnostics results for downstream analysis"
               ]
-            }
+            },
+            "provides": "policyanalysisembedder.get_diagnostics"
           },
           {
             "method_name": "_perturb_evidence",

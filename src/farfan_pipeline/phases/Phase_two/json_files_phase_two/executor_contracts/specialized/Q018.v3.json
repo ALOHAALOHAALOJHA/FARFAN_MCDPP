@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "e64392ea43b57c733dd2872b1c6cfdd85aa02813e8bf32ae1c5271b504461ac1",
+    "contract_hash": "03aae58da76e950f92df9b7e465189936b94a36f6124bb4924ad483581b0ea4c",
     "created_at": "2025-11-28T03:49:29.845951+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 18,
-    "updated_at": "2025-12-16T04:42:57.405644+00:00"
+    "updated_at": "2025-12-17T23:49:37.991419+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -238,7 +238,7 @@
       "verification_sources"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -283,7 +283,16 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "pdet_analysis.get_prior_effect",
+          "pdet_analysis.estimate_effect_bayesian",
+          "pdet_analysis.compute_robustness_value",
+          "adaptivepriorcalculator.sensitivity_analysis",
+          "hierarchicalgenerativemodel.calculate_r_hat",
+          "hierarchicalgenerativemodel.calculate_ess",
+          "advanceddagvalidator.calculate_statistical_power",
+          "bayesianmechanisminference.aggregate_bayesian_confidence"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -404,7 +413,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q018 | Análisis D4-Q3: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -439,15 +448,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _get_prior_effect"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._get_prior_effect` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.get_prior_effect'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -470,7 +479,8 @@
               "actionable_insights": [
                 "Use _get_prior_effect results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.get_prior_effect"
           },
           {
             "method_name": "_estimate_effect_bayesian",
@@ -492,15 +502,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _estimate_effect_bayesian"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._estimate_effect_bayesian` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.estimate_effect_bayesian'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -523,7 +533,8 @@
               "actionable_insights": [
                 "Use _estimate_effect_bayesian results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.estimate_effect_bayesian"
           },
           {
             "method_name": "_compute_robustness_value",
@@ -545,15 +556,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compute_robustness_value"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._compute_robustness_value` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.compute_robustness_value'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -576,7 +587,8 @@
               "actionable_insights": [
                 "Use _compute_robustness_value results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.compute_robustness_value"
           },
           {
             "method_name": "sensitivity_analysis",
@@ -598,15 +610,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute sensitivity_analysis"
+                  "description": "Invocar `AdaptivePriorCalculator.sensitivity_analysis` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='adaptivepriorcalculator.sensitivity_analysis'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -629,7 +641,8 @@
               "actionable_insights": [
                 "Use sensitivity_analysis results for downstream analysis"
               ]
-            }
+            },
+            "provides": "adaptivepriorcalculator.sensitivity_analysis"
           },
           {
             "method_name": "_calculate_r_hat",
@@ -651,15 +664,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_r_hat"
+                  "description": "Invocar `HierarchicalGenerativeModel._calculate_r_hat` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='hierarchicalgenerativemodel.calculate_r_hat'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -682,7 +695,8 @@
               "actionable_insights": [
                 "Use _calculate_r_hat results for downstream analysis"
               ]
-            }
+            },
+            "provides": "hierarchicalgenerativemodel.calculate_r_hat"
           },
           {
             "method_name": "_calculate_ess",

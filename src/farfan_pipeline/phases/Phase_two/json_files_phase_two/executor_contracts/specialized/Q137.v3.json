@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "8f7b8e1c453252673583fa6c37900cea710a0700ae76930952561d1600b10750",
+    "contract_hash": "19ed0af29c2103452d81181047c1188e352e9c184a2065bf6a2c808c6254a603",
     "created_at": "2025-11-28T03:50:31.443766+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 137,
-    "updated_at": "2025-12-17T10:18:08.932462+00:00"
+    "updated_at": "2025-12-17T23:49:38.545552+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -454,15 +454,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _encontrar_caminos_completos"
+                  "description": "Invocar `TeoriaCambio._encontrar_caminos_completos` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.encontrar_caminos_completos'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -485,7 +485,8 @@
               "actionable_insights": [
                 "Use _encontrar_caminos_completos results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.encontrar_caminos_completos"
           },
           {
             "method_name": "validacion_completa",
@@ -507,15 +508,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute validacion_completa"
+                  "description": "Invocar `TeoriaCambio.validacion_completa` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.validacion_completa'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -538,7 +539,8 @@
               "actionable_insights": [
                 "Use validacion_completa results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.validacion_completa"
           },
           {
             "method_name": "extract_causal_hierarchy",
@@ -560,15 +562,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute extract_causal_hierarchy"
+                  "description": "Invocar `CausalExtractor.extract_causal_hierarchy` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.extract_causal_hierarchy'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -591,7 +593,8 @@
               "actionable_insights": [
                 "Use extract_causal_hierarchy results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.extract_causal_hierarchy"
           },
           {
             "method_name": "verify_conditional_independence",
@@ -613,15 +616,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute verify_conditional_independence"
+                  "description": "Invocar `HierarchicalGenerativeModel.verify_conditional_independence` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='hierarchicalgenerativemodel.verify_conditional_independence'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -644,7 +647,8 @@
               "actionable_insights": [
                 "Use verify_conditional_independence results for downstream analysis"
               ]
-            }
+            },
+            "provides": "hierarchicalgenerativemodel.verify_conditional_independence"
           },
           {
             "method_name": "_generate_independence_tests",
@@ -666,15 +670,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_independence_tests"
+                  "description": "Invocar `HierarchicalGenerativeModel._generate_independence_tests` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='hierarchicalgenerativemodel.generate_independence_tests'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -697,7 +701,8 @@
               "actionable_insights": [
                 "Use _generate_independence_tests results for downstream analysis"
               ]
-            }
+            },
+            "provides": "hierarchicalgenerativemodel.generate_independence_tests"
           },
           {
             "method_name": "construct_scm",

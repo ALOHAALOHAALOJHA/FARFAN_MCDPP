@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "78e01a53f4d82d3a1fdef035edf15d98d9a68a988e1f71bd15fb3c1081226b54",
+    "contract_hash": "b9027fce56f0c703e0c1e493bbf0ef2bc72520258418d0db948e11e3cb90d881",
     "created_at": "2025-11-28T03:50:01.851833+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 31,
-    "updated_at": "2025-12-16T04:42:57.463660+00:00"
+    "updated_at": "2025-12-17T23:46:06.240549+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -461,7 +461,7 @@
       "visitor_statistics"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -508,12 +508,22 @@
         "target": "elements_found",
         "sources": [
           "text_mining.diagnose_critical_links",
+          "text_mining.analyze_link_text",
           "industrial_policy.process",
+          "industrial_policy.match_patterns_in_sentences",
+          "industrial_policy.extract_point_evidence",
           "causal_extraction.extract_goals",
+          "causal_extraction.parse_goal_context",
           "financial_audit.parse_amount",
           "pdet_analysis.extract_financial_amounts",
+          "pdet_analysis.extract_from_budget_table",
           "contradiction_detection.extract_quantitative_claims",
-          "bayesian_analysis.evaluate_policy_metric"
+          "contradiction_detection.parse_number",
+          "contradiction_detection.statistical_significance_test",
+          "bayesian_analysis.evaluate_policy_metric",
+          "bayesian_analysis.compare_policies",
+          "semantic_processing.chunk_text",
+          "semantic_processing.embed_single"
         ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
@@ -638,7 +648,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q031 | Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",

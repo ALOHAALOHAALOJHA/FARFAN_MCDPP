@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "e4101c78927e848e4d5d9f3f777f56f9e68974e6e5be882d3b34f687c0eab4c8",
+    "contract_hash": "303e695fadc0789901135c1faffdb62a9d43413b56abfd039ab550a9ffbc0393",
     "created_at": "2025-11-28T03:49:29.791441+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 4,
-    "updated_at": "2025-12-16T04:42:57.328649+00:00"
+    "updated_at": "2025-12-17T23:48:44.574462+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -328,7 +328,7 @@
       "territorial_scope"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -373,7 +373,19 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "pdet_analysis.identify_responsible_entities",
+          "pdet_analysis.extract_entities_ner",
+          "pdet_analysis.extract_entities_syntax",
+          "pdet_analysis.classify_entity_type",
+          "pdet_analysis.score_entity_specificity",
+          "pdet_analysis.consolidate_entities",
+          "mechanismpartextractor.extract_entity_activity",
+          "mechanismpartextractor.normalize_entity",
+          "mechanismpartextractor.validate_entity_activity",
+          "mechanismpartextractor.calculate_ea_confidence",
+          "operationalizationauditor.audit_evidence_traceability"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -494,7 +506,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q004 | Análisis D1-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -628,7 +640,8 @@
                 "If Secretaría Especializada found: Extract for entity-activity linkage in downstream MechanismPartExtractor analysis",
                 "If Comisaría found: Cross-validate with 'ruta de atención' patterns (PAT-Q004-003) to confirm violence response capacity"
               ]
-            }
+            },
+            "provides": "pdet_analysis.identify_responsible_entities"
           },
           {
             "method_name": "_extract_entities_ner",
@@ -736,7 +749,8 @@
                 "Cross-reference NER entities with patterns PAT-Q004-000 ('Secretaría') and PAT-Q004-001 ('Comisaría') for validation",
                 "High-confidence ORG entities (≥0.85) can skip syntax validation → direct input to _classify_entity_type"
               ]
-            }
+            },
+            "provides": "pdet_analysis.extract_entities_ner"
           },
           {
             "method_name": "_extract_entities_syntax",
@@ -840,7 +854,8 @@
                 "Entities with dependency_path containing 'nsubj' or 'dobj' are likely main clause actors (high importance for responsibility attribution)",
                 "Entities in subordinate clauses (dependency_path with 'acl', 'advcl') are contextual mentions (lower priority unless no main clause entities found)"
               ]
-            }
+            },
+            "provides": "pdet_analysis.extract_entities_syntax"
           },
           {
             "method_name": "_classify_entity_type",
@@ -923,7 +938,8 @@
                 "Comisaría entities should be cross-referenced with 'violencia' or 'atención' keywords to confirm violence response capacity",
                 "High proportion of Genérico (>50%): Low entity typing accuracy → improve NER/syntax extraction quality or expand type taxonomy"
               ]
-            }
+            },
+            "provides": "pdet_analysis.classify_entity_type"
           },
           {
             "method_name": "_score_entity_specificity",
@@ -1021,7 +1037,8 @@
                 "High-specificity entities (≥0.75) are candidates for automatic entity-activity linkage (MechanismPartExtractor)",
                 "Low-specificity entities with type='Secretaría Especializada' are CONTRADICTIONS (specialized office should have specific name) → flag for manual review"
               ]
-            }
+            },
+            "provides": "pdet_analysis.score_entity_specificity"
           },
           {
             "method_name": "_consolidate_entities",

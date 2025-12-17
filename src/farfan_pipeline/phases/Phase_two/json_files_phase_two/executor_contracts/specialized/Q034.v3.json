@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "25abbd1210430a0eb627ce1039e5e3980c982c845faeb9a7f4d10fa7c7a0efb1",
+    "contract_hash": "b4509e7e606a2b233fa50f39e13100a9fb81665fd0a3b4ddda0e9cccf6cfb2b5",
     "created_at": "2025-11-28T03:50:01.865262+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 34,
-    "updated_at": "2025-12-16T04:42:57.480401+00:00"
+    "updated_at": "2025-12-17T23:49:38.059931+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -298,7 +298,7 @@
       "visitor_statistics"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -343,7 +343,19 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "pdet_analysis.identify_responsible_entities",
+          "pdet_analysis.extract_entities_ner",
+          "pdet_analysis.extract_entities_syntax",
+          "pdet_analysis.classify_entity_type",
+          "pdet_analysis.score_entity_specificity",
+          "pdet_analysis.consolidate_entities",
+          "mechanismpartextractor.extract_entity_activity",
+          "mechanismpartextractor.normalize_entity",
+          "mechanismpartextractor.validate_entity_activity",
+          "mechanismpartextractor.calculate_ea_confidence",
+          "operationalizationauditor.audit_evidence_traceability"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -464,7 +476,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q034 | Análisis D1-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -499,15 +511,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute identify_responsible_entities"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer.identify_responsible_entities` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.identify_responsible_entities'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -530,7 +542,8 @@
               "actionable_insights": [
                 "Use identify_responsible_entities results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.identify_responsible_entities"
           },
           {
             "method_name": "_extract_entities_ner",
@@ -552,15 +565,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_entities_ner"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._extract_entities_ner` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.extract_entities_ner'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -583,7 +596,8 @@
               "actionable_insights": [
                 "Use _extract_entities_ner results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.extract_entities_ner"
           },
           {
             "method_name": "_extract_entities_syntax",
@@ -605,15 +619,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_entities_syntax"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._extract_entities_syntax` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.extract_entities_syntax'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -636,7 +650,8 @@
               "actionable_insights": [
                 "Use _extract_entities_syntax results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.extract_entities_syntax"
           },
           {
             "method_name": "_classify_entity_type",
@@ -658,15 +673,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _classify_entity_type"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._classify_entity_type` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.classify_entity_type'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -689,7 +704,8 @@
               "actionable_insights": [
                 "Use _classify_entity_type results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.classify_entity_type"
           },
           {
             "method_name": "_score_entity_specificity",
@@ -711,15 +727,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _score_entity_specificity"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._score_entity_specificity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.score_entity_specificity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -742,7 +758,8 @@
               "actionable_insights": [
                 "Use _score_entity_specificity results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.score_entity_specificity"
           },
           {
             "method_name": "_consolidate_entities",

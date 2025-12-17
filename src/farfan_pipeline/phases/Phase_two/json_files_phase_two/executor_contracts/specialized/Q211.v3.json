@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "3fc870deeea8b35457863773cff8b6f8668576da659a2147731217cb82e5a7de",
+    "contract_hash": "3af1a82ed72190a1d0d0e17c4127ffc44952d19f1cf360c1bc9a24416ceac83a",
     "created_at": "2025-11-28T03:50:41.908742+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 211,
-    "updated_at": "2025-12-17T02:49:51.797755",
+    "updated_at": "2025-12-17T23:46:07.099696+00:00",
     "remediation_applied": [
       {
         "date": "2025-12-17T02:49:51.797760",
@@ -170,7 +170,7 @@
     "note": "All 17 methods extracted from D1_Q1_Executor in executors.py"
   },
   "question_context": {
-    "question_text": "\u00bfEl diagn\u00f3stico presenta datos num\u00e9ricos (porcentaje de predios sin formalizar, km de v\u00edas terciarias en mal estado, avance del catastro multiprop\u00f3sito) sobre el \u00e1rea de Tierras y territorios que sirvan como l\u00ednea base? Se debe verificar el a\u00f1o y fuentes (ej. IGAC, ANT, INVIAS).",
+    "question_text": "¿El diagnóstico presenta datos numéricos (porcentaje de predios sin formalizar, km de vías terciarias en mal estado, avance del catastro multipropósito) sobre el área de Tierras y territorios que sirvan como línea base? Se debe verificar el año y fuentes (ej. IGAC, ANT, INVIAS).",
     "question_type": "micro",
     "scoring_modality": "TYPE_A",
     "modality": "count_and_scale",
@@ -182,7 +182,7 @@
         "flags": "i",
         "id": "PAT-Q211-000",
         "match_type": "REGEX",
-        "pattern": "l\u00ednea base|diagn\u00f3stico rural|caracterizaci\u00f3n predial|situaci\u00f3n actual",
+        "pattern": "línea base|diagnóstico rural|caracterización predial|situación actual",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -202,7 +202,7 @@
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0067",
-        "pattern": "fuente:|seg\u00fan|reportado por|con datos de",
+        "pattern": "fuente:|según|reportado por|con datos de",
         "policy_area": "PA07"
       },
       {
@@ -211,7 +211,7 @@
         "flags": "i",
         "id": "PAT-Q211-002",
         "match_type": "REGEX",
-        "pattern": "IGAC|Instituto Geogr\u00e1fico Agust\u00edn Codazzi|Catastro",
+        "pattern": "IGAC|Instituto Geográfico Agustín Codazzi|Catastro",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -225,7 +225,7 @@
         "flags": "i",
         "id": "PAT-Q211-003",
         "match_type": "REGEX",
-        "pattern": "ANT|Agencia Nacional de Tierras|URT|Unidad de Restituci\u00f3n de Tierras",
+        "pattern": "ANT|Agencia Nacional de Tierras|URT|Unidad de Restitución de Tierras",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -267,7 +267,7 @@
         "flags": "i",
         "id": "PAT-Q211-006",
         "match_type": "REGEX",
-        "pattern": "Secretar\u00eda de Planeaci\u00f3n|UMATA|Secretar\u00eda de Infraestructura",
+        "pattern": "Secretaría de Planeación|UMATA|Secretaría de Infraestructura",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -295,7 +295,7 @@
         "flags": "i",
         "id": "PAT-Q211-008",
         "match_type": "REGEX",
-        "pattern": "porcentaje de desactualizaci\u00f3n catastral|catastro multiprop\u00f3sito",
+        "pattern": "porcentaje de desactualización catastral|catastro multipropósito",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -309,7 +309,7 @@
         "flags": "i",
         "id": "PAT-Q211-009",
         "match_type": "REGEX",
-        "pattern": "kil\u00f3metros de v\u00edas terciarias en mal estado|estado de la red vial",
+        "pattern": "kilómetros de vías terciarias en mal estado|estado de la red vial",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -323,7 +323,7 @@
         "flags": "i",
         "id": "PAT-Q211-010",
         "match_type": "REGEX",
-        "pattern": "hect\u00e1reas (Ha) en conflicto de uso del suelo|frontera agr\u00edcola",
+        "pattern": "hectáreas (Ha) en conflicto de uso del suelo|frontera agrícola",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -337,7 +337,7 @@
         "flags": "i",
         "id": "PAT-Q211-011",
         "match_type": "REGEX",
-        "pattern": "d\u00e9ficit de infraestructura de riego|distritos de riego",
+        "pattern": "déficit de infraestructura de riego|distritos de riego",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -357,7 +357,7 @@
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0001",
-        "pattern": "(?:19|20)\\\\d{2}|vigencia anterior|serie hist\u00f3rica|cuatrienio anterior",
+        "pattern": "(?:19|20)\\\\d{2}|vigencia anterior|serie histórica|cuatrienio anterior",
         "policy_area": "PA07"
       },
       {
@@ -366,7 +366,7 @@
         "flags": "i",
         "id": "PAT-Q211-013",
         "match_type": "REGEX",
-        "pattern": "porcentaje|hect\u00e1reas|kil\u00f3metros|n\u00famero de predios|familias",
+        "pattern": "porcentaje|hectáreas|kilómetros|número de predios|familias",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -386,7 +386,7 @@
       },
       {
         "minimum": 2,
-        "type": "series_temporales_a\u00f1os"
+        "type": "series_temporales_años"
       }
     ],
     "validations": {
@@ -396,7 +396,7 @@
           "\\d+%",
           "\\d+\\s*por\\s*\\d+",
           "tasa de",
-          "\u00edndice de",
+          "índice de",
           "cobertura de"
         ],
         "specificity": "HIGH"
@@ -417,9 +417,9 @@
         "minimum_years": 3,
         "patterns": [
           "20\\d{2}",
-          "a\u00f1o",
+          "año",
           "periodo",
-          "hist\u00f3rico",
+          "histórico",
           "serie"
         ],
         "specificity": "MEDIUM"
@@ -432,7 +432,7 @@
           "%",
           "porcentaje",
           "tasa",
-          "raz\u00f3n"
+          "razón"
         ],
         "specificity": "MEDIUM"
       },
@@ -440,7 +440,7 @@
         "minimum_required": 2,
         "patterns": [
           "fuente:",
-          "seg\u00fan",
+          "según",
           "datos de",
           "DANE",
           "DNP",
@@ -501,7 +501,7 @@
               "description": "Scores de confianza usados por el scorer."
             },
             "semantic_similarity": {
-              "description": "M\u00e9trica de similitud sem\u00e1ntica (si aplica)."
+              "description": "Métrica de similitud semántica (si aplica)."
             },
             "pattern_matches": {
               "type": "object",
@@ -592,7 +592,7 @@
         },
         "question_global": {
           "type": "integer",
-          "description": "\u00cdndice global de la pregunta (de questionnaire_monolith).",
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
           "const": 211
         },
         "policy_area_id": {
@@ -600,7 +600,7 @@
             "string",
             "null"
           ],
-          "description": "PA can\u00f3nica, debe ser coherente con identity.policy_area_id.",
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
           "const": "PA07"
         },
         "dimension_id": {
@@ -608,7 +608,7 @@
             "string",
             "null"
           ],
-          "description": "Dimensi\u00f3n can\u00f3nica, coherente con identity.dimension_id.",
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
           "const": "DIM01"
         },
         "cluster_id": {
@@ -616,7 +616,7 @@
             "string",
             "null"
           ],
-          "description": "Cluster de an\u00e1lisis seg\u00fan el monolith, si aplica.",
+          "description": "Cluster de análisis según el monolith, si aplica.",
           "const": "CL01"
         },
         "evidence": {
@@ -632,7 +632,7 @@
             "object",
             "null"
           ],
-          "description": "Resultado de validaciones l\u00f3gicas de la respuesta (coherencia, integridad, etc.).",
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
           "additionalProperties": true
         },
         "trace": {
@@ -640,7 +640,7 @@
             "object",
             "null"
           ],
-          "description": "Informaci\u00f3n de trazabilidad (provenance, logs) espec\u00edfica de la ejecuci\u00f3n.",
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
           "additionalProperties": true
         },
         "metadata": {
@@ -662,17 +662,17 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## An\u00e1lisis D1-Q1: L\u00ednea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analiz\u00f3 la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la l\u00ednea base diagn\u00f3stica en el \u00e1rea de Derechos de las Mujeres e Igualdad de G\u00e9nero.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluaci\u00f3n Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos cr\u00edticos faltantes**: {evidence.missing_required_elements}",
+        "title": "## Q211 | Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
           "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
           "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
           "**Series temporales**: {evidence.temporal_series_count}",
           "**Cobertura territorial**: {evidence.territorial_coverage}"
         ],
-        "interpretation": "### Interpretaci\u00f3n de Resultados\n\n{methodological_interpretation}",
+        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -702,7 +702,7 @@
                 },
                 {
                   "step": 2,
-                  "description": "Extract entities before and after connector (cause \u2192 effect)"
+                  "description": "Extract entities before and after connector (cause → effect)"
                 },
                 {
                   "step": 3,
@@ -725,7 +725,7 @@
                 "link_scores": "Criticality scores (0-1) based on relevance to gender outcomes"
               },
               "interpretation_guide": {
-                "high_criticality": "\u22650.8: Link directly connects to gender inequality outcomes",
+                "high_criticality": "≥0.8: Link directly connects to gender inequality outcomes",
                 "medium_criticality": "0.5-0.79: Link relates to intermediate factors",
                 "low_criticality": "<0.5: Peripheral causal relationship"
               },
@@ -752,11 +752,11 @@
             },
             "technical_approach": {
               "method_type": "context_window_semantic_analysis",
-              "algorithm": "Extract \u00b1N sentences around link, analyze semantic consistency",
+              "algorithm": "Extract ±N sentences around link, analyze semantic consistency",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Extract context window (\u00b13 sentences) around detected causal link"
+                  "description": "Extract context window (±3 sentences) around detected causal link"
                 },
                 {
                   "step": 2,
@@ -769,7 +769,7 @@
               ],
               "assumptions": [
                 "Coherent contexts indicate valid causal claims",
-                "Context window of \u00b13 sentences captures relevant information"
+                "Context window of ±3 sentences captures relevant information"
               ],
               "limitations": [
                 "May miss long-range dependencies beyond context window",
@@ -784,7 +784,7 @@
                 "contradicting_evidence": "Contextual sentences that contradict the link"
               },
               "interpretation_guide": {
-                "high_coherence": "\u22650.7: Link is well-supported by context",
+                "high_coherence": "≥0.7: Link is well-supported by context",
                 "low_coherence": "<0.5: Link may be spurious or poorly contextualized"
               },
               "actionable_insights": [
@@ -841,12 +841,12 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "extracted_segments": "Hierarchical dict of policy structure \u2192 content",
-                "pattern_matches": "Dict of pattern_type \u2192 matched instances",
+                "extracted_segments": "Hierarchical dict of policy structure → content",
+                "pattern_matches": "Dict of pattern_type → matched instances",
                 "structural_completeness": "Score indicating presence of expected structural elements"
               },
               "interpretation_guide": {
-                "complete_structure": "\u22650.8: Document has well-defined policy architecture",
+                "complete_structure": "≥0.8: Document has well-defined policy architecture",
                 "incomplete_structure": "<0.5: Document lacks standard structure, may be disorganized"
               },
               "actionable_insights": [
@@ -863,7 +863,7 @@
             "epistemological_foundation": {
               "paradigm": "Micro-level pattern detection",
               "ontological_basis": "Policy commitments and evidence are encoded at sentence level through specific linguistic patterns",
-              "epistemological_stance": "Linguistic realism: Specific phrases reliably indicate policy elements (e.g., 'l\u00ednea base' indicates baseline data)",
+              "epistemological_stance": "Linguistic realism: Specific phrases reliably indicate policy elements (e.g., 'línea base' indicates baseline data)",
               "theoretical_framework": [
                 "Information extraction theory: Structured information can be extracted from unstructured text via pattern recognition"
               ],
@@ -1049,7 +1049,7 @@
                 },
                 {
                   "step": 3,
-                  "description": "Identify responsible actors (Secretar\u00eda de...)"
+                  "description": "Identify responsible actors (Secretaría de...)"
                 },
                 {
                   "step": 4,
@@ -1068,7 +1068,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "goal_contexts": "Dict mapping goal_id \u2192 {temporal, spatial, actor} context"
+                "goal_contexts": "Dict mapping goal_id → {temporal, spatial, actor} context"
               },
               "interpretation_guide": {
                 "complete_context": "All three dimensions present: Well-specified goal",
@@ -1130,7 +1130,7 @@
                 "parsed_amounts": "List of {raw_text, normalized_value, currency, confidence}"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.9: Amount clearly stated and parsed",
+                "high_confidence": "≥0.9: Amount clearly stated and parsed",
                 "low_confidence": "<0.7: Ambiguous format, may be misparsed"
               },
               "actionable_insights": [
@@ -1163,7 +1163,7 @@
                 },
                 {
                   "step": 2,
-                  "description": "Detect PDET-specific financial categories (SGR, regal\u00edas, PAC)"
+                  "description": "Detect PDET-specific financial categories (SGR, regalías, PAC)"
                 },
                 {
                   "step": 3,
@@ -1291,7 +1291,7 @@
                 "Same subjects are referred to consistently (no synonyms)"
               ],
               "limitations": [
-                "Cannot resolve synonyms (tasa de VBG vs. violencia de g\u00e9nero)",
+                "Cannot resolve synonyms (tasa de VBG vs. violencia de género)",
                 "May extract claims that are not meant to be factual (hypothetical scenarios)"
               ],
               "complexity": "O(n) where n=quantitative statements"
@@ -1356,7 +1356,7 @@
                 "parsing_confidence": "Confidence in parsing correctness (0-1)"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.95: Unambiguous format",
+                "high_confidence": "≥0.95: Unambiguous format",
                 "low_confidence": "<0.8: Ambiguous, may be misparsed"
               },
               "actionable_insights": [
@@ -1406,9 +1406,9 @@
               ],
               "limitations": [
                 "Requires error estimates (often unavailable in policy documents)",
-                "Significance \u2260 practical importance"
+                "Significance ≠ practical importance"
               ],
-              "complexity": "O(n\u00b2) for pairwise comparisons of n claims"
+              "complexity": "O(n²) for pairwise comparisons of n claims"
             },
             "output_interpretation": {
               "output_structure": {
@@ -1416,7 +1416,7 @@
               },
               "interpretation_guide": {
                 "p < 0.05": "Statistically significant contradiction",
-                "p \u2265 0.05": "Difference not statistically significant"
+                "p ≥ 0.05": "Difference not statistically significant"
               },
               "actionable_insights": [
                 "Significant contradictions: Data quality problem requiring investigation",
@@ -1434,7 +1434,7 @@
               "ontological_basis": "Policy metrics (e.g., VBG rates) are uncertain quantities with probability distributions, not point estimates",
               "epistemological_stance": "Bayesian epistemology: Knowledge is represented as probability distributions updated via Bayes' theorem",
               "theoretical_framework": [
-                "Bayesian inference: Prior beliefs + data \u2192 posterior beliefs",
+                "Bayesian inference: Prior beliefs + data → posterior beliefs",
                 "Uncertainty quantification: Bayesian methods explicitly model uncertainty"
               ],
               "justification": "Policy baselines often come from small samples or imperfect data; Bayesian methods quantify uncertainty properly"
@@ -1541,7 +1541,7 @@
               "interpretation_guide": {
                 "P > 0.95": "Strong evidence A is better",
                 "0.75 < P < 0.95": "Moderate evidence",
-                "P \u2248 0.5": "No clear difference"
+                "P ≈ 0.5": "No clear difference"
               },
               "actionable_insights": [
                 "High overlap despite different point estimates: Differences not meaningful given uncertainty",
@@ -1672,7 +1672,7 @@
           "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
           "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
           "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1\u219217). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
           "trade_offs": [
             "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
             "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
@@ -1714,7 +1714,7 @@
           },
           {
             "elements": [
-              "series_temporales_a\u00f1os"
+              "series_temporales_años"
             ],
             "minimum": 3
           }
@@ -1808,7 +1808,7 @@
                 "enum": [
                   "fuentes_oficiales",
                   "indicadores_cuantitativos",
-                  "series_temporales_a\u00f1os",
+                  "series_temporales_años",
                   "cobertura_territorial_especificada",
                   "financial_amounts",
                   "policy_goals",
@@ -1855,7 +1855,7 @@
                   "type": "integer",
                   "minimum_expected": 3
                 },
-                "series_temporales_a\u00f1os": {
+                "series_temporales_años": {
                   "type": "integer",
                   "minimum_expected": 3
                 },
@@ -2049,7 +2049,7 @@
         "found_in_example": 12,
         "status": "PASS"
       },
-      "series_temporales_a\u00f1os": {
+      "series_temporales_años": {
         "minimum": 3,
         "found_in_example": 4,
         "status": "PASS"

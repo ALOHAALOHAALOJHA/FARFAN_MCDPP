@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "fe68ef40a2c1bc05cf2967903dcac37b34b09e3168b4aedacc200ca53426bb3b",
+    "contract_hash": "379c5220d3f50dd81d82e97a666e6fdf29f3fd19dbc0d1c706783da057111e77",
     "created_at": "2025-11-28T03:50:42.202548+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 246,
-    "updated_at": "2025-12-16T04:42:58.574105+00:00"
+    "updated_at": "2025-12-17T23:49:39.205569+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q1_Executor",
@@ -245,7 +245,7 @@
       "institutional_capacity",
       "intervention_logic",
       "participation_mechanisms",
-      "transparency"
+      "policy_transparency"
     ],
     "optional_signals": [
       "assumptions",
@@ -255,7 +255,7 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -300,7 +300,15 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "pdfprocessor.extract_tables",
+          "financial_audit.process_financial_table",
+          "pdet_analysis.deduplicate_tables",
+          "pdet_analysis.classify_tables",
+          "pdet_analysis.is_likely_header",
+          "pdet_analysis.clean_dataframe",
+          "reportingengine.generate_accountability_matrix"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -421,7 +429,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q246 | Análisis D2-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -456,15 +464,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute extract_tables"
+                  "description": "Invocar `PDFProcessor.extract_tables` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdfprocessor.extract_tables'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -487,7 +495,8 @@
               "actionable_insights": [
                 "Use extract_tables results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdfprocessor.extract_tables"
           },
           {
             "method_name": "_process_financial_table",
@@ -509,15 +518,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _process_financial_table"
+                  "description": "Invocar `FinancialAuditor._process_financial_table` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.process_financial_table'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -540,7 +549,8 @@
               "actionable_insights": [
                 "Use _process_financial_table results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.process_financial_table"
           },
           {
             "method_name": "_deduplicate_tables",
@@ -562,15 +572,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _deduplicate_tables"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._deduplicate_tables` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.deduplicate_tables'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -593,7 +603,8 @@
               "actionable_insights": [
                 "Use _deduplicate_tables results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.deduplicate_tables"
           },
           {
             "method_name": "_classify_tables",
@@ -615,15 +626,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _classify_tables"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._classify_tables` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.classify_tables'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -646,7 +657,8 @@
               "actionable_insights": [
                 "Use _classify_tables results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.classify_tables"
           },
           {
             "method_name": "_is_likely_header",
@@ -668,15 +680,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _is_likely_header"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._is_likely_header` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.is_likely_header'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -699,7 +711,8 @@
               "actionable_insights": [
                 "Use _is_likely_header results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.is_likely_header"
           },
           {
             "method_name": "_clean_dataframe",

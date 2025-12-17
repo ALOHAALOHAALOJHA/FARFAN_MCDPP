@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "30d84cbbcb754ce1e910bee05f46dc405ebd78c1c9c21589e3c0893544ef2b6e",
+    "contract_hash": "869c1e675ba256a5148918d6df0cdd7a3ae734f74e93762aa3b2fae361df8fea",
     "created_at": "2025-11-28T03:50:42.222424+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 252,
-    "updated_at": "2025-12-16T04:42:58.600916+00:00"
+    "updated_at": "2025-12-17T23:49:39.234827+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -291,7 +291,7 @@
       "institutional_capacity",
       "participation_mechanisms",
       "product_targets",
-      "transparency"
+      "policy_transparency"
     ],
     "optional_signals": [
       "citizen_satisfaction",
@@ -301,7 +301,7 @@
       "responsible_entities"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -346,7 +346,29 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "advanceddagvalidator.calculate_bayesian_posterior",
+          "advanceddagvalidator.calculate_confidence_interval",
+          "adaptivepriorcalculator.adjust_domain_weights",
+          "pdet_analysis.get_spanish_stopwords",
+          "bayesianmechanisminference.log_refactored_components",
+          "pdet_analysis.analyze_financial_feasibility",
+          "pdet_analysis.score_indicators",
+          "pdet_analysis.interpret_risk",
+          "financial_audit.calculate_sufficiency",
+          "bayesianmechanisminference.test_sufficiency",
+          "bayesianmechanisminference.test_necessity",
+          "pdet_analysis.assess_financial_sustainability",
+          "adaptivepriorcalculator.calculate_likelihood_adaptativo",
+          "industrial_policy.calculate_quality_score",
+          "teoriacambio.generar_sugerencias_internas",
+          "pdet_analysis.deduplicate_tables",
+          "pdet_analysis.indicator_to_dict",
+          "pdet_analysis.generate_recommendations",
+          "industrial_policy.compile_pattern_registry",
+          "industrial_policy.build_point_patterns",
+          "industrial_policy.empty_result"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -467,7 +489,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q252 | Análisis D3-Q2: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -502,15 +524,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_bayesian_posterior"
+                  "description": "Invocar `AdvancedDAGValidator._calculate_bayesian_posterior` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.calculate_bayesian_posterior'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -533,7 +555,8 @@
               "actionable_insights": [
                 "Use _calculate_bayesian_posterior results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.calculate_bayesian_posterior"
           },
           {
             "method_name": "_calculate_confidence_interval",
@@ -555,15 +578,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_confidence_interval"
+                  "description": "Invocar `AdvancedDAGValidator._calculate_confidence_interval` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.calculate_confidence_interval'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -586,7 +609,8 @@
               "actionable_insights": [
                 "Use _calculate_confidence_interval results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.calculate_confidence_interval"
           },
           {
             "method_name": "_adjust_domain_weights",
@@ -608,15 +632,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _adjust_domain_weights"
+                  "description": "Invocar `AdaptivePriorCalculator._adjust_domain_weights` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='adaptivepriorcalculator.adjust_domain_weights'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -639,7 +663,8 @@
               "actionable_insights": [
                 "Use _adjust_domain_weights results for downstream analysis"
               ]
-            }
+            },
+            "provides": "adaptivepriorcalculator.adjust_domain_weights"
           },
           {
             "method_name": "_get_spanish_stopwords",
@@ -661,15 +686,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _get_spanish_stopwords"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._get_spanish_stopwords` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.get_spanish_stopwords'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -692,7 +717,8 @@
               "actionable_insights": [
                 "Use _get_spanish_stopwords results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.get_spanish_stopwords"
           },
           {
             "method_name": "_log_refactored_components",
@@ -714,15 +740,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _log_refactored_components"
+                  "description": "Invocar `BayesianMechanismInference._log_refactored_components` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.log_refactored_components'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -745,7 +771,8 @@
               "actionable_insights": [
                 "Use _log_refactored_components results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.log_refactored_components"
           },
           {
             "method_name": "analyze_financial_feasibility",

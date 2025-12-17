@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "8b08c2b7bd66ff27e4cc7cf8a0c72dd7fb91e328b52e49afea52493068d69b76",
+    "contract_hash": "669a50c6dc24ab0886ed73cc63f796695431f5b6bf9f79e11114e375834242b0",
     "created_at": "2025-11-28T03:50:31.561192+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 147,
-    "updated_at": "2025-12-17T10:18:09.492536+00:00"
+    "updated_at": "2025-12-17T23:49:38.588330+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q2_Executor",
@@ -412,15 +412,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute apply_test_logic"
+                  "description": "Invocar `BeachEvidentialTest.apply_test_logic` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='beachevidentialtest.apply_test_logic'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -443,7 +443,8 @@
               "actionable_insights": [
                 "Use apply_test_logic results for downstream analysis"
               ]
-            }
+            },
+            "provides": "beachevidentialtest.apply_test_logic"
           },
           {
             "method_name": "_test_necessity",
@@ -465,15 +466,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_necessity"
+                  "description": "Invocar `BayesianMechanismInference._test_necessity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.test_necessity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -496,7 +497,8 @@
               "actionable_insights": [
                 "Use _test_necessity results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.test_necessity"
           },
           {
             "method_name": "_test_sufficiency",
@@ -518,15 +520,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_sufficiency"
+                  "description": "Invocar `BayesianMechanismInference._test_sufficiency` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.test_sufficiency'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -549,7 +551,8 @@
               "actionable_insights": [
                 "Use _test_sufficiency results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.test_sufficiency"
           },
           {
             "method_name": "_calculate_coherence_factor",
@@ -571,15 +574,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_coherence_factor"
+                  "description": "Invocar `BayesianMechanismInference._calculate_coherence_factor` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.calculate_coherence_factor'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -602,7 +605,8 @@
               "actionable_insights": [
                 "Use _calculate_coherence_factor results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.calculate_coherence_factor"
           },
           {
             "method_name": "_test_effect_stability",
@@ -624,15 +628,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_effect_stability"
+                  "description": "Invocar `BayesianCounterfactualAuditor._test_effect_stability` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesiancounterfactualauditor.test_effect_stability'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -655,7 +659,8 @@
               "actionable_insights": [
                 "Use _test_effect_stability results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesiancounterfactualauditor.test_effect_stability"
           },
           {
             "method_name": "validate_connection_matrix",
