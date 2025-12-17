@@ -13,7 +13,7 @@ class TestCalibrationInfluenceOnExecution:
     """Test calibration impact on method execution."""
     
     def test_high_calibration_enables_full_weight(self) -> None:
-        """Test that high calibration scores result in full weight."""
+        """Test that high calibration scores result in full weight (FARFAN)."""
         policy = create_default_policy(strict_mode=False)
         
         high_calibration_score = 0.9
@@ -22,17 +22,17 @@ class TestCalibrationInfluenceOnExecution:
             "test_method", high_calibration_score
         )
         assert should_execute is True
-        assert "EXCELLENT" in reason
+        assert "EXCELENTE" in reason
         
         weight = policy.compute_adjusted_weight(1.0, high_calibration_score)
         assert weight.adjusted_weight == 1.0
         assert weight.adjustment_factor == 1.0
     
     def test_low_calibration_reduces_weight(self) -> None:
-        """Test that low calibration scores reduce weight."""
+        """Test that low calibration scores reduce weight (FARFAN)."""
         policy = create_default_policy(strict_mode=False)
         
-        low_calibration_score = 0.5
+        low_calibration_score = 0.40
         
         should_execute, reason = policy.should_execute_method(
             "test_method", low_calibration_score
@@ -41,14 +41,14 @@ class TestCalibrationInfluenceOnExecution:
         
         weight = policy.compute_adjusted_weight(1.0, low_calibration_score)
         assert weight.adjusted_weight < 1.0
-        assert weight.adjustment_factor == 0.7
-        assert weight.quality_band == "ACCEPTABLE"
+        assert weight.adjustment_factor == 0.40
+        assert weight.quality_band == "INSUFICIENTE"
     
     def test_poor_calibration_strict_mode_blocks_execution(self) -> None:
-        """Test that very low calibration blocks execution in strict mode."""
+        """Test that very low calibration blocks execution in strict mode (FARFAN)."""
         policy = CalibrationPolicy(strict_mode=True)
         
-        poor_calibration_score = 0.25
+        poor_calibration_score = 0.40  # Below MIN_EXECUTION_THRESHOLD (0.50)
         
         should_execute, reason = policy.should_execute_method(
             "test_method", poor_calibration_score
@@ -57,10 +57,10 @@ class TestCalibrationInfluenceOnExecution:
         assert "below threshold" in reason
     
     def test_poor_calibration_permissive_mode_allows_execution(self) -> None:
-        """Test that very low calibration allows execution in permissive mode."""
+        """Test that very low calibration allows execution in permissive mode (FARFAN)."""
         policy = CalibrationPolicy(strict_mode=False)
         
-        poor_calibration_score = 0.25
+        poor_calibration_score = 0.40  # Below MIN_EXECUTION_THRESHOLD but permissive
         
         should_execute, reason = policy.should_execute_method(
             "test_method", poor_calibration_score
@@ -74,14 +74,15 @@ class TestCalibrationInfluenceOnAggregation:
     """Test calibration impact on aggregation weights."""
     
     def test_calibration_weights_vary_by_score(self) -> None:
-        """Test that calibration weights vary appropriately by score."""
+        """Test that calibration weights vary appropriately by score (FARFAN)."""
         policy = create_default_policy()
         
+        # FARFAN thresholds: EXCELENTE (0.85+), BUENO (0.70-0.85), ACEPTABLE (0.55-0.70), INSUFICIENTE (<0.55)
         test_cases = [
-            (0.95, 1.0, "EXCELLENT"),
-            (0.75, 0.9, "GOOD"),
-            (0.55, 0.7, "ACCEPTABLE"),
-            (0.35, 0.4, "POOR"),
+            (0.95, 1.0, "EXCELENTE"),
+            (0.75, 0.9, "BUENO"),
+            (0.60, 0.75, "ACEPTABLE"),
+            (0.40, 0.40, "INSUFICIENTE"),
         ]
         
         for score, expected_factor, expected_band in test_cases:
@@ -91,10 +92,10 @@ class TestCalibrationInfluenceOnAggregation:
             assert weight.adjusted_weight == expected_factor
     
     def test_calibration_weights_scale_base_weight(self) -> None:
-        """Test that calibration factors scale with base weight."""
+        """Test that calibration factors scale with base weight (FARFAN)."""
         policy = create_default_policy()
         
-        calibration_score = 0.7
+        calibration_score = 0.75  # BUENO -> 0.9 factor
         base_weights = [0.5, 1.0, 2.0]
         
         for base_weight in base_weights:
@@ -164,14 +165,15 @@ class TestCalibrationEndToEnd:
     """End-to-end tests for calibration system."""
     
     def test_calibration_flow_through_execution(self) -> None:
-        """Test complete calibration flow through execution."""
+        """Test complete calibration flow through execution (FARFAN)."""
         policy = CalibrationPolicy(strict_mode=False)
         
+        # FARFAN-aligned scores
         methods_with_scores = {
-            "method_excellent": 0.9,
-            "method_good": 0.7,
-            "method_acceptable": 0.5,
-            "method_poor": 0.3,
+            "method_excelente": 0.9,   # EXCELENTE
+            "method_bueno": 0.75,      # BUENO
+            "method_aceptable": 0.60,  # ACEPTABLE
+            "method_insuficiente": 0.40,  # INSUFICIENTE
         }
         
         executed_methods = []
@@ -194,27 +196,27 @@ class TestCalibrationEndToEnd:
                 )
         
         assert len(executed_methods) == 4
-        assert weights["method_excellent"] == 1.0
-        assert weights["method_good"] < weights["method_excellent"]
-        assert weights["method_acceptable"] < weights["method_good"]
-        assert weights["method_poor"] < weights["method_acceptable"]
+        assert weights["method_excelente"] == 1.0
+        assert weights["method_bueno"] < weights["method_excelente"]
+        assert weights["method_aceptable"] < weights["method_bueno"]
+        assert weights["method_insuficiente"] < weights["method_aceptable"]
         
         summary = policy.get_metrics_summary()
         assert summary["total_metrics"] == 4
         assert summary["influenced_outputs"] == 3
     
     def test_no_fake_calibration_claims(self) -> None:
-        """Test that calibration influence is real, not fake."""
+        """Test that calibration influence is real, not fake (FARFAN)."""
         policy = create_default_policy()
         
-        high_score_weight = policy.compute_adjusted_weight(1.0, 0.9)
-        low_score_weight = policy.compute_adjusted_weight(1.0, 0.4)
+        high_score_weight = policy.compute_adjusted_weight(1.0, 0.9)  # EXCELENTE
+        low_score_weight = policy.compute_adjusted_weight(1.0, 0.40)  # INSUFICIENTE
         
         assert high_score_weight.adjusted_weight == 1.0
-        assert low_score_weight.adjusted_weight == 0.7
+        assert low_score_weight.adjusted_weight == 0.40
         
         weight_difference = high_score_weight.adjusted_weight - low_score_weight.adjusted_weight
-        assert abs(weight_difference - 0.3) < 0.001
+        assert abs(weight_difference - 0.60) < 0.001
         
         policy.record_influence(
             phase_id=2,
@@ -248,10 +250,11 @@ class TestCalibrationRegressionPrevention:
     """Regression tests to prevent silent dropping of calibration."""
     
     def test_calibration_weights_always_applied(self) -> None:
-        """Test that calibration weights are always applied when scores present."""
+        """Test that calibration weights are always applied when scores present (FARFAN)."""
         policy = create_default_policy()
         
-        calibration_scores = [0.9, 0.7, 0.5, 0.3]
+        # FARFAN thresholds: 0.85, 0.70, 0.55
+        calibration_scores = [0.9, 0.75, 0.60, 0.40]
         
         for score in calibration_scores:
             weight = policy.compute_adjusted_weight(1.0, score)
@@ -260,13 +263,13 @@ class TestCalibrationRegressionPrevention:
             assert weight.base_weight == 1.0
             assert weight.adjusted_weight > 0.0
             
-            if score >= 0.8:
+            if score >= 0.85:  # EXCELENTE
                 assert weight.adjusted_weight == 1.0
-            elif score >= 0.6:
+            elif score >= 0.70:  # BUENO
                 assert weight.adjusted_weight == 0.9
-            elif score >= 0.4:
-                assert weight.adjusted_weight == 0.7
-            else:
+            elif score >= 0.55:  # ACEPTABLE
+                assert weight.adjusted_weight == 0.75
+            else:  # INSUFICIENTE
                 assert weight.adjusted_weight == 0.4
     
     def test_calibration_influence_always_recorded(self) -> None:

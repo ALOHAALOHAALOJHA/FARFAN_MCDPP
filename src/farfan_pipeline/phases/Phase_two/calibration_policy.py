@@ -5,11 +5,17 @@ This module implements policies for how calibration scores influence:
 - Weighting in aggregation layers
 - Diagnostic output in manifests and reports
 
-Calibration scores are expected to be in [0, 1] where:
-- [0.8, 1.0]: Excellent - full weight
-- [0.6, 0.8): Good - minor downweight
-- [0.4, 0.6): Acceptable - significant downweight
-- [0.0, 0.4): Poor - major downweight or exclusion
+CANONICAL REFACTORING:
+- Uses MICRO_LEVELS from canonical_specs (FARFAN-sensitive thresholds)
+- No CalibrationOrchestrator - this is a wiring layer, not a router
+- Constants are injected, not runtime-loaded
+- Aligns with DEREK_BEACH methodology (0.85/0.70/0.55/0.00)
+
+Calibration scores are expected to be in [0, 1] using FARFAN thresholds:
+- [0.85, 1.0]: EXCELENTE - full weight
+- [0.70, 0.85): BUENO - minor downweight
+- [0.55, 0.70): ACEPTABLE - significant downweight
+- [0.0, 0.55): INSUFICIENTE - major downweight or exclusion
 """
 
 from __future__ import annotations
@@ -19,6 +25,9 @@ import statistics
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
+
+# CANONICAL IMPORT - No runtime JSON loading
+from farfan_pipeline.core.canonical_specs import MICRO_LEVELS
 
 logger = logging.getLogger(__name__)
 
@@ -72,23 +81,35 @@ class CalibrationMetrics:
 
 
 class CalibrationPolicy:
-    """Policy engine for calibration-based adjustments."""
+    """Policy engine for calibration-based adjustments.
     
+    FARFAN-SENSITIVE: Uses MICRO_LEVELS from canonical_specs aligned with
+    DEREK_BEACH methodology. Thresholds are deterministic and traceable.
+    """
+    
+    # CANONICAL QUALITY BANDS - Aligned with MICRO_LEVELS
+    # Source: farfan_pipeline.core.canonical_specs.MICRO_LEVELS
+    # Derived from: derek_beach.py MICRO_LEVELS (0.85/0.70/0.55/0.00)
     QUALITY_BANDS = {
-        "EXCELLENT": (0.8, 1.0),
-        "GOOD": (0.6, 0.8),
-        "ACCEPTABLE": (0.4, 0.6),
-        "POOR": (0.0, 0.4),
+        "EXCELENTE": (MICRO_LEVELS["EXCELENTE"], 1.0),          # [0.85, 1.0]
+        "BUENO": (MICRO_LEVELS["BUENO"], MICRO_LEVELS["EXCELENTE"]),  # [0.70, 0.85)
+        "ACEPTABLE": (MICRO_LEVELS["ACEPTABLE"], MICRO_LEVELS["BUENO"]),  # [0.55, 0.70)
+        "INSUFICIENTE": (MICRO_LEVELS["INSUFICIENTE"], MICRO_LEVELS["ACEPTABLE"]),  # [0.0, 0.55)
     }
     
+    # CANONICAL WEIGHT FACTORS - Aligned with quality bands
+    # Formula: Progressive downweighting from EXCELENTE baseline
     WEIGHT_ADJUSTMENT_FACTORS = {
-        "EXCELLENT": 1.0,      # No downweight
-        "GOOD": 0.9,           # 10% downweight
-        "ACCEPTABLE": 0.7,     # 30% downweight
-        "POOR": 0.4,           # 60% downweight
+        "EXCELENTE": 1.0,      # Full weight - no downgrade
+        "BUENO": 0.90,         # 10% downweight - minor reduction
+        "ACEPTABLE": 0.75,     # 25% downweight - significant reduction
+        "INSUFICIENTE": 0.40,  # 60% downweight - major reduction
     }
     
-    MIN_EXECUTION_THRESHOLD = 0.3
+    # CANONICAL EXECUTION THRESHOLD
+    # Derived: Slightly below ACEPTABLE to allow marginal methods
+    # Formula: MICRO_LEVELS["ACEPTABLE"] - safety_margin
+    MIN_EXECUTION_THRESHOLD = 0.50  # Below ACEPTABLE (0.55) with 0.05 margin
     
     def __init__(
         self,
@@ -96,17 +117,30 @@ class CalibrationPolicy:
         custom_thresholds: dict[str, tuple[float, float]] | None = None,
         custom_factors: dict[str, float] | None = None,
     ) -> None:
-        """Initialize calibration policy.
+        """Initialize calibration policy with FARFAN-sensitive defaults.
+        
+        CANONICAL: Uses MICRO_LEVELS by default. Custom overrides are permitted
+        for method-specific calibration (e.g., CDAFFramework logit transformation).
         
         Args:
             strict_mode: If True, reject methods below MIN_EXECUTION_THRESHOLD
-            custom_thresholds: Override default quality band thresholds
-            custom_factors: Override default weight adjustment factors
+            custom_thresholds: Override MICRO_LEVELS-based bands (for method-specific logic)
+            custom_factors: Override weight adjustment factors (for method-specific logic)
         """
         self.strict_mode = strict_mode
+        # Use canonical thresholds unless method-specific override provided
         self.quality_bands = custom_thresholds or self.QUALITY_BANDS
         self.adjustment_factors = custom_factors or self.WEIGHT_ADJUSTMENT_FACTORS
         self._metrics_history: list[CalibrationMetrics] = []
+        
+        # Quality gate: Validate monotonicity of custom thresholds
+        if custom_thresholds:
+            band_values = list(custom_thresholds.values())
+            for i in range(len(band_values) - 1):
+                if band_values[i][1] <= band_values[i + 1][0]:
+                    raise ValueError(
+                        f"Non-monotonic custom thresholds: {custom_thresholds}"
+                    )
     
     def get_quality_band(self, calibration_score: float) -> str:
         """Determine quality band for a calibration score.
@@ -362,13 +396,17 @@ class CalibrationPolicy:
 
 
 def create_default_policy(strict_mode: bool = False) -> CalibrationPolicy:
-    """Factory function for default calibration policy.
+    """Factory function for FARFAN-sensitive calibration policy.
+    
+    CANONICAL: Returns policy using MICRO_LEVELS from canonical_specs.
+    No CalibrationOrchestrator - this is a wiring layer for injecting
+    calibration constants, not a centralized router.
     
     Args:
         strict_mode: Whether to enforce strict calibration thresholds
         
     Returns:
-        Configured CalibrationPolicy instance
+        CalibrationPolicy configured with FARFAN MICRO_LEVELS
     """
     return CalibrationPolicy(strict_mode=strict_mode)
 

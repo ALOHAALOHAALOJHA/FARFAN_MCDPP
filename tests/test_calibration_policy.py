@@ -12,27 +12,28 @@ class TestCalibrationPolicy:
     """Test calibration policy decisions."""
     
     def test_quality_band_classification(self) -> None:
-        """Test quality band classification for different scores."""
+        """Test quality band classification using FARFAN MICRO_LEVELS."""
         policy = create_default_policy()
         
-        assert policy.get_quality_band(0.95) == "EXCELLENT"
-        assert policy.get_quality_band(0.80) == "EXCELLENT"
-        assert policy.get_quality_band(0.75) == "GOOD"
-        assert policy.get_quality_band(0.60) == "GOOD"
-        assert policy.get_quality_band(0.50) == "ACCEPTABLE"
-        assert policy.get_quality_band(0.40) == "ACCEPTABLE"
-        assert policy.get_quality_band(0.30) == "POOR"
-        assert policy.get_quality_band(0.10) == "POOR"
+        # FARFAN-canonical bands: EXCELENTE (0.85+), BUENO (0.70-0.85), ACEPTABLE (0.55-0.70), INSUFICIENTE (<0.55)
+        assert policy.get_quality_band(0.95) == "EXCELENTE"
+        assert policy.get_quality_band(0.85) == "EXCELENTE"
+        assert policy.get_quality_band(0.80) == "BUENO"
+        assert policy.get_quality_band(0.70) == "BUENO"
+        assert policy.get_quality_band(0.65) == "ACEPTABLE"
+        assert policy.get_quality_band(0.55) == "ACEPTABLE"
+        assert policy.get_quality_band(0.50) == "INSUFICIENTE"
+        assert policy.get_quality_band(0.30) == "INSUFICIENTE"
     
     def test_method_execution_decision_strict_mode(self) -> None:
         """Test method execution decisions in strict mode."""
         policy = CalibrationPolicy(strict_mode=True)
         
-        should_execute, reason = policy.should_execute_method("method_1", 0.8)
+        should_execute, reason = policy.should_execute_method("method_1", 0.85)
         assert should_execute is True
-        assert "EXCELLENT" in reason
+        assert "EXCELENTE" in reason
         
-        should_execute, reason = policy.should_execute_method("method_2", 0.25)
+        should_execute, reason = policy.should_execute_method("method_2", 0.45)
         assert should_execute is False
         assert "below threshold" in reason
         
@@ -44,12 +45,12 @@ class TestCalibrationPolicy:
         """Test method execution decisions in permissive mode."""
         policy = CalibrationPolicy(strict_mode=False)
         
-        should_execute, reason = policy.should_execute_method("method_1", 0.25)
+        should_execute, reason = policy.should_execute_method("method_1", 0.45)
         assert should_execute is True
         assert "non-strict" in reason
     
     def test_weight_adjustment_excellent(self) -> None:
-        """Test weight adjustment for excellent calibration."""
+        """Test weight adjustment for EXCELENTE calibration (FARFAN)."""
         policy = create_default_policy()
         
         result = policy.compute_adjusted_weight(
@@ -61,48 +62,48 @@ class TestCalibrationPolicy:
         assert isinstance(result, CalibrationWeight)
         assert result.base_weight == 1.0
         assert result.calibration_score == 0.9
-        assert result.quality_band == "EXCELLENT"
+        assert result.quality_band == "EXCELENTE"
         assert result.adjustment_factor == 1.0
         assert result.adjusted_weight == 1.0
     
     def test_weight_adjustment_good(self) -> None:
-        """Test weight adjustment for good calibration."""
+        """Test weight adjustment for BUENO calibration (FARFAN)."""
         policy = create_default_policy()
         
         result = policy.compute_adjusted_weight(
             base_weight=1.0,
-            calibration_score=0.7,
+            calibration_score=0.75,
         )
         
-        assert result.quality_band == "GOOD"
+        assert result.quality_band == "BUENO"
         assert result.adjustment_factor == 0.9
         assert result.adjusted_weight == 0.9
     
     def test_weight_adjustment_acceptable(self) -> None:
-        """Test weight adjustment for acceptable calibration."""
+        """Test weight adjustment for ACEPTABLE calibration (FARFAN)."""
         policy = create_default_policy()
         
         result = policy.compute_adjusted_weight(
             base_weight=1.0,
-            calibration_score=0.5,
+            calibration_score=0.60,
         )
         
-        assert result.quality_band == "ACCEPTABLE"
-        assert result.adjustment_factor == 0.7
-        assert result.adjusted_weight == 0.7
+        assert result.quality_band == "ACEPTABLE"
+        assert result.adjustment_factor == 0.75
+        assert result.adjusted_weight == 0.75
     
     def test_weight_adjustment_poor(self) -> None:
-        """Test weight adjustment for poor calibration."""
+        """Test weight adjustment for INSUFICIENTE calibration (FARFAN)."""
         policy = create_default_policy()
         
         result = policy.compute_adjusted_weight(
             base_weight=1.0,
-            calibration_score=0.3,
+            calibration_score=0.40,
         )
         
-        assert result.quality_band == "POOR"
-        assert result.adjustment_factor == 0.4
-        assert result.adjusted_weight == 0.4
+        assert result.quality_band == "INSUFICIENTE"
+        assert result.adjustment_factor == 0.40
+        assert result.adjusted_weight == 0.40
     
     def test_weight_adjustment_no_calibration(self) -> None:
         """Test weight adjustment when calibration data unavailable."""
@@ -245,33 +246,35 @@ class TestCalibrationPolicy:
         assert "by_quality_band" in summary
     
     def test_custom_thresholds(self) -> None:
-        """Test custom quality band thresholds."""
+        """Test custom quality band thresholds (for method-specific calibration)."""
+        # Example: Method-specific logit calibration might need different bands
         custom_bands = {
-            "EXCELLENT": (0.9, 1.0),
-            "GOOD": (0.7, 0.9),
-            "ACCEPTABLE": (0.5, 0.7),
-            "POOR": (0.0, 0.5),
+            "HIGH": (0.9, 1.0),
+            "MEDIUM": (0.7, 0.9),
+            "LOW": (0.5, 0.7),
+            "VERY_LOW": (0.0, 0.5),
         }
         
         policy = CalibrationPolicy(custom_thresholds=custom_bands)
         
-        assert policy.get_quality_band(0.95) == "EXCELLENT"
-        assert policy.get_quality_band(0.85) == "GOOD"
-        assert policy.get_quality_band(0.6) == "ACCEPTABLE"
-        assert policy.get_quality_band(0.3) == "POOR"
+        assert policy.get_quality_band(0.95) == "HIGH"
+        assert policy.get_quality_band(0.85) == "MEDIUM"
+        assert policy.get_quality_band(0.6) == "LOW"
+        assert policy.get_quality_band(0.3) == "VERY_LOW"
     
     def test_custom_adjustment_factors(self) -> None:
-        """Test custom weight adjustment factors."""
+        """Test custom weight adjustment factors (for method-specific calibration)."""
+        # Example: Method-specific factors for CDAFFramework logit calibration
         custom_factors = {
-            "EXCELLENT": 1.0,
-            "GOOD": 0.8,
-            "ACCEPTABLE": 0.5,
-            "POOR": 0.2,
+            "EXCELENTE": 1.0,
+            "BUENO": 0.8,
+            "ACEPTABLE": 0.5,
+            "INSUFICIENTE": 0.2,
         }
         
         policy = CalibrationPolicy(custom_factors=custom_factors)
         
-        result = policy.compute_adjusted_weight(1.0, 0.7)
+        result = policy.compute_adjusted_weight(1.0, 0.75)  # BUENO range
         assert result.adjustment_factor == 0.8
         assert result.adjusted_weight == 0.8
     
@@ -325,7 +328,7 @@ class TestCalibrationPolicyIntegration:
         assert summary["influenced_outputs"] == 1
     
     def test_progressive_degradation(self) -> None:
-        """Test progressive calibration degradation detection."""
+        """Test progressive calibration degradation detection (FARFAN)."""
         policy = create_default_policy()
         
         for i in range(100):
@@ -342,4 +345,5 @@ class TestCalibrationPolicyIntegration:
         
         assert drift["mean_score"] < 0.7
         summary = policy.get_metrics_summary()
-        assert "POOR" in summary["by_quality_band"] or "ACCEPTABLE" in summary["by_quality_band"]
+        # FARFAN bands: Should see INSUFICIENTE or ACEPTABLE in degraded scores
+        assert "INSUFICIENTE" in summary["by_quality_band"] or "ACEPTABLE" in summary["by_quality_band"]
