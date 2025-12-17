@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CQVR Contract Evaluation Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .card .label {
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        select {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-produccion {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-parchear {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-reformular {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .detail-section {
+            margin: 20px 0;
+        }
+
+        .detail-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .detail-item strong {
+            display: block;
+            color: #666;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .detail-item span {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .issue-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .issue-list li {
+            padding: 10px;
+            margin: 5px 0;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+        }
+
+        .blocker-list li {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .controls,
+            button {
+                display: none;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .score-bar {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 CQVR Contract Evaluation Dashboard</h1>
+            <p>Comprehensive Quality, Validation, and Remediation Analysis for 300 Executor Contracts</p>
+        </header>
+
+        <div class="summary-cards" id="summaryCards">
+            <div class="loading">Loading evaluation data...</div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="searchInput">Search:</label>
+                <input type="text" id="searchInput" placeholder="Contract ID, Question ID..." style="width: 200px;">
+            </div>
+            <div class="control-group">
+                <label for="decisionFilter">Decision:</label>
+                <select id="decisionFilter">
+                    <option value="all">All</option>
+                    <option value="PRODUCCION">Production Ready</option>
+                    <option value="PARCHEAR">Patchable</option>
+                    <option value="REFORMULAR">Needs Reformulation</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="scoreFilter">Min Score:</label>
+                <select id="scoreFilter">
+                    <option value="0">All</option>
+                    <option value="80">≥ 80 (Excellent)</option>
+                    <option value="70">≥ 70 (Good)</option>
+                    <option value="60">≥ 60 (Fair)</option>
+                    <option value="50">≥ 50 (Poor)</option>
+                </select>
+            </div>
+            <button onclick="exportToCSV()">📥 Export CSV</button>
+            <button onclick="exportToJSON()">📥 Export JSON</button>
+            <button onclick="window.print()">🖨️ Print</button>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h3 style="margin-bottom: 15px;">Score Distribution</h3>
+                <div id="scoreDistribution"></div>
+            </div>
+            <div class="chart-container">
+                <h3 style="margin-bottom: 15px;">Decision Distribution</h3>
+                <div id="decisionPieChart"></div>
+            </div>
+            <div class="chart-container">
+                <h3 style="margin-bottom: 15px;">Average Scores by Tier</h3>
+                <div id="tierComparison"></div>
+            </div>
+            <div class="chart-container">
+                <h3 style="margin-bottom: 15px;">Quality Trend by Question</h3>
+                <div id="timeSeriesChart"></div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h2 style="margin-bottom: 20px;">Contract Evaluation Results</h2>
+            <table id="contractsTable">
+                <thead>
+                    <tr>
+                        <th>Contract ID</th>
+                        <th>Question ID</th>
+                        <th>Policy Area</th>
+                        <th>Total Score</th>
+                        <th>Tier 1</th>
+                        <th>Tier 2</th>
+                        <th>Tier 3</th>
+                        <th>Decision</th>
+                        <th>Issues</th>
+                    </tr>
+                </thead>
+                <tbody id="contractsTableBody">
+                    <tr><td colspan="9" style="text-align: center;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="detailModalTitle">Contract evaluation details</h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let allContracts = [];
+        let filteredContracts = [];
+
+        async function loadData() {
+            try {
+                const response = await fetch('cqvr_evaluation_results.json');
+                allContracts = await response.json();
+                filteredContracts = [...allContracts];
+                renderDashboard();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('summaryCards').innerHTML = '<div class="loading" style="color: red;">Error loading data. Make sure cqvr_evaluation_results.json is in the same directory.</div>';
+            }
+        }
+
+        function renderDashboard() {
+            renderSummaryCards();
+            renderCharts();
+            renderTable();
+        }
+
+        function renderSummaryCards() {
+            const totalContracts = filteredContracts.length;
+            const productionReady = filteredContracts.filter(c => c.is_production_ready).length;
+            const patchable = filteredContracts.filter(c => c.decision === 'PARCHEAR').length;
+            const reformulation = filteredContracts.filter(c => c.decision === 'REFORMULAR').length;
+
+            const avgTotal = (filteredContracts.reduce((sum, c) => sum + c.total_score, 0) / totalContracts).toFixed(2);
+            const avgTier1 = (filteredContracts.reduce((sum, c) => sum + c.tier1_score, 0) / totalContracts).toFixed(2);
+            const avgTier2 = (filteredContracts.reduce((sum, c) => sum + c.tier2_score, 0) / totalContracts).toFixed(2);
+            const avgTier3 = (filteredContracts.reduce((sum, c) => sum + c.tier3_score, 0) / totalContracts).toFixed(2);
+
+            const html = `
+                <div class="card">
+                    <h3>Total Contracts</h3>
+                    <div class="value">${totalContracts}</div>
+                    <div class="label">Evaluated</div>
+                </div>
+                <div class="card">
+                    <h3>Production Ready</h3>
+                    <div class="value" style="color: #28a745;">${productionReady}</div>
+                    <div class="label">${((productionReady/totalContracts)*100).toFixed(1)}% Ready</div>
+                </div>
+                <div class="card">
+                    <h3>Patchable</h3>
+                    <div class="value" style="color: #ffc107;">${patchable}</div>
+                    <div class="label">${((patchable/totalContracts)*100).toFixed(1)}% Needs Patches</div>
+                </div>
+                <div class="card">
+                    <h3>Needs Reform</h3>
+                    <div class="value" style="color: #dc3545;">${reformulation}</div>
+                    <div class="label">${((reformulation/totalContracts)*100).toFixed(1)}% Critical</div>
+                </div>
+                <div class="card">
+                    <h3>Average Total Score</h3>
+                    <div class="value">${avgTotal}</div>
+                    <div class="label">out of 100</div>
+                </div>
+                <div class="card">
+                    <h3>Average Tier 1</h3>
+                    <div class="value">${avgTier1}</div>
+                    <div class="label">out of 55</div>
+                </div>
+                <div class="card">
+                    <h3>Average Tier 2</h3>
+                    <div class="value">${avgTier2}</div>
+                    <div class="label">out of 30</div>
+                </div>
+                <div class="card">
+                    <h3>Average Tier 3</h3>
+                    <div class="value">${avgTier3}</div>
+                    <div class="label">out of 15</div>
+                </div>
+            `;
+            document.getElementById('summaryCards').innerHTML = html;
+        }
+
+        function renderCharts() {
+            const scores = filteredContracts.map(c => c.total_score);
+            const decisions = filteredContracts.map(c => c.decision);
+            
+            const bins = [0, 20, 40, 60, 80, 100];
+            const histogram = bins.slice(0, -1).map((min, i) => {
+                const max = bins[i + 1];
+                return scores.filter(s => s >= min && s < max).length;
+            });
+
+            const maxCount = Math.max(...histogram);
+            const histogramHTML = histogram.map((count, i) => {
+                const height = maxCount > 0 ? (count / maxCount) * 200 : 0;
+                const label = `${bins[i]}-${bins[i+1]}`;
+                return `
+                    <div style="display: inline-block; width: 18%; margin: 0 1%; text-align: center;">
+                        <div style="height: 220px; display: flex; flex-direction: column; justify-content: flex-end;">
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                        height: ${height}px; border-radius: 4px 4px 0 0; 
+                                        transition: all 0.3s; position: relative; cursor: pointer;"
+                                 onmouseover="this.style.opacity='0.8'" 
+                                 onmouseout="this.style.opacity='1'">
+                                <span style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); 
+                                             font-weight: bold; color: #667eea;">${count}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.9em; font-weight: 600;">${label}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('scoreDistribution').innerHTML = `
+                <div style="padding: 20px; text-align: center;">${histogramHTML}</div>
+                <div style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #666;">Score Range</div>
+            `;
+
+            const decisionCounts = decisions.reduce((acc, d) => {
+                if (d === 'PRODUCCION') {
+                    acc.PRODUCCION += 1;
+                } else if (d === 'PARCHEAR') {
+                    acc.PARCHEAR += 1;
+                } else if (d === 'REFORMULAR') {
+                    acc.REFORMULAR += 1;
+                }
+                return acc;
+            }, { PRODUCCION: 0, PARCHEAR: 0, REFORMULAR: 0 });
+
+            const total = Object.values(decisionCounts).reduce((a, b) => a + b, 0);
+            const colors = ['#28a745', '#ffc107', '#dc3545'];
+            const labels = ['Production Ready', 'Patchable', 'Needs Reformulation'];
+            
+            let currentAngle = 0;
+            const pieSlices = Object.values(decisionCounts).map((count, i) => {
+                const percentage = (count / total) * 100;
+                const angle = (count / total) * 360;
+                const startAngle = currentAngle;
+                currentAngle += angle;
+                
+                const x1 = 100 + 80 * Math.cos((startAngle - 90) * Math.PI / 180);
+                const y1 = 100 + 80 * Math.sin((startAngle - 90) * Math.PI / 180);
+                const x2 = 100 + 80 * Math.cos((currentAngle - 90) * Math.PI / 180);
+                const y2 = 100 + 80 * Math.sin((currentAngle - 90) * Math.PI / 180);
+                const largeArc = angle > 180 ? 1 : 0;
+                
+                return `
+                    <path d="M 100 100 L ${x1} ${y1} A 80 80 0 ${largeArc} 1 ${x2} ${y2} Z"
+                          fill="${colors[i]}" stroke="white" stroke-width="2" 
+                          style="cursor: pointer; transition: opacity 0.2s;"
+                          onmouseover="this.style.opacity='0.8'" 
+                          onmouseout="this.style.opacity='1'">
+                        <title>${labels[i]}: ${count} (${percentage.toFixed(1)}%)</title>
+                    </path>
+                `;
+            }).join('');
+
+            const legend = labels.map((label, i) => `
+                <div style="display: flex; align-items: center; margin: 5px 0;">
+                    <div style="width: 20px; height: 20px; background: ${colors[i]}; 
+                               border-radius: 3px; margin-right: 10px;"></div>
+                    <span style="font-size: 0.9em;">${label}: <strong>${Object.values(decisionCounts)[i]}</strong> 
+                          (${((Object.values(decisionCounts)[i] / total) * 100).toFixed(1)}%)</span>
+                </div>
+            `).join('');
+
+            document.getElementById('decisionPieChart').innerHTML = `
+                <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
+                    <svg width="200" height="200" viewBox="0 0 200 200">
+                        ${pieSlices}
+                    </svg>
+                    <div>${legend}</div>
+                </div>
+            `;
+
+            let avgTier1 = 0;
+            let avgTier2 = 0;
+            let avgTier3 = 0;
+
+            if (filteredContracts.length > 0) {
+                avgTier1 = filteredContracts.reduce((sum, c) => sum + c.tier1_score, 0) / filteredContracts.length;
+                avgTier2 = filteredContracts.reduce((sum, c) => sum + c.tier2_score, 0) / filteredContracts.length;
+                avgTier3 = filteredContracts.reduce((sum, c) => sum + c.tier3_score, 0) / filteredContracts.length;
+            }
+            const tierData = [
+                { label: 'Tier 1 (Critical)', value: avgTier1, max: 55, color: '#667eea' },
+                { label: 'Tier 2 (Functional)', value: avgTier2, max: 30, color: '#764ba2' },
+                { label: 'Tier 3 (Quality)', value: avgTier3, max: 15, color: '#9b51e0' }
+            ];
+
+            const tierBars = tierData.map(tier => {
+                const percentage = (tier.value / tier.max) * 100;
+                return `
+                    <div style="margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span style="font-weight: 600; font-size: 0.9em;">${tier.label}</span>
+                            <span style="font-weight: bold; color: ${tier.color};">${tier.value.toFixed(1)}/${tier.max}</span>
+                        </div>
+                        <div style="background: #e0e0e0; height: 30px; border-radius: 15px; overflow: hidden; 
+                                   position: relative;">
+                            <div style="background: linear-gradient(90deg, ${tier.color}, ${tier.color}dd); 
+                                       height: 100%; width: ${percentage}%; 
+                                       transition: width 0.5s ease; position: relative;">
+                                <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                                             color: white; font-weight: bold; font-size: 0.85em;">${percentage.toFixed(1)}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('tierComparison').innerHTML = `
+                <div style="padding: 20px;">${tierBars}</div>
+            `;
+
+            const sortedByQuestion = [...filteredContracts].sort((a, b) => {
+                const qA = parseInt(a.question_id.replace('Q', ''));
+                const qB = parseInt(b.question_id.replace('Q', ''));
+                return qA - qB;
+            });
+
+            const uniqueQuestions = [...new Set(sortedByQuestion.map(c => c.question_id))];
+            const avgScoresByQuestion = uniqueQuestions.map(qid => {
+                const contracts = sortedByQuestion.filter(c => c.question_id === qid);
+                return contracts.reduce((sum, c) => sum + c.total_score, 0) / contracts.length;
+            });
+
+            // Guard against having fewer than 2 unique questions, which would break the line chart layout.
+            if (uniqueQuestions.length < 2) {
+                document.getElementById('timeSeriesChart').innerHTML = `
+                    <div style="padding: 20px; font-size: 0.9em; color: #4a5568;">
+                        Insufficient data to render the time series chart. At least two distinct questions are required.
+                    </div>
+                `;
+            } else {
+                const maxScore = 100;
+                const minScore = 0;
+                const points = avgScoresByQuestion.map((score, i) => {
+                    const x = (i / (uniqueQuestions.length - 1)) * 400;
+                    const y = 200 - ((score - minScore) / (maxScore - minScore)) * 180;
+                    return { x, y, score, label: uniqueQuestions[i] };
+                });
+
+                const pathData = points.map((p, i) => 
+                    `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`
+                ).join(' ');
+
+                const circles = points.filter((p, i) => i % 3 === 0).map(p => `
+                    <circle cx="${p.x}" cy="${p.y}" r="4" fill="#667eea" stroke="white" stroke-width="2" 
+                           style="cursor: pointer;">
+                        <title>${p.label}: ${p.score.toFixed(1)}</title>
+                    </circle>
+                `).join('');
+
+                document.getElementById('timeSeriesChart').innerHTML = `
+                <div style="padding: 20px;">
+                    <svg width="100%" height="250" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <line x1="0" y1="200" x2="400" y2="200" stroke="#e0e0e0" stroke-width="1"/>
+                        <line x1="0" y1="100" x2="400" y2="100" stroke="#f0f0f0" stroke-width="1" stroke-dasharray="5,5"/>
+                        <path d="${pathData}" fill="none" stroke="url(#lineGradient)" stroke-width="3" 
+                             style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"/>
+                        ${circles}
+                        <text x="0" y="220" font-size="12" fill="#666">${uniqueQuestions[0]}</text>
+                        <text x="380" y="220" font-size="12" fill="#666" text-anchor="end">${uniqueQuestions[uniqueQuestions.length-1]}</text>
+                        <text x="-10" y="205" font-size="12" fill="#666" text-anchor="end">0</text>
+                        <text x="-10" y="25" font-size="12" fill="#666" text-anchor="end">100</text>
+                    </svg>
+                    <div style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #666;">Question ID</div>
+                </div>
+            `;
+        }
+
+        function normalizeDecisionForStatusClass(decision) {
+            if (!decision) {
+                return '';
+            }
+            // Normalize to NFD form, strip combining diacritics, then lowercase for stable CSS class names
+            return decision
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('contractsTableBody');
+            const html = filteredContracts.map(contract => {
+                const statusClass = normalizeDecisionForStatusClass(contract.decision);
+                const totalIssues = contract.blockers_count + contract.warnings_count;
+                return `
+                    <tr onclick="showContractDetails('${contract.contract_id}')">
+                        <td>${contract.contract_id}</td>
+                        <td>${contract.question_id}</td>
+                        <td>${contract.policy_area_id}</td>
+                        <td>
+                            <strong>${contract.total_score.toFixed(1)}</strong>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${contract.total_score}%"></div>
+                            </div>
+                        </td>
+                        <td>${contract.tier1_score.toFixed(1)}/55</td>
+                        <td>${contract.tier2_score.toFixed(1)}/30</td>
+                        <td>${contract.tier3_score.toFixed(1)}/15</td>
+                        <td><span class="status-badge status-${statusClass}">${contract.decision}</span></td>
+                        <td>${totalIssues} issue${totalIssues !== 1 ? 's' : ''}</td>
+                    </tr>
+                `;
+            }).join('');
+            tbody.innerHTML = html;
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const decisionFilter = document.getElementById('decisionFilter').value;
+            const scoreFilter = parseInt(document.getElementById('scoreFilter').value);
+
+            filteredContracts = allContracts.filter(contract => {
+                const matchesSearch = !searchTerm || 
+                    contract.contract_id.toLowerCase().includes(searchTerm) ||
+                    contract.question_id.toLowerCase().includes(searchTerm) ||
+                    contract.policy_area_id.toLowerCase().includes(searchTerm);
+
+                const matchesDecision = decisionFilter === 'all' || 
+                    contract.decision === decisionFilter;
+
+                const matchesScore = contract.total_score >= scoreFilter;
+
+                return matchesSearch && matchesDecision && matchesScore;
+            });
+
+            renderDashboard();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('decisionFilter').addEventListener('change', applyFilters);
+        document.getElementById('scoreFilter').addEventListener('change', applyFilters);
+
+        function showContractDetails(contractId) {
+            const contract = allContracts.find(c => c.contract_id === contractId);
+            if (!contract) return;
+
+            const html = `
+                <h2>Contract Details: ${contract.contract_id}</h2>
+                
+                <div class="detail-section">
+                    <h3>Identity</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <strong>Contract ID</strong>
+                            <span>${contract.contract_id}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Question ID</strong>
+                            <span>${contract.question_id}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Policy Area</strong>
+                            <span>${contract.policy_area_id}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Dimension</strong>
+                            <span>${contract.dimension_id}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Base Slot</strong>
+                            <span>${contract.base_slot}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Decision</strong>
+                            <span class="status-badge status-${contract.decision.toLowerCase()}">${contract.decision}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Scores</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <strong>Total Score</strong>
+                            <span>${contract.total_score.toFixed(1)} / 100</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Tier 1 (Critical)</strong>
+                            <span>${contract.tier1_score.toFixed(1)} / 55 (${contract.tier1_percentage.toFixed(1)}%)</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Tier 2 (Functional)</strong>
+                            <span>${contract.tier2_score.toFixed(1)} / 30 (${contract.tier2_percentage.toFixed(1)}%)</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Tier 3 (Quality)</strong>
+                            <span>${contract.tier3_score.toFixed(1)} / 15 (${contract.tier3_percentage.toFixed(1)}%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Rationale</h3>
+                    <p style="background: #f8f9fa; padding: 15px; border-radius: 6px; line-height: 1.6;">${contract.rationale}</p>
+                </div>
+
+                ${contract.blockers.length > 0 ? `
+                <div class="detail-section">
+                    <h3>Blockers (${contract.blockers.length})</h3>
+                    <ul class="issue-list blocker-list">
+                        ${contract.blockers.map(b => `<li>${b}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${contract.warnings.length > 0 ? `
+                <div class="detail-section">
+                    <h3>Warnings (${contract.warnings.length})</h3>
+                    <ul class="issue-list">
+                        ${contract.warnings.map(w => `<li>${w}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${contract.recommendations.length > 0 ? `
+                <div class="detail-section">
+                    <h3>Recommendations (${contract.recommendations.length})</h3>
+                    ${contract.recommendations.map(r => `
+                        <div style="background: #e7f3ff; padding: 15px; margin: 10px 0; border-radius: 6px; border-left: 4px solid #007bff;">
+                            <strong style="color: #007bff;">${r.component} - ${r.priority} Priority</strong>
+                            <p style="margin: 5px 0;"><strong>Issue:</strong> ${r.issue}</p>
+                            <p style="margin: 5px 0;"><strong>Fix:</strong> ${r.fix}</p>
+                            <p style="margin: 5px 0;"><strong>Impact:</strong> ${r.impact}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+            `;
+
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('detailModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        function exportToCSV() {
+            const headers = ['Contract ID', 'Question ID', 'Policy Area', 'Dimension', 'Base Slot', 
+                           'Total Score', 'Tier 1', 'Tier 2', 'Tier 3', 'Decision', 
+                           'Production Ready', 'Blockers', 'Warnings'];
+            
+            const rows = filteredContracts.map(c => [
+                c.contract_id,
+                c.question_id,
+                c.policy_area_id,
+                c.dimension_id,
+                c.base_slot,
+                c.total_score,
+                c.tier1_score,
+                c.tier2_score,
+                c.tier3_score,
+                c.decision,
+                c.is_production_ready,
+                c.blockers_count,
+                c.warnings_count
+            ]);
+
+            const csv = [headers, ...rows]
+                .map(row => row.map(cell => `"${cell}"`).join(','))
+                .join('\n');
+
+            downloadFile('cqvr_evaluation_export.csv', csv, 'text/csv');
+        }
+
+        function exportToJSON() {
+            const json = JSON.stringify(filteredContracts, null, 2);
+            downloadFile('cqvr_evaluation_export.json', json, 'application/json');
+        }
+
+        function downloadFile(filename, content, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
