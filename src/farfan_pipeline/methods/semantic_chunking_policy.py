@@ -26,12 +26,10 @@ Scientific Foundation:
 """
 from __future__ import annotations
 
-import json
 import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
@@ -39,6 +37,9 @@ import torch
 from scipy import stats
 from scipy.spatial.distance import cosine
 from scipy.special import rel_entr
+
+# CANONICAL REFACTORING: Import from canonical_specs instead of runtime JSON loading
+from farfan_pipeline.core.canonical_specs import PDT_PATTERNS
 
 # Check dependency lockdown before importing transformers
 from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
@@ -117,77 +118,11 @@ class CausalDimension(Enum):
         return mapping.get(normalized)
 
 
-class UnitOfAnalysisLoader:
-    """Loads canonical patterns from unit_of_analysis_index.json."""
-
-    _payload: dict[str, Any] | None = None
-
-    @classmethod
-    def _index_path(cls) -> Path:
-        return (
-            Path(__file__).resolve().parents[2]
-            / "artifacts/plan1/canonical_ground_truth/unit_of_analysis_index.json"
-        )
-
-    @classmethod
-    def load(cls) -> dict[str, Any]:
-        if cls._payload is not None:
-            return cls._payload
-
-        path = cls._index_path()
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8"))
-        except FileNotFoundError:
-            payload = {}
-        except json.JSONDecodeError:
-            payload = {}
-
-        cls._payload = payload if isinstance(payload, dict) else {}
-        return cls._payload
-
-    @classmethod
-    def get_patterns(cls, pattern_type: str) -> list[str]:
-        payload = cls.load()
-        patterns = payload.get(pattern_type, [])
-        if isinstance(patterns, list) and all(isinstance(p, str) for p in patterns):
-            return list(patterns)
-        return []
-
-    @classmethod
-    def get_section_type_rules(cls) -> dict[str, list[str]]:
-        payload = cls.load()
-        rules = payload.get("section_type_rules", {})
-        if not isinstance(rules, dict):
-            return {}
-        typed: dict[str, list[str]] = {}
-        for key, value in rules.items():
-            if isinstance(key, str) and isinstance(value, list) and all(isinstance(p, str) for p in value):
-                typed[key] = list(value)
-        return typed
-
-    @classmethod
-    def get_table_columns(cls) -> dict[str, list[str]]:
-        payload = cls.load()
-        columns = payload.get("table_columns", {})
-        if not isinstance(columns, dict):
-            return {}
-        typed: dict[str, list[str]] = {}
-        for key, value in columns.items():
-            if isinstance(key, str) and isinstance(value, list) and all(isinstance(c, str) for c in value):
-                typed[key] = list(value)
-        return typed
-
-    @classmethod
-    def get_dimension_descriptions(cls) -> dict[str, str]:
-        payload = cls.load()
-        descriptions = payload.get("dimension_descriptions", {})
-        if not isinstance(descriptions, dict):
-            return {}
-        typed: dict[str, str] = {}
-        for key, value in descriptions.items():
-            if isinstance(key, str) and isinstance(value, str):
-                typed[key] = value
-        return typed
+# CANONICAL REFACTORING: Removed UnitOfAnalysisLoader class
+# ADR: No runtime JSON loading - patterns now imported from canonical_specs.py
+# Source: PDT_PATTERNS from canonical_specs (section/strategic/financial regex)
+# This eliminates runtime dependency on unit_of_analysis_index.json while preserving
+# all PDT/PDM-aware pattern matching for policy document structure detection.
 
 @dataclass(frozen=True, slots=True)
 class SemanticConfig:
