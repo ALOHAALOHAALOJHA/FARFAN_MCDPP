@@ -1,110 +1,94 @@
 {
   "identity": {
-    "base_slot": "D2-Q4",
-    "question_id": "Q009",
+    "base_slot": "D2-Q5",
+    "question_id": "Q010",
     "dimension_id": "DIM02",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "42bbee648fb19982fd1303c302a3736a36790342968d6c29ebab651935150cdd",
-    "created_at": "2025-11-28T03:49:29.807482+00:00",
+    "contract_hash": "dbc6fd5f7081c37453e79270006d807de63b39e0dc202d39a5a9c46ebe04d519",
+    "created_at": "2025-11-28T03:49:29.810814+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
-    "question_global": 9,
-    "updated_at": "2025-12-17T02:01:25.640372+00:00"
+    "question_global": 10,
+    "updated_at": "2025-12-16T04:42:57.357655+00:00"
   },
   "executor_binding": {
-    "executor_class": "D2_Q4_Executor",
+    "executor_class": "D2_Q5_Executor",
     "executor_module": "farfan_core.core.orchestrator.executors"
   },
   "method_binding": {
     "orchestration_mode": "multi_method_pipeline",
-    "method_count": 10,
+    "method_count": 8,
     "methods": [
       {
-        "class_name": "PDETMunicipalPlanAnalyzer",
-        "method_name": "_bayesian_risk_inference",
+        "class_name": "PolicyContradictionDetector",
+        "method_name": "_detect_logical_incompatibilities",
         "priority": 1,
-        "provides": "pdet_analysis.bayesian_risk_inference",
-        "role": "_bayesian_risk_inference_execution",
-        "description": "PDETMunicipalPlanAnalyzer._bayesian_risk_inference"
+        "provides": "contradiction_detection.detect_logical_incompatibilities",
+        "role": "_detect_logical_incompatibilities_detection",
+        "description": "PolicyContradictionDetector._detect_logical_incompatibilities"
       },
       {
-        "class_name": "PDETMunicipalPlanAnalyzer",
-        "method_name": "sensitivity_analysis",
+        "class_name": "PolicyContradictionDetector",
+        "method_name": "_calculate_coherence_metrics",
         "priority": 2,
-        "provides": "pdet_analysis.sensitivity_analysis",
-        "role": "sensitivity_analysis_execution",
-        "description": "PDETMunicipalPlanAnalyzer.sensitivity_analysis"
+        "provides": "contradiction_detection.calculate_coherence_metrics",
+        "role": "_calculate_coherence_metrics_calculation",
+        "description": "PolicyContradictionDetector._calculate_coherence_metrics"
       },
       {
-        "class_name": "PDETMunicipalPlanAnalyzer",
-        "method_name": "_interpret_risk",
+        "class_name": "PolicyContradictionDetector",
+        "method_name": "_calculate_objective_alignment",
         "priority": 3,
-        "provides": "pdet_analysis.interpret_risk",
-        "role": "_interpret_risk_execution",
-        "description": "PDETMunicipalPlanAnalyzer._interpret_risk"
+        "provides": "contradiction_detection.calculate_objective_alignment",
+        "role": "_calculate_objective_alignment_calculation",
+        "description": "PolicyContradictionDetector._calculate_objective_alignment"
       },
       {
-        "class_name": "PDETMunicipalPlanAnalyzer",
-        "method_name": "_compute_robustness_value",
+        "class_name": "PolicyContradictionDetector",
+        "method_name": "_calculate_graph_fragmentation",
         "priority": 4,
-        "provides": "pdet_analysis.compute_robustness_value",
-        "role": "_compute_robustness_value_execution",
-        "description": "PDETMunicipalPlanAnalyzer._compute_robustness_value"
-      },
-      {
-        "class_name": "PDETMunicipalPlanAnalyzer",
-        "method_name": "_compute_e_value",
-        "priority": 5,
-        "provides": "pdet_analysis.compute_e_value",
-        "role": "_compute_e_value_execution",
-        "description": "PDETMunicipalPlanAnalyzer._compute_e_value"
-      },
-      {
-        "class_name": "PDETMunicipalPlanAnalyzer",
-        "method_name": "_interpret_sensitivity",
-        "priority": 6,
-        "provides": "pdet_analysis.interpret_sensitivity",
-        "role": "_interpret_sensitivity_execution",
-        "description": "PDETMunicipalPlanAnalyzer._interpret_sensitivity"
+        "provides": "contradiction_detection.calculate_graph_fragmentation",
+        "role": "_calculate_graph_fragmentation_calculation",
+        "description": "PolicyContradictionDetector._calculate_graph_fragmentation"
       },
       {
         "class_name": "OperationalizationAuditor",
-        "method_name": "_audit_systemic_risk",
+        "method_name": "audit_sequence_logic",
+        "priority": 5,
+        "provides": "operationalizationauditor.audit_sequence_logic",
+        "role": "audit_sequence_logic_execution",
+        "description": "OperationalizationAuditor.audit_sequence_logic"
+      },
+      {
+        "class_name": "BayesianMechanismInference",
+        "method_name": "_calculate_coherence_factor",
+        "priority": 6,
+        "provides": "bayesianmechanisminference.calculate_coherence_factor",
+        "role": "_calculate_coherence_factor_calculation",
+        "description": "BayesianMechanismInference._calculate_coherence_factor"
+      },
+      {
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_score_causal_coherence",
         "priority": 7,
-        "provides": "operationalizationauditor.audit_systemic_risk",
-        "role": "_audit_systemic_risk_execution",
-        "description": "OperationalizationAuditor._audit_systemic_risk"
-      },
-      {
-        "class_name": "BayesianCounterfactualAuditor",
-        "method_name": "aggregate_risk_and_prioritize",
-        "priority": 8,
-        "provides": "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
-        "role": "aggregate_risk_and_prioritize_execution",
-        "description": "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize"
-      },
-      {
-        "class_name": "BayesianCounterfactualAuditor",
-        "method_name": "refutation_and_sanity_checks",
-        "priority": 9,
-        "provides": "bayesiancounterfactualauditor.refutation_and_sanity_checks",
-        "role": "refutation_and_sanity_checks_execution",
-        "description": "BayesianCounterfactualAuditor.refutation_and_sanity_checks"
+        "provides": "pdet_analysis.score_causal_coherence",
+        "role": "_score_causal_coherence_execution",
+        "description": "PDETMunicipalPlanAnalyzer._score_causal_coherence"
       },
       {
         "class_name": "AdaptivePriorCalculator",
-        "method_name": "sensitivity_analysis",
-        "priority": 10,
-        "provides": "adaptivepriorcalculator.sensitivity_analysis",
-        "role": "sensitivity_analysis_execution",
-        "description": "AdaptivePriorCalculator.sensitivity_analysis"
+        "method_name": "calculate_likelihood_adaptativo",
+        "priority": 8,
+        "provides": "adaptivepriorcalculator.calculate_likelihood_adaptativo",
+        "role": "calculate_likelihood_adaptativo_calculation",
+        "description": "AdaptivePriorCalculator.calculate_likelihood_adaptativo"
       }
     ],
-    "note": "All 10 methods extracted from D2_Q4_Executor in executors.py"
+    "note": "All 8 methods extracted from D2_Q5_Executor in executors.py"
   },
   "question_context": {
-    "question_text": "¿El plan identifica posibles riesgos, 'obstáculos' o 'barreras' en la implementación de las actividades de género (ej. revictimización, baja participación) y propone 'medidas de mitigación'?",
+    "question_text": "¿El conjunto de actividades de género demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad', 'sinergia', o una 'secuencia' lógica entre ellas.",
     "question_type": "micro",
     "scoring_modality": "TYPE_A",
     "modality": "count_and_scale",
@@ -114,24 +98,9 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q009-000",
+        "id": "PAT-Q010-000",
         "match_type": "REGEX",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "pattern_ref": "PAT-0095",
-        "pattern": "riesgos:|posibles dificultades:|barreras a la implementación",
-        "policy_area": "PA01"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q009-001",
-        "match_type": "REGEX",
-        "pattern": "obstáculos|desafíos",
+        "pattern": "de manera articulada|en complemento a|integralmente",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -143,37 +112,9 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q009-002",
-        "match_type": "REGEX",
-        "pattern": "baja participación de las mujeres|poca asistencia",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA01"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q009-003",
-        "match_type": "REGEX",
-        "pattern": "revictimización|riesgos de seguridad para las víctimas",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA01"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q009-004",
+        "id": "PAT-Q010-001",
         "match_type": "LITERAL",
-        "pattern": "resistencia cultural|reacciones machistas",
+        "pattern": "sinergia entre|se refuerza con",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -185,9 +126,9 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q009-005",
+        "id": "PAT-Q010-002",
         "match_type": "REGEX",
-        "pattern": "sostenibilidad de los emprendimientos",
+        "pattern": "la actividad X es prerrequisito para la actividad Y",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -199,9 +140,9 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q009-006",
+        "id": "PAT-Q010-003",
         "match_type": "REGEX",
-        "pattern": "falta de articulación interinstitucional",
+        "pattern": "en una primera fase se realizará... y luego...",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -213,36 +154,37 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q009-007",
-        "match_type": "REGEX",
+        "id": "PAT-Q010-004",
+        "match_type": "LITERAL",
+        "pattern": "la estrategia combina prevención, atención y acceso a la justicia",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
         "semantic_expansion": null,
-        "disambiguation_rules": {
-          "PA03": [
-            "desastre",
-            "emergencia natural",
-            "clima"
-          ],
-          "PA01": [
-            "protección",
-            "violencia",
-            "víctima"
-          ]
-        },
         "context_scope": "PARAGRAPH",
-        "pattern_ref": "PAT-0082",
-        "pattern": "medidas de mitigación|plan de contingencia|para mitigar",
         "policy_area": "PA01"
       },
       {
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q009-008",
+        "id": "PAT-Q010-005",
         "match_type": "REGEX",
-        "pattern": "se realizará seguimiento|estrategia de monitoreo de riesgos",
+        "pattern": "el programa de autonomía económica se complementa con el de prevención de VBG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA01"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-006",
+        "match_type": "REGEX",
+        "pattern": "evitando duplicidad de esfuerzos|no redundancia",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -254,12 +196,12 @@
     "expected_elements": [
       {
         "required": true,
-        "type": "mitigacion_propuesta",
+        "type": "complementariedad_explicita",
         "minimum": 1
       },
       {
         "required": true,
-        "type": "riesgos_identificados",
+        "type": "secuenciacion_logica",
         "minimum": 1
       }
     ],
@@ -269,7 +211,7 @@
         "missing_required_element",
         "incomplete_text"
       ],
-      "emit_code": "ABORT-Q009-REQ"
+      "emit_code": "ABORT-Q010-REQ"
     }
   },
   "signal_requirements": {
@@ -288,7 +230,7 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.5,
+    "minimum_signal_threshold": 0.0,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -375,17 +317,17 @@
         "base_slot": {
           "type": "string",
           "description": "Debe coincidir con identity.base_slot.",
-          "const": "D2-Q4"
+          "const": "D2-Q5"
         },
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q009"
+          "const": "Q010"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 9
+          "const": 10
         },
         "policy_area_id": {
           "type": [
@@ -470,26 +412,26 @@
       "methodological_depth": {
         "methods": [
           {
-            "method_name": "_bayesian_risk_inference",
-            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_detect_logical_incompatibilities",
+            "class_name": "PolicyContradictionDetector",
             "priority": 1,
-            "role": "_bayesian_risk_inference_inference",
+            "role": "_detect_logical_incompatibilities_detection",
             "epistemological_foundation": {
-              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._bayesian_risk_inference",
+              "paradigm": "PolicyContradictionDetector analytical paradigm",
+              "ontological_basis": "Analysis via PolicyContradictionDetector._detect_logical_incompatibilities",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _bayesian_risk_inference implements structured analysis for D2-Q4"
+                "Method _detect_logical_incompatibilities implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "PDETMunicipalPlanAnalyzer._bayesian_risk_inference algorithm",
+              "algorithm": "PolicyContradictionDetector._detect_logical_incompatibilities algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _bayesian_risk_inference"
+                  "description": "Execute _detect_logical_incompatibilities"
                 },
                 {
                   "step": 2,
@@ -510,7 +452,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _bayesian_risk_inference"
+                "result": "Structured output from _detect_logical_incompatibilities"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -518,31 +460,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _bayesian_risk_inference results for downstream analysis"
+                "Use _detect_logical_incompatibilities results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "sensitivity_analysis",
-            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_calculate_coherence_metrics",
+            "class_name": "PolicyContradictionDetector",
             "priority": 2,
-            "role": "sensitivity_analysis",
+            "role": "_calculate_coherence_metrics_calculation",
             "epistemological_foundation": {
-              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer.sensitivity_analysis",
+              "paradigm": "PolicyContradictionDetector analytical paradigm",
+              "ontological_basis": "Analysis via PolicyContradictionDetector._calculate_coherence_metrics",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method sensitivity_analysis implements structured analysis for D2-Q4"
+                "Method _calculate_coherence_metrics implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "PDETMunicipalPlanAnalyzer.sensitivity_analysis algorithm",
+              "algorithm": "PolicyContradictionDetector._calculate_coherence_metrics algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute sensitivity_analysis"
+                  "description": "Execute _calculate_coherence_metrics"
                 },
                 {
                   "step": 2,
@@ -563,7 +505,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from sensitivity_analysis"
+                "result": "Structured output from _calculate_coherence_metrics"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -571,31 +513,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use sensitivity_analysis results for downstream analysis"
+                "Use _calculate_coherence_metrics results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_interpret_risk",
-            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_calculate_objective_alignment",
+            "class_name": "PolicyContradictionDetector",
             "priority": 3,
-            "role": "_interpret_risk",
+            "role": "_calculate_objective_alignment_calculation",
             "epistemological_foundation": {
-              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._interpret_risk",
+              "paradigm": "PolicyContradictionDetector analytical paradigm",
+              "ontological_basis": "Analysis via PolicyContradictionDetector._calculate_objective_alignment",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _interpret_risk implements structured analysis for D2-Q4"
+                "Method _calculate_objective_alignment implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "PDETMunicipalPlanAnalyzer._interpret_risk algorithm",
+              "algorithm": "PolicyContradictionDetector._calculate_objective_alignment algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _interpret_risk"
+                  "description": "Execute _calculate_objective_alignment"
                 },
                 {
                   "step": 2,
@@ -616,7 +558,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _interpret_risk"
+                "result": "Structured output from _calculate_objective_alignment"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -624,31 +566,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _interpret_risk results for downstream analysis"
+                "Use _calculate_objective_alignment results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_compute_robustness_value",
-            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_calculate_graph_fragmentation",
+            "class_name": "PolicyContradictionDetector",
             "priority": 4,
-            "role": "_compute_robustness_value",
+            "role": "_calculate_graph_fragmentation_calculation",
             "epistemological_foundation": {
-              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._compute_robustness_value",
+              "paradigm": "PolicyContradictionDetector analytical paradigm",
+              "ontological_basis": "Analysis via PolicyContradictionDetector._calculate_graph_fragmentation",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _compute_robustness_value implements structured analysis for D2-Q4"
+                "Method _calculate_graph_fragmentation implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "PDETMunicipalPlanAnalyzer._compute_robustness_value algorithm",
+              "algorithm": "PolicyContradictionDetector._calculate_graph_fragmentation algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compute_robustness_value"
+                  "description": "Execute _calculate_graph_fragmentation"
                 },
                 {
                   "step": 2,
@@ -669,7 +611,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _compute_robustness_value"
+                "result": "Structured output from _calculate_graph_fragmentation"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -677,137 +619,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _compute_robustness_value results for downstream analysis"
+                "Use _calculate_graph_fragmentation results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_compute_e_value",
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "priority": 5,
-            "role": "_compute_e_value",
-            "epistemological_foundation": {
-              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._compute_e_value",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _compute_e_value implements structured analysis for D2-Q4"
-              ],
-              "justification": "This method contributes to D2-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "PDETMunicipalPlanAnalyzer._compute_e_value algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _compute_e_value"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _compute_e_value"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _compute_e_value results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_interpret_sensitivity",
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "priority": 6,
-            "role": "_interpret_sensitivity",
-            "epistemological_foundation": {
-              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._interpret_sensitivity",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _interpret_sensitivity implements structured analysis for D2-Q4"
-              ],
-              "justification": "This method contributes to D2-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "PDETMunicipalPlanAnalyzer._interpret_sensitivity algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _interpret_sensitivity"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _interpret_sensitivity"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _interpret_sensitivity results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_audit_systemic_risk",
+            "method_name": "audit_sequence_logic",
             "class_name": "OperationalizationAuditor",
-            "priority": 7,
-            "role": "_audit_systemic_risk_auditing",
+            "priority": 5,
+            "role": "audit_sequence_logic_auditing",
             "epistemological_foundation": {
               "paradigm": "OperationalizationAuditor analytical paradigm",
-              "ontological_basis": "Analysis via OperationalizationAuditor._audit_systemic_risk",
+              "ontological_basis": "Analysis via OperationalizationAuditor.audit_sequence_logic",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _audit_systemic_risk implements structured analysis for D2-Q4"
+                "Method audit_sequence_logic implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "OperationalizationAuditor._audit_systemic_risk algorithm",
+              "algorithm": "OperationalizationAuditor.audit_sequence_logic algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _audit_systemic_risk"
+                  "description": "Execute audit_sequence_logic"
                 },
                 {
                   "step": 2,
@@ -828,7 +664,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _audit_systemic_risk"
+                "result": "Structured output from audit_sequence_logic"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -836,31 +672,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _audit_systemic_risk results for downstream analysis"
+                "Use audit_sequence_logic results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "aggregate_risk_and_prioritize",
-            "class_name": "BayesianCounterfactualAuditor",
-            "priority": 8,
-            "role": "aggregate_risk_and_prioritize",
+            "method_name": "_calculate_coherence_factor",
+            "class_name": "BayesianMechanismInference",
+            "priority": 6,
+            "role": "_calculate_coherence_factor_calculation",
             "epistemological_foundation": {
-              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
-              "ontological_basis": "Analysis via BayesianCounterfactualAuditor.aggregate_risk_and_prioritize",
+              "paradigm": "BayesianMechanismInference analytical paradigm",
+              "ontological_basis": "Analysis via BayesianMechanismInference._calculate_coherence_factor",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method aggregate_risk_and_prioritize implements structured analysis for D2-Q4"
+                "Method _calculate_coherence_factor implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize algorithm",
+              "algorithm": "BayesianMechanismInference._calculate_coherence_factor algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute aggregate_risk_and_prioritize"
+                  "description": "Execute _calculate_coherence_factor"
                 },
                 {
                   "step": 2,
@@ -881,7 +717,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from aggregate_risk_and_prioritize"
+                "result": "Structured output from _calculate_coherence_factor"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -889,31 +725,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use aggregate_risk_and_prioritize results for downstream analysis"
+                "Use _calculate_coherence_factor results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "refutation_and_sanity_checks",
-            "class_name": "BayesianCounterfactualAuditor",
-            "priority": 9,
-            "role": "refutation_and_sanity_checks",
+            "method_name": "_score_causal_coherence",
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "priority": 7,
+            "role": "_score_causal_coherence",
             "epistemological_foundation": {
-              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
-              "ontological_basis": "Analysis via BayesianCounterfactualAuditor.refutation_and_sanity_checks",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._score_causal_coherence",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method refutation_and_sanity_checks implements structured analysis for D2-Q4"
+                "Method _score_causal_coherence implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "BayesianCounterfactualAuditor.refutation_and_sanity_checks algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer._score_causal_coherence algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute refutation_and_sanity_checks"
+                  "description": "Execute _score_causal_coherence"
                 },
                 {
                   "step": 2,
@@ -934,7 +770,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from refutation_and_sanity_checks"
+                "result": "Structured output from _score_causal_coherence"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -942,31 +778,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use refutation_and_sanity_checks results for downstream analysis"
+                "Use _score_causal_coherence results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "sensitivity_analysis",
+            "method_name": "calculate_likelihood_adaptativo",
             "class_name": "AdaptivePriorCalculator",
-            "priority": 10,
-            "role": "sensitivity_analysis",
+            "priority": 8,
+            "role": "calculate_likelihood_adaptativo_calculation",
             "epistemological_foundation": {
               "paradigm": "AdaptivePriorCalculator analytical paradigm",
-              "ontological_basis": "Analysis via AdaptivePriorCalculator.sensitivity_analysis",
+              "ontological_basis": "Analysis via AdaptivePriorCalculator.calculate_likelihood_adaptativo",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method sensitivity_analysis implements structured analysis for D2-Q4"
+                "Method calculate_likelihood_adaptativo implements structured analysis for D2-Q5"
               ],
-              "justification": "This method contributes to D2-Q4 analysis"
+              "justification": "This method contributes to D2-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdaptivePriorCalculator.sensitivity_analysis algorithm",
+              "algorithm": "AdaptivePriorCalculator.calculate_likelihood_adaptativo algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute sensitivity_analysis"
+                  "description": "Execute calculate_likelihood_adaptativo"
                 },
                 {
                   "step": 2,
@@ -987,7 +823,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from sensitivity_analysis"
+                "result": "Structured output from calculate_likelihood_adaptativo"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -995,7 +831,7 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use sensitivity_analysis results for downstream analysis"
+                "Use calculate_likelihood_adaptativo results for downstream analysis"
               ]
             }
           }
@@ -1062,26 +898,17 @@
   },
   "traceability": {
     "source_file": "data/questionnaire_monolith.json",
-    "json_path": "blocks.micro_questions[278]",
-    "method_source": "src/farfan_core/core/orchestrator/executors.py:D2_Q4_Executor",
+    "json_path": "blocks.micro_questions[279]",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D2_Q5_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
     "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
-    "source_question_id": "Q009",
-    "specialized_from_base_slot": "D2-Q4",
-    "specialization_timestamp": "2025-11-28T03:49:29.807531+00:00",
-    "remediation_log": [
-      {
-        "timestamp": "2025-12-17T02:01:25.640379+00:00",
-        "fixes_applied": [
-          "signal_threshold"
-        ],
-        "tool": "contract_remediator.py"
-      }
-    ]
+    "source_question_id": "Q010",
+    "specialized_from_base_slot": "D2-Q5",
+    "specialization_timestamp": "2025-11-28T03:49:29.810856+00:00"
   },
   "error_handling": {
     "on_method_not_found": "raise",
@@ -1092,7 +919,7 @@
         "missing_required_element",
         "incomplete_text"
       ],
-      "emit_code": "ABORT-Q009-REQ"
+      "emit_code": "ABORT-Q010-REQ"
     }
   },
   "fallback_strategy": {
@@ -1363,7 +1190,7 @@
           "properties": {
             "methods_executed": {
               "type": "integer",
-              "const": 10
+              "const": 8
             },
             "execution_time_ms": {
               "type": "number"
@@ -1506,7 +1333,7 @@
         "avg_semantic_similarity_to_query": 0.78
       },
       "metadata": {
-        "methods_executed": 10,
+        "methods_executed": 8,
         "execution_time_ms": 2845,
         "document_length": 15230,
         "analysis_timestamp": "2025-11-26T12:34:56Z"
@@ -1556,15 +1383,15 @@
     }
   },
   "method_outputs": {
-    "PDETMunicipalPlanAnalyzer._bayesian_risk_inference": {
+    "PolicyContradictionDetector._detect_logical_incompatibilities": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PDETMunicipalPlanAnalyzer._bayesian_risk_inference",
+        "description": "Output from PolicyContradictionDetector._detect_logical_incompatibilities",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _bayesian_risk_inference"
+            "description": "Result from _detect_logical_incompatibilities"
           },
           "metadata": {
             "type": "object",
@@ -1577,19 +1404,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "pdet_analysis.bayesian_risk_inference",
+        "provides_key": "contradiction_detection.detect_logical_incompatibilities",
         "merge_strategy": "replace"
       }
     },
-    "PDETMunicipalPlanAnalyzer.sensitivity_analysis": {
+    "PolicyContradictionDetector._calculate_coherence_metrics": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PDETMunicipalPlanAnalyzer.sensitivity_analysis",
+        "description": "Output from PolicyContradictionDetector._calculate_coherence_metrics",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from sensitivity_analysis"
+            "description": "Result from _calculate_coherence_metrics"
           },
           "metadata": {
             "type": "object",
@@ -1602,19 +1429,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "pdet_analysis.sensitivity_analysis",
+        "provides_key": "contradiction_detection.calculate_coherence_metrics",
         "merge_strategy": "replace"
       }
     },
-    "PDETMunicipalPlanAnalyzer._interpret_risk": {
+    "PolicyContradictionDetector._calculate_objective_alignment": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PDETMunicipalPlanAnalyzer._interpret_risk",
+        "description": "Output from PolicyContradictionDetector._calculate_objective_alignment",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _interpret_risk"
+            "description": "Result from _calculate_objective_alignment"
           },
           "metadata": {
             "type": "object",
@@ -1627,19 +1454,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "pdet_analysis.interpret_risk",
+        "provides_key": "contradiction_detection.calculate_objective_alignment",
         "merge_strategy": "replace"
       }
     },
-    "PDETMunicipalPlanAnalyzer._compute_robustness_value": {
+    "PolicyContradictionDetector._calculate_graph_fragmentation": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PDETMunicipalPlanAnalyzer._compute_robustness_value",
+        "description": "Output from PolicyContradictionDetector._calculate_graph_fragmentation",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _compute_robustness_value"
+            "description": "Result from _calculate_graph_fragmentation"
           },
           "metadata": {
             "type": "object",
@@ -1652,19 +1479,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "pdet_analysis.compute_robustness_value",
+        "provides_key": "contradiction_detection.calculate_graph_fragmentation",
         "merge_strategy": "replace"
       }
     },
-    "PDETMunicipalPlanAnalyzer._compute_e_value": {
+    "OperationalizationAuditor.audit_sequence_logic": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PDETMunicipalPlanAnalyzer._compute_e_value",
+        "description": "Output from OperationalizationAuditor.audit_sequence_logic",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _compute_e_value"
+            "description": "Result from audit_sequence_logic"
           },
           "metadata": {
             "type": "object",
@@ -1677,19 +1504,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "pdet_analysis.compute_e_value",
+        "provides_key": "operationalizationauditor.audit_sequence_logic",
         "merge_strategy": "replace"
       }
     },
-    "PDETMunicipalPlanAnalyzer._interpret_sensitivity": {
+    "BayesianMechanismInference._calculate_coherence_factor": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PDETMunicipalPlanAnalyzer._interpret_sensitivity",
+        "description": "Output from BayesianMechanismInference._calculate_coherence_factor",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _interpret_sensitivity"
+            "description": "Result from _calculate_coherence_factor"
           },
           "metadata": {
             "type": "object",
@@ -1702,19 +1529,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "pdet_analysis.interpret_sensitivity",
+        "provides_key": "bayesianmechanisminference.calculate_coherence_factor",
         "merge_strategy": "replace"
       }
     },
-    "OperationalizationAuditor._audit_systemic_risk": {
+    "PDETMunicipalPlanAnalyzer._score_causal_coherence": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from OperationalizationAuditor._audit_systemic_risk",
+        "description": "Output from PDETMunicipalPlanAnalyzer._score_causal_coherence",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _audit_systemic_risk"
+            "description": "Result from _score_causal_coherence"
           },
           "metadata": {
             "type": "object",
@@ -1727,19 +1554,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "operationalizationauditor.audit_systemic_risk",
+        "provides_key": "pdet_analysis.score_causal_coherence",
         "merge_strategy": "replace"
       }
     },
-    "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize": {
+    "AdaptivePriorCalculator.calculate_likelihood_adaptativo": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from BayesianCounterfactualAuditor.aggregate_risk_and_prioritize",
+        "description": "Output from AdaptivePriorCalculator.calculate_likelihood_adaptativo",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from aggregate_risk_and_prioritize"
+            "description": "Result from calculate_likelihood_adaptativo"
           },
           "metadata": {
             "type": "object",
@@ -1752,57 +1579,7 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
-        "merge_strategy": "replace"
-      }
-    },
-    "BayesianCounterfactualAuditor.refutation_and_sanity_checks": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from BayesianCounterfactualAuditor.refutation_and_sanity_checks",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from refutation_and_sanity_checks"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "bayesiancounterfactualauditor.refutation_and_sanity_checks",
-        "merge_strategy": "replace"
-      }
-    },
-    "AdaptivePriorCalculator.sensitivity_analysis": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from AdaptivePriorCalculator.sensitivity_analysis",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from sensitivity_analysis"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "adaptivepriorcalculator.sensitivity_analysis",
+        "provides_key": "adaptivepriorcalculator.calculate_likelihood_adaptativo",
         "merge_strategy": "replace"
       }
     }
