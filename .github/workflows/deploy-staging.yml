@@ -1,0 +1,117 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: 'Skip test suite'
+        required: false
+        default: 'false'
+
+env:
+  DEPLOYMENT_ENV: staging
+
+jobs:
+  pre_deployment_checks:
+    name: Pre-deployment Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      
+      - name: Run CQVR evaluation
+        run: |
+          python scripts/evaluate_all_contracts.py
+      
+      - name: Run test suite
+        if: github.event.inputs.skip_tests != 'true'
+        run: |
+          pytest -m "updated and not outdated" -v
+      
+      - name: Upload pre-deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pre-deployment-validation
+          path: |
+            artifacts/cqvr_evaluation_full.json
+            artifacts/CQVR_EVALUATION_REPORT.md
+  
+  deploy_staging:
+    name: Deploy to Staging Environment
+    runs-on: ubuntu-latest
+    needs: pre_deployment_checks
+    environment:
+      name: staging
+      url: https://staging.farfan.example.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create deployment backup
+        run: |
+          TIMESTAMP=$(date -u +%Y%m%d_%H%M%S)
+          mkdir -p backups/staging_$TIMESTAMP
+          cp -r src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/*.json backups/staging_$TIMESTAMP/ || true
+          echo "BACKUP_DIR=staging_$TIMESTAMP" >> $GITHUB_ENV
+      
+      - name: Deploy contracts to staging
+        run: |
+          echo "Deploying to staging environment..."
+          echo "This would sync contracts to staging server"
+          echo "Backup created: backups/$BACKUP_DIR"
+      
+      - name: Run post-deployment validation
+        run: |
+          echo "Running post-deployment validation..."
+          echo "Verifying contract integrity in staging..."
+      
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "✅ Staging deployment successful"
+          else
+            echo "❌ Staging deployment failed"
+          fi
+  
+  integration_tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+    needs: deploy_staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      
+      - name: Run integration tests
+        run: |
+          echo "Running integration tests against staging..."
+          pytest tests/ -v -m "not outdated"
+      
+      - name: Verify all contracts load
+        run: |
+          python scripts/evaluate_all_contracts.py

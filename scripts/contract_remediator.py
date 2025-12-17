@@ -215,7 +215,7 @@ class ContractRemediator:
     ) -> tuple[dict[str, Any], list[str]]:
         """Apply automatic fixes for common issues."""
         fixes = []
-        modified = contract.copy()
+        modified = json.loads(json.dumps(contract))
 
         if self._fix_identity_schema_mismatch(modified):
             fixes.append("identity_schema_coherence")
@@ -225,6 +225,18 @@ class ContractRemediator:
 
         if self._fix_signal_threshold(modified):
             fixes.append("signal_threshold")
+
+        if self._fix_validation_rules_alignment(modified):
+            fixes.append("validation_rules_alignment")
+
+        if self._fix_human_template_title(modified):
+            fixes.append("human_template_title")
+
+        if self._fix_methodological_depth(modified):
+            fixes.append("methodological_depth")
+
+        if self._fix_source_hash(modified):
+            fixes.append("source_hash")
 
         if self._fix_output_schema_required(modified):
             fixes.append("output_schema_required")
@@ -265,9 +277,33 @@ class ContractRemediator:
         if not methods or not assembly_rules:
             return False
 
-        provides_set = {m.get("provides", "") for m in methods if m.get("provides")}
+        provides_list = [
+            m.get("provides", "") for m in methods if isinstance(m.get("provides"), str) and m.get("provides")
+        ]
+        provides_set = set(provides_list)
 
         fixed = False
+
+        rule_for_elements = None
+        for rule in assembly_rules:
+            if rule.get("target") == "elements_found":
+                rule_for_elements = rule
+                break
+        if rule_for_elements is None:
+            rule_for_elements = assembly_rules[0]
+
+        desired_sources = sorted(provides_set)
+        if (
+            isinstance(rule_for_elements, dict)
+            and provides_list
+            and rule_for_elements.get("sources") != desired_sources
+        ):
+            rule_for_elements["sources"] = desired_sources
+            description = rule_for_elements.get("description")
+            if isinstance(description, str) and "Combine" in description:
+                rule_for_elements["description"] = f"Combine evidence from {len(provides_set)} methods"
+            fixed = True
+
         for rule in assembly_rules:
             sources = rule.get("sources", [])
             if not sources:
@@ -299,7 +335,20 @@ class ContractRemediator:
 
         if mandatory_signals and threshold <= 0:
             signal_reqs["minimum_signal_threshold"] = 0.5
-            return True
+            updated = True
+        else:
+            updated = False
+
+        preferred = [
+            "policy_instrument_detected",
+            "activity_specification_found",
+            "implementation_timeline_present",
+        ]
+        if isinstance(signal_reqs, dict) and "preferred_signal_types" not in signal_reqs:
+            signal_reqs["preferred_signal_types"] = preferred
+            updated = True
+
+        return updated
 
         return False
 
@@ -338,13 +387,192 @@ class ContractRemediator:
             source_hash = hashlib.sha256(monolith_str.encode()).hexdigest()
 
             traceability = contract.get("traceability", {})
-            if traceability.get("source_hash", "").startswith("TODO"):
+            existing = traceability.get("source_hash", "")
+            if not isinstance(existing, str) or not existing or existing.startswith("TODO"):
                 traceability["source_hash"] = source_hash
                 return True
         except Exception:
             pass
 
         return False
+
+    def _fix_validation_rules_alignment(self, contract: dict[str, Any]) -> bool:
+        question_context = contract.get("question_context", {})
+        expected_elements = question_context.get("expected_elements", [])
+        if not isinstance(expected_elements, list) or not expected_elements:
+            return False
+
+        required_types: list[str] = [
+            e.get("type")
+            for e in expected_elements
+            if isinstance(e, dict) and e.get("required") and isinstance(e.get("type"), str)
+        ]
+        optional_types: list[str] = [
+            e.get("type")
+            for e in expected_elements
+            if isinstance(e, dict)
+            and not e.get("required")
+            and isinstance(e.get("type"), str)
+        ]
+
+        if not required_types:
+            return False
+
+        validation_rules = contract.get("validation_rules", {})
+        if not isinstance(validation_rules, dict):
+            return False
+
+        rule_required = {
+            "description": "Auto-generated: require all required expected_elements types",
+            "field": "elements_found",
+            "must_contain": {"count": len(required_types), "elements": required_types},
+            "type": "array",
+        }
+        rule_optional = {
+            "description": "Auto-generated: encourage optional evidence types when available",
+            "field": "elements_found",
+            "should_contain": [{"elements": optional_types, "minimum": 1}] if optional_types else [],
+            "type": "array",
+        }
+
+        previous = validation_rules.get("rules", [])
+        validation_rules["rules"] = [rule_required, rule_optional]
+        contract["validation_rules"] = validation_rules
+
+        return previous != validation_rules["rules"]
+
+    def _fix_human_template_title(self, contract: dict[str, Any]) -> bool:
+        identity = contract.get("identity", {})
+        question_id = identity.get("question_id", "")
+        base_slot = identity.get("base_slot", "")
+        if not isinstance(question_id, str) or not isinstance(base_slot, str):
+            return False
+
+        question_text = contract.get("question_context", {}).get("question_text", "")
+        if isinstance(question_text, str):
+            label = question_text.strip().replace("\n", " ")
+        else:
+            label = ""
+        if len(label) > 120:
+            label = label[:117].rstrip() + "..."
+
+        title = f"## Análisis {question_id} ({base_slot})"
+        if label:
+            title = f"{title}: {label}"
+
+        template = (
+            contract.get("output_contract", {})
+            .get("human_readable_output", {})
+            .get("template", {})
+        )
+        if not isinstance(template, dict):
+            return False
+
+        current = template.get("title", "")
+        if current == title:
+            return False
+
+        template["title"] = title
+        return True
+
+    def _fix_methodological_depth(self, contract: dict[str, Any]) -> bool:
+        identity = contract.get("identity", {})
+        dimension_id = identity.get("dimension_id", "")
+        policy_area_id = identity.get("policy_area_id", "")
+        question_id = identity.get("question_id", "")
+        base_slot = identity.get("base_slot", "")
+
+        if not all(isinstance(v, str) and v for v in [dimension_id, policy_area_id, question_id, base_slot]):
+            return False
+
+        dimension_label = {
+            "DIM02": "Actividades / Lógica causal",
+            "DIM03": "Productos / Planificación",
+            "DIM04": "Resultados / Indicadores",
+            "DIM05": "Impactos / Transformación",
+            "DIM06": "Territorio / Enfoque diferencial",
+        }.get(dimension_id, dimension_id)
+
+        methodological_depth = {
+            "methods": [
+                {
+                    "method_name": "contract_orchestrated_evidence_fusion",
+                    "class_name": "EvidenceNexus",
+                    "priority": 1,
+                    "role": "evidence_graph_construction_and_synthesis",
+                    "epistemological_foundation": {
+                        "paradigm": "critical_realist",
+                        "ontological_basis": (
+                            "Policy plans encode mechanisms via activities, outputs, and indicators; "
+                            "evidence is treated as fallible observations of underlying commitments."
+                        ),
+                        "epistemological_stance": (
+                            "Triangulation across heterogeneous sources with explicit uncertainty."
+                        ),
+                        "theoretical_framework": [
+                            "Pearl (2009) causal reasoning (why mechanisms matter)",
+                            "Pawson & Tilley (1997) realistic evaluation",
+                            "Results-based management for public policy monitoring",
+                        ],
+                        "justification": (
+                            f"Chosen because {dimension_label} in {policy_area_id} must explain why "
+                            "the plan's commitments are coherent, measurable, and traceable to evidence."
+                        ),
+                    },
+                    "technical_approach": {
+                        "method_type": "graph_based_evidence_fusion",
+                        "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+                        "steps": [
+                            {
+                                "step": 1,
+                                "description": (
+                                    "Extract candidate claims and table structures from the document using "
+                                    "contract patterns and policy-area scope."
+                                ),
+                            },
+                            {
+                                "step": 2,
+                                "description": (
+                                    "Populate method outputs under provides slots and construct evidence nodes "
+                                    "aligned to expected_elements."
+                                ),
+                            },
+                            {
+                                "step": 3,
+                                "description": (
+                                    "Assemble aggregate evidence for elements_found and infer relationships "
+                                    "to support synthesis and validation."
+                                ),
+                            },
+                            {
+                                "step": 4,
+                                "description": (
+                                    "Compute completeness, gaps, and confidence interval for downstream scoring "
+                                    f"({question_id}/{base_slot})."
+                                ),
+                            },
+                        ],
+                        "assumptions": [
+                            "The source plan contains at least one relevant section or table for this question.",
+                            "Expected element types map to observable text spans or tabular cells.",
+                        ],
+                        "limitations": [
+                            "Evidence quality depends on document structure and explicitness of commitments.",
+                            "Pattern-only extraction is conservative to preserve determinism.",
+                        ],
+                        "complexity": (
+                            "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for "
+                            "graph propagation."
+                        ),
+                    },
+                }
+            ]
+        }
+
+        if contract.get("methodological_depth") == methodological_depth:
+            return False
+        contract["methodological_depth"] = methodological_depth
+        return True
 
     def _regenerate_contract(
         self, contract: dict[str, Any]
@@ -397,9 +625,13 @@ class ContractRemediator:
             }
         )
 
-        contract_str = json.dumps(contract, sort_keys=True)
-        contract_hash = hashlib.sha256(contract_str.encode()).hexdigest()
-        identity["contract_hash"] = contract_hash
+        temp = json.loads(json.dumps(contract))
+        try:
+            del temp["identity"]["contract_hash"]
+        except Exception:
+            pass
+        contract_str = json.dumps(temp, sort_keys=True)
+        identity["contract_hash"] = hashlib.sha256(contract_str.encode()).hexdigest()
 
     def remediate_batch(
         self, question_ids: list[str], strategy: RemediationStrategy

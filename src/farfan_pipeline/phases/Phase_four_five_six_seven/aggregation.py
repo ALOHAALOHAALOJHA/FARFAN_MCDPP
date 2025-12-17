@@ -157,7 +157,11 @@ class AggregationSettings:
             return settings
             
         except Exception as e:
-            logger.warning(f"SISAS: Failed to build from registry, falling back to legacy: {e}")
+            logger.warning(
+                "SISAS: Failed to build from registry (%s); falling back to legacy empty weights "
+                "(callers will use equal-weight defaults).",
+                e,
+            )
             # Return empty settings as fallback
             return cls(
                 dimension_group_by_keys=["policy_area", "dimension"],
@@ -321,15 +325,16 @@ class AggregationSettings:
     def _normalize_weights(weight_map: dict[str, float]) -> dict[str, float]:
         if not weight_map:
             return {}
-        # Discard negative weights and normalize remaining ones
-        positive_map = {k: float(v) for k, v in weight_map.items() if isinstance(v, (float, int)) and float(v) >= 0.0}
+        positive_map = {
+            key: float(value)
+            for key, value in weight_map.items()
+            if isinstance(value, (float, int)) and float(value) >= 0.0
+        }
         if not positive_map:
-            equal = 1.0 / len(weight_map)
-            return {k: equal for k in weight_map}
+            return {}
         total = sum(positive_map.values())
         if total <= 0:
-            equal = 1.0 / len(positive_map)
-            return {k: equal for k in positive_map}
+            return {}
         return {k: value / total for k, value in positive_map.items()}
 
     @classmethod
@@ -350,7 +355,9 @@ class AggregationSettings:
                     except (TypeError, ValueError):
                         continue
                 if resolved:
-                    dimension_weights[dim_id] = cls._normalize_weights(resolved)
+                    normalized = cls._normalize_weights(resolved)
+                    if normalized:
+                        dimension_weights[dim_id] = normalized
 
         if not dimension_weights:
             for dim_id, slots in dimension_slot_map.items():
@@ -377,7 +384,9 @@ class AggregationSettings:
                     except (TypeError, ValueError):
                         continue
                 if resolved:
-                    area_weights[area_id] = cls._normalize_weights(resolved)
+                    normalized = cls._normalize_weights(resolved)
+                    if normalized:
+                        area_weights[area_id] = normalized
 
         if not area_weights:
             for area in policy_areas:
@@ -406,7 +415,9 @@ class AggregationSettings:
                     except (TypeError, ValueError):
                         continue
                 if resolved:
-                    cluster_weights[cluster_id] = cls._normalize_weights(resolved)
+                    normalized = cls._normalize_weights(resolved)
+                    if normalized:
+                        cluster_weights[cluster_id] = normalized
 
         if not cluster_weights:
             for cluster in clusters:
@@ -495,28 +506,75 @@ def validate_scored_results(results: list[dict[str, Any]]) -> list[ScoredResult]
     Raises:
         ValidationError: If any of the dictionaries are invalid.
     """
-    validated_results = []
-    required_keys = {
-        "question_global": int, "base_slot": str, "policy_area": str, "dimension": str,
-        "score": float, "quality_level": str, "evidence": dict, "raw_results": dict
+    validated_results: list[ScoredResult] = []
+    required_keys: dict[str, type[Any] | tuple[type[Any], ...]] = {
+        "question_global": (int, float, str),
+        "base_slot": str,
+        "policy_area": str,
+        "dimension": str,
+        "score": (float, int),
+        "quality_level": str,
+        "evidence": dict,
+        "raw_results": dict,
     }
     for i, res_dict in enumerate(results):
-        missing_keys = set(required_keys.keys()) - set(res_dict.keys())
+        missing_keys = set(required_keys) - set(res_dict)
         if missing_keys:
             raise ValidationError(
                 f"Invalid ScoredResult at index {i}: missing keys {missing_keys}"
             )
+
+        normalized = dict(res_dict)
+        qid = normalized["question_global"]
+        if isinstance(qid, bool):
+            raise ValidationError(
+                f"Invalid type for key 'question_global' at index {i}. "
+                f"Expected int|float|str, got bool."
+            )
+        if isinstance(qid, float):
+            if not qid.is_integer():
+                raise ValidationError(
+                    f"Invalid value for key 'question_global' at index {i}. "
+                    f"Expected integer-like float, got {qid}."
+                )
+            normalized["question_global"] = int(qid)
+        elif isinstance(qid, str):
+            qid_str = qid.strip()
+            if qid_str.isdigit():
+                normalized["question_global"] = int(qid_str)
+            else:
+                normalized["question_global"] = qid_str
+
+        score_value = normalized["score"]
+        if isinstance(score_value, bool):
+            raise ValidationError(
+                f"Invalid type for key 'score' at index {i}. Expected float|int, got bool."
+            )
+        normalized["score"] = float(score_value)
+
         for key, expected_type in required_keys.items():
-            if not isinstance(res_dict[key], expected_type):
+            if key in {"question_global", "score"}:
+                continue
+            if not isinstance(normalized[key], expected_type):
                 raise ValidationError(
                     f"Invalid type for key '{key}' at index {i}. "
-                    f"Expected {expected_type}, got {type(res_dict[key])}."
+                    f"Expected {expected_type}, got {type(normalized[key])}."
                 )
         try:
-            validated_results.append(ScoredResult(**res_dict))
+            validated_results.append(ScoredResult(**normalized))
         except TypeError as e:
             raise ValidationError(f"Invalid ScoredResult at index {i}: {e}") from e
     return validated_results
+
+def _normalize_question_node_id(question_id: int | str) -> str:
+    if isinstance(question_id, int):
+        return f"Q{question_id:03d}"
+
+    question_id_str = question_id.strip()
+    suffix = question_id_str.lstrip("Qq")
+    if suffix.isdigit():
+        return f"Q{int(suffix):03d}"
+    return question_id_str
 
 # Import canonical notation for validation
 try:
@@ -530,7 +588,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ScoredResult:
     """Represents a single, scored micro-question, forming the input for aggregation."""
-    question_global: int
+    question_global: int | str
     base_slot: str
     policy_area: str
     dimension: str
@@ -553,7 +611,7 @@ class DimensionScore:
     area_id: str
     score: float
     quality_level: str
-    contributing_questions: list[int]
+    contributing_questions: list[int | str]
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
     
@@ -656,6 +714,28 @@ class HermeticityValidationError(ValidationError):
 class CoverageError(AggregationError):
     """Raised when coverage requirements are not met."""
     pass
+
+def calculate_weighted_average(scores: list[float], weights: list[float] | None = None) -> float:
+    if not scores:
+        return 0.0
+
+    if weights is None:
+        weights = [1.0 / len(scores)] * len(scores)
+
+    if len(weights) != len(scores):
+        msg = f"Weight length mismatch: {len(weights)} weights for {len(scores)} scores"
+        logger.error(msg)
+        raise WeightValidationError(msg)
+
+    expected_sum = 1.0
+    weight_sum = sum(weights)
+    tolerance = 1e-6
+    if abs(weight_sum - expected_sum) > tolerance:
+        msg = f"Weight sum validation failed: sum={weight_sum:.6f}, expected={expected_sum}"
+        logger.error(msg)
+        raise WeightValidationError(msg)
+
+    return sum(score * weight for score, weight in zip(scores, weights, strict=False))
 
 class DimensionAggregator:
     """
@@ -894,37 +974,13 @@ class DimensionAggregator:
         Raises:
             WeightValidationError: If the weights are invalid (e.g., mismatched length).
         """
-        if not scores:
-            return ParameterLoaderV2.get("farfan_core.processing.aggregation.DimensionAggregator.validate_weights", "auto_param_L665_19", 0.0)
-
-        if weights is None:
-            # Equal weights
-            weights = [ParameterLoaderV2.get("farfan_core.processing.aggregation.DimensionAggregator.validate_weights", "auto_param_L669_23", 1.0) / len(scores)] * len(scores)
-
-        # Validate weights length matches scores length
-        if len(weights) != len(scores):
-            msg = (
-                f"Weight length mismatch: {len(weights)} weights for {len(scores)} scores"
-            )
-            logger.error(msg)
-            raise WeightValidationError(msg)
-
-        # Validate weights sum to ParameterLoaderV2.get("farfan_core.processing.aggregation.DimensionAggregator.validate_weights", "auto_param_L679_34", 1.0)
-        valid, msg = self.validate_weights(weights)
-        if not valid:
-            # If validation failed and abort_on_insufficient is False,
-            # validate_weights already logged the error and returned False
-            # We should raise here to avoid silent failure
-            raise WeightValidationError(msg)
-
-        # Calculate weighted sum
-        weighted_sum = sum(s * w for s, w in zip(scores, weights, strict=False))
-
+        weighted_sum = calculate_weighted_average(scores, weights)
         logger.debug(
-            f"Weighted average calculated: "
-            f"scores={scores}, weights={weights}, result={weighted_sum:.4f}"
+            "Weighted average calculated: scores=%s, weights=%s, result=%.4f",
+            scores,
+            weights,
+            weighted_sum,
         )
-
         return weighted_sum
 
     def aggregate_with_sota(
@@ -1100,8 +1156,21 @@ class DimensionAggregator:
                 validation_details={"error": "No results", "type": "empty"}
             )
 
-        # Extract scores
-        scores = [r.score for r in dim_results]
+        raw_scores = [r.score for r in dim_results]
+        scores = [min(3.0, max(0.0, score)) for score in raw_scores]
+        n_clamped = sum(
+            1 for raw, clamped in zip(raw_scores, scores, strict=False) if raw != clamped
+        )
+        if n_clamped:
+            validation_details["clamping"] = {
+                "applied": True,
+                "n_clamped": n_clamped,
+                "original_min": min(raw_scores),
+                "original_max": max(raw_scores),
+                "clamped_min": min(scores),
+                "clamped_max": max(scores),
+            }
+
         question_ids = [r.question_global for r in dim_results]
 
         # Calculate weighted average with SOTA features
@@ -1163,14 +1232,14 @@ class DimensionAggregator:
             self.provenance_dag.add_node(dim_node)
             
             # Add aggregation edges from questions to dimension
-            question_node_ids = [f"Q{qid:03d}" for qid in question_ids]
-            for qid_str, qid in zip(question_node_ids, question_ids):
+            question_node_ids = [_normalize_question_node_id(qid) for qid in question_ids]
+            for qid_str, score_value in zip(question_node_ids, scores, strict=False):
                 # Add question node if not exists
                 if qid_str not in self.provenance_dag.nodes:
                     q_node = ProvenanceNode(
                         node_id=qid_str,
                         level="micro",
-                        score=scores[question_ids.index(qid)],
+                        score=score_value,
                         quality_level="UNKNOWN",
                     )
                     self.provenance_dag.add_node(q_node)
@@ -1335,33 +1404,6 @@ def run_aggregation_pipeline(
     )
 
     return cluster_scores
-
-    def run(
-        self,
-        scored_results: list[ScoredResult],
-        group_by_keys: list[str]
-    ) -> list[DimensionScore]:
-        """
-        Run the dimension aggregation process.
-
-        Args:
-            scored_results: List of all scored results.
-            group_by_keys: List of keys to group by.
-
-        Returns:
-            A list of DimensionScore objects.
-        """
-        def key_func(r):
-            return tuple(getattr(r, key) for key in group_by_keys)
-        grouped_results = group_by(scored_results, key_func)
-
-        dimension_scores = []
-        for group_key, results in grouped_results.items():
-            group_by_values = dict(zip(group_by_keys, group_key, strict=False))
-            score = self.aggregate_dimension(results, group_by_values)
-            dimension_scores.append(score)
-
-        return dimension_scores
 
 class AreaPolicyAggregator:
     """
@@ -1630,7 +1672,7 @@ class AreaPolicyAggregator:
         # Calculate weighted average score
         scores = [d.score for d in area_dim_scores]
         resolved_weights = weights or self._resolve_area_weights(area_id, area_dim_scores)
-        avg_score = DimensionAggregator().calculate_weighted_average(scores, weights=resolved_weights)
+        avg_score = calculate_weighted_average(scores, weights=resolved_weights)
 
         # Apply rubric thresholds
         quality_level = self.apply_rubric_thresholds(avg_score)
