@@ -1690,6 +1690,36 @@ class Orchestrator:
                         enriched_packs=self._enriched_packs or {},
                     )
 
+                    # Validate dimension_id consistency
+                    question_dimension = question.get("dimension_id")
+                    if question_dimension is None:
+                        # Question missing dimension_id, use task dimension with warning
+                        logger.warning(
+                            f"Task {task_id}: question missing dimension_id, using task dimension '{task.dimension}'"
+                        )
+                        question_dimension = task.dimension
+                    elif question_dimension != task.dimension:
+                        # Mismatch indicates data integrity issue
+                        logger.error(
+                            f"Task {task_id}: dimension_id mismatch - "
+                            f"question has '{question_dimension}' but task has '{task.dimension}'. "
+                            f"This indicates a data integrity issue in the execution plan."
+                        )
+                        task_status[task_id] = "failed"
+                        tasks_failed.add(task_id)
+                        instrumentation.record_error("dimension_mismatch", task_id)
+                        
+                        results.append(MicroQuestionRun(
+                            question_id=question.get("id"),
+                            question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                            base_slot=base_slot,
+                            metadata={"task_id": task_id, "error": "dimension_mismatch"},
+                            evidence=None,
+                            error=f"Dimension mismatch: question={question_dimension}, task={task.dimension}",
+                            aborted=False
+                        ))
+                        continue
+                    
                     q_context = {
                         "question_id": question.get("id"),
                         "question_global": question.get("global_id"),
@@ -1697,7 +1727,7 @@ class Orchestrator:
                         "patterns": question.get("patterns", []),
                         "expected_elements": question.get("expected_elements", []),
                         "identity": {
-                            "dimension_id": question.get("dimension_id", task.dimension),
+                            "dimension_id": question_dimension,
                             "cluster_id": question.get("cluster_id"),
                         },
                         "task_metadata": {
@@ -1707,15 +1737,6 @@ class Orchestrator:
                             "chunk_index": task.chunk_index,
                         }
                     }
-                    
-                    # Validate dimension_id consistency
-                    question_dimension = question.get("dimension_id")
-                    if question_dimension and question_dimension != task.dimension:
-                        logger.warning(
-                            f"Task {task_id}: dimension_id mismatch - "
-                            f"question has '{question_dimension}' but task has '{task.dimension}'. "
-                            f"Using question dimension_id."
-                        )
 
                     result_data = instance.execute(
                         document=document,

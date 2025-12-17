@@ -52,6 +52,7 @@ class ExecutionPlan:
     metadata: dict[str, Any]
 
 
+# Tests always available since we define minimal versions above
 IMPORTS_AVAILABLE = True
 IMPORT_ERROR = ""
 
