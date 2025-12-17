@@ -622,10 +622,15 @@
                 </div>
             `;
 
-            const avgTier1 = filteredContracts.reduce((sum, c) => sum + c.tier1_score, 0) / filteredContracts.length;
-            const avgTier2 = filteredContracts.reduce((sum, c) => sum + c.tier2_score, 0) / filteredContracts.length;
-            const avgTier3 = filteredContracts.reduce((sum, c) => sum + c.tier3_score, 0) / filteredContracts.length;
+            let avgTier1 = 0;
+            let avgTier2 = 0;
+            let avgTier3 = 0;
 
+            if (filteredContracts.length > 0) {
+                avgTier1 = filteredContracts.reduce((sum, c) => sum + c.tier1_score, 0) / filteredContracts.length;
+                avgTier2 = filteredContracts.reduce((sum, c) => sum + c.tier2_score, 0) / filteredContracts.length;
+                avgTier3 = filteredContracts.reduce((sum, c) => sum + c.tier3_score, 0) / filteredContracts.length;
+            }
             const tierData = [
                 { label: 'Tier 1 (Critical)', value: avgTier1, max: 55, color: '#667eea' },
                 { label: 'Tier 2 (Functional)', value: avgTier2, max: 30, color: '#764ba2' },
