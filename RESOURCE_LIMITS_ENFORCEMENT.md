@@ -60,7 +60,7 @@ The `_check_and_enforce_resource_limits` method implements mode-aware circuit br
 
 ```python
 if runtime_mode == RuntimeMode.PROD:
-    # Production: abort on sustained violation
+    # Production: abort on violation
     self.request_abort(f"Resource limits exceeded: {violation_msg}")
     raise AbortRequested(f"Resource limits exceeded: {violation_msg}")
 ```
