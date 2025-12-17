@@ -49,6 +49,17 @@ from .aggregation_enhancements import (
     enhance_aggregator,
 )
 
+from .aggregation_validation import (
+    validate_phase4_output,
+    validate_phase5_output,
+    validate_phase6_output,
+    validate_phase7_output,
+    validate_full_aggregation_pipeline,
+    enforce_validation_or_fail,
+    ValidationResult,
+    AggregationValidationError,
+)
+
 __all__ = [
     # Existing aggregation
     "DimensionAggregator",
@@ -75,4 +86,13 @@ __all__ = [
     "HermeticityDiagnosis",
     "StrategicAlignmentMetrics",
     "enhance_aggregator",
+    # Validation
+    "validate_phase4_output",
+    "validate_phase5_output",
+    "validate_phase6_output",
+    "validate_phase7_output",
+    "validate_full_aggregation_pipeline",
+    "enforce_validation_or_fail",
+    "ValidationResult",
+    "AggregationValidationError",
 ]

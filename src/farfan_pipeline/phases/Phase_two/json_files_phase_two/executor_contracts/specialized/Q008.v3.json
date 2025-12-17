@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "3ea47b5ab8fe5e47dd56549e0be636bfe4477d0e1a00280a4be58c435ceae345",
+    "contract_hash": "2495847615aeb8674206f3c0137a11d2069f263b673b70f57d16a8683df8de19",
     "created_at": "2025-11-28T03:49:29.804254+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 8,
-    "updated_at": "2025-12-16T04:42:57.348035+00:00"
+    "updated_at": "2025-12-17T02:01:25.637670+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -240,7 +240,7 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -971,7 +971,16 @@
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q008",
     "specialized_from_base_slot": "D2-Q3",
-    "specialization_timestamp": "2025-11-28T03:49:29.804298+00:00"
+    "specialization_timestamp": "2025-11-28T03:49:29.804298+00:00",
+    "remediation_log": [
+      {
+        "timestamp": "2025-12-17T02:01:25.637677+00:00",
+        "fixes_applied": [
+          "signal_threshold"
+        ],
+        "tool": "contract_remediator.py"
+      }
+    ]
   },
   "error_handling": {
     "on_method_not_found": "raise",
