@@ -1231,6 +1231,53 @@ class Orchestrator:
         if not hasattr(self.executor, "signal_registry") or self.executor.signal_registry is None:
             raise RuntimeError("MethodExecutor must have signal_registry")
         
+        # Validate signal registry health before execution
+        signal_validation_result = self.executor.signal_registry.validate_signals_for_questionnaire(
+            expected_question_count=EXPECTED_QUESTION_COUNT
+        )
+        
+        # In production mode, enforce strict validation
+        is_prod_mode = (
+            runtime_config is not None 
+            and hasattr(runtime_config, "mode")
+            and runtime_config.mode.value == "prod"
+        )
+        
+        if not signal_validation_result["valid"]:
+            error_msg = (
+                f"Signal registry validation failed: "
+                f"{len(signal_validation_result['missing_questions'])} questions missing signals, "
+                f"{len(signal_validation_result['malformed_signals'])} questions with malformed signals"
+            )
+            
+            logger.error(
+                "orchestrator_signal_validation_failed",
+                validation_result=signal_validation_result,
+                is_prod_mode=is_prod_mode,
+            )
+            
+            if is_prod_mode:
+                raise RuntimeError(
+                    f"{error_msg}. "
+                    f"Production mode requires complete signal coverage. "
+                    f"Missing questions: {signal_validation_result['missing_questions'][:10]}, "
+                    f"Coverage: {signal_validation_result['coverage_percentages']}"
+                )
+            else:
+                logger.warning(
+                    "orchestrator_signal_validation_warning",
+                    message=f"{error_msg}. Continuing in non-production mode.",
+                    missing_count=len(signal_validation_result['missing_questions']),
+                    malformed_count=len(signal_validation_result['malformed_signals']),
+                )
+        else:
+            logger.info(
+                "orchestrator_signal_validation_passed",
+                total_questions=signal_validation_result["total_questions"],
+                coverage=signal_validation_result["coverage_percentages"],
+                elapsed_seconds=signal_validation_result["elapsed_seconds"],
+            )
+        
         try:
             _validate_questionnaire_structure(self._monolith_data)
         except (ValueError, TypeError) as e:
@@ -2374,6 +2421,22 @@ class Orchestrator:
                         "source_hash": getattr(scoring_signals, 'source_hash', None),
                         "signal_source": "sisas_registry"
                     }
+                    
+                    # Add detailed signal tracking for audit trail
+                    scoring_details["applied_signals"] = {
+                        "question_id": micro_result.question_id,
+                        "scoring_modality": scoring_signals.scoring_modality,
+                        "has_modality_config": micro_result.question_id in scoring_signals.question_modalities,
+                        "threshold_defined": scoring_signals.scoring_modality in ["binary_presence", "presence_threshold"],
+                        "signal_lookup_timestamp": time.time(),
+                    }
+                    
+                    logger.debug(
+                        "signal_applied_in_scoring",
+                        question_id=micro_result.question_id,
+                        modality=scoring_signals.question_modalities.get(micro_result.question_id),
+                        scoring_modality=scoring_signals.scoring_modality,
+                    )
                 
                 # Create scored result
                 scored = ScoredMicroQuestion(
