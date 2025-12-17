@@ -1364,6 +1364,65 @@ class Orchestrator:
         
         return base_timeout * multiplier
     
+    async def _check_and_enforce_resource_limits(
+        self, phase_id: int, phase_label: str
+    ) -> None:
+        """Check resource limits and enforce circuit breaker behavior.
+        
+        Behavior depends on RuntimeMode:
+        - PROD: Abort pipeline on sustained limit violation
+        - DEV/EXPLORATORY: Log and throttle instead of immediate abort
+        """
+        memory_exceeded, usage = self.resource_limits.check_memory_exceeded()
+        cpu_exceeded, usage = self.resource_limits.check_cpu_exceeded(usage)
+        
+        if memory_exceeded or cpu_exceeded:
+            violation_type = []
+            if memory_exceeded:
+                violation_type.append(f"memory {usage['rss_mb']:.1f}MB > {self.resource_limits.max_memory_mb}MB")
+            if cpu_exceeded:
+                violation_type.append(f"CPU {usage['cpu_percent']:.1f}% > {self.resource_limits.max_cpu_percent}%")
+            
+            violation_msg = " and ".join(violation_type)
+            
+            # Apply worker budget reduction
+            old_budget = self.resource_limits.max_workers
+            new_budget = await self.resource_limits.apply_worker_budget()
+            
+            logger.warning(
+                f"Resource limits exceeded before phase {phase_id} ({phase_label}): {violation_msg}",
+                extra={
+                    "phase_id": phase_id,
+                    "phase_label": phase_label,
+                    "old_worker_budget": old_budget,
+                    "new_worker_budget": new_budget,
+                    "memory_mb": usage["rss_mb"],
+                    "cpu_percent": usage["cpu_percent"],
+                }
+            )
+            
+            # Determine abort behavior based on runtime mode
+            runtime_mode = RuntimeMode.PROD  # Default to strictest
+            if self.runtime_config is not None:
+                runtime_mode = self.runtime_config.mode
+            
+            if runtime_mode == RuntimeMode.PROD:
+                # Production: abort on violation
+                self.request_abort(f"Resource limits exceeded: {violation_msg}")
+                raise AbortRequested(f"Resource limits exceeded: {violation_msg}")
+            else:
+                # DEV/EXPLORATORY: throttle and log
+                logger.warning(
+                    f"Resource limits exceeded in {runtime_mode.value} mode - throttling but continuing",
+                    extra={
+                        "mode": runtime_mode.value,
+                        "violation": violation_msg,
+                        "action": "throttled",
+                    }
+                )
+                # Give system time to recover
+                await asyncio.sleep(0.5)
+    
     async def process_development_plan_async(
         self, pdf_path: str, preprocessed_document: Any | None = None
     ) -> list[PhaseResult]:
@@ -1382,6 +1441,9 @@ class Orchestrator:
         
         for phase_id, mode, handler_name, phase_label in self.FASES:
             self._ensure_not_aborted()
+            
+            # Resource limit enforcement between phases
+            await self._check_and_enforce_resource_limits(phase_id, phase_label)
             
             handler = getattr(self, handler_name)
             instrumentation = PhaseInstrumentation(
@@ -2121,15 +2183,14 @@ class Orchestrator:
                     ))
                     continue
 
-                try:
-                    instance = executor_class(
-                        method_executor=self.executor,
-                        signal_registry=self.executor.signal_registry,
-                        config=self.executor_config,
-                        questionnaire_provider=self._canonical_questionnaire,
-                        calibration_orchestrator=self.calibration_orchestrator,
-                        enriched_packs=self._enriched_packs or {},
-                    )
+        for idx, question in enumerate(micro_questions):
+            self._ensure_not_aborted()
+            
+            # Resource limit checks every 10 questions in long-running Phase 2
+            if idx > 0 and idx % 10 == 0:
+                await self._check_and_enforce_resource_limits(2, f"FASE 2 - Question {idx}/{len(micro_questions)}")
+            
+            start_q = time.perf_counter()
 
                     # Validate dimension_id consistency
                     question_dimension = question.get("dimension_id")
