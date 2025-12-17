@@ -182,3 +182,12 @@ src/cross_cutting_infrastructure/irrigation_using_signals
 # LOCAL DEVELOPMENT FILES (not tracked) - add specific patterns here
 # *.py  # REMOVED: Was blocking all Python files incorrectly
 
+
+# Deployment artifacts (keep reports but exclude runtime data)
+artifacts/remediation_results.json
+artifacts/deployment_*.json
+
+# Temporary backups created during deployment
+backups/pre_rollback_*
+backups/staging_*
+backups/production_*

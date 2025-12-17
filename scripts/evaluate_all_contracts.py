@@ -29,7 +29,7 @@ def evaluate_all_contracts() -> dict[str, Any]:
     contracts = sorted(contracts_dir.glob("Q*.v3.json"))
 
     results = {
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(datetime.UTC).isoformat(),
         "total_contracts": 0,
         "evaluated": 0,
         "skipped": 0,
