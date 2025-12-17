@@ -1433,6 +1433,69 @@ class Orchestrator:
             .encode("utf-8")
         ).hexdigest()
         
+        # Validate questionnaire hash against expected value
+        expected_hash = os.getenv("EXPECTED_QUESTIONNAIRE_SHA256", "").strip()
+        if self.runtime_config and hasattr(self.runtime_config, "expected_questionnaire_sha256"):
+            config_hash = getattr(self.runtime_config, "expected_questionnaire_sha256", "")
+            if config_hash:
+                expected_hash = config_hash
+        
+        if expected_hash:
+            if monolith_hash.lower() != expected_hash.lower():
+                error_msg = (
+                    f"Questionnaire integrity check failed: "
+                    f"expected SHA256 {expected_hash[:16]}..., "
+                    f"got {monolith_hash[:16]}..."
+                )
+                logger.error(error_msg)
+                instrumentation.record_error("integrity", error_msg)
+                raise RuntimeError(error_msg)
+            else:
+                logger.info(
+                    "questionnaire_integrity_verified",
+                    hash=monolith_hash[:16] + "...",
+                    category="phase0_validation"
+                )
+        
+        # Validate method count
+        if self.executor:
+            try:
+                stats = self.executor.get_registry_stats()
+                registered_count = stats.get("total_classes_registered", 0)
+                failed_count = stats.get("failed_classes", 0)
+                
+                if registered_count < EXPECTED_METHOD_COUNT:
+                    error_msg = (
+                        f"Method registry validation failed: "
+                        f"expected {EXPECTED_METHOD_COUNT} methods, "
+                        f"got {registered_count}"
+                    )
+                    logger.error(error_msg)
+                    instrumentation.record_error("method_count", error_msg)
+                    
+                    if self.runtime_config and self.runtime_config.mode == RuntimeMode.PROD:
+                        raise RuntimeError(error_msg)
+                    else:
+                        logger.warning(f"DEV mode: {error_msg}")
+                
+                if failed_count > 0:
+                    failed_names = stats.get("failed_class_names", [])
+                    warning_msg = f"Method registry has {failed_count} failed classes: {failed_names[:3]}"
+                    logger.warning(warning_msg)
+                    instrumentation.record_warning("method_failures", warning_msg)
+                    
+                    if self.runtime_config and self.runtime_config.mode == RuntimeMode.PROD:
+                        raise RuntimeError(f"PROD mode: {warning_msg}")
+                
+                logger.info(
+                    "method_registry_validated",
+                    registered=registered_count,
+                    failed=failed_count,
+                    category="phase0_validation"
+                )
+            except AttributeError:
+                logger.warning("Method registry stats unavailable - skipping validation")
+        
         micro_questions = monolith["blocks"].get("micro_questions", [])
         meso_questions = monolith["blocks"].get("meso_questions", [])
         macro_question = monolith["blocks"].get("macro_question", {})
