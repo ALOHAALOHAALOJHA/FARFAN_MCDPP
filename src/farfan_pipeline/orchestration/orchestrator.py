@@ -53,6 +53,13 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
+from canonic_phases.Phase_four_five_six_seven.aggregation_validation import (
+    validate_phase4_output,
+    validate_phase5_output,
+    validate_phase6_output,
+    validate_phase7_output,
+    enforce_validation_or_fail,
+)
 from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
     enhance_aggregator,
     EnhancedDimensionAggregator,
@@ -2136,6 +2143,16 @@ class Orchestrator:
             )
 
             logger.info(f"Phase 4: Aggregated {len(dimension_scores)} dimension scores")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase4_output(dimension_scores, agg_inputs)
+            if not validation_result.passed:
+                error_msg = f"Phase 4 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 4 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=len(dimension_scores), latency=duration)
@@ -2194,6 +2211,16 @@ class Orchestrator:
                 pass
 
             logger.info(f"Phase 5: Aggregated {len(area_scores)} area scores")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase5_output(area_scores, dimension_scores)
+            if not validation_result.passed:
+                error_msg = f"Phase 5 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 5 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=len(area_scores), latency=duration)
@@ -2232,6 +2259,16 @@ class Orchestrator:
             )
 
             logger.info(f"Phase 6: Aggregated {len(cluster_scores)} cluster scores")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase6_output(cluster_scores, policy_area_scores)
+            if not validation_result.passed:
+                error_msg = f"Phase 6 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 6 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=len(cluster_scores), latency=duration)
@@ -2296,6 +2333,18 @@ class Orchestrator:
             )
 
             logger.info(f"Phase 7: Macro evaluation complete. Score: {macro_score.score:.4f}")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase7_output(
+                macro_score, cluster_scores, policy_area_scores, dimension_scores
+            )
+            if not validation_result.passed:
+                error_msg = f"Phase 7 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 7 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=1, latency=duration)
