@@ -10,7 +10,17 @@
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 202,
-    "updated_at": "2025-12-16T04:42:58.348043+00:00"
+    "updated_at": "2025-12-17T02:49:51.776706",
+    "remediation_applied": [
+      {
+        "date": "2025-12-17T02:49:51.776710",
+        "fixes": [
+          "signal_threshold",
+          "methodological_depth"
+        ],
+        "reason": "CQVR v2.0 Batch 9 automated remediation"
+      }
+    ]
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -248,7 +258,7 @@
     "note": "All 28 methods extracted from D5_Q2_Executor in executors.py"
   },
   "question_context": {
-    "question_text": "¿Se utilizan 'índices' (ej. Índice de Pobreza Multidimensional para Niñez) o 'proxies' para medir los impactos en el desarrollo juvenil, justificando su validez?",
+    "question_text": "\u00bfSe utilizan '\u00edndices' (ej. \u00cdndice de Pobreza Multidimensional para Ni\u00f1ez) o 'proxies' para medir los impactos en el desarrollo juvenil, justificando su validez?",
     "question_type": "micro",
     "scoring_modality": "TYPE_A",
     "modality": "count_and_scale",
@@ -260,7 +270,7 @@
         "flags": "i",
         "id": "PAT-Q202-000",
         "match_type": "REGEX",
-        "pattern": "Índice de Pobreza Multidimensional para Niñez y Adolescencia|IPM-NNA",
+        "pattern": "\u00cdndice de Pobreza Multidimensional para Ni\u00f1ez y Adolescencia|IPM-NNA",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -274,7 +284,7 @@
         "flags": "i",
         "id": "PAT-Q202-001",
         "match_type": "REGEX",
-        "pattern": "Índice de Desarrollo Juvenil|indicador compuesto de bienestar",
+        "pattern": "\u00cdndice de Desarrollo Juvenil|indicador compuesto de bienestar",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -294,7 +304,7 @@
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0099",
-        "pattern": "se usará como proxy|indicador aproximado",
+        "pattern": "se usar\u00e1 como proxy|indicador aproximado",
         "policy_area": "PA06"
       },
       {
@@ -303,7 +313,7 @@
         "flags": "i",
         "id": "PAT-Q202-003",
         "match_type": "REGEX",
-        "pattern": "la tasa de graduación de educación media como proxy de capital humano",
+        "pattern": "la tasa de graduaci\u00f3n de educaci\u00f3n media como proxy de capital humano",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -317,7 +327,7 @@
         "flags": "i",
         "id": "PAT-Q202-004",
         "match_type": "REGEX",
-        "pattern": "la tasa de homicidios juvenil como proxy inverso de cohesión social",
+        "pattern": "la tasa de homicidios juvenil como proxy inverso de cohesi\u00f3n social",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -331,7 +341,7 @@
         "flags": "i",
         "id": "PAT-Q202-005",
         "match_type": "REGEX",
-        "pattern": "este indicador es válido porque es una medición estandarizada",
+        "pattern": "este indicador es v\u00e1lido porque es una medici\u00f3n estandarizada",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -382,7 +392,7 @@
       "sustainability_mechanisms"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -408,7 +418,7 @@
               "description": "Scores de confianza usados por el scorer."
             },
             "semantic_similarity": {
-              "description": "Métrica de similitud semántica (si aplica)."
+              "description": "M\u00e9trica de similitud sem\u00e1ntica (si aplica)."
             },
             "pattern_matches": {
               "type": "object",
@@ -427,7 +437,36 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "pdet_analysis.calculate_quality_score",
+          "pdet_analysis.estimate_score_confidence",
+          "pdet_analysis.compute_e_value",
+          "pdet_analysis.compute_robustness_value",
+          "pdet_analysis.interpret_sensitivity",
+          "reportingengine.calculate_quality_score",
+          "bayesianmechanisminference.aggregate_bayesian_confidence",
+          "policyanalysisembedder.evaluate_policy_numerical_consistency",
+          "policyanalysisembedder.get_diagnostics",
+          "policyanalysisembedder.process_document",
+          "policyanalysisembedder.generate_query_from_pdq",
+          "policyanalysisembedder.filter_by_pdq",
+          "policyanalysisembedder.extract_numerical_values",
+          "policyanalysisembedder.embed_texts",
+          "policyanalysisembedder.compute_overall_confidence",
+          "financial_audit.calculate_sufficiency",
+          "pdet_analysis.interpret_overall_quality",
+          "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
+          "policytextprocessor.normalize_unicode",
+          "policytextprocessor.segment_into_sentences",
+          "industrial_policy.compute_evidence_confidence",
+          "industrial_policy.compute_avg_confidence",
+          "pdet_analysis.quality_to_dict",
+          "industrial_policy.construct_evidence_bundle",
+          "policytextprocessor.compile_pattern",
+          "policytextprocessor.extract_contextual_window",
+          "pdet_analysis.generate_executive_report",
+          "industrial_policy.export_results"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -478,7 +517,7 @@
         },
         "question_global": {
           "type": "integer",
-          "description": "Índice global de la pregunta (de questionnaire_monolith).",
+          "description": "\u00cdndice global de la pregunta (de questionnaire_monolith).",
           "const": 202
         },
         "policy_area_id": {
@@ -486,7 +525,7 @@
             "string",
             "null"
           ],
-          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
+          "description": "PA can\u00f3nica, debe ser coherente con identity.policy_area_id.",
           "const": "PA06"
         },
         "dimension_id": {
@@ -494,7 +533,7 @@
             "string",
             "null"
           ],
-          "description": "Dimensión canónica, coherente con identity.dimension_id.",
+          "description": "Dimensi\u00f3n can\u00f3nica, coherente con identity.dimension_id.",
           "const": "DIM05"
         },
         "cluster_id": {
@@ -502,7 +541,7 @@
             "string",
             "null"
           ],
-          "description": "Cluster de análisis según el monolith, si aplica.",
+          "description": "Cluster de an\u00e1lisis seg\u00fan el monolith, si aplica.",
           "const": "CL02"
         },
         "evidence": {
@@ -518,7 +557,7 @@
             "object",
             "null"
           ],
-          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
+          "description": "Resultado de validaciones l\u00f3gicas de la respuesta (coherencia, integridad, etc.).",
           "additionalProperties": true
         },
         "trace": {
@@ -526,7 +565,7 @@
             "object",
             "null"
           ],
-          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
+          "description": "Informaci\u00f3n de trazabilidad (provenance, logs) espec\u00edfica de la ejecuci\u00f3n.",
           "additionalProperties": true
         },
         "metadata": {
@@ -548,17 +587,17 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "title": "## An\u00e1lisis D1-Q1: L\u00ednea Base Cuantitativa en Derechos de las Mujeres",
+        "summary": "### Resumen Ejecutivo\n\nSe analiz\u00f3 la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la l\u00ednea base diagn\u00f3stica en el \u00e1rea de Derechos de las Mujeres e Igualdad de G\u00e9nero.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluaci\u00f3n Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos cr\u00edticos faltantes**: {evidence.missing_required_elements}",
         "details": [
           "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
           "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
           "**Series temporales**: {evidence.temporal_series_count}",
           "**Cobertura territorial**: {evidence.territorial_coverage}"
         ],
-        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
+        "interpretation": "### Interpretaci\u00f3n de Resultados\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -607,7 +646,7 @@
                 "result": "Structured output from calculate_quality_score"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -660,7 +699,7 @@
                 "result": "Structured output from _estimate_score_confidence"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -713,7 +752,7 @@
                 "result": "Structured output from _compute_e_value"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -766,7 +805,7 @@
                 "result": "Structured output from _compute_robustness_value"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -819,7 +858,7 @@
                 "result": "Structured output from _interpret_sensitivity"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -872,7 +911,7 @@
                 "result": "Structured output from _calculate_quality_score"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -925,7 +964,7 @@
                 "result": "Structured output from _aggregate_bayesian_confidence"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -978,7 +1017,7 @@
                 "result": "Structured output from evaluate_policy_numerical_consistency"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1031,7 +1070,7 @@
                 "result": "Structured output from get_diagnostics"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1084,7 +1123,7 @@
                 "result": "Structured output from process_document"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1137,7 +1176,7 @@
                 "result": "Structured output from _generate_query_from_pdq"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1190,7 +1229,7 @@
                 "result": "Structured output from _filter_by_pdq"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1243,7 +1282,7 @@
                 "result": "Structured output from _extract_numerical_values"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1296,7 +1335,7 @@
                 "result": "Structured output from _embed_texts"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1349,7 +1388,7 @@
                 "result": "Structured output from _compute_overall_confidence"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1402,7 +1441,7 @@
                 "result": "Structured output from _calculate_sufficiency"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1455,7 +1494,7 @@
                 "result": "Structured output from _interpret_overall_quality"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1508,7 +1547,7 @@
                 "result": "Structured output from aggregate_risk_and_prioritize"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1561,7 +1600,7 @@
                 "result": "Structured output from normalize_unicode"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1614,7 +1653,7 @@
                 "result": "Structured output from segment_into_sentences"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1667,7 +1706,7 @@
                 "result": "Structured output from _compute_evidence_confidence"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1720,7 +1759,7 @@
                 "result": "Structured output from _compute_avg_confidence"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1773,7 +1812,7 @@
                 "result": "Structured output from _quality_to_dict"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1826,7 +1865,7 @@
                 "result": "Structured output from _construct_evidence_bundle"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1879,7 +1918,7 @@
                 "result": "Structured output from compile_pattern"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1932,7 +1971,7 @@
                 "result": "Structured output from extract_contextual_window"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1985,7 +2024,7 @@
                 "result": "Structured output from generate_executive_report"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -2038,7 +2077,7 @@
                 "result": "Structured output from export_results"
               },
               "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
+                "high_confidence": "\u22650.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -2053,7 +2092,7 @@
           "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
           "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
           "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "execution_order": "Methods execute in priority order (1\u219217). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
           "trade_offs": [
             "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
             "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
@@ -2095,7 +2134,7 @@
           },
           {
             "elements": [
-              "series_temporales_años"
+              "series_temporales_a\u00f1os"
             ],
             "minimum": 3
           }
@@ -2194,7 +2233,7 @@
                 "enum": [
                   "fuentes_oficiales",
                   "indicadores_cuantitativos",
-                  "series_temporales_años",
+                  "series_temporales_a\u00f1os",
                   "cobertura_territorial_especificada",
                   "financial_amounts",
                   "policy_goals",
@@ -2241,7 +2280,7 @@
                   "type": "integer",
                   "minimum_expected": 3
                 },
-                "series_temporales_años": {
+                "series_temporales_a\u00f1os": {
                   "type": "integer",
                   "minimum_expected": 3
                 },
@@ -2426,7 +2465,7 @@
           "value": "DANE",
           "confidence": 0.95,
           "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "según datos de DANE para el año 2022",
+          "source_sentence": "seg\u00fan datos de DANE para el a\u00f1o 2022",
           "sentence_id": 45,
           "position": {
             "start": 123,
@@ -2452,7 +2491,7 @@
         },
         {
           "element_id": "E-003",
-          "type": "series_temporales_años",
+          "type": "series_temporales_a\u00f1os",
           "years": [
             2020,
             2021,
@@ -2474,7 +2513,7 @@
         "by_type": {
           "fuentes_oficiales": 5,
           "indicadores_cuantitativos": 12,
-          "series_temporales_años": 4,
+          "series_temporales_a\u00f1os": 4,
           "cobertura_territorial_especificada": 1,
           "financial_amounts": 8,
           "policy_goals": 7,
@@ -2512,7 +2551,7 @@
       "critical_links": [
         {
           "cause": "alta tasa de VBG",
-          "effect": "baja autonomía económica",
+          "effect": "baja autonom\u00eda econ\u00f3mica",
           "criticality": 0.87,
           "coherence": 0.82
         }
@@ -2567,7 +2606,7 @@
         "found_in_example": 12,
         "status": "PASS"
       },
-      "series_temporales_años": {
+      "series_temporales_a\u00f1os": {
         "minimum": 3,
         "found_in_example": 4,
         "status": "PASS"

@@ -10,7 +10,7 @@
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 181,
-    "updated_at": "2025-12-16T04:42:58.235275+00:00"
+    "updated_at": "2025-12-17T14:44:57.238742+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -487,7 +487,7 @@
       "temporal_coverage"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -2541,6 +2541,36 @@
       "usage_in_assembly": {
         "provides_key": "semantic_processing.embed_single",
         "merge_strategy": "replace"
+      }
+    }
+  },
+  "validation": {
+    "rules": [
+      {
+        "field": "elements_found",
+        "should_contain": {
+          "minimum": 3,
+          "elements": [
+            "fuentes_oficiales",
+            "indicadores_cuantitativos",
+            "series_temporales_años"
+          ]
+        }
+      },
+      {
+        "field": "confidence_scores",
+        "threshold": {
+          "minimum_mean": 0.6
+        }
+      }
+    ],
+    "error_handling": {
+      "on_method_failure": "propagate_with_trace",
+      "failure_contract": {
+        "abort_if": [
+          "missing_required_element"
+        ],
+        "emit_code": "ABORT-Q181-REQ"
       }
     }
   }
