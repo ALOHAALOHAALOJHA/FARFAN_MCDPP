@@ -10,18 +10,18 @@
 
 | Métrica | Score | Umbral | Estado |
 |---------|-------|--------|--------|
-| **TIER 1: Componentes Críticos** | **40/55** | ≥35 | ✅ APROBADO |
-| **TIER 2: Componentes Funcionales** | **12/30** | ≥20 | ❌ REPROBADO |
+| **TIER 1: Componentes Críticos** | **50/55** | ≥35 | ✅ APROBADO |
+| **TIER 2: Componentes Funcionales** | **17/30** | ≥20 | ❌ REPROBADO |
 | **TIER 3: Componentes de Calidad** | **10/15** | ≥8 | ✅ APROBADO |
-| **TOTAL** | **62/100** | ≥80 | ⚠️ MEJORAR |
+| **TOTAL** | **77/100** | ≥80 | ⚠️ MEJORAR |
 
 **VEREDICTO**: ⚠️ MEJORAR
 
-**Decisión de Triage**: PARCHEAR_MAJOR
+**Decisión de Triage**: PARCHEAR_MINOR
 
 ---
 
-## TIER 1: COMPONENTES CRÍTICOS - 40/55 pts ✅
+## TIER 1: COMPONENTES CRÍTICOS - 50/55 pts ✅
 
 ### A1. Coherencia Identity-Schema [20/20 pts] ✅
 
@@ -67,10 +67,10 @@
 
 ---
 
-### A3. Integridad de Señales [0/10 pts] ❌
+### A3. Integridad de Señales [10/10 pts] ✅
 
 **Mandatory Signals**: 5  
-**Threshold**: 0.0  
+**Threshold**: 0.5  
 **Aggregation**: weighted_mean
 
 ---
@@ -82,7 +82,7 @@
 
 ---
 
-## TIER 2: COMPONENTES FUNCIONALES - 12/30 pts ❌
+## TIER 2: COMPONENTES FUNCIONALES - 17/30 pts ❌
 
 ### B1. Coherencia de Patrones [5/10 pts]
 
@@ -93,9 +93,9 @@
 
 **Methodological depth**: Present
 
-### B3. Reglas de Validación [5/10 pts]
+### B3. Reglas de Validación [10/10 pts]
 
-**Validation rules**: 0
+**Validation rules**: 3
 
 ---
 
@@ -115,13 +115,13 @@
 
 ## CONCLUSIÓN
 
-El contrato Q191.v3 obtiene **62/100 puntos** (**62.0%**).
+El contrato Q191.v3 obtiene **77/100 puntos** (**77.0%**).
 
 **Estado**: ⚠️ MEJORAR  
-**Decisión**: PARCHEAR_MAJOR
+**Decisión**: PARCHEAR_MINOR
 
 ---
 
-**Generado**: 2025-12-17T09:30:08.175220Z  
+**Generado**: 2025-12-17T14:45:14.467373Z  
 **Auditor**: CQVR Batch 8 Evaluator v1.0  
 **Rúbrica**: CQVR v2.0

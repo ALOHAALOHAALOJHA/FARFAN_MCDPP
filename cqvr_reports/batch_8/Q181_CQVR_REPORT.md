@@ -10,18 +10,18 @@
 
 | Métrica | Score | Umbral | Estado |
 |---------|-------|--------|--------|
-| **TIER 1: Componentes Críticos** | **42/55** | ≥35 | ✅ APROBADO |
+| **TIER 1: Componentes Críticos** | **52/55** | ≥35 | ✅ APROBADO |
 | **TIER 2: Componentes Funcionales** | **25/30** | ≥20 | ✅ APROBADO |
 | **TIER 3: Componentes de Calidad** | **10/15** | ≥8 | ✅ APROBADO |
-| **TOTAL** | **77/100** | ≥80 | ⚠️ MEJORAR |
+| **TOTAL** | **87/100** | ≥80 | ✅ PRODUCCIÓN |
 
-**VEREDICTO**: ⚠️ MEJORAR
+**VEREDICTO**: ✅ PRODUCCIÓN
 
-**Decisión de Triage**: PARCHEAR_MAJOR
+**Decisión de Triage**: PARCHEAR_MINOR
 
 ---
 
-## TIER 1: COMPONENTES CRÍTICOS - 42/55 pts ✅
+## TIER 1: COMPONENTES CRÍTICOS - 52/55 pts ✅
 
 ### A1. Coherencia Identity-Schema [20/20 pts] ✅
 
@@ -69,10 +69,10 @@
 
 ---
 
-### A3. Integridad de Señales [0/10 pts] ❌
+### A3. Integridad de Señales [10/10 pts] ✅
 
 **Mandatory Signals**: 5  
-**Threshold**: 0.0  
+**Threshold**: 0.5  
 **Aggregation**: weighted_mean
 
 ---
@@ -97,7 +97,7 @@
 
 ### B3. Reglas de Validación [10/10 pts]
 
-**Validation rules**: 0
+**Validation rules**: 2
 
 ---
 
@@ -117,13 +117,13 @@
 
 ## CONCLUSIÓN
 
-El contrato Q181.v3 obtiene **77/100 puntos** (**77.0%**).
+El contrato Q181.v3 obtiene **87/100 puntos** (**87.0%**).
 
-**Estado**: ⚠️ MEJORAR  
-**Decisión**: PARCHEAR_MAJOR
+**Estado**: ✅ PRODUCCIÓN  
+**Decisión**: PARCHEAR_MINOR
 
 ---
 
-**Generado**: 2025-12-17T09:30:08.164366Z  
+**Generado**: 2025-12-17T14:45:14.456479Z  
 **Auditor**: CQVR Batch 8 Evaluator v1.0  
 **Rúbrica**: CQVR v2.0
