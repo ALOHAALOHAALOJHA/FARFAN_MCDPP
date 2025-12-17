@@ -2111,8 +2111,15 @@ class Orchestrator:
             tasks_executed = set()
             tasks_failed = set()
             
-            for task in tasks:
+            for task_index, task in enumerate(tasks):
                 self._ensure_not_aborted()
+                
+                # Resource limit checks every 10 tasks in long-running Phase 2
+                if task_index > 0 and task_index % 10 == 0:
+                    await self._check_and_enforce_resource_limits(
+                        2, f"FASE 2 - Task {task_index}/{len(tasks)}"
+                    )
+                
                 task_id = task.task_id
                 start_q = time.perf_counter()
                 
@@ -2183,14 +2190,15 @@ class Orchestrator:
                     ))
                     continue
 
-        for idx, question in enumerate(micro_questions):
-            self._ensure_not_aborted()
-            
-            # Resource limit checks every 10 questions in long-running Phase 2
-            if idx > 0 and idx % 10 == 0:
-                await self._check_and_enforce_resource_limits(2, f"FASE 2 - Question {idx}/{len(micro_questions)}")
-            
-            start_q = time.perf_counter()
+                try:
+                    instance = executor_class(
+                        method_executor=self.executor,
+                        signal_registry=self.executor.signal_registry,
+                        config=self.executor_config,
+                        questionnaire_provider=self._canonical_questionnaire,
+                        calibration_orchestrator=self.calibration_orchestrator,
+                        enriched_packs=self._enriched_packs or {},
+                    )
 
                     # Validate dimension_id consistency
                     question_dimension = question.get("dimension_id")
