@@ -1,0 +1,94 @@
+name: CQVR Quality Gate
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/**'
+  workflow_dispatch:
+
+jobs:
+  evaluate_contracts:
+    name: Evaluate Contract Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      
+      - name: Run CQVR evaluation
+        id: evaluation
+        run: |
+          python scripts/evaluate_all_contracts.py
+        continue-on-error: true
+      
+      - name: Upload evaluation results
+        uses: actions/upload-artifact@v4
+        with:
+          name: cqvr-evaluation-results
+          path: |
+            artifacts/cqvr_evaluation_full.json
+            artifacts/CQVR_EVALUATION_REPORT.md
+          retention-days: 30
+      
+      - name: Check quality gate
+        run: |
+          AVERAGE=$(python -c "
+          import json
+          with open('artifacts/cqvr_evaluation_full.json') as f:
+              data = json.load(f)
+          print(f\"{data['statistics']['average_score']:.1f}\")
+          ")
+          
+          FAILED=$(python -c "
+          import json
+          with open('artifacts/cqvr_evaluation_full.json') as f:
+              data = json.load(f)
+          print(data['statistics']['failed_40'])
+          ")
+          
+          echo "Average Score: $AVERAGE/100"
+          echo "Contracts < 40: $FAILED"
+          
+          if python -c "exit(0 if float('$AVERAGE') >= 80 else 1)"; then
+            echo "✅ Average score passed"
+          else
+            echo "❌ Quality gate failed: Average score below 80"
+            exit 1
+          fi
+          
+          if [ "$FAILED" -gt 0 ]; then
+            echo "❌ Quality gate failed: Contracts below 40 detected"
+            exit 1
+          fi
+          
+          echo "✅ Quality gate passed"
+      
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('artifacts/CQVR_EVALUATION_REPORT.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## CQVR Evaluation Results\n\n${report}`
+            });
