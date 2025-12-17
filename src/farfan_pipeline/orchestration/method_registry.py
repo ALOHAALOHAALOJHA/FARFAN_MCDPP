@@ -330,7 +330,7 @@ class MethodRegistry:
     
     def _evict_if_full(self) -> None:
         """Evict oldest cache entries if cache size exceeds maximum."""
-        if len(self._cache) < self._max_cache_size:
+        if len(self._cache) <= self._max_cache_size:
             return
         
         # Sort by last accessed time and evict oldest
@@ -339,7 +339,7 @@ class MethodRegistry:
             key=lambda x: x[1].last_accessed,
         )
         
-        evict_count = len(self._cache) - self._max_cache_size + 1
+        evict_count = len(self._cache) - self._max_cache_size
         for class_name, entry in sorted_entries[:evict_count]:
             logger.info(
                 "cache_entry_evicted_size_limit",
