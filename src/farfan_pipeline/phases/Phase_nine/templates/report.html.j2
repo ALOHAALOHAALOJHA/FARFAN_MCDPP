@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Análisis de Política - {{ metadata.plan_name }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+            @bottom-right {
+                content: "Página " counter(page) " de " counter(pages);
+                font-size: 9pt;
+                color: #666;
+            }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 10pt;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            font-size: 24pt;
+            color: #1a1a1a;
+            border-bottom: 3px solid #2c5aa0;
+            padding-bottom: 10px;
+            margin-top: 0;
+            page-break-after: avoid;
+        }
+        
+        h2 {
+            font-size: 18pt;
+            color: #2c5aa0;
+            margin-top: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 5px;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            font-size: 14pt;
+            color: #4a4a4a;
+            margin-top: 20px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            font-size: 12pt;
+            color: #666;
+            margin-top: 15px;
+            page-break-after: avoid;
+        }
+        
+        .cover-page {
+            text-align: center;
+            padding-top: 30%;
+            page-break-after: always;
+        }
+        
+        .cover-title {
+            font-size: 32pt;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+        }
+        
+        .cover-subtitle {
+            font-size: 20pt;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .metadata-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 9pt;
+        }
+        
+        .metadata-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .metadata-table td:first-child {
+            font-weight: bold;
+            background-color: #f5f5f5;
+            width: 30%;
+        }
+        
+        .executive-summary {
+            background-color: #f8f9fa;
+            border-left: 4px solid #2c5aa0;
+            padding: 20px;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        
+        .score-box {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14pt;
+            margin: 10px 5px;
+        }
+        
+        .score-excellent {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .score-good {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .score-fair {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .score-poor {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 9pt;
+            page-break-inside: avoid;
+        }
+        
+        thead {
+            background-color: #2c5aa0;
+            color: white;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .recommendation {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 4px solid #666;
+            background-color: #f8f9fa;
+            page-break-inside: avoid;
+        }
+        
+        .recommendation-critical {
+            border-left-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        
+        .recommendation-high {
+            border-left-color: #fd7e14;
+            background-color: #fff3cd;
+        }
+        
+        .recommendation-medium {
+            border-left-color: #ffc107;
+            background-color: #fff3cd;
+        }
+        
+        .recommendation-low {
+            border-left-color: #17a2b8;
+            background-color: #d1ecf1;
+        }
+        
+        .recommendation-icon {
+            font-size: 14pt;
+            margin-right: 10px;
+        }
+        
+        .chart-container {
+            text-align: center;
+            margin: 30px 0;
+            page-break-inside: avoid;
+        }
+        
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .footer-note {
+            font-size: 8pt;
+            color: #666;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9pt;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="cover-title">Reporte de Análisis de Política</div>
+        <div class="cover-subtitle">{{ metadata.plan_name }}</div>
+        <p style="font-size: 12pt; color: #666;">
+            Generado: {{ metadata.generated_at }}<br>
+            ID: {{ metadata.report_id }}
+        </p>
+    </div>
+
+    <!-- Metadata Section -->
+    <h1>Información del Reporte</h1>
+    
+    <table class="metadata-table">
+        <tr>
+            <td>ID de Reporte</td>
+            <td><code>{{ metadata.report_id }}</code></td>
+        </tr>
+        <tr>
+            <td>Fecha de Generación</td>
+            <td>{{ metadata.generated_at }}</td>
+        </tr>
+        <tr>
+            <td>Plan de Desarrollo</td>
+            <td>{{ metadata.plan_name }}</td>
+        </tr>
+        <tr>
+            <td>Versión de Cuestionario</td>
+            <td>{{ metadata.monolith_version }}</td>
+        </tr>
+        <tr>
+            <td>Hash de Cuestionario</td>
+            <td><code>{{ metadata.monolith_hash[:16] }}...</code></td>
+        </tr>
+        <tr>
+            <td>Preguntas Totales</td>
+            <td>{{ metadata.total_questions }}</td>
+        </tr>
+        <tr>
+            <td>Preguntas Analizadas</td>
+            <td>{{ metadata.questions_analyzed }}</td>
+        </tr>
+        {% if metadata.correlation_id %}
+        <tr>
+            <td>ID de Correlación</td>
+            <td><code>{{ metadata.correlation_id }}</code></td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <!-- Executive Summary -->
+    <div class="page-break"></div>
+    <h1>Resumen Ejecutivo</h1>
+    
+    {% if macro_summary %}
+    <div class="executive-summary">
+        <h3>Evaluación General</h3>
+        <p>
+            <span class="score-box {% if macro_summary.adjusted_score >= 0.75 %}score-excellent{% elif macro_summary.adjusted_score >= 0.5 %}score-good{% elif macro_summary.adjusted_score >= 0.3 %}score-fair{% else %}score-poor{% endif %}">
+                Puntuación: {{ "%.2f"|format(macro_summary.adjusted_score * 100) }}%
+            </span>
+        </p>
+        
+        <h4>Métricas Clave</h4>
+        <ul>
+            <li><strong>Posterior Global:</strong> {{ "%.4f"|format(macro_summary.overall_posterior) }}</li>
+            <li><strong>Puntuación Ajustada:</strong> {{ "%.4f"|format(macro_summary.adjusted_score) }}</li>
+            <li><strong>Contradicciones Detectadas:</strong> {{ macro_summary.contradiction_count }}</li>
+        </ul>
+        
+        <h4>Penalizaciones Aplicadas</h4>
+        <ul>
+            <li><strong>Cobertura:</strong> {{ "%.4f"|format(macro_summary.coverage_penalty) }}</li>
+            <li><strong>Dispersión:</strong> {{ "%.4f"|format(macro_summary.dispersion_penalty) }}</li>
+            <li><strong>Contradicciones:</strong> {{ "%.4f"|format(macro_summary.contradiction_penalty) }}</li>
+            <li><strong>Total:</strong> {{ "%.4f"|format(macro_summary.total_penalty) }}</li>
+        </ul>
+    </div>
+    {% else %}
+    <div class="executive-summary">
+        <p><em>Resumen macro no disponible.</em></p>
+    </div>
+    {% endif %}
+
+    <!-- Recommendations -->
+    {% if macro_summary and macro_summary.recommendations %}
+    <div class="page-break"></div>
+    <h1>Recomendaciones Estratégicas</h1>
+    
+    {% for rec in macro_summary.recommendations %}
+    <div class="recommendation recommendation-{{ rec.severity.lower() }}">
+        <span class="recommendation-icon">
+            {% if rec.severity == "CRITICAL" %}🔴
+            {% elif rec.severity == "HIGH" %}🟠
+            {% elif rec.severity == "MEDIUM" %}🟡
+            {% elif rec.severity == "LOW" %}🔵
+            {% else %}ℹ️{% endif %}
+        </span>
+        <strong>{{ rec.type }}</strong> ({{ rec.severity }})
+        <p>{{ rec.description }}</p>
+        <small style="color: #666;">Fuente: {{ rec.source }}</small>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Meso-Level Analysis -->
+    {% if meso_clusters %}
+    <div class="page-break"></div>
+    <h1>Análisis Meso: Clústeres</h1>
+    
+    <p>Se identificaron {{ meso_clusters|length }} clústeres en el análisis.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Clúster ID</th>
+                <th>Puntuación Raw</th>
+                <th>Puntuación Ajustada</th>
+                <th>Penalización Total</th>
+                <th># Puntuaciones Micro</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cluster_id, cluster in meso_clusters.items() %}
+            <tr>
+                <td><strong>{{ cluster_id }}</strong></td>
+                <td>{{ "%.4f"|format(cluster.raw_meso_score) }}</td>
+                <td>{{ "%.4f"|format(cluster.adjusted_score) }}</td>
+                <td>{{ "%.4f"|format(cluster.total_penalty) }}</td>
+                <td>{{ cluster.micro_scores|length }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <!-- Micro-Level Analysis -->
+    <div class="page-break"></div>
+    <h1>Análisis Micro: Preguntas</h1>
+    
+    <p>Total de preguntas analizadas: {{ micro_analyses|length }}</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID Pregunta</th>
+                <th># Global</th>
+                <th>Dimensión</th>
+                <th>Área de Política</th>
+                <th>Puntuación</th>
+                <th>Patrones Aplicados</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for analysis in micro_analyses[:50] %}
+            <tr>
+                <td><strong>{{ analysis.question_id }}</strong></td>
+                <td>{{ analysis.question_global }}</td>
+                <td>{{ analysis.metadata.get('dimension', 'N/A') }}</td>
+                <td>{{ analysis.metadata.get('policy_area', 'N/A') }}</td>
+                <td>
+                    {% if analysis.score is not none %}
+                        {{ "%.4f"|format(analysis.score) }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>{{ analysis.patterns_applied|length }}</td>
+            </tr>
+            {% endfor %}
+            {% if micro_analyses|length > 50 %}
+            <tr>
+                <td colspan="6" style="text-align: center; font-style: italic; background-color: #e9ecef;">
+                    ... y {{ micro_analyses|length - 50 }} preguntas más
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <!-- Provenance and Integrity -->
+    <div class="page-break"></div>
+    <h1>Trazabilidad y Verificación</h1>
+    
+    <h3>Hashes Criptográficos</h3>
+    <table class="metadata-table">
+        {% if report_digest %}
+        <tr>
+            <td>Digest del Reporte</td>
+            <td><code>{{ report_digest }}</code></td>
+        </tr>
+        {% endif %}
+        {% if evidence_chain_hash %}
+        <tr>
+            <td>Hash de Cadena de Evidencia</td>
+            <td><code>{{ evidence_chain_hash }}</code></td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td>Hash de Cuestionario</td>
+            <td><code>{{ metadata.monolith_hash }}</code></td>
+        </tr>
+    </table>
+    
+    <div class="footer-note">
+        <p>
+            <strong>F.A.R.F.A.N</strong> - Framework for Advanced Retrieval and Forensic Analysis of Administrative Narratives<br>
+            Este reporte fue generado de forma determinista. Los mismos inputs producen los mismos outputs.<br>
+            Versión del pipeline: {{ metadata.monolith_version }}
+        </p>
+    </div>
+</body>
+</html>

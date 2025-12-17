@@ -1455,6 +1455,8 @@ class Orchestrator:
             "meso_questions": meso_questions,
             "macro_question": macro_question,
             "_aggregation_settings": aggregation_settings,
+            "plan_name": "plan1",
+            "artifacts_dir": str(PROJECT_ROOT / "artifacts"),
         }
         
         if self.runtime_config is not None:
@@ -2085,24 +2087,94 @@ class Orchestrator:
     def _assemble_report(
         self, recommendations: dict[str, Any], config: dict[str, Any]
     ) -> dict[str, Any]:
-        """FASE 9: Assemble report (STUB)."""
+        """FASE 9: Assemble comprehensive policy analysis report."""
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[9]
         
         instrumentation.start(items_total=1)
         
-        logger.warning("Phase 9 stub - add your report logic here")
-        
-        report = {
-            "status": "stub",
-            "recommendations": recommendations,
-        }
-        return report
+        try:
+            from farfan_pipeline.phases.Phase_nine.report_assembly import (
+                ReportAssembler,
+                ReportMetadata,
+            )
+            from farfan_pipeline.phases.Phase_nine.report_generator import (
+                ReportGenerator,
+            )
+            
+            # Get questionnaire provider from config
+            monolith = config.get("monolith")
+            if not monolith:
+                raise RuntimeError("Monolith not available in config")
+            
+            # Create questionnaire provider wrapper
+            class QuestionnaireProvider:
+                def __init__(self, data):
+                    self.data = data
+                
+                def get_data(self):
+                    return self.data
+                
+                def get_patterns_by_question(self, question_id):
+                    # Extract patterns for question from monolith
+                    blocks = self.data.get("blocks", {})
+                    micro_questions = blocks.get("micro_questions", [])
+                    for q in micro_questions:
+                        if q.get("question_id") == question_id:
+                            return q.get("patterns", [])
+                    return []
+            
+            provider = QuestionnaireProvider(monolith)
+            
+            # Create report assembler
+            assembler = ReportAssembler(
+                questionnaire_provider=provider,
+                evidence_registry=None,
+                qmcm_recorder=None,
+                orchestrator=self
+            )
+            
+            # Prepare execution results
+            execution_results = {
+                "questions": self._context.get("micro_results", {}),
+                "scored_results": self._context.get("scored_results", []),
+                "dimension_scores": self._context.get("dimension_scores", []),
+                "policy_area_scores": self._context.get("policy_area_scores", []),
+                "meso_clusters": self._context.get("cluster_scores", []),
+                "macro_summary": self._context.get("macro_result"),
+            }
+            
+            # Assemble report
+            plan_name = config.get("plan_name", "plan1")
+            analysis_report = assembler.assemble_report(
+                plan_name=plan_name,
+                execution_results=execution_results,
+                report_id=None,
+                enriched_packs=None
+            )
+            
+            logger.info(
+                f"Phase 9: Assembled report with {len(analysis_report.micro_analyses)} "
+                f"micro analyses, {len(analysis_report.meso_clusters)} clusters"
+            )
+            
+            instrumentation.increment(count=1, latency=0.0)
+            
+            return {
+                "status": "success",
+                "analysis_report": analysis_report,
+                "recommendations": recommendations,
+            }
+            
+        except Exception as e:
+            logger.error(f"Phase 9 failed: {e}", exc_info=True)
+            instrumentation.record_error("assembly", str(e))
+            raise
     
     async def _format_and_export(
         self, report: dict[str, Any], config: dict[str, Any]
     ) -> dict[str, Any]:
-        """FASE 10: Format and export (and Ingest to Dashboard)."""
+        """FASE 10: Format and export report to Markdown, HTML, and PDF."""
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[10]
         
@@ -2118,15 +2190,60 @@ class Orchestrator:
         except Exception as e:
             logger.error(f"Dashboard ingestion failed in Phase 10: {e}")
             instrumentation.record_warning("ingestion", f"Dashboard update failed: {e}")
-
-        logger.warning("Phase 10 stub - add your export logic here")
         
-        export_payload = {
-            "status": "stub",
-            "report": report,
-            "dashboard_updated": True
-        }
-        return export_payload
+        try:
+            from farfan_pipeline.phases.Phase_nine.report_generator import (
+                ReportGenerator,
+            )
+            
+            # Get analysis report from Phase 9
+            analysis_report = report.get("analysis_report")
+            if not analysis_report:
+                raise RuntimeError("analysis_report not available from Phase 9")
+            
+            # Determine output directory
+            plan_name = config.get("plan_name", "plan1")
+            artifacts_dir = Path(config.get("artifacts_dir", "artifacts"))
+            output_dir = artifacts_dir / plan_name
+            
+            # Create report generator
+            generator = ReportGenerator(
+                output_dir=output_dir,
+                plan_name=plan_name,
+                enable_charts=True
+            )
+            
+            # Generate all report formats
+            artifacts = generator.generate_all(
+                report=analysis_report,
+                generate_pdf=True,
+                generate_html=True,
+                generate_markdown=True
+            )
+            
+            # Log generated artifacts
+            for artifact_type, path in artifacts.items():
+                size_kb = path.stat().st_size / 1024
+                logger.info(
+                    f"Phase 10: Generated {artifact_type} report: "
+                    f"{path} ({size_kb:.2f} KB)"
+                )
+            
+            instrumentation.increment(count=1, latency=0.0)
+            
+            export_payload = {
+                "status": "success",
+                "report": report,
+                "artifacts": {k: str(v) for k, v in artifacts.items()},
+                "dashboard_updated": True
+            }
+            
+            return export_payload
+            
+        except Exception as e:
+            logger.error(f"Phase 10 failed: {e}", exc_info=True)
+            instrumentation.record_error("export", str(e))
+            raise
 
 
 # ============================================================================
