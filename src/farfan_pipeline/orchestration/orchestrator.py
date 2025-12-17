@@ -289,14 +289,24 @@ class ScoredMicroQuestion:
     error: str | None = None
 
 
-@dataclass
 class ErrorTolerance:
-    """Error tolerance configuration and tracking per phase."""
-    phase_id: int
-    max_failure_rate: float = 0.10
-    total_questions: int = 0
-    failed_questions: int = 0
-    successful_questions: int = 0
+    """Error tolerance configuration and tracking per phase.
+    
+    Provides passive error tracking that can be integrated into any
+    execution strategy without modifying loop logic.
+    """
+    
+    def __init__(
+        self,
+        phase_id: int,
+        max_failure_rate: float = 0.10,
+        total_questions: int = 0,
+    ) -> None:
+        self.phase_id = phase_id
+        self.max_failure_rate = max_failure_rate
+        self.total_questions = total_questions
+        self.failed_questions = 0
+        self.successful_questions = 0
     
     def record_success(self) -> None:
         """Record successful question processing."""
@@ -1630,14 +1640,14 @@ class Orchestrator:
     async def _execute_micro_questions_async(
         self, document: Any, config: dict[str, Any]
     ) -> list[MicroQuestionRun]:
-        # Implementation from previous file
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
-        error_tracker = self._error_tolerance[2]
         
         micro_questions = config.get("micro_questions", [])
-        error_tracker.total_questions = len(micro_questions)
         instrumentation.start(items_total=len(micro_questions))
+        
+        if 2 in self._error_tolerance:
+            self._error_tolerance[2].total_questions = len(micro_questions)
         
         results: list[MicroQuestionRun] = []
 
@@ -1647,14 +1657,12 @@ class Orchestrator:
 
             base_slot = question.get("base_slot")
             if not base_slot:
-                logger.warning(f"Question missing base_slot: {question.get('id')}")
-                error_tracker.record_failure()
+                logger.warning(f"Question missing base_slot: {question.get('question_id')}")
                 continue
 
             executor_class = self.executors.get(base_slot)
             if not executor_class:
                 logger.warning(f"No executor found for {base_slot}")
-                error_tracker.record_failure()
                 continue
 
             try:
@@ -1668,8 +1676,8 @@ class Orchestrator:
                 )
 
                 q_context = {
-                    "question_id": question.get("id"),
-                    "question_global": question.get("global_id"),
+                    "question_id": question.get("question_id"),
+                    "question_global": question.get("question_global"),
                     "base_slot": base_slot,
                     "patterns": question.get("patterns", []),
                     "expected_elements": question.get("expected_elements", []),
@@ -1688,8 +1696,8 @@ class Orchestrator:
                 duration = (time.perf_counter() - start_q) * 1000
 
                 run_result = MicroQuestionRun(
-                    question_id=question.get("id"),
-                    question_global=question.get("global_id"),
+                    question_id=question.get("question_id"),
+                    question_global=question.get("question_global"),
                     base_slot=base_slot,
                     metadata=result_data.get("metadata", {}),
                     evidence=result_data.get("evidence"),
@@ -1697,56 +1705,48 @@ class Orchestrator:
                 )
                 results.append(run_result)
                 instrumentation.increment(latency=duration)
-                error_tracker.record_success()
 
             except Exception as e:
                 logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
                 instrumentation.record_error("execution", str(e))
-                error_tracker.record_failure()
                 results.append(MicroQuestionRun(
-                    question_id=question.get("id"),
-                    question_global=question.get("global_id"),
+                    question_id=question.get("question_id"),
+                    question_global=question.get("question_global"),
                     base_slot=base_slot,
                     metadata={},
                     evidence=None,
                     error=str(e),
                     aborted=False
                 ))
-                
-                if error_tracker.threshold_exceeded():
-                    runtime_mode = self.runtime_config.mode if self.runtime_config else None
-                    if not error_tracker.can_mark_success(runtime_mode):
-                        logger.error(
-                            f"Phase 2 error threshold exceeded: "
-                            f"{error_tracker.current_failure_rate():.2%} > "
-                            f"{error_tracker.max_failure_rate:.2%}"
-                        )
-                        if runtime_mode not in (RuntimeMode.DEV, RuntimeMode.EXPLORATORY):
-                            self.request_abort("Phase 2 error threshold exceeded")
-                            raise AbortRequested("Phase 2 error threshold exceeded")
 
-        logger.info(
-            f"Phase 2 completed: {error_tracker.successful_questions}/{error_tracker.total_questions} "
-            f"questions succeeded, failure rate: {error_tracker.current_failure_rate():.2%}"
-        )
+        if 2 in self._error_tolerance:
+            error_tracker = self._error_tolerance[2]
+            success_count = len([r for r in results if r.error is None])
+            error_tracker.successful_questions = success_count
+            error_tracker.failed_questions = len(results) - success_count
+            
+            logger.info(
+                f"Phase 2 completed: {error_tracker.successful_questions}/{error_tracker.total_questions} "
+                f"questions succeeded, failure rate: {error_tracker.current_failure_rate():.2%}"
+            )
+        
         return results
 
     async def _score_micro_results_async(
         self, micro_results: list[MicroQuestionRun], config: dict[str, Any]
     ) -> list[ScoredMicroQuestion]:
-        # Implementation from previous file
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[3]
-        error_tracker = self._error_tolerance[3]
         
-        error_tracker.total_questions = len(micro_results)
+        if 3 in self._error_tolerance:
+            self._error_tolerance[3].total_questions = len(micro_results)
+        
         instrumentation.start(items_total=len(micro_results))
         
         scored_results: list[ScoredMicroQuestion] = []
         signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
         
         logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results")
-        # Initialize SignalEnrichedScorer if signals available
         scorer_engine = None
         if signal_registry is not None:
             scorer_engine = SignalEnrichedScorer(signal_registry=signal_registry)
@@ -1871,7 +1871,6 @@ class Orchestrator:
                 
                 scored_results.append(scored)
                 instrumentation.increment(latency=0.0)
-                error_tracker.record_success()
                 
             except Exception as e:
                 logger.error(
@@ -1879,7 +1878,6 @@ class Orchestrator:
                     exc_info=True
                 )
                 instrumentation.record_error("scoring", str(e))
-                error_tracker.record_failure()
                 scored = ScoredMicroQuestion(
                     question_id=micro_result.question_id,
                     question_global=micro_result.question_global,
@@ -1894,23 +1892,18 @@ class Orchestrator:
                 )
                 scored_results.append(scored)
                 instrumentation.increment(latency=0.0)
-                
-                if error_tracker.threshold_exceeded():
-                    runtime_mode = self.runtime_config.mode if self.runtime_config else None
-                    if not error_tracker.can_mark_success(runtime_mode):
-                        logger.error(
-                            f"Phase 3 error threshold exceeded: "
-                            f"{error_tracker.current_failure_rate():.2%} > "
-                            f"{error_tracker.max_failure_rate:.2%}"
-                        )
-                        if runtime_mode not in (RuntimeMode.DEV, RuntimeMode.EXPLORATORY):
-                            self.request_abort("Phase 3 error threshold exceeded")
-                            raise AbortRequested("Phase 3 error threshold exceeded")
         
-        logger.info(
-            f"Phase 3 completed: {error_tracker.successful_questions}/{error_tracker.total_questions} "
-            f"questions scored, failure rate: {error_tracker.current_failure_rate():.2%}"
-        )
+        if 3 in self._error_tolerance:
+            error_tracker = self._error_tolerance[3]
+            success_count = len([r for r in scored_results if r.error is None and r.quality_level != "ERROR"])
+            error_tracker.successful_questions = success_count
+            error_tracker.failed_questions = len(scored_results) - success_count
+            
+            logger.info(
+                f"Phase 3 completed: {error_tracker.successful_questions}/{error_tracker.total_questions} "
+                f"questions scored, failure rate: {error_tracker.current_failure_rate():.2%}"
+            )
+        
         return scored_results
     
     async def _aggregate_dimensions_async(
