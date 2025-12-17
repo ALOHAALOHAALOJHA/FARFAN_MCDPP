@@ -1,0 +1,7745 @@
+{
+  "timestamp": "2025-12-17T18:35:29.601453+00:00",
+  "total_contracts": 300,
+  "evaluated": 299,
+  "skipped": 0,
+  "errors": 1,
+  "statistics": {
+    "average_score": 70.67558528428094,
+    "min_score": 70.0,
+    "max_score": 94.0,
+    "passed_80": 11,
+    "passed_70": 288,
+    "passed_60": 0,
+    "failed_40": 0
+  },
+  "contracts": [
+    {
+      "contract_id": "Q001.v3",
+      "score": 94.0,
+      "tier1": 54,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": true,
+      "triage": "PARCHEAR_MINOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 19,
+        "A3_signal_integrity": 10,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q003.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q004.v3",
+      "score": 80.0,
+      "tier1": 40,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q005.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q006.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q007.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q008.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q009.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q010.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q011.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q012.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q013.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q014.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q015.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q016.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q017.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q018.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q019.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q020.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q021.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q022.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q023.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q024.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q025.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q026.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q027.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q028.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q029.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q030.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q031.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q032.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q033.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q034.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q035.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q036.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q037.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q038.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q039.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q040.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q041.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q042.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q043.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q044.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q045.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q046.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q047.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q048.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q049.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q050.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q051.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q052.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q053.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q054.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q055.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q056.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q057.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q058.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q059.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q060.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q061.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q062.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q063.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q064.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q065.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q066.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q067.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q068.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q069.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q070.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q071.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q072.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q073.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q074.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q075.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q076.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q077.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q078.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q079.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q080.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q081.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q082.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q083.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q084.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q085.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q086.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q087.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q088.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q089.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q090.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q091.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q092.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q093.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q094.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q095.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q096.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q097.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q098.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q099.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q100.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q101.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q102.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q103.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q104.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q105.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q106.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q107.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q108.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q109.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q110.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q111.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q112.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q113.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q114.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q115.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q116.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q117.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q118.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q119.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q120.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q121.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q122.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q123.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q124.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q125.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q126.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q127.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q128.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q129.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q130.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q131.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q132.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q133.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q134.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q135.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q136.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q137.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q138.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q139.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q140.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q141.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q142.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q143.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q144.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q145.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q146.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q147.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q148.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q149.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q150.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q151.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q152.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q153.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q154.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q155.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q156.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q157.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q158.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q159.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q160.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q161.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q162.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q163.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q164.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q165.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q166.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q167.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q168.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q169.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q170.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q171.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q172.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q173.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q174.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q175.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q176.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q177.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q178.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q179.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q180.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q181.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q182.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q183.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q184.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q185.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q186.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q187.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q188.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q189.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q190.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q191.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q192.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q193.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q194.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q195.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q196.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q197.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q198.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q199.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q200.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q201.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q202.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q203.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q204.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q205.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q206.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q207.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q208.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q209.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q210.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q211.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q212.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q213.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q214.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q215.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q216.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q217.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q218.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q219.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q220.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q221.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q222.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q223.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q224.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q225.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q226.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q227.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q228.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q229.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q230.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q231.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q232.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q233.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q234.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q235.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q236.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q237.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q238.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q239.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q240.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q241.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q242.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q243.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q244.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q245.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q246.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q247.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q248.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q249.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q250.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q251.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q252.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q253.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q254.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q255.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q256.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q257.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q258.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q259.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q260.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q261.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q262.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q263.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q264.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q265.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q266.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q267.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q268.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q269.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q270.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q271.v3",
+      "score": 82.0,
+      "tier1": 42,
+      "tier2": 30,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 17,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 10,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q272.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q273.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q274.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q275.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q276.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q277.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q278.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q279.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q280.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q281.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q282.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q283.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q284.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q285.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q286.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q287.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q288.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q289.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q290.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q291.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q292.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q293.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q294.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q295.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q296.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q297.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q298.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q299.v3",
+      "score": 70.0,
+      "tier1": 40,
+      "tier2": 20,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 0,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    },
+    {
+      "contract_id": "Q300.v3",
+      "score": 72.0,
+      "tier1": 40,
+      "tier2": 22,
+      "tier3": 10,
+      "passed": false,
+      "triage": "PARCHEAR_MAJOR",
+      "breakdown": {
+        "A1_identity_schema": 20,
+        "A2_method_assembly": 15,
+        "A3_signal_integrity": 0,
+        "A4_output_schema": 5,
+        "B1_pattern_coverage": 10,
+        "B2_method_specificity": 2,
+        "B3_validation_rules": 10,
+        "C1_documentation": 3,
+        "C2_human_template": 2,
+        "C3_metadata": 5
+      }
+    }
+  ],
+  "remediation_needed": [
+    {
+      "contract_id": "Q003.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q005.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q006.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q007.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q008.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q009.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q010.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q011.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q012.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q013.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q014.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q015.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q016.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q017.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q018.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q019.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q020.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q021.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q022.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q023.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q024.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q025.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q026.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q027.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q028.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q029.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q030.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q032.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q033.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q034.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q035.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q036.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q037.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q038.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q039.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q040.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q041.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q042.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q043.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q044.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q045.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q046.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q047.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q048.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q049.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q050.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q051.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q052.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q053.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q054.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q055.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q056.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q057.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q058.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q059.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q060.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q062.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q063.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q064.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q065.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q066.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q067.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q068.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q069.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q070.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q071.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q072.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q073.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q074.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q075.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q076.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q077.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q078.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q079.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q080.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q081.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q082.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q083.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q084.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q085.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q086.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q087.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q088.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q089.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q090.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q092.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q093.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q094.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q095.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q096.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q097.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q098.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q099.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q100.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q101.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q102.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q103.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q104.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q105.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q106.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q107.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q108.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q109.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q110.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q111.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q112.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q113.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q114.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q115.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q116.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q117.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q118.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q119.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q120.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q122.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q123.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q124.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q125.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q126.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q127.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q128.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q129.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q130.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q131.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q132.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q133.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q134.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q135.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q136.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q137.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q138.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q139.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q140.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q141.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q142.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q143.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q144.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q145.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q146.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q147.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q148.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q149.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q150.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q152.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q153.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q154.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q155.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q156.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q157.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q158.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q159.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q160.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q161.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q162.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q163.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q164.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q165.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q166.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q167.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q168.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q169.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q170.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q171.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q172.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q173.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q174.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q175.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q176.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q177.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q178.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q179.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q180.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q182.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q183.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q184.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q185.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q186.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q187.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q188.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q189.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q190.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q191.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q192.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q193.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q194.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q195.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q196.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q197.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q198.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q199.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q200.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q201.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q202.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q203.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q204.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q205.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q206.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q207.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q208.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q209.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q210.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q212.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q213.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q214.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q215.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q216.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q217.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q218.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q219.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q220.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q221.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q222.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q223.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q224.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q225.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q226.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q227.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q228.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q229.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q230.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q231.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q232.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q233.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q234.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q235.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q236.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q237.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q238.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q239.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q240.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q242.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q243.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q244.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q245.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q246.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q247.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q248.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q249.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q250.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q251.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q252.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q253.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q254.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q255.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q256.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q257.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q258.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q259.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q260.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q261.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q262.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q263.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q264.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q265.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q266.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q267.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q268.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q269.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q270.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q272.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q273.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q274.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q275.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q276.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q277.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q278.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q279.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q280.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q281.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q282.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q283.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q284.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q285.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q286.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q287.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q288.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q289.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q290.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q291.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q292.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q293.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q294.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q295.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q296.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q297.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q298.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q299.v3",
+      "score": 70.0,
+      "action": "PATCH_MINOR"
+    },
+    {
+      "contract_id": "Q300.v3",
+      "score": 72.0,
+      "action": "PATCH_MINOR"
+    }
+  ],
+  "errors_list": [
+    {
+      "contract_id": "Q002.v3",
+      "error": "'str' object has no attribute 'get'"
+    }
+  ]
+}

@@ -59,6 +59,14 @@ from sklearn.cluster import DBSCAN, AgglomerativeClustering
 from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import pipeline
 
+# === CANONICAL REFACTORING: Import from canonical_specs ===
+from farfan_pipeline.core.canonical_specs import (
+    MICRO_LEVELS,
+    ALIGNMENT_THRESHOLD,
+    RISK_THRESHOLDS,
+    PDT_PATTERNS,
+)
+
 _lockdown = get_dependency_lockdown()
 
 # ============================================================================
@@ -67,59 +75,18 @@ _lockdown = get_dependency_lockdown()
 logger = logging.getLogger(__name__)
 
 # ============================================================================
-# CANONICAL CONSTANTS FROM GUIDES (NO RUNTIME JSON DEPENDENCIES)
+# METHOD-SPECIFIC CONSTANTS (Financial Analysis)
 # ============================================================================
-# These constants are deterministic and traceable to:
-# - Reverse-archeology refactoring guide
-# - questionnaire_monolith structure guide (PDT/PDM-aware patterns)
-
-MICRO_LEVELS: dict[str, float] = {
-    "EXCELENTE": 0.85,
-    "BUENO": 0.70,
-    "ACEPTABLE": 0.55,
-    "INSUFICIENTE": 0.00,
-}
-
-# Derived thresholds (traceable formulas)
-ALIGNMENT_THRESHOLD: float = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2  # 0.625
-RISK_THRESHOLDS: dict[str, float] = {
-    "excellent": 1 - MICRO_LEVELS["EXCELENTE"],   # 0.15
-    "good": 1 - MICRO_LEVELS["BUENO"],            # 0.30
-    "acceptable": 1 - MICRO_LEVELS["ACEPTABLE"],  # 0.45
-}
+# These constants are deterministic and specific to financial table analysis.
+# Canonical constants (MICRO_LEVELS, ALIGNMENT_THRESHOLD, RISK_THRESHOLDS, PDT_PATTERNS)
+# are imported from canonical_specs.py per canonical refactoring ADR.
+# Source: Reverse-archeology refactoring guide + PDET Colombian financial audit calibration
 
 # Table quality and classification gates
 MIN_TABLE_ACCURACY: float = MICRO_LEVELS["ACEPTABLE"] + 0.05  # 0.60
 MIN_TABLE_TYPE_SCORE: float = RISK_THRESHOLDS["excellent"] + 0.05  # 0.20
 DEFAULT_INDICATOR_RISK: float = RISK_THRESHOLDS["good"]  # 0.30
 CRITICAL_RISK_THRESHOLD: float = MICRO_LEVELS["EXCELENTE"]  # 0.85
-
-# Canonical PDT/PDM-aware regex patterns (subset used by this module)
-PDT_PATTERNS: dict[str, re.Pattern[str]] = {
-    "indicator_matrix_headers": re.compile(
-        r"(?:"
-        r"Línea\s+Estratégica|"
-        r"Cód\.\s*Programa|"
-        r"Cód\.\s*Producto|"
-        r"Unidad\s+de\s+medida|"
-        r"Línea\s+base|"
-        r"Meta\s+202[4-7]|"
-        r"Fuente"
-        r")",
-        re.IGNORECASE,
-    ),
-    "ppi_headers": re.compile(
-        r"(?:"
-        r"TOTAL\s+202[4-7]|"
-        r"SGP|"
-        r"SGR|"
-        r"Regalías|"
-        r"Recursos\s+Propios|"
-        r"Otras\s+Fuentes"
-        r")",
-        re.IGNORECASE,
-    ),
-}
 
 # Deterministic funding-source vocabulary (PDT/PDM practice)
 FUNDING_SOURCE_KEYWORDS: dict[str, list[str]] = {
