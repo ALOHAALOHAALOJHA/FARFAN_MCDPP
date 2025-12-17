@@ -1630,7 +1630,7 @@ class Orchestrator:
                     results.append(MicroQuestionRun(
                         question_id=task.question_id,
                         question_global=0,
-                        base_slot=f"{task.dimension}-Q?",
+                        base_slot="UNKNOWN",
                         metadata={"task_id": task_id, "error": "question_not_found"},
                         evidence=None,
                         error=error_msg,
@@ -1693,7 +1693,7 @@ class Orchestrator:
                         "patterns": question.get("patterns", []),
                         "expected_elements": question.get("expected_elements", []),
                         "identity": {
-                            "dimension_id": task.dimension,
+                            "dimension_id": question.get("dimension_id", task.dimension),
                             "cluster_id": question.get("cluster_id"),
                         },
                         "task_metadata": {
