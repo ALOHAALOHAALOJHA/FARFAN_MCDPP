@@ -30,14 +30,14 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from orchestration.orchestrator import (
+from farfan_pipeline.orchestration.orchestrator import (
     Evidence,
     MicroQuestionRun,
     Orchestrator,
     PhaseInstrumentation,
     ResourceLimits,
 )
-from orchestration.task_planner import ExecutableTask
+from farfan_pipeline.orchestration.task_planner import ExecutableTask
 
 
 class TestPhase2ExecutionPlan:
@@ -133,9 +133,9 @@ class TestPhase2ExecutionPlan:
         mock_instance.execute.return_value = {
             "metadata": {"test": "data"},
             "evidence": Evidence(
-                text_evidence="test evidence",
-                confidence=0.9,
-                source="test"
+                modality="text",
+                elements=["test evidence"],
+                raw_results={"confidence": 0.9, "source": "test"}
             )
         }
         
@@ -222,9 +222,9 @@ class TestPhase2RetryLogic:
             return {
                 "metadata": {"attempts": call_count},
                 "evidence": Evidence(
-                    text_evidence="success after retry",
-                    confidence=0.9,
-                    source="test"
+                    modality="text",
+                    elements=["success after retry"],
+                    raw_results={"confidence": 0.9, "source": "test"}
                 )
             }
         
@@ -463,9 +463,9 @@ class TestPhase2Integration:
             return {
                 "metadata": {"task_id": q_context.get("task_id")},
                 "evidence": Evidence(
-                    text_evidence=f"evidence for {q_context.get('task_id')}",
-                    confidence=0.9,
-                    source="test"
+                    modality="text",
+                    elements=[f"evidence for {q_context.get('task_id')}"],
+                    raw_results={"confidence": 0.9, "source": "test"}
                 )
             }
         

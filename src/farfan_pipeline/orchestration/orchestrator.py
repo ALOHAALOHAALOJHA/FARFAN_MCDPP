@@ -1716,7 +1716,7 @@ class Orchestrator:
                     instrumentation.record_error("execution", str(e))
                     
                     if attempt < MAX_RETRIES - 1:
-                        backoff_time = RETRY_BACKOFF_BASE * (2 ** attempt)
+                        backoff_time = min(RETRY_BACKOFF_BASE * (2 ** attempt), 10.0)
                         logger.info(
                             "retrying_task",
                             task_id=task.task_id,
