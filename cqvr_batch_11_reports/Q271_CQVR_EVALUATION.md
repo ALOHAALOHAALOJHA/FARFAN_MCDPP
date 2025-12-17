@@ -10,20 +10,20 @@
 
 | Métrica | Score | Umbral | Estado |
 |---------|-------|--------|--------|
-| **TIER 1: Componentes Críticos** | **42/55** | ≥35 | ✅ 42/55 |
+| **TIER 1: Componentes Críticos** | **52/55** | ≥35 | ✅ 52/55 |
 | **TIER 2: Componentes Funcionales** | **30/30** | ≥20 | ✅ 30/30 |
 | **TIER 3: Componentes de Calidad** | **10/15** | ≥8 | ✅ 10/15 |
-| **TOTAL** | **82/100** | ≥80 | ❌ **REQUIERE CORRECCIÓN** |
+| **TOTAL** | **92/100** | ≥80 | ✅ **PRODUCCIÓN** |
 
-**VEREDICTO**: ⚠️ **REQUIERE MEJORAS**
+**VEREDICTO**: ✅ **CONTRATO APTO PARA PRODUCCIÓN**
 
-**Triage Decision**: `PARCHEAR_MAJOR`
+**Triage Decision**: `PARCHEAR_MINOR`
 
-El contrato Q271.v3.json alcanza 82/100 puntos (82.0%).
+El contrato Q271.v3.json alcanza 92/100 puntos (92.0%).
 
 ---
 
-## TIER 1: COMPONENTES CRÍTICOS - 42/55 pts
+## TIER 1: COMPONENTES CRÍTICOS - 52/55 pts
 
 ### A1. Coherencia Identity-Schema [20/20 pts]
 [████████████████████] 20/20
@@ -39,10 +39,10 @@ Verifica que los campos de identity coincidan exactamente con los const del outp
 
 Verifica que todas las sources en assembly_rules existan en method_binding.provides.
 
-### A3. Integridad de Señales [0/10 pts]
-[░░░░░░░░░░░░░░░░░░░░] 0/10
+### A3. Integridad de Señales [10/10 pts]
+[████████████████████] 10/10
 
-**Evaluación**: ❌ CRÍTICO
+**Evaluación**: ✅ PERFECTO
 
 Verifica que el minimum_signal_threshold sea > 0 cuando hay mandatory_signals.
 
@@ -84,15 +84,13 @@ Verifica que todos los campos required tengan definición en properties.
 ## RECOMENDACIONES
 
 
-### ⚠️ ACCIÓN REQUERIDA: PARCHEAR (MAJOR)
+### ✅ ACCIÓN SUGERIDA: PARCHEAR (MINOR)
 
-Este contrato requiere correcciones significativas en componentes críticos.
-Aplicar ContractRemediation para resolver automáticamente los problemas estructurales.
+Este contrato está cerca del umbral de producción. Correcciones menores pueden optimizarlo.
 
 ### Detalles por Componente:
 
 - **A2 (Method-Assembly)**: Sources huérfanos o provides sin uso detectados
-- **A3 (Signal Integrity)**: Problemas con signal threshold o aggregation
 
 ---
 

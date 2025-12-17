@@ -12,10 +12,10 @@
 | Metric | Value |
 |--------|-------|
 | **Contracts Evaluated** | 25 |
-| **Passed (≥80/100)** | 0 (0.0%) |
-| **Failed (<80/100)** | 25 (100.0%) |
-| **Average Total Score** | 70.7/100 |
-| **Average Tier 1** | 40.1/55 |
+| **Passed (≥80/100)** | 5 (20.0%) |
+| **Failed (<80/100)** | 20 (80.0%) |
+| **Average Total Score** | 78.3/100 |
+| **Average Tier 1** | 47.7/55 |
 | **Average Tier 2** | 20.6/30 |
 | **Average Tier 3** | 10.0/15 |
 
@@ -25,37 +25,37 @@
 
 | Contract ID | Total Score | Tier 1 | Tier 2 | Tier 3 | Status | Triage |
 |-------------|-------------|--------|--------|--------|--------|--------|
-| Q251 | 72/100 | 40/55 | 22/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q252 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q253 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q254 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q255 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q256 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q257 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q258 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q259 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q260 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q261 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q262 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q263 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q264 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q265 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q266 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q267 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q268 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q269 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q270 | 72/100 | 40/55 | 22/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q271 | 82/100 | 42/55 | 30/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q272 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q273 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q274 | 70/100 | 40/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
-| Q275 | 72/100 | 40/55 | 22/30 | 10/15 | ❌ FAIL | PARCHEAR_MAJOR |
+| Q251 | 79/100 | 47/55 | 22/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q252 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q253 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q254 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q255 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q256 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q257 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q258 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q259 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q260 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q261 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q262 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q263 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q264 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q265 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q266 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q267 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q268 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q269 | 77/100 | 47/55 | 20/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q270 | 79/100 | 47/55 | 22/30 | 10/15 | ❌ FAIL | PARCHEAR_MINOR |
+| Q271 | 92/100 | 52/55 | 30/30 | 10/15 | ✅ PASS | PARCHEAR_MINOR |
+| Q272 | 80/100 | 50/55 | 20/30 | 10/15 | ✅ PASS | PARCHEAR_MINOR |
+| Q273 | 80/100 | 50/55 | 20/30 | 10/15 | ✅ PASS | PARCHEAR_MINOR |
+| Q274 | 80/100 | 50/55 | 20/30 | 10/15 | ✅ PASS | PARCHEAR_MINOR |
+| Q275 | 82/100 | 50/55 | 22/30 | 10/15 | ✅ PASS | PARCHEAR_MINOR |
 
 ---
 
 ## TRIAGE DISTRIBUTION
 
-- **PARCHEAR_MAJOR**: 25 contracts (100.0%)
+- **PARCHEAR_MINOR**: 25 contracts (100.0%)
 
 ---
 
@@ -64,7 +64,7 @@
 
 ### ⚠️ ACTION REQUIRED
 
-25 contracts failed to meet the 80/100 threshold. Recommended actions:
+20 contracts failed to meet the 80/100 threshold. Recommended actions:
 
 1. **Review Individual Reports**: Check detailed CQVR reports in this directory
 2. **Apply Remediation**: Use ContractRemediation for structural fixes
