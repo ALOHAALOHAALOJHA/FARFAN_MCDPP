@@ -25,10 +25,15 @@ from typing import TYPE_CHECKING
 
 import structlog
 from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from sse_starlette.sse import EventSourceResponse
 
 from orchestration.factory import load_questionnaire
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
+from farfan_pipeline.dashboard_atroz_.api_v1_errors import AtrozAPIException, api_error_response
+from farfan_pipeline.dashboard_atroz_.api_v1_router import router as atroz_router
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -141,6 +146,45 @@ app = FastAPI(
     description="Cross-cut signal channel from questionnaire.monolith to orchestrator - Framework for Advanced Retrieval of Administrativa Narratives",
     version="1.0.0",
 )
+
+app.include_router(atroz_router)
+
+
+@app.exception_handler(AtrozAPIException)
+async def atroz_api_exception_handler(request: Request, exc: AtrozAPIException) -> Response:
+    return api_error_response(exc)
+
+
+@app.exception_handler(RequestValidationError)
+async def atroz_validation_exception_handler(request: Request, exc: RequestValidationError) -> Response:
+    if request.url.path.startswith("/api/v1"):
+        details = {"errors": exc.errors()}
+        return api_error_response(
+            AtrozAPIException(status=400, code="BAD_REQUEST", message="Validation error", details=details)
+        )
+    return await request_validation_exception_handler(request, exc)
+
+
+@app.exception_handler(StarletteHTTPException)
+async def atroz_http_exception_handler(request: Request, exc: StarletteHTTPException) -> Response:
+    if request.url.path.startswith("/api/v1"):
+        code_map = {
+            400: "BAD_REQUEST",
+            401: "UNAUTHORIZED",
+            403: "FORBIDDEN",
+            404: "NOT_FOUND",
+            429: "RATE_LIMIT",
+            500: "SERVER_ERROR",
+            503: "SERVICE_UNAVAILABLE",
+        }
+        return api_error_response(
+            AtrozAPIException(
+                status=exc.status_code,
+                code=code_map.get(exc.status_code, "HTTP_ERROR"),
+                message=str(exc.detail),
+            )
+        )
+    return await http_exception_handler(request, exc)
 
 
 @app.on_event("startup")
