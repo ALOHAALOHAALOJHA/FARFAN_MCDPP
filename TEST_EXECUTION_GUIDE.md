@@ -30,7 +30,7 @@ pip install pytest pytest-asyncio
 
 ### Run All Resource Limit Tests
 ```bash
-cd /home/runner/work/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL
+# from the repository root
 python -m pytest tests/orchestration/test_resource_limits*.py -v --tb=short
 ```
 
