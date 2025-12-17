@@ -186,11 +186,43 @@ def resolve_workspace_path(
 
 
 def _normalize_monolith_for_hash(monolith: dict | MappingProxyType) -> dict:
-    """Normalize monolith for hash computation."""
+    """
+    Normalize monolith dictionary for deterministic hash computation.
+    
+    INVARIANTS GUARANTEED:
+    1. MappingProxyType instances converted to standard dicts
+    2. All nested dicts/lists recursively converted
+    3. Result is JSON-serializable with sort_keys=True
+    4. Same logical content always produces same normalized form
+    5. Dict key ordering does NOT affect output (sort_keys ensures determinism)
+    
+    The normalization ensures that:
+    - Identical monoliths produce identical hashes across runs/hosts
+    - Dict insertion order variations do not affect hash
+    - Proxy types are unwrapped to canonical forms
+    
+    Args:
+        monolith: Questionnaire monolith (dict or MappingProxyType)
+        
+    Returns:
+        Normalized dict suitable for deterministic hashing
+        
+    Raises:
+        RuntimeError: If monolith contains non-serializable types
+        
+    Example:
+        >>> m1 = {"b": 2, "a": 1}
+        >>> m2 = {"a": 1, "b": 2}
+        >>> n1 = _normalize_monolith_for_hash(m1)
+        >>> n2 = _normalize_monolith_for_hash(m2)
+        >>> json.dumps(n1, sort_keys=True) == json.dumps(n2, sort_keys=True)
+        True
+    """
     if isinstance(monolith, MappingProxyType):
         monolith = dict(monolith)
     
     def _convert(obj: Any) -> Any:
+        """Recursively convert proxy types to canonical forms."""
         if isinstance(obj, MappingProxyType):
             obj = dict(obj)
         if isinstance(obj, dict):
@@ -204,7 +236,10 @@ def _normalize_monolith_for_hash(monolith: dict | MappingProxyType) -> dict:
     try:
         json.dumps(normalized, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
     except (TypeError, ValueError) as exc:
-        raise RuntimeError(f"Monolith normalization failed: {exc}") from exc
+        raise RuntimeError(
+            f"Monolith normalization failed: contains non-serializable types. "
+            f"All monolith content must be JSON-serializable. Error: {exc}"
+        ) from exc
     
     return normalized
 
@@ -1405,7 +1440,26 @@ class Orchestrator:
 
     # ... (Keep previous phase methods 0-3)
     def _load_configuration(self) -> dict[str, Any]:
-        # Implementation from previous file
+        """
+        Load and validate configuration with mode-specific behavior enforcement.
+        
+        PHASE 0 RESPONSIBILITIES:
+        1. Compute deterministic monolith_sha256
+        2. Validate question counts
+        3. Extract aggregation settings
+        4. Enforce runtime mode constraints
+        
+        MODE-SPECIFIC BEHAVIORS:
+        - PROD: Strict validation, fail on discrepancies, mark output as "verified"
+        - DEV: Permissive validation, warn on issues, mark output as "development"
+        - EXPLORATORY: Minimal validation, log everything, mark output as "experimental"
+        
+        Returns:
+            Configuration dictionary with monolith_sha256, runtime mode flags, and settings
+            
+        Raises:
+            RuntimeError: If Phase 0 bootstrap failed or PROD constraints violated
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[0]
         start = time.perf_counter()
@@ -1418,20 +1472,50 @@ class Orchestrator:
                 f"Failed gates: {[g.gate_name for g in failed_gates]}"
             )
         
+        mode_str = "UNKNOWN"
+        is_strict = False
+        verification_status = "experimental"
+        
         if self.runtime_config is not None:
             mode = self.runtime_config.mode
+            mode_str = mode.value.upper()
+            is_strict = self.runtime_config.is_strict_mode()
+            
             if mode == RuntimeMode.PROD:
-                logger.info("orchestrator_phase0_prod_mode", strict=True)
+                logger.info(
+                    "orchestrator_phase0_prod_mode", 
+                    strict=True, 
+                    verification_status="verified"
+                )
+                verification_status = "verified"
             elif mode == RuntimeMode.DEV:
-                logger.warning("orchestrator_phase0_dev_mode", strict=False)
+                logger.warning(
+                    "orchestrator_phase0_dev_mode", 
+                    strict=False,
+                    verification_status="development"
+                )
+                verification_status = "development"
             else:  # EXPLORATORY
-                logger.warning("orchestrator_phase0_exploratory_mode", strict=False)
+                logger.warning(
+                    "orchestrator_phase0_exploratory_mode", 
+                    strict=False,
+                    verification_status="experimental",
+                    note="Results are experimental and not for production use"
+                )
+                verification_status = "experimental"
         
         monolith = _normalize_monolith_for_hash(self._monolith_data)
         monolith_hash = hashlib.sha256(
             json.dumps(monolith, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
             .encode("utf-8")
         ).hexdigest()
+        
+        logger.info(
+            "monolith_hash_computed",
+            hash=monolith_hash[:16],
+            mode=mode_str,
+            deterministic=True
+        )
         
         micro_questions = monolith["blocks"].get("micro_questions", [])
         meso_questions = monolith["blocks"].get("meso_questions", [])
@@ -1440,8 +1524,19 @@ class Orchestrator:
         question_total = len(micro_questions) + len(meso_questions) + (1 if macro_question else 0)
         
         if question_total != EXPECTED_QUESTION_COUNT:
-            logger.warning(f"Question count: expected {EXPECTED_QUESTION_COUNT}, got {question_total}")
-            instrumentation.record_warning("integrity", f"Question count: {question_total}")
+            msg = f"Question count mismatch: expected {EXPECTED_QUESTION_COUNT}, got {question_total}"
+            instrumentation.record_warning("integrity", msg)
+            
+            if self.runtime_config is not None and self.runtime_config.mode == RuntimeMode.PROD:
+                if not self.runtime_config.allow_aggregation_defaults:
+                    raise RuntimeError(
+                        f"PROD mode: {msg}. This indicates a configuration integrity issue. "
+                        f"Set ALLOW_AGGREGATION_DEFAULTS=true to bypass (not recommended)."
+                    )
+                else:
+                    logger.warning("prod_mode_integrity_bypass", reason=msg)
+            else:
+                logger.warning("question_count_mismatch", **{"expected": EXPECTED_QUESTION_COUNT, "actual": question_total})
         
         aggregation_settings = AggregationSettings.from_monolith(monolith)
         
@@ -1455,11 +1550,15 @@ class Orchestrator:
             "meso_questions": meso_questions,
             "macro_question": macro_question,
             "_aggregation_settings": aggregation_settings,
+            "_verification_status": verification_status,
         }
         
         if self.runtime_config is not None:
             config_dict["_runtime_mode"] = self.runtime_config.mode.value
-            config_dict["_strict_mode"] = self.runtime_config.is_strict_mode()
+            config_dict["_strict_mode"] = is_strict
+            config_dict["_allow_partial_results"] = (
+                self.runtime_config.mode != RuntimeMode.PROD
+            )
         
         return config_dict
 
