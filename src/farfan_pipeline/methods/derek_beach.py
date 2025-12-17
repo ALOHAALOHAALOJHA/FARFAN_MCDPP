@@ -77,31 +77,40 @@ logging.basicConfig(
 )
 
 # ============================================================================
-# CANONICAL CONSTANTS FROM GUIDES
+# CANONICAL REFACTORING: Import from canonical_specs.py
+# ============================================================================
+# NO RUNTIME JSON LOADING - All constants frozen at module import
+# Architecture Decision Record (ADR): No CalibrationOrchestrator
+# Source: canonical_specs.py (single source of truth)
 # ============================================================================
 
+from farfan_pipeline.core.canonical_specs import (
+    MICRO_LEVELS,
+    ALIGNMENT_THRESHOLD,
+    RISK_THRESHOLDS,
+    CANON_POLICY_AREAS,
+    CANON_DIMENSIONS,
+    CAUSAL_CHAIN_VOCABULARY,
+    CAUSAL_CHAIN_ORDER,
+    CDAF_CALIBRATION_PARAMS,
+    CDAF_DOMAIN_WEIGHTS,
+    TRIANGULATION_ACTIVE_DOMAINS_THRESHOLD,
+    TRIANGULATION_BONUS,
+    BAYES_FACTORS,
+    PDT_SECTION_PATTERNS,
+    PDT_STRATEGIC_PATTERNS,
+    PDT_FINANCIAL_PATTERNS,
+)
+
 # ============================================================================
-# CANONICAL CONSTANTS FROM GUIDES - PDET-Focused Policy Areas
+# DEREK_BEACH LEGACY POLICY AREAS WITH PDET METADATA
 # ============================================================================
-# Source: questionnaire_monolith.json + PDET/territorial planning methodology
-# All parameters are deterministic and traceable to official DNP/SisPT guides
+# NOTE: These extended definitions contain PDET-specific metadata not in
+# canonical_specs. For basic policy area names, use CANON_POLICY_AREAS.
+# This structure is preserved for traceability and keyword matching only.
 # ============================================================================
 
-MICRO_LEVELS = {
-    "EXCELENTE": 0.85,
-    "BUENO": 0.70,
-    "ACEPTABLE": 0.55,
-    "INSUFICIENTE": 0.00
-}
-
-ALIGNMENT_THRESHOLD = 0.625
-RISK_THRESHOLDS = {
-    "excellent": 0.15,
-    "good": 0.30,
-    "acceptable": 0.45
-}
-
-CANON_POLICY_AREAS = {
+CANON_POLICY_AREAS_LEGACY = {
     "PA01": {
         "name": "Derechos de las mujeres e igualdad de género",
         "legacy": "P1",
@@ -1204,17 +1213,18 @@ PDT_PATTERNS = {
 }
 
 # ============================================================================
-# CAUSAL CHAIN VOCABULARY - Exhaustive 5-Link Value Chain (DNP Methodology)
+# CANONICAL REFACTORING NOTE
 # ============================================================================
-# Based on DNP/SisPT territorial planning methodology and MGA framework
-# Organized by: Insumos → Actividades → Productos → Resultados → Impactos
-# 
-# NOTE: Causal connectors (con el fin de, a través de, etc.) are in 
-# PDT_PATTERNS["causal_connectors"] as regex. This list contains only
-# dimension-specific vocabulary for each value chain link.
+# CAUSAL_CHAIN_VOCABULARY is now imported from canonical_specs.py (line 105)
+# No need to redefine here - it's frozen at module import time
+# Original definition moved to canonical_specs for single source of truth
 # ============================================================================
 
-CAUSAL_CHAIN_VOCABULARY = [
+# NOTE: The following uses CAUSAL_CHAIN_VOCABULARY imported from canonical_specs
+# CVC_DIMENSION_SPECS references slices of the canonical vocabulary
+
+# Placeholder to maintain line compatibility - actual value imported above
+_CAUSAL_CHAIN_VOCABULARY_MOVED_TO_CANONICAL_SPECS = [
     # ========================================================================
     # 1. INSUMOS (INPUT) - Recursos iniciales movilizados
     # ========================================================================
@@ -1451,12 +1461,13 @@ COLOMBIAN_ENTITIES = {
     "Secretaría": "Secretaría"
 }
 
-ALIGNMENT_THRESHOLD = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2
-RISK_THRESHOLDS = {
-    "excellent": 1 - MICRO_LEVELS["EXCELENTE"],
-    "good": 1 - MICRO_LEVELS["BUENO"],
-    "acceptable": 1 - MICRO_LEVELS["ACEPTABLE"]
-}
+# ============================================================================
+# CANONICAL REFACTORING NOTE: ALIGNMENT_THRESHOLD and RISK_THRESHOLDS
+# ============================================================================
+# These are now imported from canonical_specs.py (lines 105-106)
+# The duplicate definitions below at lines ~1463-1468 have been removed
+# All references use the canonical imported values
+# ============================================================================
 
 # Legacy constants for backward compatibility
 DEFAULT_CONFIG_FILE = "config.yaml"
