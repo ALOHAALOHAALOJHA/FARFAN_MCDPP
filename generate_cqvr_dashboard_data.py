@@ -127,22 +127,31 @@ def main() -> None:
     reformulation = sum(1 for r in results if r["decision"] == "REFORMULAR")
     errors = sum(1 for r in results if r["decision"] == "ERROR")
     
-    avg_total = sum(r["total_score"] for r in results) / total_contracts
-    avg_tier1 = sum(r["tier1_score"] for r in results) / total_contracts
-    avg_tier2 = sum(r["tier2_score"] for r in results) / total_contracts
-    avg_tier3 = sum(r["tier3_score"] for r in results) / total_contracts
-    
     print(f"Total contracts evaluated: {total_contracts}")
-    print(f"  Production ready: {production_ready} ({production_ready/total_contracts*100:.1f}%)")
-    print(f"  Patchable: {patchable} ({patchable/total_contracts*100:.1f}%)")
-    print(f"  Needs reformulation: {reformulation} ({reformulation/total_contracts*100:.1f}%)")
-    print(f"  Errors: {errors} ({errors/total_contracts*100:.1f}%)")
-    print()
-    print(f"Average scores:")
-    print(f"  Total: {avg_total:.2f}/100 ({avg_total:.1f}%)")
-    print(f"  Tier 1: {avg_tier1:.2f}/55 ({avg_tier1/55*100:.1f}%)")
-    print(f"  Tier 2: {avg_tier2:.2f}/30 ({avg_tier2/30*100:.1f}%)")
-    print(f"  Tier 3: {avg_tier3:.2f}/15 ({avg_tier3/15*100:.1f}%)")
+
+    if total_contracts > 0:
+        avg_total = sum(r["total_score"] for r in results) / total_contracts
+        avg_tier1 = sum(r["tier1_score"] for r in results) / total_contracts
+        avg_tier2 = sum(r["tier2_score"] for r in results) / total_contracts
+        avg_tier3 = sum(r["tier3_score"] for r in results) / total_contracts
+        
+        print(f"  Production ready: {production_ready} ({production_ready/total_contracts*100:.1f}%)")
+        print(f"  Patchable: {patchable} ({patchable/total_contracts*100:.1f}%)")
+        print(f"  Needs reformulation: {reformulation} ({reformulation/total_contracts*100:.1f}%)")
+        print(f"  Errors: {errors} ({errors/total_contracts*100:.1f}%)")
+        print()
+        print(f"Average scores:")
+        print(f"  Total: {avg_total:.2f}/100 ({avg_total:.1f}%)")
+        print(f"  Tier 1: {avg_tier1:.2f}/55 ({avg_tier1/55*100:.1f}%)")
+        print(f"  Tier 2: {avg_tier2:.2f}/30 ({avg_tier2/30*100:.1f}%)")
+        print(f"  Tier 3: {avg_tier3:.2f}/15 ({avg_tier3/15*100:.1f}%)")
+    else:
+        print("  Production ready: 0 (0.0%)")
+        print("  Patchable: 0 (0.0%)")
+        print("  Needs reformulation: 0 (0.0%)")
+        print("  Errors: 0 (0.0%)")
+        print()
+        print("Average scores are not available because no contracts were evaluated.")
     print()
     print("Dashboard data generation complete!")
 
