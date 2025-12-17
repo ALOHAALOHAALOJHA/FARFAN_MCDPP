@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from cqvr_evaluator_new import (
+from cqvr_evaluator import (
     verify_identity_schema_coherence,
     verify_method_assembly_alignment,
     verify_signal_requirements,

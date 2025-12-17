@@ -4,6 +4,77 @@ Utility scripts for F.A.R.F.A.N calibration system validation, contract quality 
 
 ## Available Scripts
 
+### cqvr_evaluator.py
+
+**LATEST** - Complete CQVR (Contract Quality Validation and Remediation) evaluator with all scoring functions, decision logic, and comprehensive reporting.
+
+**Features:**
+- ✅ 10 core scoring functions with explicit `Tuple[int, List[str]]` return signatures
+- ✅ Deterministic decision engine (PRODUCCION, PARCHEAR, REFORMULAR)
+- ✅ JSON reports (machine-readable)
+- ✅ Rich console output (human-readable tables)
+- ✅ Single contract, batch (25), or all (300) contract evaluation
+- ✅ Comprehensive error handling
+- ✅ 41 unit tests (100% pass rate)
+
+**Usage:**
+```bash
+# Single contract
+python scripts/cqvr_evaluator.py --contract path/to/contract.json --output-dir reports/cqvr
+
+# Batch processing (25 contracts)
+python scripts/cqvr_evaluator.py --batch 1 --output-dir reports/cqvr  # Q001-Q025
+python scripts/cqvr_evaluator.py --batch 2 --output-dir reports/cqvr  # Q026-Q050
+# ... up to batch 12
+
+# All 300 contracts
+python scripts/cqvr_evaluator.py --all --output-dir reports/cqvr
+
+# JSON only (no console output)
+python scripts/cqvr_evaluator.py --all --output-dir reports/cqvr --json-only
+```
+
+**Scoring Rubric (100 points):**
+- **Tier 1**: Critical Components (55 pts)
+  - A1: Identity-Schema Coherence (20 pts)
+  - A2: Method-Assembly Alignment (20 pts)
+  - A3: Signal Requirements (10 pts)
+  - A4: Output Schema (5 pts)
+- **Tier 2**: Functional Components (30 pts)
+  - B1: Pattern Coverage (10 pts)
+  - B2: Method Specificity (10 pts)
+  - B3: Validation Rules (10 pts)
+- **Tier 3**: Quality Components (15 pts)
+  - C1: Documentation Quality (5 pts)
+  - C2: Human Template (5 pts)
+  - C3: Metadata Completeness (5 pts)
+
+**Decision Matrix:**
+- `PRODUCCION`: Tier 1 ≥ 45, Total ≥ 80, 0 blockers
+- `PARCHEAR`: Tier 1 ≥ 35, Total ≥ 70, ≤ 2 blockers
+- `REFORMULAR`: Otherwise
+
+**Output:**
+```
+CQVR Evaluation Summary     
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Metric             ┃ Value    ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ Total Evaluated    │ 300      │
+│ Average Score      │ 66.8/100 │
+│ Production Ready   │ 27       │
+│ Need Patches       │ 61       │
+│ Need Reformulation │ 212      │
+└────────────────────┴──────────┘
+```
+
+**Testing:**
+```bash
+pytest tests/test_cqvr_evaluator.py -v -m updated
+```
+
+**Documentation:** See `docs/CQVR_EVALUATOR.md`
+
 ### cqvr_batch_evaluator.py
 
 **NEW** - Batch contract quality evaluator using CQVR v2.0 rubric. Evaluates executor contracts and generates comprehensive reports.
