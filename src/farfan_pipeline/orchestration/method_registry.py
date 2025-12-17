@@ -3,27 +3,37 @@
 This module implements a method injection factory that:
 1. Loads only the methods needed (not full classes)
 2. Instantiates classes lazily (only when first method is called)
-3. Caches instances for reuse
+3. Caches instances for reuse with TTL and memory management
 4. Isolates errors per method (failures don't cascade)
 5. Allows direct function injection (bypassing classes)
 
 Architecture:
     MethodRegistry
         ├─ _class_paths: mapping of class names to import paths
-        ├─ _instance_cache: lazily instantiated class instances
+        ├─ _instance_cache: lazily instantiated class instances with TTL
         ├─ _direct_methods: directly injected functions
         └─ get_method(): returns callable for (class_name, method_name)
+
+Memory Management:
+- TTL-based eviction for instance cache entries
+- Weakref support for garbage collection
+- Explicit cache clearing between pipeline runs
+- Memory profiling hooks for observability
 
 Benefits:
 - No upfront class loading (lightweight imports)
 - Failed classes don't block working methods
 - Direct function injection for custom implementations
-- Instance reuse through caching
+- Instance reuse through caching with memory bounds
+- Prevents memory bloat in long-lived processes
 """
 from __future__ import annotations
 
 import logging
 import threading
+import time
+import weakref
+from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Callable
 
@@ -34,15 +44,49 @@ class MethodRegistryError(RuntimeError):
     """Raised when a method cannot be retrieved."""
 
 
-class MethodRegistry:
-    """Registry for lazy method injection without full class instantiation."""
+@dataclass
+class CacheEntry:
+    """Cache entry with TTL tracking."""
+    
+    instance: Any
+    created_at: float
+    last_accessed: float
+    access_count: int = 0
+    
+    def is_expired(self, ttl_seconds: float) -> bool:
+        """Check if entry has exceeded TTL."""
+        if ttl_seconds <= 0:
+            return False
+        return (time.time() - self.last_accessed) > ttl_seconds
+    
+    def touch(self) -> None:
+        """Update access timestamp and counter."""
+        self.last_accessed = time.time()
+        self.access_count += 1
 
-    def __init__(self, class_paths: dict[str, str] | None = None) -> None:
+
+class MethodRegistry:
+    """Registry for lazy method injection without full class instantiation.
+    
+    Features memory management with TTL-based eviction and weakref support.
+    """
+
+    def __init__(
+        self,
+        class_paths: dict[str, str] | None = None,
+        cache_ttl_seconds: float = 300.0,
+        enable_weakref: bool = False,
+        max_cache_size: int = 100,
+    ) -> None:
         """Initialize the method registry.
 
         Args:
             class_paths: Optional mapping of class names to import paths.
                         If None, uses default paths from class_registry.
+            cache_ttl_seconds: Time-to-live for cache entries in seconds.
+                             Set to 0 to disable TTL-based eviction.
+            enable_weakref: If True, use weak references for instances.
+            max_cache_size: Maximum number of instances to cache.
         """
         # Import class paths from existing registry
         if class_paths is None:
@@ -50,13 +94,23 @@ class MethodRegistry:
             class_paths = dict(get_class_paths())
 
         self._class_paths = class_paths
-        self._instance_cache: dict[str, Any] = {}
+        self._cache: dict[str, CacheEntry] = {}
+        self._weakref_cache: dict[str, weakref.ref[Any]] = {}
         self._direct_methods: dict[tuple[str, str], Callable[..., Any]] = {}
         self._failed_classes: set[str] = set()
         self._lock = threading.Lock()
+        self._cache_ttl_seconds = cache_ttl_seconds
+        self._enable_weakref = enable_weakref
+        self._max_cache_size = max_cache_size
 
         # Special instantiation rules (from original MethodExecutor)
         self._special_instantiation: dict[str, Callable[[type], Any]] = {}
+        
+        # Metrics
+        self._cache_hits = 0
+        self._cache_misses = 0
+        self._evictions = 0
+        self._total_instantiations = 0
 
     def inject_method(
         self,
@@ -204,25 +258,97 @@ class MethodRegistry:
 
         # Use a lock to ensure thread-safe instantiation
         with self._lock:
-            # Double-check if another thread instantiated it while waiting for the lock
-            if class_name in self._instance_cache:
-                return self._instance_cache[class_name]
+            # Check weakref cache first
+            if self._enable_weakref and class_name in self._weakref_cache:
+                instance = self._weakref_cache[class_name]()
+                if instance is not None:
+                    self._cache_hits += 1
+                    logger.debug(
+                        "class_retrieved_from_weakref_cache",
+                        class_name=class_name,
+                    )
+                    return instance
+                else:
+                    # Weakref was garbage collected
+                    del self._weakref_cache[class_name]
+            
+            # Check regular cache and evict if expired
+            if class_name in self._cache:
+                entry = self._cache[class_name]
+                if entry.is_expired(self._cache_ttl_seconds):
+                    logger.info(
+                        "cache_entry_expired",
+                        class_name=class_name,
+                        age_seconds=time.time() - entry.created_at,
+                        access_count=entry.access_count,
+                    )
+                    del self._cache[class_name]
+                    self._evictions += 1
+                else:
+                    entry.touch()
+                    self._cache_hits += 1
+                    return entry.instance
+
+            # Cache miss - need to instantiate
+            self._cache_misses += 1
+            
+            # Evict oldest entries if cache is full
+            self._evict_if_full()
 
             # Load and instantiate class
             try:
                 cls = self._load_class(class_name)
                 instance = self._instantiate_class(class_name, cls)
-                self._instance_cache[class_name] = instance
-                logger.info(
-                    "class_instantiated_lazy",
-                    class_name=class_name,
-                )
+                self._total_instantiations += 1
+                
+                # Store in appropriate cache
+                if self._enable_weakref:
+                    self._weakref_cache[class_name] = weakref.ref(instance)
+                    logger.info(
+                        "class_instantiated_weakref",
+                        class_name=class_name,
+                    )
+                else:
+                    entry = CacheEntry(
+                        instance=instance,
+                        created_at=time.time(),
+                        last_accessed=time.time(),
+                        access_count=1,
+                    )
+                    self._cache[class_name] = entry
+                    logger.info(
+                        "class_instantiated_cached",
+                        class_name=class_name,
+                    )
+                
                 return instance
 
             except MethodRegistryError:
                 # Mark as failed to avoid repeated attempts
                 self._failed_classes.add(class_name)
                 raise
+    
+    def _evict_if_full(self) -> None:
+        """Evict oldest cache entries if cache size exceeds maximum."""
+        if len(self._cache) < self._max_cache_size:
+            return
+        
+        # Sort by last accessed time and evict oldest
+        sorted_entries = sorted(
+            self._cache.items(),
+            key=lambda x: x[1].last_accessed,
+        )
+        
+        evict_count = len(self._cache) - self._max_cache_size + 1
+        for class_name, entry in sorted_entries[:evict_count]:
+            logger.info(
+                "cache_entry_evicted_size_limit",
+                class_name=class_name,
+                age_seconds=time.time() - entry.created_at,
+                access_count=entry.access_count,
+            )
+            del self._cache[class_name]
+            self._evictions += 1
 
     def get_method(
         self,
@@ -298,28 +424,109 @@ class MethodRegistry:
             return False
 
         # If instance exists, check method
-        if class_name in self._instance_cache:
-            instance = self._instance_cache[class_name]
+        if class_name in self._cache:
+            instance = self._cache[class_name].instance
             return hasattr(instance, method_name)
 
         # Otherwise, assume it exists (lazy check)
         # Full validation happens on first get_method() call
         return True
+    
+    def clear_cache(self) -> dict[str, Any]:
+        """Clear all cached instances.
+        
+        This should be called between pipeline runs to prevent memory bloat.
+        
+        Returns:
+            Statistics about cleared cache entries.
+        """
+        with self._lock:
+            cache_size = len(self._cache)
+            weakref_size = len(self._weakref_cache)
+            
+            stats = {
+                "entries_cleared": cache_size,
+                "weakrefs_cleared": weakref_size,
+                "total_hits": self._cache_hits,
+                "total_misses": self._cache_misses,
+                "total_evictions": self._evictions,
+                "total_instantiations": self._total_instantiations,
+            }
+            
+            # Clear caches
+            self._cache.clear()
+            self._weakref_cache.clear()
+            
+            logger.info(
+                "cache_cleared",
+                **stats,
+            )
+            
+            return stats
+    
+    def evict_expired(self) -> int:
+        """Manually evict expired entries.
+        
+        Returns:
+            Number of entries evicted.
+        """
+        with self._lock:
+            expired = []
+            for class_name, entry in self._cache.items():
+                if entry.is_expired(self._cache_ttl_seconds):
+                    expired.append(class_name)
+            
+            for class_name in expired:
+                entry = self._cache[class_name]
+                logger.info(
+                    "cache_entry_evicted_manual",
+                    class_name=class_name,
+                    age_seconds=time.time() - entry.created_at,
+                    access_count=entry.access_count,
+                )
+                del self._cache[class_name]
+                self._evictions += 1
+            
+            return len(expired)
 
     def get_stats(self) -> dict[str, Any]:
         """Get registry statistics.
 
         Returns:
-            Dictionary with registry stats
+            Dictionary with registry stats including cache performance metrics
         """
-        return {
-            "total_classes_registered": len(self._class_paths),
-            "instantiated_classes": len(self._instance_cache),
-            "failed_classes": len(self._failed_classes),
-            "direct_methods_injected": len(self._direct_methods),
-            "instantiated_class_names": list(self._instance_cache.keys()),
-            "failed_class_names": list(self._failed_classes),
-        }
+        with self._lock:
+            cache_entries = []
+            for class_name, entry in self._cache.items():
+                cache_entries.append({
+                    "class_name": class_name,
+                    "age_seconds": time.time() - entry.created_at,
+                    "last_accessed_seconds_ago": time.time() - entry.last_accessed,
+                    "access_count": entry.access_count,
+                })
+            
+            hit_rate = 0.0
+            total_accesses = self._cache_hits + self._cache_misses
+            if total_accesses > 0:
+                hit_rate = self._cache_hits / total_accesses
+            
+            return {
+                "total_classes_registered": len(self._class_paths),
+                "cached_instances": len(self._cache),
+                "weakref_instances": len(self._weakref_cache),
+                "failed_classes": len(self._failed_classes),
+                "direct_methods_injected": len(self._direct_methods),
+                "cache_hits": self._cache_hits,
+                "cache_misses": self._cache_misses,
+                "cache_hit_rate": hit_rate,
+                "evictions": self._evictions,
+                "total_instantiations": self._total_instantiations,
+                "cache_ttl_seconds": self._cache_ttl_seconds,
+                "max_cache_size": self._max_cache_size,
+                "enable_weakref": self._enable_weakref,
+                "cache_entries": cache_entries,
+                "failed_class_names": list(self._failed_classes),
+            }
 
 
 def setup_default_instantiation_rules(registry: MethodRegistry) -> None:

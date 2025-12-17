@@ -848,6 +848,24 @@ class MethodExecutor:
         """Check if method exists."""
         return self._method_registry.has_method(class_name, method_name)
     
+    def clear_instance_cache(self) -> dict[str, Any]:
+        """Clear cached instances to prevent memory bloat.
+        
+        This should be called between pipeline runs in long-lived processes.
+        
+        Returns:
+            Statistics about cleared cache entries.
+        """
+        return self._method_registry.clear_cache()
+    
+    def evict_expired_instances(self) -> int:
+        """Manually evict expired cache entries.
+        
+        Returns:
+            Number of entries evicted.
+        """
+        return self._method_registry.evict_expired()
+    
     def get_registry_stats(self) -> dict[str, Any]:
         """Get registry stats."""
         return self._method_registry.get_stats()
