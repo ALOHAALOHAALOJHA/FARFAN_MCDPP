@@ -1,178 +1,230 @@
-"""
-Dashboard Ingestion Module
-Wires the Orchestrator to the Dashboard Database.
-"""
-import logging
-import re
-from typing import Any, Dict, Optional
-from pathlib import Path
-from difflib import get_close_matches
+"""Dashboard ingestion client (Phase 10 integration point).
 
-from .config import DATABASE_URL, USE_SQLITE, ENABLE_REALTIME_INGESTION
+Consumes the orchestrator context and posts a strictly identified municipal update to the
+AtroZ dashboard backend ingest endpoint.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import re
+from dataclasses import asdict, is_dataclass
+from datetime import datetime, timezone
+from difflib import get_close_matches
+from pathlib import Path
+from typing import Any, Mapping
+from uuid import uuid4
+
+import httpx
+import structlog
+
+from .api_v1_schemas import DashboardIngestRequest, MunicipalitySelector
+from .api_v1_utils import slugify
 from .pdet_colombia_data import PDET_MUNICIPALITIES, PDETMunicipality
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
-class DashboardIngester:
-    def __init__(self, db_url: str = DATABASE_URL):
-        self.db_url = db_url
+_DANE_RE = re.compile(r"(?<!\d)(\d{5})(?!\d)")
 
-    def populate_reference_data(self):
-        """
-        Populate DB with all 170 PDET municipalities and subregions.
-        This ensures the map is fully populated even before analysis.
-        """
-        logger.info("Populating reference data (170 Municipalities)...")
-        count = 0
-        for m in PDET_MUNICIPALITIES:
-            # Upsert Municipality (Region)
-            # Note: In a real DB we would upsert Subregions first.
-            sql = self._generate_region_upsert(
-                m.dane_code, m.name, None, None, m.latitude, m.longitude
-            )
-            self._execute_sql(sql)
-            count += 1
-        logger.info(f"Populated {count} regions.")
 
-    async def ingest_results(self, context: Dict[str, Any]) -> bool:
-        """
-        Ingest results from Orchestrator context into Dashboard DB.
+def _jsonable(obj: Any) -> Any:
+    if is_dataclass(obj):
+        return _jsonable(asdict(obj))
+    if isinstance(obj, Mapping):
+        return {str(k): _jsonable(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_jsonable(v) for v in obj]
+    if isinstance(obj, Path):
+        return str(obj)
+    if isinstance(obj, datetime):
+        return obj.astimezone(timezone.utc).isoformat()
+    if isinstance(obj, (str, int, float, bool)) or obj is None:
+        return obj
+    return str(obj)
 
-        Args:
-            context: The orchestrator's context dictionary containing artifacts from all phases.
-        """
-        if not ENABLE_REALTIME_INGESTION:
-            logger.info("Dashboard ingestion disabled via config.")
-            return False
 
-        logger.info("Starting Dashboard Ingestion...")
-
-        try:
-            # 1. Extract Artifacts
-            document = context.get("document") # CanonPolicyPackage (Phase 1)
-            macro_eval = context.get("macro_result") # MacroEvaluation (Phase 7)
-            cluster_scores = context.get("cluster_scores") # List[ClusterScore] (Phase 6)
-            scored_micro = context.get("scored_results") # List[ScoredMicroQuestion] (Phase 3)
-
-            if not document:
-                logger.warning("Ingestion skipped: 'document' missing from context.")
-                return False
-
-            # 2. Identify Municipality
-            input_data = getattr(document, "input_data", None)
-            doc_id = getattr(input_data, "document_id", "unknown") if input_data else "unknown"
-            pdf_path = getattr(input_data, "pdf_path", "unknown") if input_data else "unknown"
-
-            dane_code = self._resolve_dane_code(doc_id, str(pdf_path))
-            # Prefer PDF path for name resolution as doc_id might be opaque
-            name_source = str(pdf_path) if str(pdf_path) != "unknown" else doc_id
-            municipality = self._resolve_municipality(dane_code, name_source)
-
-            if not municipality:
-                logger.warning(f"Could not resolve municipality identity for {doc_id}")
-                # Fallback to creating a stub if strictly required, but for now skip to avoid bad data
-                return False
-
-            dane_code = municipality.dane_code
-            municipality_name = municipality.name
-
-            logger.info(f"Ingesting data for municipality: {municipality_name} ({dane_code})")
-
-            # 3. Generate SQL Data
-            # Macro
-            macro_score = getattr(macro_eval, "macro_score", None) if macro_eval else None
-            macro_band = None
-            if macro_eval and hasattr(macro_eval, "details"):
-                macro_band = getattr(macro_eval.details, "quality_band", None)
-
-            # Use static coords from reference data
-            lat = municipality.latitude
-            lon = municipality.longitude
-
-            # Upsert Region
-            region_sql = self._generate_region_upsert(
-                dane_code, municipality_name, macro_score, macro_band, lat, lon
-            )
-            self._execute_sql(region_sql)
-
-            # Clusters
-            if cluster_scores:
-                for cs in cluster_scores:
-                    cid = getattr(cs, "cluster_id", None)
-                    score = getattr(cs, "score", 0.0)
-                    if cid:
-                        cluster_sql = self._generate_cluster_upsert(dane_code, cid, score)
-                        self._execute_sql(cluster_sql)
-
-            # Micro Scores
-            if scored_micro:
-                for sm in scored_micro:
-                    qid = getattr(sm, "question_id", None)
-                    score = getattr(sm, "score", 0.0)
-                    if qid:
-                        qs_sql = self._generate_question_upsert(dane_code, qid, score)
-                        self._execute_sql(qs_sql)
-
-            logger.info(f"✓ Successfully ingested data for {municipality_name} to Dashboard DB")
-            return True
-
-        except Exception as e:
-            logger.error(f"Dashboard ingestion failed: {e}", exc_info=True)
-            return False
-
-    def _resolve_dane_code(self, doc_id: str, pdf_path: str) -> str:
-        # Heuristic: try to find a 5-digit code
-        match = re.search(r'\b\d{5}\b', doc_id) or re.search(r'\b\d{5}\b', pdf_path)
+def _extract_dane_code(*values: str) -> str | None:
+    for value in values:
+        match = _DANE_RE.search(value)
         if match:
-            return match.group(0)
-        return ""
+            return match.group(1)
+    return None
 
-    def _resolve_municipality(self, dane_code: str, doc_name: str) -> Optional[PDETMunicipality]:
-        # 1. Exact Match by Code
-        if dane_code:
-            for m in PDET_MUNICIPALITIES:
-                if m.dane_code == dane_code:
-                    return m
 
-        # 2. Name Matching
-        # Normalize: remove path, extension, underscores
-        clean_name = Path(doc_name).stem.replace("_", " ").lower()
+def _municipality_id(municipality: PDETMunicipality) -> str:
+    return f"{slugify(municipality.name)}-{slugify(municipality.department)}"
 
-        # Exact name match (case insensitive)
-        for m in PDET_MUNICIPALITIES:
-            if m.name.lower() == clean_name:
-                return m
 
-        # Substring match
-        for m in PDET_MUNICIPALITIES:
-            if m.name.lower() in clean_name:
-                return m
+def _resolve_municipality_from_context(context: Mapping[str, Any]) -> PDETMunicipality | None:
+    document = context.get("document")
+    input_data = getattr(document, "input_data", None) if document is not None else None
 
-        # Fuzzy Match
-        names = [m.name for m in PDET_MUNICIPALITIES]
-        matches = get_close_matches(clean_name, names, n=1, cutoff=0.6)
-        if matches:
-            match_name = matches[0]
-            for m in PDET_MUNICIPALITIES:
-                if m.name == match_name:
-                    return m
+    doc_id = str(getattr(input_data, "document_id", "") or "")
+    pdf_path = str(getattr(input_data, "pdf_path", "") or "")
 
+    dane_code = _extract_dane_code(doc_id, pdf_path)
+    if dane_code:
+        matches = [m for m in PDET_MUNICIPALITIES if m.dane_code == dane_code]
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            raise ValueError(f"Ambiguous DANE code match for {dane_code}: {len(matches)} candidates")
+
+    candidate_text = Path(pdf_path).stem if pdf_path else doc_id
+    cleaned = slugify(candidate_text.replace("_", " ").replace("-", " "))
+
+    dept_slugs = {slugify(m.department): m.department for m in PDET_MUNICIPALITIES}
+    dept_hits = [dept for slug, dept in dept_slugs.items() if slug and slug in cleaned]
+    dept = dept_hits[0] if len(dept_hits) == 1 else None
+
+    name_candidates = []
+    for m in PDET_MUNICIPALITIES:
+        name_slug = slugify(m.name)
+        if name_slug and name_slug in cleaned:
+            if dept is None or m.department == dept:
+                name_candidates.append(m)
+
+    if len(name_candidates) == 1:
+        return name_candidates[0]
+    if len(name_candidates) > 1:
+        raise ValueError(f"Ambiguous municipality match for '{candidate_text}': {len(name_candidates)} candidates")
+
+    names = [slugify(m.name) for m in PDET_MUNICIPALITIES]
+    fuzzy = get_close_matches(cleaned, names, n=1, cutoff=0.85)
+    if not fuzzy:
         return None
 
-    def _generate_region_upsert(self, dane: str, name: str, macro: float | None, band: str | None, lat: float=0.0, lon: float=0.0) -> str:
-        m_val = str(macro) if macro is not None else "NULL"
-        b_val = f"'{band}'" if band else "NULL"
-        safe_name = name.replace("'", "''")
-        return f"INSERT INTO regions (dane_code, name, macro_score, macro_band, latitude, longitude) VALUES ('{dane}', '{safe_name}', {m_val}, {b_val}, {lat}, {lon}) ON CONFLICT (dane_code) DO UPDATE SET macro_score=EXCLUDED.macro_score, macro_band=EXCLUDED.macro_band, latitude=EXCLUDED.latitude, longitude=EXCLUDED.longitude, last_updated=CURRENT_TIMESTAMP;"
+    fuzzy_name = fuzzy[0]
+    fuzzy_matches = [m for m in PDET_MUNICIPALITIES if slugify(m.name) == fuzzy_name]
+    if dept is not None:
+        fuzzy_matches = [m for m in fuzzy_matches if m.department == dept]
 
-    def _generate_cluster_upsert(self, dane: str, cluster_id: str, score: float) -> str:
-        return f"INSERT INTO cluster_scores (region_id, cluster_id, score) VALUES ((SELECT id FROM regions WHERE dane_code='{dane}'), '{cluster_id}', {score}) ON CONFLICT (region_id, cluster_id) DO UPDATE SET score=EXCLUDED.score;"
+    if len(fuzzy_matches) == 1:
+        return fuzzy_matches[0]
 
-    def _generate_question_upsert(self, dane: str, qid: str, score: float) -> str:
-        return f"INSERT INTO question_scores (region_id, question_id, score) VALUES ((SELECT id FROM regions WHERE dane_code='{dane}'), '{qid}', {score}) ON CONFLICT (region_id, question_id) DO UPDATE SET score=EXCLUDED.score;"
+    return None
 
-    def _execute_sql(self, sql: str):
-        # Dry run logging
-        if "INSERT INTO regions" in sql:
-            logger.info(f"SQL Exec: {sql.strip()[:100]}...")
-        pass
+
+class DashboardIngester:
+    def __init__(
+        self,
+        ingest_url: str | None = None,
+        auth_token: str | None = None,
+        client_name: str = "dashboard-v1",
+        client_version: str = "1.0.0",
+        timeout_s: float = 5.0,
+        max_retries: int = 3,
+    ) -> None:
+        import os
+
+        self._ingest_url = ingest_url or os.getenv(
+            "ATROZ_DASHBOARD_INGEST_URL", "http://localhost:8000/api/v1/data/ingest"
+        )
+        self._auth_token = auth_token or os.getenv("ATROZ_DASHBOARD_JWT", "")
+        self._client_name = client_name
+        self._client_version = client_version
+        self._timeout_s = timeout_s
+        self._max_retries = max_retries
+
+    async def ingest_results(self, context: Mapping[str, Any]) -> bool:
+        municipality = _resolve_municipality_from_context(context)
+        if municipality is None:
+            logger.error("dashboard_ingest_municipality_unresolved")
+            return False
+
+        document = context.get("document")
+        input_data = getattr(document, "input_data", None) if document is not None else None
+        run_id = str(getattr(input_data, "run_id", "") or "") or f"run_unknown_{int(datetime.now().timestamp())}"
+
+        selector = MunicipalitySelector(
+            id=_municipality_id(municipality),
+            dane_code=municipality.dane_code or None,
+            name=municipality.name,
+            department=municipality.department,
+            document_id=str(getattr(input_data, "document_id", "") or "") or None,
+            pdf_path=str(getattr(input_data, "pdf_path", "") or "") or None,
+        )
+
+        macro_result = context.get("macro_result")
+        cluster_scores = context.get("cluster_scores")
+        policy_area_scores = context.get("policy_area_scores")
+        dimension_scores = context.get("dimension_scores")
+        scored_results = context.get("scored_results")
+        micro_results = context.get("micro_results")
+
+        minimal_micro_results: list[dict[str, Any]] | None = None
+        if isinstance(micro_results, list):
+            minimal_micro_results = [
+                {
+                    "question_id": getattr(r, "question_id", None),
+                    "question_global": getattr(r, "question_global", None),
+                    "base_slot": getattr(r, "base_slot", None),
+                    "error": getattr(r, "error", None),
+                    "duration_ms": getattr(r, "duration_ms", None),
+                    "aborted": getattr(r, "aborted", None),
+                }
+                for r in micro_results
+            ]
+
+        payload = DashboardIngestRequest(
+            run_id=run_id,
+            timestamp=datetime.now(timezone.utc),
+            municipality=selector,
+            macro_result=_jsonable(macro_result) if macro_result is not None else None,
+            cluster_scores=_jsonable(cluster_scores) if cluster_scores is not None else None,
+            policy_area_scores=_jsonable(policy_area_scores) if policy_area_scores is not None else None,
+            dimension_scores=_jsonable(dimension_scores) if dimension_scores is not None else None,
+            scored_results=_jsonable(scored_results) if scored_results is not None else None,
+            micro_results=minimal_micro_results,
+        )
+
+        headers = {
+            "X-Atroz-Client": self._client_name,
+            "X-Atroz-Version": self._client_version,
+            "X-Request-ID": str(uuid4()),
+            "Content-Type": "application/json",
+        }
+        if self._auth_token:
+            headers["Authorization"] = f"Bearer {self._auth_token}"
+
+        body = payload.model_dump(mode="json")
+
+        for attempt in range(1, self._max_retries + 1):
+            try:
+                async with httpx.AsyncClient(timeout=self._timeout_s) as client:
+                    response = await client.post(self._ingest_url, json=body, headers=headers)
+
+                if 200 <= response.status_code < 300:
+                    logger.info(
+                        "dashboard_ingest_ok",
+                        municipality_id=selector.id,
+                        run_id=run_id,
+                        status_code=response.status_code,
+                    )
+                    return True
+
+                if response.status_code in {429, 500, 503} and attempt < self._max_retries:
+                    await asyncio.sleep(2**attempt)
+                    continue
+
+                logger.error(
+                    "dashboard_ingest_failed",
+                    municipality_id=selector.id,
+                    run_id=run_id,
+                    status_code=response.status_code,
+                    response_text=response.text[:512],
+                )
+                return False
+
+            except (httpx.TimeoutException, httpx.NetworkError) as exc:
+                if attempt >= self._max_retries:
+                    logger.error(
+                        "dashboard_ingest_network_error",
+                        municipality_id=selector.id,
+                        run_id=run_id,
+                        error=str(exc),
+                    )
+                    return False
+                await asyncio.sleep(2**attempt)
+
+        return False
