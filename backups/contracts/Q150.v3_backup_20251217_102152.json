@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "9f272588f7d70f45338e8a4ee3dda5843aa8999d498606f8c30ecf5fdb5a5471",
+    "contract_hash": "cc88617b61ec7c8722aac87b2d7d0f5b9f5aeef4b21addac4900f7341a4372e6",
     "created_at": "2025-11-28T03:50:31.571934+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 150,
-    "updated_at": "2025-12-17T10:21:52.456712+00:00"
+    "updated_at": "2025-12-17T10:18:09.639462+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -307,18 +307,10 @@
       {
         "target": "elements_found",
         "sources": [
-          "adaptivepriorcalculator.generate_traceability_record",
-          "causal_extraction.assess_temporal_coherence",
-          "causal_extraction.calculate_language_specificity",
-          "causalinferencesetup.get_dynamics_pattern",
-          "causalinferencesetup.identify_failure_points",
-          "semantic_processing.chunk_text",
-          "semantic_processing.detect_pdm_structure",
-          "semantic_processing.detect_table",
           "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "concat",
-        "description": "Combine evidence from 9 methods"
+        "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
@@ -1004,13 +996,6 @@
           "human_template_title",
           "methodological_depth",
           "source_hash"
-        ],
-        "tool": "contract_remediator.py"
-      },
-      {
-        "timestamp": "2025-12-17T10:21:52.456725+00:00",
-        "fixes_applied": [
-          "method_assembly_alignment"
         ],
         "tool": "contract_remediator.py"
       }

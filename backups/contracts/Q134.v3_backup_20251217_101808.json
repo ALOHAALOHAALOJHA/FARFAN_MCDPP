@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "a0adb676f5b6d2853ea059d5ae6a309e38225528049d0106023f6ae10aac07c3",
+    "contract_hash": "50407aa18077c8e803d9b6d724d132a5d9b549aadc19a1ebada219ad0d122931",
     "created_at": "2025-11-28T03:50:31.430404+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 134,
-    "updated_at": "2025-12-17T10:18:08.690565+00:00"
+    "updated_at": "2025-12-16T04:42:57.988206+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -368,13 +368,8 @@
       "vaccination_rates"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01.",
-    "preferred_signal_types": [
-      "policy_instrument_detected",
-      "activity_specification_found",
-      "implementation_timeline_present"
-    ]
+    "minimum_signal_threshold": 0.0,
+    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -418,36 +413,9 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "advanceddagvalidator.add_edge",
-          "advanceddagvalidator.add_node",
-          "advanceddagvalidator.calculate_acyclicity_pvalue",
-          "advanceddagvalidator.calculate_node_importance",
-          "advanceddagvalidator.calculate_statistical_power",
-          "advanceddagvalidator.create_empty_result",
-          "advanceddagvalidator.export_nodes",
-          "advanceddagvalidator.generate_subgraph",
-          "advanceddagvalidator.get_graph_stats",
-          "advanceddagvalidator.get_node_validator",
-          "advanceddagvalidator.initialize_rng",
-          "advanceddagvalidator.is_acyclic",
-          "bayesianmechanisminference.test_necessity",
-          "hierarchicalgenerativemodel.calculate_ess",
-          "hierarchicalgenerativemodel.calculate_likelihood",
-          "hierarchicalgenerativemodel.calculate_r_hat",
-          "industrialgradevalidator.benchmark_operation",
-          "industrialgradevalidator.execute_suite",
-          "industrialgradevalidator.log_metric",
-          "industrialgradevalidator.run_performance_benchmarks",
-          "industrialgradevalidator.validate_causal_categories",
-          "industrialgradevalidator.validate_connection_matrix",
-          "industrialgradevalidator.validate_engine_readiness",
-          "performanceanalyzer.analyze_performance",
-          "performanceanalyzer.calculate_loss_functions",
-          "teoriacambio.extraer_categorias"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine evidence from 26 methods"
+        "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
@@ -566,7 +534,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q134 (D3-Q4): ¿Existe una relación factible entre la actividad (ej. 'jornadas de afiliación') y la meta del producto asociado (ej....",
+        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1979,23 +1947,40 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
-        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
+        "type": "array",
         "must_contain": {
-          "count": 3,
+          "count": 1,
           "elements": [
-            "coherencia_recursos",
-            "factibilidad_tecnica",
-            "realismo_plazos"
+            "cobertura_territorial_especificada"
           ]
         },
-        "type": "array"
+        "description": "Derived from monolith expected_elements where required is true"
       },
       {
-        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "should_contain": [],
-        "type": "array"
+        "type": "array",
+        "should_contain": [
+          {
+            "elements": [
+              "fuentes_oficiales"
+            ],
+            "minimum": 2
+          },
+          {
+            "elements": [
+              "indicadores_cuantitativos"
+            ],
+            "minimum": 3
+          },
+          {
+            "elements": [
+              "series_temporales_años"
+            ],
+            "minimum": 3
+          }
+        ],
+        "description": "Derived from monolith expected_elements with minimum counts"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -2009,27 +1994,13 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D3_Q4_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
+    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q134",
     "specialized_from_base_slot": "D3-Q4",
-    "specialization_timestamp": "2025-11-28T03:50:31.430499+00:00",
-    "remediation_log": [
-      {
-        "timestamp": "2025-12-17T10:18:08.690583+00:00",
-        "fixes_applied": [
-          "method_assembly_alignment",
-          "signal_threshold",
-          "validation_rules_alignment",
-          "human_template_title",
-          "methodological_depth",
-          "source_hash"
-        ],
-        "tool": "contract_remediator.py"
-      }
-    ]
+    "specialization_timestamp": "2025-11-28T03:50:31.430499+00:00"
   },
   "error_handling": {
     "on_method_not_found": "raise",
@@ -3154,57 +3125,5 @@
         "merge_strategy": "replace"
       }
     }
-  },
-  "methodological_depth": {
-    "methods": [
-      {
-        "method_name": "contract_orchestrated_evidence_fusion",
-        "class_name": "EvidenceNexus",
-        "priority": 1,
-        "role": "evidence_graph_construction_and_synthesis",
-        "epistemological_foundation": {
-          "paradigm": "critical_realist",
-          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
-          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
-          "theoretical_framework": [
-            "Pearl (2009) causal reasoning (why mechanisms matter)",
-            "Pawson & Tilley (1997) realistic evaluation",
-            "Results-based management for public policy monitoring"
-          ],
-          "justification": "Chosen because Productos / Planificación in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
-        },
-        "technical_approach": {
-          "method_type": "graph_based_evidence_fusion",
-          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
-          "steps": [
-            {
-              "step": 1,
-              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
-            },
-            {
-              "step": 2,
-              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
-            },
-            {
-              "step": 3,
-              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
-            },
-            {
-              "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q134/D3-Q4)."
-            }
-          ],
-          "assumptions": [
-            "The source plan contains at least one relevant section or table for this question.",
-            "Expected element types map to observable text spans or tabular cells."
-          ],
-          "limitations": [
-            "Evidence quality depends on document structure and explicitness of commitments.",
-            "Pattern-only extraction is conservative to preserve determinism."
-          ],
-          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
-        }
-      }
-    ]
   }
 }

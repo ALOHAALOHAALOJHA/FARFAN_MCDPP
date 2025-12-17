@@ -1,5 +1,9 @@
 import json
+import sys
 from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from canonic_phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
@@ -10,8 +14,7 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
 
 def test_sota_provenance_handles_string_qids() -> None:
     monolith_path = (
-        Path(__file__).resolve().parent.parent
-        / "canonic_questionnaire_central"
+        REPO_ROOT / "canonic_questionnaire_central"
         / "questionnaire_monolith.json"
     )
     monolith = json.loads(monolith_path.read_text(encoding="utf-8"))
@@ -66,4 +69,3 @@ def test_sota_provenance_handles_string_qids() -> None:
     assert "Q001" in agg.provenance_dag.nodes
     assert "Q002" in agg.provenance_dag.nodes
     assert "QABC" in agg.provenance_dag.nodes
-

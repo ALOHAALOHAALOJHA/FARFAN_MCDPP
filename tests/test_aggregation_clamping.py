@@ -1,5 +1,9 @@
 import json
+import sys
 from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from canonic_phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
@@ -10,8 +14,7 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
 
 def test_dimension_clamps_scores_to_range() -> None:
     monolith_path = (
-        Path(__file__).resolve().parent.parent
-        / "canonic_questionnaire_central"
+        REPO_ROOT / "canonic_questionnaire_central"
         / "questionnaire_monolith.json"
     )
     monolith = json.loads(monolith_path.read_text(encoding="utf-8"))
@@ -63,4 +66,3 @@ def test_dimension_clamps_scores_to_range() -> None:
     assert 0.0 <= ds.score <= 3.0
     assert ds.validation_details["clamping"]["applied"] is True
     assert ds.validation_details["clamping"]["n_clamped"] == 2
-

@@ -1,238 +1,230 @@
 {
   "identity": {
-    "base_slot": "D3-Q4",
-    "question_id": "Q134",
+    "base_slot": "D3-Q5",
+    "question_id": "Q135",
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "a0adb676f5b6d2853ea059d5ae6a309e38225528049d0106023f6ae10aac07c3",
-    "created_at": "2025-11-28T03:50:31.430404+00:00",
+    "contract_hash": "6b3aea64d42f13ac99ae8c88289dfc6666fc4d552805bd67641c86cc3737306b",
+    "created_at": "2025-11-28T03:50:31.435385+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
-    "question_global": 134,
-    "updated_at": "2025-12-17T10:18:08.690565+00:00"
+    "question_global": 135,
+    "updated_at": "2025-12-16T04:42:57.995927+00:00"
   },
   "executor_binding": {
-    "executor_class": "D3_Q4_Executor",
+    "executor_class": "D3_Q5_Executor",
     "executor_module": "farfan_core.core.orchestrator.executors"
   },
   "method_binding": {
     "orchestration_mode": "multi_method_pipeline",
-    "method_count": 26,
+    "method_count": 25,
     "methods": [
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "calculate_acyclicity_pvalue",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_identify_confounders",
         "priority": 1,
-        "provides": "advanceddagvalidator.calculate_acyclicity_pvalue",
-        "role": "calculate_acyclicity_pvalue_calculation",
-        "description": "AdvancedDAGValidator.calculate_acyclicity_pvalue"
+        "provides": "pdet_analysis.identify_confounders",
+        "role": "_identify_confounders_execution",
+        "description": "PDETMunicipalPlanAnalyzer._identify_confounders"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "_is_acyclic",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_effect_to_dict",
         "priority": 2,
-        "provides": "advanceddagvalidator.is_acyclic",
-        "role": "_is_acyclic_execution",
-        "description": "AdvancedDAGValidator._is_acyclic"
+        "provides": "pdet_analysis.effect_to_dict",
+        "role": "_effect_to_dict_execution",
+        "description": "PDETMunicipalPlanAnalyzer._effect_to_dict"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "get_graph_stats",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_scenario_to_dict",
         "priority": 3,
-        "provides": "advanceddagvalidator.get_graph_stats",
-        "role": "get_graph_stats_execution",
-        "description": "AdvancedDAGValidator.get_graph_stats"
+        "provides": "pdet_analysis.scenario_to_dict",
+        "role": "_scenario_to_dict_execution",
+        "description": "PDETMunicipalPlanAnalyzer._scenario_to_dict"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "_calculate_node_importance",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_simulate_intervention",
         "priority": 4,
-        "provides": "advanceddagvalidator.calculate_node_importance",
-        "role": "_calculate_node_importance_calculation",
-        "description": "AdvancedDAGValidator._calculate_node_importance"
+        "provides": "pdet_analysis.simulate_intervention",
+        "role": "_simulate_intervention_execution",
+        "description": "PDETMunicipalPlanAnalyzer._simulate_intervention"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "_generate_subgraph",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_generate_recommendations",
         "priority": 5,
-        "provides": "advanceddagvalidator.generate_subgraph",
-        "role": "_generate_subgraph_execution",
-        "description": "AdvancedDAGValidator._generate_subgraph"
+        "provides": "pdet_analysis.generate_recommendations",
+        "role": "_generate_recommendations_execution",
+        "description": "PDETMunicipalPlanAnalyzer._generate_recommendations"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "add_node",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_identify_causal_nodes",
         "priority": 6,
-        "provides": "advanceddagvalidator.add_node",
-        "role": "add_node_execution",
-        "description": "AdvancedDAGValidator.add_node"
+        "provides": "pdet_analysis.identify_causal_nodes",
+        "role": "_identify_causal_nodes_execution",
+        "description": "PDETMunicipalPlanAnalyzer._identify_causal_nodes"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "add_edge",
+        "class_name": "BayesianCounterfactualAuditor",
+        "method_name": "_evaluate_factual",
         "priority": 7,
-        "provides": "advanceddagvalidator.add_edge",
-        "role": "add_edge_execution",
-        "description": "AdvancedDAGValidator.add_edge"
+        "provides": "bayesiancounterfactualauditor.evaluate_factual",
+        "role": "_evaluate_factual_evaluation",
+        "description": "BayesianCounterfactualAuditor._evaluate_factual"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "export_nodes",
+        "class_name": "BayesianCounterfactualAuditor",
+        "method_name": "_evaluate_counterfactual",
         "priority": 8,
-        "provides": "advanceddagvalidator.export_nodes",
-        "role": "export_nodes_execution",
-        "description": "AdvancedDAGValidator.export_nodes"
+        "provides": "bayesiancounterfactualauditor.evaluate_counterfactual",
+        "role": "_evaluate_counterfactual_evaluation",
+        "description": "BayesianCounterfactualAuditor._evaluate_counterfactual"
       },
       {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "_initialize_rng",
+        "class_name": "CausalExtractor",
+        "method_name": "_assess_financial_consistency",
         "priority": 9,
-        "provides": "advanceddagvalidator.initialize_rng",
-        "role": "_initialize_rng_execution",
-        "description": "AdvancedDAGValidator._initialize_rng"
-      },
-      {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "_calculate_statistical_power",
-        "priority": 10,
-        "provides": "advanceddagvalidator.calculate_statistical_power",
-        "role": "_calculate_statistical_power_calculation",
-        "description": "AdvancedDAGValidator._calculate_statistical_power"
-      },
-      {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "_get_node_validator",
-        "priority": 11,
-        "provides": "advanceddagvalidator.get_node_validator",
-        "role": "_get_node_validator_execution",
-        "description": "AdvancedDAGValidator._get_node_validator"
-      },
-      {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "_create_empty_result",
-        "priority": 12,
-        "provides": "advanceddagvalidator.create_empty_result",
-        "role": "_create_empty_result_execution",
-        "description": "AdvancedDAGValidator._create_empty_result"
+        "provides": "causal_extraction.assess_financial_consistency",
+        "role": "_assess_financial_consistency_execution",
+        "description": "CausalExtractor._assess_financial_consistency"
       },
       {
         "class_name": "BayesianMechanismInference",
-        "method_name": "_test_necessity",
+        "method_name": "_infer_activity_sequence",
+        "priority": 10,
+        "provides": "bayesianmechanisminference.infer_activity_sequence",
+        "role": "_infer_activity_sequence_execution",
+        "description": "BayesianMechanismInference._infer_activity_sequence"
+      },
+      {
+        "class_name": "BayesianMechanismInference",
+        "method_name": "_generate_necessity_remediation",
+        "priority": 11,
+        "provides": "bayesianmechanisminference.generate_necessity_remediation",
+        "role": "_generate_necessity_remediation_execution",
+        "description": "BayesianMechanismInference._generate_necessity_remediation"
+      },
+      {
+        "class_name": "BayesianCounterfactualAuditor",
+        "method_name": "refutation_and_sanity_checks",
+        "priority": 12,
+        "provides": "bayesiancounterfactualauditor.refutation_and_sanity_checks",
+        "role": "refutation_and_sanity_checks_execution",
+        "description": "BayesianCounterfactualAuditor.refutation_and_sanity_checks"
+      },
+      {
+        "class_name": "IndustrialPolicyProcessor",
+        "method_name": "_load_questionnaire",
         "priority": 13,
-        "provides": "bayesianmechanisminference.test_necessity",
-        "role": "_test_necessity_execution",
-        "description": "BayesianMechanismInference._test_necessity"
+        "provides": "industrial_policy.load_questionnaire",
+        "role": "_load_questionnaire_execution",
+        "description": "IndustrialPolicyProcessor._load_questionnaire"
       },
       {
-        "class_name": "IndustrialGradeValidator",
-        "method_name": "execute_suite",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "analyze_financial_feasibility",
         "priority": 14,
-        "provides": "industrialgradevalidator.execute_suite",
-        "role": "execute_suite_execution",
-        "description": "IndustrialGradeValidator.execute_suite"
+        "provides": "pdet_analysis.analyze_financial_feasibility",
+        "role": "analyze_financial_feasibility_analysis",
+        "description": "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility"
       },
       {
-        "class_name": "IndustrialGradeValidator",
-        "method_name": "validate_connection_matrix",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "construct_causal_dag",
         "priority": 15,
-        "provides": "industrialgradevalidator.validate_connection_matrix",
-        "role": "validate_connection_matrix_validation",
-        "description": "IndustrialGradeValidator.validate_connection_matrix"
+        "provides": "pdet_analysis.construct_causal_dag",
+        "role": "construct_causal_dag_execution",
+        "description": "PDETMunicipalPlanAnalyzer.construct_causal_dag"
       },
       {
-        "class_name": "IndustrialGradeValidator",
-        "method_name": "run_performance_benchmarks",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "estimate_causal_effects",
         "priority": 16,
-        "provides": "industrialgradevalidator.run_performance_benchmarks",
-        "role": "run_performance_benchmarks_execution",
-        "description": "IndustrialGradeValidator.run_performance_benchmarks"
+        "provides": "pdet_analysis.estimate_causal_effects",
+        "role": "estimate_causal_effects_execution",
+        "description": "PDETMunicipalPlanAnalyzer.estimate_causal_effects"
       },
       {
-        "class_name": "IndustrialGradeValidator",
-        "method_name": "_benchmark_operation",
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "generate_counterfactuals",
         "priority": 17,
-        "provides": "industrialgradevalidator.benchmark_operation",
-        "role": "_benchmark_operation_execution",
-        "description": "IndustrialGradeValidator._benchmark_operation"
+        "provides": "pdet_analysis.generate_counterfactuals",
+        "role": "generate_counterfactuals_execution",
+        "description": "PDETMunicipalPlanAnalyzer.generate_counterfactuals"
       },
       {
-        "class_name": "IndustrialGradeValidator",
-        "method_name": "_log_metric",
+        "class_name": "CausalExtractor",
+        "method_name": "_build_type_hierarchy",
         "priority": 18,
-        "provides": "industrialgradevalidator.log_metric",
-        "role": "_log_metric_execution",
-        "description": "IndustrialGradeValidator._log_metric"
+        "provides": "causal_extraction.build_type_hierarchy",
+        "role": "_build_type_hierarchy_execution",
+        "description": "CausalExtractor._build_type_hierarchy"
       },
       {
-        "class_name": "IndustrialGradeValidator",
-        "method_name": "validate_engine_readiness",
+        "class_name": "CausalExtractor",
+        "method_name": "_check_structural_violation",
         "priority": 19,
-        "provides": "industrialgradevalidator.validate_engine_readiness",
-        "role": "validate_engine_readiness_validation",
-        "description": "IndustrialGradeValidator.validate_engine_readiness"
+        "provides": "causal_extraction.check_structural_violation",
+        "role": "_check_structural_violation_execution",
+        "description": "CausalExtractor._check_structural_violation"
       },
       {
-        "class_name": "PerformanceAnalyzer",
-        "method_name": "analyze_performance",
+        "class_name": "CausalExtractor",
+        "method_name": "_calculate_type_transition_prior",
         "priority": 20,
-        "provides": "performanceanalyzer.analyze_performance",
-        "role": "analyze_performance_analysis",
-        "description": "PerformanceAnalyzer.analyze_performance"
+        "provides": "causal_extraction.calculate_type_transition_prior",
+        "role": "_calculate_type_transition_prior_calculation",
+        "description": "CausalExtractor._calculate_type_transition_prior"
       },
       {
-        "class_name": "PerformanceAnalyzer",
-        "method_name": "_calculate_loss_functions",
+        "class_name": "CausalExtractor",
+        "method_name": "_calculate_textual_proximity",
         "priority": 21,
-        "provides": "performanceanalyzer.calculate_loss_functions",
-        "role": "_calculate_loss_functions_calculation",
-        "description": "PerformanceAnalyzer._calculate_loss_functions"
-      },
-      {
-        "class_name": "HierarchicalGenerativeModel",
-        "method_name": "_calculate_likelihood",
-        "priority": 22,
-        "provides": "hierarchicalgenerativemodel.calculate_likelihood",
-        "role": "_calculate_likelihood_calculation",
-        "description": "HierarchicalGenerativeModel._calculate_likelihood"
-      },
-      {
-        "class_name": "HierarchicalGenerativeModel",
-        "method_name": "_calculate_ess",
-        "priority": 23,
-        "provides": "hierarchicalgenerativemodel.calculate_ess",
-        "role": "_calculate_ess_calculation",
-        "description": "HierarchicalGenerativeModel._calculate_ess"
-      },
-      {
-        "class_name": "HierarchicalGenerativeModel",
-        "method_name": "_calculate_r_hat",
-        "priority": 24,
-        "provides": "hierarchicalgenerativemodel.calculate_r_hat",
-        "role": "_calculate_r_hat_calculation",
-        "description": "HierarchicalGenerativeModel._calculate_r_hat"
-      },
-      {
-        "class_name": "IndustrialGradeValidator",
-        "method_name": "validate_causal_categories",
-        "priority": 25,
-        "provides": "industrialgradevalidator.validate_causal_categories",
-        "role": "validate_causal_categories_validation",
-        "description": "IndustrialGradeValidator.validate_causal_categories"
+        "provides": "causal_extraction.calculate_textual_proximity",
+        "role": "_calculate_textual_proximity_calculation",
+        "description": "CausalExtractor._calculate_textual_proximity"
       },
       {
         "class_name": "TeoriaCambio",
-        "method_name": "_extraer_categorias",
-        "priority": 26,
-        "provides": "teoriacambio.extraer_categorias",
-        "role": "_extraer_categorias_execution",
-        "description": "TeoriaCambio._extraer_categorias"
+        "method_name": "_validar_orden_causal",
+        "priority": 22,
+        "provides": "teoriacambio.validar_orden_causal",
+        "role": "_validar_orden_causal_execution",
+        "description": "TeoriaCambio._validar_orden_causal"
+      },
+      {
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_refine_edge_probabilities",
+        "priority": 23,
+        "provides": "pdet_analysis.refine_edge_probabilities",
+        "role": "_refine_edge_probabilities_execution",
+        "description": "PDETMunicipalPlanAnalyzer._refine_edge_probabilities"
+      },
+      {
+        "class_name": "PolicyAnalysisEmbedder",
+        "method_name": "compare_policy_interventions",
+        "priority": 24,
+        "provides": "policyanalysisembedder.compare_policy_interventions",
+        "role": "compare_policy_interventions_comparison",
+        "description": "PolicyAnalysisEmbedder.compare_policy_interventions"
+      },
+      {
+        "class_name": "BayesianMechanismInference",
+        "method_name": "infer_mechanisms",
+        "priority": 25,
+        "provides": "bayesianmechanisminference.infer_mechanisms",
+        "role": "infer_mechanisms_execution",
+        "description": "BayesianMechanismInference.infer_mechanisms"
       }
     ],
-    "note": "All 26 methods extracted from D3_Q4_Executor in executors.py"
+    "note": "All 25 methods extracted from D3_Q5_Executor in executors.py"
   },
   "question_context": {
-    "question_text": "¿Existe una relación factible entre la actividad (ej. 'jornadas de afiliación') y la meta del producto asociado (ej. '10.000 nuevos afiliados a salud') para el área de DESC? Se debe evaluar si los 'plazos' y recursos son realistas.",
+    "question_text": "¿El PDM explica cómo los productos sociales (ej. 'estudiantes beneficiados con PAE') contribuyen a generar resultados (ej. 'reducción de la deserción escolar')? Se debe buscar la descripción de este 'mecanismo'.",
     "question_type": "micro",
     "scoring_modality": "TYPE_A",
     "modality": "count_and_scale",
@@ -242,38 +234,24 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q134-000",
+        "id": "PAT-Q135-000",
         "match_type": "REGEX",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "pattern_ref": "PAT-0066",
-        "pattern": "factibilidad|viabilidad|es realista esperar que",
+        "pattern_ref": "PAT-0063",
+        "pattern": "esto permitirá que|lo cual contribuirá a|generando una reducción de",
         "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q134-001",
+        "id": "PAT-Q135-001",
         "match_type": "REGEX",
-        "pattern": "capacidad operativa de la Secretaría de Salud para afiliar",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q134-002",
-        "match_type": "REGEX",
-        "pattern": "plazo de ejecución de las obras de infraestructura educativa",
+        "pattern": "el mecanismo es que el PAE reduce los costos de asistencia para las familias",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -285,9 +263,9 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q134-003",
-        "match_type": "LITERAL",
-        "pattern": "la meta es ambiciosa pero alcanzable con los recursos SGP",
+        "id": "PAT-Q135-002",
+        "match_type": "REGEX",
+        "pattern": "la construcción de aulas permite ampliar la cobertura, lo que resulta en...",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -299,47 +277,55 @@
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q134-004",
+        "id": "PAT-Q135-003",
         "match_type": "REGEX",
+        "pattern": "la afiliación a salud elimina las barreras de acceso, mejorando el estado de salud",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "pattern_ref": "PAT-0045",
-        "pattern": "contradictorio|poco probable|desproporcionado",
         "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
         "confidence_weight": 0.85,
         "flags": "i",
-        "id": "PAT-Q134-005",
+        "id": "PAT-Q135-004",
+        "match_type": "REGEX",
+        "pattern": "variable intermedia|mediador|eslabón causal|permanencia escolar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA04"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q135-005",
         "match_type": "REGEX",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "pattern_ref": "PAT-0042",
-        "pattern": "con los recursos asignados se puede lograr",
+        "pattern_ref": "PAT-0030",
+        "pattern": "cadena de valor|ruta de cambio",
         "policy_area": "PA04"
       }
     ],
     "expected_elements": [
       {
         "required": true,
-        "type": "coherencia_recursos",
+        "type": "conexion_producto_resultado",
         "minimum": 1
       },
       {
         "required": true,
-        "type": "factibilidad_tecnica",
-        "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "realismo_plazos",
+        "type": "mecanismo_causal_explicito",
         "minimum": 1
       }
     ],
@@ -349,7 +335,7 @@
         "missing_required_element",
         "incomplete_text"
       ],
-      "emit_code": "ABORT-Q134-REQ"
+      "emit_code": "ABORT-Q135-REQ"
     }
   },
   "signal_requirements": {
@@ -368,13 +354,8 @@
       "vaccination_rates"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01.",
-    "preferred_signal_types": [
-      "policy_instrument_detected",
-      "activity_specification_found",
-      "implementation_timeline_present"
-    ]
+    "minimum_signal_threshold": 0.0,
+    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -418,36 +399,9 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [
-          "advanceddagvalidator.add_edge",
-          "advanceddagvalidator.add_node",
-          "advanceddagvalidator.calculate_acyclicity_pvalue",
-          "advanceddagvalidator.calculate_node_importance",
-          "advanceddagvalidator.calculate_statistical_power",
-          "advanceddagvalidator.create_empty_result",
-          "advanceddagvalidator.export_nodes",
-          "advanceddagvalidator.generate_subgraph",
-          "advanceddagvalidator.get_graph_stats",
-          "advanceddagvalidator.get_node_validator",
-          "advanceddagvalidator.initialize_rng",
-          "advanceddagvalidator.is_acyclic",
-          "bayesianmechanisminference.test_necessity",
-          "hierarchicalgenerativemodel.calculate_ess",
-          "hierarchicalgenerativemodel.calculate_likelihood",
-          "hierarchicalgenerativemodel.calculate_r_hat",
-          "industrialgradevalidator.benchmark_operation",
-          "industrialgradevalidator.execute_suite",
-          "industrialgradevalidator.log_metric",
-          "industrialgradevalidator.run_performance_benchmarks",
-          "industrialgradevalidator.validate_causal_categories",
-          "industrialgradevalidator.validate_connection_matrix",
-          "industrialgradevalidator.validate_engine_readiness",
-          "performanceanalyzer.analyze_performance",
-          "performanceanalyzer.calculate_loss_functions",
-          "teoriacambio.extraer_categorias"
-        ],
+        "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine evidence from 26 methods"
+        "description": "Combine all evidence elements from 17 method invocations"
       },
       {
         "target": "confidence_scores",
@@ -487,17 +441,17 @@
         "base_slot": {
           "type": "string",
           "description": "Debe coincidir con identity.base_slot.",
-          "const": "D3-Q4"
+          "const": "D3-Q5"
         },
         "question_id": {
           "type": "string",
           "description": "Debe coincidir con identity.question_id.",
-          "const": "Q134"
+          "const": "Q135"
         },
         "question_global": {
           "type": "integer",
           "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 134
+          "const": 135
         },
         "policy_area_id": {
           "type": [
@@ -566,7 +520,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q134 (D3-Q4): ¿Existe una relación factible entre la actividad (ej. 'jornadas de afiliación') y la meta del producto asociado (ej....",
+        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -582,26 +536,26 @@
       "methodological_depth": {
         "methods": [
           {
-            "method_name": "calculate_acyclicity_pvalue",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_identify_confounders",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 1,
-            "role": "calculate_acyclicity_pvalue_calculation",
+            "role": "_identify_confounders_identification",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator.calculate_acyclicity_pvalue",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._identify_confounders",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method calculate_acyclicity_pvalue implements structured analysis for D3-Q4"
+                "Method _identify_confounders implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator.calculate_acyclicity_pvalue algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer._identify_confounders algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute calculate_acyclicity_pvalue"
+                  "description": "Execute _identify_confounders"
                 },
                 {
                   "step": 2,
@@ -622,7 +576,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from calculate_acyclicity_pvalue"
+                "result": "Structured output from _identify_confounders"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -630,31 +584,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use calculate_acyclicity_pvalue results for downstream analysis"
+                "Use _identify_confounders results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_is_acyclic",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_effect_to_dict",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 2,
-            "role": "_is_acyclic",
+            "role": "_effect_to_dict",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator._is_acyclic",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._effect_to_dict",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _is_acyclic implements structured analysis for D3-Q4"
+                "Method _effect_to_dict implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator._is_acyclic algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer._effect_to_dict algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _is_acyclic"
+                  "description": "Execute _effect_to_dict"
                 },
                 {
                   "step": 2,
@@ -675,7 +629,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _is_acyclic"
+                "result": "Structured output from _effect_to_dict"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -683,31 +637,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _is_acyclic results for downstream analysis"
+                "Use _effect_to_dict results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "get_graph_stats",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_scenario_to_dict",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 3,
-            "role": "get_graph_stats",
+            "role": "_scenario_to_dict",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator.get_graph_stats",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._scenario_to_dict",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method get_graph_stats implements structured analysis for D3-Q4"
+                "Method _scenario_to_dict implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator.get_graph_stats algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer._scenario_to_dict algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute get_graph_stats"
+                  "description": "Execute _scenario_to_dict"
                 },
                 {
                   "step": 2,
@@ -728,7 +682,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from get_graph_stats"
+                "result": "Structured output from _scenario_to_dict"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -736,31 +690,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use get_graph_stats results for downstream analysis"
+                "Use _scenario_to_dict results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_calculate_node_importance",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_simulate_intervention",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 4,
-            "role": "_calculate_node_importance_calculation",
+            "role": "_simulate_intervention",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator._calculate_node_importance",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._simulate_intervention",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _calculate_node_importance implements structured analysis for D3-Q4"
+                "Method _simulate_intervention implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator._calculate_node_importance algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer._simulate_intervention algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_node_importance"
+                  "description": "Execute _simulate_intervention"
                 },
                 {
                   "step": 2,
@@ -781,7 +735,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _calculate_node_importance"
+                "result": "Structured output from _simulate_intervention"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -789,31 +743,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _calculate_node_importance results for downstream analysis"
+                "Use _simulate_intervention results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_generate_subgraph",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_generate_recommendations",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 5,
-            "role": "_generate_subgraph_generation",
+            "role": "_generate_recommendations_generation",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator._generate_subgraph",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._generate_recommendations",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _generate_subgraph implements structured analysis for D3-Q4"
+                "Method _generate_recommendations implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator._generate_subgraph algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer._generate_recommendations algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_subgraph"
+                  "description": "Execute _generate_recommendations"
                 },
                 {
                   "step": 2,
@@ -834,7 +788,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _generate_subgraph"
+                "result": "Structured output from _generate_recommendations"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -842,31 +796,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _generate_subgraph results for downstream analysis"
+                "Use _generate_recommendations results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "add_node",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_identify_causal_nodes",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 6,
-            "role": "add_node",
+            "role": "_identify_causal_nodes_identification",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator.add_node",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._identify_causal_nodes",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method add_node implements structured analysis for D3-Q4"
+                "Method _identify_causal_nodes implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator.add_node algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer._identify_causal_nodes algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute add_node"
+                  "description": "Execute _identify_causal_nodes"
                 },
                 {
                   "step": 2,
@@ -887,7 +841,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from add_node"
+                "result": "Structured output from _identify_causal_nodes"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -895,31 +849,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use add_node results for downstream analysis"
+                "Use _identify_causal_nodes results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "add_edge",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_evaluate_factual",
+            "class_name": "BayesianCounterfactualAuditor",
             "priority": 7,
-            "role": "add_edge",
+            "role": "_evaluate_factual_evaluation",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator.add_edge",
+              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
+              "ontological_basis": "Analysis via BayesianCounterfactualAuditor._evaluate_factual",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method add_edge implements structured analysis for D3-Q4"
+                "Method _evaluate_factual implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator.add_edge algorithm",
+              "algorithm": "BayesianCounterfactualAuditor._evaluate_factual algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute add_edge"
+                  "description": "Execute _evaluate_factual"
                 },
                 {
                   "step": 2,
@@ -940,7 +894,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from add_edge"
+                "result": "Structured output from _evaluate_factual"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -948,31 +902,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use add_edge results for downstream analysis"
+                "Use _evaluate_factual results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "export_nodes",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_evaluate_counterfactual",
+            "class_name": "BayesianCounterfactualAuditor",
             "priority": 8,
-            "role": "export_nodes",
+            "role": "_evaluate_counterfactual_evaluation",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator.export_nodes",
+              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
+              "ontological_basis": "Analysis via BayesianCounterfactualAuditor._evaluate_counterfactual",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method export_nodes implements structured analysis for D3-Q4"
+                "Method _evaluate_counterfactual implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator.export_nodes algorithm",
+              "algorithm": "BayesianCounterfactualAuditor._evaluate_counterfactual algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute export_nodes"
+                  "description": "Execute _evaluate_counterfactual"
                 },
                 {
                   "step": 2,
@@ -993,7 +947,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from export_nodes"
+                "result": "Structured output from _evaluate_counterfactual"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1001,31 +955,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use export_nodes results for downstream analysis"
+                "Use _evaluate_counterfactual results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_initialize_rng",
-            "class_name": "AdvancedDAGValidator",
+            "method_name": "_assess_financial_consistency",
+            "class_name": "CausalExtractor",
             "priority": 9,
-            "role": "_initialize_rng",
+            "role": "_assess_financial_consistency",
             "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator._initialize_rng",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._assess_financial_consistency",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _initialize_rng implements structured analysis for D3-Q4"
+                "Method _assess_financial_consistency implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator._initialize_rng algorithm",
+              "algorithm": "CausalExtractor._assess_financial_consistency algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _initialize_rng"
+                  "description": "Execute _assess_financial_consistency"
                 },
                 {
                   "step": 2,
@@ -1046,7 +1000,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _initialize_rng"
+                "result": "Structured output from _assess_financial_consistency"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1054,190 +1008,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _initialize_rng results for downstream analysis"
+                "Use _assess_financial_consistency results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_calculate_statistical_power",
-            "class_name": "AdvancedDAGValidator",
-            "priority": 10,
-            "role": "_calculate_statistical_power_calculation",
-            "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator._calculate_statistical_power",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _calculate_statistical_power implements structured analysis for D3-Q4"
-              ],
-              "justification": "This method contributes to D3-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator._calculate_statistical_power algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _calculate_statistical_power"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _calculate_statistical_power"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _calculate_statistical_power results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_get_node_validator",
-            "class_name": "AdvancedDAGValidator",
-            "priority": 11,
-            "role": "_get_node_validator",
-            "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator._get_node_validator",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _get_node_validator implements structured analysis for D3-Q4"
-              ],
-              "justification": "This method contributes to D3-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator._get_node_validator algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _get_node_validator"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _get_node_validator"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _get_node_validator results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_create_empty_result",
-            "class_name": "AdvancedDAGValidator",
-            "priority": 12,
-            "role": "_create_empty_result",
-            "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator._create_empty_result",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _create_empty_result implements structured analysis for D3-Q4"
-              ],
-              "justification": "This method contributes to D3-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator._create_empty_result algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _create_empty_result"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _create_empty_result"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _create_empty_result results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_test_necessity",
+            "method_name": "_infer_activity_sequence",
             "class_name": "BayesianMechanismInference",
-            "priority": 13,
-            "role": "_test_necessity",
+            "priority": 10,
+            "role": "_infer_activity_sequence_inference",
             "epistemological_foundation": {
               "paradigm": "BayesianMechanismInference analytical paradigm",
-              "ontological_basis": "Analysis via BayesianMechanismInference._test_necessity",
+              "ontological_basis": "Analysis via BayesianMechanismInference._infer_activity_sequence",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _test_necessity implements structured analysis for D3-Q4"
+                "Method _infer_activity_sequence implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "BayesianMechanismInference._test_necessity algorithm",
+              "algorithm": "BayesianMechanismInference._infer_activity_sequence algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_necessity"
+                  "description": "Execute _infer_activity_sequence"
                 },
                 {
                   "step": 2,
@@ -1258,7 +1053,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _test_necessity"
+                "result": "Structured output from _infer_activity_sequence"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1266,31 +1061,190 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _test_necessity results for downstream analysis"
+                "Use _infer_activity_sequence results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "execute_suite",
-            "class_name": "IndustrialGradeValidator",
+            "method_name": "_generate_necessity_remediation",
+            "class_name": "BayesianMechanismInference",
+            "priority": 11,
+            "role": "_generate_necessity_remediation_generation",
+            "epistemological_foundation": {
+              "paradigm": "BayesianMechanismInference analytical paradigm",
+              "ontological_basis": "Analysis via BayesianMechanismInference._generate_necessity_remediation",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _generate_necessity_remediation implements structured analysis for D3-Q5"
+              ],
+              "justification": "This method contributes to D3-Q5 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "BayesianMechanismInference._generate_necessity_remediation algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Execute _generate_necessity_remediation"
+                },
+                {
+                  "step": 2,
+                  "description": "Process results"
+                },
+                {
+                  "step": 3,
+                  "description": "Return structured output"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _generate_necessity_remediation"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _generate_necessity_remediation results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "refutation_and_sanity_checks",
+            "class_name": "BayesianCounterfactualAuditor",
+            "priority": 12,
+            "role": "refutation_and_sanity_checks",
+            "epistemological_foundation": {
+              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
+              "ontological_basis": "Analysis via BayesianCounterfactualAuditor.refutation_and_sanity_checks",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method refutation_and_sanity_checks implements structured analysis for D3-Q5"
+              ],
+              "justification": "This method contributes to D3-Q5 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "BayesianCounterfactualAuditor.refutation_and_sanity_checks algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Execute refutation_and_sanity_checks"
+                },
+                {
+                  "step": 2,
+                  "description": "Process results"
+                },
+                {
+                  "step": 3,
+                  "description": "Return structured output"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from refutation_and_sanity_checks"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use refutation_and_sanity_checks results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_load_questionnaire",
+            "class_name": "IndustrialPolicyProcessor",
+            "priority": 13,
+            "role": "_load_questionnaire",
+            "epistemological_foundation": {
+              "paradigm": "IndustrialPolicyProcessor analytical paradigm",
+              "ontological_basis": "Analysis via IndustrialPolicyProcessor._load_questionnaire",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _load_questionnaire implements structured analysis for D3-Q5"
+              ],
+              "justification": "This method contributes to D3-Q5 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "IndustrialPolicyProcessor._load_questionnaire algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Execute _load_questionnaire"
+                },
+                {
+                  "step": 2,
+                  "description": "Process results"
+                },
+                {
+                  "step": 3,
+                  "description": "Return structured output"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _load_questionnaire"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _load_questionnaire results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "analyze_financial_feasibility",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 14,
-            "role": "execute_suite",
+            "role": "analyze_financial_feasibility_analysis",
             "epistemological_foundation": {
-              "paradigm": "IndustrialGradeValidator analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialGradeValidator.execute_suite",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer.analyze_financial_feasibility",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method execute_suite implements structured analysis for D3-Q4"
+                "Method analyze_financial_feasibility implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "IndustrialGradeValidator.execute_suite algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute execute_suite"
+                  "description": "Execute analyze_financial_feasibility"
                 },
                 {
                   "step": 2,
@@ -1311,7 +1265,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from execute_suite"
+                "result": "Structured output from analyze_financial_feasibility"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1319,31 +1273,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use execute_suite results for downstream analysis"
+                "Use analyze_financial_feasibility results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "validate_connection_matrix",
-            "class_name": "IndustrialGradeValidator",
+            "method_name": "construct_causal_dag",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 15,
-            "role": "validate_connection_matrix_validation",
+            "role": "construct_causal_dag_construction",
             "epistemological_foundation": {
-              "paradigm": "IndustrialGradeValidator analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialGradeValidator.validate_connection_matrix",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer.construct_causal_dag",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method validate_connection_matrix implements structured analysis for D3-Q4"
+                "Method construct_causal_dag implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "IndustrialGradeValidator.validate_connection_matrix algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer.construct_causal_dag algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute validate_connection_matrix"
+                  "description": "Execute construct_causal_dag"
                 },
                 {
                   "step": 2,
@@ -1364,7 +1318,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from validate_connection_matrix"
+                "result": "Structured output from construct_causal_dag"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1372,31 +1326,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use validate_connection_matrix results for downstream analysis"
+                "Use construct_causal_dag results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "run_performance_benchmarks",
-            "class_name": "IndustrialGradeValidator",
+            "method_name": "estimate_causal_effects",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 16,
-            "role": "run_performance_benchmarks",
+            "role": "estimate_causal_effects",
             "epistemological_foundation": {
-              "paradigm": "IndustrialGradeValidator analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialGradeValidator.run_performance_benchmarks",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer.estimate_causal_effects",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method run_performance_benchmarks implements structured analysis for D3-Q4"
+                "Method estimate_causal_effects implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "IndustrialGradeValidator.run_performance_benchmarks algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer.estimate_causal_effects algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute run_performance_benchmarks"
+                  "description": "Execute estimate_causal_effects"
                 },
                 {
                   "step": 2,
@@ -1417,7 +1371,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from run_performance_benchmarks"
+                "result": "Structured output from estimate_causal_effects"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1425,31 +1379,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use run_performance_benchmarks results for downstream analysis"
+                "Use estimate_causal_effects results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_benchmark_operation",
-            "class_name": "IndustrialGradeValidator",
+            "method_name": "generate_counterfactuals",
+            "class_name": "PDETMunicipalPlanAnalyzer",
             "priority": 17,
-            "role": "_benchmark_operation",
+            "role": "generate_counterfactuals_generation",
             "epistemological_foundation": {
-              "paradigm": "IndustrialGradeValidator analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialGradeValidator._benchmark_operation",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer.generate_counterfactuals",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _benchmark_operation implements structured analysis for D3-Q4"
+                "Method generate_counterfactuals implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "IndustrialGradeValidator._benchmark_operation algorithm",
+              "algorithm": "PDETMunicipalPlanAnalyzer.generate_counterfactuals algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _benchmark_operation"
+                  "description": "Execute generate_counterfactuals"
                 },
                 {
                   "step": 2,
@@ -1470,7 +1424,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _benchmark_operation"
+                "result": "Structured output from generate_counterfactuals"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1478,31 +1432,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _benchmark_operation results for downstream analysis"
+                "Use generate_counterfactuals results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_log_metric",
-            "class_name": "IndustrialGradeValidator",
+            "method_name": "_build_type_hierarchy",
+            "class_name": "CausalExtractor",
             "priority": 18,
-            "role": "_log_metric",
+            "role": "_build_type_hierarchy",
             "epistemological_foundation": {
-              "paradigm": "IndustrialGradeValidator analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialGradeValidator._log_metric",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._build_type_hierarchy",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _log_metric implements structured analysis for D3-Q4"
+                "Method _build_type_hierarchy implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "IndustrialGradeValidator._log_metric algorithm",
+              "algorithm": "CausalExtractor._build_type_hierarchy algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _log_metric"
+                  "description": "Execute _build_type_hierarchy"
                 },
                 {
                   "step": 2,
@@ -1523,7 +1477,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _log_metric"
+                "result": "Structured output from _build_type_hierarchy"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1531,31 +1485,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _log_metric results for downstream analysis"
+                "Use _build_type_hierarchy results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "validate_engine_readiness",
-            "class_name": "IndustrialGradeValidator",
+            "method_name": "_check_structural_violation",
+            "class_name": "CausalExtractor",
             "priority": 19,
-            "role": "validate_engine_readiness_validation",
+            "role": "_check_structural_violation",
             "epistemological_foundation": {
-              "paradigm": "IndustrialGradeValidator analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialGradeValidator.validate_engine_readiness",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._check_structural_violation",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method validate_engine_readiness implements structured analysis for D3-Q4"
+                "Method _check_structural_violation implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "IndustrialGradeValidator.validate_engine_readiness algorithm",
+              "algorithm": "CausalExtractor._check_structural_violation algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute validate_engine_readiness"
+                  "description": "Execute _check_structural_violation"
                 },
                 {
                   "step": 2,
@@ -1576,7 +1530,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from validate_engine_readiness"
+                "result": "Structured output from _check_structural_violation"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1584,31 +1538,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use validate_engine_readiness results for downstream analysis"
+                "Use _check_structural_violation results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "analyze_performance",
-            "class_name": "PerformanceAnalyzer",
+            "method_name": "_calculate_type_transition_prior",
+            "class_name": "CausalExtractor",
             "priority": 20,
-            "role": "analyze_performance_analysis",
+            "role": "_calculate_type_transition_prior_calculation",
             "epistemological_foundation": {
-              "paradigm": "PerformanceAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PerformanceAnalyzer.analyze_performance",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._calculate_type_transition_prior",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method analyze_performance implements structured analysis for D3-Q4"
+                "Method _calculate_type_transition_prior implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "PerformanceAnalyzer.analyze_performance algorithm",
+              "algorithm": "CausalExtractor._calculate_type_transition_prior algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute analyze_performance"
+                  "description": "Execute _calculate_type_transition_prior"
                 },
                 {
                   "step": 2,
@@ -1629,7 +1583,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from analyze_performance"
+                "result": "Structured output from _calculate_type_transition_prior"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1637,31 +1591,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use analyze_performance results for downstream analysis"
+                "Use _calculate_type_transition_prior results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_calculate_loss_functions",
-            "class_name": "PerformanceAnalyzer",
+            "method_name": "_calculate_textual_proximity",
+            "class_name": "CausalExtractor",
             "priority": 21,
-            "role": "_calculate_loss_functions_calculation",
+            "role": "_calculate_textual_proximity_calculation",
             "epistemological_foundation": {
-              "paradigm": "PerformanceAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PerformanceAnalyzer._calculate_loss_functions",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._calculate_textual_proximity",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _calculate_loss_functions implements structured analysis for D3-Q4"
+                "Method _calculate_textual_proximity implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "PerformanceAnalyzer._calculate_loss_functions algorithm",
+              "algorithm": "CausalExtractor._calculate_textual_proximity algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_loss_functions"
+                  "description": "Execute _calculate_textual_proximity"
                 },
                 {
                   "step": 2,
@@ -1682,7 +1636,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _calculate_loss_functions"
+                "result": "Structured output from _calculate_textual_proximity"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1690,243 +1644,31 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _calculate_loss_functions results for downstream analysis"
+                "Use _calculate_textual_proximity results for downstream analysis"
               ]
             }
           },
           {
-            "method_name": "_calculate_likelihood",
-            "class_name": "HierarchicalGenerativeModel",
-            "priority": 22,
-            "role": "_calculate_likelihood_calculation",
-            "epistemological_foundation": {
-              "paradigm": "HierarchicalGenerativeModel analytical paradigm",
-              "ontological_basis": "Analysis via HierarchicalGenerativeModel._calculate_likelihood",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _calculate_likelihood implements structured analysis for D3-Q4"
-              ],
-              "justification": "This method contributes to D3-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "HierarchicalGenerativeModel._calculate_likelihood algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _calculate_likelihood"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _calculate_likelihood"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _calculate_likelihood results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_calculate_ess",
-            "class_name": "HierarchicalGenerativeModel",
-            "priority": 23,
-            "role": "_calculate_ess_calculation",
-            "epistemological_foundation": {
-              "paradigm": "HierarchicalGenerativeModel analytical paradigm",
-              "ontological_basis": "Analysis via HierarchicalGenerativeModel._calculate_ess",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _calculate_ess implements structured analysis for D3-Q4"
-              ],
-              "justification": "This method contributes to D3-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "HierarchicalGenerativeModel._calculate_ess algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _calculate_ess"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _calculate_ess"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _calculate_ess results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_calculate_r_hat",
-            "class_name": "HierarchicalGenerativeModel",
-            "priority": 24,
-            "role": "_calculate_r_hat_calculation",
-            "epistemological_foundation": {
-              "paradigm": "HierarchicalGenerativeModel analytical paradigm",
-              "ontological_basis": "Analysis via HierarchicalGenerativeModel._calculate_r_hat",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _calculate_r_hat implements structured analysis for D3-Q4"
-              ],
-              "justification": "This method contributes to D3-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "HierarchicalGenerativeModel._calculate_r_hat algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _calculate_r_hat"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _calculate_r_hat"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _calculate_r_hat results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "validate_causal_categories",
-            "class_name": "IndustrialGradeValidator",
-            "priority": 25,
-            "role": "validate_causal_categories_validation",
-            "epistemological_foundation": {
-              "paradigm": "IndustrialGradeValidator analytical paradigm",
-              "ontological_basis": "Analysis via IndustrialGradeValidator.validate_causal_categories",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method validate_causal_categories implements structured analysis for D3-Q4"
-              ],
-              "justification": "This method contributes to D3-Q4 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "IndustrialGradeValidator.validate_causal_categories algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute validate_causal_categories"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from validate_causal_categories"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use validate_causal_categories results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_extraer_categorias",
+            "method_name": "_validar_orden_causal",
             "class_name": "TeoriaCambio",
-            "priority": 26,
-            "role": "_extraer_categorias",
+            "priority": 22,
+            "role": "_validar_orden_causal",
             "epistemological_foundation": {
               "paradigm": "TeoriaCambio analytical paradigm",
-              "ontological_basis": "Analysis via TeoriaCambio._extraer_categorias",
+              "ontological_basis": "Analysis via TeoriaCambio._validar_orden_causal",
               "epistemological_stance": "Empirical-analytical approach",
               "theoretical_framework": [
-                "Method _extraer_categorias implements structured analysis for D3-Q4"
+                "Method _validar_orden_causal implements structured analysis for D3-Q5"
               ],
-              "justification": "This method contributes to D3-Q4 analysis"
+              "justification": "This method contributes to D3-Q5 analysis"
             },
             "technical_approach": {
               "method_type": "analytical_processing",
-              "algorithm": "TeoriaCambio._extraer_categorias algorithm",
+              "algorithm": "TeoriaCambio._validar_orden_causal algorithm",
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extraer_categorias"
+                  "description": "Execute _validar_orden_causal"
                 },
                 {
                   "step": 2,
@@ -1947,7 +1689,7 @@
             },
             "output_interpretation": {
               "output_structure": {
-                "result": "Structured output from _extraer_categorias"
+                "result": "Structured output from _validar_orden_causal"
               },
               "interpretation_guide": {
                 "high_confidence": "≥0.8: Strong evidence",
@@ -1955,7 +1697,166 @@
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
-                "Use _extraer_categorias results for downstream analysis"
+                "Use _validar_orden_causal results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_refine_edge_probabilities",
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "priority": 23,
+            "role": "_refine_edge_probabilities",
+            "epistemological_foundation": {
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._refine_edge_probabilities",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _refine_edge_probabilities implements structured analysis for D3-Q5"
+              ],
+              "justification": "This method contributes to D3-Q5 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "PDETMunicipalPlanAnalyzer._refine_edge_probabilities algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Execute _refine_edge_probabilities"
+                },
+                {
+                  "step": 2,
+                  "description": "Process results"
+                },
+                {
+                  "step": 3,
+                  "description": "Return structured output"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _refine_edge_probabilities"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _refine_edge_probabilities results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "compare_policy_interventions",
+            "class_name": "PolicyAnalysisEmbedder",
+            "priority": 24,
+            "role": "compare_policy_interventions_comparison",
+            "epistemological_foundation": {
+              "paradigm": "PolicyAnalysisEmbedder analytical paradigm",
+              "ontological_basis": "Analysis via PolicyAnalysisEmbedder.compare_policy_interventions",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method compare_policy_interventions implements structured analysis for D3-Q5"
+              ],
+              "justification": "This method contributes to D3-Q5 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "PolicyAnalysisEmbedder.compare_policy_interventions algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Execute compare_policy_interventions"
+                },
+                {
+                  "step": 2,
+                  "description": "Process results"
+                },
+                {
+                  "step": 3,
+                  "description": "Return structured output"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from compare_policy_interventions"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use compare_policy_interventions results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "infer_mechanisms",
+            "class_name": "BayesianMechanismInference",
+            "priority": 25,
+            "role": "infer_mechanisms_inference",
+            "epistemological_foundation": {
+              "paradigm": "BayesianMechanismInference analytical paradigm",
+              "ontological_basis": "Analysis via BayesianMechanismInference.infer_mechanisms",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method infer_mechanisms implements structured analysis for D3-Q5"
+              ],
+              "justification": "This method contributes to D3-Q5 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "BayesianMechanismInference.infer_mechanisms algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Execute infer_mechanisms"
+                },
+                {
+                  "step": 2,
+                  "description": "Process results"
+                },
+                {
+                  "step": 3,
+                  "description": "Return structured output"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from infer_mechanisms"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use infer_mechanisms results for downstream analysis"
               ]
             }
           }
@@ -1979,23 +1880,40 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
-        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
+        "type": "array",
         "must_contain": {
-          "count": 3,
+          "count": 1,
           "elements": [
-            "coherencia_recursos",
-            "factibilidad_tecnica",
-            "realismo_plazos"
+            "cobertura_territorial_especificada"
           ]
         },
-        "type": "array"
+        "description": "Derived from monolith expected_elements where required is true"
       },
       {
-        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "should_contain": [],
-        "type": "array"
+        "type": "array",
+        "should_contain": [
+          {
+            "elements": [
+              "fuentes_oficiales"
+            ],
+            "minimum": 2
+          },
+          {
+            "elements": [
+              "indicadores_cuantitativos"
+            ],
+            "minimum": 3
+          },
+          {
+            "elements": [
+              "series_temporales_años"
+            ],
+            "minimum": 3
+          }
+        ],
+        "description": "Derived from monolith expected_elements with minimum counts"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -2005,31 +1923,17 @@
   },
   "traceability": {
     "source_file": "data/questionnaire_monolith.json",
-    "json_path": "blocks.micro_questions[283]",
-    "method_source": "src/farfan_core/core/orchestrator/executors.py:D3_Q4_Executor",
+    "json_path": "blocks.micro_questions[284]",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D3_Q5_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
+    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
-    "source_question_id": "Q134",
-    "specialized_from_base_slot": "D3-Q4",
-    "specialization_timestamp": "2025-11-28T03:50:31.430499+00:00",
-    "remediation_log": [
-      {
-        "timestamp": "2025-12-17T10:18:08.690583+00:00",
-        "fixes_applied": [
-          "method_assembly_alignment",
-          "signal_threshold",
-          "validation_rules_alignment",
-          "human_template_title",
-          "methodological_depth",
-          "source_hash"
-        ],
-        "tool": "contract_remediator.py"
-      }
-    ]
+    "source_question_id": "Q135",
+    "specialized_from_base_slot": "D3-Q5",
+    "specialization_timestamp": "2025-11-28T03:50:31.435476+00:00"
   },
   "error_handling": {
     "on_method_not_found": "raise",
@@ -2040,7 +1944,7 @@
         "missing_required_element",
         "incomplete_text"
       ],
-      "emit_code": "ABORT-Q134-REQ"
+      "emit_code": "ABORT-Q135-REQ"
     }
   },
   "fallback_strategy": {
@@ -2311,7 +2215,7 @@
           "properties": {
             "methods_executed": {
               "type": "integer",
-              "const": 26
+              "const": 25
             },
             "execution_time_ms": {
               "type": "number"
@@ -2454,7 +2358,7 @@
         "avg_semantic_similarity_to_query": 0.78
       },
       "metadata": {
-        "methods_executed": 26,
+        "methods_executed": 25,
         "execution_time_ms": 2845,
         "document_length": 15230,
         "analysis_timestamp": "2025-11-26T12:34:56Z"
@@ -2504,15 +2408,15 @@
     }
   },
   "method_outputs": {
-    "AdvancedDAGValidator.calculate_acyclicity_pvalue": {
+    "PDETMunicipalPlanAnalyzer._identify_confounders": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator.calculate_acyclicity_pvalue",
+        "description": "Output from PDETMunicipalPlanAnalyzer._identify_confounders",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from calculate_acyclicity_pvalue"
+            "description": "Result from _identify_confounders"
           },
           "metadata": {
             "type": "object",
@@ -2525,19 +2429,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.calculate_acyclicity_pvalue",
+        "provides_key": "pdet_analysis.identify_confounders",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator._is_acyclic": {
+    "PDETMunicipalPlanAnalyzer._effect_to_dict": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator._is_acyclic",
+        "description": "Output from PDETMunicipalPlanAnalyzer._effect_to_dict",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _is_acyclic"
+            "description": "Result from _effect_to_dict"
           },
           "metadata": {
             "type": "object",
@@ -2550,19 +2454,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.is_acyclic",
+        "provides_key": "pdet_analysis.effect_to_dict",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator.get_graph_stats": {
+    "PDETMunicipalPlanAnalyzer._scenario_to_dict": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator.get_graph_stats",
+        "description": "Output from PDETMunicipalPlanAnalyzer._scenario_to_dict",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from get_graph_stats"
+            "description": "Result from _scenario_to_dict"
           },
           "metadata": {
             "type": "object",
@@ -2575,19 +2479,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.get_graph_stats",
+        "provides_key": "pdet_analysis.scenario_to_dict",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator._calculate_node_importance": {
+    "PDETMunicipalPlanAnalyzer._simulate_intervention": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator._calculate_node_importance",
+        "description": "Output from PDETMunicipalPlanAnalyzer._simulate_intervention",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _calculate_node_importance"
+            "description": "Result from _simulate_intervention"
           },
           "metadata": {
             "type": "object",
@@ -2600,19 +2504,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.calculate_node_importance",
+        "provides_key": "pdet_analysis.simulate_intervention",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator._generate_subgraph": {
+    "PDETMunicipalPlanAnalyzer._generate_recommendations": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator._generate_subgraph",
+        "description": "Output from PDETMunicipalPlanAnalyzer._generate_recommendations",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _generate_subgraph"
+            "description": "Result from _generate_recommendations"
           },
           "metadata": {
             "type": "object",
@@ -2625,19 +2529,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.generate_subgraph",
+        "provides_key": "pdet_analysis.generate_recommendations",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator.add_node": {
+    "PDETMunicipalPlanAnalyzer._identify_causal_nodes": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator.add_node",
+        "description": "Output from PDETMunicipalPlanAnalyzer._identify_causal_nodes",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from add_node"
+            "description": "Result from _identify_causal_nodes"
           },
           "metadata": {
             "type": "object",
@@ -2650,19 +2554,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.add_node",
+        "provides_key": "pdet_analysis.identify_causal_nodes",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator.add_edge": {
+    "BayesianCounterfactualAuditor._evaluate_factual": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator.add_edge",
+        "description": "Output from BayesianCounterfactualAuditor._evaluate_factual",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from add_edge"
+            "description": "Result from _evaluate_factual"
           },
           "metadata": {
             "type": "object",
@@ -2675,19 +2579,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.add_edge",
+        "provides_key": "bayesiancounterfactualauditor.evaluate_factual",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator.export_nodes": {
+    "BayesianCounterfactualAuditor._evaluate_counterfactual": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator.export_nodes",
+        "description": "Output from BayesianCounterfactualAuditor._evaluate_counterfactual",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from export_nodes"
+            "description": "Result from _evaluate_counterfactual"
           },
           "metadata": {
             "type": "object",
@@ -2700,19 +2604,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.export_nodes",
+        "provides_key": "bayesiancounterfactualauditor.evaluate_counterfactual",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator._initialize_rng": {
+    "CausalExtractor._assess_financial_consistency": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator._initialize_rng",
+        "description": "Output from CausalExtractor._assess_financial_consistency",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _initialize_rng"
+            "description": "Result from _assess_financial_consistency"
           },
           "metadata": {
             "type": "object",
@@ -2725,19 +2629,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.initialize_rng",
+        "provides_key": "causal_extraction.assess_financial_consistency",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator._calculate_statistical_power": {
+    "BayesianMechanismInference._infer_activity_sequence": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator._calculate_statistical_power",
+        "description": "Output from BayesianMechanismInference._infer_activity_sequence",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _calculate_statistical_power"
+            "description": "Result from _infer_activity_sequence"
           },
           "metadata": {
             "type": "object",
@@ -2750,19 +2654,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.calculate_statistical_power",
+        "provides_key": "bayesianmechanisminference.infer_activity_sequence",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator._get_node_validator": {
+    "BayesianMechanismInference._generate_necessity_remediation": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator._get_node_validator",
+        "description": "Output from BayesianMechanismInference._generate_necessity_remediation",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _get_node_validator"
+            "description": "Result from _generate_necessity_remediation"
           },
           "metadata": {
             "type": "object",
@@ -2775,19 +2679,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.get_node_validator",
+        "provides_key": "bayesianmechanisminference.generate_necessity_remediation",
         "merge_strategy": "replace"
       }
     },
-    "AdvancedDAGValidator._create_empty_result": {
+    "BayesianCounterfactualAuditor.refutation_and_sanity_checks": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from AdvancedDAGValidator._create_empty_result",
+        "description": "Output from BayesianCounterfactualAuditor.refutation_and_sanity_checks",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _create_empty_result"
+            "description": "Result from refutation_and_sanity_checks"
           },
           "metadata": {
             "type": "object",
@@ -2800,19 +2704,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.create_empty_result",
+        "provides_key": "bayesiancounterfactualauditor.refutation_and_sanity_checks",
         "merge_strategy": "replace"
       }
     },
-    "BayesianMechanismInference._test_necessity": {
+    "IndustrialPolicyProcessor._load_questionnaire": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from BayesianMechanismInference._test_necessity",
+        "description": "Output from IndustrialPolicyProcessor._load_questionnaire",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _test_necessity"
+            "description": "Result from _load_questionnaire"
           },
           "metadata": {
             "type": "object",
@@ -2825,19 +2729,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "bayesianmechanisminference.test_necessity",
+        "provides_key": "industrial_policy.load_questionnaire",
         "merge_strategy": "replace"
       }
     },
-    "IndustrialGradeValidator.execute_suite": {
+    "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from IndustrialGradeValidator.execute_suite",
+        "description": "Output from PDETMunicipalPlanAnalyzer.analyze_financial_feasibility",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from execute_suite"
+            "description": "Result from analyze_financial_feasibility"
           },
           "metadata": {
             "type": "object",
@@ -2850,19 +2754,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "industrialgradevalidator.execute_suite",
+        "provides_key": "pdet_analysis.analyze_financial_feasibility",
         "merge_strategy": "replace"
       }
     },
-    "IndustrialGradeValidator.validate_connection_matrix": {
+    "PDETMunicipalPlanAnalyzer.construct_causal_dag": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from IndustrialGradeValidator.validate_connection_matrix",
+        "description": "Output from PDETMunicipalPlanAnalyzer.construct_causal_dag",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from validate_connection_matrix"
+            "description": "Result from construct_causal_dag"
           },
           "metadata": {
             "type": "object",
@@ -2875,19 +2779,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "industrialgradevalidator.validate_connection_matrix",
+        "provides_key": "pdet_analysis.construct_causal_dag",
         "merge_strategy": "replace"
       }
     },
-    "IndustrialGradeValidator.run_performance_benchmarks": {
+    "PDETMunicipalPlanAnalyzer.estimate_causal_effects": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from IndustrialGradeValidator.run_performance_benchmarks",
+        "description": "Output from PDETMunicipalPlanAnalyzer.estimate_causal_effects",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from run_performance_benchmarks"
+            "description": "Result from estimate_causal_effects"
           },
           "metadata": {
             "type": "object",
@@ -2900,19 +2804,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "industrialgradevalidator.run_performance_benchmarks",
+        "provides_key": "pdet_analysis.estimate_causal_effects",
         "merge_strategy": "replace"
       }
     },
-    "IndustrialGradeValidator._benchmark_operation": {
+    "PDETMunicipalPlanAnalyzer.generate_counterfactuals": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from IndustrialGradeValidator._benchmark_operation",
+        "description": "Output from PDETMunicipalPlanAnalyzer.generate_counterfactuals",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _benchmark_operation"
+            "description": "Result from generate_counterfactuals"
           },
           "metadata": {
             "type": "object",
@@ -2925,19 +2829,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "industrialgradevalidator.benchmark_operation",
+        "provides_key": "pdet_analysis.generate_counterfactuals",
         "merge_strategy": "replace"
       }
     },
-    "IndustrialGradeValidator._log_metric": {
+    "CausalExtractor._build_type_hierarchy": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from IndustrialGradeValidator._log_metric",
+        "description": "Output from CausalExtractor._build_type_hierarchy",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _log_metric"
+            "description": "Result from _build_type_hierarchy"
           },
           "metadata": {
             "type": "object",
@@ -2950,19 +2854,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "industrialgradevalidator.log_metric",
+        "provides_key": "causal_extraction.build_type_hierarchy",
         "merge_strategy": "replace"
       }
     },
-    "IndustrialGradeValidator.validate_engine_readiness": {
+    "CausalExtractor._check_structural_violation": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from IndustrialGradeValidator.validate_engine_readiness",
+        "description": "Output from CausalExtractor._check_structural_violation",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from validate_engine_readiness"
+            "description": "Result from _check_structural_violation"
           },
           "metadata": {
             "type": "object",
@@ -2975,19 +2879,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "industrialgradevalidator.validate_engine_readiness",
+        "provides_key": "causal_extraction.check_structural_violation",
         "merge_strategy": "replace"
       }
     },
-    "PerformanceAnalyzer.analyze_performance": {
+    "CausalExtractor._calculate_type_transition_prior": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PerformanceAnalyzer.analyze_performance",
+        "description": "Output from CausalExtractor._calculate_type_transition_prior",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from analyze_performance"
+            "description": "Result from _calculate_type_transition_prior"
           },
           "metadata": {
             "type": "object",
@@ -3000,19 +2904,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "performanceanalyzer.analyze_performance",
+        "provides_key": "causal_extraction.calculate_type_transition_prior",
         "merge_strategy": "replace"
       }
     },
-    "PerformanceAnalyzer._calculate_loss_functions": {
+    "CausalExtractor._calculate_textual_proximity": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from PerformanceAnalyzer._calculate_loss_functions",
+        "description": "Output from CausalExtractor._calculate_textual_proximity",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _calculate_loss_functions"
+            "description": "Result from _calculate_textual_proximity"
           },
           "metadata": {
             "type": "object",
@@ -3025,19 +2929,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "performanceanalyzer.calculate_loss_functions",
+        "provides_key": "causal_extraction.calculate_textual_proximity",
         "merge_strategy": "replace"
       }
     },
-    "HierarchicalGenerativeModel._calculate_likelihood": {
+    "TeoriaCambio._validar_orden_causal": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from HierarchicalGenerativeModel._calculate_likelihood",
+        "description": "Output from TeoriaCambio._validar_orden_causal",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _calculate_likelihood"
+            "description": "Result from _validar_orden_causal"
           },
           "metadata": {
             "type": "object",
@@ -3050,19 +2954,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "hierarchicalgenerativemodel.calculate_likelihood",
+        "provides_key": "teoriacambio.validar_orden_causal",
         "merge_strategy": "replace"
       }
     },
-    "HierarchicalGenerativeModel._calculate_ess": {
+    "PDETMunicipalPlanAnalyzer._refine_edge_probabilities": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from HierarchicalGenerativeModel._calculate_ess",
+        "description": "Output from PDETMunicipalPlanAnalyzer._refine_edge_probabilities",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _calculate_ess"
+            "description": "Result from _refine_edge_probabilities"
           },
           "metadata": {
             "type": "object",
@@ -3075,19 +2979,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "hierarchicalgenerativemodel.calculate_ess",
+        "provides_key": "pdet_analysis.refine_edge_probabilities",
         "merge_strategy": "replace"
       }
     },
-    "HierarchicalGenerativeModel._calculate_r_hat": {
+    "PolicyAnalysisEmbedder.compare_policy_interventions": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from HierarchicalGenerativeModel._calculate_r_hat",
+        "description": "Output from PolicyAnalysisEmbedder.compare_policy_interventions",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from _calculate_r_hat"
+            "description": "Result from compare_policy_interventions"
           },
           "metadata": {
             "type": "object",
@@ -3100,19 +3004,19 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "hierarchicalgenerativemodel.calculate_r_hat",
+        "provides_key": "policyanalysisembedder.compare_policy_interventions",
         "merge_strategy": "replace"
       }
     },
-    "IndustrialGradeValidator.validate_causal_categories": {
+    "BayesianMechanismInference.infer_mechanisms": {
       "output_type": "dict",
       "structure": {
-        "description": "Output from IndustrialGradeValidator.validate_causal_categories",
+        "description": "Output from BayesianMechanismInference.infer_mechanisms",
         "type": "object",
         "properties": {
           "result": {
             "type": "object",
-            "description": "Result from validate_causal_categories"
+            "description": "Result from infer_mechanisms"
           },
           "metadata": {
             "type": "object",
@@ -3125,86 +3029,9 @@
         "non_empty": true
       },
       "usage_in_assembly": {
-        "provides_key": "industrialgradevalidator.validate_causal_categories",
-        "merge_strategy": "replace"
-      }
-    },
-    "TeoriaCambio._extraer_categorias": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from TeoriaCambio._extraer_categorias",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from _extraer_categorias"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "teoriacambio.extraer_categorias",
+        "provides_key": "bayesianmechanisminference.infer_mechanisms",
         "merge_strategy": "replace"
       }
     }
-  },
-  "methodological_depth": {
-    "methods": [
-      {
-        "method_name": "contract_orchestrated_evidence_fusion",
-        "class_name": "EvidenceNexus",
-        "priority": 1,
-        "role": "evidence_graph_construction_and_synthesis",
-        "epistemological_foundation": {
-          "paradigm": "critical_realist",
-          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
-          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
-          "theoretical_framework": [
-            "Pearl (2009) causal reasoning (why mechanisms matter)",
-            "Pawson & Tilley (1997) realistic evaluation",
-            "Results-based management for public policy monitoring"
-          ],
-          "justification": "Chosen because Productos / Planificación in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
-        },
-        "technical_approach": {
-          "method_type": "graph_based_evidence_fusion",
-          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
-          "steps": [
-            {
-              "step": 1,
-              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
-            },
-            {
-              "step": 2,
-              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
-            },
-            {
-              "step": 3,
-              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
-            },
-            {
-              "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q134/D3-Q4)."
-            }
-          ],
-          "assumptions": [
-            "The source plan contains at least one relevant section or table for this question.",
-            "Expected element types map to observable text spans or tabular cells."
-          ],
-          "limitations": [
-            "Evidence quality depends on document structure and explicitness of commitments.",
-            "Pattern-only extraction is conservative to preserve determinism."
-          ],
-          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
-        }
-      }
-    ]
   }
 }
