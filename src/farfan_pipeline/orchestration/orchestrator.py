@@ -1750,7 +1750,7 @@ class Orchestrator:
         scorer_engine = None
         if signal_registry is not None:
             scorer_engine = SignalEnrichedScorer(signal_registry=signal_registry)
-            logger. info(f"Phase 3: Scoring {len(micro_results)} micro-question results using SignalEnrichedScorer")
+            logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results using SignalEnrichedScorer")
         else:
             logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results")
         
@@ -1767,7 +1767,7 @@ class Orchestrator:
                         pass
                 
                 # Extract metadata and evidence
-                metadata = micro_result. metadata
+                metadata = micro_result.metadata
                 evidence_obj = micro_result.evidence
                 if hasattr(evidence_obj, "__dict__"):
                     evidence = evidence_obj.__dict__
@@ -1780,7 +1780,7 @@ class Orchestrator:
                 score = metadata.get("overall_confidence")
                 if score is None:
                     validation = evidence.get("validation", {})
-                    score = validation. get("score")
+                    score = validation.get("score")
                 
                 if score is None:
                     conf_scores = evidence.get("confidence_scores", {})
@@ -1865,11 +1865,11 @@ class Orchestrator:
                     quality_level=final_quality_level,
                     evidence=micro_result.evidence,
                     scoring_details=scoring_details,
-                    metadata=micro_result. metadata,
+                    metadata=micro_result.metadata,
                     error=micro_result.error,
                 )
                 
-                scored_results. append(scored)
+                scored_results.append(scored)
                 instrumentation.increment(latency=0.0)
                 error_tracker.record_success()
                 
