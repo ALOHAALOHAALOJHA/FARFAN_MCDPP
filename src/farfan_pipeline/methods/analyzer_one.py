@@ -75,11 +75,28 @@ except ImportError as e:
     stopwords = None
 
 # =============================================================================
-# CANONICAL POLICY AREAS (PA01-PA10)
-# Source: questionnaire_monolith.json canonical_notation.policy_areas
+# CANONICAL CONSTANTS - IMPORT FROM canonical_specs.py
+# CANONICAL REFACTORING (2025-12-17): No runtime JSON loading
+# ADR: Import frozen constants from single source of truth
 # =============================================================================
 
-POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
+from farfan_pipeline.core.canonical_specs import (
+    MICRO_LEVELS,
+    CANON_POLICY_AREAS,
+    CANON_DIMENSIONS,
+    PDT_SECTION_PATTERNS,
+    PDT_STRATEGIC_PATTERNS,
+    PDT_FINANCIAL_PATTERNS,
+    CAUSAL_CHAIN_VOCABULARY,
+    CAUSAL_CHAIN_ORDER,
+)
+
+# DEPRECATED: POLICY_AREAS_CANONICAL hardcoded below
+# Migration: Use CANON_POLICY_AREAS from canonical_specs instead
+# Historical note: This was extracted from questionnaire_monolith.json and frozen
+# Kept for backward compatibility but should import from canonical_specs
+
+POLICY_AREAS_CANONICAL_LEGACY: dict[str, dict[str, Any]] = {
     "PA01": {
         "id": "PA01",
         "name": "Derechos de las mujeres e igualdad de género",
@@ -607,9 +624,14 @@ POLICY_AREAS_CANONICAL: dict[str, dict[str, Any]] = {
     }
 }
 
+# CANONICAL REFACTORING: Alias legacy to canonical for backward compatibility
+# New code should import CANON_POLICY_AREAS from canonical_specs directly
+POLICY_AREAS_CANONICAL = POLICY_AREAS_CANONICAL_LEGACY  # Temporary backward compat
+
 # =============================================================================
 # CANONICAL VALUE CHAIN DIMENSIONS (DIM01-DIM06)
-# Source: questionnaire_monolith.json canonical_notation.dimensions
+# DEPRECATED: This should use CANON_DIMENSIONS from canonical_specs
+# Source: questionnaire_monolith.json canonical_notation.dimensions (now frozen in canonical_specs)
 # Structure: 3 levels
 #   Level 1: Dimension (DIM01-DIM06)
 #   Level 2: Analytical variables (compress 5 questions per dimension)
@@ -885,9 +907,10 @@ SLOT_TO_EXPECTED_ELEMENTS: dict[str, list[str]] = {
 class MunicipalOntology:
     """Core ontology for municipal development domains.
     
-    Uses canonical structures from questionnaire_monolith.json:
+    CANONICAL REFACTORING: Uses frozen constants from canonical_specs.py
     - VALUE_CHAIN_DIMENSIONS: 6 analytical dimensions (DIM01-DIM06)
     - POLICY_AREAS_CANONICAL: 10 policy areas (PA01-PA10)
+    Source: Originally extracted from questionnaire_monolith.json, now frozen
     """
 
     def __init__(self) -> None:
@@ -909,13 +932,15 @@ class MunicipalOntology:
 
 # =============================================================================
 # CANONICAL PATTERNS FOR SLOT D3-Q3 (Trazabilidad Presupuestal/Organizacional)
-# Maps to Q013, Q043, Q073, Q103, Q133, Q163, Q193, Q223, Q253, Q283
-# One per Policy Area (PA01-PA10)
+# CANONICAL REFACTORING NOTE: question_id mappings (Q013, Q043, etc.) are preserved
+# but marked as LEGACY. New code should use policy area (PA01-PA10) directly.
+# Rationale: This is method-specific pattern metadata, not questionnaire routing.
+# These patterns define evidence requirements (capability metadata), not Q-to-method bindings.
 # =============================================================================
 
 PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
     "PA01": {  # Género
-        "question_id": "Q013",
+        "question_id": "Q013",  # LEGACY: For traceability only, not for method routing
         "question_text": "¿Los productos de género tienen trazabilidad presupuestal y organizacional?",
         "trazabilidad_organizacional": [
             r"Secretaría de la Mujer|Oficina de la Mujer|Secretaría de Desarrollo Social",
@@ -1090,15 +1115,21 @@ class SemanticAnalyzer:
         """
         self.ontology = ontology
 
-        # Load calibration artifacts (data-driven, no defaults)
-        self._monolith_index = self._load_json(CG_ROOT / "monolith_index.json")
-        self._patterns_resolved = self._load_json(CG_ROOT / "pattern_registry_resolved.json")
+        # CANONICAL REFACTORING NOTE:
+        # - Removed: _monolith_index and _patterns_resolved (never used, questionnaire coupling)
+        # - Kept: Calibration loading (computational results, method-specific parameters)
+        # - Kept: Unit of analysis stats (PDT/PDM structure detection)
+        
+        # Load method-specific calibration (computational results, not questionnaire data)
         calib = self._load_json(Path("artifacts/plan1/calibration/analyzer_one_calibration.json"))
         self._calibration = calib
         self.thresholds_by_base_slot = calib["thresholds_by_base_slot"]
         self._slot_thresholds = {slot: self._get_slot_threshold(slot) for slot in ALL_BASE_SLOTS}
+        
+        # Load unit of analysis structure stats (PDT/PDM natural blocks)
         self._unit_of_analysis_stats = self._load_unit_of_analysis_stats(Path("pdt_analysis_report.json"))
 
+        # TF-IDF configuration from calibration
         self.max_features = calib["max_features"]
         self.ngram_range = tuple(calib["ngram_range"])
         self.similarity_threshold = None  # base-slot specific thresholds are used
@@ -1443,7 +1474,8 @@ class SemanticAnalyzer:
         """
         Classify segment by Policy Area (PA01-PA10) using keyword matching.
         
-        Refactored per questionnaire_monolith.json canonical notation.
+        CANONICAL REFACTORING: Uses frozen policy areas from canonical_specs.py
+        Originally extracted from questionnaire_monolith.json, now deterministic.
         
         Args:
             segment: Text segment to classify
@@ -2191,9 +2223,13 @@ def example_usage():
 
 @dataclass
 class CanonicalQuestionContract:
-    """Canonical contract linking questionnaire, policy area and evidence."""
+    """Canonical contract for evidence collection (method capability metadata).
+    
+    CANONICAL REFACTORING: legacy_question_id kept for traceability only.
+    Contract defines evidence requirements (what the method needs), not Q-to-method routing.
+    """
 
-    legacy_question_id: str
+    legacy_question_id: str  # LEGACY: For traceability, not routing
     policy_area_id: str
     dimension_id: str
     question_number: int
@@ -2219,11 +2255,15 @@ class EvidenceSegment:
     matched_patterns: list[str]
 
 class CanonicalQuestionSegmenter:
-    """Deterministic segmenter anchored to canonical questionnaire schemas."""
+    """Deterministic segmenter using frozen canonical patterns.
+    
+    CANONICAL REFACTORING: No longer loads questionnaire at runtime.
+    Uses PDT/PDM structure patterns from canonical_specs.py
+    """
 
     def __init__(
         self,
-        questionnaire_path: str = "questionnaire.json",
+        questionnaire_path: str = "questionnaire.json",  # DEPRECATED: Kept for backward compat
         rubric_path: str = "rubric_scoring_FIXED.json",
         segmentation_method: str = "paragraph",
     ) -> None:
