@@ -1159,7 +1159,7 @@ class Orchestrator:
                 runtime_mode = self.runtime_config.mode
             
             if runtime_mode == RuntimeMode.PROD:
-                # Production: abort on sustained violation
+                # Production: abort on violation
                 self.request_abort(f"Resource limits exceeded: {violation_msg}")
                 raise AbortRequested(f"Resource limits exceeded: {violation_msg}")
             else:
