@@ -1,8 +1,11 @@
 
-<! DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <title>SOTA Contract Orchestration Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de orquestación de contratos del sistema F.A.R.F.A.N">
     <style>
         * { margin: 0; padding:  0; box-sizing: border-box; }
         body { 
@@ -109,6 +112,10 @@
             transform: scale(1.1);
             z-index: 10;
         }
+        button:focus, .group-cell:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
         .success { background: linear-gradient(135deg, #00c851, #00ff00); }
         .partial { background: linear-gradient(135deg, #ffbb33, #FF8800); }
         .failed { background: linear-gradient(135deg, #ff4444, #CC0000); }
@@ -145,16 +152,31 @@
             font-weight: bold;
             transition: width 0.5s ease;
         }
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            .dimension-grid {
+                grid-template-columns: 1fr;
+            }
+            .group-matrix {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+        }
     </style>
 </head>
-<body>
+<body role="application">
     <div class="container">
-        <div class="header">
+        <header class="header" role="banner">
             <h1>🚀 SOTA Contract Orchestration Dashboard</h1>
-            <div class="timestamp">Generated: 2025-12-15T18:08:42.069942+00:00</div>
-        </div>
+            <div class="timestamp" aria-live="polite" aria-label="Fecha de generación">Generated: 2025-12-15T18:08:42.069942+00:00</div>
+        </header>
         
-        <div class="metrics-grid">
+        <main role="main">
+        <div class="metrics-grid" role="group" aria-label="Métricas principales">
             <div class="metric-card">
                 <div class="metric-value">30</div>
                 <div class="metric-label">Groups Processed</div>
@@ -181,13 +203,13 @@
             </div>
         </div>
         
-        <div class="progress-bar">
+        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso general">
             <div class="progress-fill" style="width: 100.0%">
                 100.0% Complete
             </div>
         </div>
         
-        <div class="dimension-grid">
+        <section class="dimension-grid" aria-label="Métricas por dimensión">
 
             <div class="dimension-card">
                 <div class="dimension-title">Dimension 1</div>
@@ -213,10 +235,10 @@
                 <p>Success:  100.0%</p>
             </div>
 
-        </div>
+        </section>
         
         <h2 style="color: white; margin:  20px 0;">Group Matrix (30 Groups)</h2>
-        <div class="group-matrix">
+        <div class="group-matrix" role="grid" aria-label="Matriz de grupos de contratos">
 
             <div class="group-cell success" title="Group 0:  D1-Q1">
                 D1-Q1
@@ -340,8 +362,8 @@
 
         </div>
         
-        <div class="insights">
-            <h2>🧠 Cross-Group Insights</h2>
+        <section class="insights" aria-labelledby="insights-title">
+            <h2 id="insights-title">🧠 Cross-Group Insights</h2>
 
             <div class="insight-item">
                 <strong>missing_execution_sequence</strong><br>
@@ -371,7 +393,8 @@
                 Affects 299 groups
             </div>
 
-        </div>
+        </section>
+        </main>
     </div>
     
     <script>

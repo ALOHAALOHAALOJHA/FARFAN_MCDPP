@@ -1059,6 +1059,47 @@
             }
         }
 
+        @media (max-width: 600px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px 15px;
+            }
+            
+            .logo {
+                font-size: 18px;
+                letter-spacing: 4px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            body {
+                overflow-y: auto;
+            }
+        }
+
+        .btn-primary:focus,
+        button:focus,
+        select:focus,
+        input:focus {
+            outline: 2px solid var(--atroz-green-toxic);
+            outline-offset: 2px;
+        }
+
+        .upload-zone:focus {
+            outline: 2px solid var(--atroz-green-toxic);
+            outline-offset: 2px;
+            border-color: var(--atroz-green-toxic);
+        }
+
         .performance-optimized {
             will-change: transform, opacity;
             backface-visibility: hidden;

@@ -41,6 +41,13 @@ class AtroZAdminDashboard {
 
         uploadZone.addEventListener('click', () => pdfInput.click());
 
+        uploadZone.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                pdfInput.click();
+            }
+        });
+
         uploadZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             uploadZone.classList.add('dragover');
