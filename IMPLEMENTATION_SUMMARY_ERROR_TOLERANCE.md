@@ -3,7 +3,7 @@
 **Issue:** [P2] ADD: Error Tolerance and Partial Result Handling (Per-Question and Per-Phase)  
 **PR Branch:** copilot/add-error-tolerance-handling  
 **Implementation Date:** 2025-12-17  
-**Commits:** a3feaaf, 3becc28
+**Commits:** a3feaaf, 3becc28, 0e06a0b (refactored for merge compatibility)
 
 ## Problem Statement
 
@@ -15,35 +15,42 @@ The F.A.R.F.A.N pipeline previously used an all-or-nothing approach where the fi
 - Clearly mark incomplete runs in manifests
 - Support partial success classification for DEV/EXPLORATORY modes
 - Prevent silent failures
+- **Must not conflict with plan-based execution (ExecutionPlan/IrrigationSynchronizer)**
 
 ## Solution Overview
 
-Implemented a controlled degradation system with:
+Implemented a **passive, non-intrusive** controlled degradation system with:
 1. Per-phase error tracking (Phases 2 and 3)
 2. Configurable failure thresholds (default 10%)
 3. Runtime mode-aware success determination
 4. Transparent error reporting in manifests
-5. Comprehensive test coverage
+5. Post-processing error analysis (conflict-free)
+6. Comprehensive test coverage
 
 ## Technical Implementation
 
-### 1. ErrorTolerance Dataclass
+### 1. ErrorTolerance Class
 
-**Location:** `src/farfan_pipeline/orchestration/orchestrator.py:292-358`
+**Location:** `src/farfan_pipeline/orchestration/orchestrator.py:292-354`
 
 ```python
-@dataclass
 class ErrorTolerance:
-    phase_id: int
-    max_failure_rate: float = 0.10
-    total_questions: int = 0
-    failed_questions: int = 0
-    successful_questions: int = 0
+    def __init__(
+        self,
+        phase_id: int,
+        max_failure_rate: float = 0.10,
+        total_questions: int = 0,
+    ) -> None:
+        self.phase_id = phase_id
+        self.max_failure_rate = max_failure_rate
+        self.total_questions = total_questions
+        self.failed_questions = 0
+        self.successful_questions = 0
 ```
 
 **Key Methods:**
-- `record_success()`: Increment successful question counter
-- `record_failure()`: Increment failed question counter
+- `record_success()`: Increment successful question counter (not used in loops)
+- `record_failure()`: Increment failed question counter (not used in loops)
 - `current_failure_rate()`: Calculate failure percentage
 - `threshold_exceeded()`: Check if failure rate > max_failure_rate
 - `can_mark_success(runtime_mode)`: Determine if phase can be marked as success
@@ -52,7 +59,7 @@ class ErrorTolerance:
 - **PRODUCTION/CI:** failure_rate <= 10%
 - **DEV/EXPLORATORY:** successful_questions >= 50% of total
 
-### 2. Orchestrator Integration
+### 2. Orchestrator Integration (Non-Intrusive Approach)
 
 **Error Tolerance Initialization:**
 ```python
@@ -62,19 +69,17 @@ self._error_tolerance: dict[int, ErrorTolerance] = {
 }
 ```
 
-**Phase 2 Changes (Micro Questions):**
-- Initialize error tracker with total question count
-- Record success/failure for each question execution
-- Check threshold after each failure
-- Abort in PRODUCTION mode if threshold exceeded
-- Log completion statistics
+**Phase 2 Changes (Micro Questions) - CONFLICT-FREE:**
+- Set `total_questions` BEFORE loop starts
+- **NO changes inside the loop** - compatible with both simple and plan-based execution
+- Count successes/failures AFTER loop completes by analyzing results
+- Log completion statistics after processing
 
-**Phase 3 Changes (Scoring):**
-- Initialize error tracker with total result count
-- Record success/failure for each scoring operation
-- Check threshold after each failure
-- Abort in PRODUCTION mode if threshold exceeded
-- Log completion statistics
+**Phase 3 Changes (Scoring) - CONFLICT-FREE:**
+- Set `total_questions` BEFORE loop starts
+- **NO changes inside the loop** - compatible with both simple and plan-based execution
+- Count successes/failures AFTER loop completes by analyzing scored results
+- Log completion statistics after processing
 
 **PhaseResult Creation:**
 - Evaluate error tolerance before marking success
