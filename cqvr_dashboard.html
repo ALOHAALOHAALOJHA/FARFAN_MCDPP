@@ -571,11 +571,16 @@
                 <div style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #666;">Score Range</div>
             `;
 
-            const decisionCounts = {
-                'PRODUCCION': decisions.filter(d => d === 'PRODUCCION').length,
-                'PARCHEAR': decisions.filter(d => d === 'PARCHEAR').length,
-                'REFORMULAR': decisions.filter(d => d === 'REFORMULAR').length
-            };
+            const decisionCounts = decisions.reduce((acc, d) => {
+                if (d === 'PRODUCCION') {
+                    acc.PRODUCCION += 1;
+                } else if (d === 'PARCHEAR') {
+                    acc.PARCHEAR += 1;
+                } else if (d === 'REFORMULAR') {
+                    acc.REFORMULAR += 1;
+                }
+                return acc;
+            }, { PRODUCCION: 0, PARCHEAR: 0, REFORMULAR: 0 });
 
             const total = Object.values(decisionCounts).reduce((a, b) => a + b, 0);
             const colors = ['#28a745', '#ffc107', '#dc3545'];
