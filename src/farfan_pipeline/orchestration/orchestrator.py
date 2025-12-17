@@ -53,6 +53,13 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
+from canonic_phases.Phase_four_five_six_seven.aggregation_validation import (
+    validate_phase4_output,
+    validate_phase5_output,
+    validate_phase6_output,
+    validate_phase7_output,
+    enforce_validation_or_fail,
+)
 from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
     enhance_aggregator,
     EnhancedDimensionAggregator,
@@ -73,6 +80,13 @@ from canonic_phases.Phase_two.irrigation_synchronizer import (
     ExecutionPlan,
 )
 from canonic_phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
+from canonic_phases.Phase_three.validation import (
+    ValidationCounters,
+    validate_micro_results_input,
+    validate_and_clamp_score,
+    validate_quality_level,
+    validate_evidence_presence,
+)
 
 logger = structlog.get_logger(__name__)
 _CORE_MODULE_DIR = Path(__file__).resolve().parent
@@ -81,7 +95,11 @@ EXPECTED_QUESTION_COUNT = int(os.getenv("EXPECTED_QUESTION_COUNT", "305"))
 EXPECTED_METHOD_COUNT = int(os.getenv("EXPECTED_METHOD_COUNT", "416"))
 PHASE_TIMEOUT_DEFAULT = int(os.getenv("PHASE_TIMEOUT_SECONDS", "300"))
 P01_EXPECTED_CHUNK_COUNT = 60
-TIMEOUT_SYNC_PHASES: set[int] = {1}
+TIMEOUT_SYNC_PHASES: set[int] = {0, 1, 6, 7, 9}
+
+# Phase 2 ExecutionPlan constants
+UNKNOWN_BASE_SLOT = "UNKNOWN"
+UNKNOWN_QUESTION_GLOBAL = -1
 
 P = ParamSpec("P")
 T = TypeVar("T")
@@ -186,11 +204,43 @@ def resolve_workspace_path(
 
 
 def _normalize_monolith_for_hash(monolith: dict | MappingProxyType) -> dict:
-    """Normalize monolith for hash computation."""
+    """
+    Normalize monolith dictionary for deterministic hash computation.
+    
+    INVARIANTS GUARANTEED:
+    1. MappingProxyType instances converted to standard dicts
+    2. All nested dicts/lists recursively converted
+    3. Result is JSON-serializable with sort_keys=True
+    4. Same logical content always produces same normalized form
+    5. Dict key ordering does NOT affect output (sort_keys ensures determinism)
+    
+    The normalization ensures that:
+    - Identical monoliths produce identical hashes across runs/hosts
+    - Dict insertion order variations do not affect hash
+    - Proxy types are unwrapped to canonical forms
+    
+    Args:
+        monolith: Questionnaire monolith (dict or MappingProxyType)
+        
+    Returns:
+        Normalized dict suitable for deterministic hashing
+        
+    Raises:
+        RuntimeError: If monolith contains non-serializable types
+        
+    Example:
+        >>> m1 = {"b": 2, "a": 1}
+        >>> m2 = {"a": 1, "b": 2}
+        >>> n1 = _normalize_monolith_for_hash(m1)
+        >>> n2 = _normalize_monolith_for_hash(m2)
+        >>> json.dumps(n1, sort_keys=True) == json.dumps(n2, sort_keys=True)
+        True
+    """
     if isinstance(monolith, MappingProxyType):
         monolith = dict(monolith)
     
     def _convert(obj: Any) -> Any:
+        """Recursively convert proxy types to canonical forms."""
         if isinstance(obj, MappingProxyType):
             obj = dict(obj)
         if isinstance(obj, dict):
@@ -204,7 +254,10 @@ def _normalize_monolith_for_hash(monolith: dict | MappingProxyType) -> dict:
     try:
         json.dumps(normalized, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
     except (TypeError, ValueError) as exc:
-        raise RuntimeError(f"Monolith normalization failed: {exc}") from exc
+        raise RuntimeError(
+            f"Monolith normalization failed: contains non-serializable types. "
+            f"All monolith content must be JSON-serializable. Error: {exc}"
+        ) from exc
     
     return normalized
 
@@ -664,13 +717,26 @@ class PhaseInstrumentation:
 # ============================================================================
 
 class PhaseTimeoutError(RuntimeError):
-    """Phase timeout exception."""
+    """Phase timeout exception with enhanced context."""
     
-    def __init__(self, phase_id: int | str, phase_name: str, timeout_s: float) -> None:
+    def __init__(
+        self,
+        phase_id: int | str,
+        phase_name: str,
+        timeout_s: float,
+        elapsed_s: float | None = None,
+        partial_result: Any = None
+    ) -> None:
         self.phase_id = phase_id
         self.phase_name = phase_name
         self.timeout_s = timeout_s
-        super().__init__(f"Phase {phase_id} ({phase_name}) timed out after {timeout_s}s")
+        self.elapsed_s = elapsed_s
+        self.partial_result = partial_result
+        
+        message = f"Phase {phase_id} ({phase_name}) timed out after {timeout_s}s"
+        if elapsed_s is not None:
+            message += f" (elapsed: {elapsed_s:.2f}s)"
+        super().__init__(message)
 
 
 async def execute_phase_with_timeout(
@@ -680,9 +746,28 @@ async def execute_phase_with_timeout(
     handler: Callable[P, T] | None = None,
     args: tuple | None = None,
     timeout_s: float = 300.0,
+    instrumentation: PhaseInstrumentation | None = None,
     **kwargs: P.kwargs,
 ) -> T:
-    """Execute phase with timeout."""
+    """Execute phase with timeout and 80% warning threshold.
+    
+    Args:
+        phase_id: Phase identifier
+        phase_name: Human-readable phase name
+        coro: Coroutine to execute (for async context)
+        handler: Handler function to execute
+        args: Arguments to pass to handler
+        timeout_s: Timeout in seconds
+        instrumentation: Optional instrumentation for recording warnings
+        **kwargs: Additional keyword arguments
+    
+    Returns:
+        Result from phase execution
+    
+    Raises:
+        PhaseTimeoutError: If phase exceeds timeout
+        asyncio.TimeoutError: If underlying operation times out
+    """
     target = coro or handler
     if target is None:
         raise ValueError("Either 'coro' or 'handler' must be provided")
@@ -690,21 +775,60 @@ async def execute_phase_with_timeout(
     call_args = args or ()
     
     start = time.perf_counter()
-    logger.info(f"Phase {phase_id} ({phase_name}) started, timeout={timeout_s}s")
+    warning_threshold = timeout_s * 0.8
+    warning_logged = False
+    
+    logger.info(
+        f"Phase {phase_id} ({phase_name}) started",
+        timeout_s=timeout_s,
+        warning_threshold_s=warning_threshold,
+        phase_id=phase_id,
+        phase_name=phase_name
+    )
     
     if not callable(target):
-         raise TypeError(f"Phase {phase_name} function is not callable: {type(target)}")
+        raise TypeError(f"Phase {phase_name} function is not callable: {type(target)}")
+    
+    # Create monitoring task for 80% warning
+    async def monitor_timeout() -> None:
+        """Monitor execution and log warning at 80% threshold."""
+        nonlocal warning_logged
+        await asyncio.sleep(warning_threshold)
+        if not warning_logged:
+            elapsed = time.perf_counter() - start
+            warning_logged = True
+            logger.warning(
+                f"Phase {phase_id} ({phase_name}) approaching timeout",
+                phase_id=phase_id,
+                phase_name=phase_name,
+                elapsed_s=elapsed,
+                timeout_s=timeout_s,
+                threshold_percent=80,
+                remaining_s=timeout_s - elapsed,
+                category="timeout_warning"
+            )
+            if instrumentation is not None:
+                instrumentation.record_warning(
+                    "timeout_threshold",
+                    f"Phase approaching timeout: {elapsed:.2f}s / {timeout_s}s (80% threshold)",
+                    phase_id=phase_id,
+                    phase_name=phase_name,
+                    elapsed_s=elapsed,
+                    timeout_s=timeout_s
+                )
+    
     try:
-        # Improved execution with proper context
+        # Start monitoring task
+        monitor_task = asyncio.create_task(monitor_timeout())
+        
+        # Execute phase with proper handling
         if asyncio.iscoroutinefunction(target):
-            # Handle args
             call_args = args or ()
             if isinstance(call_args, dict):
                 result = await asyncio.wait_for(target(**call_args), timeout=timeout_s)
             else:
                 result = await asyncio.wait_for(target(*call_args), timeout=timeout_s)
         else:
-            # Use functools.partial for cleaner argument binding
             from functools import partial
             call_args = args or ()
             if isinstance(call_args, dict):
@@ -715,16 +839,55 @@ async def execute_phase_with_timeout(
                 bound_func = partial(target, call_args)
             result = await asyncio.wait_for(asyncio.to_thread(bound_func), timeout=timeout_s)
         
-        logger.info(f"Phase {phase_name} completed successfully")
+        # Cancel monitoring task if completed successfully
+        if not monitor_task.done():
+            monitor_task.cancel()
+        
+        elapsed = time.perf_counter() - start
+        logger.info(
+            f"Phase {phase_id} ({phase_name}) completed successfully",
+            phase_id=phase_id,
+            phase_name=phase_name,
+            elapsed_s=elapsed,
+            timeout_s=timeout_s
+        )
         return result
         
     except asyncio.TimeoutError:
-        logger.error(f"Phase {phase_name} timed out after {timeout_s}s")
-        # Record failure structure if needed, but orchestrator should handle it
-        raise
+        elapsed = time.perf_counter() - start
+        logger.error(
+            f"Phase {phase_id} ({phase_name}) timed out",
+            phase_id=phase_id,
+            phase_name=phase_name,
+            timeout_s=timeout_s,
+            elapsed_s=elapsed,
+            category="timeout_error"
+        )
+        raise PhaseTimeoutError(
+            phase_id=phase_id,
+            phase_name=phase_name,
+            timeout_s=timeout_s,
+            elapsed_s=elapsed
+        )
     except Exception as e:
-        logger.error(f"Phase {phase_name} failed with {type(e).__name__}: {str(e)}")
+        elapsed = time.perf_counter() - start
+        logger.error(
+            f"Phase {phase_id} ({phase_name}) failed",
+            phase_id=phase_id,
+            phase_name=phase_name,
+            error_type=type(e).__name__,
+            error_message=str(e),
+            elapsed_s=elapsed
+        )
         raise
+    finally:
+        # Ensure monitoring task is cancelled
+        if 'monitor_task' in locals() and not monitor_task.done():
+            monitor_task.cancel()
+            try:
+                await monitor_task
+            except asyncio.CancelledError:
+                pass
 
 
 
@@ -847,6 +1010,24 @@ class MethodExecutor:
     def has_method(self, class_name: str, method_name: str) -> bool:
         """Check if method exists."""
         return self._method_registry.has_method(class_name, method_name)
+    
+    def clear_instance_cache(self) -> dict[str, Any]:
+        """Clear cached instances to prevent memory bloat.
+        
+        This should be called between pipeline runs in long-lived processes.
+        
+        Returns:
+            Statistics about cleared cache entries.
+        """
+        return self._method_registry.clear_cache()
+    
+    def evict_expired_instances(self) -> int:
+        """Manually evict expired cache entries.
+        
+        Returns:
+            Number of entries evicted.
+        """
+        return self._method_registry.evict_expired()
     
     def get_registry_stats(self) -> dict[str, Any]:
         """Get registry stats."""
@@ -1050,6 +1231,53 @@ class Orchestrator:
         if not hasattr(self.executor, "signal_registry") or self.executor.signal_registry is None:
             raise RuntimeError("MethodExecutor must have signal_registry")
         
+        # Validate signal registry health before execution
+        signal_validation_result = self.executor.signal_registry.validate_signals_for_questionnaire(
+            expected_question_count=EXPECTED_QUESTION_COUNT
+        )
+        
+        # In production mode, enforce strict validation
+        is_prod_mode = (
+            runtime_config is not None 
+            and hasattr(runtime_config, "mode")
+            and runtime_config.mode.value == "prod"
+        )
+        
+        if not signal_validation_result["valid"]:
+            error_msg = (
+                f"Signal registry validation failed: "
+                f"{len(signal_validation_result['missing_questions'])} questions missing signals, "
+                f"{len(signal_validation_result['malformed_signals'])} questions with malformed signals"
+            )
+            
+            logger.error(
+                "orchestrator_signal_validation_failed",
+                validation_result=signal_validation_result,
+                is_prod_mode=is_prod_mode,
+            )
+            
+            if is_prod_mode:
+                raise RuntimeError(
+                    f"{error_msg}. "
+                    f"Production mode requires complete signal coverage. "
+                    f"Missing questions: {signal_validation_result['missing_questions'][:10]}, "
+                    f"Coverage: {signal_validation_result['coverage_percentages']}"
+                )
+            else:
+                logger.warning(
+                    "orchestrator_signal_validation_warning",
+                    message=f"{error_msg}. Continuing in non-production mode.",
+                    missing_count=len(signal_validation_result['missing_questions']),
+                    malformed_count=len(signal_validation_result['malformed_signals']),
+                )
+        else:
+            logger.info(
+                "orchestrator_signal_validation_passed",
+                total_questions=signal_validation_result["total_questions"],
+                coverage=signal_validation_result["coverage_percentages"],
+                elapsed_seconds=signal_validation_result["elapsed_seconds"],
+            )
+        
         try:
             _validate_questionnaire_structure(self._monolith_data)
         except (ValueError, TypeError) as e:
@@ -1114,7 +1342,27 @@ class Orchestrator:
         self.abort_signal.reset()
     
     def _get_phase_timeout(self, phase_id: int) -> float:
-        return self.PHASE_TIMEOUTS.get(phase_id, 300.0)
+        """Get phase timeout with RuntimeMode multiplier applied.
+        
+        Multipliers:
+        - PROD: 1x (no multiplier)
+        - DEV: 2x (more relaxed for debugging)
+        - EXPLORATORY: 4x (maximum flexibility for research)
+        """
+        base_timeout = self.PHASE_TIMEOUTS.get(phase_id, 300.0)
+        
+        if self.runtime_config is None:
+            return base_timeout
+        
+        mode = self.runtime_config.mode
+        if mode == RuntimeMode.PROD:
+            multiplier = 1.0
+        elif mode == RuntimeMode.DEV:
+            multiplier = 2.0
+        else:  # EXPLORATORY
+            multiplier = 4.0
+        
+        return base_timeout * multiplier
     
     async def _check_and_enforce_resource_limits(
         self, phase_id: int, phase_label: str
@@ -1234,6 +1482,7 @@ class Orchestrator:
                             timeout_s=self._get_phase_timeout(phase_id),
                             coro=asyncio.to_thread,
                             args=(handler,) + tuple(args),
+                            instrumentation=instrumentation,
                         )
                     else:
                         data = handler(*args)
@@ -1244,6 +1493,7 @@ class Orchestrator:
                         timeout_s=self._get_phase_timeout(phase_id),
                         handler=handler,
                         args=tuple(args),
+                        instrumentation=instrumentation,
                     )
                 success = True
                 
@@ -1251,6 +1501,15 @@ class Orchestrator:
                 error = exc
                 instrumentation.record_error("timeout", str(exc))
                 self.request_abort(f"Phase {phase_id} timed out")
+                
+                # Extract partial result if available
+                if hasattr(exc, 'partial_result') and exc.partial_result is not None:
+                    data = exc.partial_result
+                    logger.warning(
+                        f"Phase {phase_id} timed out, but partial result available",
+                        phase_id=phase_id,
+                        has_partial=True
+                    )
                 
             except AbortRequested as exc:
                 error = exc
@@ -1397,11 +1656,76 @@ class Orchestrator:
             for phase_id, instr in self._phase_instrumentation.items()
         }
     
+    def _build_execution_manifest(self) -> dict[str, Any]:
+        """Build execution manifest with success/failure status.
+        
+        In PROD mode, timeout causes manifest to have success=false.
+        """
+        # Check if any phase timed out or failed
+        has_timeout = any(
+            isinstance(pr.error, PhaseTimeoutError) 
+            for pr in self.phase_results
+        )
+        has_failure = any(
+            not pr.success and pr.error is not None
+            for pr in self.phase_results
+        )
+        
+        all_phases_completed = all(
+            status == "completed" 
+            for status in self._phase_status.values()
+        )
+        
+        # In PROD mode, timeouts should cause failure
+        is_prod = (
+            self.runtime_config is not None and 
+            self.runtime_config.mode == RuntimeMode.PROD
+        )
+        
+        success = all_phases_completed and not has_failure
+        if is_prod and has_timeout:
+            success = False
+        
+        manifest = {
+            "success": success,
+            "timestamp": datetime.utcnow().isoformat(),
+            "runtime_mode": (
+                self.runtime_config.mode.value 
+                if self.runtime_config else "unknown"
+            ),
+            "phases_completed": sum(
+                1 for status in self._phase_status.values() 
+                if status == "completed"
+            ),
+            "phases_total": len(self.FASES),
+            "has_timeout": has_timeout,
+            "has_failure": has_failure,
+            "aborted": self.abort_signal.is_aborted(),
+            "abort_reason": self.abort_signal.get_reason(),
+        }
+        
+        # Add timeout details if present
+        if has_timeout:
+            timeout_phases = [
+                {
+                    "phase_id": pr.phase_id,
+                    "phase_name": self.FASES[int(pr.phase_id)][3] if int(pr.phase_id) < len(self.FASES) else "Unknown",
+                    "timeout_s": pr.error.timeout_s if isinstance(pr.error, PhaseTimeoutError) else None,
+                    "elapsed_s": pr.error.elapsed_s if isinstance(pr.error, PhaseTimeoutError) else None,
+                }
+                for pr in self.phase_results
+                if isinstance(pr.error, PhaseTimeoutError)
+            ]
+            manifest["timeout_phases"] = timeout_phases
+        
+        return manifest
+    
     def export_metrics(self) -> dict[str, Any]:
         abort_timestamp = self.abort_signal.get_timestamp()
         
         return {
             "timestamp": datetime.utcnow().isoformat(),
+            "manifest": self._build_execution_manifest(),
             "phase_metrics": self.get_phase_metrics(),
             "resource_usage": self.resource_limits.get_usage_history(),
             "abort_status": {
@@ -1467,7 +1791,26 @@ class Orchestrator:
 
     # ... (Keep previous phase methods 0-3)
     def _load_configuration(self) -> dict[str, Any]:
-        # Implementation from previous file
+        """
+        Load and validate configuration with mode-specific behavior enforcement.
+        
+        PHASE 0 RESPONSIBILITIES:
+        1. Compute deterministic monolith_sha256
+        2. Validate question counts
+        3. Extract aggregation settings
+        4. Enforce runtime mode constraints
+        
+        MODE-SPECIFIC BEHAVIORS:
+        - PROD: Strict validation, fail on discrepancies, mark output as "verified"
+        - DEV: Permissive validation, warn on issues, mark output as "development"
+        - EXPLORATORY: Minimal validation, log everything, mark output as "experimental"
+        
+        Returns:
+            Configuration dictionary with monolith_sha256, runtime mode flags, and settings
+            
+        Raises:
+            RuntimeError: If Phase 0 bootstrap failed or PROD constraints violated
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[0]
         start = time.perf_counter()
@@ -1480,20 +1823,106 @@ class Orchestrator:
                 f"Failed gates: {[g.gate_name for g in failed_gates]}"
             )
         
+        mode_str = "UNKNOWN"
+        is_strict = False
+        verification_status = "experimental"
+        
         if self.runtime_config is not None:
             mode = self.runtime_config.mode
+            mode_str = mode.value.upper()
+            is_strict = self.runtime_config.is_strict_mode()
+            
             if mode == RuntimeMode.PROD:
-                logger.info("orchestrator_phase0_prod_mode", strict=True)
+                logger.info(
+                    "orchestrator_phase0_prod_mode", 
+                    strict=True, 
+                    verification_status="verified"
+                )
+                verification_status = "verified"
             elif mode == RuntimeMode.DEV:
-                logger.warning("orchestrator_phase0_dev_mode", strict=False)
+                logger.warning(
+                    "orchestrator_phase0_dev_mode", 
+                    strict=False,
+                    verification_status="development"
+                )
+                verification_status = "development"
             else:  # EXPLORATORY
-                logger.warning("orchestrator_phase0_exploratory_mode", strict=False)
+                logger.warning(
+                    "orchestrator_phase0_exploratory_mode", 
+                    strict=False,
+                    verification_status="experimental",
+                    note="Results are experimental and not for production use"
+                )
+                verification_status = "experimental"
         
         monolith = _normalize_monolith_for_hash(self._monolith_data)
         monolith_hash = hashlib.sha256(
             json.dumps(monolith, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
             .encode("utf-8")
         ).hexdigest()
+        
+        # Validate questionnaire hash against expected value
+        expected_hash = os.getenv("EXPECTED_QUESTIONNAIRE_SHA256", "").strip()
+        if self.runtime_config and hasattr(self.runtime_config, "expected_questionnaire_sha256"):
+            config_hash = getattr(self.runtime_config, "expected_questionnaire_sha256", "")
+            if config_hash:
+                expected_hash = config_hash
+        
+        if expected_hash:
+            if monolith_hash.lower() != expected_hash.lower():
+                error_msg = (
+                    f"Questionnaire integrity check failed: "
+                    f"expected SHA256 {expected_hash[:16]}..., "
+                    f"got {monolith_hash[:16]}..."
+                )
+                logger.error(error_msg)
+                instrumentation.record_error("integrity", error_msg)
+                raise RuntimeError(error_msg)
+            else:
+                logger.info(
+                    "questionnaire_integrity_verified",
+                    hash=monolith_hash[:16] + "...",
+                    category="phase0_validation"
+                )
+        
+        # Validate method count
+        if self.executor:
+            try:
+                stats = self.executor.get_registry_stats()
+                registered_count = stats.get("total_classes_registered", 0)
+                failed_count = stats.get("failed_classes", 0)
+                
+                if registered_count < EXPECTED_METHOD_COUNT:
+                    error_msg = (
+                        f"Method registry validation failed: "
+                        f"expected {EXPECTED_METHOD_COUNT} methods, "
+                        f"got {registered_count}"
+                    )
+                    logger.error(error_msg)
+                    instrumentation.record_error("method_count", error_msg)
+                    
+                    if self.runtime_config and self.runtime_config.mode == RuntimeMode.PROD:
+                        raise RuntimeError(error_msg)
+                    else:
+                        logger.warning(f"DEV mode: {error_msg}")
+                
+                if failed_count > 0:
+                    failed_names = stats.get("failed_class_names", [])
+                    warning_msg = f"Method registry has {failed_count} failed classes: {failed_names[:3]}"
+                    logger.warning(warning_msg)
+                    instrumentation.record_warning("method_failures", warning_msg)
+                    
+                    if self.runtime_config and self.runtime_config.mode == RuntimeMode.PROD:
+                        raise RuntimeError(f"PROD mode: {warning_msg}")
+                
+                logger.info(
+                    "method_registry_validated",
+                    registered=registered_count,
+                    failed=failed_count,
+                    category="phase0_validation"
+                )
+            except AttributeError:
+                logger.warning("Method registry stats unavailable - skipping validation")
         
         micro_questions = monolith["blocks"].get("micro_questions", [])
         meso_questions = monolith["blocks"].get("meso_questions", [])
@@ -1502,8 +1931,19 @@ class Orchestrator:
         question_total = len(micro_questions) + len(meso_questions) + (1 if macro_question else 0)
         
         if question_total != EXPECTED_QUESTION_COUNT:
-            logger.warning(f"Question count: expected {EXPECTED_QUESTION_COUNT}, got {question_total}")
-            instrumentation.record_warning("integrity", f"Question count: {question_total}")
+            msg = f"Question count mismatch: expected {EXPECTED_QUESTION_COUNT}, got {question_total}"
+            instrumentation.record_warning("integrity", msg)
+            
+            if self.runtime_config is not None and self.runtime_config.mode == RuntimeMode.PROD:
+                if not self.runtime_config.allow_aggregation_defaults:
+                    raise RuntimeError(
+                        f"PROD mode: {msg}. This indicates a configuration integrity issue. "
+                        f"Set ALLOW_AGGREGATION_DEFAULTS=true to bypass (not recommended)."
+                    )
+                else:
+                    logger.warning("prod_mode_integrity_bypass", reason=msg)
+            else:
+                logger.warning("question_count_mismatch", **{"expected": EXPECTED_QUESTION_COUNT, "actual": question_total})
         
         aggregation_settings = AggregationSettings.from_monolith(monolith)
         
@@ -1517,11 +1957,16 @@ class Orchestrator:
             "meso_questions": meso_questions,
             "macro_question": macro_question,
             "_aggregation_settings": aggregation_settings,
+            "plan_name": "plan1",
+            "artifacts_dir": str(PROJECT_ROOT / "artifacts"),
         }
         
         if self.runtime_config is not None:
             config_dict["_runtime_mode"] = self.runtime_config.mode.value
-            config_dict["_strict_mode"] = self.runtime_config.is_strict_mode()
+            config_dict["_strict_mode"] = is_strict
+            config_dict["_allow_partial_results"] = (
+                self.runtime_config.mode != RuntimeMode.PROD
+            )
         
         return config_dict
 
@@ -1619,17 +2064,124 @@ class Orchestrator:
         
         return canon_package
     
+    def _lookup_question_from_plan_task(self, task: Any, config: dict[str, Any]) -> dict[str, Any] | None:
+        """Look up full question data from monolith using task metadata.
+        
+        Args:
+            task: Task from execution_plan with question_id and dimension
+            config: Configuration dict containing micro_questions from monolith
+            
+        Returns:
+            Question dict from monolith, or None if not found
+        """
+        micro_questions = config.get("micro_questions", [])
+        question_id = task.question_id
+        
+        for question in micro_questions:
+            if question.get("id") == question_id or question.get("question_id") == question_id:
+                return question
+        
+        logger.warning(f"Question {question_id} not found in monolith for task {task.task_id}")
+        return None
+
     async def _execute_micro_questions_async(
         self, document: Any, config: dict[str, Any]
     ) -> list[MicroQuestionRun]:
-        # Implementation from previous file
+        """Execute micro questions using ExecutionPlan from Phase 1.
+        
+        Consumes all tasks from self._execution_plan, tracks status, errors, and retries.
+        Each task is mapped to the correct executor using dimension and question metadata.
+        
+        Invariants:
+        - No orphan tasks (all tasks in plan are consumed)
+        - No duplicate execution (each task executed exactly once, ignoring retries)
+        - Task metadata drives execution (dimension, policy_area, question_id)
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
         
-        micro_questions = config.get("micro_questions", [])
-        instrumentation.start(items_total=len(micro_questions))
-        
-        results: list[MicroQuestionRun] = []
+        # Use execution_plan if available, fallback to legacy config-based approach
+        if self._execution_plan is not None:
+            tasks = list(self._execution_plan.tasks)
+            logger.info(f"Phase 2: Executing {len(tasks)} tasks from execution plan (plan_id: {self._execution_plan.plan_id})")
+            instrumentation.start(items_total=len(tasks))
+            
+            task_status = {}
+            results: list[MicroQuestionRun] = []
+            tasks_executed = set()
+            tasks_failed = set()
+            
+            for task in tasks:
+                self._ensure_not_aborted()
+                task_id = task.task_id
+                start_q = time.perf_counter()
+                
+                # Track task to ensure no duplicates
+                if task_id in tasks_executed:
+                    logger.error(f"Duplicate task execution detected: {task_id}")
+                    instrumentation.record_error("duplicate_task", task_id)
+                    continue
+                
+                tasks_executed.add(task_id)
+                task_status[task_id] = "running"
+                
+                # Look up full question data from monolith
+                question = self._lookup_question_from_plan_task(task, config)
+                if question is None:
+                    error_msg = f"Question data not found for task {task_id}"
+                    logger.error(error_msg)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("question_lookup_failed", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=task.question_id,
+                        question_global=UNKNOWN_QUESTION_GLOBAL,
+                        base_slot=UNKNOWN_BASE_SLOT,
+                        metadata={"task_id": task_id, "error": "question_not_found"},
+                        evidence=None,
+                        error=error_msg,
+                        aborted=False
+                    ))
+                    continue
+                
+                base_slot = question.get("base_slot")
+                if not base_slot:
+                    error_msg = f"Task {task_id}: Question missing base_slot"
+                    logger.warning(error_msg)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("missing_base_slot", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                        base_slot=UNKNOWN_BASE_SLOT,
+                        metadata={"task_id": task_id, "error": "missing_base_slot"},
+                        evidence=None,
+                        error=error_msg,
+                        aborted=False
+                    ))
+                    continue
+
+                executor_class = self.executors.get(base_slot)
+                if not executor_class:
+                    error_msg = f"Task {task_id}: No executor found for {base_slot}"
+                    logger.warning(error_msg)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("executor_not_found", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={"task_id": task_id, "error": "executor_not_found"},
+                        evidence=None,
+                        error=error_msg,
+                        aborted=False
+                    ))
+                    continue
 
         for idx, question in enumerate(micro_questions):
             self._ensure_not_aborted()
@@ -1640,80 +2192,220 @@ class Orchestrator:
             
             start_q = time.perf_counter()
 
-            base_slot = question.get("base_slot")
-            if not base_slot:
-                logger.warning(f"Question missing base_slot: {question.get('id')}")
-                continue
-
-            executor_class = self.executors.get(base_slot)
-            if not executor_class:
-                logger.warning(f"No executor found for {base_slot}")
-                continue
-
-            try:
-                instance = executor_class(
-                    method_executor=self.executor,
-                    signal_registry=self.executor.signal_registry,
-                    config=self.executor_config,
-                    questionnaire_provider=self._canonical_questionnaire,
-                    calibration_orchestrator=self.calibration_orchestrator,
-                    enriched_packs=self._enriched_packs or {},
-                )
-
-                q_context = {
-                    "question_id": question.get("id"),
-                    "question_global": question.get("global_id"),
-                    "base_slot": base_slot,
-                    "patterns": question.get("patterns", []),
-                    "expected_elements": question.get("expected_elements", []),
-                    "identity": {
-                        "dimension_id": question.get("dimension_id"),
-                        "cluster_id": question.get("cluster_id"),
+                    # Validate dimension_id consistency
+                    question_dimension = question.get("dimension_id")
+                    if question_dimension is None:
+                        # Question missing dimension_id, use task dimension with warning
+                        logger.warning(
+                            f"Task {task_id}: question missing dimension_id, using task dimension '{task.dimension}'"
+                        )
+                        question_dimension = task.dimension
+                    elif question_dimension != task.dimension:
+                        # Mismatch indicates data integrity issue
+                        logger.error(
+                            f"Task {task_id}: dimension_id mismatch - "
+                            f"question has '{question_dimension}' but task has '{task.dimension}'. "
+                            f"This indicates a data integrity issue in the execution plan."
+                        )
+                        task_status[task_id] = "failed"
+                        tasks_failed.add(task_id)
+                        instrumentation.record_error("dimension_mismatch", task_id)
+                        
+                        results.append(MicroQuestionRun(
+                            question_id=question.get("id"),
+                            question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                            base_slot=base_slot,
+                            metadata={"task_id": task_id, "error": "dimension_mismatch"},
+                            evidence=None,
+                            error=f"Dimension mismatch: question={question_dimension}, task={task.dimension}",
+                            aborted=False
+                        ))
+                        continue
+                    
+                    q_context = {
+                        "question_id": question.get("id"),
+                        "question_global": question.get("global_id"),
+                        "base_slot": base_slot,
+                        "patterns": question.get("patterns", []),
+                        "expected_elements": question.get("expected_elements", []),
+                        "identity": {
+                            "dimension_id": question_dimension,
+                            "cluster_id": question.get("cluster_id"),
+                        },
+                        "task_metadata": {
+                            "task_id": task_id,
+                            "policy_area": task.policy_area,
+                            "chunk_id": task.chunk_id,
+                            "chunk_index": task.chunk_index,
+                        }
                     }
-                }
 
-                result_data = instance.execute(
-                    document=document,
-                    method_executor=self.executor,
-                    question_context=q_context
-                )
+                    result_data = instance.execute(
+                        document=document,
+                        method_executor=self.executor,
+                        question_context=q_context
+                    )
 
-                duration = (time.perf_counter() - start_q) * 1000
+                    duration = (time.perf_counter() - start_q) * 1000
 
-                run_result = MicroQuestionRun(
-                    question_id=question.get("id"),
-                    question_global=question.get("global_id"),
-                    base_slot=base_slot,
-                    metadata=result_data.get("metadata", {}),
-                    evidence=result_data.get("evidence"),
-                    duration_ms=duration,
-                )
-                results.append(run_result)
-                instrumentation.increment(latency=duration)
+                    run_result = MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={**result_data.get("metadata", {}), "task_id": task_id},
+                        evidence=result_data.get("evidence"),
+                        duration_ms=duration,
+                    )
+                    results.append(run_result)
+                    task_status[task_id] = "completed"
+                    instrumentation.increment(latency=duration)
+                    
+                    logger.debug(f"Task {task_id} completed successfully in {duration:.2f}ms")
 
-            except Exception as e:
-                logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
-                instrumentation.record_error("execution", str(e))
-                results.append(MicroQuestionRun(
-                    question_id=question.get("id"),
-                    question_global=question.get("global_id"),
-                    base_slot=base_slot,
-                    metadata={},
-                    evidence=None,
-                    error=str(e),
-                    aborted=False
-                ))
+                except Exception as e:
+                    logger.error(f"Task {task_id}: Executor {base_slot} failed: {e}", exc_info=True)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("execution", f"{task_id}: {str(e)}")
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={"task_id": task_id, "error": str(e)},
+                        evidence=None,
+                        error=str(e),
+                        aborted=False
+                    ))
+            
+            # Verify plan coverage: all tasks must be executed
+            orphan_tasks = set(t.task_id for t in tasks) - tasks_executed
+            if orphan_tasks:
+                error_msg = f"Orphan tasks detected (not executed): {orphan_tasks}"
+                logger.error(error_msg)
+                instrumentation.record_error("orphan_tasks", str(len(orphan_tasks)))
+                # Orphan tasks indicate a serious logic error - fail in all modes
+                # In PROD mode, this is a hard failure; in DEV, log as critical warning
+                if self.runtime_config.mode == RuntimeMode.PRODUCTION:
+                    self.request_abort(error_msg)
+                else:
+                    logger.critical(f"DEVELOPMENT MODE WARNING: {error_msg}")
+            
+            # In PROD mode, fail Phase 2 if any tasks failed
+            if tasks_failed and self.runtime_config.mode == RuntimeMode.PRODUCTION:
+                error_msg = f"Phase 2 failed: {len(tasks_failed)} tasks failed in PROD mode"
+                logger.error(error_msg)
+                self.request_abort(error_msg)
+            
+            # Log final metrics
+            logger.info(
+                f"Phase 2 complete: {len(tasks_executed)} tasks executed, "
+                f"{len(tasks_failed)} failed, {len(orphan_tasks)} orphaned"
+            )
+            
+            return results
+            
+        else:
+            # Fallback: legacy config-based approach when execution_plan not available
+            logger.warning("Phase 2: No execution plan available, falling back to config-based approach")
+            micro_questions = config.get("micro_questions", [])
+            instrumentation.start(items_total=len(micro_questions))
+            
+            results: list[MicroQuestionRun] = []
 
-        return results
+            for question in micro_questions:
+                self._ensure_not_aborted()
+                start_q = time.perf_counter()
+
+                base_slot = question.get("base_slot")
+                if not base_slot:
+                    logger.warning(f"Question missing base_slot: {question.get('id')}")
+                    continue
+
+                executor_class = self.executors.get(base_slot)
+                if not executor_class:
+                    logger.warning(f"No executor found for {base_slot}")
+                    continue
+
+                try:
+                    instance = executor_class(
+                        method_executor=self.executor,
+                        signal_registry=self.executor.signal_registry,
+                        config=self.executor_config,
+                        questionnaire_provider=self._canonical_questionnaire,
+                        calibration_orchestrator=self.calibration_orchestrator,
+                        enriched_packs=self._enriched_packs or {},
+                    )
+
+                    q_context = {
+                        "question_id": question.get("id"),
+                        "question_global": question.get("global_id"),
+                        "base_slot": base_slot,
+                        "patterns": question.get("patterns", []),
+                        "expected_elements": question.get("expected_elements", []),
+                        "identity": {
+                            "dimension_id": question.get("dimension_id"),
+                            "cluster_id": question.get("cluster_id"),
+                        }
+                    }
+
+                    result_data = instance.execute(
+                        document=document,
+                        method_executor=self.executor,
+                        question_context=q_context
+                    )
+
+                    duration = (time.perf_counter() - start_q) * 1000
+
+                    run_result = MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata=result_data.get("metadata", {}),
+                        evidence=result_data.get("evidence"),
+                        duration_ms=duration,
+                    )
+                    results.append(run_result)
+                    instrumentation.increment(latency=duration)
+
+                except Exception as e:
+                    logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
+                    instrumentation.record_error("execution", str(e))
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={},
+                        evidence=None,
+                        error=str(e),
+                        aborted=False
+                    ))
+
+            return results
 
     async def _score_micro_results_async(
         self, micro_results: list[MicroQuestionRun], config: dict[str, Any]
     ) -> list[ScoredMicroQuestion]:
-        # Implementation from previous file
+        """FASE 3: Score micro-question results with strict validation.
+        
+        Validates:
+        - Input count matches EXPECTED_QUESTION_COUNT
+        - Evidence presence (not None/null)
+        - Score bounds [0.0, 1.0] with clamping
+        - Quality level enum validity
+        
+        Logs all validation failures explicitly.
+        """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[3]
         
+        # Input validation: Check micro_results count
+        validate_micro_results_input(micro_results, EXPECTED_QUESTION_COUNT)
+        
         instrumentation.start(items_total=len(micro_results))
+        
+        # Initialize validation counters
+        validation_counters = ValidationCounters(total_questions=len(micro_results))
         
         scored_results: list[ScoredMicroQuestion] = []
         signal_registry = self.executor.signal_registry if hasattr(self.executor, 'signal_registry') else None
@@ -1723,7 +2415,7 @@ class Orchestrator:
         scorer_engine = None
         if signal_registry is not None:
             scorer_engine = SignalEnrichedScorer(signal_registry=signal_registry)
-            logger. info(f"Phase 3: Scoring {len(micro_results)} micro-question results using SignalEnrichedScorer")
+            logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results using SignalEnrichedScorer")
         else:
             logger.info(f"Phase 3: Scoring {len(micro_results)} micro-question results")
         
@@ -1731,6 +2423,14 @@ class Orchestrator:
             self._ensure_not_aborted()
             
             try: 
+                # Validate evidence presence
+                evidence_valid = validate_evidence_presence(
+                    micro_result.evidence,
+                    micro_result.question_id,
+                    micro_result.question_global,
+                    validation_counters,
+                )
+                
                 # Extract scoring signals if available
                 scoring_signals = None
                 if signal_registry is not None:
@@ -1740,7 +2440,7 @@ class Orchestrator:
                         pass
                 
                 # Extract metadata and evidence
-                metadata = micro_result. metadata
+                metadata = micro_result.metadata
                 evidence_obj = micro_result.evidence
                 if hasattr(evidence_obj, "__dict__"):
                     evidence = evidence_obj.__dict__
@@ -1753,16 +2453,19 @@ class Orchestrator:
                 score = metadata.get("overall_confidence")
                 if score is None:
                     validation = evidence.get("validation", {})
-                    score = validation. get("score")
+                    score = validation.get("score")
                 
                 if score is None:
                     conf_scores = evidence.get("confidence_scores", {})
                     score = conf_scores.get("mean", 0.0)
                 
-                try:
-                    score_float = float(score) if score is not None else 0.0
-                except (TypeError, ValueError):
-                    score_float = 0.0
+                # Validate and clamp score to [0.0, 1.0]
+                score_float = validate_and_clamp_score(
+                    score,
+                    micro_result.question_id,
+                    micro_result.question_global,
+                    validation_counters,
+                )
                 
                 # Determine completeness and quality level
                 completeness = metadata.get("completeness")
@@ -1778,6 +2481,14 @@ class Orchestrator:
                 else:
                     validation = evidence.get("validation", {})
                     quality_level = validation.get("quality_level", "INSUFICIENTE")
+                
+                # Validate quality level enum
+                quality_level = validate_quality_level(
+                    quality_level,
+                    micro_result.question_id,
+                    micro_result.question_global,
+                    validation_counters,
+                )
                 
                 # Build base scoring details
                 base_scoring_details = {
@@ -1827,6 +2538,22 @@ class Orchestrator:
                         "source_hash": getattr(scoring_signals, 'source_hash', None),
                         "signal_source": "sisas_registry"
                     }
+                    
+                    # Add detailed signal tracking for audit trail
+                    scoring_details["applied_signals"] = {
+                        "question_id": micro_result.question_id,
+                        "scoring_modality": scoring_signals.scoring_modality,
+                        "has_modality_config": micro_result.question_id in scoring_signals.question_modalities,
+                        "threshold_defined": scoring_signals.scoring_modality in ["binary_presence", "presence_threshold"],
+                        "signal_lookup_timestamp": time.time(),
+                    }
+                    
+                    logger.debug(
+                        "signal_applied_in_scoring",
+                        question_id=micro_result.question_id,
+                        modality=scoring_signals.question_modalities.get(micro_result.question_id),
+                        scoring_modality=scoring_signals.scoring_modality,
+                    )
                 
                 # Create scored result
                 scored = ScoredMicroQuestion(
@@ -1838,11 +2565,11 @@ class Orchestrator:
                     quality_level=final_quality_level,
                     evidence=micro_result.evidence,
                     scoring_details=scoring_details,
-                    metadata=micro_result. metadata,
+                    metadata=micro_result.metadata,
                     error=micro_result.error,
                 )
                 
-                scored_results. append(scored)
+                scored_results.append(scored)
                 instrumentation.increment(latency=0.0)
                 
             except Exception as e:
@@ -1862,28 +2589,18 @@ class Orchestrator:
                     metadata=micro_result.metadata,
                     error=f"Scoring error: {e}",
                 )
-                scored_results. append(scored)
-                instrumentation.increment(latency=0.0)
-                
-            except Exception as e:
-                logger.error(
-                    f"Phase 3: Failed to score question {micro_result.question_global}: {e}",
-                    exc_info=True
-                )
-                scored = ScoredMicroQuestion(
-                    question_id=micro_result.question_id,
-                    question_global=micro_result.question_global,
-                    base_slot=micro_result.base_slot,
-                    score=0.0,
-                    normalized_score=0.0,
-                    quality_level="ERROR",
-                    evidence=micro_result.evidence,
-                    scoring_details={"error": str(e)},
-                    metadata=micro_result.metadata,
-                    error=f"Scoring error: {e}",
-                )
                 scored_results.append(scored)
                 instrumentation.increment(latency=0.0)
+        
+        # Log validation summary
+        validation_counters.log_summary()
+        
+        # Fail if critical validation issues detected
+        if validation_counters.missing_evidence > 0:
+            logger.error(
+                f"Phase 3 validation failed: {validation_counters.missing_evidence} questions "
+                f"have missing/null evidence"
+            )
         
         return scored_results
     
@@ -1961,6 +2678,16 @@ class Orchestrator:
             )
 
             logger.info(f"Phase 4: Aggregated {len(dimension_scores)} dimension scores")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase4_output(dimension_scores, agg_inputs)
+            if not validation_result.passed:
+                error_msg = f"Phase 4 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 4 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=len(dimension_scores), latency=duration)
@@ -2019,6 +2746,16 @@ class Orchestrator:
                 pass
 
             logger.info(f"Phase 5: Aggregated {len(area_scores)} area scores")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase5_output(area_scores, dimension_scores)
+            if not validation_result.passed:
+                error_msg = f"Phase 5 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 5 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=len(area_scores), latency=duration)
@@ -2057,6 +2794,16 @@ class Orchestrator:
             )
 
             logger.info(f"Phase 6: Aggregated {len(cluster_scores)} cluster scores")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase6_output(cluster_scores, policy_area_scores)
+            if not validation_result.passed:
+                error_msg = f"Phase 6 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 6 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=len(cluster_scores), latency=duration)
@@ -2121,6 +2868,18 @@ class Orchestrator:
             )
 
             logger.info(f"Phase 7: Macro evaluation complete. Score: {macro_score.score:.4f}")
+            
+            # CRITICAL VALIDATION: Fail hard if empty or invalid
+            validation_result = validate_phase7_output(
+                macro_score, cluster_scores, policy_area_scores, dimension_scores
+            )
+            if not validation_result.passed:
+                error_msg = f"Phase 7 validation failed: {validation_result.error_message}"
+                logger.error(error_msg)
+                instrumentation.record_error("validation", validation_result.error_message)
+                raise ValueError(error_msg)
+            
+            logger.info(f"✓ Phase 7 validation passed: {validation_result.details}")
 
             duration = time.perf_counter() - start
             instrumentation.increment(count=1, latency=duration)
@@ -2152,24 +2911,94 @@ class Orchestrator:
     def _assemble_report(
         self, recommendations: dict[str, Any], config: dict[str, Any]
     ) -> dict[str, Any]:
-        """FASE 9: Assemble report (STUB)."""
+        """FASE 9: Assemble comprehensive policy analysis report."""
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[9]
         
         instrumentation.start(items_total=1)
         
-        logger.warning("Phase 9 stub - add your report logic here")
-        
-        report = {
-            "status": "stub",
-            "recommendations": recommendations,
-        }
-        return report
+        try:
+            from farfan_pipeline.phases.Phase_nine.report_assembly import (
+                ReportAssembler,
+                ReportMetadata,
+            )
+            from farfan_pipeline.phases.Phase_nine.report_generator import (
+                ReportGenerator,
+            )
+            
+            # Get questionnaire provider from config
+            monolith = config.get("monolith")
+            if not monolith:
+                raise RuntimeError("Monolith not available in config")
+            
+            # Create questionnaire provider wrapper
+            class QuestionnaireProvider:
+                def __init__(self, data):
+                    self.data = data
+                
+                def get_data(self):
+                    return self.data
+                
+                def get_patterns_by_question(self, question_id):
+                    # Extract patterns for question from monolith
+                    blocks = self.data.get("blocks", {})
+                    micro_questions = blocks.get("micro_questions", [])
+                    for q in micro_questions:
+                        if q.get("question_id") == question_id:
+                            return q.get("patterns", [])
+                    return []
+            
+            provider = QuestionnaireProvider(monolith)
+            
+            # Create report assembler
+            assembler = ReportAssembler(
+                questionnaire_provider=provider,
+                evidence_registry=None,
+                qmcm_recorder=None,
+                orchestrator=self
+            )
+            
+            # Prepare execution results
+            execution_results = {
+                "questions": self._context.get("micro_results", {}),
+                "scored_results": self._context.get("scored_results", []),
+                "dimension_scores": self._context.get("dimension_scores", []),
+                "policy_area_scores": self._context.get("policy_area_scores", []),
+                "meso_clusters": self._context.get("cluster_scores", []),
+                "macro_summary": self._context.get("macro_result"),
+            }
+            
+            # Assemble report
+            plan_name = config.get("plan_name", "plan1")
+            analysis_report = assembler.assemble_report(
+                plan_name=plan_name,
+                execution_results=execution_results,
+                report_id=None,
+                enriched_packs=None
+            )
+            
+            logger.info(
+                f"Phase 9: Assembled report with {len(analysis_report.micro_analyses)} "
+                f"micro analyses, {len(analysis_report.meso_clusters)} clusters"
+            )
+            
+            instrumentation.increment(count=1, latency=0.0)
+            
+            return {
+                "status": "success",
+                "analysis_report": analysis_report,
+                "recommendations": recommendations,
+            }
+            
+        except Exception as e:
+            logger.error(f"Phase 9 failed: {e}", exc_info=True)
+            instrumentation.record_error("assembly", str(e))
+            raise
     
     async def _format_and_export(
         self, report: dict[str, Any], config: dict[str, Any]
     ) -> dict[str, Any]:
-        """FASE 10: Format and export (and Ingest to Dashboard)."""
+        """FASE 10: Format and export report to Markdown, HTML, and PDF."""
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[10]
         
@@ -2185,15 +3014,60 @@ class Orchestrator:
         except Exception as e:
             logger.error(f"Dashboard ingestion failed in Phase 10: {e}")
             instrumentation.record_warning("ingestion", f"Dashboard update failed: {e}")
-
-        logger.warning("Phase 10 stub - add your export logic here")
         
-        export_payload = {
-            "status": "stub",
-            "report": report,
-            "dashboard_updated": True
-        }
-        return export_payload
+        try:
+            from farfan_pipeline.phases.Phase_nine.report_generator import (
+                ReportGenerator,
+            )
+            
+            # Get analysis report from Phase 9
+            analysis_report = report.get("analysis_report")
+            if not analysis_report:
+                raise RuntimeError("analysis_report not available from Phase 9")
+            
+            # Determine output directory
+            plan_name = config.get("plan_name", "plan1")
+            artifacts_dir = Path(config.get("artifacts_dir", "artifacts"))
+            output_dir = artifacts_dir / plan_name
+            
+            # Create report generator
+            generator = ReportGenerator(
+                output_dir=output_dir,
+                plan_name=plan_name,
+                enable_charts=True
+            )
+            
+            # Generate all report formats
+            artifacts = generator.generate_all(
+                report=analysis_report,
+                generate_pdf=True,
+                generate_html=True,
+                generate_markdown=True
+            )
+            
+            # Log generated artifacts
+            for artifact_type, path in artifacts.items():
+                size_kb = path.stat().st_size / 1024
+                logger.info(
+                    f"Phase 10: Generated {artifact_type} report: "
+                    f"{path} ({size_kb:.2f} KB)"
+                )
+            
+            instrumentation.increment(count=1, latency=0.0)
+            
+            export_payload = {
+                "status": "success",
+                "report": report,
+                "artifacts": {k: str(v) for k, v in artifacts.items()},
+                "dashboard_updated": True
+            }
+            
+            return export_payload
+            
+        except Exception as e:
+            logger.error(f"Phase 10 failed: {e}", exc_info=True)
+            instrumentation.record_error("export", str(e))
+            raise
 
 
 # ============================================================================

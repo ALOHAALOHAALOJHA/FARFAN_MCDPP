@@ -15,9 +15,14 @@ Test Coverage:
 """
 
 import pytest
+import sys
 from datetime import datetime
+from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
 from dataclasses import asdict
+
+# Add src to path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Phase 0 imports
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode

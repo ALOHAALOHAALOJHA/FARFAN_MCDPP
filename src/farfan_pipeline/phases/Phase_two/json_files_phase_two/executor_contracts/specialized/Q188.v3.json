@@ -10,7 +10,7 @@
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 188,
-    "updated_at": "2025-12-16T04:42:58.269826+00:00"
+    "updated_at": "2025-12-17T14:44:57.266902+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -252,7 +252,7 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -1681,6 +1681,45 @@
       "usage_in_assembly": {
         "provides_key": "semanticanalyzer.extract_semantic_cube",
         "merge_strategy": "concat"
+      }
+    }
+  },
+  "validation": {
+    "rules": [
+      {
+        "field": "elements_found",
+        "must_contain": {
+          "count": 1,
+          "elements": [
+            "aborda_causa_raiz",
+            "vinculo_diagnostico_actividad"
+          ]
+        }
+      },
+      {
+        "field": "elements_found",
+        "should_contain": {
+          "minimum": 2,
+          "elements": [
+            "aborda_causa_raiz",
+            "vinculo_diagnostico_actividad"
+          ]
+        }
+      },
+      {
+        "field": "confidence_scores",
+        "threshold": {
+          "minimum_mean": 0.6
+        }
+      }
+    ],
+    "error_handling": {
+      "on_method_failure": "propagate_with_trace",
+      "failure_contract": {
+        "abort_if": [
+          "missing_required_element"
+        ],
+        "emit_code": "ABORT-Q188-REQ"
       }
     }
   }
