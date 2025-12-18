@@ -530,9 +530,249 @@ Core Aggregators (signal-adjusted weights)
 
 ---
 
-## 9. Provenance Tracking
+## 9. Certificate Specifications (15 Mandatory)
 
-### 9.1 DAG Structure
+### 9.1 Certificate Template
+
+All compliance certificates for the F.A.R.F.A.N Phase 4-7 Aggregation Pipeline MUST adhere to the following canonical template structure with 15 mandatory elements:
+
+```markdown
+# Certificate XX: [Descriptive Title]
+
+**Status:** [ACTIVE | DEPRECATED | PENDING]  
+**Timestamp:** YYYY-MM-DD  
+**Phase:** [Phase Identifier(s)]  
+**Requirement ID:** [Unique Invariant/Requirement Identifier]
+
+## Requirement Specification
+
+[Clear, unambiguous statement of what MUST be satisfied. Use imperative language.]
+
+**Mathematical Invariant:** (if applicable)
+```
+[Mathematical formula, pseudocode, or logical assertion]
+```
+
+## Verification Method
+
+**Test:** `[Full path to test file]::[TestClass]::[test_method]`
+
+**Validation Function:** `[Module path].[validation_function_name]`
+
+**Assertion:** (if applicable)
+```python
+[Core assertion from test or validation code]
+```
+
+## Evidence
+
+[Numbered list of evidence items proving compliance]
+
+1. **Code Location:**
+   - `[file_path]::[class/function]`
+   - [Brief description of implementation]
+   
+2. **Validation Enforcement:**
+   - [Validation mechanism description]
+   - [Error conditions and handling]
+   
+3. **Test Results:**
+   - [Test coverage description]
+   - [Verification approach]
+
+## Compliance Status
+
+✅ **COMPLIANT** | ❌ **NON-COMPLIANT** | ⚠️ **PARTIAL**
+
+[Brief statement confirming compliance status and any relevant context]
+
+## Audit Trail (Optional)
+
+| Date | Event | Outcome |
+|------|-------|---------|
+| YYYY-MM-DD | [Event description] | [Outcome] |
+
+---
+
+**Signature:** [Component/Module Name] v[Version]  
+**Certification Authority:** F.A.R.F.A.N Canonical Phases  
+**Next Review:** YYYY-MM-DD
+```
+
+### 9.2 Mandatory Elements
+
+Each certificate MUST contain the following 15 mandatory elements:
+
+| # | Element | Location | Description | Required |
+|---|---------|----------|-------------|----------|
+| 1 | **Certificate Title** | Header (H1) | Unique identifier and descriptive title in format "Certificate XX: Title" | ✅ MANDATORY |
+| 2 | **Status** | Metadata | One of: ACTIVE, DEPRECATED, PENDING | ✅ MANDATORY |
+| 3 | **Timestamp** | Metadata | ISO date (YYYY-MM-DD) of certificate creation/update | ✅ MANDATORY |
+| 4 | **Phase** | Metadata | Phase identifier(s) this certificate applies to | ✅ MANDATORY |
+| 5 | **Requirement ID** | Metadata | Unique invariant identifier (e.g., INV-P4-60) | ✅ MANDATORY |
+| 6 | **Requirement Specification** | Section | Clear statement of what MUST be satisfied | ✅ MANDATORY |
+| 7 | **Mathematical Invariant** | Subsection | Formula, pseudocode, or assertion (when applicable) | ⚠️ CONDITIONAL |
+| 8 | **Verification Method** | Section | How compliance is verified | ✅ MANDATORY |
+| 9 | **Test Specification** | Subsection | Full path to automated test | ✅ MANDATORY |
+| 10 | **Validation Function** | Subsection | Code reference to validation logic | ✅ MANDATORY |
+| 11 | **Evidence** | Section | Numbered list proving compliance | ✅ MANDATORY |
+| 12 | **Code Location** | Evidence item | Source code implementing requirement | ✅ MANDATORY |
+| 13 | **Compliance Status** | Section | Binary compliance assertion with indicator | ✅ MANDATORY |
+| 14 | **Signature** | Footer | Component name and version | ✅ MANDATORY |
+| 15 | **Next Review Date** | Footer | Date for next compliance review | ✅ MANDATORY |
+
+### 9.3 Certificate Naming Convention
+
+Certificates MUST follow the naming pattern:
+
+```
+CERTIFICATE_[NN]_[DESCRIPTIVE_NAME].md
+```
+
+Where:
+- `[NN]` = Two-digit zero-padded sequential number (01-15)
+- `[DESCRIPTIVE_NAME]` = UPPER_SNAKE_CASE descriptive identifier
+- File extension MUST be `.md`
+
+**Examples:**
+- `CERTIFICATE_01_PHASE4_COUNT_60.md`
+- `CERTIFICATE_05_SCORE_BOUNDS.md`
+- `CERTIFICATE_13_UNCERTAINTY_QUANTIFICATION.md`
+
+### 9.4 Requirement ID Taxonomy
+
+Requirement IDs MUST follow one of these patterns:
+
+| Pattern | Description | Example |
+|---------|-------------|---------|
+| `INV-P[N]-[DESC]` | Phase-specific invariant | `INV-P4-60`, `INV-P5-10` |
+| `INV-P4-7-[DESC]` | Cross-phase invariant | `INV-P4-7-BOUNDS`, `INV-P4-7-HERMETIC` |
+| `[CATEGORY]-[DESC]` | Functional category requirement | `VALIDATION-ENFORCEMENT`, `PROVENANCE-EXPORT` |
+
+### 9.5 Status Lifecycle
+
+| Status | Meaning | Usage |
+|--------|---------|-------|
+| **ACTIVE** | Certificate is currently enforced | Standard production status |
+| **PENDING** | Certificate defined but not yet enforced | Pre-implementation phase |
+| **DEPRECATED** | Certificate superseded or obsolete | Historical reference only |
+
+### 9.6 Evidence Requirements
+
+The Evidence section MUST contain at least 3 items:
+
+1. **Code Location**: Exact file path and implementation details
+2. **Validation Enforcement**: How the requirement is enforced at runtime
+3. **Test Results**: Description of test coverage and verification approach
+
+Additional evidence items are encouraged when they strengthen the compliance case.
+
+### 9.7 Compliance Indicators
+
+Use standardized Unicode indicators for visual clarity:
+
+| Indicator | Status | Meaning |
+|-----------|--------|---------|
+| ✅ | COMPLIANT | Requirement fully satisfied |
+| ❌ | NON-COMPLIANT | Requirement violated |
+| ⚠️ | PARTIAL | Requirement partially satisfied |
+
+### 9.8 Mathematical Invariants
+
+When a requirement can be expressed mathematically, include a formal invariant using:
+
+- Set notation: `∀ x ∈ X: P(x)`
+- Logical operators: `∧` (AND), `∨` (OR), `¬` (NOT), `→` (IMPLIES)
+- Comparisons: `≤`, `≥`, `=`, `≠`
+- Code assertions: Python-style pseudocode
+
+**Example:**
+```
+Mathematical Invariant:
+  ∀ s ∈ dimension_scores: 0.0 ≤ s.score ≤ 3.0
+  ∧ len(dimension_scores) = 60
+```
+
+### 9.9 Test Specification Format
+
+Test paths MUST use the format:
+
+```
+tests/[module]/[test_file].py::[TestClass]::[test_method]
+```
+
+Or for function-based tests:
+
+```
+tests/[module]/[test_file].py::[test_function]
+```
+
+### 9.10 Validation Function Format
+
+Validation function references MUST use the format:
+
+```
+[package].[subpackage].[module].[function_name]
+```
+
+**Example:**
+```
+canonic_phases.phase_4_7_aggregation_pipeline.validation.validate_phase4_output
+```
+
+### 9.11 Certificate Audit Trail
+
+While optional, an audit trail is RECOMMENDED for certificates that undergo revisions:
+
+| Date | Event | Outcome |
+|------|-------|---------|
+| 2025-12-18 | Certificate created | Initial compliance documented |
+| 2025-12-18 | Test suite created | Verification method established |
+| 2025-12-18 | Validation integrated | Enforcement active |
+
+### 9.12 Version Control
+
+Certificates MUST be version-controlled with the codebase. Certificate modifications require:
+
+1. Update to certificate timestamp
+2. Addition of audit trail entry
+3. Code review approval
+4. Re-validation of compliance
+
+### 9.13 Enforcement
+
+Certificate compliance is NON-NEGOTIABLE. The orchestrator MUST:
+
+1. Validate all certificate requirements during execution
+2. Raise descriptive errors on non-compliance
+3. Prevent pipeline completion when certificates fail
+4. Log compliance status for audit trails
+
+### 9.14 Certificate Registry
+
+All certificates MUST be registered in this README's Section 12 (Compliance Certificates) with:
+
+- Certificate number and title
+- Link to certificate file
+- Current status
+- Last verification date
+
+### 9.15 Review Cycle
+
+Certificates MUST be reviewed on a 6-month cycle. The review process includes:
+
+1. **Validation**: Confirm tests still pass
+2. **Relevance**: Assess if requirement is still applicable
+3. **Accuracy**: Verify evidence references are current
+4. **Completeness**: Check all 15 mandatory elements present
+
+Next review date MUST be set to 6 months from certificate creation/last review.
+
+---
+
+## 10. Provenance Tracking
+
+### 10.1 DAG Structure
 
 ```
 LEVEL: micro              LEVEL: dimension         LEVEL: area    LEVEL: cluster   LEVEL: macro
@@ -548,7 +788,7 @@ LEVEL: micro              LEVEL: dimension         LEVEL: area    LEVEL: cluster
                                                                                   (1)
 ```
 
-### 9.2 Attribution
+### 10.2 Attribution
 
 Shapley values computed for feature attribution:
 ```python
@@ -558,7 +798,7 @@ critical_path = dag.get_critical_path("MACRO", top_k=5)
 
 ---
 
-## 10. Quality Rubric
+## 11. Quality Rubric
 
 | Quality Level | Normalized Score Range | Description |
 |---------------|------------------------|-------------|
@@ -569,9 +809,9 @@ critical_path = dag.get_critical_path("MACRO", top_k=5)
 
 ---
 
-## 10. Mathematical Foundations: Choquet Integral
+## 12. Mathematical Foundations: Choquet Integral
 
-### 10.1 Definition
+### 12.1 Definition
 
 The **Choquet integral** is a generalization of the weighted average that accounts for interaction between criteria. For normalized inputs x₁, ..., xₙ ∈ [0,1]:
 
@@ -585,7 +825,7 @@ Where:
 - **aᵢⱼ**: Interaction weight for criteria pair (i,j)
 - **Cal(I)**: Choquet-aggregated score ∈ [0,1]
 
-### 10.2 Formal Properties
+### 12.2 Formal Properties
 
 **Theorem 1 (Boundedness):** For inputs xᵢ ∈ [0,1] and properly normalized weights, the Choquet integral satisfies:
 
@@ -599,7 +839,7 @@ min(x₁, ..., xₙ) ≤ Cal(I) ≤ max(x₁, ..., xₙ)
 
 **Theorem 3 (Idempotence):** If x₁ = x₂ = ... = xₙ = c, then Cal(I) = c.
 
-### 10.3 Normalization Constraints
+### 12.3 Normalization Constraints
 
 To guarantee boundedness:
 
@@ -617,13 +857,13 @@ if sum(abs(v) for v in self.interaction_terms.values()) > 0.5:
     raise CalibrationConfigError("Interaction terms exceed bound")
 ```
 
-### 10.4 Interaction Interpretation
+### 12.4 Interaction Interpretation
 
 - **aᵢⱼ > 0**: Positive synergy (criteria reinforce each other)
 - **aᵢⱼ < 0**: Negative interaction (criteria substitute)
 - **aᵢⱼ = 0**: Independence (reduces to weighted average)
 
-### 10.5 Comparison to Weighted Average
+### 12.5 Comparison to Weighted Average
 
 For the special case where all aᵢⱼ = 0:
 
@@ -633,7 +873,7 @@ Cal(I) = Σᵢ (aᵢ · xᵢ)  [reduces to weighted average]
 
 The Choquet integral generalizes this by adding interaction terms.
 
-### 10.6 Implementation
+### 12.6 Implementation
 
 **Code Location:** `src/canonic_phases/phase_4_7_aggregation_pipeline/choquet_aggregator.py`
 
@@ -653,13 +893,13 @@ config = ChoquetConfig(
 )
 ```
 
-### 10.7 Academic References
+### 12.7 Academic References
 
 1. Choquet, G. (1954). "Theory of capacities". *Annales de l'institut Fourier*, 5, 131-295.
 2. Grabisch, M. (1997). "k-order additive discrete fuzzy measures and their representation". *Fuzzy Sets and Systems*, 92(2), 167-189.
 3. Marichal, J.-L. (2000). "An axiomatic approach of the discrete Choquet integral as a tool to aggregate interacting criteria". *IEEE Transactions on Fuzzy Systems*, 8(6), 800-807.
 
-### 10.8 Graphviz Visualization
+### 12.8 Graphviz Visualization
 
 Choquet aggregation structure can be visualized using Graphviz:
 
@@ -697,7 +937,7 @@ digraph choquet_aggregation {
 
 Render with: `dot -Tpng choquet.dot -o choquet.png`
 
-### 10.9 Example Calculation
+### 12.9 Example Calculation
 
 Given:
 - x₁ = 0.7, x₂ = 0.8, x₃ = 0.6
@@ -717,9 +957,9 @@ Result: 0.74 ∈ [min(0.6), max(0.8)] = [0.6, 0.8] ✓
 
 ---
 
-## 12. Compliance Certificates
+## 13. Compliance Certificates
 
-All requirements are documented and verified through 15 compliance certificates:
+All requirements are documented and verified through 15 compliance certificates (see [Section 9](#9-certificate-specifications-15-mandatory) for template specification):
 
 | Certificate | Requirement | Status |
 |-------------|-------------|--------|
@@ -744,7 +984,7 @@ All requirements are documented and verified through 15 compliance certificates:
 
 ---
 
-## 13. Related Documents
+## 14. Related Documents
 
 - [PHASE_4_7_RIA_2025-12-18.txt](./PHASE_4_7_RIA_2025-12-18.txt) — Repository Inventory Artifact
 - [FORCING_ROUTE.md](./FORCING_ROUTE.md) — Execution constraints
@@ -752,7 +992,7 @@ All requirements are documented and verified through 15 compliance certificates:
 
 ---
 
-## 14. Changelog
+## 15. Changelog
 
 | Date | Version | Change |
 |------|---------|--------|
