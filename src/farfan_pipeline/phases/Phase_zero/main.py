@@ -1402,6 +1402,7 @@ def cli() -> None:
             # Fetch threshold for this specific method
             method_key = "farfan_core.scripts.run_policy_pipeline_verified.VerifiedPipelineRunner.generate_verification_manifest"
             #             calibrated_params = param_loader.get(method_key)  # CALIBRATION DISABLED
+            calibrated_params = {}  # CALIBRATION DISABLED - use empty dict as fallback
 
             # Default to 1.0 (strict) if not found, but log warning if falling back
             required_coverage = calibrated_params.get(
