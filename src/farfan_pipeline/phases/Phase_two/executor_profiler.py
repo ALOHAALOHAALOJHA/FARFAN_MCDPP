@@ -18,7 +18,7 @@ Architecture:
 METHOD DISPENSARY INTEGRATION:
 ==============================
 This profiler is aware of the factory's method dispensary pattern where:
-- 30 executors orchestrate methods from ~20 monolith classes
+- 300 executor contracts orchestrate methods from ~20 monolith classes
 - Methods are called via MethodExecutor.execute(class_name, method_name, **payload)
 - Same methods are PARTIALLY reused across different executors
 - Dispensary classes: PDETMunicipalPlanAnalyzer (52+ methods), CausalExtractor (28), etc.
@@ -30,9 +30,9 @@ The profiler tracks:
 4. Executor-specific vs dispensary-wide bottlenecks
 
 Usage:
-    # Basic profiling
+    # Basic profiling (supports both question_id and legacy base_slot)
     profiler = ExecutorProfiler()
-    with profiler.profile_executor("D1-Q1"):
+    with profiler.profile_executor("Q001"):  # or legacy "D1-Q1"
         result = executor.execute(context)
     report = profiler.generate_report()
 

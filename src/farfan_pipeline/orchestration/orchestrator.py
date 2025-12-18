@@ -45,7 +45,7 @@ from farfan_pipeline.resilience import (
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
-from canonic_phases.Phase_four_five_six_seven.aggregation import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
     AreaScore,
@@ -59,14 +59,14 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
-from canonic_phases.Phase_four_five_six_seven.aggregation_validation import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
     enforce_validation_or_fail,
 )
-from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
     enhance_aggregator,
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
@@ -2335,26 +2335,23 @@ class Orchestrator:
                         )
                         raise CircuitBreakerOpen("phase2_micro_questions", time_until_retry)
 
-                    from canonic_phases.Phase_two import executors as phase2_executors
+                    # 300-CONTRACT MODEL: Load contract directly by question_id
+                    # This replaces the old 30-executor pattern from executors.py
+                    from canonic_phases.Phase_two.base_executor_with_contract import DynamicContractExecutor
 
-                    executor_class_name = f"{base_slot.replace('-', '')}_Executor"
-                    executor_class = getattr(phase2_executors, executor_class_name, None)
-                    if executor_class is None:
-                        error_msg = (
-                            f"Task {task_id}: Executor not found for base_slot '{base_slot}' "
-                            f"(expected class '{executor_class_name}')"
-                        )
+                    question_id = question.get("id")
+                    if not question_id:
+                        error_msg = f"Task {task_id}: question missing 'id' field"
                         logger.error(error_msg)
                         task_status[task_id] = "failed"
                         tasks_failed.add(task_id)
-                        instrumentation.record_error("executor_not_found", task_id)
-
+                        instrumentation.record_error("missing_question_id", task_id)
                         results.append(
                             MicroQuestionRun(
-                                question_id=question.get("id"),
+                                question_id=None,
                                 question_global=question.get("global_id"),
                                 base_slot=base_slot,
-                                metadata={"task_id": task_id, "error": "executor_not_found"},
+                                metadata={"task_id": task_id, "error": "missing_question_id"},
                                 evidence=None,
                                 error=error_msg,
                                 aborted=False,
@@ -2362,14 +2359,34 @@ class Orchestrator:
                         )
                         continue
 
-                    instance = executor_class(
-                        method_executor=self.executor,
-                        signal_registry=self.executor.signal_registry,
-                        config=self.executor_config,
-                        questionnaire_provider=self._canonical_questionnaire,
-                        calibration_orchestrator=self.calibration_orchestrator,
-                        enriched_packs=self._enriched_packs or {},
-                    )
+                    try:
+                        instance = DynamicContractExecutor(
+                            question_id=question_id,
+                            method_executor=self.executor,
+                            signal_registry=self.executor.signal_registry,
+                            config=self.executor_config,
+                            questionnaire_provider=self._canonical_questionnaire,
+                            calibration_orchestrator=self.calibration_orchestrator,
+                            enriched_packs=self._enriched_packs or {},
+                        )
+                    except FileNotFoundError as e:
+                        error_msg = f"Task {task_id}: Contract not found for question '{question_id}': {e}"
+                        logger.error(error_msg)
+                        task_status[task_id] = "failed"
+                        tasks_failed.add(task_id)
+                        instrumentation.record_error("contract_not_found", task_id)
+                        results.append(
+                            MicroQuestionRun(
+                                question_id=question_id,
+                                question_global=question.get("global_id"),
+                                base_slot=base_slot,
+                                metadata={"task_id": task_id, "error": "contract_not_found"},
+                                evidence=None,
+                                error=error_msg,
+                                aborted=False,
+                            )
+                        )
+                        continue
 
                     # Validate dimension_id consistency
                     question_dimension = question.get("dimension_id")

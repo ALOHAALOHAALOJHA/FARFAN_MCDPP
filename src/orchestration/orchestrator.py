@@ -45,7 +45,7 @@ from farfan_pipeline.resilience import (
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
-from canonic_phases.Phase_four_five_six_seven.aggregation import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
     AreaScore,
@@ -59,14 +59,14 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
-from canonic_phases.Phase_four_five_six_seven.aggregation_validation import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
     enforce_validation_or_fail,
 )
-from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
     enhance_aggregator,
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,

@@ -5,7 +5,8 @@ This mixin adds calibration instrumentation to all D[1-6]Q[1-5] executors,
 capturing runtime metrics and retrieving quality scores from the calibration system.
 
 Usage:
-    class D3_Q2_TargetProportionalityAnalyzer(BaseExecutor, ExecutorInstrumentationMixin):
+    # 300-contract model (preferred)
+    class Q001_Executor(BaseExecutor, ExecutorInstrumentationMixin):
         def execute(self, context):
             # Instrumentation is automatically applied via wrapper
             ...

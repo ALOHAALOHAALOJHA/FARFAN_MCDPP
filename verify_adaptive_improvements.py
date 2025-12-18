@@ -14,7 +14,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from canonic_phases.Phase_four_five_six_seven.adaptive_meso_scoring import (
+from canonic_phases.phase_4_7_aggregation_pipeline.adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     create_adaptive_scorer,
 )

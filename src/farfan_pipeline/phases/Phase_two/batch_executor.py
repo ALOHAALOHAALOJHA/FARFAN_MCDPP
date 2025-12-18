@@ -89,38 +89,68 @@ class BatchExecutorConfig:
             )
 
 
-EXECUTOR_COMPLEXITY_MAP: dict[str, ExecutorComplexity] = {
-    "D1-Q1": ExecutorComplexity.MODERATE,
-    "D1-Q2": ExecutorComplexity.MODERATE,
-    "D1-Q3": ExecutorComplexity.COMPLEX,
-    "D1-Q4": ExecutorComplexity.MODERATE,
-    "D1-Q5": ExecutorComplexity.MODERATE,
-    "D2-Q1": ExecutorComplexity.MODERATE,
-    "D2-Q2": ExecutorComplexity.VERY_COMPLEX,
-    "D2-Q3": ExecutorComplexity.COMPLEX,
-    "D2-Q4": ExecutorComplexity.COMPLEX,
-    "D2-Q5": ExecutorComplexity.MODERATE,
-    "D3-Q1": ExecutorComplexity.MODERATE,
-    "D3-Q2": ExecutorComplexity.VERY_COMPLEX,
-    "D3-Q3": ExecutorComplexity.VERY_COMPLEX,
-    "D3-Q4": ExecutorComplexity.VERY_COMPLEX,
-    "D3-Q5": ExecutorComplexity.VERY_COMPLEX,
-    "D4-Q1": ExecutorComplexity.VERY_COMPLEX,
-    "D4-Q2": ExecutorComplexity.COMPLEX,
-    "D4-Q3": ExecutorComplexity.COMPLEX,
-    "D4-Q4": ExecutorComplexity.MODERATE,
-    "D4-Q5": ExecutorComplexity.MODERATE,
-    "D5-Q1": ExecutorComplexity.MODERATE,
-    "D5-Q2": ExecutorComplexity.VERY_COMPLEX,
-    "D5-Q3": ExecutorComplexity.MODERATE,
-    "D5-Q4": ExecutorComplexity.COMPLEX,
-    "D5-Q5": ExecutorComplexity.COMPLEX,
-    "D6-Q1": ExecutorComplexity.COMPLEX,
-    "D6-Q2": ExecutorComplexity.MODERATE,
-    "D6-Q3": ExecutorComplexity.COMPLEX,
-    "D6-Q4": ExecutorComplexity.MODERATE,
-    "D6-Q5": ExecutorComplexity.MODERATE,
+# EXECUTOR_COMPLEXITY_MAP: REMOVED - Hardcoded 30-executor pattern replaced
+# Complexity is now derived dynamically from contract method_binding.method_count
+# See get_complexity_for_contract() for the derivation logic
+
+# Thresholds for deriving complexity from method count
+_METHOD_COUNT_THRESHOLDS = {
+    ExecutorComplexity.SIMPLE: 5,       # ≤5 methods
+    ExecutorComplexity.MODERATE: 12,    # 6-12 methods
+    ExecutorComplexity.COMPLEX: 20,     # 13-20 methods
+    # >20 methods = VERY_COMPLEX
 }
+
+
+def get_complexity_for_contract(
+    question_id: str | None = None,
+    method_count: int | None = None,
+    base_slot: str | None = None,
+) -> ExecutorComplexity:
+    """Derive executor complexity from contract method count.
+    
+    The 300-contract model uses question_id (e.g., "Q001") to identify contracts.
+    Complexity is derived from the method_binding.method_count field in each contract.
+    
+    Args:
+        question_id: Question identifier (e.g., "Q001", "Q150")
+        method_count: Method count from contract (if already loaded)
+        base_slot: Legacy base_slot for backward compatibility
+        
+    Returns:
+        ExecutorComplexity based on method count thresholds:
+        - SIMPLE: ≤5 methods
+        - MODERATE: 6-12 methods  
+        - COMPLEX: 13-20 methods
+        - VERY_COMPLEX: >20 methods
+    """
+    # If method_count provided directly, use it
+    if method_count is not None:
+        if method_count <= _METHOD_COUNT_THRESHOLDS[ExecutorComplexity.SIMPLE]:
+            return ExecutorComplexity.SIMPLE
+        elif method_count <= _METHOD_COUNT_THRESHOLDS[ExecutorComplexity.MODERATE]:
+            return ExecutorComplexity.MODERATE
+        elif method_count <= _METHOD_COUNT_THRESHOLDS[ExecutorComplexity.COMPLEX]:
+            return ExecutorComplexity.COMPLEX
+        else:
+            return ExecutorComplexity.VERY_COMPLEX
+    
+    # If question_id provided, we could load the contract and check method_count
+    # For now, default to MODERATE as a safe fallback
+    if question_id is not None:
+        # TODO: Load contract and extract method_count for full dynamic lookup
+        # For now, use MODERATE as default for all questions
+        logger.debug(f"Using default complexity MODERATE for {question_id}")
+        return ExecutorComplexity.MODERATE
+    
+    # Legacy base_slot support - derive question number and use MODERATE
+    if base_slot is not None:
+        # base_slot format: "D1-Q1" -> maps to Q001-Q005 for D1
+        logger.debug(f"Legacy base_slot {base_slot} - using default complexity MODERATE")
+        return ExecutorComplexity.MODERATE
+    
+    return ExecutorComplexity.MODERATE
+
 
 COMPLEXITY_BATCH_SIZE_MAP: dict[ExecutorComplexity, int] = {
     ExecutorComplexity.SIMPLE: 50,
@@ -267,16 +297,33 @@ class BatchExecutor:
                 f"error_threshold={self.config.error_threshold}"
             )
 
-    def get_batch_size_for_executor(self, base_slot: str) -> int:
+    def get_batch_size_for_executor(
+        self,
+        base_slot: str | None = None,
+        question_id: str | None = None,
+        method_count: int | None = None,
+    ) -> int:
         """Determine batch size for a given executor based on complexity.
 
+        Supports both the legacy base_slot pattern and the new 300-contract
+        question_id pattern. Complexity can be derived from:
+        1. method_count (if provided directly)
+        2. question_id (300-contract model)
+        3. base_slot (legacy 30-executor model)
+
         Args:
-            base_slot: Executor base slot (e.g., "D1-Q1")
+            base_slot: Legacy executor base slot (e.g., "D1-Q1")
+            question_id: Question identifier (e.g., "Q001") - preferred
+            method_count: Method count from contract (for precise complexity)
 
         Returns:
             Recommended batch size for this executor
         """
-        complexity = EXECUTOR_COMPLEXITY_MAP.get(base_slot, ExecutorComplexity.MODERATE)
+        complexity = get_complexity_for_contract(
+            question_id=question_id,
+            method_count=method_count,
+            base_slot=base_slot,
+        )
         recommended_size = COMPLEXITY_BATCH_SIZE_MAP.get(
             complexity, self.config.default_batch_size
         )
@@ -287,12 +334,14 @@ class BatchExecutor:
         )
 
         if self.config.enable_instrumentation:
+            identifier = question_id or base_slot or "unknown"
             logger.debug(
-                f"Batch size for {base_slot}: {batch_size} "
+                f"Batch size for {identifier}: {batch_size} "
                 f"(complexity={complexity.value}, recommended={recommended_size})"
             )
 
         return batch_size
+
 
     def _create_batches(
         self, items: list[Any], batch_size: int
@@ -492,6 +541,7 @@ class BatchExecutor:
         document: PreprocessedDocument,
         question_context: dict[str, Any],
         base_slot: str | None = None,
+        question_id: str | None = None,
         batch_size: int | None = None,
     ) -> AsyncIterator[BatchResult]:
         """Execute items in batches with streaming result generation.
@@ -499,19 +549,23 @@ class BatchExecutor:
         This method processes items in batches and yields results as they complete,
         enabling streaming aggregation without accumulating all results in memory.
 
+        Supports both legacy base_slot and new question_id patterns.
+
         Args:
             items: List of items to process
-            executor_class: Executor class to instantiate
+            executor_class: Executor class to instantiate (e.g., DynamicContractExecutor)
             document: Document being processed
             question_context: Question context for execution
-            base_slot: Base slot for complexity-based batch sizing (optional)
+            base_slot: Legacy base slot for complexity-based batch sizing
+            question_id: Question identifier (e.g., "Q001") - preferred for 300-contract model
             batch_size: Override batch size (optional, uses complexity-based sizing if None)
 
         Yields:
             BatchResult for each completed batch
 
         Example:
-            >>> batches = executor.execute_batches(entities, D1Q1_Executor, doc, ctx)
+            >>> # 300-contract model (preferred)
+            >>> batches = executor.execute_batches(entities, ContractExecutor, doc, ctx, question_id="Q001")
             >>> async for batch_result in batches:
             ...     for item, result in batch_result.get_successful_results():
             ...         aggregate(result)
@@ -521,10 +575,10 @@ class BatchExecutor:
             return
 
         if batch_size is None:
-            if base_slot:
-                batch_size = self.get_batch_size_for_executor(base_slot)
-            else:
-                batch_size = self.config.default_batch_size
+            batch_size = self.get_batch_size_for_executor(
+                base_slot=base_slot,
+                question_id=question_id,
+            )
 
         batches = self._create_batches(items, batch_size)
 
@@ -709,7 +763,7 @@ class BatchExecutor:
             ...     acc['total'] += result['score']
             ...     return acc
             >>>
-            >>> batches = executor.execute_batches(entities, D1Q1_Executor, doc, ctx)
+            >>> batches = executor.execute_batches(entities, ContractExecutor, doc, ctx, question_id="Q001")
             >>> final = await executor.stream_aggregate_batches(batches, aggregate_fn)
         """
         accumulator = None

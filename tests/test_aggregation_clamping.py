@@ -5,7 +5,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from canonic_phases.Phase_four_five_six_seven.aggregation import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
     AggregationSettings,
     DimensionAggregator,
     ScoredResult,

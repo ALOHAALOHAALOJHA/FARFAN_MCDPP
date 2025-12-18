@@ -98,7 +98,7 @@ class ExecutorConfig:
         5. Conservative defaults
         
         Args:
-            executor_id: Executor identifier (e.g., "D3_Q2_TargetProportionalityAnalyzer")
+            executor_id: Executor identifier (e.g., "Q001" or legacy "D3_Q2_TargetProportionalityAnalyzer")
             environment: Environment name (development, staging, production)
             cli_overrides: CLI argument overrides
         

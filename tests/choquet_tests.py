@@ -27,7 +27,7 @@ from pathlib import Path
 # Add src to path for direct module import
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from canonic_phases.Phase_four_five_six_seven.choquet_aggregator import (
+from canonic_phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationConfigError,

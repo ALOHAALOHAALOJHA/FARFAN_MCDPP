@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from canonic_phases.Phase_four_five_six_seven.choquet_aggregator import (
+from canonic_phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
 )
