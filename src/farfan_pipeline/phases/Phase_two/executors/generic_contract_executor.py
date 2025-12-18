@@ -73,20 +73,16 @@ class GenericContractExecutor(BaseExecutorWithContract):
             validation_orchestrator=validation_orchestrator,
         )
         self._question_id = question_id
-        
-        # Load the contract to get the actual base_slot
-        # (needed for base_slot validation in parent execute())
-        contract = self._load_contract(question_id=question_id)
-        self._actual_base_slot = contract.get("identity", {}).get("base_slot", "UNKNOWN")
     
-    def get_base_slot(self) -> str:
-        """Return actual base_slot from loaded contract for instance operations.
+    @classmethod
+    def get_base_slot(cls) -> str:
+        """Return generic base slot placeholder for class-level operations.
         
-        This overrides the class method to return the instance-specific base_slot
-        from the loaded contract (e.g., "D1-Q1", "D6-Q5") instead of "GENERIC".
-        This ensures base_slot validation in parent execute() succeeds.
+        GenericContractExecutor uses "GENERIC" as a placeholder since the actual
+        base_slot depends on which contract is loaded at runtime (e.g., "D1-Q1", "D6-Q5").
+        Validation against the actual base_slot happens in execute() after contract loading.
         """
-        return self._actual_base_slot
+        return "GENERIC"
     
     def execute(
         self,
@@ -97,8 +93,8 @@ class GenericContractExecutor(BaseExecutorWithContract):
     ) -> dict[str, Any]:
         """Execute question contract with given context.
         
-        This overrides the base execute() to ensure question_id is passed
-        via question_context for contract loading.
+        This overrides the base execute() to handle GenericContractExecutor's
+        dynamic base_slot validation (since get_base_slot() returns "GENERIC").
         
         Args:
             document: PreprocessedDocument to analyze
@@ -108,9 +104,27 @@ class GenericContractExecutor(BaseExecutorWithContract):
         Returns:
             Result dict with evidence, validation, trace, etc.
         """
-        # Ensure question_id is in question_context for _load_contract()
+        # For GenericContractExecutor, skip the base_slot check in parent's execute()
+        # by temporarily adjusting question_context, since we validate against the
+        # loaded contract's base_slot instead of the class-level "GENERIC" placeholder
+        question_id = question_context.get("question_id", self._question_id)
+        contract = self._load_contract(question_id=question_id)
+        actual_base_slot = contract.get("identity", {}).get("base_slot", "UNKNOWN")
+        
+        # Validate that orchestrator's base_slot matches the loaded contract's base_slot
+        orchestrator_base_slot = question_context.get("base_slot")
+        if orchestrator_base_slot != actual_base_slot:
+            raise ValueError(
+                f"Question base_slot {orchestrator_base_slot} from orchestrator does not match "
+                f"loaded contract base_slot {actual_base_slot} for question_id {question_id}"
+            )
+        
+        # Update question_context with validated base_slot set to "GENERIC" for parent check
+        # (parent will compare question_context["base_slot"] == self.get_base_slot() == "GENERIC")
         ctx = dict(question_context)
-        ctx.setdefault("question_id", self._question_id)
+        ctx["base_slot"] = "GENERIC"  # Match get_base_slot() return value
+        ctx["question_id"] = question_id
+        
         return super().execute(
             document=document,
             method_executor=method_executor,
