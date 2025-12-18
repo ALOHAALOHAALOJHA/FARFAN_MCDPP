@@ -26,19 +26,20 @@ Formally instituted and froze Phase 2 by enforcing strict file naming convention
 9. `PHASE_2_INTEGRATION_COMPLETE.md` - Root orphan
 10. `PHASE_2_INTERNAL_WIRING_AUDIT.md` - Root orphan
 
-### Files Relocated (8 total)
+### Files Relocated (7 total)
 
-**To executors/ subfolder** (6 files):
-1. `base_executor_with_contract.py` - Base executor class
-2. `executors.py` - 30 executor classes (D1-D6, Q1-Q5)
-3. `executor_config.py` - Runtime configuration
-4. `executor_instrumentation_mixin.py` - Calibration instrumentation
-5. `executor_profiler.py` - Performance profiling
-6. `executor_tests.py` - Unit tests
+**To executors/ subfolder** (5 files):
+1. `base_executor_with_contract.py` - Base executor class with contract-driven execution
+2. `executor_config.py` - Runtime configuration
+3. `executor_instrumentation_mixin.py` - Calibration instrumentation
+4. `executor_profiler.py` - Performance profiling
+5. `executor_tests.py` - Unit tests
 
 **To Phase_two root** (2 files):
 1. `executor_chunk_synchronizer.py` - From orchestration/
 2. `synchronization.py` - From farfan_pipeline root
+
+**Note**: Phase 2 architecture uses `BaseExecutorWithContract(question_id)` with 300+ JSON contracts in `executor_contracts/specialized/`. No D1Qx_Executor classes or base_slot→class mappings exist in Phase 2.
 
 ### Files Renamed (1 total)
 1. `phase6_validation.py` → `schema_validation.py` - Removed confusing legacy name
@@ -136,12 +137,12 @@ from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
 ```
 
-**Executor re-export** in `Phase_two/__init__.py`:
+**Executor import** in `Phase_two/__init__.py`:
 ```python
-from canonic_phases.Phase_two import executors  # Module re-export
+from canonic_phases.Phase_two.executors import BaseExecutorWithContract
 ```
 
-**Purpose**: Maintain `executors.D1Q1_Executor` access pattern used by orchestrator
+**Purpose**: Contract-driven execution using `BaseExecutorWithContract(question_id=Q001)` pattern. The executor loads contracts dynamically from `executor_contracts/specialized/{question_id}.v3.json` (300 contracts for Q001-Q300)
 
 ---
 

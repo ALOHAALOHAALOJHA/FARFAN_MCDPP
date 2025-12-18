@@ -47,7 +47,7 @@ Phase 2 is the **Question Execution & Analysis Engine** that processes 309 quest
 - **Deterministic**: Same inputs produce identical outputs via ExecutionPlan with integrity_hash
 - **Observable**: All operations logged with correlation_id tracking through 10 phases
 - **Verifiable**: Evidence graphs ensure traceability of analytical claims + 15 Dura Lex certificates
-- **Generic**: Single GenericContractExecutor handles ALL 309 questions dynamically
+- **Generic**: BaseExecutorWithContract handles ALL 300 questions dynamically via question_id
 
 ---
 
