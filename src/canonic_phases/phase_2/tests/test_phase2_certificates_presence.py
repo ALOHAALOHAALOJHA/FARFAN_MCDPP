@@ -29,7 +29,7 @@ from __future__ import annotations
 import re
 import warnings
 from pathlib import Path
-from typing import Final, List, Set
+from typing import Final
 
 import pytest
 
