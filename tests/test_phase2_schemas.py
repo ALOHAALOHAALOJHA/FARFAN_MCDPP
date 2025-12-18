@@ -219,9 +219,6 @@ class TestSchemaPatterns:
         schema = load_json_file(SCHEMAS_DIR / 'executor_config.schema.json')
         pattern = schema['properties']['executor_id']['pattern']
         
-        # Valid executor IDs
-        valid_ids = ['text_mining_executor', 'abc_def', 'my_executor_123']
-        
         # Invalid executor IDs (would need regex validation in actual test)
         invalid_ids = ['1invalid', 'Invalid', 'ab', 'a' * 65]
         
