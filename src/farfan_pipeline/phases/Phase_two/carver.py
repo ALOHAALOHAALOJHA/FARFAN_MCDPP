@@ -289,7 +289,7 @@ class CarverAnswer:
     synthesis_trace: Dict[str, Any] = field(default_factory=dict)
     
     # v3.0 Extensions (optional, backward compatible)
-    methodological_depth: Optional[Any] = None  # MethodologicalDepth
+    methodological_depth: Optional["MethodologicalDepth"] = None
     limitations_statement: Optional[str] = None
     theoretical_references: Optional[List[str]] = None
     assumptions_statement: Optional[str] = None
