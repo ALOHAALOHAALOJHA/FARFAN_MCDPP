@@ -37,8 +37,6 @@ from typing import Any, Final, TypeVar
 
 from ..constants.phase2_constants import DEFAULT_RANDOM_SEED, HASH_ALGORITHM
 
-logger: Final = logging.getLogger(__name__)
-
 T = TypeVar("T")
 
 
