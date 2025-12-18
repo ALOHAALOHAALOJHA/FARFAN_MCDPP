@@ -9,16 +9,17 @@ def test_purge_non_canonical_paths():
     # Get repository root
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     
-    # Search for Phase_zero directories (excluding canonical path)
+    # Search for Phase_zero directories (excluding canonical path and compatibility shim)
     cmd = (
         f"find {repo_root}/src -type d "
         f"\\( -name 'Phase_zero' -o -name 'phase_zero' \\) "
-        f"! -path '*/phase_0_input_validation/*'"
+        f"! -path '*/phase_0_input_validation/*' "
+        f"! -path '*/farfan_pipeline/phases/Phase_zero'"
     )
     
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     
-    # Should find no legacy directories
+    # Should find no legacy directories (excluding the compatibility shim)
     assert result.stdout.strip() == "", \
         f"Found legacy Phase 0 directories: {result.stdout}"
 

@@ -102,9 +102,25 @@ def test_readme_documents_15_certificates():
     with open(readme_path) as f:
         content = f.read()
     
-    # Count certificate references (1-15)
-    for i in range(1, 16):
-        # Look for numbered list entries
-        pattern = f"{i}\\."
-        assert pattern in content, \
-            f"Certificate {i} not listed in README"
+    # Look for certificate names in numbered list under "Certificates (15)"
+    certificates = [
+        "Runtime Mode Enforcement",
+        "Bootstrap Initialization",
+        "Input File Hashing",
+        "Boot Checks Execution",
+        "Determinism Seeds Applied",
+        "Questionnaire Integrity",
+        "Method Registry Validation",
+        "Smoke Tests Execution",
+        "Exit Gate Sequencing",
+        "Canonical Path Enforcement",
+        "Naming Convention Compliance",
+        "Phase0Result Handoff Readiness",
+        "Contract Module Structure",
+        "Academic README Alignment",
+        "Governance Artifacts Complete",
+    ]
+    
+    for cert_name in certificates:
+        assert cert_name in content, \
+            f"Certificate '{cert_name}' not listed in README"
