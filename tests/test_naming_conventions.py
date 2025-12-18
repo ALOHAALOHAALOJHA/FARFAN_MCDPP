@@ -16,8 +16,8 @@ from scripts.validate_naming_conventions import (
     NAMING_RULES,
     validate_file_name,
     validate_naming_conventions,
-    NamingViolation,
 )
+
 
 
 class TestNamingRules:
