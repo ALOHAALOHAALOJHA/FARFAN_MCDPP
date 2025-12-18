@@ -1,6 +1,6 @@
 """Irrigation Synchronizer - Question→Chunk→Task→Plan Coordination.
 
-This module implements the synchronization layer that maps questionnaire questions
+This module implements the synchronization layer that maps questions (provided by orchestrator)
 to document chunks, generating an ExecutionPlan with 300 tasks (6 dimensions × 50
 questions/dimension × 10 policy areas) for deterministic pipeline execution.
 
@@ -15,6 +15,9 @@ Design Principles:
 - Full observability (correlation_id propagates through all 10 phases)
 - Prometheus metrics for synchronization health
 - Blake3-based integrity hashing for plan verification
+
+NOTE: This module does NOT directly access questionnaire files. Question data is provided
+by the orchestrator which is the only component allowed to load questionnaire definitions.
 """
 
 from __future__ import annotations
@@ -296,10 +299,13 @@ class ExecutionPlan:
 
 
 class IrrigationSynchronizer:
-    """Synchronizes questionnaire questions with document chunks.
+    """Synchronizes questions (from orchestrator) with document chunks.
 
     Generates deterministic execution plans mapping questions to chunks across
     all policy areas, with full observability and integrity verification.
+    
+    Questions data is received from the orchestrator - this component does not
+    directly load or access questionnaire definition files.
     """
 
     def __init__(
@@ -314,7 +320,7 @@ class IrrigationSynchronizer:
         """Initialize synchronizer with questionnaire and chunks.
 
         Args:
-            questionnaire: Loaded questionnaire_monolith.json data
+            questionnaire: Questions data structure provided by orchestrator
             preprocessed_document: PreprocessedDocument containing validated chunks
             document_chunks: Legacy list of document chunks (deprecated)
             signal_registry: SignalRegistry for Phase 5 signal resolution (initialized if None)
