@@ -32,7 +32,6 @@ MANDATORY_ELEMENTS = {
 def validate_certificate(cert_path: Path) -> Tuple[bool, List[str]]:
     """Validate a single certificate file against the template."""
     content = cert_path.read_text()
-    lines = content.split("\n")
     
     issues = []
     checks = {
