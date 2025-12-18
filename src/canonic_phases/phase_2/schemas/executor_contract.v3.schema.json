@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://farfan.pipeline/schemas/executor_contract.v3.schema.json",
+  "title": "Executor Contract v3 Schema",
+  "description": "JSON Schema for Phase 2 executor contracts (Q001-Q300)",
+  "type": "object",
+  "required": ["identity", "executor_binding", "method_binding"],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "required": ["base_slot", "question_id", "dimension_id", "policy_area_id", "contract_version"],
+      "properties": {
+        "base_slot": {
+          "type": "string",
+          "pattern": "^D[1-6]-Q[1-9][0-9]?$",
+          "description": "Dimension-Question slot identifier"
+        },
+        "question_id": {
+          "type": "string",
+          "pattern": "^Q[0-9]{3}$",
+          "description": "Question identifier (Q001-Q300)"
+        },
+        "dimension_id": {
+          "type": "string",
+          "pattern": "^DIM0[1-6]$",
+          "description": "Dimension identifier (DIM01-DIM06)"
+        },
+        "policy_area_id": {
+          "type": "string",
+          "pattern": "^PA[0-9]{2}$",
+          "description": "Policy area identifier (PA01-PA10)"
+        },
+        "contract_version": {
+          "type": "string",
+          "description": "Semantic version of contract"
+        },
+        "contract_hash": {
+          "type": "string",
+          "description": "SHA-256 hash of contract content"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validated_against_schema": {
+          "type": "string"
+        },
+        "cluster_id": {
+          "type": "string",
+          "pattern": "^CL[0-9]{2}$"
+        },
+        "question_global": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "executor_binding": {
+      "type": "object",
+      "required": ["executor_class", "executor_module"],
+      "properties": {
+        "executor_class": {
+          "type": "string",
+          "description": "Python class name for executor"
+        },
+        "executor_module": {
+          "type": "string",
+          "description": "Python module path for executor"
+        }
+      }
+    },
+    "method_binding": {
+      "type": "object",
+      "required": ["orchestration_mode", "method_count", "methods"],
+      "properties": {
+        "orchestration_mode": {
+          "type": "string",
+          "enum": ["single_method", "multi_method_pipeline", "multi_method_ensemble"]
+        },
+        "method_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["class_name", "method_name", "priority"],
+            "properties": {
+              "class_name": {
+                "type": "string"
+              },
+              "method_name": {
+                "type": "string"
+              },
+              "priority": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "provides": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
