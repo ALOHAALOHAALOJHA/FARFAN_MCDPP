@@ -4,16 +4,16 @@
   "contract_name": "Severe Interpreter Contract",
   "contract_module": "governance",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.841486+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.329295+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_governance.py",
-  "compliance_statement": "Phase 2 passes Severe Interpreter Contract (SIC)",
+  "compliance_statement": "Phase 2 fails Severe Interpreter Contract (SIC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "352975afe92d26a805731156389766d99af3574b838918bff219cc5fcce860bc"
+  "integrity_hash": "60279709f47e586b54a7c6ea4d1fb1c0f990cc228fb466f61896c952747a0d95"
 }

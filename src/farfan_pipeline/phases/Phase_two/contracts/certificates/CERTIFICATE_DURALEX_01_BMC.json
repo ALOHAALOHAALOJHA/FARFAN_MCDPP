@@ -4,16 +4,16 @@
   "contract_name": "Budget Monotonicity Contract",
   "contract_module": "budget_monotonicity",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.833161+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.321106+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_budgetmonotonicity.py",
-  "compliance_statement": "Phase 2 passes Budget Monotonicity Contract (BMC)",
+  "compliance_statement": "Phase 2 fails Budget Monotonicity Contract (BMC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "4664c0f4cc5df0ca390ca01453a7f510bdbabc09c40a22c0d7b14e6e33f25f8b"
+  "integrity_hash": "b8736a0ba8b77c01282c3bbb53f732805596f3fdf063a1793033891b512dc8bc"
 }

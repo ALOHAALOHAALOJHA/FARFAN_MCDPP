@@ -2,10 +2,10 @@
   "summary_id": "CERT-P2-DURA-LEX-SUMMARY",
   "phase": "Phase 2",
   "total_tests": 15,
-  "passed": 15,
-  "failed": 0,
-  "date_issued": "2025-12-17T23:53:18.842927+00:00",
-  "lifecycle_state": "ACTIVE",
+  "passed": 0,
+  "failed": 15,
+  "date_issued": "2025-12-18T22:09:07.330906+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "certificates": [
     "CERTIFICATE_DURALEX_01_BMC.json",
     "CERTIFICATE_DURALEX_02_CDC.json",
@@ -27,92 +27,107 @@
     {
       "code": "BMC",
       "name": "Budget Monotonicity Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_01_BMC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_01_BMC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "CDC",
       "name": "Concurrency Determinism Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_02_CDC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_02_CDC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "CIC",
       "name": "Context Immutability Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_03_CIC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_03_CIC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "FFC",
       "name": "Failure Fallback Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_04_FFC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_04_FFC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "IDC",
       "name": "Idempotency & Deduplication Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_05_IDC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_05_IDC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "MCC",
       "name": "Monotone Compliance Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_06_MCC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_06_MCC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "OTA",
       "name": "Output-Target Alignment Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_07_OTA.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_07_OTA.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "PIC",
       "name": "Permutation Invariance Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_08_PIC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_08_PIC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "RC",
       "name": "Routing Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_09_RC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_09_RC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "RCC",
       "name": "Risk Certificate Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_10_RCC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_10_RCC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "RFC",
       "name": "Refusal Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_11_RFC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_11_RFC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "RDC",
       "name": "Retriever Determinism Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_12_RDC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_12_RDC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "SIC",
       "name": "Severe Interpreter Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_13_SIC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_13_SIC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "SNC",
       "name": "Snapshot Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_14_SNC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_14_SNC.json",
+      "error": "Import error: No module named 'numpy'"
     },
     {
       "code": "TOC",
       "name": "Total Ordering / Traceability Contract",
-      "passed": true,
-      "certificate": "CERTIFICATE_DURALEX_15_TOC.json"
+      "passed": false,
+      "certificate": "CERTIFICATE_DURALEX_15_TOC.json",
+      "error": "Import error: No module named 'numpy'"
     }
   ]
 }

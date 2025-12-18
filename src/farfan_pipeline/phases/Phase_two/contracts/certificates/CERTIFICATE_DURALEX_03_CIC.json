@@ -4,16 +4,16 @@
   "contract_name": "Context Immutability Contract",
   "contract_module": "context_immutability",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.834601+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.322626+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_contextimmutability.py",
-  "compliance_statement": "Phase 2 passes Context Immutability Contract (CIC)",
+  "compliance_statement": "Phase 2 fails Context Immutability Contract (CIC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "1b14e8434350fe9cd368c67e04780f82b3103b10f688ebbe5d96365237d07475"
+  "integrity_hash": "300450923eeca73a64839f8cbaf719bc5b56358db24efe9ddc61c6fc6f02cea3"
 }

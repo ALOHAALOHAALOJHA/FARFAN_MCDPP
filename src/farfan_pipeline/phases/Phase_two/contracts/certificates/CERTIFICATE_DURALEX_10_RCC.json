@@ -4,16 +4,16 @@
   "contract_name": "Risk Certificate Contract",
   "contract_module": "risk_certificate",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.838961+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.327316+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_riskcertificate.py",
-  "compliance_statement": "Phase 2 passes Risk Certificate Contract (RCC)",
+  "compliance_statement": "Phase 2 fails Risk Certificate Contract (RCC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "2a87f8311c5ac17b761a3243583c6d62a4586eed63dc15f51d8c34db3e11ed26"
+  "integrity_hash": "8df880e8d64b2b940b260c279bdc278da3cd2ec58e8fb602a38b1585dab2298a"
 }

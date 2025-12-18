@@ -4,16 +4,16 @@
   "contract_name": "Total Ordering / Traceability Contract",
   "contract_module": "traceability",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.842703+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.330652+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_traceability.py",
-  "compliance_statement": "Phase 2 passes Total Ordering / Traceability Contract (TOC)",
+  "compliance_statement": "Phase 2 fails Total Ordering / Traceability Contract (TOC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "8238d72a519d241a8e2ec3bc03e1f117c3b4c63f12a9e8c5dc95ba858c24f526"
+  "integrity_hash": "e2cc879a1417de9cd7f56f5272bab3b16624e544f1e25a33c8a4612c85a5b2c9"
 }

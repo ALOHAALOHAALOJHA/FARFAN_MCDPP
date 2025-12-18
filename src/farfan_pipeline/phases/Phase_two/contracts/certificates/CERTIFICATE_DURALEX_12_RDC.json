@@ -4,16 +4,16 @@
   "contract_name": "Retriever Determinism Contract",
   "contract_module": "retriever_contract",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.840868+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.328645+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_retrievercontract.py",
-  "compliance_statement": "Phase 2 passes Retriever Determinism Contract (RDC)",
+  "compliance_statement": "Phase 2 fails Retriever Determinism Contract (RDC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "89d821bdadc15e9c73c729e0963530a00184247720b90014808eee6120fa8954"
+  "integrity_hash": "083d0b5755a15501a8b8f6133cd44f886c302d8631fa178b4d84af13a8082fa5"
 }

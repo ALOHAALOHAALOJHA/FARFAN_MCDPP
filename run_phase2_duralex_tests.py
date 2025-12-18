@@ -83,55 +83,47 @@ for idx, (code, name, module_name) in enumerate(TESTS, 1):
         
     except ImportError as e:
         error_msg = f"Import error: {e}"
-        print(f"    ⚠️  WARNING: {error_msg}")
-        # Mark as passed since contract exists and is defined in dura_lex/
-        passed = True
+        print(f"    ❌ FAILED: {error_msg}")
+        passed = False
     except Exception as e:
         error_msg = f"Error: {e}"
-        print(f"    ⚠️  WARNING: {error_msg}")
-        passed = True  # Consider as passed for certificate generation
+        print(f"    ❌ FAILED: {error_msg}")
+        passed = False
     
     # Generate certificate
-    if passed:
-        cert_data = {
-            "certificate_id": f"CERT-P2-DURA-LEX-{code}",
-            "contract_code": code,
-            "contract_name": name,
-            "contract_module": module_name,
-            "phase": "Phase 2",
-            "status": "PASSED",
-            "date_issued": datetime.now(timezone.utc).isoformat(),
-            "lifecycle_state": "ACTIVE",
-            "verification_method": "Dura Lex Contractual Test",
-            "test_file": f"tests/phase2_contracts/test_{module_name.replace('_', '')}.py",
-            "compliance_statement": f"Phase 2 passes {name} ({code})",
-            "evidence": {
-                "module_imported": True,
-                "test_run": True,
-                "error": error_msg
-            },
-            "integrity_hash": hashlib.sha256(
-                f"{code}-{name}-{datetime.now(timezone.utc).isoformat()}".encode()
-            ).hexdigest()
-        }
-        
-        cert_file = OUTPUT_DIR / f"CERTIFICATE_DURALEX_{idx:02d}_{code}.json"
-        cert_file.write_text(json.dumps(cert_data, indent=2))
-        print(f"    📄 Certificate: {cert_file.name}")
-        
-        results.append({
-            "code": code,
-            "name": name,
-            "passed": True,
-            "certificate": cert_file.name
-        })
-    else:
-        results.append({
-            "code": code,
-            "name": name,
-            "passed": False,
-            "error": error_msg
-        })
+    cert_data = {
+        "certificate_id": f"CERT-P2-DURA-LEX-{code}",
+        "contract_code": code,
+        "contract_name": name,
+        "contract_module": module_name,
+        "phase": "Phase 2",
+        "status": "PASSED" if passed else "FAILED",
+        "date_issued": datetime.now(timezone.utc).isoformat(),
+        "lifecycle_state": "ACTIVE" if passed else "REQUIRES_ATTENTION",
+        "verification_method": "Dura Lex Contractual Test",
+        "test_file": f"tests/phase2_contracts/test_{module_name.replace('_', '')}.py",
+        "compliance_statement": f"Phase 2 passes {name} ({code})" if passed else f"Phase 2 fails {name} ({code})",
+        "evidence": {
+            "module_imported": passed,
+            "test_run": passed,
+            "error": error_msg if error_msg else None
+        },
+        "integrity_hash": hashlib.sha256(
+            f"{code}-{name}-{datetime.now(timezone.utc).isoformat()}".encode()
+        ).hexdigest()
+    }
+    
+    cert_file = OUTPUT_DIR / f"CERTIFICATE_DURALEX_{idx:02d}_{code}.json"
+    cert_file.write_text(json.dumps(cert_data, indent=2))
+    print(f"    📄 Certificate: {cert_file.name}")
+    
+    results.append({
+        "code": code,
+        "name": name,
+        "passed": passed,
+        "certificate": cert_file.name,
+        "error": error_msg if not passed else None
+    })
     
     print()
 
@@ -162,8 +154,8 @@ summary = {
     "passed": passed_count,
     "failed": len(TESTS) - passed_count,
     "date_issued": datetime.now(timezone.utc).isoformat(),
-    "lifecycle_state": "ACTIVE",
-    "certificates": [r.get("certificate") for r in results if r["passed"]],
+    "lifecycle_state": "ACTIVE" if passed_count == len(TESTS) else "REQUIRES_ATTENTION",
+    "certificates": [r.get("certificate") for r in results],
     "results": results
 }
 

@@ -4,16 +4,16 @@
   "contract_name": "Output-Target Alignment Contract",
   "contract_module": "alignment_stability",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.837057+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.325303+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_alignmentstability.py",
-  "compliance_statement": "Phase 2 passes Output-Target Alignment Contract (OTA)",
+  "compliance_statement": "Phase 2 fails Output-Target Alignment Contract (OTA)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "06f40c77be8571bb968bff0af01bab749fbacdf63a95243807a6ed3ea4a6a76e"
+  "integrity_hash": "67afd3240132b99664260c68499d4ae05328f4dc7429eb9ace6d7858fd6ffef6"
 }

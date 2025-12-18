@@ -4,16 +4,16 @@
   "contract_name": "Snapshot Contract",
   "contract_module": "audit_trail",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.842084+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.329972+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_audittrail.py",
-  "compliance_statement": "Phase 2 passes Snapshot Contract (SNC)",
+  "compliance_statement": "Phase 2 fails Snapshot Contract (SNC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "a241687d2bde2e384b1253c40100470053085d2b23f801c2318e2260d28c22d2"
+  "integrity_hash": "8519584bb7e0331c5cf006ee5f2404cc8ca2df3d09525743d49926f8b039bd25"
 }

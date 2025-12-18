@@ -4,16 +4,16 @@
   "contract_name": "Idempotency & Deduplication Contract",
   "contract_module": "idempotency_dedup",
   "phase": "Phase 2",
-  "status": "PASSED",
-  "date_issued": "2025-12-17T23:53:18.835846+00:00",
-  "lifecycle_state": "ACTIVE",
+  "status": "FAILED",
+  "date_issued": "2025-12-18T22:09:07.323976+00:00",
+  "lifecycle_state": "REQUIRES_ATTENTION",
   "verification_method": "Dura Lex Contractual Test",
   "test_file": "tests/phase2_contracts/test_idempotencydedup.py",
-  "compliance_statement": "Phase 2 passes Idempotency & Deduplication Contract (IDC)",
+  "compliance_statement": "Phase 2 fails Idempotency & Deduplication Contract (IDC)",
   "evidence": {
-    "module_imported": true,
-    "test_run": true,
+    "module_imported": false,
+    "test_run": false,
     "error": "Import error: No module named 'numpy'"
   },
-  "integrity_hash": "c0a1c16d835a5cea33580ba1556b19a28e423b4a47445a1499bf3a419b7fcb72"
+  "integrity_hash": "69ab3bbe73e75855f6508457ac301185187d04b53e7acf6c844eb827c0627947"
 }
