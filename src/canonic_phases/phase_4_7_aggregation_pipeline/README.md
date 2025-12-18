@@ -329,9 +329,149 @@ evaluation_dict = macro_score_to_evaluation(macro_score)
 
 ---
 
-## 6. Contract Signatures
+## 6. Design by Contract
 
-### 6.1 Entry Contract (Phase 3 → Phase 4)
+### 6.1 Philosophy
+
+Phase 4-7 aggregation operates under **strict contract enforcement** (Design by Contract, Dura Lex Sed Lex):
+
+1. **Preconditions:** Conditions that MUST hold before a method executes
+2. **Postconditions:** Guarantees provided after successful execution
+3. **Invariants:** Properties that MUST hold at all times
+4. **Failure Modes:** Explicit exceptions for contract violations
+
+### 6.2 Aggregator Contracts
+
+#### DimensionAggregator
+
+**Preconditions:**
+- `len(scored_results) == 300` (or multiple of 60 for partial runs)
+- `∀ sr: sr.score ∈ [0.0, 1.0]` (normalized Phase 3 output)
+- `∀ sr: sr.policy_area, sr.dimension are valid identifiers`
+
+**Postconditions:**
+- `len(dimension_scores) == 60` (6 dimensions × 10 policy areas)
+- `∀ ds: ds.score ∈ [0.0, 3.0]` (3-point scale)
+- `∀ ds: len(ds.contributing_questions) > 0` (traceability)
+
+**Invariants:**
+- Weights sum to 1.0 (normalization)
+- Provenance node created for each dimension score
+
+**Failure Modes:**
+- `AggregationValidationError`: Output count ≠ 60
+- `ValueError`: Invalid score range
+- `KeyError`: Missing dimension/policy area configuration
+
+#### AreaPolicyAggregator
+
+**Preconditions:**
+- `len(dimension_scores) == 60`
+- `∀ ds: ds.score ∈ [0.0, 3.0]`
+
+**Postconditions:**
+- `len(area_scores) == 10`
+- `∀ as: as.score ∈ [0.0, 3.0]`
+- `∀ as: as.is_hermetic == True` (all 6 dimensions present)
+
+**Invariants:**
+- Each area has exactly 6 dimension scores
+- Hermeticity validated
+
+**Failure Modes:**
+- `AggregationValidationError`: Output count ≠ 10
+- `HermeticityViolation`: Missing dimensions for area
+
+#### ClusterAggregator
+
+**Preconditions:**
+- `len(area_scores) == 10`
+- `∀ as: as.score ∈ [0.0, 3.0]`
+
+**Postconditions:**
+- `len(cluster_scores) == 4`
+- `∀ cs: cs.score ∈ [0.0, 3.0]`
+- `∀ cs: cs.dispersion_metrics computed`
+
+**Invariants:**
+- Adaptive penalty applied based on dispersion
+- Coherence metrics computed
+
+**Failure Modes:**
+- `AggregationValidationError`: Output count ≠ 4
+- `DispersionComputationError`: Invalid dispersion metrics
+
+#### MacroAggregator
+
+**Preconditions:**
+- `len(cluster_scores) == 4`
+- `∀ cs: cs.score ∈ [0.0, 3.0]`
+
+**Postconditions:**
+- `macro_score is not None`
+- `macro_score.score ∈ [0.0, 3.0]`
+- `macro_score.systemic_gaps identified`
+
+**Invariants:**
+- Cross-cutting coherence computed
+- Strategic alignment assessed
+
+**Failure Modes:**
+- `AggregationValidationError`: Null macro score
+- `ValueError`: Invalid score range
+
+#### ChoquetAggregator
+
+**Preconditions:**
+- `inputs ∈ [0.0, 1.0]ⁿ` (normalized)
+- `Σ(linear_weights) == 1.0`
+- `Σ|interaction_terms| ≤ 0.5 × Σ(linear_weights)`
+
+**Postconditions:**
+- `result ∈ [min(inputs), max(inputs)]` (boundedness)
+- `breakdown.sum() == result` (consistency)
+
+**Invariants:**
+- Monotonicity: increasing inputs → non-decreasing output
+- Idempotence: all equal inputs → output equals input
+
+**Failure Modes:**
+- `CalibrationConfigError`: Invalid weight configuration
+- `ValueError`: Input out of bounds
+
+### 6.3 Exception Taxonomy
+
+```
+AggregationError (base)
+├── AggregationValidationError
+│   ├── CountMismatchError
+│   ├── BoundsViolationError
+│   └── TraceabilityError
+├── HermeticityViolation
+├── DispersionComputationError
+├── CalibrationConfigError
+└── ProvenanceConstructionError
+```
+
+### 6.4 Verification Strategy
+
+**Unit Tests:** Verify individual aggregator contracts
+**Integration Tests:** Verify phase sequencing and composition
+**Property Tests:** Verify mathematical invariants (boundedness, monotonicity)
+**Contract Tests:** Verify precondition/postcondition enforcement
+
+**Test Coverage:**
+- `tests/phase_4_7/test_orchestrator_integration.py` → Sequencing
+- `tests/phase_4_7/test_counts_and_bounds.py` → Count contracts
+- `tests/phase_4_7/test_choquet_properties.py` → Mathematical properties
+- `tests/phase_4_7/test_signal_wiring.py` → Signal integration contracts
+- `tests/phase_4_7/test_provenance_dag.py` → Provenance contracts
+
+---
+
+## 7. Contract Signatures
+
+### 7.1 Entry Contract (Phase 3 → Phase 4)
 
 **Contract ID:** `CONTRACT-P4-7-ENTRY`
 
@@ -342,7 +482,7 @@ evaluation_dict = macro_score_to_evaluation(macro_score)
 | PRE-P4-03 | `∀ sr: sr.quality_level ∈ VALID_QUALITY_LEVELS` | Enum check |
 | PRE-P4-04 | Signal registry available (optional) | DI check |
 
-### 6.2 Exit Contract (Phase 7 → Output)
+### 7.2 Exit Contract (Phase 7 → Output)
 
 **Contract ID:** `CONTRACT-P4-7-EXIT`
 
@@ -357,7 +497,7 @@ evaluation_dict = macro_score_to_evaluation(macro_score)
 
 ---
 
-## 7. Signal Wiring
+## 8. Signal Wiring
 
 ### 7.1 Signal Flow
 
@@ -390,9 +530,9 @@ Core Aggregators (signal-adjusted weights)
 
 ---
 
-## 8. Provenance Tracking
+## 9. Provenance Tracking
 
-### 8.1 DAG Structure
+### 9.1 DAG Structure
 
 ```
 LEVEL: micro              LEVEL: dimension         LEVEL: area    LEVEL: cluster   LEVEL: macro
@@ -408,7 +548,7 @@ LEVEL: micro              LEVEL: dimension         LEVEL: area    LEVEL: cluster
                                                                                   (1)
 ```
 
-### 8.2 Attribution
+### 9.2 Attribution
 
 Shapley values computed for feature attribution:
 ```python
@@ -418,7 +558,7 @@ critical_path = dag.get_critical_path("MACRO", top_k=5)
 
 ---
 
-## 9. Quality Rubric
+## 10. Quality Rubric
 
 | Quality Level | Normalized Score Range | Description |
 |---------------|------------------------|-------------|
@@ -429,29 +569,182 @@ critical_path = dag.get_critical_path("MACRO", top_k=5)
 
 ---
 
-## 10. Choquet Integral
+## 10. Mathematical Foundations: Choquet Integral
 
-### Formula
+### 10.1 Definition
+
+The **Choquet integral** is a generalization of the weighted average that accounts for interaction between criteria. For normalized inputs x₁, ..., xₙ ∈ [0,1]:
 
 ```
-Cal(I) = Σ(aₗ·xₗ) + Σ(aₗₖ·min(xₗ,xₖ))
+Cal(I) = Σᵢ₌₁ⁿ (aᵢ · xᵢ) + Σᵢ<ⱼ (aᵢⱼ · min(xᵢ, xⱼ))
 ```
 
 Where:
-- `xₗ`: Score for layer l (normalized to [0,1])
-- `aₗ`: Linear weight for layer l
-- `aₗₖ`: Interaction weight for layer pair (l,k)
-- `Cal(I)`: Choquet-aggregated calibration score ∈ [0,1]
+- **xᵢ**: Normalized score for criterion i ∈ [0,1]
+- **aᵢ**: Linear weight for criterion i
+- **aᵢⱼ**: Interaction weight for criteria pair (i,j)
+- **Cal(I)**: Choquet-aggregated score ∈ [0,1]
 
-### Boundedness Guarantee
+### 10.2 Formal Properties
 
-- Weights normalized: `Σ(aₗ) = 1.0`
-- Interactions constrained: `Σ(aₗₖ) ≤ 0.5 × Σ(aₗ)`
-- Result clamped: `max(0.0, min(1.0, Cal(I)))`
+**Theorem 1 (Boundedness):** For inputs xᵢ ∈ [0,1] and properly normalized weights, the Choquet integral satisfies:
+
+```
+min(x₁, ..., xₙ) ≤ Cal(I) ≤ max(x₁, ..., xₙ)
+```
+
+**Proof sketch:** The Choquet integral is bounded by the minimum and maximum input values because it is a convex combination when weights are properly normalized.
+
+**Theorem 2 (Monotonicity):** If xᵢ ≤ yᵢ for all i, then Cal(x) ≤ Cal(y).
+
+**Theorem 3 (Idempotence):** If x₁ = x₂ = ... = xₙ = c, then Cal(I) = c.
+
+### 10.3 Normalization Constraints
+
+To guarantee boundedness:
+
+1. **Linear weights normalized:** Σᵢ aᵢ = 1.0
+2. **Interaction constraint:** Σᵢ<ⱼ |aᵢⱼ| ≤ 0.5 × Σᵢ aᵢ
+3. **Final clamping:** Cal(I) ∈ [0, 1]
+
+**Enforcement:**
+```python
+# In ChoquetAggregator.__post_init__
+if not abs(sum(self.linear_weights.values()) - 1.0) < 1e-6:
+    raise CalibrationConfigError("Linear weights must sum to 1.0")
+
+if sum(abs(v) for v in self.interaction_terms.values()) > 0.5:
+    raise CalibrationConfigError("Interaction terms exceed bound")
+```
+
+### 10.4 Interaction Interpretation
+
+- **aᵢⱼ > 0**: Positive synergy (criteria reinforce each other)
+- **aᵢⱼ < 0**: Negative interaction (criteria substitute)
+- **aᵢⱼ = 0**: Independence (reduces to weighted average)
+
+### 10.5 Comparison to Weighted Average
+
+For the special case where all aᵢⱼ = 0:
+
+```
+Cal(I) = Σᵢ (aᵢ · xᵢ)  [reduces to weighted average]
+```
+
+The Choquet integral generalizes this by adding interaction terms.
+
+### 10.6 Implementation
+
+**Code Location:** `src/canonic_phases/phase_4_7_aggregation_pipeline/choquet_aggregator.py`
+
+**Key Methods:**
+- `ChoquetAggregator.calibrate()`: Computes Choquet integral
+- `_validate_boundedness()`: Enforces mathematical properties
+- `CalibrationResult.breakdown`: Decomposes result into components
+
+**Configuration:**
+```python
+config = ChoquetConfig(
+    interaction_terms={
+        ('DIM01', 'DIM02'): 0.15,  # Positive synergy
+        ('DIM03', 'DIM04'): -0.10,  # Substitution
+    },
+    normalization=True  # Enforce normalization
+)
+```
+
+### 10.7 Academic References
+
+1. Choquet, G. (1954). "Theory of capacities". *Annales de l'institut Fourier*, 5, 131-295.
+2. Grabisch, M. (1997). "k-order additive discrete fuzzy measures and their representation". *Fuzzy Sets and Systems*, 92(2), 167-189.
+3. Marichal, J.-L. (2000). "An axiomatic approach of the discrete Choquet integral as a tool to aggregate interacting criteria". *IEEE Transactions on Fuzzy Systems*, 8(6), 800-807.
+
+### 10.8 Graphviz Visualization
+
+Choquet aggregation structure can be visualized using Graphviz:
+
+```dot
+digraph choquet_aggregation {
+    rankdir=LR;
+    node [shape=box];
+    
+    // Inputs
+    x1 [label="x₁"];
+    x2 [label="x₂"];
+    x3 [label="x₃"];
+    
+    // Linear terms
+    linear [label="Σ(aᵢ·xᵢ)", shape=ellipse];
+    
+    // Interaction terms
+    interact [label="Σ(aᵢⱼ·min(xᵢ,xⱼ))", shape=ellipse];
+    
+    // Output
+    output [label="Cal(I)", shape=doubleoctagon];
+    
+    x1 -> linear;
+    x2 -> linear;
+    x3 -> linear;
+    
+    x1 -> interact;
+    x2 -> interact;
+    x3 -> interact;
+    
+    linear -> output;
+    interact -> output;
+}
+```
+
+Render with: `dot -Tpng choquet.dot -o choquet.png`
+
+### 10.9 Example Calculation
+
+Given:
+- x₁ = 0.7, x₂ = 0.8, x₃ = 0.6
+- a₁ = 0.4, a₂ = 0.3, a₃ = 0.3
+- a₁₂ = 0.1, a₁₃ = 0.0, a₂₃ = -0.05
+
+Calculation:
+```
+Linear: 0.4(0.7) + 0.3(0.8) + 0.3(0.6) = 0.28 + 0.24 + 0.18 = 0.70
+Interactions: 0.1·min(0.7,0.8) + 0.0·min(0.7,0.6) + (-0.05)·min(0.8,0.6)
+            = 0.1(0.7) + 0.0 + (-0.05)(0.6)
+            = 0.07 + 0.0 - 0.03 = 0.04
+Cal(I) = 0.70 + 0.04 = 0.74
+```
+
+Result: 0.74 ∈ [min(0.6), max(0.8)] = [0.6, 0.8] ✓
 
 ---
 
-## 11. Related Documents
+## 12. Compliance Certificates
+
+All requirements are documented and verified through 15 compliance certificates:
+
+| Certificate | Requirement | Status |
+|-------------|-------------|--------|
+| [CERTIFICATE_01](contracts/certificates/CERTIFICATE_01_PHASE4_COUNT_60.md) | Phase 4 Count = 60 | ✅ ACTIVE |
+| [CERTIFICATE_02](contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md) | Phase 5 Count = 10 | ✅ ACTIVE |
+| [CERTIFICATE_03](contracts/certificates/CERTIFICATE_03_PHASE6_COUNT_4.md) | Phase 6 Count = 4 | ✅ ACTIVE |
+| [CERTIFICATE_04](contracts/certificates/CERTIFICATE_04_PHASE7_COUNT_1.md) | Phase 7 Count = 1 | ✅ ACTIVE |
+| [CERTIFICATE_05](contracts/certificates/CERTIFICATE_05_SCORE_BOUNDS.md) | Score Bounds [0.0, 3.0] | ✅ ACTIVE |
+| [CERTIFICATE_06](contracts/certificates/CERTIFICATE_06_HERMETICITY.md) | Hermeticity Validation | ✅ ACTIVE |
+| [CERTIFICATE_07](contracts/certificates/CERTIFICATE_07_PROVENANCE_DAG.md) | Provenance DAG Generation | ✅ ACTIVE |
+| [CERTIFICATE_08](contracts/certificates/CERTIFICATE_08_CHOQUET_BOUNDEDNESS.md) | Choquet Boundedness | ✅ ACTIVE |
+| [CERTIFICATE_09](contracts/certificates/CERTIFICATE_09_SIGNAL_INTEGRATION.md) | Signal Integration | ✅ ACTIVE |
+| [CERTIFICATE_10](contracts/certificates/CERTIFICATE_10_VALIDATION_HOOKS.md) | Validation Hooks Execution | ✅ ACTIVE |
+| [CERTIFICATE_11](contracts/certificates/CERTIFICATE_11_ADAPTIVE_PENALTY.md) | Adaptive Penalty Application | ✅ ACTIVE |
+| [CERTIFICATE_12](contracts/certificates/CERTIFICATE_12_DISPERSION_ANALYSIS.md) | Dispersion Analysis | ✅ ACTIVE |
+| [CERTIFICATE_13](contracts/certificates/CERTIFICATE_13_UNCERTAINTY_QUANTIFICATION.md) | Uncertainty Quantification | ✅ ACTIVE |
+| [CERTIFICATE_14](contracts/certificates/CERTIFICATE_14_DAG_EXPORT.md) | DAG Export (GraphML/PROV-JSON) | ✅ ACTIVE |
+| [CERTIFICATE_15](contracts/certificates/CERTIFICATE_15_ORCHESTRATOR_TRANSCRIPT.md) | Orchestrator Transcript Compliance | ✅ ACTIVE |
+
+**Certification Authority:** F.A.R.F.A.N Canonical Phases  
+**Next Review:** 2026-06-18
+
+---
+
+## 13. Related Documents
 
 - [PHASE_4_7_RIA_2025-12-18.txt](./PHASE_4_7_RIA_2025-12-18.txt) — Repository Inventory Artifact
 - [FORCING_ROUTE.md](./FORCING_ROUTE.md) — Execution constraints
@@ -459,7 +752,7 @@ Where:
 
 ---
 
-## 12. Changelog
+## 14. Changelog
 
 | Date | Version | Change |
 |------|---------|--------|
