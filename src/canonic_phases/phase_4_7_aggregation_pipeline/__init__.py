@@ -44,18 +44,18 @@ from canonic_phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationResult,
-    ChoquetProcessingAdapter,
 )
 
 # Enhanced Aggregation
-from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
+from canonic_phases.phase_4_7_aggregation_pipeline.enhancements import (
     EnhancedDimensionAggregator,
     DispersionMetrics,
     HermeticityDiagnosis,
+    enhance_aggregator,
 )
 
 # Validation
-from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
+from canonic_phases.phase_4_7_aggregation_pipeline.validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
@@ -72,12 +72,12 @@ from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_provenance import
 )
 
 # Signal-Enriched Aggregation
-from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+from canonic_phases.phase_4_7_aggregation_pipeline.enhancements.signal_enriched_aggregation import (
     SignalEnrichedAggregator,
 )
 
 # Adaptive Meso Scoring
-from canonic_phases.phase_4_7_aggregation_pipeline.adaptive_meso_scoring import (
+from canonic_phases.phase_4_7_aggregation_pipeline.enhancements.adaptive_meso_scoring import (
     AdaptiveMesoScoringEngine,
 )
 
@@ -113,11 +113,11 @@ __all__ = [
     "ChoquetAggregator",
     "ChoquetConfig",
     "CalibrationResult",
-    "ChoquetProcessingAdapter",
     # Enhanced
     "EnhancedDimensionAggregator",
     "DispersionMetrics",
     "HermeticityDiagnosis",
+    "enhance_aggregator",
     # Validation
     "validate_phase4_output",
     "validate_phase5_output",

@@ -9,7 +9,6 @@ __all__ = [
     "Phase_one",
     "Phase_two",
     "Phase_three",
-    "Phase_four_five_six_seven",
     "Phase_eight",
     "Phase_nine",
 ]
