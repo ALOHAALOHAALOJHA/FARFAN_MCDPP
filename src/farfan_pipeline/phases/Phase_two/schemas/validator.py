@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 try:
-    from jsonschema import validate, ValidationError, Draft202012Validator
+    from jsonschema import ValidationError, Draft202012Validator
     JSONSCHEMA_AVAILABLE = True
 except ImportError:
     JSONSCHEMA_AVAILABLE = False
