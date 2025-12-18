@@ -317,7 +317,7 @@
         "target": "metadata",
         "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from all 8 methods for full traceability"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
