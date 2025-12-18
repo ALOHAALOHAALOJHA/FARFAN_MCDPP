@@ -2222,19 +2222,34 @@ class Orchestrator:
                             time.monotonic() - self._phase2_circuit_breaker.last_failure_time
                         )
                         raise CircuitBreakerOpen("phase2_micro_questions", time_until_retry)
-                    
-                    results.append(MicroQuestionRun(
-                        question_id=question.get("id"),
-                        question_global=question.get("global_id"),
-                        base_slot=base_slot,
-                        metadata={"task_id": task_id, "error": "executor_not_found"},
-                        evidence=None,
-                        error=error_msg,
-                        aborted=False
-                    ))
-                    continue
 
-                try:
+                    from canonic_phases.Phase_two import executors as phase2_executors
+
+                    executor_class_name = f"{base_slot.replace('-', '')}_Executor"
+                    executor_class = getattr(phase2_executors, executor_class_name, None)
+                    if executor_class is None:
+                        error_msg = (
+                            f"Task {task_id}: Executor not found for base_slot '{base_slot}' "
+                            f"(expected class '{executor_class_name}')"
+                        )
+                        logger.error(error_msg)
+                        task_status[task_id] = "failed"
+                        tasks_failed.add(task_id)
+                        instrumentation.record_error("executor_not_found", task_id)
+
+                        results.append(
+                            MicroQuestionRun(
+                                question_id=question.get("id"),
+                                question_global=question.get("global_id"),
+                                base_slot=base_slot,
+                                metadata={"task_id": task_id, "error": "executor_not_found"},
+                                evidence=None,
+                                error=error_msg,
+                                aborted=False,
+                            )
+                        )
+                        continue
+
                     instance = executor_class(
                         method_executor=self.executor,
                         signal_registry=self.executor.signal_registry,
