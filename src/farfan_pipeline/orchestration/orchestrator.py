@@ -923,6 +923,95 @@ async def execute_phase_with_timeout(
 
 
 # ============================================================================
+# ASYNC/SYNC BOUNDARY HELPERS
+# ============================================================================
+
+def run_async_safely(coro: Any, timeout: float | None = None) -> Any:
+    """Safely run an async coroutine from either sync or async context.
+    
+    This function enforces the canonical pathway for async execution:
+    - If called from sync context: Uses asyncio.run()
+    - If called from async context: Directly awaits the coroutine
+    - Prevents blocking the event loop in async contexts
+    
+    Args:
+        coro: Coroutine or coroutine function to execute
+        timeout: Optional timeout in seconds
+        
+    Returns:
+        Result from the coroutine execution
+        
+    Raises:
+        RuntimeError: If execution fails or times out
+        
+    Example:
+        >>> # From sync context
+        >>> result = run_async_safely(some_async_function())
+        >>> 
+        >>> # From async context
+        >>> result = await run_async_safely(some_async_function())
+    """
+    import inspect
+    
+    # Ensure we have a coroutine
+    if not inspect.iscoroutine(coro) and inspect.iscoroutinefunction(coro):
+        coro = coro()
+    
+    if not inspect.iscoroutine(coro):
+        raise TypeError(f"Expected coroutine, got {type(coro)}")
+    
+    # Detect if we're in an async context
+    try:
+        loop = asyncio.get_running_loop()
+        in_async_context = loop is not None and loop.is_running()
+    except RuntimeError:
+        in_async_context = False
+    
+    if in_async_context:
+        # Already in async context - this function becomes a coroutine
+        # Caller must await it
+        raise RuntimeError(
+            "run_async_safely() called from async context. "
+            "You must use 'await run_async_safely(coro)' instead of 'run_async_safely(coro)'."
+        )
+    else:
+        # Sync context - safe to use asyncio.run()
+        if timeout:
+            async def _with_timeout():
+                return await asyncio.wait_for(coro, timeout=timeout)
+            return asyncio.run(_with_timeout())
+        else:
+            return asyncio.run(coro)
+
+
+async def run_async_safely_async(coro: Any, timeout: float | None = None) -> Any:
+    """Async version of run_async_safely for use within async contexts.
+    
+    This ensures consistent behavior whether called from sync or async context.
+    
+    Args:
+        coro: Coroutine or coroutine function to execute
+        timeout: Optional timeout in seconds
+        
+    Returns:
+        Result from the coroutine execution
+    """
+    import inspect
+    
+    # Ensure we have a coroutine
+    if not inspect.iscoroutine(coro) and inspect.iscoroutinefunction(coro):
+        coro = coro()
+    
+    if not inspect.iscoroutine(coro):
+        raise TypeError(f"Expected coroutine, got {type(coro)}")
+    
+    if timeout:
+        return await asyncio.wait_for(coro, timeout=timeout)
+    else:
+        return await coro
+
+
+# ============================================================================
 # METHOD EXECUTOR
 # ============================================================================
 
@@ -1507,18 +1596,18 @@ class Orchestrator:
             
             try:
                 if mode == "sync":
-                    if phase_id in TIMEOUT_SYNC_PHASES:
-                        data = await execute_phase_with_timeout(
-                            phase_id=phase_id,
-                            phase_name=phase_label,
-                            timeout_s=self._get_phase_timeout(phase_id),
-                            coro=asyncio.to_thread,
-                            args=(handler,) + tuple(args),
-                            instrumentation=instrumentation,
-                        )
-                    else:
-                        data = handler(*args)
+                    # ALL sync phases must use asyncio.to_thread to avoid blocking event loop
+                    # This is the canonical pathway for executing sync handlers in async context
+                    data = await execute_phase_with_timeout(
+                        phase_id=phase_id,
+                        phase_name=phase_label,
+                        timeout_s=self._get_phase_timeout(phase_id),
+                        handler=handler,
+                        args=tuple(args),
+                        instrumentation=instrumentation,
+                    )
                 else:
+                    # Async phases can be executed directly
                     data = await execute_phase_with_timeout(
                         phase_id=phase_id,
                         phase_name=phase_label,
@@ -1639,13 +1728,34 @@ class Orchestrator:
     def process_development_plan(
         self, pdf_path: str, preprocessed_document: Any | None = None
     ) -> list[PhaseResult]:
+        """Synchronous entry point for pipeline execution.
+        
+        This method enforces the async/sync boundary by detecting if it's called
+        from within an async context and raising a clear error if so.
+        
+        Args:
+            pdf_path: Path to the PDF document to analyze
+            preprocessed_document: Optional preprocessed document to use
+            
+        Returns:
+            List of PhaseResult objects for each phase executed
+            
+        Raises:
+            RuntimeError: If called from within an async context. Use
+                         process_development_plan_async() instead.
+        """
         try:
             loop = asyncio.get_running_loop()
         except RuntimeError:
+            # No event loop running - safe to proceed
             loop = None
         
         if loop and loop.is_running():
-            raise RuntimeError("Cannot call from within async context")
+            raise RuntimeError(
+                "Cannot call process_development_plan() from within an async context. "
+                "This would block the event loop and cause deadlock. "
+                "Use 'await process_development_plan_async()' instead."
+            )
         
         return asyncio.run(self.process_development_plan_async(pdf_path, preprocessed_document))
     
@@ -3161,4 +3271,8 @@ __all__ = [
     "ScoredMicroQuestion",
     "Evidence",
     "MacroEvaluation",
+    "run_async_safely",
+    "run_async_safely_async",
+    "execute_phase_with_timeout",
+    "PhaseTimeoutError",
 ]
