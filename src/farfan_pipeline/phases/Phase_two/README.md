@@ -42,7 +42,7 @@ Phase 2 constitutes the core analytical processor of the F.A.R.F.A.N Mechanistic
 5. **Architectural components** (§6): Complete specification of 22 Python modules implementing the framework
 6. **Validation and compliance** (§7): Formal verification through 15 Dura Lex contractual tests
 
-The architecture processes 300 executor contracts (Q001–Q300.v3.json), each binding 1–17 specialized methods to specific analytical questions across 10 policy areas (PA01–PA10: territorial development domains) and 6 causal dimensions (D1–D6: Inputs, Activities, Products, Outcomes, Impacts, Transversal).
+The architecture processes 300 executor contracts (Q001.v3.json through Q300.v3.json), each binding 1–17 specialized methods to specific analytical questions across 10 policy areas (PA01–PA10: territorial development domains) and 6 causal dimensions (D1–D6: Inputs, Activities, Products, Outcomes, Impacts, Transversal). The contract numbering follows sequential enumeration: 30 base questions (6 dimensions × 5 questions) replicated across 10 policy areas yields precisely 300 contracts.
 
 
 ---
@@ -248,22 +248,26 @@ def generate_execution_plan(cpp: CanonPolicyPackage) -> ExecutionPlan:
     """Generate deterministic 300-task plan from 60-chunk package.
     
     Mapping:
-    - 30 base questions (D1-Q1 ... D6-Q5)
+    - 30 base questions (D1-Q1 ... D6-Q5): 6 dimensions × 5 questions
     - 10 policy areas (PA01-PA10)
-    - 60 chunks mapped via ChunkMatrix
+    - Total: 30 × 10 = 300 contracts (Q001-Q300)
+    - Formula: Q_id = (dim-1)*50 + (q-1)*10 + pa
     
     Returns ExecutionPlan with integrity hash for verification.
     """
     tasks = []
+    question_counter = 1
     for dim in range(1, 7):          # D1-D6
         for q in range(1, 6):         # Q1-Q5
             for pa in range(1, 11):   # PA01-PA10
-                question_id = f"Q{(dim-1)*50 + (q-1)*10 + pa:03d}"
+                question_id = f"Q{question_counter:03d}"
                 tasks.append(Task(
                     question_id=question_id,
+                    base_slot=f"D{dim}-Q{q}",
                     policy_area=f"PA{pa:02d}",
                     chunks=chunk_matrix.get_chunks(dim, q)
                 ))
+                question_counter += 1
     return ExecutionPlan(tasks=tasks, integrity_hash=blake3(tasks))
 ```
 
