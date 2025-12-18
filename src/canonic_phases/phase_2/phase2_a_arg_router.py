@@ -47,7 +47,7 @@ class ArgumentRouter(Protocol):
             ArgumentValidationError: If arguments invalid
             UnexpectedArgumentError: If unexpected arguments present
         """
-        ...
+        raise NotImplementedError
 
 
 class Phase2ArgRouter:
