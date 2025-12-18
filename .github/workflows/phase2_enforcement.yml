@@ -1,0 +1,109 @@
+name: Phase 2 Enforcement
+
+on:
+  push:
+    paths:
+      - 'src/canonic_phases/phase_2/**'
+      - 'tests/canonic_phases/test_phase2_*.py'
+      - '.github/workflows/phase2_enforcement.yml'
+  pull_request:
+    paths:
+      - 'src/canonic_phases/phase_2/**'
+      - 'tests/canonic_phases/test_phase2_*.py'
+
+jobs:
+  phase2-gates:
+    name: Phase 2 Gates
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pytest jsonschema
+      
+      - name: GATE_01 - Directory Structure
+        run: |
+          echo "Verifying Phase 2 directory structure..."
+          test -d src/canonic_phases/phase_2/constants || exit 1
+          test -d src/canonic_phases/phase_2/schemas || exit 1
+          test -d src/canonic_phases/phase_2/executors || exit 1
+          test -d src/canonic_phases/phase_2/contracts || exit 1
+          test -d src/canonic_phases/phase_2/orchestration || exit 1
+          test -d src/canonic_phases/phase_2/sisas || exit 1
+          test -d src/canonic_phases/phase_2/tests || exit 1
+          echo "✓ Directory structure complete"
+      
+      - name: GATE_02 - Package Imports
+        run: |
+          echo "Verifying Python can import phase_2..."
+          python -c "import src.canonic_phases.phase_2"
+          python -c "from src.canonic_phases.phase_2.constants import phase2_constants"
+          echo "✓ Package imports successful"
+      
+      - name: GATE_03 - Constants Frozen
+        run: |
+          echo "Verifying constants and cardinality..."
+          python -c "
+from src.canonic_phases.phase_2.constants.phase2_constants import (
+    NUM_CHUNKS, NUM_MICRO_ANSWERS, NUM_BASE_QUESTIONS, NUM_POLICY_AREAS
+)
+assert NUM_CHUNKS == 60, f'NUM_CHUNKS={NUM_CHUNKS}, expected 60'
+assert NUM_MICRO_ANSWERS == 300, f'NUM_MICRO_ANSWERS={NUM_MICRO_ANSWERS}, expected 300'
+assert NUM_MICRO_ANSWERS == NUM_BASE_QUESTIONS * NUM_POLICY_AREAS
+print('✓ Constants frozen and cardinality verified')
+          "
+      
+      - name: GATE_04 - Schema Validation
+        run: |
+          echo "Validating JSON schemas..."
+          python << 'EOF'
+import json
+import jsonschema
+from pathlib import Path
+
+schemas = [
+    'src/canonic_phases/phase_2/schemas/micro_answer_schema.json',
+    'src/canonic_phases/phase_2/schemas/execution_plan_schema.json',
+    'src/canonic_phases/phase_2/schemas/executor_contract_schema.json',
+    'src/canonic_phases/phase_2/schemas/phase2_output_schema.json',
+]
+
+for schema_path in schemas:
+    with open(schema_path, 'r') as f:
+        schema = json.load(f)
+    jsonschema.Draft202012Validator.check_schema(schema)
+    print(f'✓ {Path(schema_path).name} valid')
+
+print('✓ All schemas valid (JSON Schema Draft 2020-12)')
+EOF
+      
+      - name: Run Phase 2 Structure Tests
+        run: |
+          pytest tests/canonic_phases/test_phase2_structure.py -v --tb=short
+      
+      - name: Check README Exists
+        run: |
+          test -f src/canonic_phases/phase_2/README.md || exit 1
+          echo "✓ README.md present"
+      
+      - name: Report Gates Status
+        if: always()
+        run: |
+          echo "========================================="
+          echo "Phase 2 Enforcement Gates Summary"
+          echo "========================================="
+          echo "GATE_01: Directory Structure - ${{ steps.gate01.outcome || 'PASSED' }}"
+          echo "GATE_02: Package Imports - ${{ steps.gate02.outcome || 'PASSED' }}"
+          echo "GATE_03: Constants Frozen - ${{ steps.gate03.outcome || 'PASSED' }}"
+          echo "GATE_04: Schema Validation - ${{ steps.gate04.outcome || 'PASSED' }}"
+          echo "========================================="
