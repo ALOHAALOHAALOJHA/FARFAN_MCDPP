@@ -29,7 +29,6 @@ Failure-Modes:
 from __future__ import annotations
 
 import hashlib
-import logging
 from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
