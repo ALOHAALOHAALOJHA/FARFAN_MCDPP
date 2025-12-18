@@ -4,6 +4,76 @@ Utility scripts for F.A.R.F.A.N calibration system validation, contract quality 
 
 ## Available Scripts
 
+### discovery_protocol.py
+
+**NEW** - Discovery Protocol (Section 1.1) - Mandatory inventory acquisition tool that executes exhaustive repository scanning and produces structured YAML inventory.
+
+**Usage:**
+```bash
+python scripts/discovery_protocol.py
+```
+
+**What it does:**
+- Executes 4 mandatory command sets for comprehensive repository scanning
+- Generates `PHASE2_INVENTORY.yaml` with structured categorization
+- Maps Phase 2, executor, orchestrator, SISAS, and related components
+- Traces import dependencies across critical subsystems
+- Detects legacy artifacts requiring refactoring
+
+**Outputs:**
+- `PHASE2_INVENTORY.yaml` - Complete repository inventory (5,407 lines)
+  - 1,456 files scanned (491 Python, 440 JSON, 525 Markdown)
+  - 358 Phase 2 files, 350 executor files, 526 contract files
+  - Import dependency graph for 5 major components
+  - Legacy artifact detection (batch files, v2 versions, etc.)
+
+**Example:**
+```bash
+$ python scripts/discovery_protocol.py
+
+================================================================================
+DISCOVERY PROTOCOL - SECTION 1.1: MANDATORY INVENTORY ACQUISITION
+================================================================================
+
+Executing COMMAND_SET_1: Exhaustive file discovery...
+Executing COMMAND_SET_2: Directory structure mapping...
+Executing COMMAND_SET_3: Import dependency graph...
+Executing COMMAND_SET_4: Legacy artifact detection...
+
+================================================================================
+INVENTORY SUMMARY
+================================================================================
+Total files scanned: 1456
+Python files: 491
+JSON files: 440
+Markdown files: 525
+
+Phase 2 files: 358
+Executor files: 350
+Contract files: 526
+Legacy artifacts detected: 4
+================================================================================
+
+✓ Discovery protocol completed successfully
+```
+
+**Use cases:**
+- Pre-refactoring baseline documentation
+- Post-change impact verification
+- Audit compliance and architectural analysis
+- Import dependency mapping
+
+**Testing:**
+```bash
+pytest tests/test_discovery_protocol.py -v -m updated
+# Expected: 11 tests passing
+```
+
+**Documentation:**
+- Full guide: `DISCOVERY_PROTOCOL_README.md`
+- Quick reference: `DISCOVERY_PROTOCOL_QUICK_REF.md`
+- Test suite: `tests/test_discovery_protocol.py`
+
 ### cqvr_batch_evaluator.py
 
 **NEW** - Batch contract quality evaluator using CQVR v2.0 rubric. Evaluates executor contracts and generates comprehensive reports.
