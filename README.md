@@ -128,6 +128,7 @@ Cal(I) = Σ aₗ·xₗ + Σ aₗₖ·min(xₗ, xₖ)
 - **[LAYER_SYSTEM.md](docs/LAYER_SYSTEM.md)** - Detailed explanation of 8-layer quality system
 - **[FUSION_FORMULA.md](docs/FUSION_FORMULA.md)** - Choquet integral mathematics with worked examples
 - **[DETERMINISM.md](docs/DETERMINISM.md)** - SIN_CARRETA doctrine, reproducibility guarantees
+- **[AGENT_SYSTEM.md](docs/AGENT_SYSTEM.md)** - Agent prime directives, epistemic constraints, discovery protocol
 
 ### Configuration & Tuning
 
@@ -140,6 +141,7 @@ Cal(I) = Σ aₗ·xₗ + Σ aₗₖ·min(xₗ, xₖ)
 - **[CALIBRATION_GUIDE.md](docs/CALIBRATION_GUIDE.md)** - How to calibrate a new analytical method
 - **[TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** - Common issues and solutions
 - **[VALIDATION_GUIDE.md](docs/VALIDATION_GUIDE.md)** - System integrity validation procedures
+- **[AGENT_QUICK_REFERENCE.md](docs/AGENT_QUICK_REFERENCE.md)** - Quick reference for agent system usage
 
 ---
 
