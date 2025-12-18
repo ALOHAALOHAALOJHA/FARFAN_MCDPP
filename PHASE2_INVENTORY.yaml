@@ -1,10 +1,10 @@
-inventory_timestamp: '2025-12-18T20:19:09.780716+00:00'
+inventory_timestamp: '2025-12-18T20:21:06.646632+00:00'
 inventory_version: 1.0.0
-total_files_scanned: 1456
+total_files_scanned: 1457
 file_type_counts:
   python_files: 491
   json_files: 440
-  markdown_files: 525
+  markdown_files: 526
 command_results:
   command_set_1_exhaustive_discovery:
     count: 690
@@ -700,7 +700,7 @@ command_results:
     - validate_executor_integration.py
     - verify_orchestrator_fixes.sh
   command_set_2_directory_mapping:
-    count: 1456
+    count: 1457
     files:
     - ./.github/instructions/memory.instructions.md
     - ./.github/prompts/plan-calibrationSystemMigration.prompt.md
@@ -772,6 +772,7 @@ command_results:
     - ./DEPENDENCIES.md
     - ./DEPLOYMENT_CHECKLIST.md
     - ./DETERMINISM_AUDIT_CRITICAL_FINDINGS.md
+    - ./DISCOVERY_PROTOCOL_QUICK_REF.md
     - ./DISCOVERY_PROTOCOL_README.md
     - ./EXECUTOR_CHUNK_SYNCHRONIZATION_ASSESSMENT.md
     - ./EXECUTOR_CONTRACTS_FINAL_REPORT.md
