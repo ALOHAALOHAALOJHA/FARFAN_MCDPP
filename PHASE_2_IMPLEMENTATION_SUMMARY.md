@@ -4,6 +4,84 @@
 
 Successfully implemented the Phase 2 core module specifications as requested in Issue VI (SECTION 6: CORE MODULE SPECIFICATIONS - DOCUMENTATION PHASE), including EvidenceNexus integration for complete evidence-to-answer synthesis.
 
+**Note**: This canonical implementation focuses on the core transformation pipeline (router → carver → nexus). The existing `Phase_two` implementation contains additional orchestration components (irrigation synchronizer, executor-chunk synchronization) that handle task planning and coordination across the 300-task execution matrix.
+
+## Scope and Relationship to Existing Phase_two
+
+### Canonical Phase 2 Modules (This Implementation)
+Located in: `src/canonic_phases/phase_2/`
+
+**Purpose**: Core transformation pipeline from CPP chunks to synthesized narrative
+
+**Modules**:
+1. **Router** - Exhaustive dispatch to executors
+2. **Carver** - 60 CPP chunks → 300 micro-answers transformation
+3. **Nexus Integration** - Micro-answers → Evidence graph → Narrative synthesis
+
+### Existing Phase_two Orchestration (Separate Concern)
+Located in: `src/farfan_pipeline/phases/Phase_two/`
+
+**Purpose**: Task orchestration and execution coordination
+
+**Key Components**:
+- **IrrigationSynchronizer** (`irrigation_synchronizer.py`) - Maps questionnaire questions to document chunks, generating ExecutionPlan with 300 tasks (6 dimensions × 50 questions/dimension × 10 policy areas)
+- **ExecutorChunkSynchronizer** (`executor_chunk_synchronizer.py`) - Maintains JOIN table between executors and chunks for deterministic task assignment
+- **SignalRegistry Integration** - SISAS signal resolution for chunk requirements
+- **Blake3 Integrity Hashing** - Plan verification and provenance tracking
+
+### How They Relate
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Phase 1: CPP Ingestion                                  │
+│ Output: Preprocessed Document + 60 CPP Chunks           │
+└────────────────────┬────────────────────────────────────┘
+                     │
+    ┌────────────────┴──────────────────┐
+    │                                   │
+    ▼ (Canonical Pipeline)              ▼ (Orchestration)
+┌────────────────────┐          ┌──────────────────────┐
+│ Phase 2a: Router   │          │ Irrigation           │
+│ • Payload routing  │          │ Synchronizer         │
+│ • Contract         │          │ • Q→Chunk mapping    │
+│   validation       │          │ • 300 task matrix    │
+└────────┬───────────┘          │ • Execution plan     │
+         │                      └──────────┬───────────┘
+         ▼                                 │
+┌────────────────────┐                    │
+│ Phase 2b: Carver   │◄───────────────────┘
+│ • 60→300           │    (Tasks feed carver)
+│   transformation   │
+│ • Deterministic    │
+│   sharding         │
+└────────┬───────────┘
+         │
+         ▼
+┌────────────────────┐
+│ Phase 2c: Nexus    │
+│ Integration        │
+│ • Groups by        │
+│   chunk_id         │
+│ • Method outputs   │
+└────────┬───────────┘
+         │
+         ▼
+┌────────────────────┐
+│ EvidenceNexus      │
+│ • Evidence graph   │
+│ • Belief           │
+│   propagation      │
+│ • Narrative        │
+│   synthesis        │
+└────────────────────┘
+```
+
+**Key Distinction**:
+- **Canonical modules** (this implementation): Core data transformation pipeline
+- **Irrigation/Synchronization**: Task orchestration and execution coordination
+
+The canonical implementation provides the "how" (transform data), while irrigation/synchronization provides the "what" (which tasks to execute in which order).
+
 ## Modules Implemented
 
 ### 1. Router Module (`phase2_a_arg_router.py`)
@@ -226,6 +304,79 @@ Exceptions use standard dataclasses (not frozen) to avoid conflicts with Python'
 
 ### Nexus Integration Strategy
 The nexus integration module uses lazy-loading of EvidenceNexus to avoid circular import issues. It transforms micro-answers into the method outputs format expected by EvidenceNexus, grouping by chunk_id to maintain semantic coherence in the evidence graph.
+
+## Irrigation and Synchronization (Existing Phase_two)
+
+The canonical implementation documented here does **not** include the irrigation and synchronization components, which remain in the existing `Phase_two` implementation. These are separate orchestration concerns:
+
+### IrrigationSynchronizer
+
+**Location**: `src/farfan_pipeline/phases/Phase_two/irrigation_synchronizer.py`
+
+**Purpose**: Question→Chunk→Task→Plan coordination for the 300-task execution matrix
+
+**Key Responsibilities**:
+- Maps questionnaire questions to document chunks
+- Generates ExecutionPlan with 300 tasks organized as:
+  - 6 dimensions (D1-D6)
+  - 50 questions per dimension  
+  - 10 policy areas
+  - = 300 total tasks
+- Deterministic task generation with stable ordering
+- Blake3-based integrity hashing for plan verification
+- Prometheus metrics for synchronization health
+- Correlation ID tracking for full observability
+
+**Data Structures**:
+- `Task`: Single unit of work (question + chunk + policy_area)
+- `ExecutionPlan`: Immutable plan with deterministic plan_id and integrity_hash
+- `ChunkRoutingResult`: Validated chunk reference with metadata
+
+### ExecutorChunkSynchronizer
+
+**Location**: `src/farfan_pipeline/orchestration/executor_chunk_synchronizer.py`
+
+**Purpose**: Maintains JOIN table between executors and chunks for deterministic task assignment
+
+**Key Responsibilities**:
+- Builds join table mapping executors to chunks
+- Generates verification manifests
+- Ensures consistent executor-chunk bindings across pipeline runs
+- Prevents race conditions in parallel execution
+
+### Integration with Canonical Modules
+
+The irrigation/synchronization components work **upstream** of the canonical pipeline:
+
+1. **IrrigationSynchronizer** generates the ExecutionPlan (300 tasks)
+2. Tasks are distributed to executors based on **ExecutorChunkSynchronizer** JOIN table
+3. **Canonical Router** (phase2_a) validates and routes task payloads to executors
+4. **Canonical Carver** (phase2_b) transforms executor outputs (60 chunks → 300 micro-answers)
+5. **Canonical Nexus Integration** (phase2_c) synthesizes evidence and generates narratives
+
+### Why Separate?
+
+The irrigation/synchronization components handle:
+- **Task orchestration**: Which tasks to execute, in what order
+- **Execution coordination**: How to distribute work across executors
+- **Plan integrity**: Verification that the 300-task matrix is complete
+
+The canonical modules handle:
+- **Data transformation**: How to process chunks into answers
+- **Evidence synthesis**: How to build narrative from evidence
+- **Provenance tracking**: How to trace results back to sources
+
+This separation of concerns allows:
+- Independent testing of transformation logic vs. orchestration logic
+- Parallel execution of tasks while maintaining deterministic transformation
+- Flexibility to swap orchestration strategies without changing core pipeline
+
+### Documentation References
+
+- IrrigationSynchronizer design principles documented in module docstring
+- ExecutorChunkSynchronizer JOIN table documented in `EXECUTOR_CALIBRATION_INTEGRATION_README.md`
+- Signal irrigation documented in `src/farfan_pipeline/infrastructure/irrigation_using_signals/`
+- Integration tests in `tests/test_irrigation_synchronizer_join_table_integration.py`
 
 ## Verification
 
