@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "c055be2cba4a9db46514307fb32cb8dc9416668226f4e0d2eb1f08db9c557566",
+    "contract_hash": "51becf86fdfa39f238424d5e451f535f5833670acc41c3ed39c6022073078255",
     "created_at": "2025-11-28T03:50:31.408118+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 128,
-    "updated_at": "2025-12-17T10:18:08.300075+00:00"
+    "updated_at": "2025-12-17T23:49:38.492367+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -469,15 +469,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_causal_links"
+                  "description": "Invocar `CausalExtractor._extract_causal_links` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.extract_causal_links'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -500,7 +500,8 @@
               "actionable_insights": [
                 "Use _extract_causal_links results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.extract_causal_links"
           },
           {
             "method_name": "_calculate_composite_likelihood",
@@ -522,15 +523,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_composite_likelihood"
+                  "description": "Invocar `CausalExtractor._calculate_composite_likelihood` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.calculate_composite_likelihood'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -553,7 +554,8 @@
               "actionable_insights": [
                 "Use _calculate_composite_likelihood results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.calculate_composite_likelihood"
           },
           {
             "method_name": "_initialize_prior",
@@ -575,15 +577,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _initialize_prior"
+                  "description": "Invocar `CausalExtractor._initialize_prior` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.initialize_prior'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -606,7 +608,8 @@
               "actionable_insights": [
                 "Use _initialize_prior results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.initialize_prior"
           },
           {
             "method_name": "_calculate_type_transition_prior",
@@ -628,15 +631,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_type_transition_prior"
+                  "description": "Invocar `CausalExtractor._calculate_type_transition_prior` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.calculate_type_transition_prior'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -659,7 +662,8 @@
               "actionable_insights": [
                 "Use _calculate_type_transition_prior results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.calculate_type_transition_prior"
           },
           {
             "method_name": "_identify_causal_edges",
@@ -681,15 +685,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _identify_causal_edges"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._identify_causal_edges` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.identify_causal_edges'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -712,7 +716,8 @@
               "actionable_insights": [
                 "Use _identify_causal_edges results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.identify_causal_edges"
           },
           {
             "method_name": "_refine_edge_probabilities",

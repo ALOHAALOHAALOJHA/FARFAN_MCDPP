@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "740249bf9460351ba3b3d8fb3f98ce3fdd663a848590cacd5daa617c7e3f4afb",
+    "contract_hash": "bb49f2c69467cf95a1c4e54063c8f3ea5a813bf6bdb1e7d9806439d1d639a8cc",
     "created_at": "2025-11-28T03:50:42.252339+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 259,
-    "updated_at": "2025-12-16T04:42:58.641942+00:00"
+    "updated_at": "2025-12-17T23:49:39.281994+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -201,7 +201,7 @@
       "measurement_validity",
       "outcome_indicators",
       "participation_mechanisms",
-      "transparency"
+      "policy_transparency"
     ],
     "optional_signals": [
       "citizen_satisfaction",
@@ -256,7 +256,15 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "contradiction_detection.calculate_objective_alignment",
+          "contradiction_detection.identify_affected_sections",
+          "contradiction_detection.generate_resolution_recommendations",
+          "operationalizationauditor.generate_optimal_remediations",
+          "operationalizationauditor.get_remediation_text",
+          "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
+          "financial_audit.detect_allocation_gaps"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -377,7 +385,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q259 | Análisis D4-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -412,15 +420,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_objective_alignment"
+                  "description": "Invocar `PolicyContradictionDetector._calculate_objective_alignment` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='contradiction_detection.calculate_objective_alignment'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -443,7 +451,8 @@
               "actionable_insights": [
                 "Use _calculate_objective_alignment results for downstream analysis"
               ]
-            }
+            },
+            "provides": "contradiction_detection.calculate_objective_alignment"
           },
           {
             "method_name": "_identify_affected_sections",
@@ -465,15 +474,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _identify_affected_sections"
+                  "description": "Invocar `PolicyContradictionDetector._identify_affected_sections` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='contradiction_detection.identify_affected_sections'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -496,7 +505,8 @@
               "actionable_insights": [
                 "Use _identify_affected_sections results for downstream analysis"
               ]
-            }
+            },
+            "provides": "contradiction_detection.identify_affected_sections"
           },
           {
             "method_name": "_generate_resolution_recommendations",
@@ -518,15 +528,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_resolution_recommendations"
+                  "description": "Invocar `PolicyContradictionDetector._generate_resolution_recommendations` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='contradiction_detection.generate_resolution_recommendations'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -549,7 +559,8 @@
               "actionable_insights": [
                 "Use _generate_resolution_recommendations results for downstream analysis"
               ]
-            }
+            },
+            "provides": "contradiction_detection.generate_resolution_recommendations"
           },
           {
             "method_name": "_generate_optimal_remediations",
@@ -571,15 +582,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_optimal_remediations"
+                  "description": "Invocar `OperationalizationAuditor._generate_optimal_remediations` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='operationalizationauditor.generate_optimal_remediations'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -602,7 +613,8 @@
               "actionable_insights": [
                 "Use _generate_optimal_remediations results for downstream analysis"
               ]
-            }
+            },
+            "provides": "operationalizationauditor.generate_optimal_remediations"
           },
           {
             "method_name": "_get_remediation_text",
@@ -624,15 +636,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _get_remediation_text"
+                  "description": "Invocar `OperationalizationAuditor._get_remediation_text` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='operationalizationauditor.get_remediation_text'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -655,7 +667,8 @@
               "actionable_insights": [
                 "Use _get_remediation_text results for downstream analysis"
               ]
-            }
+            },
+            "provides": "operationalizationauditor.get_remediation_text"
           },
           {
             "method_name": "aggregate_risk_and_prioritize",

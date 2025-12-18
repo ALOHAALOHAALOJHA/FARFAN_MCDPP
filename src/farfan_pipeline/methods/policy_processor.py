@@ -93,168 +93,66 @@ except Exception as import_error:
 
 
 # ============================================================================
-# CANONICAL CONSTANTS - ALIVE DATA LOADER
+# CANONICAL CONSTANTS - FROZEN AT IMPORT (NO RUNTIME JSON)
 # ============================================================================
 
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT
-import json
+# CANONICAL REFACTORING: Import from canonical_specs instead of runtime JSON loading
+# ADR: No runtime questionnaire dependency - all constants frozen at module import
+# Source: src/farfan_pipeline/core/canonical_specs.py
+from farfan_pipeline.core.canonical_specs import (
+    MICRO_LEVELS,
+    CANON_DIMENSIONS,
+    CANON_POLICY_AREAS,
+    PDT_SECTION_PATTERNS,
+    PDT_STRATEGIC_PATTERNS,
+    PDT_FINANCIAL_PATTERNS,
+    CAUSAL_CHAIN_VOCABULARY,
+)
 
-class ParametrizationLoader:
-    """Loads sensitive parameters from canonical JSON source."""
+# DEPRECATED: ParametrizationLoader removed per canonical refactoring
+# Historical note: This class previously loaded questionnaire_monolith.json at runtime
+# Replaced with: Import from canonical_specs.py (Extract → Normalize → Freeze pattern)
+# Migration date: 2025-12-17
+# Rationale: Eliminate runtime JSON dependency, improve determinism and traceability
 
-    _monolith: dict[str, Any] | None = None
-    _unit_analysis: dict[str, Any] | None = None
+# ============================================================================
+# DERIVED THRESHOLDS - CALCULATED FROM CANONICAL CONSTANTS
+# ============================================================================
 
-    @classmethod
-    def load_monolith(cls) -> dict[str, Any]:
-        if cls._monolith is None:
-            path = PROJECT_ROOT / "canonic_questionnaire_central/questionnaire_monolith.json"
-            if path.exists():
-                with open(path, "r", encoding="utf-8") as f:
-                    cls._monolith = json.load(f)
-            else:
-                logging.getLogger(__name__).warning(f"Monolith not found at {path}")
-                cls._monolith = {}
-        return cls._monolith
+# Formula: (ACEPTABLE + BUENO) / 2
+# Source: MICRO_LEVELS from canonical_specs.py
+# Rationale: Midpoint between acceptable and good quality for confidence scoring
+CONFIDENCE_THRESHOLD = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2.0
+CONFIDENCE_THRESHOLD = round(CONFIDENCE_THRESHOLD, 2)  # 0.625
 
-    @classmethod
-    def load_unit_analysis(cls) -> dict[str, Any]:
-        if cls._unit_analysis is None:
-            path = PROJECT_ROOT / "canonic_description_unit_analysis.json"
-            if path.exists():
-                with open(path, "r", encoding="utf-8") as f:
-                    cls._unit_analysis = json.load(f)
-            else:
-                logging.getLogger(__name__).warning(f"Unit analysis not found at {path}")
-                cls._unit_analysis = {}
-        return cls._unit_analysis
+# Formula: ACEPTABLE threshold
+# Source: MICRO_LEVELS from canonical_specs.py
+# Rationale: Minimum acceptable coherence level
+COHERENCE_THRESHOLD = MICRO_LEVELS["ACEPTABLE"]  # 0.55
 
-    @classmethod
-    def get_micro_levels(cls) -> dict[str, float]:
-        monolith = cls.load_monolith()
-        levels = monolith.get("scoring", {}).get("micro_levels", [])
-        if not levels:
-            # Fallback
-            return {
-                "EXCELENTE": 0.85,
-                "BUENO": 0.70,
-                "ACEPTABLE": 0.55,
-                "INSUFICIENTE": 0.00,
-            }
-        return {l["level"]: float(l["min_score"]) for l in levels}
+# Formula: (ACEPTABLE + BUENO) / 2
+# Source: MICRO_LEVELS from canonical_specs.py  
+# Rationale: Alignment scoring threshold (same as confidence)
+ALIGNMENT_THRESHOLD = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2.0  # 0.625
 
-    @classmethod
-    def get_canonical_dimensions(cls) -> dict[str, dict[str, str]]:
-        monolith = cls.load_monolith()
-        return monolith.get("canonical_notation", {}).get("dimensions", {})
-
-    @classmethod
-    def get_policy_areas(cls) -> dict[str, dict[str, Any]]:
-        monolith = cls.load_monolith()
-        areas = monolith.get("canonical_notation", {}).get("policy_areas", {})
-        # Note: keywords are not in monolith policy_areas, need to preserve them or load from unit_analysis?
-        # Unit analysis doesn't seem to map keywords to PA codes directly in a simple dict.
-        # We will merge loaded areas with hardcoded keywords for now to ensure continuity,
-        # as keywords are essential for pattern matching.
-        return areas
-
-    @staticmethod
-    def _phrase_to_regex(phrase_str: str) -> str:
-        if not phrase_str:
-            return ""
-        # Split by comma or semicolon
-        phrases = [p.strip() for p in re.split(r'[,;]', phrase_str) if p.strip()]
-        patterns = []
-        for p in phrases:
-            # Escape regex chars but allow whitespace flexibility
-            escaped = re.escape(p)
-            pattern = escaped.replace(r"\ ", r"\s+")
-            patterns.append(pattern)
-
-        return r"\b(?:" + "|".join(patterns) + r")\b"
-
-    @classmethod
-    def get_questionnaire_patterns(cls) -> dict[str, list[str]]:
-        unit = cls.load_unit_analysis()
-        sections = unit.get("reporte_unit_of_analysis", {}).get("secciones", [])
-
-        patterns = {}
-
-        # Mapping from JSON keys to our internal keys
-        mapping = {
-            "D1_Insumos": {
-                "frases_asignacion_recursos": "recursos_asignados",
-                "patrones_descripcion_capacidad": "capacidad_institucional",
-                "terminologia_diagnostico_carencia": "brechas_deficits"
-            },
-            "D2_Actividades": {
-                "verbos_implementacion": "metas_producto", # Fallback mapping
-                "descripciones_intervencion": "estrategias_intervenciones",
-                "terminologia_proceso": "mecanismo_causal"
-            },
-            "D3_Productos": {
-                "descripciones_entregables": "metas_producto",
-                "establecimiento_indicadores": "indicadores_producto",
-                "frases_finalizacion_producto": "trazabilidad_producto"
-            },
-            "D4_Resultados": {
-                "lenguaje_logro_resultados": "indicadores_resultado",
-                "frases_cambio_mediano_plazo": "encadenamiento_causal",
-                "terminos_medicion_resultados": "metricas_outcome"
-            },
-            "D5_Impactos": {
-                "lenguaje_transformacion_largo_plazo": "transformacion_estructural",
-                "terminologia_sostenibilidad": "efectos_largo_plazo",
-                "frases_evaluacion_impacto": "proxies_mensurables"
-            },
-            "D6_Causalidad": {
-                "conectores_teoria_cambio": "teoria_cambio",
-                "terminos_marco_logico": "teoria_cambio_explicita",
-                "declaraciones_hipotesis": "supuestos_verificables"
-            }
-        }
-
-        # Find section III
-        for sec in sections:
-            if sec.get("id") == "III":
-                dims = sec.get("dimensiones_causales", {})
-                for dim_key, categories in dims.items():
-                    if dim_key in mapping:
-                        for json_cat, py_cat in mapping[dim_key].items():
-                            phrases = categories.get(json_cat, "")
-                            if phrases:
-                                if py_cat not in patterns:
-                                    patterns[py_cat] = []
-                                # Convert to regex and add
-                                patterns[py_cat].append(cls._phrase_to_regex(phrases))
-
-        # Ensure critical keys exist (fallback to hardcoded if not found in JSON)
-        # Note: We rely on hardcoded fallback below if this returns empty for some keys
-        return patterns
-
-# Load Alive Data
-MICRO_LEVELS = ParametrizationLoader.get_micro_levels()
-
-# DYNAMICALLY DERIVED THRESHOLDS (ALIVE DATA)
-# Calculated relative to the loaded micro-levels to ensure consistency
-CONFIDENCE_THRESHOLD = (MICRO_LEVELS.get("ACEPTABLE", 0.55) + MICRO_LEVELS.get("BUENO", 0.70)) / 2.0
-CONFIDENCE_THRESHOLD = round(CONFIDENCE_THRESHOLD, 2)
-
-COHERENCE_THRESHOLD = MICRO_LEVELS.get("ACEPTABLE", 0.55)
-
-ALIGNMENT_THRESHOLD = (MICRO_LEVELS.get("ACEPTABLE", 0.55) + MICRO_LEVELS.get("BUENO", 0.70)) / 2.0
-
+# Risk thresholds (inverse quality)
+# Source: Derived from quality standards
 RISK_THRESHOLDS = {
-    "excellent": 0.15,
+    "excellent": 0.15,   # Low risk = high quality
     "good": 0.30,
     "acceptable": 0.50,
-    "insufficient": 0.80
+    "insufficient": 0.80  # High risk = low quality
 }
 
-CANONICAL_DIMENSIONS = ParametrizationLoader.get_canonical_dimensions()
-# Merge loaded areas with hardcoded keywords (hybrid approach for robustness)
-_loaded_areas = ParametrizationLoader.get_policy_areas()
-CANON_POLICY_AREAS: dict[str, dict[str, Any]] = {
+# CANONICAL DIMENSIONS - Import from canonical_specs
+# Note: CANON_DIMENSIONS already imported above, but alias for backward compatibility
+CANONICAL_DIMENSIONS = CANON_DIMENSIONS
+
+# POLICY AREA KEYWORDS - Extended metadata for pattern matching
+# Note: CANON_POLICY_AREAS from canonical_specs contains PA01-PA10 with names
+# This adds keywords for semantic pattern matching (method capability requirement)
+# Source: Historical hardcoded keywords aligned with PDET/PDM terminology
+POLICY_AREA_KEYWORDS: dict[str, dict[str, Any]] = {
     "PA01": {
         "name": "Derechos de las mujeres e igualdad de género",
         "legacy_id": "P1",
@@ -443,80 +341,79 @@ CANON_POLICY_AREAS: dict[str, dict[str, Any]] = {
         ],
     },
 }
-# Update Policy Areas with loaded data (preserving keywords)
-for pa, data in _loaded_areas.items():
-    if pa in CANON_POLICY_AREAS:
-        CANON_POLICY_AREAS[pa].update({k: v for k, v in data.items() if k != "keywords"})
-    else:
-        CANON_POLICY_AREAS[pa] = data
 
-# Load Patterns from Unit of Analysis
-_loaded_patterns = ParametrizationLoader.get_questionnaire_patterns()
+# ============================================================================
+# QUESTIONNAIRE PATTERNS - FROZEN CANONICAL PATTERNS
+# ============================================================================
+# CANONICAL REFACTORING: Patterns previously loaded from unit_of_analysis.json
+# Now frozen as constants. Source: PDT/PDM structure from unit_of_analysis
+# These patterns define evidence requirements for methods (capability metadata)
+
 QUESTIONNAIRE_PATTERNS: dict[str, list[str]] = {
     # D1-INSUMOS Patterns
-    "diagnostico_cuantitativo": _loaded_patterns.get("diagnostico_cuantitativo", [
+    "diagnostico_cuantitativo": [
         r"\b(?:línea\s+base|año\s+base|situación\s+inicial|diagnóstico\s+de\s+género)\b",
         r"\b(?:serie\s+histórica|evolución\s+20\d{2}-20\d{2}|tendencia\s+de\s+los\s+últimos)\b",
         r"\b(?:DANE|Medicina\s+Legal|Fiscalía|Policía\s+Nacional|SIVIGILA|SISPRO)\b",
         r"\b(?:Observatorio\s+de\s+Asuntos\s+de\s+Género|Secretaría\s+de\s+la\s+Mujer|Comisaría\s+de\s+Familia)\b",
         r"\b(?:Encuesta\s+Nacional\s+de\s+Demografía\s+y\s+Salud|ENDS)\b",
         r"\b(?:\d+(?:\.\d+)?\s*%|por\s+cada\s+100\.000|por\s+100\s+mil\s+habitantes)\b",
-    ]),
-    "brechas_deficits": _loaded_patterns.get("brechas_deficits", [
+    ],
+    "brechas_deficits": [
         r"\b(?:brecha\s+de\s+género|déficit\s+en|rezago\s+frente\s+a\s+los\s+hombres)\b",
         r"\b(?:subregistro\s+de\s+casos|cifra\s+negra)\b",
         r"\b(?:barreras\s+de\s+acceso|dificultades\s+para)\b",
         r"\b(?:información\s+insuficiente|falta\s+de\s+datos\s+desagregados)\b",
         r"\b(?:limitación\s+en\s+la\s+medición|trabajo\s+no\s+remunerado)\b",
-    ]),
-    "recursos_asignados": _loaded_patterns.get("recursos_asignados", [
+    ],
+    "recursos_asignados": [
         r"\b(?:asignación\s+presupuestal|recursos\s+destinados|inversión\s+prevista)\b",
         r"\b(?:plan\s+plurianual|marco\s+fiscal|presupuesto\s+participativo)\b",
         r"\b(?:fuentes\s+de\s+financiación|SGP|SGR|recursos\s+propios)\b",
         r"\b(?:BPIN|código\s+presupuestal|rubro)\b",
         r"\b(?:\\$[\d\.,]+|COP[\d\.,]+|millones\s+de\s+pesos)\b",
-    ]),
+    ],
     # D2-ACTIVIDADES Patterns
-    "estrategias_intervenciones": _loaded_patterns.get("estrategias_intervenciones", [
+    "estrategias_intervenciones": [
         r"\b(?:estrategia\s+de|programa\s+de|proyecto\s+de|iniciativa\s+de)\b",
         r"\b(?:plan\s+de\s+acción|hoja\s+de\s+ruta|agenda\s+de)\b",
         r"\b(?:componentes\s+del\s+programa|líneas\s+de\s+acción|ejes\s+temáticos)\b",
         r"\b(?:metodología\s+de\s+intervención|modelo\s+de\s+atención|protocolo\s+de)\b",
-    ]),
-    "poblacion_focalizada": _loaded_patterns.get("poblacion_focalizada", [
+    ],
+    "poblacion_focalizada": [
         r"\b(?:población\s+objetivo|beneficiarios\s+directos|grupo\s+meta)\b",
         r"\b(?:criterios\s+de\s+focalización|priorización\s+de|selección\s+de\s+beneficiarios)\b",
         r"\b(?:cobertura\s+territorial|municipios\s+priorizados|zonas\s+de\s+intervención)\b",
         r"\b(?:enfoque\s+diferencial|enfoque\s+de\s+género|enfoque\s+étnico)\b",
-    ]),
+    ],
     # D3-PRODUCTOS Patterns
-    "metas_producto": _loaded_patterns.get("metas_producto", [
+    "metas_producto": [
         r"\b(?:meta\s+de\s+producto|indicador\s+de\s+producto|entregable)\b",
         r"\b(?:cantidad\s+de|número\s+de|porcentaje\s+de)\b",
         r"\b(?:construir|implementar|realizar|ejecutar|desarrollar)\b",
         r"\b(?:unidades|personas\s+atendidas|familias\s+beneficiadas|eventos\s+realizados)\b",
-    ]),
+    ],
     # D4-RESULTADOS Patterns
-    "indicadores_resultado": _loaded_patterns.get("indicadores_resultado", [
+    "indicadores_resultado": [
         r"\b(?:indicador\s+de\s+resultado|meta\s+de\s+resultado|outcome)\b",
         r"\b(?:reducción\s+de|aumento\s+de|mejora\s+en|fortalecimiento\s+de)\b",
         r"\b(?:tasa\s+de|índice\s+de|porcentaje\s+de|proporción\s+de)\b",
         r"\b(?:al\s+final\s+del\s+cuatrienio|para\s+20\d{2}|meta\s+cuatrienal)\b",
-    ]),
+    ],
     # D5-IMPACTOS Patterns
-    "transformacion_estructural": _loaded_patterns.get("transformacion_estructural", [
+    "transformacion_estructural": [
         r"\b(?:impacto\s+esperado|transformación|cambio\s+sistémico)\b",
         r"\b(?:largo\s+plazo|sostenibilidad|permanencia|consolidación)\b",
         r"\b(?:desarrollo\s+sostenible|ODS|Agenda\s+2030)\b",
         r"\b(?:cierre\s+de\s+brechas|equidad|inclusión\s+social)\b",
-    ]),
+    ],
     # D6-CAUSALIDAD Patterns
-    "teoria_cambio": _loaded_patterns.get("teoria_cambio", [
+    "teoria_cambio": [
         r"\b(?:teoría\s+de\s+cambio|modelo\s+lógico|cadena\s+de\s+valor)\b",
         r"\b(?:supuestos|hipótesis|condiciones\s+necesarias)\b",
         r"\b(?:si\.\.\.entonces|causa.*efecto|debido\s+a|como\s+resultado\s+de)\b",
         r"\b(?:contribuir\s+a|generar|provocar|desencadenar|facilitar)\b",
-    ]),
+    ],
 }
 
 # Official Entities from Questionnaire
@@ -1446,14 +1343,19 @@ class IndustrialPolicyProcessor:
     
     def _load_questionnaire(self) -> dict[str, Any]:
         """
-        LEGACY: Questionnaire loading disabled.
-
+        DEPRECATED: Questionnaire loading removed per canonical refactoring.
+        
+        CANONICAL REFACTORING (2025-12-17): This method no longer loads questionnaire_monolith.json
+        All constants are now imported from canonical_specs.py (Extract → Normalize → Freeze pattern)
+        
         This method is kept for backward compatibility but returns empty data.
         Modern SPC pipeline handles questionnaire injection separately.
+        
+        ADR: No runtime questionnaire dependency
         """
         logger.warning(
             "IndustrialPolicyProcessor._load_questionnaire called but questionnaire "
-            "loading is disabled. This is a legacy component. Use SPC ingestion instead."
+            "loading is disabled per canonical refactoring. Use canonical_specs.py constants."
         )
         return {"questions": []}
 

@@ -13,6 +13,7 @@ from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 # NEW: Replace legacy evidence modules with EvidenceNexus and Carver
 from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
 from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
+from canonic_phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
 
 if TYPE_CHECKING:
     from orchestration.orchestrator import MethodExecutor
@@ -47,6 +48,7 @@ class BaseExecutorWithContract(ABC):
         calibration_orchestrator: Any | None = None,
         enriched_packs: dict[str, Any] | None = None,
         validation_orchestrator: Any | None = None,
+        calibration_policy: CalibrationPolicy | None = None,
     ) -> None:
         self.method_executor = method_executor
         self.signal_registry = signal_registry
@@ -59,6 +61,8 @@ class BaseExecutorWithContract(ABC):
         # VALIDATION ORCHESTRATOR: Comprehensive validation tracking
         self.validation_orchestrator = validation_orchestrator
         self._use_validation_orchestrator = validation_orchestrator is not None
+        # CALIBRATION POLICY: Method selection and weighting based on calibration
+        self.calibration_policy = calibration_policy or create_default_policy(strict_mode=False)
 
     @classmethod
     @abstractmethod
@@ -776,6 +780,7 @@ class BaseExecutorWithContract(ABC):
         )
         
         calibration_results = {}
+        calibration_weights = {}
         
         for _, entry in sorted_inputs:
             class_name = entry["class"]
@@ -786,6 +791,7 @@ class BaseExecutorWithContract(ABC):
             payload = {**common_kwargs, **extra_args}
             
             method_id = f"{class_name}.{method_name}"
+            calibration_score = None
             
             if self.calibration_orchestrator:
                 try:
@@ -799,34 +805,77 @@ class BaseExecutorWithContract(ABC):
                         evidence=None
                     )
                     
+                    calibration_score = calibration_result.final_score
                     calibration_results[method_id] = calibration_result.to_dict()
                     
                     import logging
                     logger = logging.getLogger(__name__)
                     logger.info(
-                        f"[{base_slot}] Calibration: {method_id} → {calibration_result.final_score:.3f}"
+                        f"[{base_slot}] Calibration: {method_id} → {calibration_score:.3f}"
                     )
                     
                 except MethodBelowThresholdError as e:
                     import logging
                     logger = logging.getLogger(__name__)
-                    logger.error(
-                        f"[{base_slot}] Method {method_id} FAILED calibration: "
-                        f"score={e.score:.3f}, threshold={e.threshold:.3f}"
+                    calibration_score = e.score
+                    
+                    should_execute, reason = self.calibration_policy.should_execute_method(
+                        method_id, calibration_score
                     )
-                    raise RuntimeError(
-                        f"Method {method_id} failed calibration threshold"
-                    ) from e
+                    
+                    if not should_execute:
+                        logger.error(
+                            f"[{base_slot}] Method {method_id} SKIPPED: {reason}"
+                        )
+                        continue
+                    else:
+                        logger.warning(
+                            f"[{base_slot}] Method {method_id} below threshold but executing: {reason}"
+                        )
                 except Exception as e:
                     import logging
                     logger = logging.getLogger(__name__)
                     logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
+            
+            should_execute, exec_reason = self.calibration_policy.should_execute_method(
+                method_id, calibration_score
+            )
+            
+            if not should_execute:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.warning(f"[{base_slot}] Skipping {method_id}: {exec_reason}")
+                continue
+            
+            base_weight = entry.get("weight", 1.0)
+            weight_info = self.calibration_policy.compute_adjusted_weight(
+                base_weight=base_weight,
+                calibration_score=calibration_score,
+                method_id=method_id,
+            )
+            calibration_weights[method_id] = weight_info.to_dict()
+            
+            self.calibration_policy.record_influence(
+                phase_id=2,
+                method_id=method_id,
+                calibration_score=calibration_score or 0.0,
+                weight_adjustment=base_weight - weight_info.adjusted_weight,
+                influenced_output=weight_info.adjusted_weight != base_weight,
+                base_slot=base_slot,
+                question_id=question_id,
+            )
 
             result = self.method_executor.execute(
                 class_name=class_name,
                 method_name=method_name,
                 **payload,
             )
+            
+            if "_calibration_weight" not in result or not isinstance(result, dict):
+                if isinstance(result, dict):
+                    result["_calibration_weight"] = weight_info.adjusted_weight
+                    result["_calibration_score"] = calibration_score
+                    result["_calibration_quality_band"] = weight_info.quality_band
 
             if "signal_pack" in payload and payload["signal_pack"] is not None:
                 if "_signal_usage" not in method_outputs:
@@ -1015,6 +1064,7 @@ class BaseExecutorWithContract(ABC):
             "calibration_metadata": {
                 "enabled": self.calibration_orchestrator is not None,
                 "results": calibration_results,
+                "weights": calibration_weights,
                 "summary": {
                     "total_methods": len(calibration_results),
                     "average_score": sum(
@@ -1028,6 +1078,8 @@ class BaseExecutorWithContract(ABC):
                         (cr["final_score"] for cr in calibration_results.values()),
                         default=0.0
                     ),
+                    "methods_executed": len(method_outputs),
+                    "methods_skipped": len(method_inputs) - len(method_outputs),
                 }
             }
         }

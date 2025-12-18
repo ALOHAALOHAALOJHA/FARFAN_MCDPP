@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "a7458ba66ec30206f29c67d7b800d991190e28bca5edf88bcf75992a63702fbc",
+    "contract_hash": "cda629f1568822b9a53368535e83b267f922dc919f54654bf0ef6de8c54dc96c",
     "created_at": "2025-11-28T03:50:42.215568+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 250,
-    "updated_at": "2025-12-16T04:42:58.591863+00:00"
+    "updated_at": "2025-12-17T23:49:39.225229+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q5_Executor",
@@ -206,7 +206,7 @@
       "institutional_capacity",
       "intervention_logic",
       "participation_mechanisms",
-      "transparency"
+      "policy_transparency"
     ],
     "optional_signals": [
       "assumptions",
@@ -216,7 +216,7 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -261,7 +261,16 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "contradiction_detection.detect_logical_incompatibilities",
+          "contradiction_detection.calculate_coherence_metrics",
+          "contradiction_detection.calculate_objective_alignment",
+          "contradiction_detection.calculate_graph_fragmentation",
+          "operationalizationauditor.audit_sequence_logic",
+          "bayesianmechanisminference.calculate_coherence_factor",
+          "pdet_analysis.score_causal_coherence",
+          "adaptivepriorcalculator.calculate_likelihood_adaptativo"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -382,7 +391,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q250 | Análisis D2-Q5: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -417,15 +426,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _detect_logical_incompatibilities"
+                  "description": "Invocar `PolicyContradictionDetector._detect_logical_incompatibilities` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='contradiction_detection.detect_logical_incompatibilities'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -448,7 +457,8 @@
               "actionable_insights": [
                 "Use _detect_logical_incompatibilities results for downstream analysis"
               ]
-            }
+            },
+            "provides": "contradiction_detection.detect_logical_incompatibilities"
           },
           {
             "method_name": "_calculate_coherence_metrics",
@@ -470,15 +480,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_coherence_metrics"
+                  "description": "Invocar `PolicyContradictionDetector._calculate_coherence_metrics` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='contradiction_detection.calculate_coherence_metrics'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -501,7 +511,8 @@
               "actionable_insights": [
                 "Use _calculate_coherence_metrics results for downstream analysis"
               ]
-            }
+            },
+            "provides": "contradiction_detection.calculate_coherence_metrics"
           },
           {
             "method_name": "_calculate_objective_alignment",
@@ -523,15 +534,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_objective_alignment"
+                  "description": "Invocar `PolicyContradictionDetector._calculate_objective_alignment` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='contradiction_detection.calculate_objective_alignment'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -554,7 +565,8 @@
               "actionable_insights": [
                 "Use _calculate_objective_alignment results for downstream analysis"
               ]
-            }
+            },
+            "provides": "contradiction_detection.calculate_objective_alignment"
           },
           {
             "method_name": "_calculate_graph_fragmentation",
@@ -576,15 +588,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_graph_fragmentation"
+                  "description": "Invocar `PolicyContradictionDetector._calculate_graph_fragmentation` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='contradiction_detection.calculate_graph_fragmentation'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -607,7 +619,8 @@
               "actionable_insights": [
                 "Use _calculate_graph_fragmentation results for downstream analysis"
               ]
-            }
+            },
+            "provides": "contradiction_detection.calculate_graph_fragmentation"
           },
           {
             "method_name": "audit_sequence_logic",
@@ -629,15 +642,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute audit_sequence_logic"
+                  "description": "Invocar `OperationalizationAuditor.audit_sequence_logic` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='operationalizationauditor.audit_sequence_logic'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -660,7 +673,8 @@
               "actionable_insights": [
                 "Use audit_sequence_logic results for downstream analysis"
               ]
-            }
+            },
+            "provides": "operationalizationauditor.audit_sequence_logic"
           },
           {
             "method_name": "_calculate_coherence_factor",

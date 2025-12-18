@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "9cb8819ae080496dd92502c4f97c4f81ad4fa80f8ecc63570063605461a0edf9",
+    "contract_hash": "854994f72b696524c3221dae81a388fe94a3b8fe3f4e16ecb5d5081356548c14",
     "created_at": "2025-11-28T03:50:42.212372+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 249,
-    "updated_at": "2025-12-16T04:42:58.587497+00:00"
+    "updated_at": "2025-12-17T23:49:39.220155+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q4_Executor",
@@ -252,7 +252,7 @@
       "institutional_capacity",
       "intervention_logic",
       "participation_mechanisms",
-      "transparency"
+      "policy_transparency"
     ],
     "optional_signals": [
       "assumptions",
@@ -262,7 +262,7 @@
       "theory_of_change"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -307,7 +307,18 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "pdet_analysis.bayesian_risk_inference",
+          "pdet_analysis.sensitivity_analysis",
+          "pdet_analysis.interpret_risk",
+          "pdet_analysis.compute_robustness_value",
+          "pdet_analysis.compute_e_value",
+          "pdet_analysis.interpret_sensitivity",
+          "operationalizationauditor.audit_systemic_risk",
+          "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
+          "bayesiancounterfactualauditor.refutation_and_sanity_checks",
+          "adaptivepriorcalculator.sensitivity_analysis"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -428,7 +439,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q249 | Análisis D2-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -463,15 +474,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _bayesian_risk_inference"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._bayesian_risk_inference` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.bayesian_risk_inference'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -494,7 +505,8 @@
               "actionable_insights": [
                 "Use _bayesian_risk_inference results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.bayesian_risk_inference"
           },
           {
             "method_name": "sensitivity_analysis",
@@ -516,15 +528,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute sensitivity_analysis"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer.sensitivity_analysis` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.sensitivity_analysis'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -547,7 +559,8 @@
               "actionable_insights": [
                 "Use sensitivity_analysis results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.sensitivity_analysis"
           },
           {
             "method_name": "_interpret_risk",
@@ -569,15 +582,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _interpret_risk"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._interpret_risk` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.interpret_risk'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -600,7 +613,8 @@
               "actionable_insights": [
                 "Use _interpret_risk results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.interpret_risk"
           },
           {
             "method_name": "_compute_robustness_value",
@@ -622,15 +636,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compute_robustness_value"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._compute_robustness_value` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.compute_robustness_value'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -653,7 +667,8 @@
               "actionable_insights": [
                 "Use _compute_robustness_value results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.compute_robustness_value"
           },
           {
             "method_name": "_compute_e_value",
@@ -675,15 +690,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compute_e_value"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._compute_e_value` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.compute_e_value'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -706,7 +721,8 @@
               "actionable_insights": [
                 "Use _compute_e_value results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.compute_e_value"
           },
           {
             "method_name": "_interpret_sensitivity",

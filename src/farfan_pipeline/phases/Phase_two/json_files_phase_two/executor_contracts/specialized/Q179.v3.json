@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "32fbcbe9ddbef2914858c7dbb523913a3a3c62802296ee32ddbfebe2b1897ccf",
+    "contract_hash": "412f8eb34bad227e09ac0c9181d5aeb7e0cefc43d9d59ed7ad9a1d91879b7c25",
     "created_at": "2025-11-28T03:50:31.754833+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 179,
-    "updated_at": "2025-12-17T14:44:57.230685+00:00"
+    "updated_at": "2025-12-17T23:49:38.758088+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -272,7 +272,15 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "configloader.update_priors_from_feedback",
+          "configloader.check_uncertainty_reduction_criterion",
+          "configloader.save_prior_history",
+          "configloader.load_uncertainty_history",
+          "cdafframework.extract_feedback_from_audit",
+          "advanceddagvalidator.calculate_node_importance",
+          "bayesfactortable.get_bayes_factor"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -393,7 +401,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q179 | Análisis D6-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -428,15 +436,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute update_priors_from_feedback"
+                  "description": "Invocar `ConfigLoader.update_priors_from_feedback` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.update_priors_from_feedback'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -459,7 +467,8 @@
               "actionable_insights": [
                 "Use update_priors_from_feedback results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.update_priors_from_feedback"
           },
           {
             "method_name": "check_uncertainty_reduction_criterion",
@@ -481,15 +490,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute check_uncertainty_reduction_criterion"
+                  "description": "Invocar `ConfigLoader.check_uncertainty_reduction_criterion` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.check_uncertainty_reduction_criterion'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -512,7 +521,8 @@
               "actionable_insights": [
                 "Use check_uncertainty_reduction_criterion results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.check_uncertainty_reduction_criterion"
           },
           {
             "method_name": "_save_prior_history",
@@ -534,15 +544,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _save_prior_history"
+                  "description": "Invocar `ConfigLoader._save_prior_history` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.save_prior_history'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -565,7 +575,8 @@
               "actionable_insights": [
                 "Use _save_prior_history results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.save_prior_history"
           },
           {
             "method_name": "_load_uncertainty_history",
@@ -587,15 +598,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _load_uncertainty_history"
+                  "description": "Invocar `ConfigLoader._load_uncertainty_history` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.load_uncertainty_history'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -618,7 +629,8 @@
               "actionable_insights": [
                 "Use _load_uncertainty_history results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.load_uncertainty_history"
           },
           {
             "method_name": "_extract_feedback_from_audit",
@@ -640,15 +652,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_feedback_from_audit"
+                  "description": "Invocar `CDAFFramework._extract_feedback_from_audit` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='cdafframework.extract_feedback_from_audit'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -671,7 +683,8 @@
               "actionable_insights": [
                 "Use _extract_feedback_from_audit results for downstream analysis"
               ]
-            }
+            },
+            "provides": "cdafframework.extract_feedback_from_audit"
           },
           {
             "method_name": "_calculate_node_importance",

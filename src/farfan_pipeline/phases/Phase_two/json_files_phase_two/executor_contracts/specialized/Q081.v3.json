@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "a71c1704919645284ed991b89f02f3147379c866befd6cfe4046abfe465f51cf",
+    "contract_hash": "9641d2081ebc8ffc88080e69a4551d59531ac628ec7accc8feed44dc3ff873a2",
     "created_at": "2025-11-28T03:50:13.347137+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 81,
-    "updated_at": "2025-12-16T04:42:57.720084+00:00"
+    "updated_at": "2025-12-17T23:49:38.288743+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -238,7 +238,7 @@
       "sustainability_mechanisms"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -283,7 +283,16 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "pdet_analysis.generate_counterfactuals",
+          "pdet_analysis.simulate_intervention",
+          "pdet_analysis.generate_scenario_narrative",
+          "pdet_analysis.find_mediator_mentions",
+          "teoriacambio.validar_orden_causal",
+          "causal_extraction.assess_temporal_coherence",
+          "text_mining.generate_interventions",
+          "bayesiancounterfactualauditor.construct_scm"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -404,7 +413,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q081 | Análisis D5-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -439,15 +448,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute generate_counterfactuals"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer.generate_counterfactuals` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.generate_counterfactuals'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -470,7 +479,8 @@
               "actionable_insights": [
                 "Use generate_counterfactuals results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.generate_counterfactuals"
           },
           {
             "method_name": "_simulate_intervention",
@@ -492,15 +502,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _simulate_intervention"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._simulate_intervention` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.simulate_intervention'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -523,7 +533,8 @@
               "actionable_insights": [
                 "Use _simulate_intervention results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.simulate_intervention"
           },
           {
             "method_name": "_generate_scenario_narrative",
@@ -545,15 +556,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_scenario_narrative"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._generate_scenario_narrative` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.generate_scenario_narrative'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -576,7 +587,8 @@
               "actionable_insights": [
                 "Use _generate_scenario_narrative results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.generate_scenario_narrative"
           },
           {
             "method_name": "_find_mediator_mentions",
@@ -598,15 +610,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _find_mediator_mentions"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._find_mediator_mentions` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.find_mediator_mentions'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -629,7 +641,8 @@
               "actionable_insights": [
                 "Use _find_mediator_mentions results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.find_mediator_mentions"
           },
           {
             "method_name": "_validar_orden_causal",
@@ -651,15 +664,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _validar_orden_causal"
+                  "description": "Invocar `TeoriaCambio._validar_orden_causal` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.validar_orden_causal'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -682,7 +695,8 @@
               "actionable_insights": [
                 "Use _validar_orden_causal results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.validar_orden_causal"
           },
           {
             "method_name": "_assess_temporal_coherence",

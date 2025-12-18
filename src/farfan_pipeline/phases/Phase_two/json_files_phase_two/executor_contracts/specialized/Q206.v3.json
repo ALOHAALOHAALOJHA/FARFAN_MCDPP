@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "4bc83ddf87f6e64bb275d5ff8e1ec9b3517485d1a4db2855d998dc93577994fe",
+    "contract_hash": "a4cb86f7bfc7c088fb7bf6ce5094e04278dcd42dd05830573d87b382a75b99b2",
     "created_at": "2025-11-28T03:50:41.892548+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 206,
-    "updated_at": "2025-12-17T02:49:51.786697",
+    "updated_at": "2025-12-17T23:49:38.961724+00:00",
     "remediation_applied": [
       {
         "date": "2025-12-17T02:49:51.786700",
@@ -98,7 +98,7 @@
     "note": "All 8 methods extracted from D6_Q1_Executor in executors.py"
   },
   "question_context": {
-    "question_text": "\u00bfExiste una 'teor\u00eda de cambio' expl\u00edcita para la pol\u00edtica de ni\u00f1ez y juventud, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. permanencia escolar) y 'supuestos verificables'?",
+    "question_text": "¿Existe una 'teoría de cambio' explícita para la política de niñez y juventud, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. permanencia escolar) y 'supuestos verificables'?",
     "question_type": "micro",
     "scoring_modality": "TYPE_A",
     "modality": "count_and_scale",
@@ -110,7 +110,7 @@
         "flags": "i",
         "id": "PAT-Q206-000",
         "match_type": "REGEX",
-        "pattern": "teor\u00eda de cambio|marco l\u00f3gico|cadena causal|modelo l\u00f3gico de desarrollo juvenil",
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de desarrollo juvenil",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -131,7 +131,7 @@
         "evidence_modality": "FIGURE",
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0051",
-        "pattern": "diagrama causal|gr\u00e1fico de la teor\u00eda de cambio|ruta causal",
+        "pattern": "diagrama causal|gráfico de la teoría de cambio|ruta causal",
         "policy_area": "PA06"
       },
       {
@@ -140,7 +140,7 @@
         "flags": "i",
         "id": "PAT-Q206-002",
         "match_type": "REGEX",
-        "pattern": "causa ra\u00edz de la deserci\u00f3n|determinante del embarazo adolescente",
+        "pattern": "causa raíz de la deserción|determinante del embarazo adolescente",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -154,7 +154,7 @@
         "flags": "i",
         "id": "PAT-Q206-003",
         "match_type": "REGEX",
-        "pattern": "mediador|variable intermedia|eslab\u00f3n|permanencia escolar|proyecto de vida",
+        "pattern": "mediador|variable intermedia|eslabón|permanencia escolar|proyecto de vida",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -188,7 +188,7 @@
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0104",
-        "pattern": "supuesto verificable|hip\u00f3tesis a testear|premisa comprobable",
+        "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable",
         "policy_area": "PA06"
       }
     ],
@@ -260,7 +260,7 @@
               "description": "Scores de confianza usados por el scorer."
             },
             "semantic_similarity": {
-              "description": "M\u00e9trica de similitud sem\u00e1ntica (si aplica)."
+              "description": "Métrica de similitud semántica (si aplica)."
             },
             "pattern_matches": {
               "type": "object",
@@ -339,7 +339,7 @@
         },
         "question_global": {
           "type": "integer",
-          "description": "\u00cdndice global de la pregunta (de questionnaire_monolith).",
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
           "const": 206
         },
         "policy_area_id": {
@@ -347,7 +347,7 @@
             "string",
             "null"
           ],
-          "description": "PA can\u00f3nica, debe ser coherente con identity.policy_area_id.",
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
           "const": "PA06"
         },
         "dimension_id": {
@@ -355,7 +355,7 @@
             "string",
             "null"
           ],
-          "description": "Dimensi\u00f3n can\u00f3nica, coherente con identity.dimension_id.",
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
           "const": "DIM06"
         },
         "cluster_id": {
@@ -363,7 +363,7 @@
             "string",
             "null"
           ],
-          "description": "Cluster de an\u00e1lisis seg\u00fan el monolith, si aplica.",
+          "description": "Cluster de análisis según el monolith, si aplica.",
           "const": "CL02"
         },
         "evidence": {
@@ -379,7 +379,7 @@
             "object",
             "null"
           ],
-          "description": "Resultado de validaciones l\u00f3gicas de la respuesta (coherencia, integridad, etc.).",
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
           "additionalProperties": true
         },
         "trace": {
@@ -387,7 +387,7 @@
             "object",
             "null"
           ],
-          "description": "Informaci\u00f3n de trazabilidad (provenance, logs) espec\u00edfica de la ejecuci\u00f3n.",
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
           "additionalProperties": true
         },
         "metadata": {
@@ -409,17 +409,17 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## An\u00e1lisis D1-Q1: L\u00ednea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analiz\u00f3 la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la l\u00ednea base diagn\u00f3stica en el \u00e1rea de Derechos de las Mujeres e Igualdad de G\u00e9nero.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluaci\u00f3n Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos cr\u00edticos faltantes**: {evidence.missing_required_elements}",
+        "title": "## Q206 | Análisis D6-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
           "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
           "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
           "**Series temporales**: {evidence.temporal_series_count}",
           "**Cobertura territorial**: {evidence.territorial_coverage}"
         ],
-        "interpretation": "### Interpretaci\u00f3n de Resultados\n\n{methodological_interpretation}",
+        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -444,15 +444,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute construir_grafo_causal"
+                  "description": "Invocar `TeoriaCambio.construir_grafo_causal` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.construir_grafo_causal'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -468,14 +468,15 @@
                 "result": "Structured output from construir_grafo_causal"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use construir_grafo_causal results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.construir_grafo_causal"
           },
           {
             "method_name": "validacion_completa",
@@ -497,15 +498,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute validacion_completa"
+                  "description": "Invocar `TeoriaCambio.validacion_completa` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.validacion_completa'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -521,14 +522,15 @@
                 "result": "Structured output from validacion_completa"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use validacion_completa results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.validacion_completa"
           },
           {
             "method_name": "export_nodes",
@@ -550,15 +552,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute export_nodes"
+                  "description": "Invocar `TeoriaCambio.export_nodes` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.export_nodes'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -574,14 +576,15 @@
                 "result": "Structured output from export_nodes"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use export_nodes results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.export_nodes"
           },
           {
             "method_name": "generate_causal_diagram",
@@ -603,15 +606,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute generate_causal_diagram"
+                  "description": "Invocar `ReportingEngine.generate_causal_diagram` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_diagram'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -627,14 +630,15 @@
                 "result": "Structured output from generate_causal_diagram"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use generate_causal_diagram results for downstream analysis"
               ]
-            }
+            },
+            "provides": "reportingengine.generate_causal_diagram"
           },
           {
             "method_name": "generate_causal_model_json",
@@ -656,15 +660,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute generate_causal_model_json"
+                  "description": "Invocar `ReportingEngine.generate_causal_model_json` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_model_json'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -680,14 +684,15 @@
                 "result": "Structured output from generate_causal_model_json"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use generate_causal_model_json results for downstream analysis"
               ]
-            }
+            },
+            "provides": "reportingengine.generate_causal_model_json"
           },
           {
             "method_name": "export_nodes",
@@ -733,7 +738,7 @@
                 "result": "Structured output from export_nodes"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -786,7 +791,7 @@
                 "result": "Structured output from export_causal_network"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -839,7 +844,7 @@
                 "result": "Structured output from extract_causal_hierarchy"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -854,7 +859,7 @@
           "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
           "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
           "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1\u219217). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
           "trade_offs": [
             "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
             "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
@@ -896,7 +901,7 @@
           },
           {
             "elements": [
-              "series_temporales_a\u00f1os"
+              "series_temporales_años"
             ],
             "minimum": 3
           }
@@ -995,7 +1000,7 @@
                 "enum": [
                   "fuentes_oficiales",
                   "indicadores_cuantitativos",
-                  "series_temporales_a\u00f1os",
+                  "series_temporales_años",
                   "cobertura_territorial_especificada",
                   "financial_amounts",
                   "policy_goals",
@@ -1042,7 +1047,7 @@
                   "type": "integer",
                   "minimum_expected": 3
                 },
-                "series_temporales_a\u00f1os": {
+                "series_temporales_años": {
                   "type": "integer",
                   "minimum_expected": 3
                 },
@@ -1227,7 +1232,7 @@
           "value": "DANE",
           "confidence": 0.95,
           "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "seg\u00fan datos de DANE para el a\u00f1o 2022",
+          "source_sentence": "según datos de DANE para el año 2022",
           "sentence_id": 45,
           "position": {
             "start": 123,
@@ -1253,7 +1258,7 @@
         },
         {
           "element_id": "E-003",
-          "type": "series_temporales_a\u00f1os",
+          "type": "series_temporales_años",
           "years": [
             2020,
             2021,
@@ -1275,7 +1280,7 @@
         "by_type": {
           "fuentes_oficiales": 5,
           "indicadores_cuantitativos": 12,
-          "series_temporales_a\u00f1os": 4,
+          "series_temporales_años": 4,
           "cobertura_territorial_especificada": 1,
           "financial_amounts": 8,
           "policy_goals": 7,
@@ -1313,7 +1318,7 @@
       "critical_links": [
         {
           "cause": "alta tasa de VBG",
-          "effect": "baja autonom\u00eda econ\u00f3mica",
+          "effect": "baja autonomía económica",
           "criticality": 0.87,
           "coherence": 0.82
         }
@@ -1368,7 +1373,7 @@
         "found_in_example": 12,
         "status": "PASS"
       },
-      "series_temporales_a\u00f1os": {
+      "series_temporales_años": {
         "minimum": 3,
         "found_in_example": 4,
         "status": "PASS"

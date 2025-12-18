@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "62ff6f6356e0a8d0a1cfae713ad583844067d3d21391e186ce74e6b58e9cbf59",
+    "contract_hash": "92f85b36e8807fe1d01ef184389163f0aadac8d73eaf771354ba59bcb9486a8f",
     "created_at": "2025-11-28T03:49:29.823196+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 13,
-    "updated_at": "2025-12-16T04:42:57.373885+00:00"
+    "updated_at": "2025-12-17T23:49:37.954552+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -344,7 +344,7 @@
       "territorial_scope"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -389,7 +389,30 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "financial_audit.match_program_to_node",
+          "financial_audit.match_goal_to_budget",
+          "pdet_analysis.extract_from_responsibility_tables",
+          "pdet_analysis.consolidate_entities",
+          "pdet_analysis.identify_responsible_entities",
+          "pdet_analysis.score_responsibility_clarity",
+          "policyanalysisembedder.process_document",
+          "policyanalysisembedder.generate_query_from_pdq",
+          "policyanalysisembedder.semantic_search",
+          "policyanalysisembedder.apply_mmr",
+          "semanticanalyzer.empty_semantic_cube",
+          "semanticanalyzer.classify_policy_domain",
+          "semanticanalyzer.classify_cross_cutting_themes",
+          "semanticanalyzer.classify_value_chain_link",
+          "semanticanalyzer.vectorize_segments",
+          "semanticanalyzer.process_segment",
+          "semanticanalyzer.calculate_semantic_complexity",
+          "industrial_policy.compute_evidence_confidence",
+          "pdet_analysis.entity_to_dict",
+          "adaptivepriorcalculator.generate_traceability_record",
+          "policyanalysisembedder.generate_pdq_report",
+          "reportingengine.generate_accountability_matrix"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -510,7 +533,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q013 | Análisis D3-Q3: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -545,15 +568,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _match_program_to_node"
+                  "description": "Invocar `FinancialAuditor._match_program_to_node` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.match_program_to_node'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -576,7 +599,8 @@
               "actionable_insights": [
                 "Use _match_program_to_node results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.match_program_to_node"
           },
           {
             "method_name": "_match_goal_to_budget",
@@ -598,15 +622,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _match_goal_to_budget"
+                  "description": "Invocar `FinancialAuditor._match_goal_to_budget` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.match_goal_to_budget'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -629,7 +653,8 @@
               "actionable_insights": [
                 "Use _match_goal_to_budget results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.match_goal_to_budget"
           },
           {
             "method_name": "_extract_from_responsibility_tables",
@@ -651,15 +676,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_from_responsibility_tables"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.extract_from_responsibility_tables'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -682,7 +707,8 @@
               "actionable_insights": [
                 "Use _extract_from_responsibility_tables results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.extract_from_responsibility_tables"
           },
           {
             "method_name": "_consolidate_entities",
@@ -704,15 +730,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _consolidate_entities"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._consolidate_entities` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.consolidate_entities'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -735,7 +761,8 @@
               "actionable_insights": [
                 "Use _consolidate_entities results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.consolidate_entities"
           },
           {
             "method_name": "identify_responsible_entities",
@@ -757,15 +784,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute identify_responsible_entities"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer.identify_responsible_entities` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.identify_responsible_entities'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -788,7 +815,8 @@
               "actionable_insights": [
                 "Use identify_responsible_entities results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.identify_responsible_entities"
           },
           {
             "method_name": "_score_responsibility_clarity",

@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "9f272588f7d70f45338e8a4ee3dda5843aa8999d498606f8c30ecf5fdb5a5471",
+    "contract_hash": "55af1589ba1d01cd701e2f6e1fc9ceef76a7e0d3a73fed5b92525c73151c853d",
     "created_at": "2025-11-28T03:50:31.571934+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 150,
-    "updated_at": "2025-12-17T10:21:52.456712+00:00"
+    "updated_at": "2025-12-17T23:49:38.599894+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -474,15 +474,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_language_specificity"
+                  "description": "Invocar `CausalExtractor._calculate_language_specificity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.calculate_language_specificity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -505,7 +505,8 @@
               "actionable_insights": [
                 "Use _calculate_language_specificity results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.calculate_language_specificity"
           },
           {
             "method_name": "_assess_temporal_coherence",
@@ -527,15 +528,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _assess_temporal_coherence"
+                  "description": "Invocar `CausalExtractor._assess_temporal_coherence` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.assess_temporal_coherence'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -558,7 +559,8 @@
               "actionable_insights": [
                 "Use _assess_temporal_coherence results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causal_extraction.assess_temporal_coherence"
           },
           {
             "method_name": "diagnose_critical_links",
@@ -616,7 +618,8 @@
                 "If few critical links found: Diagnosis lacks causal depth, may be purely descriptive",
                 "If many links but low criticality: Diagnosis discusses tangential issues, not core gender inequalities"
               ]
-            }
+            },
+            "provides": "text_mining.diagnose_critical_links"
           },
           {
             "method_name": "identify_failure_points",
@@ -638,15 +641,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute identify_failure_points"
+                  "description": "Invocar `CausalInferenceSetup.identify_failure_points` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.identify_failure_points'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -669,7 +672,8 @@
               "actionable_insights": [
                 "Use identify_failure_points results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causalinferencesetup.identify_failure_points"
           },
           {
             "method_name": "_get_dynamics_pattern",
@@ -691,15 +695,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _get_dynamics_pattern"
+                  "description": "Invocar `CausalInferenceSetup._get_dynamics_pattern` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.get_dynamics_pattern'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -722,7 +726,8 @@
               "actionable_insights": [
                 "Use _get_dynamics_pattern results for downstream analysis"
               ]
-            }
+            },
+            "provides": "causalinferencesetup.get_dynamics_pattern"
           },
           {
             "method_name": "chunk_text",

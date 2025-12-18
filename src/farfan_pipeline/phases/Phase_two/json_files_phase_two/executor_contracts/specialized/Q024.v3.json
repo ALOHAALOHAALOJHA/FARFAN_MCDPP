@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "e85140526938a3dfd4fe53d3a1e995c8df541f79519928ae87065095f599f457",
+    "contract_hash": "54a44eb5440664725e7730a15ba768c745671fd0b1420b13c835eb8f7ad44121",
     "created_at": "2025-11-28T03:50:01.829220+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 24,
-    "updated_at": "2025-12-16T04:42:57.435232+00:00"
+    "updated_at": "2025-12-17T23:49:38.019313+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -208,7 +208,7 @@
       "territorial_scope"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -253,7 +253,15 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "operationalizationauditor.audit_systemic_risk",
+          "bayesiancounterfactualauditor.refutation_and_sanity_checks",
+          "bayesiancounterfactualauditor.test_effect_stability",
+          "pdet_analysis.interpret_risk",
+          "pdet_analysis.interpret_sensitivity",
+          "pdet_analysis.break_cycles",
+          "adaptivepriorcalculator.sensitivity_analysis"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -374,7 +382,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q024 | Análisis D5-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -409,15 +417,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _audit_systemic_risk"
+                  "description": "Invocar `OperationalizationAuditor._audit_systemic_risk` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='operationalizationauditor.audit_systemic_risk'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -440,7 +448,8 @@
               "actionable_insights": [
                 "Use _audit_systemic_risk results for downstream analysis"
               ]
-            }
+            },
+            "provides": "operationalizationauditor.audit_systemic_risk"
           },
           {
             "method_name": "refutation_and_sanity_checks",
@@ -462,15 +471,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute refutation_and_sanity_checks"
+                  "description": "Invocar `BayesianCounterfactualAuditor.refutation_and_sanity_checks` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesiancounterfactualauditor.refutation_and_sanity_checks'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -493,7 +502,8 @@
               "actionable_insights": [
                 "Use refutation_and_sanity_checks results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesiancounterfactualauditor.refutation_and_sanity_checks"
           },
           {
             "method_name": "_test_effect_stability",
@@ -515,15 +525,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_effect_stability"
+                  "description": "Invocar `BayesianCounterfactualAuditor._test_effect_stability` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesiancounterfactualauditor.test_effect_stability'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -546,7 +556,8 @@
               "actionable_insights": [
                 "Use _test_effect_stability results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesiancounterfactualauditor.test_effect_stability"
           },
           {
             "method_name": "_interpret_risk",
@@ -568,15 +579,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _interpret_risk"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._interpret_risk` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.interpret_risk'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -599,7 +610,8 @@
               "actionable_insights": [
                 "Use _interpret_risk results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.interpret_risk"
           },
           {
             "method_name": "_interpret_sensitivity",
@@ -621,15 +633,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _interpret_sensitivity"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._interpret_sensitivity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.interpret_sensitivity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -652,7 +664,8 @@
               "actionable_insights": [
                 "Use _interpret_sensitivity results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.interpret_sensitivity"
           },
           {
             "method_name": "_break_cycles",

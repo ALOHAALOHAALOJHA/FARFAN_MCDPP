@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "5e2bb173049378180f3f8be82c329ccf76937c2f28c713cabc86e6d5ba73f59d",
+    "contract_hash": "8646bb147e841e32df89fdab5a86602834f782ca31f12be2fd707d69348a120d",
     "created_at": "2025-11-28T03:49:29.779617+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 1,
-    "updated_at": "2025-12-16T04:42:57.310011+00:00"
+    "updated_at": "2025-12-17T23:46:06.084951+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -588,6 +588,7 @@
           "text_mining.diagnose_critical_links",
           "text_mining.analyze_link_text",
           "industrial_policy.process",
+          "industrial_policy.match_patterns_in_sentences",
           "industrial_policy.extract_point_evidence",
           "causal_extraction.extract_goals",
           "causal_extraction.parse_goal_context",
@@ -596,6 +597,7 @@
           "pdet_analysis.extract_from_budget_table",
           "contradiction_detection.extract_quantitative_claims",
           "contradiction_detection.parse_number",
+          "contradiction_detection.statistical_significance_test",
           "bayesian_analysis.evaluate_policy_metric",
           "bayesian_analysis.compare_policies",
           "semantic_processing.chunk_text",
@@ -720,7 +722,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q001 | Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_count}** nodos de evidencia en el grafo construido por EvidenceNexus para la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level} | **Confianza**: {overall_confidence}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza general**: {overall_confidence}\n- **Completitud**: {completeness}\n- **Nodos en grafo**: {graph_statistics.node_count} | **Relaciones**: {graph_statistics.edge_count}",
         "elements_section": "### Elementos de Evidencia Identificados (Grafo)\n\n{evidence.elements_list}\n\n**Gaps críticos**: {synthesized_answer.gaps}",

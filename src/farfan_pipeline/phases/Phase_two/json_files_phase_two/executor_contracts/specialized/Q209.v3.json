@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "6db1d51c5aecf70d766cc3c54f86bdb80cbb1f3ea9d2f4d42faf020586662da4",
+    "contract_hash": "ff653c74190e3217376268efa82de099ed633da50ef42b6433e6439a2622dbf2",
     "created_at": "2025-11-28T03:50:41.901651+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 209,
-    "updated_at": "2025-12-17T02:49:51.793066",
+    "updated_at": "2025-12-17T23:49:38.976414+00:00",
     "remediation_applied": [
       {
         "date": "2025-12-17T02:49:51.793069",
@@ -90,7 +90,7 @@
     "note": "All 7 methods extracted from D6_Q4_Executor in executors.py"
   },
   "question_context": {
-    "question_text": "\u00bfSe describe un sistema de monitoreo para la pol\u00edtica de ni\u00f1ez y juventud que incluya 'mecanismos de correcci\u00f3n', 'retroalimentaci\u00f3n' o 'aprendizaje' para adaptar la estrategia?",
+    "question_text": "¿Se describe un sistema de monitoreo para la política de niñez y juventud que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
     "question_type": "micro",
     "scoring_modality": "TYPE_A",
     "modality": "count_and_scale",
@@ -102,7 +102,7 @@
         "flags": "i",
         "id": "PAT-Q209-000",
         "match_type": "REGEX",
-        "pattern": "sistema de seguimiento y evaluaci\u00f3n|M&E a la pol\u00edtica de infancia",
+        "pattern": "sistema de seguimiento y evaluación|M&E a la política de infancia",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -116,7 +116,7 @@
         "flags": "i",
         "id": "PAT-Q209-001",
         "match_type": "LITERAL",
-        "pattern": "monitoreo nominal|seguimiento ni\u00f1o a ni\u00f1o",
+        "pattern": "monitoreo nominal|seguimiento niño a niño",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -130,7 +130,7 @@
         "flags": "i",
         "id": "PAT-Q209-002",
         "match_type": "REGEX",
-        "pattern": "alerta temprana sobre deserci\u00f3n escolar|alerta por vulneraci\u00f3n de derechos",
+        "pattern": "alerta temprana sobre deserción escolar|alerta por vulneración de derechos",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -144,7 +144,7 @@
         "flags": "i",
         "id": "PAT-Q209-003",
         "match_type": "REGEX",
-        "pattern": "mecanismo de ajuste|medida correctiva del PAI (Plan de Atenci\u00f3n Integral)",
+        "pattern": "mecanismo de ajuste|medida correctiva del PAI (Plan de Atención Integral)",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -158,7 +158,7 @@
         "flags": "i",
         "id": "PAT-Q209-004",
         "match_type": "REGEX",
-        "pattern": "retroalimentaci\u00f3n desde las mesas de participaci\u00f3n de NNA",
+        "pattern": "retroalimentación desde las mesas de participación de NNA",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -172,7 +172,7 @@
         "flags": "i",
         "id": "PAT-Q209-005",
         "match_type": "REGEX",
-        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Pol\u00edtica Social",
+        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Política Social",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -186,7 +186,7 @@
         "flags": "i",
         "id": "PAT-Q209-006",
         "match_type": "REGEX",
-        "pattern": "lecciones aprendidas en la implementaci\u00f3n",
+        "pattern": "lecciones aprendidas en la implementación",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -263,7 +263,7 @@
               "description": "Scores de confianza usados por el scorer."
             },
             "semantic_similarity": {
-              "description": "M\u00e9trica de similitud sem\u00e1ntica (si aplica)."
+              "description": "Métrica de similitud semántica (si aplica)."
             },
             "pattern_matches": {
               "type": "object",
@@ -341,7 +341,7 @@
         },
         "question_global": {
           "type": "integer",
-          "description": "\u00cdndice global de la pregunta (de questionnaire_monolith).",
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
           "const": 209
         },
         "policy_area_id": {
@@ -349,7 +349,7 @@
             "string",
             "null"
           ],
-          "description": "PA can\u00f3nica, debe ser coherente con identity.policy_area_id.",
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
           "const": "PA06"
         },
         "dimension_id": {
@@ -357,7 +357,7 @@
             "string",
             "null"
           ],
-          "description": "Dimensi\u00f3n can\u00f3nica, coherente con identity.dimension_id.",
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
           "const": "DIM06"
         },
         "cluster_id": {
@@ -365,7 +365,7 @@
             "string",
             "null"
           ],
-          "description": "Cluster de an\u00e1lisis seg\u00fan el monolith, si aplica.",
+          "description": "Cluster de análisis según el monolith, si aplica.",
           "const": "CL02"
         },
         "evidence": {
@@ -381,7 +381,7 @@
             "object",
             "null"
           ],
-          "description": "Resultado de validaciones l\u00f3gicas de la respuesta (coherencia, integridad, etc.).",
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
           "additionalProperties": true
         },
         "trace": {
@@ -389,7 +389,7 @@
             "object",
             "null"
           ],
-          "description": "Informaci\u00f3n de trazabilidad (provenance, logs) espec\u00edfica de la ejecuci\u00f3n.",
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
           "additionalProperties": true
         },
         "metadata": {
@@ -411,17 +411,17 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## An\u00e1lisis D1-Q1: L\u00ednea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analiz\u00f3 la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la l\u00ednea base diagn\u00f3stica en el \u00e1rea de Derechos de las Mujeres e Igualdad de G\u00e9nero.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluaci\u00f3n Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos cr\u00edticos faltantes**: {evidence.missing_required_elements}",
+        "title": "## Q209 | Análisis D6-Q4: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
           "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
           "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
           "**Series temporales**: {evidence.temporal_series_count}",
           "**Cobertura territorial**: {evidence.territorial_coverage}"
         ],
-        "interpretation": "### Interpretaci\u00f3n de Resultados\n\n{methodological_interpretation}",
+        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -446,15 +446,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute update_priors_from_feedback"
+                  "description": "Invocar `ConfigLoader.update_priors_from_feedback` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.update_priors_from_feedback'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -470,14 +470,15 @@
                 "result": "Structured output from update_priors_from_feedback"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use update_priors_from_feedback results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.update_priors_from_feedback"
           },
           {
             "method_name": "check_uncertainty_reduction_criterion",
@@ -499,15 +500,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute check_uncertainty_reduction_criterion"
+                  "description": "Invocar `ConfigLoader.check_uncertainty_reduction_criterion` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.check_uncertainty_reduction_criterion'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -523,14 +524,15 @@
                 "result": "Structured output from check_uncertainty_reduction_criterion"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use check_uncertainty_reduction_criterion results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.check_uncertainty_reduction_criterion"
           },
           {
             "method_name": "_save_prior_history",
@@ -552,15 +554,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _save_prior_history"
+                  "description": "Invocar `ConfigLoader._save_prior_history` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.save_prior_history'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -576,14 +578,15 @@
                 "result": "Structured output from _save_prior_history"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use _save_prior_history results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.save_prior_history"
           },
           {
             "method_name": "_load_uncertainty_history",
@@ -605,15 +608,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _load_uncertainty_history"
+                  "description": "Invocar `ConfigLoader._load_uncertainty_history` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='configloader.load_uncertainty_history'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -629,14 +632,15 @@
                 "result": "Structured output from _load_uncertainty_history"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use _load_uncertainty_history results for downstream analysis"
               ]
-            }
+            },
+            "provides": "configloader.load_uncertainty_history"
           },
           {
             "method_name": "_extract_feedback_from_audit",
@@ -658,15 +662,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_feedback_from_audit"
+                  "description": "Invocar `CDAFFramework._extract_feedback_from_audit` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='cdafframework.extract_feedback_from_audit'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -682,14 +686,15 @@
                 "result": "Structured output from _extract_feedback_from_audit"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
               "actionable_insights": [
                 "Use _extract_feedback_from_audit results for downstream analysis"
               ]
-            }
+            },
+            "provides": "cdafframework.extract_feedback_from_audit"
           },
           {
             "method_name": "_calculate_node_importance",
@@ -735,7 +740,7 @@
                 "result": "Structured output from _calculate_node_importance"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -788,7 +793,7 @@
                 "result": "Structured output from get_bayes_factor"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -803,7 +808,7 @@
           "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
           "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
           "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1\u219217). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
           "trade_offs": [
             "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
             "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
@@ -845,7 +850,7 @@
           },
           {
             "elements": [
-              "series_temporales_a\u00f1os"
+              "series_temporales_años"
             ],
             "minimum": 3
           }
@@ -944,7 +949,7 @@
                 "enum": [
                   "fuentes_oficiales",
                   "indicadores_cuantitativos",
-                  "series_temporales_a\u00f1os",
+                  "series_temporales_años",
                   "cobertura_territorial_especificada",
                   "financial_amounts",
                   "policy_goals",
@@ -991,7 +996,7 @@
                   "type": "integer",
                   "minimum_expected": 3
                 },
-                "series_temporales_a\u00f1os": {
+                "series_temporales_años": {
                   "type": "integer",
                   "minimum_expected": 3
                 },
@@ -1176,7 +1181,7 @@
           "value": "DANE",
           "confidence": 0.95,
           "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "seg\u00fan datos de DANE para el a\u00f1o 2022",
+          "source_sentence": "según datos de DANE para el año 2022",
           "sentence_id": 45,
           "position": {
             "start": 123,
@@ -1202,7 +1207,7 @@
         },
         {
           "element_id": "E-003",
-          "type": "series_temporales_a\u00f1os",
+          "type": "series_temporales_años",
           "years": [
             2020,
             2021,
@@ -1224,7 +1229,7 @@
         "by_type": {
           "fuentes_oficiales": 5,
           "indicadores_cuantitativos": 12,
-          "series_temporales_a\u00f1os": 4,
+          "series_temporales_años": 4,
           "cobertura_territorial_especificada": 1,
           "financial_amounts": 8,
           "policy_goals": 7,
@@ -1262,7 +1267,7 @@
       "critical_links": [
         {
           "cause": "alta tasa de VBG",
-          "effect": "baja autonom\u00eda econ\u00f3mica",
+          "effect": "baja autonomía económica",
           "criticality": 0.87,
           "coherence": 0.82
         }
@@ -1317,7 +1322,7 @@
         "found_in_example": 12,
         "status": "PASS"
       },
-      "series_temporales_a\u00f1os": {
+      "series_temporales_años": {
         "minimum": 3,
         "found_in_example": 4,
         "status": "PASS"

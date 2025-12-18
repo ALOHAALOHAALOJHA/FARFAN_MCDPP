@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "9edaa9ecd1b214e062fb8fbf7c7b2c21d79e8b26c5b96e034ed7978716fa209f",
+    "contract_hash": "cc9f60462f51998325925e769f9be7615d9460af817bfb65d47b3e094dc50691",
     "created_at": "2025-11-28T03:50:31.421081+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 132,
-    "updated_at": "2025-12-17T10:18:08.562948+00:00"
+    "updated_at": "2025-12-17T23:49:38.511625+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -543,15 +543,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_bayesian_posterior"
+                  "description": "Invocar `AdvancedDAGValidator._calculate_bayesian_posterior` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.calculate_bayesian_posterior'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -574,7 +574,8 @@
               "actionable_insights": [
                 "Use _calculate_bayesian_posterior results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.calculate_bayesian_posterior"
           },
           {
             "method_name": "_calculate_confidence_interval",
@@ -596,15 +597,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_confidence_interval"
+                  "description": "Invocar `AdvancedDAGValidator._calculate_confidence_interval` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='advanceddagvalidator.calculate_confidence_interval'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -627,7 +628,8 @@
               "actionable_insights": [
                 "Use _calculate_confidence_interval results for downstream analysis"
               ]
-            }
+            },
+            "provides": "advanceddagvalidator.calculate_confidence_interval"
           },
           {
             "method_name": "_adjust_domain_weights",
@@ -649,15 +651,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _adjust_domain_weights"
+                  "description": "Invocar `AdaptivePriorCalculator._adjust_domain_weights` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='adaptivepriorcalculator.adjust_domain_weights'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -680,7 +682,8 @@
               "actionable_insights": [
                 "Use _adjust_domain_weights results for downstream analysis"
               ]
-            }
+            },
+            "provides": "adaptivepriorcalculator.adjust_domain_weights"
           },
           {
             "method_name": "_get_spanish_stopwords",
@@ -702,15 +705,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _get_spanish_stopwords"
+                  "description": "Invocar `PDETMunicipalPlanAnalyzer._get_spanish_stopwords` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.get_spanish_stopwords'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -733,7 +736,8 @@
               "actionable_insights": [
                 "Use _get_spanish_stopwords results for downstream analysis"
               ]
-            }
+            },
+            "provides": "pdet_analysis.get_spanish_stopwords"
           },
           {
             "method_name": "_log_refactored_components",
@@ -755,15 +759,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _log_refactored_components"
+                  "description": "Invocar `BayesianMechanismInference._log_refactored_components` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='bayesianmechanisminference.log_refactored_components'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -786,7 +790,8 @@
               "actionable_insights": [
                 "Use _log_refactored_components results for downstream analysis"
               ]
-            }
+            },
+            "provides": "bayesianmechanisminference.log_refactored_components"
           },
           {
             "method_name": "analyze_financial_feasibility",

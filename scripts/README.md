@@ -139,6 +139,23 @@ These directories are created but await evidence generation from calibration run
 
 This ensures both calibration system integrity and contract quality on every commit.
 
+### stabilize_executor_contracts_phase2.py
+
+Deep-check and stabilize **Phase 2 v3 specialized executor contracts** to meet strict CQVR gates.
+
+**Usage:**
+```bash
+python scripts/stabilize_executor_contracts_phase2.py audit --threshold 96
+python scripts/stabilize_executor_contracts_phase2.py fix --threshold 96
+```
+
+**What it enforces:**
+- CQVR score ≥96 for all `Q###.v3.json` specialized contracts
+- `minimum_signal_threshold > 0` whenever `mandatory_signals` exist
+- `assembly_rules[0].sources` equals method `provides` set
+- Human template title includes `Q###` and correct `base_slot`
+- Methodological steps are non-boilerplate (no generic CQVR-blocking phrases)
+
 ## References
 
 ### Calibration System
@@ -150,4 +167,3 @@ This ensures both calibration system integrity and contract quality on every com
 - Integration guide: `docs/CQVR_CICD_INTEGRATION.md`
 - Quick reference: `docs/CQVR_QUICK_REFERENCE.md`
 - GitHub workflow: `.github/workflows/cqvr-validation.yml`
-

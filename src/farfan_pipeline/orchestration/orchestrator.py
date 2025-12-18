@@ -36,6 +36,12 @@ from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 from canonic_phases.Phase_zero.paths import safe_join
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
 from canonic_phases.Phase_zero.exit_gates import GateResult
+from farfan_pipeline.resilience import (
+    CircuitBreaker,
+    CircuitBreakerConfig,
+    CircuitBreakerOpen,
+    CircuitState,
+)
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
@@ -399,7 +405,7 @@ class AbortSignal:
 # ============================================================================
 
 class ResourceLimits:
-    """Adaptive resource management."""
+    """Adaptive resource management with thread-safe budget prediction."""
     
     def __init__(
         self,
@@ -419,6 +425,7 @@ class ResourceLimits:
         self._semaphore: asyncio.Semaphore | None = None
         self._semaphore_limit = self._max_workers
         self._async_lock: asyncio.Lock | None = None
+        self._sync_lock = threading.RLock()  # For thread-safe access to _max_workers
         self._psutil = None
         self._psutil_process = None
         
@@ -431,7 +438,8 @@ class ResourceLimits:
     
     @property
     def max_workers(self) -> int:
-        return self._max_workers
+        with self._sync_lock:
+            return self._max_workers
     
     def attach_semaphore(self, semaphore: asyncio.Semaphore) -> None:
         """Attach semaphore for budget control."""
@@ -439,26 +447,45 @@ class ResourceLimits:
         self._semaphore_limit = self._max_workers
     
     async def apply_worker_budget(self) -> int:
-        """Apply worker budget to semaphore."""
+        """Apply worker budget to semaphore.
+        
+        Thread-safe: acquires both sync and async locks to prevent race conditions
+        between _predict_worker_budget() and this method.
+        """
         if self._semaphore is None:
-            return self._max_workers
+            with self._sync_lock:
+                return self._max_workers
         
         if self._async_lock is None:
             self._async_lock = asyncio.Lock()
         
-        async with self._async_lock:
+        # First acquire sync lock to read _max_workers safely
+        with self._sync_lock:
             desired = self._max_workers
+        
+        async with self._async_lock:
             current = self._semaphore_limit
             
             if desired > current:
+                # Increase capacity
                 for _ in range(desired - current):
                     self._semaphore.release()
+                logger.debug(f"Worker budget increased: {current} → {desired}")
             elif desired < current:
+                # Decrease capacity (must acquire slots first)
                 for _ in range(current - desired):
-                    await self._semaphore.acquire()
+                    try:
+                        await asyncio.wait_for(
+                            self._semaphore.acquire(),
+                            timeout=1.0
+                        )
+                    except asyncio.TimeoutError:
+                        logger.warning(f"Timeout acquiring semaphore slot for budget reduction")
+                        break
+                logger.debug(f"Worker budget decreased: {current} → {desired}")
             
             self._semaphore_limit = desired
-            return self._max_workers
+            return desired
     
     def _record_usage(self, usage: dict[str, float]) -> None:
         """Record usage and predict budget."""
@@ -466,25 +493,30 @@ class ResourceLimits:
         self._predict_worker_budget()
     
     def _predict_worker_budget(self) -> None:
-        """Adaptive worker budget prediction."""
+        """Adaptive worker budget prediction.
+        
+        Thread-safe: MUST be called with _sync_lock held via _record_usage().
+        Modifies _max_workers based on recent resource usage history.
+        """
         if len(self._usage_history) < 5:
             return
         
-        recent_cpu = [e["cpu_percent"] for e in list(self._usage_history)[-5:]]
-        recent_mem = [e["memory_percent"] for e in list(self._usage_history)[-5:]]
-        
-        avg_cpu = statistics.mean(recent_cpu)
-        avg_mem = statistics.mean(recent_mem)
-        
-        new_budget = self._max_workers
-        
-        if (self.max_cpu_percent and avg_cpu > self.max_cpu_percent * 0.95) or \
-           (self.max_memory_mb and avg_mem > 90.0):
-            new_budget = max(self.min_workers, self._max_workers - 1)
-        elif avg_cpu < self.max_cpu_percent * 0.6 and avg_mem < 70.0:
-            new_budget = min(self.hard_max_workers, self._max_workers + 1)
-        
-        self._max_workers = max(self.min_workers, min(new_budget, self.hard_max_workers))
+        with self._sync_lock:
+            recent_cpu = [e["cpu_percent"] for e in list(self._usage_history)[-5:]]
+            recent_mem = [e["memory_percent"] for e in list(self._usage_history)[-5:]]
+            
+            avg_cpu = statistics.mean(recent_cpu)
+            avg_mem = statistics.mean(recent_mem)
+            
+            new_budget = self._max_workers
+            
+            if (self.max_cpu_percent and avg_cpu > self.max_cpu_percent * 0.95) or \
+               (self.max_memory_mb and avg_mem > 90.0):
+                new_budget = max(self.min_workers, self._max_workers - 1)
+            elif avg_cpu < self.max_cpu_percent * 0.6 and avg_mem < 70.0:
+                new_budget = min(self.hard_max_workers, self._max_workers + 1)
+            
+            self._max_workers = max(self.min_workers, min(new_budget, self.hard_max_workers))
     
     def get_resource_usage(self) -> dict[str, float]:
         """Get current resource usage."""
@@ -1161,6 +1193,7 @@ class Orchestrator:
         runtime_config: RuntimeConfig | None = None,
         phase0_validation: Phase0ValidationResult | None = None,
         calibration_orchestrator: Any | None = None,
+        calibration_policy: Any | None = None,
         resource_limits: ResourceLimits | None = None,
         resource_snapshot_interval: int = 10,
         recommendation_engine_port: RecommendationEnginePort | None = None,
@@ -1168,6 +1201,7 @@ class Orchestrator:
     ) -> None:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
+        from canonic_phases.Phase_two.calibration_policy import create_default_policy
         
         validate_phase_definitions(self.FASES, self.__class__)
         
@@ -1213,6 +1247,10 @@ class Orchestrator:
             logger.info("CalibrationOrchestrator injected into main orchestrator")
         else:
             self.calibration_orchestrator = None
+        
+        strict_calibration = runtime_config.is_strict_mode() if runtime_config else False
+        self.calibration_policy = calibration_policy or create_default_policy(strict_mode=strict_calibration)
+        logger.info(f"CalibrationPolicy initialized (strict_mode={strict_calibration})")
         
         self.resource_limits = resource_limits or ResourceLimits()
         self.resource_snapshot_interval = max(1, resource_snapshot_interval)
@@ -1286,9 +1324,10 @@ class Orchestrator:
         if not self.executor.instances:
             raise RuntimeError("MethodExecutor.instances is empty")
         
-        # REMOVED: self.executors dictionary - now using GenericContractExecutor
-        # with direct question_id loading for all 309 contracts (Q001-Q309)
-        
+        # IMPORTANT INVARIANT:
+        # Phase 2 execution MUST run exclusively via the contractual channel
+        # (GenericContractExecutor loading executor_contracts by question_id).
+        # This orchestrator MUST NOT maintain or consult any base_slot→executor mapping.
         self.abort_signal = AbortSignal()
         self.phase_results: list[PhaseResult] = []
         self._phase_instrumentation: dict[int, PhaseInstrumentation] = {}
@@ -1297,6 +1336,19 @@ class Orchestrator:
         self._context: dict[str, Any] = {}
         self._start_time: float | None = None
         self._execution_plan: ExecutionPlan | None = None
+        
+        # Circuit breaker for Phase 2 micro-question execution
+        # Protects against systematic failures (e.g., LLM rate limiting)
+        # 5% error budget: 15 failures out of 300 micro-questions
+        self._phase2_circuit_breaker = CircuitBreaker(
+            config=CircuitBreakerConfig(
+                failure_threshold=5,
+                error_rate_threshold=0.05,  # 5% of 300 = 15 failures max
+                window_size=50,
+                timeout_seconds=60.0,
+                success_threshold=3,
+            )
+        )
         
         self.dependency_lockdown = get_dependency_lockdown()
         logger.info(f"Orchestrator initialized: {self.dependency_lockdown.get_mode_description()}")
@@ -1708,6 +1760,8 @@ class Orchestrator:
     def export_metrics(self) -> dict[str, Any]:
         abort_timestamp = self.abort_signal.get_timestamp()
         
+        calibration_metrics = self.calibration_policy.get_metrics_summary()
+        
         return {
             "timestamp": datetime.utcnow().isoformat(),
             "manifest": self._build_execution_manifest(),
@@ -1719,7 +1773,17 @@ class Orchestrator:
                 "timestamp": abort_timestamp.isoformat() if abort_timestamp else None,
             },
             "phase_status": dict(self._phase_status),
+            "calibration_metrics": calibration_metrics,
+            "calibration_detailed": self.calibration_policy.export_metrics() if calibration_metrics["total_metrics"] > 0 else [],
         }
+    
+    def get_calibration_summary(self) -> dict[str, Any]:
+        """Get calibration influence summary.
+        
+        Returns:
+            Summary of calibration metrics and drift detection
+        """
+        return self.calibration_policy.get_metrics_summary()
     
     def calibrate_method(
         self,
@@ -2096,14 +2160,15 @@ class Orchestrator:
             tasks_executed = set()
             tasks_failed = set()
             
-            for idx, task in enumerate(tasks):
+            for task_index, task in enumerate(tasks):
                 self._ensure_not_aborted()
-
-                # Resource limit checks every 10 tasks in long-running Phase 2
-                if idx > 0 and idx % 10 == 0:
+                
+                # Resource limit checks every 10 tasks (MERGED from feature branch)
+                if task_index > 0 and task_index % 10 == 0:
                     await self._check_and_enforce_resource_limits(
-                        2, f"FASE 2 - Task {idx}/{len(tasks)}"
+                        2, f"FASE 2 - Task {task_index}/{len(tasks)}"
                     )
+                
                 task_id = task.task_id
                 start_q = time.perf_counter()
                 
@@ -2154,8 +2219,6 @@ class Orchestrator:
                         aborted=False
                     ))
                     continue
-
-                # Use GenericContractExecutor with question_id for direct contract loading
                 question_id = question.get("id")
                 if not question_id:
                     error_msg = f"Task {task_id}: Question missing 'id' field"
@@ -2163,24 +2226,33 @@ class Orchestrator:
                     task_status[task_id] = "failed"
                     tasks_failed.add(task_id)
                     instrumentation.record_error("question_missing_id", task_id)
-                    
-                    results.append(MicroQuestionRun(
-                        question_id="UNKNOWN",
-                        question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
-                        base_slot=base_slot,
-                        metadata={"task_id": task_id, "error": "question_missing_id"},
-                        evidence=None,
-                        error=error_msg,
-                        aborted=False
-                    ))
+
+                    results.append(
+                        MicroQuestionRun(
+                            question_id=task.question_id,
+                            question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                            base_slot=base_slot,
+                            metadata={"task_id": task_id, "error": "question_missing_id"},
+                            evidence=None,
+                            error=error_msg,
+                            aborted=False,
+                        )
+                    )
                     continue
 
                 try:
+                    # Circuit breaker check - fail fast if error rate too high
+                    if not self._phase2_circuit_breaker.can_execute():
+                        time_until_retry = self._phase2_circuit_breaker.config.timeout_seconds - (
+                            time.monotonic() - self._phase2_circuit_breaker.last_failure_time
+                        )
+                        raise CircuitBreakerOpen("phase2_micro_questions", time_until_retry)
+
                     # Create GenericContractExecutor with question_id
                     # This loads the contract from executor_contracts/specialized/{question_id}.v3.json
                     instance = GenericContractExecutor(
                         method_executor=self.executor,
-                        signal_registry=getattr(self.executor, "signal_registry", None),
+                        signal_registry=self.executor.signal_registry,
                         config=self.executor_config,
                         questionnaire_provider=self._canonical_questionnaire,
                         question_id=question_id,  # Direct contract loading by question_id
@@ -2259,13 +2331,43 @@ class Orchestrator:
                     task_status[task_id] = "completed"
                     instrumentation.increment(latency=duration)
 
+                    self._phase2_circuit_breaker.record_success()
+
                     logger.debug(f"Task {task_id} completed successfully in {duration:.2f}ms")
 
+                except CircuitBreakerOpen as cb_error:
+                    # Circuit breaker is open - fail fast
+                    logger.error(
+                        f"Circuit breaker OPEN for Phase 2 - stopping execution. "
+                        f"Retry in {cb_error.time_until_retry:.1f}s. "
+                        f"Stats: {self._phase2_circuit_breaker.get_stats()}"
+                    )
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("circuit_breaker_open", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id=question.get("id"),
+                        question_global=question.get("global_id"),
+                        base_slot=base_slot,
+                        metadata={"task_id": task_id, "error": "circuit_breaker_open"},
+                        evidence=None,
+                        error=str(cb_error),
+                        aborted=False
+                    ))
+                    
+                    # Abort pipeline when circuit breaker opens
+                    self.request_abort(str(cb_error))
+                    break
+                    
                 except Exception as e:
                     logger.error(f"Task {task_id}: Executor {base_slot} failed: {e}", exc_info=True)
                     task_status[task_id] = "failed"
                     tasks_failed.add(task_id)
                     instrumentation.record_error("execution", f"{task_id}: {str(e)}")
+                    
+                    # Record failure in circuit breaker
+                    self._phase2_circuit_breaker.record_failure(e)
                     
                     results.append(MicroQuestionRun(
                         question_id=question.get("id"),
@@ -2285,13 +2387,13 @@ class Orchestrator:
                 instrumentation.record_error("orphan_tasks", str(len(orphan_tasks)))
                 # Orphan tasks indicate a serious logic error - fail in all modes
                 # In PROD mode, this is a hard failure; in DEV, log as critical warning
-                if self.runtime_config.mode == RuntimeMode.PRODUCTION:
+                if self.runtime_config is not None and self.runtime_config.mode == RuntimeMode.PROD:
                     self.request_abort(error_msg)
                 else:
                     logger.critical(f"DEVELOPMENT MODE WARNING: {error_msg}")
             
             # In PROD mode, fail Phase 2 if any tasks failed
-            if tasks_failed and self.runtime_config.mode == RuntimeMode.PRODUCTION:
+            if tasks_failed and self.runtime_config is not None and self.runtime_config.mode == RuntimeMode.PROD:
                 error_msg = f"Phase 2 failed: {len(tasks_failed)} tasks failed in PROD mode"
                 logger.error(error_msg)
                 self.request_abort(error_msg)
@@ -2305,8 +2407,8 @@ class Orchestrator:
             return results
             
         else:
-            # Fallback: legacy config-based approach when execution_plan not available
-            logger.warning("Phase 2: No execution plan available, falling back to config-based approach")
+            # Fallback: execution_plan not available, but execution remains CONTRACTUAL.
+            logger.warning("Phase 2: No execution plan available; executing micro_questions via contractual channel")
             micro_questions = config.get("micro_questions", [])
             instrumentation.start(items_total=len(micro_questions))
             
@@ -2321,19 +2423,21 @@ class Orchestrator:
                     logger.warning(f"Question missing 'id': {question}")
                     continue
 
-                base_slot = question.get("base_slot")
-                if not base_slot:
-                    logger.warning(f"Question missing base_slot: {question_id}")
-                    continue
+                base_slot = question.get("base_slot") or UNKNOWN_BASE_SLOT
 
                 try:
-                    # Use GenericContractExecutor with question_id
+                    if not self._phase2_circuit_breaker.can_execute():
+                        time_until_retry = self._phase2_circuit_breaker.config.timeout_seconds - (
+                            time.monotonic() - self._phase2_circuit_breaker.last_failure_time
+                        )
+                        raise CircuitBreakerOpen("phase2_micro_questions", time_until_retry)
+
                     instance = GenericContractExecutor(
                         method_executor=self.executor,
                         signal_registry=self.executor.signal_registry,
                         config=self.executor_config,
                         questionnaire_provider=self._canonical_questionnaire,
-                        question_id=question_id,  # Direct contract loading
+                        question_id=question_id,
                         calibration_orchestrator=self.calibration_orchestrator,
                         enriched_packs=self._enriched_packs or {},
                     )
@@ -2353,7 +2457,7 @@ class Orchestrator:
                     result_data = instance.execute(
                         document=document,
                         method_executor=self.executor,
-                        question_context=q_context
+                        question_context=q_context,
                     )
 
                     duration = (time.perf_counter() - start_q) * 1000
@@ -2369,9 +2473,22 @@ class Orchestrator:
                     results.append(run_result)
                     instrumentation.increment(latency=duration)
 
+                    self._phase2_circuit_breaker.record_success()
+
+                except CircuitBreakerOpen as cb_error:
+                    logger.error(
+                        f"Circuit breaker OPEN for Phase 2 (fallback path) - stopping execution. "
+                        f"Retry in {cb_error.time_until_retry:.1f}s. "
+                        f"Stats: {self._phase2_circuit_breaker.get_stats()}"
+                    )
+                    instrumentation.record_error("circuit_breaker_open", question_id)
+                    self.request_abort(str(cb_error))
+                    break
+
                 except Exception as e:
                     logger.error(f"Executor {base_slot} failed: {e}", exc_info=True)
                     instrumentation.record_error("execution", str(e))
+                    self._phase2_circuit_breaker.record_failure(e)
                     results.append(MicroQuestionRun(
                         question_id=question.get("id"),
                         question_global=question.get("global_id"),

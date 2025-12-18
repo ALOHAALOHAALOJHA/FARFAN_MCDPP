@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "cbf452304e2c6c520b3693e2c40a5b6962f1f402fc2e1c01df227dbd9543cc9e",
+    "contract_hash": "7ebeb055aa5827e84c88a70d7ab85e3ff4e092067b6e5af2cf6cf0d50f3dc9f1",
     "created_at": "2025-11-28T03:50:31.746232+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 176,
-    "updated_at": "2025-12-17T14:44:57.220314+00:00"
+    "updated_at": "2025-12-17T23:49:38.742504+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -270,7 +270,16 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "teoriacambio.construir_grafo_causal",
+          "teoriacambio.validacion_completa",
+          "teoriacambio.export_nodes",
+          "reportingengine.generate_causal_diagram",
+          "reportingengine.generate_causal_model_json",
+          "advanceddagvalidator.export_nodes",
+          "pdet_analysis.export_causal_network",
+          "causal_extraction.extract_causal_hierarchy"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -391,7 +400,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q176 | Análisis D6-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -426,15 +435,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute construir_grafo_causal"
+                  "description": "Invocar `TeoriaCambio.construir_grafo_causal` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.construir_grafo_causal'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -457,7 +466,8 @@
               "actionable_insights": [
                 "Use construir_grafo_causal results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.construir_grafo_causal"
           },
           {
             "method_name": "validacion_completa",
@@ -479,15 +489,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute validacion_completa"
+                  "description": "Invocar `TeoriaCambio.validacion_completa` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.validacion_completa'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -510,7 +520,8 @@
               "actionable_insights": [
                 "Use validacion_completa results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.validacion_completa"
           },
           {
             "method_name": "export_nodes",
@@ -532,15 +543,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute export_nodes"
+                  "description": "Invocar `TeoriaCambio.export_nodes` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.export_nodes'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -563,7 +574,8 @@
               "actionable_insights": [
                 "Use export_nodes results for downstream analysis"
               ]
-            }
+            },
+            "provides": "teoriacambio.export_nodes"
           },
           {
             "method_name": "generate_causal_diagram",
@@ -585,15 +597,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute generate_causal_diagram"
+                  "description": "Invocar `ReportingEngine.generate_causal_diagram` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_diagram'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -616,7 +628,8 @@
               "actionable_insights": [
                 "Use generate_causal_diagram results for downstream analysis"
               ]
-            }
+            },
+            "provides": "reportingengine.generate_causal_diagram"
           },
           {
             "method_name": "generate_causal_model_json",
@@ -638,15 +651,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute generate_causal_model_json"
+                  "description": "Invocar `ReportingEngine.generate_causal_model_json` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_model_json'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -669,7 +682,8 @@
               "actionable_insights": [
                 "Use generate_causal_model_json results for downstream analysis"
               ]
-            }
+            },
+            "provides": "reportingengine.generate_causal_model_json"
           },
           {
             "method_name": "export_nodes",

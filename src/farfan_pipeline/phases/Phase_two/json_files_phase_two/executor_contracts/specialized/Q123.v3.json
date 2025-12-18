@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "25582ef7ac7bc04dbb29fa8514a39741b294d48267ade532230633d9bcaf5537",
+    "contract_hash": "ab8a11d7ee43181412bfdb487dfede6792fcfbfaa109e31f3449a0dd62a9c1cb",
     "created_at": "2025-11-28T03:50:31.391808+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 123,
-    "updated_at": "2025-12-16T04:42:57.926919+00:00"
+    "updated_at": "2025-12-17T23:49:38.469966+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -309,7 +309,7 @@
       "vaccination_rates"
     ],
     "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.0,
+    "minimum_signal_threshold": 0.5,
     "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
   },
   "evidence_assembly": {
@@ -354,7 +354,21 @@
     "assembly_rules": [
       {
         "target": "elements_found",
-        "sources": [],
+        "sources": [
+          "financial_audit.trace_financial_allocation",
+          "financial_audit.process_financial_table",
+          "financial_audit.match_program_to_node",
+          "financial_audit.match_goal_to_budget",
+          "financial_audit.perform_counterfactual_budget_check",
+          "financial_audit.calculate_sufficiency",
+          "pdet_analysis.analyze_financial_feasibility",
+          "pdet_analysis.extract_budget_for_pillar",
+          "pdet_analysis.identify_funding_source",
+          "pdet_analysis.classify_tables",
+          "pdet_analysis.analyze_funding_sources",
+          "pdet_analysis.score_financial_component",
+          "bayesiancounterfactualauditor.aggregate_risk_and_prioritize"
+        ],
         "merge_strategy": "concat",
         "description": "Combine all evidence elements from 17 method invocations"
       },
@@ -475,7 +489,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q123 | Análisis D1-Q3: Línea Base Cuantitativa en Derechos de las Mujeres",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -510,15 +524,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute trace_financial_allocation"
+                  "description": "Invocar `FinancialAuditor.trace_financial_allocation` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.trace_financial_allocation'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -541,7 +555,8 @@
               "actionable_insights": [
                 "Use trace_financial_allocation results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.trace_financial_allocation"
           },
           {
             "method_name": "_process_financial_table",
@@ -563,15 +578,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _process_financial_table"
+                  "description": "Invocar `FinancialAuditor._process_financial_table` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.process_financial_table'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -594,7 +609,8 @@
               "actionable_insights": [
                 "Use _process_financial_table results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.process_financial_table"
           },
           {
             "method_name": "_match_program_to_node",
@@ -616,15 +632,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _match_program_to_node"
+                  "description": "Invocar `FinancialAuditor._match_program_to_node` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.match_program_to_node'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -647,7 +663,8 @@
               "actionable_insights": [
                 "Use _match_program_to_node results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.match_program_to_node"
           },
           {
             "method_name": "_match_goal_to_budget",
@@ -669,15 +686,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _match_goal_to_budget"
+                  "description": "Invocar `FinancialAuditor._match_goal_to_budget` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.match_goal_to_budget'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -700,7 +717,8 @@
               "actionable_insights": [
                 "Use _match_goal_to_budget results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.match_goal_to_budget"
           },
           {
             "method_name": "_perform_counterfactual_budget_check",
@@ -722,15 +740,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _perform_counterfactual_budget_check"
+                  "description": "Invocar `FinancialAuditor._perform_counterfactual_budget_check` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='financial_audit.perform_counterfactual_budget_check'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
                 }
               ],
               "assumptions": [
@@ -753,7 +771,8 @@
               "actionable_insights": [
                 "Use _perform_counterfactual_budget_check results for downstream analysis"
               ]
-            }
+            },
+            "provides": "financial_audit.perform_counterfactual_budget_check"
           },
           {
             "method_name": "_calculate_sufficiency",
