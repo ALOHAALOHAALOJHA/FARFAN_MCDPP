@@ -1,27 +1,75 @@
 """
 Executor Instrumentation Mixin for Calibration Integration.
 
-This mixin adds calibration instrumentation to all D[1-6]Q[1-5] executors,
+This mixin adds calibration instrumentation to executor execution,
 capturing runtime metrics and retrieving quality scores from the calibration system.
 
+**Value in 300-contract model:**
+- Provides consistent runtime metrics capture across all 300 contracts
+- Integrates with CalibrationPolicy for quality-based method weighting
+- Tracks execution_time, memory, methods_executed for performance profiling
+- Enables drift detection when combined with CalibrationPolicy
+
 Usage:
-    # 300-contract model (preferred)
-    class Q001_Executor(BaseExecutor, ExecutorInstrumentationMixin):
-        def execute(self, context):
-            # Instrumentation is automatically applied via wrapper
-            ...
+    # 300-contract model: combine with DynamicContractExecutor
+    class InstrumentedExecutor(DynamicContractExecutor, ExecutorInstrumentationMixin):
+        def execute(self, document, method_executor, *, question_context):
+            return self.execute_with_calibration(question_context)
 """
 
 from __future__ import annotations
 
 import time
+from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
-from executor_calibration_integration import (
-    instrument_executor,
-    get_executor_config,
-    CalibrationResult,
-)
+# Lazy/conditional calibration imports - graceful degradation if not available
+try:
+    from cross_cutting_infrastrucuture.capaz_calibration_parmetrization.calibration_orchestrator import (
+        instrument_executor,
+        get_executor_config,
+    )
+    CALIBRATION_AVAILABLE = True
+except ImportError:
+    CALIBRATION_AVAILABLE = False
+    
+    def instrument_executor(**kwargs: Any) -> "CalibrationResult":
+        """Stub when calibration module not available."""
+        return CalibrationResult(
+            quality_score=1.0,
+            layer_scores={},
+            layers_used=[],
+            aggregation_method="none",
+            metrics=_MetricsStub(
+                runtime_ms=kwargs.get("runtime_ms", 0.0),
+                memory_mb=kwargs.get("memory_mb", 0.0),
+                methods_executed=kwargs.get("methods_executed", 0),
+                methods_succeeded=kwargs.get("methods_succeeded", 0),
+            ),
+        )
+    
+    def get_executor_config(executor_id: str, dimension: str, question: str) -> Dict[str, Any]:
+        """Stub when calibration module not available."""
+        return {}
+
+
+@dataclass
+class _MetricsStub:
+    """Stub metrics when calibration not available."""
+    runtime_ms: float
+    memory_mb: float
+    methods_executed: int
+    methods_succeeded: int
+
+
+@dataclass
+class CalibrationResult:
+    """Result from calibration instrumentation."""
+    quality_score: float
+    layer_scores: Dict[str, float]
+    layers_used: list[str]
+    aggregation_method: str
+    metrics: _MetricsStub
 
 
 class ExecutorInstrumentationMixin:
