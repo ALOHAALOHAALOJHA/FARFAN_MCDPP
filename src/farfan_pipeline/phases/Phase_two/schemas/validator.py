@@ -22,12 +22,18 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
+
+class FallbackValidationError(Exception):
+    """Fallback validation error used when jsonschema is not available."""
+    pass
+
+
 try:
     from jsonschema import ValidationError, Draft202012Validator
     JSONSCHEMA_AVAILABLE = True
 except ImportError:
     JSONSCHEMA_AVAILABLE = False
-    ValidationError = Exception  # type: ignore
+    ValidationError = FallbackValidationError  # type: ignore
 
 
 SCHEMA_DIR = Path(__file__).parent
