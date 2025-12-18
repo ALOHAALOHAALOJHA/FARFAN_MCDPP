@@ -5,6 +5,7 @@ Owner: phase2_orchestration
 Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2025-12-18
+Python-Version: 3.12+ (uses modern type hints)
 
 Contracts-Enforced:
     - CardinalityContract: Input 60 chunks -> Output 300 micro-answers
@@ -102,7 +103,7 @@ class MicroAnswer:
 
 # === EXCEPTION TAXONOMY ===
 
-@dataclass(frozen=True)
+@dataclass
 class CarverError(Exception):
     """Raised when carving fails."""
     error_code: str
@@ -114,7 +115,7 @@ class CarverError(Exception):
         return f"[{self.error_code}] {self.message}"
 
 
-@dataclass(frozen=True)
+@dataclass
 class ProvenanceError(Exception):
     """Raised when provenance tracking fails."""
     task_id: str
@@ -158,8 +159,6 @@ class Carver:
             random_seed: Seed for deterministic shard content generation
         """
         self._seed: Final = random_seed
-        self._processed_chunks: int = 0
-        self._generated_answers: int = 0
 
     @precondition(
         lambda self, chunks: True,  # Actual validation inside
@@ -195,7 +194,6 @@ class Carver:
         for chunk in chunk_list:
             shards = self._shard_chunk(chunk)
             micro_answers.extend(shards)
-            self._processed_chunks += 1
 
         # Validate output cardinality
         self._validate_output_cardinality(micro_answers)
@@ -206,7 +204,7 @@ class Carver:
         logger.info(
             "Carving complete",
             extra={
-                "chunks_processed": self._processed_chunks,
+                "chunks_processed": len(chunk_list),
                 "answers_generated": len(micro_answers),
                 "seed": self._seed,
             }
@@ -278,7 +276,6 @@ class Carver:
                 content_hash=content_hash,
             )
             shards.append(shard)
-            self._generated_answers += 1
 
         return shards
 
@@ -291,8 +288,24 @@ class Carver:
         """
         Generate shard content deterministically.
 
-        Implementation note: Actual sharding logic depends on domain.
-        This is a placeholder for the deterministic partitioning strategy.
+        IMPLEMENTATION NOTE:
+        This is a placeholder implementation for Phase 2 specification.
+        The actual sharding strategy depends on domain-specific requirements:
+        - Semantic segmentation using NLP
+        - Fixed-size byte partitioning
+        - Content-aware boundary detection
+        - Question-specific extraction patterns
+
+        The current implementation uses simple concatenation to ensure
+        determinism while allowing future enhancement without changing
+        the API contract.
+
+        Args:
+            chunk: Source CPP chunk
+            shard_index: Index of shard within chunk (0-4)
+
+        Returns:
+            Deterministically generated shard content
         """
         # Deterministic content derivation (domain-specific implementation)
         return f"{chunk.content}::SHARD_{shard_index}"

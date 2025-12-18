@@ -5,6 +5,7 @@ Owner: phase2_orchestration
 Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2025-12-18
+Python-Version: 3.12+ (uses PEP 695 generic syntax)
 
 Contracts-Enforced:
     - RoutingContract: Every contract type maps to exactly one executor
@@ -98,7 +99,7 @@ class Executor(Protocol[PayloadT, ResultT]):
 
 # === EXCEPTION TAXONOMY ===
 
-@dataclass(frozen=True)
+@dataclass
 class RoutingError(Exception):
     """Raised when routing fails."""
     error_code: str
@@ -109,7 +110,7 @@ class RoutingError(Exception):
         return f"[{self.error_code}] {self.message}"
 
 
-@dataclass(frozen=True)
+@dataclass
 class ValidationError(Exception):
     """Raised when validation fails."""
     error_code: str
