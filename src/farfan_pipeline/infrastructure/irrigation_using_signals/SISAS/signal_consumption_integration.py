@@ -32,7 +32,7 @@ from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumpt
 )
 
 if TYPE_CHECKING:
-    from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
+    from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
 
 
 @dataclass
@@ -307,4 +307,3 @@ def verify_pattern_scope(
         return False, f"Pattern belongs to {pattern_pa} but question is in {policy_area}"
     
     return True, None
-

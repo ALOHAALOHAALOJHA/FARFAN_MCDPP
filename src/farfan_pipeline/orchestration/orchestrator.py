@@ -79,7 +79,7 @@ from canonic_phases.Phase_two.arg_router import (
     ExtendedArgRouter,
 )
 from orchestration.class_registry import ClassRegistryError
-from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,

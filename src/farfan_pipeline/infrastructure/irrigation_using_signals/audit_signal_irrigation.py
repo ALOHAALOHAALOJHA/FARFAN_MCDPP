@@ -220,7 +220,7 @@ class WiringAuditor:
         # Check if executors have signal_registry attribute
         # This is a structural check - actual usage is checked in utilization audit
         try:
-            from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
+            from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
             
             # Check if BaseExecutorWithContract accepts signal_registry
             import inspect
@@ -849,4 +849,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

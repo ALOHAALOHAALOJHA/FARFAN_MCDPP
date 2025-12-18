@@ -28,6 +28,7 @@ import hashlib
 import time
 import json
 import sys
+import logging
 import concurrent.futures
 from pathlib import Path
 from collections import defaultdict
@@ -72,8 +73,9 @@ try:
     import structlog
     logger = structlog.get_logger(__name__)
 except ImportError:
-    import logging
     logger = logging.getLogger(__name__)  # type: ignore
+
+stdlib_logger = logging.getLogger(__name__)
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
@@ -1584,6 +1586,14 @@ class QuestionnaireSignalRegistry:
                             modality="micro_answering",
                             pattern_count=len(signals.question_patterns[q_id]),
                         )
+                        stdlib_logger.debug(
+                            "signal_lookup",
+                            extra={
+                                "question_id": q_id,
+                                "modality": "micro_answering",
+                                "pattern_count": len(signals.question_patterns[q_id]),
+                            },
+                        )
                     
                     # Check expected_elements
                     if not signals.expected_elements or q_id not in signals.expected_elements:
@@ -1624,6 +1634,14 @@ class QuestionnaireSignalRegistry:
                             modality="validation",
                             rule_count=len(signals.validation_rules),
                         )
+                        stdlib_logger.debug(
+                            "signal_lookup",
+                            extra={
+                                "question_id": q_id,
+                                "modality": "validation",
+                                "rule_count": len(signals.validation_rules),
+                            },
+                        )
                     
                 except QuestionNotFoundError:
                     q_missing_modalities.append("validation")
@@ -1659,6 +1677,14 @@ class QuestionnaireSignalRegistry:
                             question_id=q_id,
                             modality="scoring",
                             scoring_modality=signals.scoring_modality,
+                        )
+                        stdlib_logger.debug(
+                            "signal_lookup",
+                            extra={
+                                "question_id": q_id,
+                                "modality": "scoring",
+                                "scoring_modality": signals.scoring_modality,
+                            },
                         )
                     
                 except QuestionNotFoundError:

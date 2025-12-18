@@ -25,7 +25,7 @@ from canonic_phases.Phase_zero.paths import CONFIG_DIR, DATA_DIR
 from orchestration.factory import CanonicalQuestionnaire
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry
-from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
 from orchestration.factory import CoreModuleFactory
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
     InMemorySignalSource,
