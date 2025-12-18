@@ -1,0 +1,66 @@
+name: Naming Convention Enforcement
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/**/*.py'
+      - 'tests/**/*.py'
+      - 'scripts/**/*.py'
+      - '**/*.schema.json'
+      - '**/contracts/certificates/*.md'
+  workflow_dispatch:
+
+jobs:
+  validate_naming:
+    name: Validate File Naming Conventions
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Validate naming conventions
+        id: naming_validation
+        run: |
+          python scripts/validate_naming_conventions.py --ci
+        continue-on-error: false
+      
+      - name: Generate naming report
+        if: failure()
+        run: |
+          echo "# Naming Convention Violations" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The following files violate naming conventions:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          python scripts/validate_naming_conventions.py >> $GITHUB_STEP_SUMMARY || true
+      
+      - name: Comment PR with violations
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            
+            try {
+              const output = execSync('python scripts/validate_naming_conventions.py', {
+                encoding: 'utf-8',
+                stdio: ['pipe', 'pipe', 'pipe']
+              });
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## ❌ Naming Convention Violations\n\nThis PR introduces files that violate naming conventions:\n\n\`\`\`\n${output}\n\`\`\``
+              });
+            } catch (error) {
+              console.error('Failed to generate naming report:', error);
+            }
