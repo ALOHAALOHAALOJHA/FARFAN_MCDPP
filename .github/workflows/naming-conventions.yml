@@ -33,8 +33,14 @@ jobs:
           python scripts/validate_naming_conventions.py --ci
         continue-on-error: false
       
+      - name: Validate file headers
+        id: header_validation
+        run: |
+          python scripts/validate_file_headers.py --report-only
+        continue-on-error: true
+      
       - name: Generate naming report
-        if: failure()
+        if: failure() && steps.naming_validation.outcome == 'failure'
         run: |
           echo "# Naming Convention Violations" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

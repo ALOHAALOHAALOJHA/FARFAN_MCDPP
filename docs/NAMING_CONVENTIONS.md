@@ -168,20 +168,63 @@ See `.naming_exemptions` for the complete list.
 
 ## File Header Template
 
-**Note:** Section 3.2 of the requirements specifies a mandatory file header template. This is documented separately and enforced via linting rules.
+**Note:** Section 3.2 of the requirements specifies a mandatory file header template.
 
-Every `.py` file MUST begin with a docstring following the template:
+Every `.py` file MUST begin with a docstring following this structure:
+
 ```python
 """
 Module: src.canonic_phases.phase_2.{module_name}
 
-{Brief description}
+{Brief description of what this module does}
+
+This module implements {specific functionality} for Phase 2 of the F.A.R.F.A.N
+pipeline. It follows the canonical Phase 2 architecture.
+
+Key Features:
+- Feature 1: Description
+- Feature 2: Description
 
 Compliance:
 - Naming: Rule 3.1.X
 - Header: Rule 3.2
+- Contract: Executor Contract v3.0
 """
 ```
+
+### Header Components
+
+1. **Module Path** (Line 2): Full dotted path to the module
+2. **Brief Description** (Line 4): One-line summary
+3. **Detailed Description** (Lines 6+): Comprehensive explanation
+4. **Key Features**: Bulleted list of main capabilities
+5. **Compliance Markers**: References to applicable rules
+
+### Validation
+
+File headers are validated using:
+
+```bash
+# Check file headers
+python scripts/validate_file_headers.py
+
+# Report only (non-blocking)
+python scripts/validate_file_headers.py --report-only
+```
+
+### Template
+
+A complete template is available at:
+- `docs/PHASE2_FILE_TEMPLATE.py`
+
+This template shows:
+- Proper module docstring structure
+- Import organization (standard → third-party → local)
+- Class and function documentation
+- Type hints and annotations
+- Compliance markers
+
+## File Header Template
 
 ## Testing
 
