@@ -142,7 +142,7 @@ from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchroni
 from canonic_phases.Phase_two.executors import BaseExecutorWithContract
 ```
 
-**Purpose**: Contract-driven execution using `BaseExecutorWithContract(question_id=Q001)` pattern. The executor loads contracts dynamically from `executor_contracts/specialized/{question_id}.v3.json` (300 contracts for Q001-Q300)
+**Purpose**: Contract-driven execution using `BaseExecutorWithContract(question_id="Q001")` pattern. The executor loads contracts dynamically from `executor_contracts/specialized/{question_id}.v3.json` (300 contracts for Q001-Q300)
 
 ---
 
