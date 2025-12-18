@@ -18,9 +18,7 @@ __path__.append(str((Path(__file__).resolve().parent.parent / "farfan_pipeline" 
 
 __all__ = [
     "Phase_zero",
-    "Phase_one",
     "Phase_two",
-    "phase_2",
     "phase_3_scoring_transformation",
     "phase_4_7_aggregation_pipeline",
     "Phase_eight",
