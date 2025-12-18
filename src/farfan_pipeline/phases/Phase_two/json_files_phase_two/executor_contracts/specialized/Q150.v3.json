@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "55af1589ba1d01cd701e2f6e1fc9ceef76a7e0d3a73fed5b92525c73151c853d",
+    "contract_hash": "927cb362de00b24c3c64239f2f6cccba17826ee95e7ec119888348b0aefd3ba8",
     "created_at": "2025-11-28T03:50:31.571934+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 150,
-    "updated_at": "2025-12-17T23:49:38.599894+00:00"
+    "updated_at": "2025-12-18T07:16:06.022250+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -238,7 +238,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q150-REQ"
-    }
+    },
+    "policy_area_label": "Derechos económicos, sociales y culturales",
+    "dimension_label": "CAUSALIDAD"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -439,7 +441,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q150 (D6-Q5): ¿La lógica causal de la política social considera el contexto, reconociendo 'grupos afectados' (población rural, migr...",
+        "title": "## Análisis Q150 (D6-Q5): ¿La lógica causal de la política social considera el contexto, reconociendo 'grupos afectados' (población rural, migr... | Derechos económicos, sociales y culturales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1736,7 +1738,7 @@
             "Pawson & Tilley (1997) realistic evaluation",
             "Results-based management for public policy monitoring"
           ],
-          "justification": "Chosen because Territorio / Enfoque diferencial in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+          "justification": "Chosen because CAUSALIDAD in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
         },
         "technical_approach": {
           "method_type": "graph_based_evidence_fusion",
@@ -1756,7 +1758,7 @@
             },
             {
               "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q150/D6-Q5)."
+              "description": "Compute completeness, gaps, and confidence interval for Q150/D6-Q5."
             }
           ],
           "assumptions": [

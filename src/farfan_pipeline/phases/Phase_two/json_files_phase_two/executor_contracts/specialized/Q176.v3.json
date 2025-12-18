@@ -5,12 +5,12 @@
     "dimension_id": "DIM06",
     "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "7ebeb055aa5827e84c88a70d7ab85e3ff4e092067b6e5af2cf6cf0d50f3dc9f1",
+    "contract_hash": "44db16ef9d0eca03af1f214ff652a9e43a391e907a7bbc57f76c1daaafd2378d",
     "created_at": "2025-11-28T03:50:31.746232+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 176,
-    "updated_at": "2025-12-17T23:49:38.742504+00:00"
+    "updated_at": "2025-12-18T07:16:05.756859+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -207,7 +207,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q176-REQ"
-    }
+    },
+    "policy_area_label": "Derechos de las víctimas y construcción de paz",
+    "dimension_label": "CAUSALIDAD"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -271,17 +273,17 @@
       {
         "target": "elements_found",
         "sources": [
-          "teoriacambio.construir_grafo_causal",
-          "teoriacambio.validacion_completa",
-          "teoriacambio.export_nodes",
+          "advanceddagvalidator.export_nodes",
+          "causal_extraction.extract_causal_hierarchy",
+          "pdet_analysis.export_causal_network",
           "reportingengine.generate_causal_diagram",
           "reportingengine.generate_causal_model_json",
-          "advanceddagvalidator.export_nodes",
-          "pdet_analysis.export_causal_network",
-          "causal_extraction.extract_causal_hierarchy"
+          "teoriacambio.construir_grafo_causal",
+          "teoriacambio.export_nodes",
+          "teoriacambio.validacion_completa"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine evidence from 8 methods"
       },
       {
         "target": "confidence_scores",
@@ -400,7 +402,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q176 | Análisis D6-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q176 | Análisis D6-Q1: Línea Base Cuantitativa en Derechos de las Mujeres | Derechos de las víctimas y construcción de paz",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -864,40 +866,23 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
+        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
-        "type": "array",
         "must_contain": {
-          "count": 1,
+          "count": 3,
           "elements": [
-            "cobertura_territorial_especificada"
+            "diagrama_causal",
+            "supuestos_verificables",
+            "teoria_cambio_explicita"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "type": "array"
       },
       {
+        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "type": "array",
-        "should_contain": [
-          {
-            "elements": [
-              "fuentes_oficiales"
-            ],
-            "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
-              "series_temporales_años"
-            ],
-            "minimum": 3
-          }
-        ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "should_contain": [],
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -911,7 +896,7 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D6_Q1_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
@@ -1632,5 +1617,57 @@
         "emit_code": "ABORT-Q176-REQ"
       }
     }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "class_name": "EvidenceNexus",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "epistemological_foundation": {
+          "paradigm": "critical_realist",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ],
+          "justification": "Chosen because CAUSALIDAD in PA05 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+        },
+        "technical_approach": {
+          "method_type": "graph_based_evidence_fusion",
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "steps": [
+            {
+              "step": 1,
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
+            },
+            {
+              "step": 2,
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
+            },
+            {
+              "step": 3,
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
+            },
+            {
+              "step": 4,
+              "description": "Compute completeness, gaps, and confidence interval for Q176/D6-Q1."
+            }
+          ],
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
+        }
+      }
+    ]
   }
 }

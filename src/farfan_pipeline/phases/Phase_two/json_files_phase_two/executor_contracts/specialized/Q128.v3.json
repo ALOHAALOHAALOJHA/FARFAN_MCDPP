@@ -5,12 +5,12 @@
     "dimension_id": "DIM02",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "51becf86fdfa39f238424d5e451f535f5833670acc41c3ed39c6022073078255",
+    "contract_hash": "e452073fee6d355d3776cdf25ced81c3bdd63369c9dde10d5b05246df354a1ac",
     "created_at": "2025-11-28T03:50:31.408118+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 128,
-    "updated_at": "2025-12-17T23:49:38.492367+00:00"
+    "updated_at": "2025-12-18T07:16:03.781098+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -235,7 +235,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q128-REQ"
-    }
+    },
+    "policy_area_label": "Derechos económicos, sociales y culturales",
+    "dimension_label": "ACTIVIDADES"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -434,7 +436,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q128 (D2-Q3): ¿El PDM vincula explícitamente las actividades (ej. programa de alimentación escolar) con las 'causas raíz' de los pr...",
+        "title": "## Análisis Q128 (D2-Q3): ¿El PDM vincula explícitamente las actividades (ej. programa de alimentación escolar) con las 'causas raíz' de los pr... | Derechos económicos, sociales y culturales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1717,7 +1719,7 @@
             "Pawson & Tilley (1997) realistic evaluation",
             "Results-based management for public policy monitoring"
           ],
-          "justification": "Chosen because Actividades / Lógica causal in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+          "justification": "Chosen because ACTIVIDADES in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
         },
         "technical_approach": {
           "method_type": "graph_based_evidence_fusion",
@@ -1737,7 +1739,7 @@
             },
             {
               "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q128/D2-Q3)."
+              "description": "Compute completeness, gaps, and confidence interval for Q128/D2-Q3."
             }
           ],
           "assumptions": [

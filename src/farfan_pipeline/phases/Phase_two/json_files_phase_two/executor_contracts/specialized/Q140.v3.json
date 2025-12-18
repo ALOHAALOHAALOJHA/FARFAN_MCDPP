@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "b7c852ec4900d6bfe1b5b461e0fb80a870b809c3e79ad4861e027e1fc531a36e",
+    "contract_hash": "3308db470ecee52bba628dd6a4f2903b591b4fd395d07ae12f33133660e46e53",
     "created_at": "2025-11-28T03:50:31.452601+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 140,
-    "updated_at": "2025-12-17T23:49:38.557130+00:00"
+    "updated_at": "2025-12-18T07:16:05.225545+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -160,6 +160,21 @@
         "required": true,
         "type": "alineacion_pnd",
         "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "alineacion_otros_marcos",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "alineacion_acuerdo_paz",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "alineacion_jurisprudencia",
+        "minimum": 1
       }
     ],
     "validations": {},
@@ -169,7 +184,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q140-REQ"
-    }
+    },
+    "policy_area_label": "Derechos económicos, sociales y culturales",
+    "dimension_label": "RESULTADOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -365,7 +382,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q140 (D4-Q5): ¿El plan declara la alineación de sus resultados sociales con marcos superiores como el PND o los ODS (1, 2, 3, 4)?",
+        "title": "## Análisis Q140 (D4-Q5): ¿El plan declara la alineación de sus resultados sociales con marcos superiores como el PND o los ODS (1, 2, 3, 4)? | Derechos económicos, sociales y culturales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -726,10 +743,13 @@
         "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
         "must_contain": {
-          "count": 2,
+          "count": 5,
           "elements": [
             "alineacion_ods",
-            "alineacion_pnd"
+            "alineacion_pnd",
+            "alineacion_otros_marcos",
+            "alineacion_acuerdo_paz",
+            "alineacion_jurisprudencia"
           ]
         },
         "type": "array"
@@ -1414,7 +1434,7 @@
             "Pawson & Tilley (1997) realistic evaluation",
             "Results-based management for public policy monitoring"
           ],
-          "justification": "Chosen because Resultados / Indicadores in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+          "justification": "Chosen because RESULTADOS in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
         },
         "technical_approach": {
           "method_type": "graph_based_evidence_fusion",
@@ -1434,7 +1454,7 @@
             },
             {
               "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q140/D4-Q5)."
+              "description": "Compute completeness, gaps, and confidence interval for Q140/D4-Q5."
             }
           ],
           "assumptions": [

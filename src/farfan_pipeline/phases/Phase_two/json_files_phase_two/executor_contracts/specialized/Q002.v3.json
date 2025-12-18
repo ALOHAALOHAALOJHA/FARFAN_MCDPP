@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "d28245b2c9773103ae1231d37ce0137c00e8f7c83803215e36cfdaad1a1f62ab",
+    "contract_hash": "f7b7644c58cfabda64e54b43dc8684b819e0889dc9f397da370fc22336d6e7ca",
     "created_at": "2025-11-28T03:49:29.784078+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 2,
-    "updated_at": "2025-12-17T23:46:06.102257+00:00"
+    "updated_at": "2025-12-18T07:16:03.210280+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -268,6 +268,21 @@
         "required": true,
         "type": "vacios_explicitos",
         "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "analisis_causal_problema",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "cuantificacion_magnitud",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "analisis_vulnerabilidad",
+        "minimum": 1
       }
     ],
     "validations": {},
@@ -277,7 +292,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q002-REQ"
-    }
+    },
+    "policy_area_label": "Derechos de las mujeres e igualdad de género",
+    "dimension_label": "INSUMOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -474,7 +491,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q002 | Análisis D1-Q2: Cuantificación de Brecha de Género y Vacíos de Datos",
+        "title": "## Q002 | Análisis D1-Q2: Cuantificación de Brecha de Género y Vacíos de Datos | Derechos de las mujeres e igualdad de género",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la cuantificación de brecha de género y el reconocimiento de vacíos de datos, identificando **{evidence.elements_found_count}** elementos de evidencia. Q002 evalúa si el texto dimensiona el problema cuantificando déficits y limitaciones de información.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1014,42 +1031,26 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
+        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
-        "type": "array",
         "must_contain": {
-          "count": 1,
+          "count": 6,
           "elements": [
             "cuantificacion_brecha",
             "sesgos_reconocidos",
-            "vacios_explicitos"
+            "vacios_explicitos",
+            "analisis_causal_problema",
+            "cuantificacion_magnitud",
+            "analisis_vulnerabilidad"
           ]
         },
-        "description": "Required elements aligned with question_context.expected_elements for D1-Q2"
+        "type": "array"
       },
       {
+        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "type": "array",
-        "should_contain": [
-          {
-            "elements": [
-              "fuentes_oficiales"
-            ],
-            "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
-              "cobertura_territorial_especificada"
-            ],
-            "minimum": 1
-          }
-        ],
-        "description": "Recommended elements for comprehensive D1-Q2 evidence (non-blocking)"
+        "should_contain": [],
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -1063,7 +1064,7 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q2_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
@@ -1844,5 +1845,57 @@
         "merge_strategy": "replace"
       }
     }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "class_name": "EvidenceNexus",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "epistemological_foundation": {
+          "paradigm": "critical_realist",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ],
+          "justification": "Chosen because INSUMOS in PA01 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+        },
+        "technical_approach": {
+          "method_type": "graph_based_evidence_fusion",
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "steps": [
+            {
+              "step": 1,
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
+            },
+            {
+              "step": 2,
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
+            },
+            {
+              "step": 3,
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
+            },
+            {
+              "step": 4,
+              "description": "Compute completeness, gaps, and confidence interval for Q002/D1-Q2."
+            }
+          ],
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
+        }
+      }
+    ]
   }
 }

@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "cc9f60462f51998325925e769f9be7615d9460af817bfb65d47b3e094dc50691",
+    "contract_hash": "92cadbd1582b3418b3392abdf0a0d1e472391691d3a87632eb11f29b4d8a6a31",
     "created_at": "2025-11-28T03:50:31.421081+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 132,
-    "updated_at": "2025-12-17T23:49:38.511625+00:00"
+    "updated_at": "2025-12-18T07:16:04.340283+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -286,6 +286,16 @@
     "expected_elements": [
       {
         "required": true,
+        "type": "dosificacion_definida",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "proporcionalidad_meta_brecha",
+        "minimum": 1
+      },
+      {
+        "required": true,
         "type": "proporcionalidad_meta_problema",
         "minimum": 1
       }
@@ -297,7 +307,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q132-REQ"
-    }
+    },
+    "policy_area_label": "Derechos económicos, sociales y culturales",
+    "dimension_label": "PRODUCTOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -508,7 +520,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q132 (D3-Q2): ¿Las metas de los productos sociales (ej. 'construir 200 viviendas') son proporcionales a la magnitud del problema di...",
+        "title": "## Análisis Q132 (D3-Q2): ¿Las metas de los productos sociales (ej. 'construir 200 viviendas') son proporcionales a la magnitud del problema di... | Derechos económicos, sociales y culturales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1664,8 +1676,10 @@
         "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
         "must_contain": {
-          "count": 1,
+          "count": 3,
           "elements": [
+            "dosificacion_definida",
+            "proporcionalidad_meta_brecha",
             "proporcionalidad_meta_problema"
           ]
         },
@@ -2726,7 +2740,7 @@
             "Pawson & Tilley (1997) realistic evaluation",
             "Results-based management for public policy monitoring"
           ],
-          "justification": "Chosen because Productos / Planificación in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+          "justification": "Chosen because PRODUCTOS in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
         },
         "technical_approach": {
           "method_type": "graph_based_evidence_fusion",
@@ -2746,7 +2760,7 @@
             },
             {
               "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q132/D3-Q2)."
+              "description": "Compute completeness, gaps, and confidence interval for Q132/D3-Q2."
             }
           ],
           "assumptions": [
