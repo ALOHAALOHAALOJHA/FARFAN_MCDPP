@@ -2132,8 +2132,8 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
         
         try:
-            from canonic_phases.Phase_one import (
-                CanonicalInput,
+            from farfan_pipeline.phases.Phase_zero.phase0_input_validation import CanonicalInput
+            from canonic_phases.phase_1_cpp_ingestion import (
                 execute_phase_1_with_full_contract,
                 CanonPolicyPackage,
             )
