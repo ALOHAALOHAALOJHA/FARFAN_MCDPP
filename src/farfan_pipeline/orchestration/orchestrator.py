@@ -84,14 +84,16 @@ from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
-from canonic_phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
-from canonic_phases.Phase_three.validation import (
+from canonic_phases.phase_3_scoring_transformation.phase3_signal_enriched_scoring import SignalEnrichedScorer
+from canonic_phases.phase_3_scoring_transformation.phase3_validation import (
     ValidationCounters,
     validate_micro_results_input,
     validate_and_clamp_score,
     validate_quality_level,
     validate_evidence_presence,
 )
+from canonic_phases.phase_3_scoring_transformation.interface.phase3_entry_contract import MicroQuestionRun
+from canonic_phases.phase_3_scoring_transformation.interface.phase3_exit_contract import ScoredMicroQuestion
 
 logger = structlog.get_logger(__name__)
 _CORE_MODULE_DIR = Path(__file__).resolve().parent
@@ -319,32 +321,6 @@ class PhaseResult:
     aborted: bool = False
 
 
-@dataclass
-class MicroQuestionRun:
-    """Micro-question execution result."""
-    question_id: str
-    question_global: int
-    base_slot: str
-    metadata: dict[str, Any]
-    evidence: Evidence | None
-    error: str | None = None
-    duration_ms: float | None = None
-    aborted: bool = False
-
-
-@dataclass
-class ScoredMicroQuestion:
-    """Scored micro-question."""
-    question_id: str
-    question_global: int
-    base_slot: str
-    score: float | None
-    normalized_score: float | None
-    quality_level: str | None
-    evidence: Evidence | None
-    scoring_details: dict[str, Any] = field(default_factory=dict)
-    metadata: dict[str, Any] = field(default_factory=dict)
-    error: str | None = None
 
 
 # ============================================================================

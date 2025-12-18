@@ -91,7 +91,7 @@ from typing import Any, Literal
 
 # Import mathematical foundations (academic rigor)
 try:
-    from farfan_pipeline.analysis.scoring.mathematical_foundation import (
+    from .mathematical_foundation import (
         wilson_score_interval,
         weighted_aggregation,
         validate_scoring_invariants,
@@ -117,12 +117,7 @@ except ImportError:
 ScoringModality = Literal["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E", "TYPE_F"]
 
 
-class QualityLevel(Enum):
-    """Quality assessment levels aligned with calibration thresholds."""
-    EXCELLENT = "EXCELLENT"  # ≥ 0.85
-    GOOD = "GOOD"            # ≥ 0.70
-    ADEQUATE = "ADEQUATE"    # ≥ 0.50
-    POOR = "POOR"            # < 0.50
+from .quality_levels import QualityLevel
 
 
 # =============================================================================
