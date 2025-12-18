@@ -43,7 +43,6 @@ Notes:
 from __future__ import annotations
 
 # Standard library imports
-import json
 import logging
 from pathlib import Path
 from typing import Any
