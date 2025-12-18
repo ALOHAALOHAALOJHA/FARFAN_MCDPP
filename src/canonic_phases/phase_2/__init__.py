@@ -9,6 +9,7 @@ Effective-Date: 2025-12-18
 This package provides the canonical Phase 2 implementation with:
 - Exhaustive argument routing with contract enforcement
 - Deterministic carving of 60 CPP chunks into 300 micro-answers
+- EvidenceNexus integration for graph-based evidence synthesis
 - Full provenance tracking and validation
 - Strict cardinality contracts
 """
@@ -31,21 +32,32 @@ from .phase2_b_carver import (
     ProvenanceError,
     carve_chunks,
 )
+from .phase2_c_nexus_integration import (
+    NexusIntegrator,
+    NexusIntegrationError,
+    NexusResult,
+    integrate_with_nexus,
+)
 
 __all__ = [
     # Router
     "ArgRouter",
-    "CPPChunk",
-    # Carver
-    "Carver",
-    "CarverError",
     "ContractPayload",
     "Executor",
     "ExecutorResult",
-    "MicroAnswer",
-    "ProvenanceError",
     "RegistryError",
     "RoutingError",
     "ValidationError",
+    # Carver
+    "Carver",
+    "CarverError",
+    "CPPChunk",
+    "MicroAnswer",
+    "ProvenanceError",
     "carve_chunks",
+    # Nexus Integration
+    "NexusIntegrator",
+    "NexusIntegrationError",
+    "NexusResult",
+    "integrate_with_nexus",
 ]

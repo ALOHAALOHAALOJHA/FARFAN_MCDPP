@@ -56,6 +56,14 @@ ERROR_CODES: Final[dict[str, ErrorCode]] = {
         code="E2004",
         message_template="Provenance tracking failed: {details}",
     ),
+    "E2005": ErrorCode(
+        code="E2005",
+        message_template="EvidenceNexus processing failed: {error}",
+    ),
+    "E2006": ErrorCode(
+        code="E2006",
+        message_template="Cannot import EvidenceNexus: {error}",
+    ),
 }
 
 # === EXECUTOR REGISTRY DEFINITION ===
