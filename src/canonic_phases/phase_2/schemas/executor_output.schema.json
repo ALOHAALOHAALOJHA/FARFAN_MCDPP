@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://farfan-pipeline.org/schemas/executor_output.schema.json",
+  "title": "Executor Output Schema",
+  "description": "Schema for Phase 2 executor output. Enforces cardinality (300 outputs), provenance, and schema compliance.",
+  "type": "object",
+  "version": "1.0.0",
+  "required": [
+    "executor_id",
+    "execution_metadata",
+    "outputs"
+  ],
+  "properties": {
+    "executor_id": {
+      "type": "string",
+      "description": "ID of executor that produced this output"
+    },
+    "execution_metadata": {
+      "type": "object",
+      "required": [
+        "start_time",
+        "end_time",
+        "seed",
+        "status"
+      ],
+      "properties": {
+        "start_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "seed": {
+          "type": "integer",
+          "description": "Seed used for deterministic execution"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["success", "failure", "partial"]
+        },
+        "contracts_verified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Array of 300 outputs (cardinality contract)",
+      "minItems": 300,
+      "maxItems": 300,
+      "items": {
+        "type": "object",
+        "required": [
+          "chunk_id",
+          "content",
+          "provenance"
+        ],
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "description": "Unique identifier linking output to source chunk",
+            "pattern": "^chunk_[0-9]{3}$"
+          },
+          "content": {
+            "type": "object",
+            "description": "Output content (executor-specific structure)",
+            "additionalProperties": true
+          },
+          "provenance": {
+            "type": "object",
+            "required": [
+              "source_document",
+              "extraction_method"
+            ],
+            "properties": {
+              "source_document": {
+                "type": "string"
+              },
+              "extraction_method": {
+                "type": "string"
+              },
+              "quality_score": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              }
+            }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "description": "Evidence nexus for traceability",
+      "properties": {
+        "evidence_uris": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
