@@ -1,7 +1,7 @@
 """Generic Contract Executor - Executes ANY question contract by question_id.
 
 This replaces the 30 hardcoded D1Q1-D6Q5 executor classes with a single
-generic executor that loads contracts dynamically by question_id (Q001-Q309).
+generic executor that loads contracts dynamically by question_id (Q001-Q300).
 
 Architecture:
 - Loads contract JSON by question_id from executor_contracts/specialized/
@@ -22,7 +22,7 @@ from canonic_phases.Phase_two.executors.base_executor_with_contract import (
 class GenericContractExecutor(BaseExecutorWithContract):
     """Generic executor that loads and executes any question contract.
     
-    Instead of having 309 separate executor classes, this single class
+    Instead of having 300 separate executor classes, this single class
     can execute ANY contract by loading it dynamically via question_id.
     
     Usage:
@@ -36,7 +36,7 @@ class GenericContractExecutor(BaseExecutorWithContract):
             questionnaire_provider=questionnaire_provider,
             question_id=question_id
         )
-        result = executor.execute(document=doc, question_context=ctx)
+        result = executor.execute(document=doc, method_executor=method_executor, question_context=ctx)
     """
     
     def __init__(
@@ -53,7 +53,7 @@ class GenericContractExecutor(BaseExecutorWithContract):
         """Initialize generic executor with question_id.
         
         Args:
-            question_id: Question identifier (Q001-Q309) to load contract from
+            question_id: Question identifier (Q001-Q300) to load contract from
                         executor_contracts/specialized/{question_id}.v3.json
             method_executor: MethodExecutor for executing contract methods
             signal_registry: Signal registry for SISAS coordination
@@ -75,24 +75,44 @@ class GenericContractExecutor(BaseExecutorWithContract):
         self._question_id = question_id
         
         # Load the contract to get the actual base_slot
-        # (needed for some internal operations)
+        # (needed for base_slot validation in parent execute())
         contract = self._load_contract(question_id=question_id)
         self._actual_base_slot = contract.get("identity", {}).get("base_slot", "UNKNOWN")
     
-    @classmethod
-    def get_base_slot(cls) -> str:
-        """Return generic base slot for class-level operations.
+    def get_base_slot(self) -> str:
+        """Return actual base_slot from loaded contract for instance operations.
         
-        Note: Instance-level operations use _actual_base_slot from
-        the loaded contract.
+        This overrides the class method to return the instance-specific base_slot
+        from the loaded contract (e.g., "D1-Q1", "D6-Q5") instead of "GENERIC".
+        This ensures base_slot validation in parent execute() succeeds.
         """
-        return "GENERIC"
+        return self._actual_base_slot
     
-    def execute(self, **kwargs: Any) -> dict[str, Any]:
+    def execute(
+        self,
+        document: Any,
+        method_executor: Any,
+        *,
+        question_context: dict[str, Any],
+    ) -> dict[str, Any]:
         """Execute question contract with given context.
         
-        This overrides the base execute() to ensure the question_id
-        is passed through to _load_contract().
+        This overrides the base execute() to ensure question_id is passed
+        via question_context for contract loading.
+        
+        Args:
+            document: PreprocessedDocument to analyze
+            method_executor: MethodExecutor for executing contract methods
+            question_context: Context dict containing question_id, base_slot, etc.
+        
+        Returns:
+            Result dict with evidence, validation, trace, etc.
         """
-        # Ensure question_id is used for contract loading
-        return super().execute(question_id=self._question_id, **kwargs)
+        # Ensure question_id is in question_context for _load_contract()
+        ctx = dict(question_context)
+        ctx.setdefault("question_id", self._question_id)
+        return super().execute(
+            document=document,
+            method_executor=method_executor,
+            question_context=ctx,
+        )
