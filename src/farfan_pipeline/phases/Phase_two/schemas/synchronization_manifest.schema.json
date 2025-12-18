@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://canonic-phases.internal/phase2/schemas/synchronization_manifest.schema.json",
+  "title": "SynchronizationManifest",
+  "description": "SISAS synchronization manifest mapping CPP chunks to executor tasks. Version 1.0.0. Effective: 2025-12-18.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "created_at",
+    "cardinality",
+    "chunk_mappings",
+    "sisas_integration",
+    "verification"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "manifest_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$",
+      "description": "Unique manifest identifier (32-char hex)"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cardinality": {
+      "type": "object",
+      "required": ["input_chunks", "output_tasks", "shards_per_chunk"],
+      "additionalProperties": false,
+      "properties": {
+        "input_chunks": {
+          "type": "integer",
+          "const": 60,
+          "description": "INVARIANT: Exactly 60 CPP chunks from Phase 1"
+        },
+        "output_tasks": {
+          "type": "integer",
+          "const": 300,
+          "description": "INVARIANT: Exactly 300 micro-answer tasks"
+        },
+        "shards_per_chunk": {
+          "type": "integer",
+          "const": 5,
+          "description": "INVARIANT: Exactly 5 shards per chunk"
+        }
+      }
+    },
+    "chunk_mappings": {
+      "type": "array",
+      "minItems": 60,
+      "maxItems": 60,
+      "items": {
+        "type": "object",
+        "required": ["chunk_id", "pa_code", "dim_code", "tasks", "sisas_signals"],
+        "additionalProperties": false,
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pa_code": {
+            "type": "string"
+          },
+          "dim_code": {
+            "type": "string"
+          },
+          "tasks": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "required": ["task_id", "shard_index", "executor_id", "priority"],
+              "additionalProperties": false,
+              "properties": {
+                "task_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{16}$"
+                },
+                "shard_index": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "executor_id": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "Normalized priority (0-1) derived from SISAS signals"
+                },
+                "signal_annotations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "SISAS signal identifiers influencing this task"
+                }
+              }
+            }
+          },
+          "sisas_signals": {
+            "type": "object",
+            "properties": {
+              "irrigation_links": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "coverage_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "quality_indicators": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sisas_integration": {
+      "type": "object",
+      "required": ["registry_version", "coverage_threshold", "total_signals_applied"],
+      "additionalProperties": false,
+      "properties": {
+        "registry_version": {
+          "type": "string",
+          "description": "SISAS signal registry version used"
+        },
+        "coverage_threshold": {
+          "type": "number",
+          "const": 0.85,
+          "description": "Minimum signal coverage threshold"
+        },
+        "total_signals_applied": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "chunks_below_threshold": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Chunk IDs with coverage below threshold (flagged)"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["surjection_verified", "cardinality_verified", "provenance_verified", "manifest_hash"],
+      "additionalProperties": false,
+      "properties": {
+        "surjection_verified": {
+          "type": "boolean",
+          "const": true,
+          "description": "All 60 chunks map to at least one task"
+        },
+        "cardinality_verified": {
+          "type": "boolean",
+          "const": true,
+          "description": "Total tasks equals 300"
+        },
+        "provenance_verified": {
+          "type": "boolean",
+          "const": true,
+          "description": "Every task traces to valid chunk"
+        },
+        "manifest_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of manifest content for integrity"
+        }
+      }
+    }
+  }
+}

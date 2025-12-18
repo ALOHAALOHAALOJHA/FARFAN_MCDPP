@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "CAL-2025-12-18-a1b2c3d4",
+  "effective_date": "2025-12-18",
+  "thresholds": {
+    "precision_minimum": 0.85,
+    "recall_minimum": 0.80,
+    "confidence_minimum": 0.75,
+    "coverage_minimum": 0.85
+  },
+  "bands": [
+    {
+      "band_id": "EXCELLENT",
+      "lower_bound": 0.90,
+      "upper_bound": 1.0,
+      "action": "ACCEPT",
+      "weight_modifier": 1.2
+    },
+    {
+      "band_id": "GOOD",
+      "lower_bound": 0.75,
+      "upper_bound": 0.90,
+      "action": "ACCEPT",
+      "weight_modifier": 1.0
+    },
+    {
+      "band_id": "MARGINAL",
+      "lower_bound": 0.60,
+      "upper_bound": 0.75,
+      "action": "REVIEW",
+      "weight_modifier": 0.8
+    },
+    {
+      "band_id": "POOR",
+      "lower_bound": 0.40,
+      "upper_bound": 0.60,
+      "action": "REJECT",
+      "weight_modifier": 0.5
+    },
+    {
+      "band_id": "CRITICAL",
+      "lower_bound": 0.0,
+      "upper_bound": 0.40,
+      "action": "ESCALATE",
+      "weight_modifier": 0.0
+    }
+  ],
+  "derivation_source": "derek_beach.MICRO_LEVELS",
+  "content_hash": "d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6"
+}

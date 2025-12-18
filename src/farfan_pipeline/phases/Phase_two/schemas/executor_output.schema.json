@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://canonic-phases.internal/phase2/schemas/executor_output.schema.json",
+  "title": "ExecutorOutput",
+  "description": "Output schema for Phase 2 executor results. Version 1.0.0. Effective: 2025-12-18.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "chunk_id",
+    "executor_id",
+    "success",
+    "timestamp",
+    "provenance"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{16}$",
+      "description": "Unique task identifier (16-char hex)"
+    },
+    "chunk_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Originating CPP chunk identifier (provenance)"
+    },
+    "shard_index": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4,
+      "description": "Shard index within chunk (0-4)"
+    },
+    "executor_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,63}$"
+    },
+    "success": {
+      "type": "boolean",
+      "description": "Whether execution completed successfully"
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "pattern": "^E[0-9]{4}$"
+        },
+        "error_category": {
+          "type": "string",
+          "enum": ["ROUTING", "CARVING", "VALIDATION", "SYNCHRONIZATION", "SCHEMA", "DETERMINISM", "CONTRACT"]
+        },
+        "message": {
+          "type": "string"
+        },
+        "stack_trace": {
+          "type": "string"
+        }
+      },
+      "description": "Error details if success is false"
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Micro-answer content"
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of content"
+        },
+        "pa_code": {
+          "type": "string",
+          "description": "Pregunta Analítica code"
+        },
+        "dim_code": {
+          "type": "string",
+          "description": "Dimension code"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "description": "Execution result if success is true"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 execution timestamp"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Execution duration in milliseconds"
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["phase", "stage", "seed"],
+      "additionalProperties": false,
+      "properties": {
+        "phase": {
+          "type": "string",
+          "const": "phase_2"
+        },
+        "stage": {
+          "type": "string",
+          "enum": ["routing", "carving", "execution", "synchronization"]
+        },
+        "seed": {
+          "type": "integer",
+          "description": "Random seed used for determinism"
+        },
+        "config_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Hash of executor config used"
+        },
+        "code_version": {
+          "type": "string",
+          "description": "Git commit SHA or semantic version"
+        }
+      }
+    },
+    "contracts_verified": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["contract_name", "status"],
+        "properties": {
+          "contract_name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PASSED", "FAILED", "SKIPPED"]
+          },
+          "details": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Dura Lex contracts verified during execution"
+    }
+  }
+}

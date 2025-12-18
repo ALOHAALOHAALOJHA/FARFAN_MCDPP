@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "executor_id": "text_mining_executor",
+  "executor_class": "TextMiningExecutor",
+  "contract_types": [
+    "TextMiningPayload",
+    "DocumentAnalysisPayload"
+  ],
+  "determinism": {
+    "is_deterministic": true,
+    "seed_strategy": "PARAMETERIZED",
+    "default_seed": 42
+  },
+  "resource_limits": {
+    "max_memory_mb": 2048,
+    "max_cpu_seconds": 300,
+    "max_concurrent_tasks": 10
+  },
+  "contracts": [
+    {
+      "contract_name": "RoutingContract",
+      "enforcement_level": "FATAL"
+    },
+    {
+      "contract_name": "ConcurrencyDeterminism",
+      "enforcement_level": "FATAL"
+    },
+    {
+      "contract_name": "ContextImmutability",
+      "enforcement_level": "FATAL"
+    },
+    {
+      "contract_name": "PermutationInvariance",
+      "enforcement_level": "WARNING"
+    },
+    {
+      "contract_name": "RuntimeContracts",
+      "enforcement_level": "FATAL"
+    },
+    {
+      "contract_name": "SnapshotContract",
+      "enforcement_level": "WARNING"
+    }
+  ],
+  "created_at": "2025-12-18T20:00:00Z",
+  "content_hash": "a3f2b8c9d1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0"
+}

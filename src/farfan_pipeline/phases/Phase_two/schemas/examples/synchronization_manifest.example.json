@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0.0",
+  "manifest_id": "f1e2d3c4b5a6978869584736251a0b9c",
+  "created_at": "2025-12-18T20:00:00Z",
+  "cardinality": {
+    "input_chunks": 60,
+    "output_tasks": 300,
+    "shards_per_chunk": 5
+  },
+  "chunk_mappings": [
+    {
+      "chunk_id": "CPP_PA01_DIM1_001",
+      "pa_code": "PA01",
+      "dim_code": "DIM1",
+      "tasks": [
+        {
+          "task_id": "a1b2c3d4e5f6g7h8",
+          "shard_index": 0,
+          "executor_id": "text_mining_executor",
+          "priority": 0.95,
+          "signal_annotations": [
+            "SISAS_SIGNAL_001",
+            "SISAS_SIGNAL_042"
+          ]
+        },
+        {
+          "task_id": "b2c3d4e5f6g7h8i9",
+          "shard_index": 1,
+          "executor_id": "causal_extractor",
+          "priority": 0.88,
+          "signal_annotations": [
+            "SISAS_SIGNAL_007",
+            "SISAS_SIGNAL_023"
+          ]
+        },
+        {
+          "task_id": "c3d4e5f6g7h8i9j0",
+          "shard_index": 2,
+          "executor_id": "financial_auditor",
+          "priority": 0.92,
+          "signal_annotations": [
+            "SISAS_SIGNAL_015"
+          ]
+        },
+        {
+          "task_id": "d4e5f6g7h8i9j0k1",
+          "shard_index": 3,
+          "executor_id": "semantic_processor",
+          "priority": 0.87,
+          "signal_annotations": [
+            "SISAS_SIGNAL_031",
+            "SISAS_SIGNAL_048"
+          ]
+        },
+        {
+          "task_id": "e5f6g7h8i9j0k1l2",
+          "shard_index": 4,
+          "executor_id": "bayesian_analyzer",
+          "priority": 0.90,
+          "signal_annotations": [
+            "SISAS_SIGNAL_019"
+          ]
+        }
+      ],
+      "sisas_signals": {
+        "irrigation_links": [
+          "Q001_Q005_LINK",
+          "Q003_Q012_LINK"
+        ],
+        "coverage_score": 0.92,
+        "quality_indicators": [
+          "HIGH_PRECISION",
+          "STRONG_EVIDENCE",
+          "MULTI_SOURCE"
+        ]
+      }
+    }
+  ],
+  "sisas_integration": {
+    "registry_version": "1.2.0",
+    "coverage_threshold": 0.85,
+    "total_signals_applied": 127,
+    "chunks_below_threshold": []
+  },
+  "verification": {
+    "surjection_verified": true,
+    "cardinality_verified": true,
+    "provenance_verified": true,
+    "manifest_hash": "c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5"
+  }
+}

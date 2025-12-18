@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://canonic-phases.internal/phase2/schemas/calibration_policy.schema.json",
+  "title": "CalibrationPolicy",
+  "description": "Calibration policy for executor behavior tuning. Version 1.0.0. Effective: 2025-12-18.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "effective_date",
+    "thresholds",
+    "bands"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "pattern": "^CAL-[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9]{8}$",
+      "description": "Unique policy identifier with date prefix"
+    },
+    "effective_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["precision_minimum", "recall_minimum", "confidence_minimum"],
+      "additionalProperties": false,
+      "properties": {
+        "precision_minimum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "recall_minimum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confidence_minimum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "coverage_minimum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "bands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["band_id", "lower_bound", "upper_bound", "action"],
+        "additionalProperties": false,
+        "properties": {
+          "band_id": {
+            "type": "string"
+          },
+          "lower_bound": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "upper_bound": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "action": {
+            "type": "string",
+            "enum": ["ACCEPT", "REVIEW", "REJECT", "ESCALATE"]
+          },
+          "weight_modifier": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2,
+            "default": 1.0
+          }
+        }
+      }
+    },
+    "derivation_source": {
+      "type": "string",
+      "description": "Reference to canonical source (e.g., derek_beach.MICRO_LEVELS)"
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
