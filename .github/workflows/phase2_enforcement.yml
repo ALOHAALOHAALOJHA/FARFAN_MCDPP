@@ -15,6 +15,8 @@ jobs:
   phase2-gates:
     name: Phase 2 Gates
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout
