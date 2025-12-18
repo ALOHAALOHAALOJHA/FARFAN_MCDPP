@@ -1,0 +1,139 @@
+name: Phase 0 Canonicalization Gate
+
+on:
+  push:
+    branches: [main, develop, 'copilot/**']
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  phase0_validation:
+    name: Phase 0 Canonical Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      
+      - name: Check for legacy Phase_zero imports
+        id: legacy_check
+        run: |
+          echo "Checking for legacy Phase_zero imports..."
+          
+          # Check src/ for legacy imports (excluding compatibility shims)
+          if grep -rn "from.*\.Phase_zero\." src/ --include="*.py" \
+             | grep -v "canonic_phases/__init__.py" \
+             | grep -v "phases/Phase_zero/__init__.py" \
+             | grep -v "phase_0_input_validation"; then
+            echo "❌ FAILED: Found legacy Phase_zero imports in src/!"
+            echo "   Use 'from canonic_phases.phase_0_input_validation.phase0_' instead."
+            exit 1
+          fi
+          
+          # Check tests/ for legacy imports
+          if grep -rn "from.*\.Phase_zero\." tests/ --include="*.py" \
+             | grep -v "phase_0_input_validation"; then
+            echo "❌ FAILED: Found legacy Phase_zero imports in tests/!"
+            echo "   Use 'from canonic_phases.phase_0_input_validation.phase0_' instead."
+            exit 1
+          fi
+          
+          echo "✅ PASSED: No legacy Phase_zero imports found."
+      
+      - name: Check naming conventions
+        id: naming_check
+        run: |
+          echo "Checking Phase 0 naming conventions..."
+          
+          # Verify all Phase 0 files use phase0_ prefix
+          cd src/canonic_phases/phase_0_input_validation
+          
+          for file in *.py; do
+            if [ "$file" != "__init__.py" ] && [ "$file" != "README.md" ]; then
+              if ! echo "$file" | grep -q "^phase0_"; then
+                echo "❌ FAILED: File '$file' does not use phase0_ prefix!"
+                exit 1
+              fi
+            fi
+          done
+          
+          echo "✅ PASSED: All files follow naming conventions."
+      
+      - name: Verify canonical path structure
+        id: structure_check
+        run: |
+          echo "Verifying canonical path structure..."
+          
+          # Check canonical directory exists
+          if [ ! -d "src/canonic_phases/phase_0_input_validation" ]; then
+            echo "❌ FAILED: Canonical path does not exist!"
+            exit 1
+          fi
+          
+          # Check contracts directory
+          if [ ! -d "src/canonic_phases/phase_0_input_validation/contracts" ]; then
+            echo "❌ FAILED: Contracts directory missing!"
+            exit 1
+          fi
+          
+          # Check certificates directory
+          if [ ! -d "src/canonic_phases/phase_0_input_validation/contracts/certificates" ]; then
+            echo "❌ FAILED: Certificates directory missing!"
+            exit 1
+          fi
+          
+          # Count certificates (should be 15)
+          cert_count=$(find src/canonic_phases/phase_0_input_validation/contracts/certificates -name "CERTIFICATE_*.md" | wc -l)
+          if [ "$cert_count" -ne 15 ]; then
+            echo "❌ FAILED: Expected 15 certificates, found $cert_count!"
+            exit 1
+          fi
+          
+          echo "✅ PASSED: Canonical path structure verified."
+      
+      - name: Run Phase 0 tests
+        id: test_phase0
+        run: |
+          echo "Running Phase 0 test suite..."
+          python -m pytest tests/phase_0/ -v --tb=short
+      
+      - name: Verify purge of non-canonical paths
+        id: purge_check
+        run: |
+          echo "Verifying non-canonical Phase 0 paths are purged..."
+          
+          # Should not find Phase_zero directories outside legacy location
+          # (excluding the compatibility shim at farfan_pipeline/phases/Phase_zero)
+          non_canonical=$(find src -type d -name "Phase_zero" -o -name "phase_zero" \
+            | grep -v "farfan_pipeline/phases/Phase_zero" \
+            | grep -v "phase_0_input_validation" || true)
+          
+          if [ -n "$non_canonical" ]; then
+            echo "❌ FAILED: Found non-canonical Phase 0 directories:"
+            echo "$non_canonical"
+            exit 1
+          fi
+          
+          echo "✅ PASSED: No non-canonical Phase 0 paths found."
+      
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Phase 0 Canonicalization Validation"
+          echo ""
+          echo "- Legacy imports check: ${{ steps.legacy_check.outcome }}"
+          echo "- Naming conventions: ${{ steps.naming_check.outcome }}"
+          echo "- Structure verification: ${{ steps.structure_check.outcome }}"
+          echo "- Phase 0 tests: ${{ steps.test_phase0.outcome }}"
+          echo "- Purge verification: ${{ steps.purge_check.outcome }}"
