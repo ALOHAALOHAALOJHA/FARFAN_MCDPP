@@ -151,7 +151,7 @@ class TestCarverCapabilities:
     def test_carver_dimension_support(self):
         """Test that Carver supports 6 dimensions."""
         try:
-            from canonic_phases.Phase_two.carver import Dimension
+            from canonic_phases.Phase_two.phase2_f_carver import Dimension
             
             dimensions = list(Dimension)
             assert len(dimensions) == 6, "Carver should support 6 dimensions"
@@ -169,7 +169,7 @@ class TestCarverCapabilities:
     def test_carver_gap_analyzer_exists(self):
         """Test that GapAnalyzer class exists in Carver."""
         try:
-            from canonic_phases.Phase_two.carver import GapAnalyzer
+            from canonic_phases.Phase_two.phase2_f_carver import GapAnalyzer
             
             # Check it has identify_gaps method
             assert hasattr(GapAnalyzer, 'identify_gaps'), \
@@ -181,7 +181,7 @@ class TestCarverCapabilities:
     def test_carver_evidence_analyzer_exists(self):
         """Test that EvidenceAnalyzer class exists in Carver."""
         try:
-            from canonic_phases.Phase_two.carver import EvidenceAnalyzer
+            from canonic_phases.Phase_two.phase2_f_carver import EvidenceAnalyzer
             
             # Check key methods
             methods = ['extract_items', 'count_by_type', 'find_corroborations', 
@@ -196,7 +196,7 @@ class TestCarverCapabilities:
     def test_carver_bayesian_confidence_exists(self):
         """Test that BayesianConfidenceEngine exists in Carver."""
         try:
-            from canonic_phases.Phase_two.carver import BayesianConfidenceEngine
+            from canonic_phases.Phase_two.phase2_f_carver import BayesianConfidenceEngine
             
             # Check compute method
             assert hasattr(BayesianConfidenceEngine, 'compute'), \
@@ -249,7 +249,7 @@ class TestGapSeverityClassification:
     def test_gap_severity_enum_exists(self):
         """Test that GapSeverity enum exists."""
         try:
-            from canonic_phases.Phase_two.carver import GapSeverity
+            from canonic_phases.Phase_two.phase2_f_carver import GapSeverity
             
             # Check all severity levels exist
             expected = ["CRITICAL", "MAJOR", "MINOR", "COSMETIC"]
@@ -263,7 +263,7 @@ class TestGapSeverityClassification:
     def test_evidence_strength_enum_exists(self):
         """Test that EvidenceStrength enum exists."""
         try:
-            from canonic_phases.Phase_two.carver import EvidenceStrength
+            from canonic_phases.Phase_two.phase2_f_carver import EvidenceStrength
             
             # Check all strength levels exist
             expected = ["DEFINITIVE", "STRONG", "MODERATE", "WEAK", "ABSENT"]

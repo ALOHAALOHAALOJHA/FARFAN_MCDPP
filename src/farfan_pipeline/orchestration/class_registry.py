@@ -63,8 +63,8 @@ _CLASS_PATHS: Mapping[str, str] = {
     "HierarchicalGenerativeModel": "methods_dispensary.derek_beach.HierarchicalGenerativeModel",
     
     # Evidence Nexus (replaced EvidenceAssembler)
-    "EvidenceNexus": "canonic_phases.Phase_two.evidence_nexus.EvidenceNexus",
-    "EvidenceAssembler": "canonic_phases.Phase_two.evidence_nexus.EvidenceNexus",  # Alias for backwards compatibility
+    "EvidenceNexus": "canonic_phases.Phase_two.phase2_h_evidence_nexus.EvidenceNexus",
+    "EvidenceAssembler": "canonic_phases.Phase_two.phase2_h_evidence_nexus.EvidenceNexus",  # Alias for backwards compatibility
     
     # Executors (in canonic_phases/Phase_two/executors.py)
     # D1_Q1_QuantitativeBaselineExtractor and D1_Q2_ProblemDimensioningAnalyzer removed (Legacy)

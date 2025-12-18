@@ -14,7 +14,7 @@ from typing import Any
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from farfan_pipeline.phases.Phase_two.contract_validator_cqvr import (
+from farfan_pipeline.phases.Phase_two.phase2_g_contract_validator_cqvr import (
     CQVRValidator,
     ContractTriageDecision,
     TriageDecision,

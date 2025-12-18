@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 try:
-    from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
+    from canonic_phases.Phase_two.phase2_b_base_executor_with_contract import BaseExecutorWithContract
     print("✅ Successfully imported BaseExecutorWithContract")
 except ImportError as e:
     print(f"❌ Failed to import BaseExecutorWithContract: {e}")

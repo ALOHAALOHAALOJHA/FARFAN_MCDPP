@@ -1,7 +1,7 @@
 """Tests for calibration policy system."""
 
 import pytest
-from farfan_pipeline.phases.Phase_two.calibration_policy import (
+from farfan_pipeline.phases.Phase_two.phase2_e_calibration_policy import (
     CalibrationPolicy,
     CalibrationWeight,
     create_default_policy,

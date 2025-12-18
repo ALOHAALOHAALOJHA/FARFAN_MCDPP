@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, MagicMock
-from farfan_pipeline.phases.Phase_two.calibration_policy import (
+from farfan_pipeline.phases.Phase_two.phase2_e_calibration_policy import (
     CalibrationPolicy,
     create_default_policy,
 )

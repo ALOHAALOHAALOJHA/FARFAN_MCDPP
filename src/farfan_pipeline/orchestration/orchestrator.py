@@ -73,14 +73,14 @@ from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements impo
     EnhancedClusterAggregator,
     EnhancedMacroAggregator,
 )
-from canonic_phases.Phase_two.arg_router import (
+from canonic_phases.Phase_two.phase2_a_arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
 )
 from orchestration.class_registry import ClassRegistryError
 from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
-from canonic_phases.Phase_two.irrigation_synchronizer import (
+from canonic_phases.Phase_two.phase2_p_irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
@@ -1265,7 +1265,7 @@ class Orchestrator:
     ) -> None:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
-        from canonic_phases.Phase_two.calibration_policy import create_default_policy
+        from canonic_phases.Phase_two.phase2_e_calibration_policy import create_default_policy
         from canonic_phases.Phase_zero.runtime_config import RuntimeConfig as _RuntimeConfig
         
         validate_phase_definitions(self.FASES, self.__class__)
@@ -2398,7 +2398,7 @@ class Orchestrator:
 
                     # 300-CONTRACT MODEL: Load contract directly by question_id
                     # This replaces the old 30-executor pattern from executors.py
-                    from canonic_phases.Phase_two.base_executor_with_contract import DynamicContractExecutor
+                    from canonic_phases.Phase_two.phase2_b_base_executor_with_contract import DynamicContractExecutor
 
                     question_id = question.get("id")
                     if not question_id:

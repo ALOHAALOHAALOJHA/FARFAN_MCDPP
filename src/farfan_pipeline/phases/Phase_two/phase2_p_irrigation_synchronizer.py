@@ -37,7 +37,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
-from canonic_phases.Phase_two.phase6_validation import (
+from canonic_phases.Phase_two.phase2_q_phase6_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument

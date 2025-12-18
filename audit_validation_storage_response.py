@@ -458,7 +458,7 @@ class ValidationStorageResponseAuditor:
             base_code = f.read()
         
         # Check EvidenceNexus integration
-        if "from canonic_phases.Phase_two.evidence_nexus import" in base_code:
+        if "from canonic_phases.Phase_two.phase2_h_evidence_nexus import" in base_code:
             # EvidenceNexus is imported
             if "process_evidence" in base_code:
                 # And used
@@ -481,7 +481,7 @@ class ValidationStorageResponseAuditor:
             ))
         
         # Check Carver integration
-        if "from canonic_phases.Phase_two.carver import" in base_code:
+        if "from canonic_phases.Phase_two.phase2_f_carver import" in base_code:
             # Carver is imported - check usage
             if "DoctoralCarverSynthesizer" not in base_code:
                 self.report.add_finding(AuditFinding(

@@ -17,7 +17,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from canonic_phases.Phase_two.contract_validator_cqvr import CQVRValidator
+from canonic_phases.Phase_two.phase2_g_contract_validator_cqvr import CQVRValidator
 
 
 def load_contract(path: str) -> dict[str, Any]:

@@ -17,7 +17,7 @@ from unittest.mock import Mock, MagicMock, patch
 import pytest
 
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.phase2_i_executor_config import ExecutorConfig
 
 
 class TestOrchestratorSignalValidationIntegration:

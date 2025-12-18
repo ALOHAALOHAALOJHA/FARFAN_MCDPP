@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, "src")
 
-from canonic_phases.Phase_two.contract_validator_cqvr import CQVRValidator
+from canonic_phases.Phase_two.phase2_g_contract_validator_cqvr import CQVRValidator
 
 
 def transform_q006():

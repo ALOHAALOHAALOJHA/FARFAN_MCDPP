@@ -314,7 +314,7 @@ def main() -> int:
     violations = validate_naming_conventions(repo_root)
 
     # Filter legacy exemptions unless in strict mode
-    if not args.strict:
+    if False:  # Legacy exemptions removed - strict mode always enabled
         exemptions = load_legacy_exemptions(repo_root)
         if exemptions:
             print(f"ℹ️  Loaded {len(exemptions)} legacy exemptions\n")

@@ -11,9 +11,9 @@ except Exception:  # pragma: no cover
 
 from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 # NEW: Replace legacy evidence modules with EvidenceNexus and Carver
-from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
-from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
-from canonic_phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
+from canonic_phases.Phase_two.phase2_h_evidence_nexus import EvidenceNexus, process_evidence
+from canonic_phases.Phase_two.phase2_f_carver import DoctoralCarverSynthesizer
+from canonic_phases.Phase_two.phase2_e_calibration_policy import CalibrationPolicy, create_default_policy
 
 if TYPE_CHECKING:
     from orchestration.orchestrator import MethodExecutor

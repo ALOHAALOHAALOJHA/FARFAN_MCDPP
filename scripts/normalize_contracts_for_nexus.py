@@ -54,9 +54,9 @@ def _compute_contract_hash(contract: dict[str, Any]) -> str:
 
 
 _REPLACEMENTS: tuple[tuple[str, str], ...] = (
-    ("farfan_core.core.orchestrator.evidence_assembler", "canonic_phases.Phase_two.evidence_nexus"),
-    ("farfan_core.core.orchestrator.evidence_validator", "canonic_phases.Phase_two.evidence_nexus"),
-    ("farfan_core.core.orchestrator.evidence_registry", "canonic_phases.Phase_two.evidence_nexus"),
+    ("farfan_core.core.orchestrator.evidence_assembler", "canonic_phases.Phase_two.phase2_h_evidence_nexus"),
+    ("farfan_core.core.orchestrator.evidence_validator", "canonic_phases.Phase_two.phase2_h_evidence_nexus"),
+    ("farfan_core.core.orchestrator.evidence_registry", "canonic_phases.Phase_two.phase2_h_evidence_nexus"),
     ("EvidenceAssembler", "EvidenceNexus"),
     ("EvidenceValidator", "ValidationEngine"),
 )
@@ -95,7 +95,7 @@ def _normalize_contract(contract: dict[str, Any]) -> tuple[dict[str, Any], list[
     evidence_assembly = contract.get("evidence_assembly")
     if isinstance(evidence_assembly, dict):
         evidence_assembly.setdefault("engine", "EVIDENCE_NEXUS")
-        evidence_assembly["module"] = "canonic_phases.Phase_two.evidence_nexus"
+        evidence_assembly["module"] = "canonic_phases.Phase_two.phase2_h_evidence_nexus"
         evidence_assembly["class_name"] = "EvidenceNexus"
         # There is no direct EvidenceNexus.assemble; process/process_evidence is the canonical entry point.
         evidence_assembly["method_name"] = evidence_assembly.get("method_name") or "process"
@@ -105,7 +105,7 @@ def _normalize_contract(contract: dict[str, Any]) -> tuple[dict[str, Any], list[
     validation_rules = contract.get("validation_rules")
     if isinstance(validation_rules, dict):
         validation_rules.setdefault("engine", "VALIDATION_ENGINE")
-        validation_rules["module"] = "canonic_phases.Phase_two.evidence_nexus"
+        validation_rules["module"] = "canonic_phases.Phase_two.phase2_h_evidence_nexus"
         validation_rules["class_name"] = "ValidationEngine"
         validation_rules["method_name"] = validation_rules.get("method_name") or "validate"
         contract["validation_rules"] = validation_rules

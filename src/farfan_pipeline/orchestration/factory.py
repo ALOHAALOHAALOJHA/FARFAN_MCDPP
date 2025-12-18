@@ -115,7 +115,7 @@ from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
-from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
+from canonic_phases.Phase_two.phase2_a_arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry, get_class_paths
 from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract

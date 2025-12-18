@@ -85,7 +85,7 @@ INTEGRATION GUIDE:
    Pass validation orchestrator to executors:
 
    ```python
-   from canonic_phases.Phase_two.base_executor_with_contract import (
+   from canonic_phases.Phase_two.phase2_b_base_executor_with_contract import (
        BaseExecutorWithContract
    )
    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (

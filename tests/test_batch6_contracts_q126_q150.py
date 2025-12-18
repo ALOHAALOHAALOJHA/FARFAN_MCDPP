@@ -7,7 +7,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from farfan_pipeline.phases.Phase_two.contract_validator_cqvr import CQVRValidator  # noqa: E402
+from farfan_pipeline.phases.Phase_two.phase2_g_contract_validator_cqvr import CQVRValidator  # noqa: E402
 
 
 CONTRACTS_DIR = (
