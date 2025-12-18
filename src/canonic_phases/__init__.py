@@ -21,7 +21,7 @@ __all__ = [
     "Phase_two",
     "phase_1_cpp_ingestion",
     "phase_3_scoring_transformation",
-    "Phase_four_five_six_seven",
+    "phase_4_7_aggregation_pipeline",
     "Phase_eight",
     "Phase_nine",
 ]
