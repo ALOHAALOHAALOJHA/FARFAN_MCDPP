@@ -8,8 +8,9 @@ Effective-Date: 2025-12-18
 """
 from __future__ import annotations
 
-from typing import Callable, Any, TypeVar
+from collections.abc import Callable
 from functools import wraps
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -17,7 +18,7 @@ T = TypeVar("T")
 def precondition(check: Callable[..., bool], message: str) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Decorator to enforce preconditions on function execution.
-    
+
     Args:
         check: Function that returns True if precondition is met
         message: Error message to display if precondition fails
@@ -35,7 +36,7 @@ def precondition(check: Callable[..., bool], message: str) -> Callable[[Callable
 def postcondition(check: Callable[[T], bool], message: str) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Decorator to enforce postconditions on function execution.
-    
+
     Args:
         check: Function that returns True if postcondition is met
         message: Error message to display if postcondition fails

@@ -8,15 +8,15 @@ Effective-Date: 2025-12-18
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import List, Iterable, Optional
 
 
 @dataclass(frozen=True, slots=True)
 class CPPChunk:
     """
     CPP Chunk representation from Phase 1.
-    
+
     Attributes:
         chunk_id: Unique identifier for the chunk
         pa_code: Policy Area code
@@ -33,7 +33,7 @@ class CPPChunk:
 class MicroAnswer:
     """
     Micro-answer generated from CPP chunk carving.
-    
+
     Attributes:
         task_id: Unique identifier for the task
         chunk_id: Source chunk identifier
@@ -45,25 +45,25 @@ class MicroAnswer:
     chunk_id: str
     shard_index: int
     content: str
-    executor_id: Optional[str] = None
+    executor_id: str | None = None
 
 
 def carve_chunks(
     chunk_stream: Iterable[CPPChunk],
     random_seed: int,
-) -> List[MicroAnswer]:
+) -> list[MicroAnswer]:
     """
     Transform 60 CPP chunks into 300 micro-answers.
-    
+
     Args:
         chunk_stream: Stream of 60 CPP chunks from Phase 1
         random_seed: Seed for deterministic processing
-        
+
     Returns:
         List of 300 micro-answers (5 per chunk)
     """
-    micro_answers: List[MicroAnswer] = []
-    
+    micro_answers: list[MicroAnswer] = []
+
     for chunk in chunk_stream:
         for shard_index in range(5):
             task_id = f"{chunk.chunk_id}_S{shard_index}"
@@ -75,5 +75,5 @@ def carve_chunks(
                 executor_id=None,
             )
             micro_answers.append(micro_answer)
-    
+
     return micro_answers

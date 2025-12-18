@@ -27,14 +27,15 @@ Failure-Modes:
 from __future__ import annotations
 
 import re
+import warnings
 from pathlib import Path
-from typing import List, Set, Dict, Final
+from typing import Final, List, Set
 
 import pytest
 
 # === CONSTANTS ===
 
-REQUIRED_CERTIFICATES: Final[List[str]] = [
+REQUIRED_CERTIFICATES: Final[list[str]] = [
     "CERTIFICATE_01_ROUTING_CONTRACT.md",
     "CERTIFICATE_02_CONCURRENCY_DETERMINISM.md",
     "CERTIFICATE_03_CONTEXT_IMMUTABILITY.md",
@@ -52,7 +53,7 @@ REQUIRED_CERTIFICATES: Final[List[str]] = [
     "CERTIFICATE_15_SOURCE_VALIDATION_STRICTNESS.md",
 ]
 
-REQUIRED_FIELDS: Final[List[str]] = [
+REQUIRED_FIELDS: Final[list[str]] = [
     "Certificate ID",
     "Status",
     "Effective Date",
@@ -80,15 +81,15 @@ class TestCertificatesPresence:
         - All 15 certificate files exist
         - Each certificate contains required fields
         - Status field is ACTIVE
-    
+
     FAILURE_MODES:
         - MissingFile: Certificate file not found
         - MissingField: Required field not in certificate
         - InvalidStatus: Status is not ACTIVE
-    
+
     TERMINATION_CONDITION:
         - All certificates scanned and validated
-    
+
     VERIFICATION_STRATEGY:
         - pytest execution in CI
     """
@@ -110,13 +111,13 @@ class TestCertificatesPresence:
         certificates_dir: Path,
     ) -> None:
         """All 15 required certificates must exist."""
-        missing: List[str] = []
-        
+        missing: list[str] = []
+
         for cert_name in REQUIRED_CERTIFICATES:
             cert_path = certificates_dir / cert_name
             if not cert_path.exists():
                 missing.append(cert_name)
-        
+
         assert not missing, (
             f"Missing certificates ({len(missing)}/15):\n" +
             "\n".join(f"  - {m}" for m in missing)
@@ -128,14 +129,14 @@ class TestCertificatesPresence:
     ) -> None:
         """All certificate files must match naming pattern."""
         pattern = re.compile(r"^CERTIFICATE_[0-9]{2}_[A-Z][A-Z0-9_]*\.md$")
-        violations: List[str] = []
-        
+        violations: list[str] = []
+
         for cert_file in certificates_dir.glob("*.md"):
             if not pattern.match(cert_file.name):
                 violations.append(cert_file.name)
-        
+
         assert not violations, (
-            f"Certificate naming violations:\n" +
+            "Certificate naming violations:\n" +
             "\n".join(f"  - {v}" for v in violations)
         )
 
@@ -147,17 +148,17 @@ class TestCertificatesPresence:
     ) -> None:
         """Each certificate must contain all required fields."""
         cert_path = certificates_dir / cert_name
-        
+
         if not cert_path.exists():
             pytest.skip(f"Certificate not yet created: {cert_name}")
-        
+
         content = cert_path.read_text(encoding="utf-8")
-        
-        missing_fields: List[str] = []
+
+        missing_fields: list[str] = []
         for field in REQUIRED_FIELDS:
             if field not in content:
                 missing_fields.append(field)
-        
+
         assert not missing_fields, (
             f"Certificate {cert_name} missing fields:\n" +
             "\n".join(f"  - {f}" for f in missing_fields)
@@ -171,20 +172,20 @@ class TestCertificatesPresence:
     ) -> None:
         """Each certificate Status field must be ACTIVE."""
         cert_path = certificates_dir / cert_name
-        
+
         if not cert_path.exists():
             pytest.skip(f"Certificate not yet created: {cert_name}")
-        
+
         content = cert_path.read_text(encoding="utf-8")
-        
+
         # Look for Status field in table format
         status_pattern = re.compile(r"\|\s*Status\s*\|\s*(\w+)\s*\|")
         match = status_pattern.search(content)
-        
+
         assert match is not None, (
             f"Certificate {cert_name} has no Status field in table format"
         )
-        
+
         status = match.group(1)
         assert status == "ACTIVE", (
             f"Certificate {cert_name} Status is {status}, expected ACTIVE"
@@ -195,11 +196,11 @@ class TestCertificatesPresence:
         certificates_dir: Path,
     ) -> None:
         """No unexpected certificate files should exist."""
-        expected_set: Set[str] = set(REQUIRED_CERTIFICATES)
+        expected_set: set[str] = set(REQUIRED_CERTIFICATES)
         actual_files = {f.name for f in certificates_dir.glob("*.md")}
-        
+
         extra = actual_files - expected_set
-        
+
         # Warning only, not assertion (may have additional docs)
         if extra:
             import warnings

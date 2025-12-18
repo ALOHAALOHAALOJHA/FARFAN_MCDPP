@@ -28,11 +28,10 @@ Failure-Modes:
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Callable, Dict, Any, List, Set, Final, Type, Optional
-from types import ModuleType
-import inspect
 import logging
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from typing import Any, Final
 
 logger: Final = logging.getLogger(__name__)
 
@@ -56,7 +55,7 @@ class MethodDefinition:
     module_path: str
     description: str
     contracts: tuple[str, ...] = field(default_factory=tuple)
-    
+
     @property
     def qualified_name(self) -> str:
         """Return fully qualified method name."""
@@ -69,7 +68,7 @@ class RegistryEntry:
     definition: MethodDefinition
     method_ref: Callable[..., Any]
     validated: bool = False
-    validation_errors: List[str] = field(default_factory=list)
+    validation_errors: list[str] = field(default_factory=list)
 
 
 # === EXCEPTION TAXONOMY ===
@@ -80,14 +79,14 @@ class RegistryError(Exception):
     error_type: str
     method_name: str
     details: str
-    
+
     def __str__(self) -> str:
         return f"REGISTRY_ERROR[{self.error_type}]: {self.method_name} — {self.details}"
 
 
 # === REQUIRED METHODS SPECIFICATION ===
 
-REQUIRED_PHASE2_METHODS: Final[List[MethodDefinition]] = [
+REQUIRED_PHASE2_METHODS: Final[list[MethodDefinition]] = [
     MethodDefinition(
         name="carve_chunks",
         signature=MethodSignature(
@@ -125,29 +124,29 @@ REQUIRED_PHASE2_METHODS: Final[List[MethodDefinition]] = [
 class MethodRegistry:
     """
     Registry of Phase 2 methods with validation.
-    
+
     SUCCESS_CRITERIA:
         - All required methods registered and resolved
         - Signatures validated against declarations
         - Source modules accessible
-    
+
     FAILURE_MODES:
         - MissingMethod: Required method not found
         - SignatureMismatch: Actual signature differs from declared
         - ImportError: Source module not importable
-    
+
     TERMINATION_CONDITION:
         - Registry fully populated and validated
-    
+
     VERIFICATION_STRATEGY:
         - test_phase2_orchestrator_alignment.py
     """
-    
+
     def __init__(self) -> None:
         """Initialize empty registry."""
-        self._entries: Dict[str, RegistryEntry] = {}
+        self._entries: dict[str, RegistryEntry] = {}
         self._validated: bool = False
-    
+
     def register(
         self,
         definition: MethodDefinition,
@@ -155,11 +154,11 @@ class MethodRegistry:
     ) -> None:
         """
         Register a method with its definition.
-        
+
         Args:
             definition: Method definition with signature
             method_ref: Actual method reference
-            
+
         Raises:
             RegistryError: If method already registered
         """
@@ -169,26 +168,26 @@ class MethodRegistry:
                 method_name=definition.name,
                 details="Method already registered",
             )
-        
+
         self._entries[definition.name] = RegistryEntry(
             definition=definition,
             method_ref=method_ref,
             validated=False,
         )
         self._validated = False
-        
+
         logger.debug(f"Registered method: {definition.qualified_name}")
-    
+
     def get(self, method_name: str) -> Callable[..., Any]:
         """
         Get registered method by name.
-        
+
         Args:
             method_name: Name of registered method
-            
+
         Returns:
             Method reference
-            
+
         Raises:
             RegistryError: If method not registered
         """
@@ -198,42 +197,42 @@ class MethodRegistry:
                 method_name=method_name,
                 details=f"Method '{method_name}' not registered",
             )
-        
+
         return self._entries[method_name].method_ref
-    
+
     def validate_all(self) -> bool:
         """
         Validate all registered methods.
-        
+
         Returns:
             True if all methods valid, False otherwise
         """
         all_valid = True
-        
+
         for entry in self._entries.values():
             if not self._validate_entry(entry):
                 all_valid = False
-        
+
         self._validated = all_valid
         return all_valid
-    
+
     def _validate_entry(self, entry: RegistryEntry) -> bool:
         """Validate a single registry entry."""
-        errors: List[str] = []
-        
+        errors: list[str] = []
+
         # Check method is callable
         if not callable(entry.method_ref):
             errors.append("Method is not callable")
-        
+
         entry.validated = len(errors) == 0
         entry.validation_errors = errors
-        
+
         return entry.validated
-    
-    def get_all_definitions(self) -> List[MethodDefinition]:
+
+    def get_all_definitions(self) -> list[MethodDefinition]:
         """Get all registered method definitions."""
         return [entry.definition for entry in self._entries.values()]
-    
+
     def is_validated(self) -> bool:
         """Check if registry has been validated."""
         return self._validated
@@ -244,20 +243,20 @@ class MethodRegistry:
 def create_phase2_registry() -> MethodRegistry:
     """
     Create and populate Phase 2 method registry.
-    
+
     Returns:
         Populated MethodRegistry instance
     """
     registry = MethodRegistry()
-    
+
     # Import and register methods
     from ..phase2_b_carver import carve_chunks
     from ..phase2_e_irrigation_synchronizer import synchronize_irrigation
-    
+
     for definition in REQUIRED_PHASE2_METHODS:
         if definition.name == "carve_chunks":
             registry.register(definition, carve_chunks)
         elif definition.name == "synchronize_irrigation":
             registry.register(definition, synchronize_irrigation)
-    
+
     return registry
