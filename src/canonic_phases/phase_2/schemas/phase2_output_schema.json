@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://farfan.pipeline/schemas/phase2/phase2-output.json",
+  "title": "Phase2Output",
+  "description": "Schema for complete Phase 2 output package",
+  "type": "object",
+  "required": [
+    "phase_id",
+    "execution_timestamp",
+    "micro_answers",
+    "cardinality_report",
+    "quality_metrics"
+  ],
+  "properties": {
+    "phase_id": {
+      "type": "string",
+      "const": "phase_2",
+      "description": "Phase identifier"
+    },
+    "execution_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Phase execution timestamp"
+    },
+    "micro_answers": {
+      "type": "array",
+      "minItems": 300,
+      "maxItems": 300,
+      "items": {
+        "$ref": "micro_answer_schema.json"
+      },
+      "description": "Exactly 300 micro-answers"
+    },
+    "cardinality_report": {
+      "type": "object",
+      "required": ["chunks_processed", "answers_generated", "invariant_met"],
+      "properties": {
+        "chunks_processed": {"type": "integer", "const": 60},
+        "answers_generated": {"type": "integer", "const": 300},
+        "invariant_met": {"type": "boolean", "const": true},
+        "questions_per_pa": {
+          "type": "object",
+          "patternProperties": {
+            "^PA[0-9]{2}$": {"type": "integer", "const": 30}
+          }
+        }
+      }
+    },
+    "quality_metrics": {
+      "type": "object",
+      "required": ["avg_confidence", "evidence_coverage", "execution_stats"],
+      "properties": {
+        "avg_confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "evidence_coverage": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Fraction of answers with evidence"
+        },
+        "execution_stats": {
+          "type": "object",
+          "properties": {
+            "total_execution_time_ms": {"type": "number", "minimum": 0},
+            "avg_execution_time_per_task_ms": {"type": "number", "minimum": 0},
+            "retry_count": {"type": "integer", "minimum": 0},
+            "error_count": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

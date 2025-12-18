@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://farfan.pipeline/schemas/phase2/micro-answer.json",
+  "title": "MicroAnswer",
+  "description": "Schema for a single micro-answer produced by Phase 2 execution",
+  "type": "object",
+  "required": [
+    "question_id",
+    "policy_area_id",
+    "chunk_id",
+    "answer_text",
+    "confidence",
+    "evidence",
+    "metadata"
+  ],
+  "properties": {
+    "question_id": {
+      "type": "string",
+      "pattern": "^Q[0-9]{3}$",
+      "description": "Base question ID (Q001-Q030)"
+    },
+    "policy_area_id": {
+      "type": "string",
+      "pattern": "^PA[0-9]{2}$",
+      "description": "Policy area ID (PA01-PA10)"
+    },
+    "chunk_id": {
+      "type": "string",
+      "description": "Document chunk identifier"
+    },
+    "answer_text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Generated micro-answer text"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Calibrated confidence score"
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["source", "text"],
+        "properties": {
+          "source": {"type": "string"},
+          "text": {"type": "string"},
+          "page": {"type": "integer", "minimum": 1},
+          "relevance_score": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+        }
+      },
+      "description": "Evidence supporting the answer"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["executor_id", "execution_timestamp"],
+      "properties": {
+        "executor_id": {"type": "string"},
+        "execution_timestamp": {"type": "string", "format": "date-time"},
+        "execution_time_ms": {"type": "number", "minimum": 0},
+        "retry_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": true,
+      "description": "Execution metadata"
+    }
+  },
+  "additionalProperties": false
+}

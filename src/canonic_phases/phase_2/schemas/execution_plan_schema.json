@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://farfan.pipeline/schemas/phase2/execution-plan.json",
+  "title": "ExecutionPlan",
+  "description": "Schema for Phase 2 execution plan mapping 60 chunks to 300 tasks",
+  "type": "object",
+  "required": ["plan_id", "created_at", "chunks", "tasks", "cardinality"],
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "description": "Unique plan identifier"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Plan creation timestamp"
+    },
+    "chunks": {
+      "type": "array",
+      "minItems": 60,
+      "maxItems": 60,
+      "items": {
+        "type": "object",
+        "required": ["chunk_id", "policy_area_id", "dimension_id"],
+        "properties": {
+          "chunk_id": {"type": "string"},
+          "policy_area_id": {"type": "string", "pattern": "^PA[0-9]{2}$"},
+          "dimension_id": {"type": "string", "pattern": "^DIM[0-9]{2}$"},
+          "text_length": {"type": "integer", "minimum": 0}
+        }
+      },
+      "description": "60 input chunks from Phase 1"
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 300,
+      "maxItems": 300,
+      "items": {
+        "type": "object",
+        "required": ["task_id", "question_id", "chunk_id", "policy_area_id"],
+        "properties": {
+          "task_id": {"type": "string"},
+          "question_id": {"type": "string", "pattern": "^Q[0-9]{3}$"},
+          "chunk_id": {"type": "string"},
+          "policy_area_id": {"type": "string", "pattern": "^PA[0-9]{2}$"},
+          "dimension_id": {"type": "string", "pattern": "^DIM[0-9]{2}$"},
+          "executor_id": {"type": "string"},
+          "patterns": {"type": "array", "items": {"type": "string"}},
+          "expected_elements": {"type": "array", "items": {"type": "string"}}
+        }
+      },
+      "description": "300 executable tasks"
+    },
+    "cardinality": {
+      "type": "object",
+      "required": ["chunks_in", "tasks_out", "invariant_met"],
+      "properties": {
+        "chunks_in": {"type": "integer", "const": 60},
+        "tasks_out": {"type": "integer", "const": 300},
+        "invariant_met": {"type": "boolean", "const": true}
+      },
+      "description": "Cardinality verification"
+    }
+  },
+  "additionalProperties": false
+}
