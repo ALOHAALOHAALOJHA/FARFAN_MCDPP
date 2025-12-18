@@ -25,8 +25,8 @@ from dataclasses import asdict
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Phase 0 imports
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.exit_gates import GateResult
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.phase_0_input_validation.phase0_exit_gates import GateResult
 
 # Orchestrator imports
 from orchestration.orchestrator import Orchestrator, Phase0ValidationResult

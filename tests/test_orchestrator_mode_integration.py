@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import pytest
 
-from canonic_phases.Phase_zero.runtime_config import (
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import (
     RuntimeConfig,
     RuntimeMode,
     reset_runtime_config,

@@ -9,7 +9,7 @@ try:
 except Exception:  # pragma: no cover
     Draft7Validator = Any  # type: ignore[misc,assignment]
 
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+from canonic_phases.phase_0_input_validation.phase0_paths import PROJECT_ROOT
 # NEW: Replace legacy evidence modules with EvidenceNexus and Carver
 from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
 from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer

@@ -1,11 +1,11 @@
 """Path helpers (single source of truth).
 
-Re-exported from `farfan_pipeline.phases.Phase_zero.paths`.
+Re-exported from canonical Phase 0 path utilities.
 """
 
 from __future__ import annotations
 
-from farfan_pipeline.phases.Phase_zero.paths import (  # noqa: F401
+from canonic_phases.phase_0_input_validation.phase0_paths import (  # noqa: F401
     PROJECT_ROOT,
     SRC_DIR,
     DATA_DIR,

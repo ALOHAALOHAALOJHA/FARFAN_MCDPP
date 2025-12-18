@@ -96,7 +96,7 @@ class GraphMetricsInfo:
 
 # Re-export FallbackCategory from runtime_config for convenience
 try:
-    from canonic_phases.Phase_zero.runtime_config import FallbackCategory
+    from canonic_phases.phase_0_input_validation.phase0_runtime_config import FallbackCategory
 except ImportError:
     # Fallback definition if runtime_config not available
     class FallbackCategory(Enum):

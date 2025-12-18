@@ -14,7 +14,7 @@ import pytest
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import RuntimeConfig, RuntimeMode
 from orchestration.orchestrator import (
     AbortRequested,
     Orchestrator,

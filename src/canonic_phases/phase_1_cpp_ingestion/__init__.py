@@ -6,7 +6,7 @@ Constitutional invariant: exactly 60 chunks (10 policy areas × 6 dimensions).
 
 from __future__ import annotations
 
-from canonic_phases.Phase_zero.phase0_input_validation import CanonicalInput, Phase0Input
+from canonic_phases.phase_0_input_validation.phase0_phase0_input_validation import CanonicalInput, Phase0Input
 from canonic_phases.phase_1_cpp_ingestion.cpp_models import (
     CanonPolicyPackage,
     CanonPolicyPackageValidator,

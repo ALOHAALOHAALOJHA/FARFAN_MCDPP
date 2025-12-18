@@ -1,7 +1,7 @@
 
 import pytest
 from pathlib import Path
-from canonic_phases.Phase_zero.signature_validator import (
+from canonic_phases.phase_0_input_validation.phase0_signature_validator import (
     SignatureRegistry,
     FunctionSignature,
     validate_signature,

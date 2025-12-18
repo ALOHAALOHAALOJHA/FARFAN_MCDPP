@@ -42,14 +42,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import farfan_pipeline
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+from canonic_phases.phase_0_input_validation.phase0_paths import PROJECT_ROOT
 
 if os.environ.get("PIPELINE_DEBUG"):
     print(f"DEBUG: farfan_pipeline loaded from {farfan_pipeline.__file__}", flush=True)
 
 # Import contract enforcement infrastructure
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, get_runtime_config
-from canonic_phases.Phase_zero.boot_checks import (
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import RuntimeConfig, get_runtime_config
+from canonic_phases.phase_0_input_validation.phase0_boot_checks import (
     run_boot_checks,
     get_boot_check_summary,
     BootCheckError,
@@ -139,7 +139,7 @@ class VerifiedPipelineRunner:
 
         # Set questionnaire path (explicit input, SIN_CARRETA compliance)
         if questionnaire_path is None:
-            from canonic_phases.Phase_zero.paths import QUESTIONNAIRE_FILE
+            from canonic_phases.phase_0_input_validation.phase0_paths import QUESTIONNAIRE_FILE
 
             questionnaire_path = QUESTIONNAIRE_FILE
 

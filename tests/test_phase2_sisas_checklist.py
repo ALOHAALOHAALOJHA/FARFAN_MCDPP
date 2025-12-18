@@ -149,7 +149,7 @@ except ImportError:
 # If not found, try canonic_phases.Phase_zero (bootstrap location)
 if not QUESTIONNAIRE_LOADER_AVAILABLE:
     try:
-        from canonic_phases.Phase_zero.bootstrap import load_questionnaire
+        from canonic_phases.phase_0_input_validation.phase0_bootstrap import load_questionnaire
         QUESTIONNAIRE_LOADER_AVAILABLE = True
     except ImportError:
         pass

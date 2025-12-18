@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 import pytest
 
 # Import Phase 0 components from Phase_zero folder
-from canonic_phases.Phase_zero.runtime_config import (
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import (
     ConfigurationError,
     FallbackCategory,
     RuntimeConfig,
@@ -26,7 +26,7 @@ from canonic_phases.Phase_zero.runtime_config import (
     reset_runtime_config,
 )
 
-from canonic_phases.Phase_zero.boot_checks import (
+from canonic_phases.phase_0_input_validation.phase0_boot_checks import (
     BootCheckError,
     check_networkx_available,
     get_boot_check_summary,

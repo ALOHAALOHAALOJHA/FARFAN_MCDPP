@@ -32,10 +32,10 @@ from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT
-from canonic_phases.Phase_zero.paths import safe_join
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.exit_gates import GateResult
+from canonic_phases.phase_0_input_validation.phase0_paths import PROJECT_ROOT
+from canonic_phases.phase_0_input_validation.phase0_paths import safe_join
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.phase_0_input_validation.phase0_exit_gates import GateResult
 from farfan_pipeline.resilience import (
     CircuitBreaker,
     CircuitBreakerConfig,
@@ -130,7 +130,7 @@ class Phase0ValidationResult:
         validation_time: ISO 8601 timestamp of when validation occurred
     
     Example:
-        >>> from canonic_phases.Phase_zero.exit_gates import check_all_gates
+        >>> from canonic_phases.phase_0_input_validation.phase0_exit_gates import check_all_gates
         >>> all_passed, gates = check_all_gates(runner)
         >>> validation = Phase0ValidationResult(
         ...     all_passed=all_passed,
@@ -1266,7 +1266,7 @@ class Orchestrator:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
         from canonic_phases.Phase_two.calibration_policy import create_default_policy
-        from canonic_phases.Phase_zero.runtime_config import RuntimeConfig as _RuntimeConfig
+        from canonic_phases.phase_0_input_validation.phase0_runtime_config import RuntimeConfig as _RuntimeConfig
         
         validate_phase_definitions(self.FASES, self.__class__)
 

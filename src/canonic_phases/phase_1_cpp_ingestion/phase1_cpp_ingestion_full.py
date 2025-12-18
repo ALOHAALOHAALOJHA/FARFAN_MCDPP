@@ -66,7 +66,7 @@ from typing import Any, Dict, List, Optional, Tuple, Set
 
 # Core pipeline imports - REAL PATHS based on actual project structure
 # Phase 0/1 models from same directory
-from canonic_phases.Phase_zero.phase0_input_validation import CanonicalInput
+from canonic_phases.phase_0_input_validation.phase0_phase0_input_validation import CanonicalInput
 from canonic_phases.phase_1_cpp_ingestion.phase1_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
     Chunk, CausalChains, IntegratedCausal, Arguments, Temporal, Discourse, Strategic,

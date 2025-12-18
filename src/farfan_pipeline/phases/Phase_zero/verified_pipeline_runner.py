@@ -46,13 +46,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from canonic_phases.Phase_zero.boot_checks import BootCheckError, run_boot_checks
-from canonic_phases.Phase_zero.determinism import initialize_determinism_from_registry
-from canonic_phases.Phase_zero.exit_gates import (
+from canonic_phases.phase_0_input_validation.phase0_boot_checks import BootCheckError, run_boot_checks
+from canonic_phases.phase_0_input_validation.phase0_determinism import initialize_determinism_from_registry
+from canonic_phases.phase_0_input_validation.phase0_exit_gates import (
     check_all_gates,
     get_gate_summary,
 )
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import RuntimeConfig
 
 
 class VerifiedPipelineRunner:

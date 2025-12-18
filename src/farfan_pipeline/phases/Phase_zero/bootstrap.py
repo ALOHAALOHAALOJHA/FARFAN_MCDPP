@@ -21,7 +21,7 @@ from typing import Any
 
 import structlog
 
-from canonic_phases.Phase_zero.paths import CONFIG_DIR, DATA_DIR
+from canonic_phases.phase_0_input_validation.phase0_paths import CONFIG_DIR, DATA_DIR
 from orchestration.factory import CanonicalQuestionnaire
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry

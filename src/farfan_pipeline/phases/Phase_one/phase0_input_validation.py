@@ -431,7 +431,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         # 1. Resolve questionnaire path
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
-            from canonic_phases.Phase_zero.paths import QUESTIONNAIRE_FILE
+            from canonic_phases.phase_0_input_validation.phase0_paths import QUESTIONNAIRE_FILE
 
             questionnaire_path = QUESTIONNAIRE_FILE
             warnings.append(

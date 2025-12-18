@@ -24,20 +24,20 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from canonic_phases.Phase_zero.boot_checks import BootCheckError
-from canonic_phases.Phase_zero.determinism import (
+from canonic_phases.phase_0_input_validation.phase0_boot_checks import BootCheckError
+from canonic_phases.phase_0_input_validation.phase0_determinism import (
     MANDATORY_SEEDS,
     apply_seeds_to_rngs,
     initialize_determinism_from_registry,
     validate_seed_application,
 )
-from canonic_phases.Phase_zero.exit_gates import (
+from canonic_phases.phase_0_input_validation.phase0_exit_gates import (
     check_all_gates,
     check_bootstrap_gate,
     check_determinism_gate,
 )
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.verified_pipeline_runner import VerifiedPipelineRunner
+from canonic_phases.phase_0_input_validation.phase0_runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.phase_0_input_validation.phase0_verified_pipeline_runner import VerifiedPipelineRunner
 
 
 # ============================================================================
@@ -232,7 +232,7 @@ def test_contract_08_prod_mode_must_fail_on_boot_check_error():
     Precondition: runtime_config.mode = "prod"
     Postcondition: BootCheckError raised, error appended
     """
-    from canonic_phases.Phase_zero.boot_checks import run_boot_checks
+    from canonic_phases.phase_0_input_validation.phase0_boot_checks import run_boot_checks
     
     config = MagicMock()
     config.mode.value = "prod"

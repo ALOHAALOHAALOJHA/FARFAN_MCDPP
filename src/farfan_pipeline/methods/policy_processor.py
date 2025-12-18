@@ -34,7 +34,7 @@ import numpy as np
 
 # Import runtime error fixes for defensive programming
 try:
-    from canonic_phases.Phase_zero.runtime_error_fixes import ensure_list_return
+    from canonic_phases.phase_0_input_validation.phase0_runtime_error_fixes import ensure_list_return
 except Exception:  # pragma: no cover - local fallback for standalone import
 
     def ensure_list_return(value: Any) -> list[Any]:
