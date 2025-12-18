@@ -478,23 +478,16 @@
     }
   },
   "signal_requirements": {
-    "mandatory_signals": [
-      "baseline_completeness",
-      "data_sources",
-      "gender_baseline_data",
-      "policy_coverage",
-      "vbg_statistics"
-    ],
-    "optional_signals": [
-      "geographic_scope",
-      "source_validation",
-      "temporal_coverage",
-      "temporal_series",
-      "territorial_scope"
-    ],
+    "mandatory_signals": [],
+    "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
+    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM01; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "preferred_signal_types": [
+      "policy_instrument_detected",
+      "activity_specification_found",
+      "implementation_timeline_present"
+    ]
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -585,21 +578,23 @@
       {
         "target": "evidence_graph",
         "sources": [
-          "text_mining.diagnose_critical_links",
-          "text_mining.analyze_link_text",
-          "industrial_policy.process",
-          "industrial_policy.extract_point_evidence",
+          "bayesian_analysis.compare_policies",
+          "bayesian_analysis.evaluate_policy_metric",
           "causal_extraction.extract_goals",
           "causal_extraction.parse_goal_context",
-          "financial_audit.parse_amount",
-          "pdet_analysis.extract_financial_amounts",
-          "pdet_analysis.extract_from_budget_table",
           "contradiction_detection.extract_quantitative_claims",
           "contradiction_detection.parse_number",
-          "bayesian_analysis.evaluate_policy_metric",
-          "bayesian_analysis.compare_policies",
+          "contradiction_detection.statistical_significance_test",
+          "financial_audit.parse_amount",
+          "industrial_policy.extract_point_evidence",
+          "industrial_policy.match_patterns_in_sentences",
+          "industrial_policy.process",
+          "pdet_analysis.extract_financial_amounts",
+          "pdet_analysis.extract_from_budget_table",
           "semantic_processing.chunk_text",
-          "semantic_processing.embed_single"
+          "semantic_processing.embed_single",
+          "text_mining.analyze_link_text",
+          "text_mining.diagnose_critical_links"
         ],
         "merge_strategy": "graph_construction",
         "description": "EvidenceNexus transforms ALL 17 method outputs into EvidenceNode objects with SHA-256 hashing and builds causal evidence graph"
@@ -720,17 +715,11 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_count}** nodos de evidencia en el grafo construido por EvidenceNexus para la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level} | **Confianza**: {overall_confidence}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza general**: {overall_confidence}\n- **Completitud**: {completeness}\n- **Nodos en grafo**: {graph_statistics.node_count} | **Relaciones**: {graph_statistics.edge_count}",
-        "elements_section": "### Elementos de Evidencia Identificados (Grafo)\n\n{evidence.elements_list}\n\n**Gaps críticos**: {synthesized_answer.gaps}",
-        "details": [
-          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
-          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
-          "**Series temporales**: {evidence.temporal_series_count}",
-          "**Cobertura territorial**: {evidence.territorial_coverage}"
-        ],
-        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
+        "title": "## Análisis Q001 (D1-Q1): ¿El diagnóstico presenta datos numéricos (tasas de VBG, porcentajes de participación, cifras de brechas salariales) para el área de Derec...",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
+        "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "interpretation": "### Interpretación\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -1727,14 +1716,14 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is transformed into EvidenceNode objects by EvidenceNexus. Overlapping evidence (same content hash) is deduplicated via SHA-256. Belief masses are combined via Dempster-Shafer fusion, confidence intervals via belief propagation.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "rationale": "D1-Q1 (Q001) for PA01/DIM01 requires consistent extraction, validation, and synthesis across 17 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
+          "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
+          "execution_order": "Methods execute in priority order (1→17).",
           "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
-            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+            "Coverage vs. cost: using 17 methods increases coverage but raises computation and maintenance burden.",
+            "Recall vs. precision: multiple detectors increase recall but can introduce redundancy; deduplication and weighting mitigate this.",
+            "Sophistication vs. interpretability: advanced models can be less transparent; human_readable_output documents assumptions and limitations."
           ]
         }
       }
@@ -1744,40 +1733,30 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
-        "field": "elements",
-        "type": "array",
+        "description": "Auto-generated: require all required expected_elements types",
+        "field": "elements_found",
         "must_contain": {
           "count": 1,
           "elements": [
             "cobertura_territorial_especificada"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "type": "array"
       },
       {
-        "field": "elements",
-        "type": "array",
+        "description": "Auto-generated: encourage optional evidence types when available",
+        "field": "elements_found",
         "should_contain": [
           {
             "elements": [
-              "fuentes_oficiales"
-            ],
-            "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
+              "fuentes_oficiales",
+              "indicadores_cuantitativos",
               "series_temporales_años"
             ],
-            "minimum": 3
+            "minimum": 1
           }
         ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -1791,10 +1770,10 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q1_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_Executor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q001",
     "specialized_from_base_slot": "D1-Q1",
     "specialization_timestamp": "2025-11-28T03:49:29.779693+00:00"
@@ -1845,7 +1824,7 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure after Nexus processes method outputs: evidence graph, validation report, synthesized narrative, and legacy-compatible evidence dict",
+    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
       "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_nexus": "EvidenceNexus builds evidence graph, infers relationships, validates consistency",

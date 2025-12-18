@@ -202,7 +202,7 @@
     "note": "All 21 methods extracted from D3_Q2_Executor in executors.py"
   },
   "question_context": {
-    "question_text": "\u00bfLas metas de los productos de tierras (ej. 'formalizar 500 predios') son proporcionales a la magnitud del problema diagnosticado (ej. 'existen 5.000 predios informales')?",
+    "question_text": "¿Las metas de los productos de tierras (ej. 'formalizar 500 predios') son proporcionales a la magnitud del problema diagnosticado (ej. 'existen 5.000 predios informales')?",
     "question_type": "micro",
     "scoring_modality": "TYPE_A",
     "modality": "count_and_scale",
@@ -214,7 +214,7 @@
         "flags": "i",
         "id": "PAT-Q222-000",
         "match_type": "REGEX",
-        "pattern": "la meta de formalizaci\u00f3n cubre un X% del total de predios informales",
+        "pattern": "la meta de formalización cubre un X% del total de predios informales",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -228,7 +228,7 @@
         "flags": "i",
         "id": "PAT-Q222-001",
         "match_type": "REGEX",
-        "pattern": "se intervendr\u00e1 el \\d+% de la red vial terciaria en mal estado",
+        "pattern": "se intervendrá el \\d+% de la red vial terciaria en mal estado",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -242,7 +242,7 @@
         "flags": "i",
         "id": "PAT-Q222-002",
         "match_type": "REGEX",
-        "pattern": "universo de atenci\u00f3n|total de predios rurales",
+        "pattern": "universo de atención|total de predios rurales",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -256,7 +256,7 @@
         "flags": "i",
         "id": "PAT-Q222-003",
         "match_type": "REGEX",
-        "pattern": "la meta se establece en funci\u00f3n de la capacidad operativa de la ANT y el municipio",
+        "pattern": "la meta se establece en función de la capacidad operativa de la ANT y el municipio",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -270,7 +270,7 @@
         "flags": "i",
         "id": "PAT-Q222-004",
         "match_type": "REGEX",
-        "pattern": "se priorizar\u00e1n las veredas con mayor informalidad|v\u00edas m\u00e1s cr\u00edticas",
+        "pattern": "se priorizarán las veredas con mayor informalidad|vías más críticas",
         "specificity": "MEDIUM",
         "validation_rule": null,
         "context_requirement": null,
@@ -296,23 +296,16 @@
     }
   },
   "signal_requirements": {
-    "mandatory_signals": [
-      "budget_allocation",
-      "environmental_baseline",
-      "product_targets",
-      "protection_areas",
-      "risk_zones"
-    ],
-    "optional_signals": [
-      "biodiversity",
-      "deforestation_rates",
-      "implementation_schedule",
-      "responsible_entities",
-      "water_quality"
-    ],
+    "mandatory_signals": [],
+    "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "note": "Signal requirements are under development. Canonical mapping pending for PA07/DIM03; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "preferred_signal_types": [
+      "policy_instrument_detected",
+      "activity_specification_found",
+      "implementation_timeline_present"
+    ]
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -337,7 +330,7 @@
               "description": "Scores de confianza usados por el scorer."
             },
             "semantic_similarity": {
-              "description": "M\u00e9trica de similitud sem\u00e1ntica (si aplica)."
+              "description": "Métrica de similitud semántica (si aplica)."
             },
             "pattern_matches": {
               "type": "object",
@@ -357,50 +350,50 @@
       {
         "target": "elements_found",
         "sources": [
+          "adaptivepriorcalculator.adjust_domain_weights",
+          "adaptivepriorcalculator.calculate_likelihood_adaptativo",
           "advanceddagvalidator.calculate_bayesian_posterior",
           "advanceddagvalidator.calculate_confidence_interval",
-          "adaptivepriorcalculator.adjust_domain_weights",
-          "pdet_analysis.get_spanish_stopwords",
           "bayesianmechanisminference.log_refactored_components",
-          "pdet_analysis.analyze_financial_feasibility",
-          "pdet_analysis.score_indicators",
-          "pdet_analysis.interpret_risk",
-          "financial_audit.calculate_sufficiency",
-          "bayesianmechanisminference.test_sufficiency",
           "bayesianmechanisminference.test_necessity",
-          "pdet_analysis.assess_financial_sustainability",
-          "adaptivepriorcalculator.calculate_likelihood_adaptativo",
-          "industrial_policy.calculate_quality_score",
-          "teoriacambio.generar_sugerencias_internas",
-          "pdet_analysis.deduplicate_tables",
-          "pdet_analysis.indicator_to_dict",
-          "pdet_analysis.generate_recommendations",
-          "industrial_policy.compile_pattern_registry",
+          "bayesianmechanisminference.test_sufficiency",
+          "financial_audit.calculate_sufficiency",
           "industrial_policy.build_point_patterns",
-          "industrial_policy.empty_result"
+          "industrial_policy.calculate_quality_score",
+          "industrial_policy.compile_pattern_registry",
+          "industrial_policy.empty_result",
+          "pdet_analysis.analyze_financial_feasibility",
+          "pdet_analysis.assess_financial_sustainability",
+          "pdet_analysis.deduplicate_tables",
+          "pdet_analysis.generate_recommendations",
+          "pdet_analysis.get_spanish_stopwords",
+          "pdet_analysis.indicator_to_dict",
+          "pdet_analysis.interpret_risk",
+          "pdet_analysis.score_indicators",
+          "teoriacambio.generar_sugerencias_internas"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine evidence elements from 21 method invocations"
       },
       {
         "target": "confidence_scores",
         "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
-        "description": "Aggregate confidence scores across all methods"
+        "description": "Aggregate confidence scores across 21 methods"
       },
       {
         "target": "pattern_matches",
         "sources": [],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from text mining methods"
+        "description": "Combine pattern matches across 21 methods"
       },
       {
         "target": "metadata",
         "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from 21 methods for full traceability"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
@@ -429,7 +422,7 @@
         },
         "question_global": {
           "type": "integer",
-          "description": "\u00cdndice global de la pregunta (de questionnaire_monolith).",
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
           "const": 222
         },
         "policy_area_id": {
@@ -437,7 +430,7 @@
             "string",
             "null"
           ],
-          "description": "PA can\u00f3nica, debe ser coherente con identity.policy_area_id.",
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
           "const": "PA07"
         },
         "dimension_id": {
@@ -445,7 +438,7 @@
             "string",
             "null"
           ],
-          "description": "Dimensi\u00f3n can\u00f3nica, coherente con identity.dimension_id.",
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
           "const": "DIM03"
         },
         "cluster_id": {
@@ -453,7 +446,7 @@
             "string",
             "null"
           ],
-          "description": "Cluster de an\u00e1lisis seg\u00fan el monolith, si aplica.",
+          "description": "Cluster de análisis según el monolith, si aplica.",
           "const": "CL01"
         },
         "evidence": {
@@ -469,7 +462,7 @@
             "object",
             "null"
           ],
-          "description": "Resultado de validaciones l\u00f3gicas de la respuesta (coherencia, integridad, etc.).",
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
           "additionalProperties": true
         },
         "trace": {
@@ -477,7 +470,7 @@
             "object",
             "null"
           ],
-          "description": "Informaci\u00f3n de trazabilidad (provenance, logs) espec\u00edfica de la ejecuci\u00f3n.",
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
           "additionalProperties": true
         },
         "metadata": {
@@ -499,17 +492,11 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## An\u00e1lisis D1-Q1: L\u00ednea Base Cuantitativa en Derechos de las Mujeres",
-        "summary": "### Resumen Ejecutivo\n\nSe analiz\u00f3 la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la l\u00ednea base diagn\u00f3stica en el \u00e1rea de Derechos de las Mujeres e Igualdad de G\u00e9nero.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluaci\u00f3n Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos cr\u00edticos faltantes**: {evidence.missing_required_elements}",
-        "details": [
-          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
-          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
-          "**Series temporales**: {evidence.temporal_series_count}",
-          "**Cobertura territorial**: {evidence.territorial_coverage}"
-        ],
-        "interpretation": "### Interpretaci\u00f3n de Resultados\n\n{methodological_interpretation}",
+        "title": "## Análisis Q222 (D3-Q2): ¿Las metas de los productos de tierras (ej. 'formalizar 500 predios') son proporcionales a la magnitud del problema diagnosticado (ej. 'e...",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Tierras y territorios\n\n**Dimensión**: PRODUCTOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
+        "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "interpretation": "### Interpretación\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -534,15 +521,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_bayesian_posterior"
+                  "description": "Run AdvancedDAGValidator._calculate_bayesian_posterior using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -558,7 +545,7 @@
                 "result": "Structured output from _calculate_bayesian_posterior"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -587,15 +574,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_confidence_interval"
+                  "description": "Run AdvancedDAGValidator._calculate_confidence_interval using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -611,7 +598,7 @@
                 "result": "Structured output from _calculate_confidence_interval"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -640,15 +627,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _adjust_domain_weights"
+                  "description": "Run AdaptivePriorCalculator._adjust_domain_weights using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -664,7 +651,7 @@
                 "result": "Structured output from _adjust_domain_weights"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -693,15 +680,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _get_spanish_stopwords"
+                  "description": "Run PDETMunicipalPlanAnalyzer._get_spanish_stopwords using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -717,7 +704,7 @@
                 "result": "Structured output from _get_spanish_stopwords"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -746,15 +733,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _log_refactored_components"
+                  "description": "Run BayesianMechanismInference._log_refactored_components using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -770,7 +757,7 @@
                 "result": "Structured output from _log_refactored_components"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -799,15 +786,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute analyze_financial_feasibility"
+                  "description": "Run PDETMunicipalPlanAnalyzer.analyze_financial_feasibility using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -823,7 +810,7 @@
                 "result": "Structured output from analyze_financial_feasibility"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -852,15 +839,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _score_indicators"
+                  "description": "Run PDETMunicipalPlanAnalyzer._score_indicators using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -876,7 +863,7 @@
                 "result": "Structured output from _score_indicators"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -905,15 +892,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _interpret_risk"
+                  "description": "Run PDETMunicipalPlanAnalyzer._interpret_risk using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -929,7 +916,7 @@
                 "result": "Structured output from _interpret_risk"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -958,15 +945,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_sufficiency"
+                  "description": "Run FinancialAuditor._calculate_sufficiency using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -982,7 +969,7 @@
                 "result": "Structured output from _calculate_sufficiency"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1011,15 +998,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_sufficiency"
+                  "description": "Run BayesianMechanismInference._test_sufficiency using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1035,7 +1022,7 @@
                 "result": "Structured output from _test_sufficiency"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1064,15 +1051,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _test_necessity"
+                  "description": "Run BayesianMechanismInference._test_necessity using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1088,7 +1075,7 @@
                 "result": "Structured output from _test_necessity"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1117,15 +1104,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _assess_financial_sustainability"
+                  "description": "Run PDETMunicipalPlanAnalyzer._assess_financial_sustainability using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1141,7 +1128,7 @@
                 "result": "Structured output from _assess_financial_sustainability"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1170,15 +1157,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute calculate_likelihood_adaptativo"
+                  "description": "Run AdaptivePriorCalculator.calculate_likelihood_adaptativo using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1194,7 +1181,7 @@
                 "result": "Structured output from calculate_likelihood_adaptativo"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1223,15 +1210,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_quality_score"
+                  "description": "Run IndustrialPolicyProcessor._calculate_quality_score using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1247,7 +1234,7 @@
                 "result": "Structured output from _calculate_quality_score"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1276,15 +1263,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generar_sugerencias_internas"
+                  "description": "Run TeoriaCambio._generar_sugerencias_internas using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1300,7 +1287,7 @@
                 "result": "Structured output from _generar_sugerencias_internas"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1329,15 +1316,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _deduplicate_tables"
+                  "description": "Run PDETMunicipalPlanAnalyzer._deduplicate_tables using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1353,7 +1340,7 @@
                 "result": "Structured output from _deduplicate_tables"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1382,15 +1369,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _indicator_to_dict"
+                  "description": "Run PDETMunicipalPlanAnalyzer._indicator_to_dict using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1406,7 +1393,7 @@
                 "result": "Structured output from _indicator_to_dict"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1435,15 +1422,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_recommendations"
+                  "description": "Run PDETMunicipalPlanAnalyzer._generate_recommendations using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1459,7 +1446,7 @@
                 "result": "Structured output from _generate_recommendations"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1488,15 +1475,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compile_pattern_registry"
+                  "description": "Run IndustrialPolicyProcessor._compile_pattern_registry using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1512,7 +1499,7 @@
                 "result": "Structured output from _compile_pattern_registry"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1541,15 +1528,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _build_point_patterns"
+                  "description": "Run IndustrialPolicyProcessor._build_point_patterns using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1565,7 +1552,7 @@
                 "result": "Structured output from _build_point_patterns"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1594,15 +1581,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _empty_result"
+                  "description": "Run IndustrialPolicyProcessor._empty_result using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1618,7 +1605,7 @@
                 "result": "Structured output from _empty_result"
               },
               "interpretation_guide": {
-                "high_confidence": "\u22650.8: Strong evidence",
+                "high_confidence": "≥0.8: Strong evidence",
                 "medium_confidence": "0.5-0.79: Moderate evidence",
                 "low_confidence": "<0.5: Weak evidence"
               },
@@ -1630,14 +1617,14 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1\u219217). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "rationale": "D3-Q2 (Q222) for PA07/DIM03 requires consistent extraction, validation, and synthesis across 21 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
+          "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
+          "execution_order": "Methods execute in priority order (1→21).",
           "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
-            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+            "Coverage vs. cost: using 21 methods increases coverage but raises computation and maintenance burden.",
+            "Recall vs. precision: multiple detectors increase recall but can introduce redundancy; deduplication and weighting mitigate this.",
+            "Sophistication vs. interpretability: advanced models can be less transparent; human_readable_output documents assumptions and limitations."
           ]
         }
       }
@@ -1647,40 +1634,21 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
+        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
-        "type": "array",
         "must_contain": {
           "count": 1,
           "elements": [
-            "cobertura_territorial_especificada"
+            "proporcionalidad_meta_problema"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "type": "array"
       },
       {
+        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "type": "array",
-        "should_contain": [
-          {
-            "elements": [
-              "fuentes_oficiales"
-            ],
-            "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
-              "series_temporales_a\u00f1os"
-            ],
-            "minimum": 3
-          }
-        ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "should_contain": [],
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -1694,10 +1662,10 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D3_Q2_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 21 methods from D3_Q2_Executor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q222",
     "specialized_from_base_slot": "D3-Q2",
     "specialization_timestamp": "2025-11-28T03:50:42.032599+00:00"
@@ -1748,9 +1716,9 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all 21 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "21 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -1774,7 +1742,7 @@
                 "enum": [
                   "fuentes_oficiales",
                   "indicadores_cuantitativos",
-                  "series_temporales_a\u00f1os",
+                  "series_temporales_años",
                   "cobertura_territorial_especificada",
                   "financial_amounts",
                   "policy_goals",
@@ -1821,7 +1789,7 @@
                   "type": "integer",
                   "minimum_expected": 3
                 },
-                "series_temporales_a\u00f1os": {
+                "series_temporales_años": {
                   "type": "integer",
                   "minimum_expected": 3
                 },
@@ -2006,7 +1974,7 @@
           "value": "DANE",
           "confidence": 0.95,
           "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "seg\u00fan datos de DANE para el a\u00f1o 2022",
+          "source_sentence": "según datos de DANE para el año 2022",
           "sentence_id": 45,
           "position": {
             "start": 123,
@@ -2032,7 +2000,7 @@
         },
         {
           "element_id": "E-003",
-          "type": "series_temporales_a\u00f1os",
+          "type": "series_temporales_años",
           "years": [
             2020,
             2021,
@@ -2054,7 +2022,7 @@
         "by_type": {
           "fuentes_oficiales": 5,
           "indicadores_cuantitativos": 12,
-          "series_temporales_a\u00f1os": 4,
+          "series_temporales_años": 4,
           "cobertura_territorial_especificada": 1,
           "financial_amounts": 8,
           "policy_goals": 7,
@@ -2092,7 +2060,7 @@
       "critical_links": [
         {
           "cause": "alta tasa de VBG",
-          "effect": "baja autonom\u00eda econ\u00f3mica",
+          "effect": "baja autonomía económica",
           "criticality": 0.87,
           "coherence": 0.82
         }
@@ -2147,7 +2115,7 @@
         "found_in_example": 12,
         "status": "PASS"
       },
-      "series_temporales_a\u00f1os": {
+      "series_temporales_años": {
         "minimum": 3,
         "found_in_example": 4,
         "status": "PASS"

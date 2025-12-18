@@ -1984,6 +1984,35 @@ class EvidenceNexus:
                 filtered_patterns = patterns
                 context_filter_stats = None
 
+        # Optional semantic expansion from SISAS (Refactoring #2)
+        expanded_patterns = filtered_patterns
+        expansion_stats: dict[str, Any] | None = None
+        try:
+            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_semantic_expander import (
+                expand_all_patterns,
+                validate_expansion_result,
+            )
+
+            dict_patterns = [p for p in filtered_patterns if isinstance(p, dict)]
+            if dict_patterns:
+                expanded_patterns = expand_all_patterns(dict_patterns, enable_logging=False)
+                try:
+                    expansion_stats = validate_expansion_result(
+                        dict_patterns,
+                        expanded_patterns,
+                        min_multiplier=2.0,
+                        target_multiplier=5.0,
+                    )
+                except Exception:
+                    expansion_stats = None
+        except Exception:
+            expanded_patterns = filtered_patterns
+            expansion_stats = None
+
+        max_patterns = 2000
+        if isinstance(expanded_patterns, list) and len(expanded_patterns) > max_patterns:
+            expanded_patterns = expanded_patterns[:max_patterns]
+
         def _to_flags(flags_value: Any) -> int:
             if not flags_value:
                 return re.IGNORECASE | re.MULTILINE
@@ -2015,7 +2044,7 @@ class EvidenceNexus:
             # Default: treat as method-output-like evidence with tags
             return EvidenceType.METHOD_OUTPUT
 
-        for pat in filtered_patterns:
+        for pat in expanded_patterns:
             if not isinstance(pat, dict):
                 continue
 
@@ -2130,7 +2159,8 @@ class EvidenceNexus:
         # Emit a lightweight stats node for context filtering and utility accounting
         try:
             total_injected = len([p for p in patterns if isinstance(p, dict)])
-            total_considered = len([p for p in filtered_patterns if isinstance(p, dict)])
+            total_after_context = len([p for p in filtered_patterns if isinstance(p, dict)])
+            total_considered = len([p for p in expanded_patterns if isinstance(p, dict)])
             matched_patterns = 0
             for n in nodes:
                 if isinstance(n.content, dict) and int(n.content.get("match_count", 0) or 0) > 0:
@@ -2147,10 +2177,12 @@ class EvidenceNexus:
                         "provenance_type": "contract_pattern_utility",
                         "question_id": qid,
                         "patterns_injected": total_injected,
+                        "patterns_after_context_filter": total_after_context,
                         "patterns_considered": total_considered,
                         "patterns_matched": matched_patterns,
                         "waste_ratio": round(float(waste_ratio), 4),
                         "context_filter_stats": context_filter_stats,
+                        "semantic_expansion_stats": expansion_stats,
                     },
                     confidence=1.0,
                     source_method="contract.patterns.utility",
