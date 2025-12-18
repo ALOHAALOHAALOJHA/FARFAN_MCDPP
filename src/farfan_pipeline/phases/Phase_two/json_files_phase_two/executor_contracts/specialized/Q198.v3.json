@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "58850920aefa7767ec7a1ad819cb63e0221d52cb411ae53d8a18ad9afbbea9e5",
+    "contract_hash": "ec115cb41e856fa0cfbbb00933b39f1dd7e81004f107506820b40bf3ef53b4e3",
     "created_at": "2025-11-28T03:50:31.910401+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 198,
-    "updated_at": "2025-12-17T23:49:38.913086+00:00"
+    "updated_at": "2025-12-18T07:16:05.101397+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -195,6 +195,11 @@
         "required": true,
         "type": "justificacion_recursos",
         "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "justificacion_tecnica",
+        "minimum": 1
       }
     ],
     "validations": {},
@@ -204,7 +209,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q198-REQ"
-    }
+    },
+    "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+    "dimension_label": "RESULTADOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -268,17 +275,17 @@
       {
         "target": "elements_found",
         "sources": [
-          "pdet_analysis.get_prior_effect",
-          "pdet_analysis.estimate_effect_bayesian",
-          "pdet_analysis.compute_robustness_value",
           "adaptivepriorcalculator.sensitivity_analysis",
-          "hierarchicalgenerativemodel.calculate_r_hat",
-          "hierarchicalgenerativemodel.calculate_ess",
           "advanceddagvalidator.calculate_statistical_power",
-          "bayesianmechanisminference.aggregate_bayesian_confidence"
+          "bayesianmechanisminference.aggregate_bayesian_confidence",
+          "hierarchicalgenerativemodel.calculate_ess",
+          "hierarchicalgenerativemodel.calculate_r_hat",
+          "pdet_analysis.compute_robustness_value",
+          "pdet_analysis.estimate_effect_bayesian",
+          "pdet_analysis.get_prior_effect"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine evidence from 8 methods"
       },
       {
         "target": "confidence_scores",
@@ -397,7 +404,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q198 | Análisis D4-Q3: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q198 | Análisis D4-Q3: Línea Base Cuantitativa en Derechos de las Mujeres | Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -861,40 +868,24 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
+        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
-        "type": "array",
         "must_contain": {
-          "count": 1,
+          "count": 4,
           "elements": [
-            "cobertura_territorial_especificada"
+            "evidencia_comparada",
+            "justificacion_capacidad",
+            "justificacion_recursos",
+            "justificacion_tecnica"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "type": "array"
       },
       {
+        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "type": "array",
-        "should_contain": [
-          {
-            "elements": [
-              "fuentes_oficiales"
-            ],
-            "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
-              "series_temporales_años"
-            ],
-            "minimum": 3
-          }
-        ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "should_contain": [],
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -908,7 +899,7 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D4_Q3_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
@@ -1629,5 +1620,57 @@
         "emit_code": "ABORT-Q198-REQ"
       }
     }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "class_name": "EvidenceNexus",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "epistemological_foundation": {
+          "paradigm": "critical_realist",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ],
+          "justification": "Chosen because RESULTADOS in PA06 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+        },
+        "technical_approach": {
+          "method_type": "graph_based_evidence_fusion",
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "steps": [
+            {
+              "step": 1,
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
+            },
+            {
+              "step": 2,
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
+            },
+            {
+              "step": 3,
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
+            },
+            {
+              "step": 4,
+              "description": "Compute completeness, gaps, and confidence interval for Q198/D4-Q3."
+            }
+          ],
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
+        }
+      }
+    ]
   }
 }

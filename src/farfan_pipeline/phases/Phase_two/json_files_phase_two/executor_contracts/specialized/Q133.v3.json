@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "ecc259686f2f64c59ecf80a12b7130b5cfc2548ec5d40ca165851f4473a5b835",
+    "contract_hash": "3ad74bda57e382225d4842f0b8d923df489a5182a8f8f28d4daa8f4ea5fbf7a6",
     "created_at": "2025-11-28T03:50:31.425587+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 133,
-    "updated_at": "2025-12-17T23:49:38.518000+00:00"
+    "updated_at": "2025-12-18T07:16:04.485471+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -326,7 +326,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q133-REQ"
-    }
+    },
+    "policy_area_label": "Derechos económicos, sociales y culturales",
+    "dimension_label": "PRODUCTOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -538,7 +540,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q133 (D3-Q3): ¿Los productos sociales tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados...",
+        "title": "## Análisis Q133 (D3-Q3): ¿Los productos sociales tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados... | Derechos económicos, sociales y culturales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -2835,7 +2837,7 @@
             "Pawson & Tilley (1997) realistic evaluation",
             "Results-based management for public policy monitoring"
           ],
-          "justification": "Chosen because Productos / Planificación in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+          "justification": "Chosen because PRODUCTOS in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
         },
         "technical_approach": {
           "method_type": "graph_based_evidence_fusion",
@@ -2855,7 +2857,7 @@
             },
             {
               "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q133/D3-Q3)."
+              "description": "Compute completeness, gaps, and confidence interval for Q133/D3-Q3."
             }
           ],
           "assumptions": [

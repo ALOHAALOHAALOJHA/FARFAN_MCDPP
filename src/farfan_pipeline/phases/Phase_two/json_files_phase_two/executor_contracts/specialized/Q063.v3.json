@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "153ae13620b85bc5d32f68f87194691d0e2192f1fc3e2829b911d7fbdbd70fb2",
+    "contract_hash": "284e2847e1111cf06f7ab85256ed1664daf934981b965d3aa253d0be7346890f",
     "created_at": "2025-11-28T03:50:09.590954+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 63,
-    "updated_at": "2025-12-17T23:49:38.195291+00:00"
+    "updated_at": "2025-12-18T07:16:03.311660+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -292,7 +292,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q063-REQ"
-    }
+    },
+    "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+    "dimension_label": "INSUMOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -490,7 +492,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q063 | Análisis D1-Q3: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q063 | Análisis D1-Q3: Línea Base Cuantitativa en Derechos de las Mujeres | Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1219,40 +1221,23 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
+        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
-        "type": "array",
         "must_contain": {
-          "count": 1,
+          "count": 3,
           "elements": [
-            "cobertura_territorial_especificada"
+            "asignacion_explicita",
+            "suficiencia_justificada",
+            "trazabilidad_ppi_bpin"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "type": "array"
       },
       {
+        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "type": "array",
-        "should_contain": [
-          {
-            "elements": [
-              "fuentes_oficiales"
-            ],
-            "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
-              "series_temporales_años"
-            ],
-            "minimum": 3
-          }
-        ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "should_contain": [],
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -1266,7 +1251,7 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q3_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
@@ -2072,5 +2057,57 @@
         "merge_strategy": "replace"
       }
     }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "class_name": "EvidenceNexus",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "epistemological_foundation": {
+          "paradigm": "critical_realist",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ],
+          "justification": "Chosen because INSUMOS in PA02 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+        },
+        "technical_approach": {
+          "method_type": "graph_based_evidence_fusion",
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "steps": [
+            {
+              "step": 1,
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
+            },
+            {
+              "step": 2,
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
+            },
+            {
+              "step": 3,
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
+            },
+            {
+              "step": 4,
+              "description": "Compute completeness, gaps, and confidence interval for Q063/D1-Q3."
+            }
+          ],
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
+        }
+      }
+    ]
   }
 }

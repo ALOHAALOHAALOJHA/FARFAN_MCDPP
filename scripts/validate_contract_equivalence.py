@@ -32,7 +32,17 @@ from collections import defaultdict
 
 # === Configuration ===
 
-CONTRACTS_DIR = Path(__file__).parent.parent / "src/canonic_phases/Phase_two/json_files_phase_two/executor_contracts/specialized"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+CONTRACTS_DIR = (
+    REPO_ROOT
+    / "src"
+    / "farfan_pipeline"
+    / "phases"
+    / "Phase_two"
+    / "json_files_phase_two"
+    / "executor_contracts"
+    / "specialized"
+)
 NUM_BASE_SLOTS = 30
 NUM_POLICY_AREAS = 10
 

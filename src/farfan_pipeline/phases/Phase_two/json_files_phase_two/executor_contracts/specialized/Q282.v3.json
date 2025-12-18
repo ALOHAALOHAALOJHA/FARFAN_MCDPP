@@ -5,12 +5,12 @@
     "dimension_id": "DIM03",
     "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "76cf870db5e7e9f776b13dcb685b13228c6464608601efc671b33b92e0fff00e",
+    "contract_hash": "8145a73225a5aaa24c7f68da779693e27d41a86cd0e8be9afbe8ed669a9c8182",
     "created_at": "2025-11-28T03:50:42.495872+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 282,
-    "updated_at": "2025-12-17T23:49:39.393142+00:00"
+    "updated_at": "2025-12-18T07:16:04.411591+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -272,6 +272,16 @@
     "expected_elements": [
       {
         "required": true,
+        "type": "dosificacion_definida",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "proporcionalidad_meta_brecha",
+        "minimum": 1
+      },
+      {
+        "required": true,
         "type": "proporcionalidad_meta_problema",
         "minimum": 1
       }
@@ -283,7 +293,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q282-REQ"
-    }
+    },
+    "policy_area_label": "Crisis de derechos de personas privadas de la libertad",
+    "dimension_label": "PRODUCTOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -347,30 +359,30 @@
       {
         "target": "elements_found",
         "sources": [
+          "adaptivepriorcalculator.adjust_domain_weights",
+          "adaptivepriorcalculator.calculate_likelihood_adaptativo",
           "advanceddagvalidator.calculate_bayesian_posterior",
           "advanceddagvalidator.calculate_confidence_interval",
-          "adaptivepriorcalculator.adjust_domain_weights",
-          "pdet_analysis.get_spanish_stopwords",
           "bayesianmechanisminference.log_refactored_components",
-          "pdet_analysis.analyze_financial_feasibility",
-          "pdet_analysis.score_indicators",
-          "pdet_analysis.interpret_risk",
-          "financial_audit.calculate_sufficiency",
-          "bayesianmechanisminference.test_sufficiency",
           "bayesianmechanisminference.test_necessity",
-          "pdet_analysis.assess_financial_sustainability",
-          "adaptivepriorcalculator.calculate_likelihood_adaptativo",
-          "industrial_policy.calculate_quality_score",
-          "teoriacambio.generar_sugerencias_internas",
-          "pdet_analysis.deduplicate_tables",
-          "pdet_analysis.indicator_to_dict",
-          "pdet_analysis.generate_recommendations",
-          "industrial_policy.compile_pattern_registry",
+          "bayesianmechanisminference.test_sufficiency",
+          "financial_audit.calculate_sufficiency",
           "industrial_policy.build_point_patterns",
-          "industrial_policy.empty_result"
+          "industrial_policy.calculate_quality_score",
+          "industrial_policy.compile_pattern_registry",
+          "industrial_policy.empty_result",
+          "pdet_analysis.analyze_financial_feasibility",
+          "pdet_analysis.assess_financial_sustainability",
+          "pdet_analysis.deduplicate_tables",
+          "pdet_analysis.generate_recommendations",
+          "pdet_analysis.get_spanish_stopwords",
+          "pdet_analysis.indicator_to_dict",
+          "pdet_analysis.interpret_risk",
+          "pdet_analysis.score_indicators",
+          "teoriacambio.generar_sugerencias_internas"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine evidence from 21 methods"
       },
       {
         "target": "confidence_scores",
@@ -489,7 +501,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q282 | Análisis D3-Q2: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q282 | Análisis D3-Q2: Línea Base Cuantitativa en Derechos de las Mujeres | Crisis de derechos de personas privadas de la libertad",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1642,40 +1654,23 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
+        "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
-        "type": "array",
         "must_contain": {
-          "count": 1,
+          "count": 3,
           "elements": [
-            "cobertura_territorial_especificada"
+            "dosificacion_definida",
+            "proporcionalidad_meta_brecha",
+            "proporcionalidad_meta_problema"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "type": "array"
       },
       {
+        "description": "Auto-generated: encourage optional evidence types when available",
         "field": "elements_found",
-        "type": "array",
-        "should_contain": [
-          {
-            "elements": [
-              "fuentes_oficiales"
-            ],
-            "minimum": 2
-          },
-          {
-            "elements": [
-              "indicadores_cuantitativos"
-            ],
-            "minimum": 3
-          },
-          {
-            "elements": [
-              "series_temporales_años"
-            ],
-            "minimum": 3
-          }
-        ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "should_contain": [],
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -1689,7 +1684,7 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D3_Q2_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
@@ -2695,5 +2690,57 @@
         "merge_strategy": "replace"
       }
     }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "class_name": "EvidenceNexus",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "epistemological_foundation": {
+          "paradigm": "critical_realist",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ],
+          "justification": "Chosen because PRODUCTOS in PA09 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+        },
+        "technical_approach": {
+          "method_type": "graph_based_evidence_fusion",
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "steps": [
+            {
+              "step": 1,
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
+            },
+            {
+              "step": 2,
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
+            },
+            {
+              "step": 3,
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
+            },
+            {
+              "step": 4,
+              "description": "Compute completeness, gaps, and confidence interval for Q282/D3-Q2."
+            }
+          ],
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
+        }
+      }
+    ]
   }
 }

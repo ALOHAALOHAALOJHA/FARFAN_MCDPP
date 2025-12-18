@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "8646bb147e841e32df89fdab5a86602834f782ca31f12be2fd707d69348a120d",
+    "contract_hash": "6efadda78208a21dd759f9411e1c0b6759e5096c97c6bae6dbd9a7a83d0eb927",
     "created_at": "2025-11-28T03:49:29.779617+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 1,
-    "updated_at": "2025-12-17T23:46:06.084951+00:00"
+    "updated_at": "2025-12-18T07:16:03.104731+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -475,7 +475,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q001-REQ"
-    }
+    },
+    "policy_area_label": "Derechos de las mujeres e igualdad de género",
+    "dimension_label": "INSUMOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -583,7 +585,7 @@
     },
     "assembly_rules": [
       {
-        "target": "evidence_graph",
+        "target": "elements_found",
         "sources": [
           "text_mining.diagnose_critical_links",
           "text_mining.analyze_link_text",
@@ -603,27 +605,31 @@
           "semantic_processing.chunk_text",
           "semantic_processing.embed_single"
         ],
-        "merge_strategy": "graph_construction",
-        "description": "EvidenceNexus transforms ALL 17 method outputs into EvidenceNode objects with SHA-256 hashing and builds causal evidence graph"
+        "merge_strategy": "concat",
+        "description": "Combine all evidence elements from 17 method invocations"
       },
       {
-        "target": "relationships",
+        "target": "confidence_scores",
         "sources": [],
-        "merge_strategy": "edge_inference",
-        "description": "Nexus infers EvidenceEdge relationships (SUPPORTS, CONTRADICTS, CAUSES, CORRELATES) between nodes"
-      },
-      {
-        "target": "belief_propagation",
-        "sources": [],
-        "merge_strategy": "dempster_shafer",
+        "merge_strategy": "weighted_mean",
         "default": [],
-        "description": "Apply Dempster-Shafer belief propagation across graph for calibrated confidence intervals"
+        "description": "Aggregate confidence scores across all methods"
       },
       {
-        "target": "narrative_synthesis",
+        "target": "pattern_matches",
+        "sources": [
+          "text_mining.diagnose_critical_links",
+          "industrial_policy.match_patterns_in_sentences"
+        ],
+        "merge_strategy": "concat",
+        "default": {},
+        "description": "Combine pattern matches from text mining methods"
+      },
+      {
+        "target": "metadata",
         "sources": [],
-        "merge_strategy": "carver_doctoral_synthesis",
-        "description": "DoctoralCarverSynthesizer generates Raymond Carver-style PhD-level narrative with citations and gap analysis"
+        "merge_strategy": "concat",
+        "description": "Combine metadata from all 17 methods for full traceability"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
@@ -722,7 +728,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q001 | Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres",
+        "title": "## Q001 | Análisis D1-Q1: Línea Base Cuantitativa en Derechos de las Mujeres | Derechos de las mujeres e igualdad de género",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_count}** nodos de evidencia en el grafo construido por EvidenceNexus para la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level} | **Confianza**: {overall_confidence}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza general**: {overall_confidence}\n- **Completitud**: {completeness}\n- **Nodos en grafo**: {graph_statistics.node_count} | **Relaciones**: {graph_statistics.edge_count}",
         "elements_section": "### Elementos de Evidencia Identificados (Grafo)\n\n{evidence.elements_list}\n\n**Gaps críticos**: {synthesized_answer.gaps}",
@@ -1746,19 +1752,19 @@
     "na_policy": "abort_on_critical",
     "rules": [
       {
-        "field": "elements",
-        "type": "array",
+        "description": "Auto-generated: require all required expected_elements types",
+        "field": "elements_found",
         "must_contain": {
           "count": 1,
           "elements": [
             "cobertura_territorial_especificada"
           ]
         },
-        "description": "Derived from monolith expected_elements where required is true"
+        "type": "array"
       },
       {
-        "field": "elements",
-        "type": "array",
+        "description": "Auto-generated: encourage optional evidence types when available",
+        "field": "elements_found",
         "should_contain": [
           {
             "elements": [
@@ -1779,7 +1785,7 @@
             "minimum": 3
           }
         ],
-        "description": "Derived from monolith expected_elements with minimum counts"
+        "type": "array"
       }
     ],
     "engine": "VALIDATION_ENGINE",
@@ -1793,7 +1799,7 @@
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q1_Executor",
     "method_mapping_source": "executor_methods_mapping.json",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "TODO_SHA256_HASH_OF_QUESTIONNAIRE_MONOLITH",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
     "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
@@ -2742,5 +2748,57 @@
         "merge_strategy": "replace"
       }
     }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "class_name": "EvidenceNexus",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "epistemological_foundation": {
+          "paradigm": "critical_realist",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ],
+          "justification": "Chosen because INSUMOS in PA01 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+        },
+        "technical_approach": {
+          "method_type": "graph_based_evidence_fusion",
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "steps": [
+            {
+              "step": 1,
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
+            },
+            {
+              "step": 2,
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
+            },
+            {
+              "step": 3,
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
+            },
+            {
+              "step": 4,
+              "description": "Compute completeness, gaps, and confidence interval for Q001/D1-Q1."
+            }
+          ],
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
+        }
+      }
+    ]
   }
 }
