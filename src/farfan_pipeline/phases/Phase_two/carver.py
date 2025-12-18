@@ -44,6 +44,7 @@ import statistics
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from enum import Enum
 from typing import (
     Any,
@@ -286,6 +287,70 @@ class CarverAnswer:
     
     # Trace
     synthesis_trace: Dict[str, Any] = field(default_factory=dict)
+    
+    # v3.0 Extensions (optional, backward compatible)
+    methodological_depth: Optional[Any] = None  # MethodologicalDepth
+    limitations_statement: Optional[str] = None
+    theoretical_references: Optional[List[str]] = None
+    assumptions_statement: Optional[str] = None
+    actionable_insights: Optional[List[str]] = None
+
+
+@dataclass(frozen=True)
+class MethodEpistemology:
+    """Epistemological foundation of a method."""
+    paradigm: str
+    ontological_basis: str
+    epistemological_stance: str
+    theoretical_framework: List[str]
+    justification: str
+
+
+@dataclass(frozen=True)
+class TechnicalApproach:
+    """Technical approach and implementation details."""
+    method_type: str
+    algorithm: str
+    steps: List[Dict[str, Any]]
+    assumptions: List[str]
+    limitations: List[str]
+    complexity: str
+
+
+@dataclass(frozen=True)
+class OutputInterpretation:
+    """Output structure and interpretation guidance."""
+    output_structure: Dict[str, str]
+    interpretation_guide: Dict[str, str]
+    actionable_insights: List[str]
+
+
+@dataclass(frozen=True)
+class MethodDepthEntry:
+    """Full methodological depth for a single method."""
+    method_name: str
+    class_name: str
+    priority: int
+    role: str
+    epistemology: MethodEpistemology
+    technical_approach: TechnicalApproach
+    output_interpretation: OutputInterpretation
+
+
+@dataclass(frozen=True)
+class MethodCombinationLogic:
+    """Logic for combining multiple methods."""
+    dependency_graph: Dict[str, List[str]]
+    trade_offs: List[str]
+    evidence_fusion_approach: str
+
+
+@dataclass(frozen=True)
+class MethodologicalDepth:
+    """Complete methodological depth from contract v3."""
+    methods: List[MethodDepthEntry]
+    combination_logic: Optional[MethodCombinationLogic]
+    extraction_timestamp: str
 
 
 # =============================================================================
@@ -418,6 +483,89 @@ class ContractInterpreter:
                 for m in method_binding.get("methods", [])
             ][: 5],  # Top 5
         }
+    
+    @classmethod
+    def extract_methodological_depth(cls, contract: Dict) -> Optional[MethodologicalDepth]:
+        """
+        Extrae profundidad metodológica completa del contrato v3.
+        
+        Extrae:
+        - Fundamentos epistemológicos de cada método
+        - Enfoque técnico y algoritmos
+        - Guías de interpretación de salidas
+        - Lógica de combinación de métodos
+        
+        Returns:
+            MethodologicalDepth si el contrato v3 tiene methodological_depth,
+            None si es contrato v2 o falta el campo (backward compatible)
+        """
+        method_binding = contract.get("method_binding", {})
+        methodological_depth_raw = method_binding.get("methodological_depth")
+        
+        if not methodological_depth_raw:
+            return None
+        
+        methods_list = []
+        methods_raw = methodological_depth_raw.get("methods", [])
+        
+        for method_raw in methods_raw:
+            # Extract epistemology
+            epi_raw = method_raw.get("epistemological_foundation", {})
+            epistemology = MethodEpistemology(
+                paradigm=epi_raw.get("paradigm", ""),
+                ontological_basis=epi_raw.get("ontological_basis", ""),
+                epistemological_stance=epi_raw.get("epistemological_stance", ""),
+                theoretical_framework=epi_raw.get("theoretical_framework", []),
+                justification=epi_raw.get("justification", "")
+            )
+            
+            # Extract technical approach
+            tech_raw = method_raw.get("technical_approach", {})
+            technical_approach = TechnicalApproach(
+                method_type=tech_raw.get("method_type", ""),
+                algorithm=tech_raw.get("algorithm", ""),
+                steps=tech_raw.get("steps", []),
+                assumptions=tech_raw.get("assumptions", []),
+                limitations=tech_raw.get("limitations", []),
+                complexity=tech_raw.get("complexity", "")
+            )
+            
+            # Extract output interpretation
+            out_raw = method_raw.get("output_interpretation", {})
+            output_interpretation = OutputInterpretation(
+                output_structure=out_raw.get("output_structure", {}),
+                interpretation_guide=out_raw.get("interpretation_guide", {}),
+                actionable_insights=out_raw.get("actionable_insights", [])
+            )
+            
+            # Create method depth entry
+            method_entry = MethodDepthEntry(
+                method_name=method_raw.get("method_name", ""),
+                class_name=method_raw.get("class_name", ""),
+                priority=method_raw.get("priority", 0),
+                role=method_raw.get("role", ""),
+                epistemology=epistemology,
+                technical_approach=technical_approach,
+                output_interpretation=output_interpretation
+            )
+            methods_list.append(method_entry)
+        
+        # Extract combination logic if present
+        combination_logic = None
+        combo_raw = methodological_depth_raw.get("method_combination_logic")
+        if combo_raw:
+            combination_logic = MethodCombinationLogic(
+                dependency_graph=combo_raw.get("dependency_graph", {}),
+                trade_offs=combo_raw.get("trade_offs", []),
+                evidence_fusion_approach=combo_raw.get("evidence_fusion_approach", "")
+            )
+        
+        # Create methodological depth
+        return MethodologicalDepth(
+            methods=methods_list,
+            combination_logic=combination_logic,
+            extraction_timestamp=datetime.now(timezone.utc).isoformat()
+        )
 
 
 # =============================================================================
@@ -1185,6 +1333,104 @@ class CarverRenderer:
         return f"Análisis con {count} métodos."
     
     @classmethod
+    def render_limitations_section(cls, methodological_depth: MethodologicalDepth) -> str:
+        """
+        Render limitations section.Max 5.Carver style.
+        
+        Extrae limitaciones de technical_approach de cada método,
+        deduplica y prioriza las más relevantes.
+        """
+        all_limitations = []
+        for method in methodological_depth.methods:
+            for limitation in method.technical_approach.limitations:
+                if limitation and limitation not in all_limitations:
+                    all_limitations.append(limitation)
+        
+        if not all_limitations:
+            return ""
+        
+        # Max 5 limitations
+        selected = all_limitations[:5]
+        
+        lines = ["## Limitaciones\n"]
+        for lim in selected:
+            lines.append(f"- {lim}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
+    def render_theoretical_references(cls, methodological_depth: MethodologicalDepth) -> str:
+        """
+        Render theoretical references.Deduplicated.Max 6.
+        
+        Extrae referencias del theoretical_framework de cada método.
+        """
+        all_refs = []
+        for method in methodological_depth.methods:
+            for ref in method.epistemology.theoretical_framework:
+                if ref and ref not in all_refs:
+                    all_refs.append(ref)
+        
+        if not all_refs:
+            return ""
+        
+        # Max 6 references
+        selected = all_refs[:6]
+        
+        lines = ["## Referencias Teóricas\n"]
+        for i, ref in enumerate(selected, 1):
+            lines.append(f"{i}. {ref}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
+    def render_actionable_insights(cls, methodological_depth: MethodologicalDepth) -> str:
+        """
+        Render actionable insights.Prioritized by relevance.
+        
+        Extrae insights de output_interpretation de cada método.
+        """
+        all_insights = []
+        for method in methodological_depth.methods:
+            for insight in method.output_interpretation.actionable_insights:
+                if insight and insight not in all_insights:
+                    all_insights.append(insight)
+        
+        if not all_insights:
+            return ""
+        
+        lines = ["## Insights Accionables\n"]
+        for insight in all_insights[:6]:  # Max 6
+            lines.append(f"- {insight}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
+    def render_assumptions_section(cls, methodological_depth: MethodologicalDepth) -> str:
+        """
+        Render assumptions section.Deduplicated.Max 5.
+        
+        Extrae assumptions de technical_approach de cada método.
+        """
+        all_assumptions = []
+        for method in methodological_depth.methods:
+            for assumption in method.technical_approach.assumptions:
+                if assumption and assumption not in all_assumptions:
+                    all_assumptions.append(assumption)
+        
+        if not all_assumptions:
+            return ""
+        
+        # Max 5 assumptions
+        selected = all_assumptions[:5]
+        
+        lines = ["## Supuestos Metodológicos\n"]
+        for assum in selected:
+            lines.append(f"- {assum}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
     def render_full_answer(cls, answer: CarverAnswer) -> str:
         """
         Render complete answer in Carver style with readability enforcement.
@@ -1211,6 +1457,28 @@ class CarverRenderer:
         
         # Confidence
         sections.append(f"\n## Confianza\n\n{answer.confidence_statement}")
+        
+        # v3.0 Extensions (only if present)
+        if answer.methodological_depth:
+            # Limitations
+            limitations_text = cls.render_limitations_section(answer.methodological_depth)
+            if limitations_text:
+                sections.append(f"\n{limitations_text}")
+            
+            # Assumptions
+            assumptions_text = cls.render_assumptions_section(answer.methodological_depth)
+            if assumptions_text:
+                sections.append(f"\n{assumptions_text}")
+            
+            # Actionable Insights
+            insights_text = cls.render_actionable_insights(answer.methodological_depth)
+            if insights_text:
+                sections.append(f"\n{insights_text}")
+            
+            # Theoretical References
+            refs_text = cls.render_theoretical_references(answer.methodological_depth)
+            if refs_text:
+                sections.append(f"\n{refs_text}")
         
         # Method note (discrete)
         sections.append(f"\n---\n*{answer.method_note}*")
@@ -1287,6 +1555,7 @@ class DoctoralCarverSynthesizer:
         expected_elements = self.interpreter.extract_expected_elements(contract)
         question_intent = self.interpreter.extract_question_intent(contract)
         method_meta = self.interpreter.extract_method_metadata(contract)
+        methodological_depth = self.interpreter.extract_methodological_depth(contract)
         
         # 2. Get dimension strategy
         strategy = get_dimension_strategy(dimension)
@@ -1322,6 +1591,7 @@ class DoctoralCarverSynthesizer:
             question_text=question_intent["question_text"],
             dimension=dimension,
             method_note=method_note,
+            methodological_depth=methodological_depth,
             synthesis_trace={
                 "dimension": dimension.value,
                 "items_count": len(items),
@@ -1351,6 +1621,7 @@ class DoctoralCarverSynthesizer:
         expected_elements = self.interpreter.extract_expected_elements(contract)
         question_intent = self.interpreter.extract_question_intent(contract)
         method_meta = self.interpreter.extract_method_metadata(contract)
+        methodological_depth = self.interpreter.extract_methodological_depth(contract)
         
         strategy = get_dimension_strategy(dimension)
         
@@ -1380,6 +1651,7 @@ class DoctoralCarverSynthesizer:
             question_text=question_intent["question_text"],
             dimension=dimension,
             method_note=method_note,
+            methodological_depth=methodological_depth,
             synthesis_trace={
                 "dimension": dimension.value,
                 "items_count":  len(items),
@@ -1856,6 +2128,14 @@ __all__ = [
     "ArgumentUnit",
     "BayesianConfidenceResult",
     "CarverAnswer",
+    
+    # v3.0 Data structures
+    "MethodEpistemology",
+    "TechnicalApproach",
+    "OutputInterpretation",
+    "MethodDepthEntry",
+    "MethodCombinationLogic",
+    "MethodologicalDepth",
     
     # Components
     "ContractInterpreter",
