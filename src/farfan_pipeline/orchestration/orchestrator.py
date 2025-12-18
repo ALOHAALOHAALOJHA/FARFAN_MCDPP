@@ -1201,14 +1201,15 @@ class Orchestrator:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
         from canonic_phases.Phase_two.calibration_policy import create_default_policy
+        from canonic_phases.Phase_zero.runtime_config import RuntimeConfig as _RuntimeConfig
         
         validate_phase_definitions(self.FASES, self.__class__)
-        
+
         self.executor = method_executor
         self._canonical_questionnaire = questionnaire
         self._monolith_data = dict(questionnaire.data)
         self.executor_config = executor_config
-        self.runtime_config = runtime_config
+        self.runtime_config = runtime_config or _RuntimeConfig.from_env()
         self.phase0_validation = phase0_validation
         
         if phase0_validation is not None:
@@ -1227,11 +1228,11 @@ class Orchestrator:
                 summary=phase0_validation.get_summary()
             )
         
-        if runtime_config is not None:
+        if self.runtime_config is not None:
             logger.info(
                 "orchestrator_runtime_mode",
-                mode=runtime_config.mode.value,
-                strict=runtime_config.is_strict_mode(),
+                mode=self.runtime_config.mode.value,
+                strict=self.runtime_config.is_strict_mode(),
                 category="phase0_integration"
             )
         else:
@@ -1247,7 +1248,7 @@ class Orchestrator:
         else:
             self.calibration_orchestrator = None
         
-        strict_calibration = runtime_config.is_strict_mode() if runtime_config else False
+        strict_calibration = self.runtime_config.is_strict_mode() if self.runtime_config else False
         self.calibration_policy = calibration_policy or create_default_policy(strict_mode=strict_calibration)
         logger.info(f"CalibrationPolicy initialized (strict_mode={strict_calibration})")
         
@@ -1269,51 +1270,73 @@ class Orchestrator:
             raise RuntimeError("MethodExecutor must have signal_registry")
         
         # Validate signal registry health before execution
-        signal_validation_result = self.executor.signal_registry.validate_signals_for_questionnaire(
+        signal_validation_result_raw = self.executor.signal_registry.validate_signals_for_questionnaire(
             expected_question_count=EXPECTED_QUESTION_COUNT
         )
         
         # In production mode, enforce strict validation
         is_prod_mode = (
-            runtime_config is not None 
-            and hasattr(runtime_config, "mode")
-            and runtime_config.mode.value == "prod"
+            self.runtime_config is not None
+            and hasattr(self.runtime_config, "mode")
+            and self.runtime_config.mode.value == "prod"
         )
         
-        if not signal_validation_result["valid"]:
+        if not isinstance(signal_validation_result_raw, dict):
             error_msg = (
-                f"Signal registry validation failed: "
-                f"{len(signal_validation_result['missing_questions'])} questions missing signals, "
-                f"{len(signal_validation_result['malformed_signals'])} questions with malformed signals"
+                "Signal registry validation returned an unsupported type: "
+                f"{type(signal_validation_result_raw).__name__}"
             )
-            
             logger.error(
-                "orchestrator_signal_validation_failed",
-                validation_result=signal_validation_result,
+                "orchestrator_signal_validation_invalid_result",
+                result_type=type(signal_validation_result_raw).__name__,
                 is_prod_mode=is_prod_mode,
             )
-            
             if is_prod_mode:
-                raise RuntimeError(
-                    f"{error_msg}. "
-                    f"Production mode requires complete signal coverage. "
-                    f"Missing questions: {signal_validation_result['missing_questions'][:10]}, "
-                    f"Coverage: {signal_validation_result['coverage_percentages']}"
+                raise RuntimeError(error_msg)
+            logger.warning(
+                "orchestrator_signal_validation_warning",
+                message=f"{error_msg}. Continuing in non-production mode.",
+            )
+        else:
+            signal_validation_result = signal_validation_result_raw
+            valid = bool(signal_validation_result.get("valid", True))
+
+            if not valid:
+                missing_questions = signal_validation_result.get("missing_questions", [])
+                malformed_signals = signal_validation_result.get("malformed_signals", {})
+                error_msg = (
+                    "Signal registry validation failed: "
+                    f"{len(missing_questions)} questions missing signals, "
+                    f"{len(malformed_signals)} questions with malformed signals"
                 )
-            else:
+
+                logger.error(
+                    "orchestrator_signal_validation_failed",
+                    validation_result=signal_validation_result,
+                    is_prod_mode=is_prod_mode,
+                )
+
+                if is_prod_mode:
+                    raise RuntimeError(
+                        f"{error_msg}. "
+                        "Production mode requires complete signal coverage. "
+                        f"Missing questions: {missing_questions[:10]}, "
+                        f"Coverage: {signal_validation_result.get('coverage_percentages')}"
+                    )
+
                 logger.warning(
                     "orchestrator_signal_validation_warning",
                     message=f"{error_msg}. Continuing in non-production mode.",
-                    missing_count=len(signal_validation_result['missing_questions']),
-                    malformed_count=len(signal_validation_result['malformed_signals']),
+                    missing_count=len(missing_questions),
+                    malformed_count=len(malformed_signals),
                 )
-        else:
-            logger.info(
-                "orchestrator_signal_validation_passed",
-                total_questions=signal_validation_result["total_questions"],
-                coverage=signal_validation_result["coverage_percentages"],
-                elapsed_seconds=signal_validation_result["elapsed_seconds"],
-            )
+            else:
+                logger.info(
+                    "orchestrator_signal_validation_passed",
+                    total_questions=signal_validation_result.get("total_questions"),
+                    coverage=signal_validation_result.get("coverage_percentages"),
+                    elapsed_seconds=signal_validation_result.get("elapsed_seconds"),
+                )
         
         try:
             _validate_questionnaire_structure(self._monolith_data)
@@ -2143,6 +2166,9 @@ class Orchestrator:
         """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
+
+        if self._execution_plan is None and self.runtime_config.mode == RuntimeMode.PROD:
+            raise RuntimeError("Execution plan missing")
         
         # Use execution_plan if available, fallback to legacy config-based approach
         if self._execution_plan is not None:
@@ -2384,13 +2410,13 @@ class Orchestrator:
                 instrumentation.record_error("orphan_tasks", str(len(orphan_tasks)))
                 # Orphan tasks indicate a serious logic error - fail in all modes
                 # In PROD mode, this is a hard failure; in DEV, log as critical warning
-                if self.runtime_config.mode == RuntimeMode.PRODUCTION:
+                if self.runtime_config.mode == RuntimeMode.PROD:
                     self.request_abort(error_msg)
                 else:
                     logger.critical(f"DEVELOPMENT MODE WARNING: {error_msg}")
             
             # In PROD mode, fail Phase 2 if any tasks failed
-            if tasks_failed and self.runtime_config.mode == RuntimeMode.PRODUCTION:
+            if tasks_failed and self.runtime_config.mode == RuntimeMode.PROD:
                 error_msg = f"Phase 2 failed: {len(tasks_failed)} tasks failed in PROD mode"
                 logger.error(error_msg)
                 self.request_abort(error_msg)
