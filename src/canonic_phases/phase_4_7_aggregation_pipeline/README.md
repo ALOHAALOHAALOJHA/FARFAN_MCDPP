@@ -631,7 +631,7 @@ CERTIFICATE_[NN]_[DESCRIPTIVE_NAME].md
 
 Where:
 - `[NN]` = Two-digit zero-padded sequential number (01-15)
-- `[DESCRIPTIVE_NAME]` = UPPER_SNAKE_CASE descriptive identifier
+- `[DESCRIPTIVE_NAME]` = UPPER_SNAKE_CASE descriptive identifier (alphanumeric and underscores)
 - File extension MUST be `.md`
 
 **Examples:**
