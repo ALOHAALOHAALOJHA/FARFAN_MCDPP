@@ -108,16 +108,15 @@ class Phase2Carver:
             
         Raises:
             CardinalityError: If output count != 300
+            NotImplementedError: Stub implementation, full migration pending
         """
         if len(chunks) != 60:
             raise ValueError(f"Expected 60 chunks, got {len(chunks)}")
         
-        micro_answers: list[MicroAnswer] = []
-        
-        return CarverOutput(
-            micro_answers=micro_answers,
-            cardinality_verified=len(micro_answers) == self._expected_output_count,
-            execution_metadata={"cardinality_target": self._expected_output_count},
+        raise NotImplementedError(
+            "Carver implementation pending migration from Phase_two.carver. "
+            "This stub enforces the 300-output type system but does not implement "
+            "the full doctoral-level synthesis logic (2760 lines)."
         )
 
 
