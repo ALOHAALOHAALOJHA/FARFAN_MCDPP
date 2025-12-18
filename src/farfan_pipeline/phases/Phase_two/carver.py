@@ -487,14 +487,19 @@ class ContractInterpreter:
     @classmethod
     def extract_methodological_depth(cls, contract: Dict[str, Any]) -> Optional[MethodologicalDepth]:
         """
-        Extract full methodological depth from contract v3 human_answer_structure.
+        Extract full methodological depth from contract v3.
+        
+        Looks in multiple locations:
+        1. human_answer_structure.methodological_depth
+        2. human_readable_output.methodological_depth  
+        3. output_contract.human_readable_output.methodological_depth
         
         Success criteria:
-        - Returns MethodologicalDepth if human_answer_structure.methodological_depth exists
+        - Returns MethodologicalDepth if methodological_depth exists in any location
         - Returns None with warning log if structure is missing or malformed
         
         Failure modes:
-        - Missing human_answer_structure section -> returns None
+        - Missing all sections -> returns None
         - Missing methodological_depth key -> returns None  
         - Malformed method entries -> skips entry, logs warning, continues
         
@@ -504,13 +509,28 @@ class ContractInterpreter:
         """
         import datetime
         
-        # Extract human_answer_structure
-        human_answer = contract.get("human_answer_structure", {})
-        if not human_answer:
-            return None
+        # Try multiple locations for methodological_depth
+        methodological_depth_raw = None
         
-        # Extract methodological_depth section
-        methodological_depth_raw = human_answer.get("methodological_depth", {})
+        # Location 1: human_answer_structure.methodological_depth
+        human_answer = contract.get("human_answer_structure", {})
+        if human_answer:
+            methodological_depth_raw = human_answer.get("methodological_depth")
+        
+        # Location 2: human_readable_output.methodological_depth (fallback)
+        if not methodological_depth_raw:
+            human_readable = contract.get("human_readable_output", {})
+            if human_readable:
+                methodological_depth_raw = human_readable.get("methodological_depth")
+        
+        # Location 3: output_contract.human_readable_output.methodological_depth (most common)
+        if not methodological_depth_raw:
+            output_contract = contract.get("output_contract", {})
+            if output_contract:
+                human_readable = output_contract.get("human_readable_output", {})
+                if human_readable:
+                    methodological_depth_raw = human_readable.get("methodological_depth")
+        
         if not methodological_depth_raw:
             return None
         
