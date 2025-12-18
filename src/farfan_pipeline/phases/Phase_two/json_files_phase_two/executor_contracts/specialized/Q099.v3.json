@@ -342,7 +342,7 @@
         "target": "metadata",
         "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from all 10 methods for full traceability"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
@@ -993,15 +993,15 @@
           }
         ],
         "method_combination_logic": {
-          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "combination_strategy": "Sequential multi-method pipeline with risk-focused evidence fusion",
+          "rationale": "Q099 (D2-Q4) requires comprehensive risk identification and mitigation analysis for policy activities in environmental and disaster prevention domains. The 10 methods focus on risk assessment: Bayesian risk inference and sensitivity analysis (methods 1-6 from PDETMunicipalPlanAnalyzer), systemic risk auditing (method 7), counterfactual analysis and refutation checks (methods 8-9), and adaptive prior sensitivity (method 10).",
+          "evidence_fusion": "Evidence from all 10 methods is aggregated by the EvidenceNexus. Risk assessments from multiple Bayesian methods are combined with counterfactual refutations and systemic audits. Confidence scores are combined via weighted averaging with higher weights for validated risk inferences.",
+          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability and validation status (e.g., refutation-tested risk assessments have higher weight).",
+          "execution_order": "Methods execute in priority order (1→10). Bayesian risk inference precedes sensitivity analysis, which then feeds into interpretation methods. Systemic audit and counterfactual checks validate earlier outputs.",
           "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
-            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+            "Comprehensiveness vs. Complexity: 10 risk-focused methods ensure thorough risk coverage while maintaining manageable computational cost",
+            "Precision vs. Recall: Multiple Bayesian and counterfactual methods increase risk detection precision; sensitivity analysis ensures robustness",
+            "Interpretability vs. Sophistication: Bayesian risk methods are powerful but complex; human_readable_output and interpretation methods (interpret_risk, interpret_sensitivity) provide transparency"
           ]
         }
       }
@@ -1043,7 +1043,7 @@
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 10 risk-focused methods for Q099/D2-Q4: 6 from PDETMunicipalPlanAnalyzer (Bayesian risk inference, sensitivity analysis, risk interpretation, robustness and E-value computation), 1 from OperationalizationAuditor (systemic risk audit), 2 from BayesianCounterfactualAuditor (risk aggregation and refutation checks), and 1 from AdaptivePriorCalculator (adaptive sensitivity analysis). human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q099",
     "specialized_from_base_slot": "D2-Q4",
     "specialization_timestamp": "2025-11-28T03:50:13.408915+00:00"
@@ -1094,9 +1094,9 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all 10 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "10 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -1515,7 +1515,7 @@
       }
     },
     "usage_notes": {
-      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_developers": "This structure shows the expected evidence dict after GenericContractExecutor(question_id='Q099') completes all 10 method executions and evidence assembly via the Phase 2 contract-based runner.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
     }
