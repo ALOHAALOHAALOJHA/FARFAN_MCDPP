@@ -345,14 +345,14 @@ try:
     validate_executor_config(config_data)
     print("✓ Config valid")
 except ValidationError as e:
-    print(f"✗ Validation failed: {e.message}")
+    print(f"✗ Validation failed: {str(e)}")
 
 # Validate file
 try:
     validate_file('config.json', 'executor_config')
     print("✓ File valid")
 except ValidationError as e:
-    print(f"✗ Validation failed: {e.message}")
+    print(f"✗ Validation failed: {str(e)}")
 ```
 
 ## Testing

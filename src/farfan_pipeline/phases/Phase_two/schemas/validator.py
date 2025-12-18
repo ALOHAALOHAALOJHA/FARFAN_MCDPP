@@ -190,7 +190,7 @@ if __name__ == '__main__':
             print(f"✓ Validation successful: {json_file}")
             sys.exit(0)
     except ValidationError as e:
-        print(f"✗ Validation failed: {e.message}")
+        print(f"✗ Validation failed: {str(e)}")
         sys.exit(1)
     except Exception as e:
         print(f"✗ Error: {e}")
