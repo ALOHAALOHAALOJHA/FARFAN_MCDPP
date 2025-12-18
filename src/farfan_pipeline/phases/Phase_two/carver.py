@@ -1,6 +1,6 @@
 """
-Doctoral-Carver Narrative Synthesizer v2.1 (SOTA Edition + Macro Synthesis)
-============================================================================
+Doctoral-Carver Narrative Synthesizer v3.0.0 (Full Contract Extraction)
+========================================================================
 
 Genera respuestas PhD-level con estilo minimalista Raymond Carver: 
 - Precisión quirúrgica en cada afirmación
@@ -17,12 +17,12 @@ Fundamentos Teóricos:
 - Calibrated Uncertainty Quantification (Gneiting & Raftery, 2007)
 
 Arquitectura: 
-1.ContractInterpreter: Extrae semántica profunda del contrato v3
+1.ContractInterpreter: Extrae semántica profunda del contrato v3 + methodological_depth
 2.EvidenceGraph: Construye grafo causal de evidencia
 3.GapAnalyzer: Análisis multi-dimensional de vacíos
 4.BayesianConfidence: Inferencia calibrada de confianza
 5.DimensionTheory: Estrategias teóricamente fundamentadas por D1-D6
-6.CarverRenderer: Prosa minimalista con máximo impacto
+6.CarverRenderer: Prosa minimalista con máximo impacto + nuevas secciones v3
 7.MacroSynthesizer: Agregación holística con análisis PA×DIM (v2.1)
 
 Invariantes: 
@@ -31,9 +31,10 @@ Invariantes:
 [INV-003] Confianza debe ser calibrada (no optimista)
 [INV-004] Estilo Carver:  oraciones cortas, verbos activos, sin adverbios
 [INV-005] Macro synthesis con divergencia PA×DIM explícita (v2.1)
+[INV-006] Methodological depth extraction from contract v3 (v3.0)
 
 Author: F.A. R.F.A.N Pipeline
-Version: 2.1.0-SOTA-MACRO
+Version: 3.0.0
 """
 
 from __future__ import annotations
@@ -264,9 +265,66 @@ class BayesianConfidenceResult:
             return "MUY BAJA"
 
 
+@dataclass(frozen=True)
+class MethodEpistemology:
+    """Epistemological foundation for a single method."""
+    paradigm: str
+    ontological_basis: str
+    epistemological_stance: str
+    theoretical_framework: Tuple[str, ...]  # Immutable citations
+    justification: str
+
+
+@dataclass(frozen=True)
+class TechnicalApproach:
+    """Technical implementation specification."""
+    method_type: str
+    algorithm: str
+    steps: Tuple[Dict[str, Any], ...]  # Immutable step sequence
+    assumptions: Tuple[str, ...]
+    limitations: Tuple[str, ...]
+    complexity: str
+
+
+@dataclass(frozen=True)
+class OutputInterpretation:
+    """How to interpret method outputs."""
+    output_structure: Dict[str, str]
+    interpretation_guide: Dict[str, str]  # threshold -> meaning
+    actionable_insights: Tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class MethodDepthEntry:
+    """Complete methodological depth for one method."""
+    method_name: str
+    class_name: str
+    priority: int
+    role: str
+    epistemology: MethodEpistemology
+    technical_approach: TechnicalApproach
+    output_interpretation: OutputInterpretation
+
+
+@dataclass(frozen=True)
+class MethodCombinationLogic:
+    """How methods combine during execution."""
+    dependency_graph: Dict[str, List[str]]
+    trade_offs: Dict[str, str]
+    evidence_fusion_approach: str
+
+
+@dataclass(frozen=True)
+class MethodologicalDepth:
+    """Full methodological depth extracted from contract v3."""
+    methods: Tuple[MethodDepthEntry, ...]
+    combination_logic: Optional[MethodCombinationLogic]
+    extraction_timestamp: str
+
+
 @dataclass
 class CarverAnswer:
-    """Respuesta estructurada estilo Carver."""
+    """Respuesta estructurada estilo Carver - v3.0 Extended."""
     # Core components
     verdict: str  # Una oración.Directa.Sin escape. 
     evidence_statements: List[str]  # Hechos.Verificables.
@@ -286,6 +344,13 @@ class CarverAnswer:
     
     # Trace
     synthesis_trace: Dict[str, Any] = field(default_factory=dict)
+    
+    # NEW v3.0 fields
+    methodological_depth: Optional[MethodologicalDepth] = None
+    limitations_statement: str = ""
+    theoretical_references: str = ""
+    assumptions_statement: str = ""
+    actionable_insights: str = ""
 
 
 # =============================================================================
@@ -418,6 +483,125 @@ class ContractInterpreter:
                 for m in method_binding.get("methods", [])
             ][: 5],  # Top 5
         }
+    
+    @classmethod
+    def extract_methodological_depth(cls, contract: Dict[str, Any]) -> Optional[MethodologicalDepth]:
+        """
+        Extract full methodological depth from contract v3 human_answer_structure.
+        
+        Success criteria:
+        - Returns MethodologicalDepth if human_answer_structure.methodological_depth exists
+        - Returns None with warning log if structure is missing or malformed
+        
+        Failure modes:
+        - Missing human_answer_structure section -> returns None
+        - Missing methodological_depth key -> returns None  
+        - Malformed method entries -> skips entry, logs warning, continues
+        
+        Verification strategy:
+        - Unit tests with golden contract fixtures (Q001.v3.json, Q011.v3.json)
+        - Property: len(result.methods) == len(input methods with valid epistemology)
+        """
+        import datetime
+        
+        # Extract human_answer_structure
+        human_answer = contract.get("human_answer_structure", {})
+        if not human_answer:
+            return None
+        
+        # Extract methodological_depth section
+        methodological_depth_raw = human_answer.get("methodological_depth", {})
+        if not methodological_depth_raw:
+            return None
+        
+        # Extract methods
+        methods_raw = methodological_depth_raw.get("methods", [])
+        if not methods_raw:
+            return None
+        
+        method_entries = []
+        for method_raw in methods_raw:
+            try:
+                # Extract epistemology
+                epist_raw = method_raw.get("epistemological_foundation", {})
+                if not epist_raw:
+                    continue
+                
+                epistemology = MethodEpistemology(
+                    paradigm=epist_raw.get("paradigm", ""),
+                    ontological_basis=epist_raw.get("ontological_basis", ""),
+                    epistemological_stance=epist_raw.get("epistemological_stance", ""),
+                    theoretical_framework=tuple(epist_raw.get("theoretical_framework", [])),
+                    justification=epist_raw.get("justification", "")
+                )
+                
+                # Extract technical approach
+                tech_raw = method_raw.get("technical_approach", {})
+                steps_raw = tech_raw.get("steps", [])
+                # Handle both string and dict steps
+                steps_normalized = []
+                for step in steps_raw:
+                    if isinstance(step, str):
+                        steps_normalized.append({"description": step})
+                    elif isinstance(step, dict):
+                        steps_normalized.append(step)
+                
+                technical_approach = TechnicalApproach(
+                    method_type=tech_raw.get("method_type", ""),
+                    algorithm=tech_raw.get("algorithm", ""),
+                    steps=tuple(steps_normalized),
+                    assumptions=tuple(tech_raw.get("assumptions", [])),
+                    limitations=tuple(tech_raw.get("limitations", [])),
+                    complexity=tech_raw.get("complexity", "")
+                )
+                
+                # Extract output interpretation
+                output_raw = method_raw.get("output_interpretation", {})
+                output_interpretation = OutputInterpretation(
+                    output_structure=output_raw.get("output_structure", {}),
+                    interpretation_guide=output_raw.get("interpretation_guide", {}),
+                    actionable_insights=tuple(output_raw.get("actionable_insights", []))
+                )
+                
+                # Create method entry
+                method_entry = MethodDepthEntry(
+                    method_name=method_raw.get("method_name", ""),
+                    class_name=method_raw.get("class_name", ""),
+                    priority=method_raw.get("priority", 0),
+                    role=method_raw.get("role", ""),
+                    epistemology=epistemology,
+                    technical_approach=technical_approach,
+                    output_interpretation=output_interpretation
+                )
+                
+                method_entries.append(method_entry)
+            except (KeyError, TypeError, ValueError) as e:
+                # Skip malformed entry, continue with others
+                continue
+        
+        if not method_entries:
+            return None
+        
+        # Extract combination logic if present
+        combination_raw = methodological_depth_raw.get("method_combination_logic", {})
+        combination_logic = None
+        if combination_raw:
+            try:
+                combination_logic = MethodCombinationLogic(
+                    dependency_graph=combination_raw.get("dependency_graph", {}),
+                    trade_offs=combination_raw.get("trade_offs", {}),
+                    evidence_fusion_approach=combination_raw.get("evidence_fusion", 
+                                                                  combination_raw.get("combination_strategy", ""))
+                )
+            except (KeyError, TypeError, ValueError):
+                # Continue without combination logic if malformed
+                pass
+        
+        return MethodologicalDepth(
+            methods=tuple(method_entries),
+            combination_logic=combination_logic,
+            extraction_timestamp=datetime.datetime.utcnow().isoformat()
+        )
 
 
 # =============================================================================
@@ -1185,9 +1369,176 @@ class CarverRenderer:
         return f"Análisis con {count} métodos."
     
     @classmethod
+    def render_limitations_section(
+        cls,
+        methods_depth: MethodologicalDepth,
+        dimension: Dimension,
+    ) -> str:
+        """
+        Render methodological limitations in Carver style.
+        
+        Output format:
+        ## Limitaciones Metodológicas
+        
+        - [Method]: [Limitation]. [Assumption violated condition].
+        - [Method]: [Limitation].
+        
+        Max 5 limitations, prioritized by relevance to dimension.
+        """
+        if not methods_depth or not methods_depth.methods:
+            return ""
+        
+        limitations = []
+        for method in methods_depth.methods[:5]:  # Top 5 methods by priority
+            if method.technical_approach.limitations:
+                method_name = method.method_name
+                for limitation in method.technical_approach.limitations[:2]:  # Max 2 per method
+                    limitations.append(f"{method_name}: {limitation}")
+        
+        if not limitations:
+            return ""
+        
+        lines = ["## Limitaciones Metodológicas\n"]
+        for lim in limitations[:5]:  # Max 5 total
+            lines.append(f"- {lim}")
+        
+        return "\n".join(lines)
+    
+    @classmethod  
+    def render_theoretical_references(
+        cls,
+        methods_depth: MethodologicalDepth,
+    ) -> str:
+        """
+        Render theoretical framework citations.
+        
+        Output format:
+        ## Fundamentos Teóricos
+        
+        Este análisis se fundamenta en:
+        - [Framework] ([Citation])
+        - [Framework] ([Citation])
+        
+        Deduplicated, max 6 references.
+        """
+        if not methods_depth or not methods_depth.methods:
+            return ""
+        
+        # Collect all theoretical frameworks
+        all_frameworks = []
+        for method in methods_depth.methods:
+            all_frameworks.extend(method.epistemology.theoretical_framework)
+        
+        # Deduplicate while preserving order
+        seen = set()
+        unique_frameworks = []
+        for framework in all_frameworks:
+            if framework and framework not in seen:
+                seen.add(framework)
+                unique_frameworks.append(framework)
+        
+        if not unique_frameworks:
+            return ""
+        
+        lines = ["## Fundamentos Teóricos\n", "Este análisis se fundamenta en:"]
+        for framework in unique_frameworks[:6]:  # Max 6
+            lines.append(f"- {framework}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
+    def render_actionable_insights(
+        cls,
+        methods_depth: MethodologicalDepth,
+        gaps: List[EvidenceGap],
+        confidence: BayesianConfidenceResult,
+    ) -> str:
+        """
+        Render actionable insights based on method outputs and gaps.
+        
+        Output format:
+        ## Recomendaciones
+        
+        Basado en el análisis:
+        1. [Insight from method with high confidence]
+        2. [Insight addressing critical gap]
+        
+        Prioritized by: (1) gap severity, (2) confidence level, (3) method priority.
+        """
+        if not methods_depth or not methods_depth.methods:
+            return ""
+        
+        insights = []
+        
+        # Collect insights from methods
+        for method in methods_depth.methods[:5]:  # Top 5 by priority
+            if method.output_interpretation.actionable_insights:
+                insights.extend(method.output_interpretation.actionable_insights[:2])
+        
+        # Add gap-based insights
+        critical_gaps = [g for g in gaps if g.severity == GapSeverity.CRITICAL]
+        if critical_gaps:
+            insights.append(f"Abordar {len(critical_gaps)} gaps críticos identificados.")
+        
+        # Add confidence-based insight
+        if confidence.point_estimate < 0.5:
+            insights.append("Reforzar evidencia para aumentar confianza del análisis.")
+        
+        if not insights:
+            return ""
+        
+        lines = ["## Recomendaciones\n", "Basado en el análisis:"]
+        for i, insight in enumerate(insights[:5], 1):  # Max 5
+            lines.append(f"{i}. {insight}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
+    def render_assumptions_section(
+        cls,
+        methods_depth: MethodologicalDepth,
+    ) -> str:
+        """
+        Render analysis assumptions for transparency.
+        
+        Output format:
+        ## Supuestos del Análisis
+        
+        Este análisis asume:
+        - [Assumption 1]
+        - [Assumption 2]
+        
+        Deduplicated across methods, max 5.
+        """
+        if not methods_depth or not methods_depth.methods:
+            return ""
+        
+        # Collect all assumptions
+        all_assumptions = []
+        for method in methods_depth.methods:
+            all_assumptions.extend(method.technical_approach.assumptions)
+        
+        # Deduplicate while preserving order
+        seen = set()
+        unique_assumptions = []
+        for assumption in all_assumptions:
+            if assumption and assumption not in seen:
+                seen.add(assumption)
+                unique_assumptions.append(assumption)
+        
+        if not unique_assumptions:
+            return ""
+        
+        lines = ["## Supuestos del Análisis\n", "Este análisis asume:"]
+        for assumption in unique_assumptions[:5]:  # Max 5
+            lines.append(f"- {assumption}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
     def render_full_answer(cls, answer: CarverAnswer) -> str:
         """
-        Render complete answer in Carver style with readability enforcement.
+        Render complete answer in Carver style with readability enforcement - v3.0 with full depth.
         """
         sections = []
         
@@ -1212,7 +1563,21 @@ class CarverRenderer:
         # Confidence
         sections.append(f"\n## Confianza\n\n{answer.confidence_statement}")
         
-        # Method note (discrete)
+        # NEW v3.0 sections (only if methodological_depth present)
+        if answer.methodological_depth:
+            if answer.limitations_statement:
+                sections.append(f"\n{answer.limitations_statement}")
+            
+            if answer.assumptions_statement:
+                sections.append(f"\n{answer.assumptions_statement}")
+            
+            if answer.actionable_insights:
+                sections.append(f"\n{answer.actionable_insights}")
+            
+            if answer.theoretical_references:
+                sections.append(f"\n{answer.theoretical_references}")
+        
+        # Method note (discrete, at end)
         sections.append(f"\n---\n*{answer.method_note}*")
         
         # Join all sections
@@ -1273,7 +1638,7 @@ class DoctoralCarverSynthesizer:
         contract:  Dict[str, Any],
     ) -> str:
         """
-        Sintetiza respuesta doctoral-Carver.
+        Sintetiza respuesta doctoral-Carver v3.0 with full methodological depth.
         
         Args:
             evidence:  Evidencia ensamblada (dict con "elements", etc.)
@@ -1287,6 +1652,9 @@ class DoctoralCarverSynthesizer:
         expected_elements = self.interpreter.extract_expected_elements(contract)
         question_intent = self.interpreter.extract_question_intent(contract)
         method_meta = self.interpreter.extract_method_metadata(contract)
+        
+        # NEW: Extract full methodological depth
+        methodological_depth = self.interpreter.extract_methodological_depth(contract)
         
         # 2. Get dimension strategy
         strategy = get_dimension_strategy(dimension)
@@ -1312,6 +1680,26 @@ class DoctoralCarverSynthesizer:
         conf_stmt = self.renderer.render_confidence_statement(confidence, strategy)
         method_note = self.renderer.render_method_note(method_meta)
         
+        # NEW v3.0: Render additional sections if depth available
+        limitations_stmt = ""
+        assumptions_stmt = ""
+        insights_stmt = ""
+        references_stmt = ""
+        
+        if methodological_depth:
+            limitations_stmt = self.renderer.render_limitations_section(
+                methodological_depth, dimension
+            )
+            assumptions_stmt = self.renderer.render_assumptions_section(
+                methodological_depth
+            )
+            insights_stmt = self.renderer.render_actionable_insights(
+                methodological_depth, gaps, confidence
+            )
+            references_stmt = self.renderer.render_theoretical_references(
+                methodological_depth
+            )
+        
         # 7. Compose answer
         answer = CarverAnswer(
             verdict=verdict,
@@ -1330,7 +1718,12 @@ class DoctoralCarverSynthesizer:
                 "corroborations":  len(corroborations),
                 "contradictions": len(contradictions),
                 "confidence": confidence.point_estimate,
-            }
+            },
+            methodological_depth=methodological_depth,
+            limitations_statement=limitations_stmt,
+            theoretical_references=references_stmt,
+            assumptions_statement=assumptions_stmt,
+            actionable_insights=insights_stmt,
         )
         
         # 8. Render final output
@@ -1342,7 +1735,7 @@ class DoctoralCarverSynthesizer:
         contract: Dict[str, Any],
     ) -> CarverAnswer:
         """
-        Returns structured CarverAnswer instead of string.
+        Returns structured CarverAnswer instead of string - v3.0 with full depth.
         
         Useful for further processing or integration.
         """
@@ -1351,6 +1744,9 @@ class DoctoralCarverSynthesizer:
         expected_elements = self.interpreter.extract_expected_elements(contract)
         question_intent = self.interpreter.extract_question_intent(contract)
         method_meta = self.interpreter.extract_method_metadata(contract)
+        
+        # NEW: Extract full methodological depth
+        methodological_depth = self.interpreter.extract_methodological_depth(contract)
         
         strategy = get_dimension_strategy(dimension)
         
@@ -1371,6 +1767,26 @@ class DoctoralCarverSynthesizer:
         conf_stmt = self.renderer.render_confidence_statement(confidence, strategy)
         method_note = self.renderer.render_method_note(method_meta)
         
+        # NEW v3.0: Render additional sections if depth available
+        limitations_stmt = ""
+        assumptions_stmt = ""
+        insights_stmt = ""
+        references_stmt = ""
+        
+        if methodological_depth:
+            limitations_stmt = self.renderer.render_limitations_section(
+                methodological_depth, dimension
+            )
+            assumptions_stmt = self.renderer.render_assumptions_section(
+                methodological_depth
+            )
+            insights_stmt = self.renderer.render_actionable_insights(
+                methodological_depth, gaps, confidence
+            )
+            references_stmt = self.renderer.render_theoretical_references(
+                methodological_depth
+            )
+        
         return CarverAnswer(
             verdict=verdict,
             evidence_statements=evidence_stmts,
@@ -1388,7 +1804,12 @@ class DoctoralCarverSynthesizer:
                 "corroborations": len(corroborations),
                 "contradictions": len(contradictions),
                 "confidence": confidence.point_estimate,
-            }
+            },
+            methodological_depth=methodological_depth,
+            limitations_statement=limitations_stmt,
+            theoretical_references=references_stmt,
+            assumptions_statement=assumptions_stmt,
+            actionable_insights=insights_stmt,
         )
     
     def synthesize_macro(
@@ -1856,6 +2277,14 @@ __all__ = [
     "ArgumentUnit",
     "BayesianConfidenceResult",
     "CarverAnswer",
+    
+    # NEW v3.0 data structures
+    "MethodEpistemology",
+    "TechnicalApproach",
+    "OutputInterpretation",
+    "MethodDepthEntry",
+    "MethodCombinationLogic",
+    "MethodologicalDepth",
     
     # Components
     "ContractInterpreter",
