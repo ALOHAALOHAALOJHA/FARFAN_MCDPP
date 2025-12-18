@@ -61,11 +61,12 @@ class TestPhase2ExecutionPlan:
         
         mock_config = Mock()
         
-        orchestrator = Orchestrator(
-            method_executor=mock_executor,
-            questionnaire=mock_questionnaire,
-            executor_config=mock_config,
-        )
+        with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
+            orchestrator = Orchestrator(
+                method_executor=mock_executor,
+                questionnaire=mock_questionnaire,
+                executor_config=mock_config,
+            )
         orchestrator._phase_instrumentation[2] = PhaseInstrumentation(2, "Phase 2")
         orchestrator._execution_plan = None
         
@@ -93,11 +94,12 @@ class TestPhase2ExecutionPlan:
         
         mock_config = Mock()
         
-        orchestrator = Orchestrator(
-            method_executor=mock_executor,
-            questionnaire=mock_questionnaire,
-            executor_config=mock_config,
-        )
+        with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
+            orchestrator = Orchestrator(
+                method_executor=mock_executor,
+                questionnaire=mock_questionnaire,
+                executor_config=mock_config,
+            )
         orchestrator._phase_instrumentation[2] = PhaseInstrumentation(2, "Phase 2")
         orchestrator._canonical_questionnaire = mock_questionnaire
         orchestrator.executor_config = mock_config
@@ -176,11 +178,12 @@ class TestPhase2RetryLogic:
         
         mock_config = Mock()
         
-        orchestrator = Orchestrator(
-            method_executor=mock_executor,
-            questionnaire=mock_questionnaire,
-            executor_config=mock_config,
-        )
+        with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
+            orchestrator = Orchestrator(
+                method_executor=mock_executor,
+                questionnaire=mock_questionnaire,
+                executor_config=mock_config,
+            )
         orchestrator._phase_instrumentation[2] = PhaseInstrumentation(2, "Phase 2")
         orchestrator._canonical_questionnaire = mock_questionnaire
         orchestrator.executor_config = mock_config
@@ -263,11 +266,12 @@ class TestPhase2RetryLogic:
         
         mock_config = Mock()
         
-        orchestrator = Orchestrator(
-            method_executor=mock_executor,
-            questionnaire=mock_questionnaire,
-            executor_config=mock_config,
-        )
+        with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
+            orchestrator = Orchestrator(
+                method_executor=mock_executor,
+                questionnaire=mock_questionnaire,
+                executor_config=mock_config,
+            )
         orchestrator._phase_instrumentation[2] = PhaseInstrumentation(2, "Phase 2")
         orchestrator._canonical_questionnaire = mock_questionnaire
         orchestrator.executor_config = mock_config
@@ -337,11 +341,12 @@ class TestPhase2EvidenceValidation:
         
         mock_config = Mock()
         
-        orchestrator = Orchestrator(
-            method_executor=mock_executor,
-            questionnaire=mock_questionnaire,
-            executor_config=mock_config,
-        )
+        with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
+            orchestrator = Orchestrator(
+                method_executor=mock_executor,
+                questionnaire=mock_questionnaire,
+                executor_config=mock_config,
+            )
         orchestrator._phase_instrumentation[2] = PhaseInstrumentation(2, "Phase 2")
         orchestrator._canonical_questionnaire = mock_questionnaire
         orchestrator.executor_config = mock_config
@@ -418,11 +423,12 @@ class TestPhase2Integration:
         
         mock_config = Mock()
         
-        orchestrator = Orchestrator(
-            method_executor=mock_executor,
-            questionnaire=mock_questionnaire,
-            executor_config=mock_config,
-        )
+        with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
+            orchestrator = Orchestrator(
+                method_executor=mock_executor,
+                questionnaire=mock_questionnaire,
+                executor_config=mock_config,
+            )
         orchestrator._phase_instrumentation[2] = PhaseInstrumentation(2, "Phase 2")
         orchestrator._canonical_questionnaire = mock_questionnaire
         orchestrator.executor_config = mock_config

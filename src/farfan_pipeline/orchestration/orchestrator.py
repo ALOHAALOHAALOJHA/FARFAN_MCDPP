@@ -923,6 +923,95 @@ async def execute_phase_with_timeout(
 
 
 # ============================================================================
+# ASYNC/SYNC BOUNDARY HELPERS
+# ============================================================================
+
+def run_async_safely(coro: Any, timeout: float | None = None) -> Any:
+    """Safely run an async coroutine from either sync or async context.
+    
+    This function enforces the canonical pathway for async execution:
+    - If called from sync context: Uses asyncio.run()
+    - If called from async context: Directly awaits the coroutine
+    - Prevents blocking the event loop in async contexts
+    
+    Args:
+        coro: Coroutine or coroutine function to execute
+        timeout: Optional timeout in seconds
+        
+    Returns:
+        Result from the coroutine execution
+        
+    Raises:
+        RuntimeError: If execution fails or times out
+        
+    Example:
+        >>> # From sync context
+        >>> result = run_async_safely(some_async_function())
+        >>> 
+        >>> # From async context
+        >>> result = await run_async_safely(some_async_function())
+    """
+    import inspect
+    
+    # Ensure we have a coroutine
+    if not inspect.iscoroutine(coro) and inspect.iscoroutinefunction(coro):
+        coro = coro()
+    
+    if not inspect.iscoroutine(coro):
+        raise TypeError(f"Expected coroutine, got {type(coro)}")
+    
+    # Detect if we're in an async context
+    try:
+        loop = asyncio.get_running_loop()
+        in_async_context = loop is not None and loop.is_running()
+    except RuntimeError:
+        in_async_context = False
+    
+    if in_async_context:
+        # Already in async context - this function becomes a coroutine
+        # Caller must await it
+        raise RuntimeError(
+            "run_async_safely() called from async context. "
+            "You must use 'await run_async_safely(coro)' instead of 'run_async_safely(coro)'."
+        )
+    else:
+        # Sync context - safe to use asyncio.run()
+        if timeout:
+            async def _with_timeout():
+                return await asyncio.wait_for(coro, timeout=timeout)
+            return asyncio.run(_with_timeout())
+        else:
+            return asyncio.run(coro)
+
+
+async def run_async_safely_async(coro: Any, timeout: float | None = None) -> Any:
+    """Async version of run_async_safely for use within async contexts.
+    
+    This ensures consistent behavior whether called from sync or async context.
+    
+    Args:
+        coro: Coroutine or coroutine function to execute
+        timeout: Optional timeout in seconds
+        
+    Returns:
+        Result from the coroutine execution
+    """
+    import inspect
+    
+    # Ensure we have a coroutine
+    if not inspect.iscoroutine(coro) and inspect.iscoroutinefunction(coro):
+        coro = coro()
+    
+    if not inspect.iscoroutine(coro):
+        raise TypeError(f"Expected coroutine, got {type(coro)}")
+    
+    if timeout:
+        return await asyncio.wait_for(coro, timeout=timeout)
+    else:
+        return await coro
+
+
+# ============================================================================
 # METHOD EXECUTOR
 # ============================================================================
 
@@ -1201,14 +1290,15 @@ class Orchestrator:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
         from canonic_phases.Phase_two.calibration_policy import create_default_policy
+        from canonic_phases.Phase_zero.runtime_config import RuntimeConfig as _RuntimeConfig
         
         validate_phase_definitions(self.FASES, self.__class__)
-        
+
         self.executor = method_executor
         self._canonical_questionnaire = questionnaire
         self._monolith_data = dict(questionnaire.data)
         self.executor_config = executor_config
-        self.runtime_config = runtime_config
+        self.runtime_config = runtime_config or _RuntimeConfig.from_env()
         self.phase0_validation = phase0_validation
         
         if phase0_validation is not None:
@@ -1227,11 +1317,11 @@ class Orchestrator:
                 summary=phase0_validation.get_summary()
             )
         
-        if runtime_config is not None:
+        if self.runtime_config is not None:
             logger.info(
                 "orchestrator_runtime_mode",
-                mode=runtime_config.mode.value,
-                strict=runtime_config.is_strict_mode(),
+                mode=self.runtime_config.mode.value,
+                strict=self.runtime_config.is_strict_mode(),
                 category="phase0_integration"
             )
         else:
@@ -1247,7 +1337,7 @@ class Orchestrator:
         else:
             self.calibration_orchestrator = None
         
-        strict_calibration = runtime_config.is_strict_mode() if runtime_config else False
+        strict_calibration = self.runtime_config.is_strict_mode() if self.runtime_config else False
         self.calibration_policy = calibration_policy or create_default_policy(strict_mode=strict_calibration)
         logger.info(f"CalibrationPolicy initialized (strict_mode={strict_calibration})")
         
@@ -1269,51 +1359,73 @@ class Orchestrator:
             raise RuntimeError("MethodExecutor must have signal_registry")
         
         # Validate signal registry health before execution
-        signal_validation_result = self.executor.signal_registry.validate_signals_for_questionnaire(
+        signal_validation_result_raw = self.executor.signal_registry.validate_signals_for_questionnaire(
             expected_question_count=EXPECTED_QUESTION_COUNT
         )
         
         # In production mode, enforce strict validation
         is_prod_mode = (
-            runtime_config is not None 
-            and hasattr(runtime_config, "mode")
-            and runtime_config.mode.value == "prod"
+            self.runtime_config is not None
+            and hasattr(self.runtime_config, "mode")
+            and self.runtime_config.mode.value == "prod"
         )
         
-        if not signal_validation_result["valid"]:
+        if not isinstance(signal_validation_result_raw, dict):
             error_msg = (
-                f"Signal registry validation failed: "
-                f"{len(signal_validation_result['missing_questions'])} questions missing signals, "
-                f"{len(signal_validation_result['malformed_signals'])} questions with malformed signals"
+                "Signal registry validation returned an unsupported type: "
+                f"{type(signal_validation_result_raw).__name__}"
             )
-            
             logger.error(
-                "orchestrator_signal_validation_failed",
-                validation_result=signal_validation_result,
+                "orchestrator_signal_validation_invalid_result",
+                result_type=type(signal_validation_result_raw).__name__,
                 is_prod_mode=is_prod_mode,
             )
-            
             if is_prod_mode:
-                raise RuntimeError(
-                    f"{error_msg}. "
-                    f"Production mode requires complete signal coverage. "
-                    f"Missing questions: {signal_validation_result['missing_questions'][:10]}, "
-                    f"Coverage: {signal_validation_result['coverage_percentages']}"
+                raise RuntimeError(error_msg)
+            logger.warning(
+                "orchestrator_signal_validation_warning",
+                message=f"{error_msg}. Continuing in non-production mode.",
+            )
+        else:
+            signal_validation_result = signal_validation_result_raw
+            valid = bool(signal_validation_result.get("valid", True))
+
+            if not valid:
+                missing_questions = signal_validation_result.get("missing_questions", [])
+                malformed_signals = signal_validation_result.get("malformed_signals", {})
+                error_msg = (
+                    "Signal registry validation failed: "
+                    f"{len(missing_questions)} questions missing signals, "
+                    f"{len(malformed_signals)} questions with malformed signals"
                 )
-            else:
+
+                logger.error(
+                    "orchestrator_signal_validation_failed",
+                    validation_result=signal_validation_result,
+                    is_prod_mode=is_prod_mode,
+                )
+
+                if is_prod_mode:
+                    raise RuntimeError(
+                        f"{error_msg}. "
+                        "Production mode requires complete signal coverage. "
+                        f"Missing questions: {missing_questions[:10]}, "
+                        f"Coverage: {signal_validation_result.get('coverage_percentages')}"
+                    )
+
                 logger.warning(
                     "orchestrator_signal_validation_warning",
                     message=f"{error_msg}. Continuing in non-production mode.",
-                    missing_count=len(signal_validation_result['missing_questions']),
-                    malformed_count=len(signal_validation_result['malformed_signals']),
+                    missing_count=len(missing_questions),
+                    malformed_count=len(malformed_signals),
                 )
-        else:
-            logger.info(
-                "orchestrator_signal_validation_passed",
-                total_questions=signal_validation_result["total_questions"],
-                coverage=signal_validation_result["coverage_percentages"],
-                elapsed_seconds=signal_validation_result["elapsed_seconds"],
-            )
+            else:
+                logger.info(
+                    "orchestrator_signal_validation_passed",
+                    total_questions=signal_validation_result.get("total_questions"),
+                    coverage=signal_validation_result.get("coverage_percentages"),
+                    elapsed_seconds=signal_validation_result.get("elapsed_seconds"),
+                )
         
         try:
             _validate_questionnaire_structure(self._monolith_data)
@@ -1507,18 +1619,18 @@ class Orchestrator:
             
             try:
                 if mode == "sync":
-                    if phase_id in TIMEOUT_SYNC_PHASES:
-                        data = await execute_phase_with_timeout(
-                            phase_id=phase_id,
-                            phase_name=phase_label,
-                            timeout_s=self._get_phase_timeout(phase_id),
-                            coro=asyncio.to_thread,
-                            args=(handler,) + tuple(args),
-                            instrumentation=instrumentation,
-                        )
-                    else:
-                        data = handler(*args)
+                    # ALL sync phases must use asyncio.to_thread to avoid blocking event loop
+                    # This is the canonical pathway for executing sync handlers in async context
+                    data = await execute_phase_with_timeout(
+                        phase_id=phase_id,
+                        phase_name=phase_label,
+                        timeout_s=self._get_phase_timeout(phase_id),
+                        handler=handler,
+                        args=tuple(args),
+                        instrumentation=instrumentation,
+                    )
                 else:
+                    # Async phases can be executed directly
                     data = await execute_phase_with_timeout(
                         phase_id=phase_id,
                         phase_name=phase_label,
@@ -1639,13 +1751,34 @@ class Orchestrator:
     def process_development_plan(
         self, pdf_path: str, preprocessed_document: Any | None = None
     ) -> list[PhaseResult]:
+        """Synchronous entry point for pipeline execution.
+        
+        This method enforces the async/sync boundary by detecting if it's called
+        from within an async context and raising a clear error if so.
+        
+        Args:
+            pdf_path: Path to the PDF document to analyze
+            preprocessed_document: Optional preprocessed document to use
+            
+        Returns:
+            List of PhaseResult objects for each phase executed
+            
+        Raises:
+            RuntimeError: If called from within an async context. Use
+                         process_development_plan_async() instead.
+        """
         try:
             loop = asyncio.get_running_loop()
         except RuntimeError:
+            # No event loop running - safe to proceed
             loop = None
         
         if loop and loop.is_running():
-            raise RuntimeError("Cannot call from within async context")
+            raise RuntimeError(
+                "Cannot call process_development_plan() from within an async context. "
+                "This would block the event loop and cause deadlock. "
+                "Use 'await process_development_plan_async()' instead."
+            )
         
         return asyncio.run(self.process_development_plan_async(pdf_path, preprocessed_document))
     
@@ -2143,6 +2276,9 @@ class Orchestrator:
         """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
+
+        if self._execution_plan is None and self.runtime_config.mode == RuntimeMode.PROD:
+            raise RuntimeError("Execution plan missing")
         
         # Use execution_plan if available, fallback to legacy config-based approach
         if self._execution_plan is not None:
@@ -2384,13 +2520,13 @@ class Orchestrator:
                 instrumentation.record_error("orphan_tasks", str(len(orphan_tasks)))
                 # Orphan tasks indicate a serious logic error - fail in all modes
                 # In PROD mode, this is a hard failure; in DEV, log as critical warning
-                if self.runtime_config.mode == RuntimeMode.PRODUCTION:
+                if self.runtime_config.mode == RuntimeMode.PROD:
                     self.request_abort(error_msg)
                 else:
                     logger.critical(f"DEVELOPMENT MODE WARNING: {error_msg}")
             
             # In PROD mode, fail Phase 2 if any tasks failed
-            if tasks_failed and self.runtime_config.mode == RuntimeMode.PRODUCTION:
+            if tasks_failed and self.runtime_config.mode == RuntimeMode.PROD:
                 error_msg = f"Phase 2 failed: {len(tasks_failed)} tasks failed in PROD mode"
                 logger.error(error_msg)
                 self.request_abort(error_msg)
@@ -3176,4 +3312,8 @@ __all__ = [
     "ScoredMicroQuestion",
     "Evidence",
     "MacroEvaluation",
+    "run_async_safely",
+    "run_async_safely_async",
+    "execute_phase_with_timeout",
+    "PhaseTimeoutError",
 ]
