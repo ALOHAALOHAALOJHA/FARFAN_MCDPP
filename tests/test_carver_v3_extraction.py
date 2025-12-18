@@ -13,7 +13,6 @@ import pytest
 import sys
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Dict, Any, List
 
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
