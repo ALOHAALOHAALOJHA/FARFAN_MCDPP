@@ -2192,20 +2192,81 @@ class Orchestrator:
             if not isinstance(canon_package, CanonPolicyPackage):
                 raise ValueError(f"Phase 1 returned invalid type: {type(canon_package)}")
             
+            # CONSTITUTIONAL INVARIANT: Exactly 60 chunks
             actual_chunk_count = len(canon_package.chunk_graph.chunks)
             if actual_chunk_count != P01_EXPECTED_CHUNK_COUNT:
                 raise ValueError(
-                    f"P01 validation failed: expected {P01_EXPECTED_CHUNK_COUNT} chunks, "
-                    f"got {actual_chunk_count}"
+                    f"CONSTITUTIONAL VIOLATION (POST-01): Expected {P01_EXPECTED_CHUNK_COUNT} chunks, "
+                    f"got {actual_chunk_count}. Phase 1 failed to produce required 60-chunk CPP."
                 )
             
+            # POST-02: All chunks have valid PA and Dimension
+            policy_areas = set()
+            dimensions = set()
+            pa_dim_coverage = set()
             for i, chunk in enumerate(canon_package.chunk_graph.chunks):
                 if not hasattr(chunk, "policy_area") or not chunk.policy_area:
-                    raise ValueError(f"Chunk {i} missing policy_area")
+                    raise ValueError(f"POST-02 violation: Chunk {i} ({getattr(chunk, 'chunk_id', 'unknown')}) missing policy_area")
                 if not hasattr(chunk, "dimension") or not chunk.dimension:
-                    raise ValueError(f"Chunk {i} missing dimension")
+                    raise ValueError(f"POST-02 violation: Chunk {i} ({getattr(chunk, 'chunk_id', 'unknown')}) missing dimension")
+                
+                policy_areas.add(chunk.policy_area)
+                dimensions.add(chunk.dimension)
+                pa_dim_coverage.add((chunk.policy_area, chunk.dimension))
             
-            logger.info(f"✓ P01-ES v1.0 validation passed: {actual_chunk_count} chunks")
+            # Verify 10 Policy Areas
+            if len(policy_areas) != 10:
+                raise ValueError(
+                    f"CONSTITUTIONAL VIOLATION: Expected 10 Policy Areas, got {len(policy_areas)}. "
+                    f"Policy Areas: {sorted(policy_areas)}"
+                )
+            
+            # Verify 6 Dimensions
+            if len(dimensions) != 6:
+                raise ValueError(
+                    f"CONSTITUTIONAL VIOLATION: Expected 6 Dimensions, got {len(dimensions)}. "
+                    f"Dimensions: {sorted(dimensions)}"
+                )
+            
+            # Verify complete PA×Dimension grid coverage (10×6 = 60)
+            if len(pa_dim_coverage) != 60:
+                raise ValueError(
+                    f"CONSTITUTIONAL VIOLATION: Expected 60 unique PA×Dimension combinations, "
+                    f"got {len(pa_dim_coverage)}. Coverage incomplete."
+                )
+            
+            # POST-03: DAG acyclicity check
+            edges = canon_package.chunk_graph.edges
+            visited = set()
+            rec_stack = set()
+            
+            def has_cycle(node_id: str) -> bool:
+                visited.add(node_id)
+                rec_stack.add(node_id)
+                for edge in edges:
+                    if edge.source_id == node_id:
+                        target = edge.target_id
+                        if target not in visited:
+                            if has_cycle(target):
+                                return True
+                        elif target in rec_stack:
+                            return True
+                rec_stack.remove(node_id)
+                return False
+            
+            for chunk in canon_package.chunk_graph.chunks:
+                chunk_id = getattr(chunk, 'chunk_id', None)
+                if chunk_id and chunk_id not in visited:
+                    if has_cycle(chunk_id):
+                        raise ValueError(
+                            f"POST-03 violation: Chunk graph contains cycle starting at {chunk_id}. "
+                            f"DAG property violated."
+                        )
+            
+            logger.info(
+                f"✓ Phase 1 constitutional invariants verified: {actual_chunk_count} chunks, "
+                f"{len(policy_areas)} PAs, {len(dimensions)} Dims, DAG acyclic"
+            )
             return canon_package
             
         except Exception as e:
