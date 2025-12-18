@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "2a8e7c540f29cf3b93c7af090bfa8c08c79d6ce671eb346a51e7a67247cda5ad",
+    "contract_hash": "838e1e6604800375fd17a0f830e6d05b177ec767843b5995efea634af2797dab",
     "created_at": "2025-11-28T03:50:31.449739+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 139,
-    "updated_at": "2025-12-17T23:49:38.553455+00:00"
+    "updated_at": "2025-12-18T07:16:05.161163+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -193,7 +193,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q139-REQ"
-    }
+    },
+    "policy_area_label": "Derechos económicos, sociales y culturales",
+    "dimension_label": "RESULTADOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -390,7 +392,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q139 (D4-Q4): ¿Los resultados propuestos (ej. 'mejora en las condiciones de habitabilidad') 'atienden' o 'abordan' directamente los...",
+        "title": "## Análisis Q139 (D4-Q4): ¿Los resultados propuestos (ej. 'mejora en las condiciones de habitabilidad') 'atienden' o 'abordan' directamente los... | Derechos económicos, sociales y culturales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1517,7 +1519,7 @@
             "Pawson & Tilley (1997) realistic evaluation",
             "Results-based management for public policy monitoring"
           ],
-          "justification": "Chosen because Resultados / Indicadores in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+          "justification": "Chosen because RESULTADOS in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
         },
         "technical_approach": {
           "method_type": "graph_based_evidence_fusion",
@@ -1537,7 +1539,7 @@
             },
             {
               "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q139/D4-Q4)."
+              "description": "Compute completeness, gaps, and confidence interval for Q139/D4-Q4."
             }
           ],
           "assumptions": [

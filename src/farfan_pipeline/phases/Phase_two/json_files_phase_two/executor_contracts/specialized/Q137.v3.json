@@ -5,12 +5,12 @@
     "dimension_id": "DIM04",
     "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "19ed0af29c2103452d81181047c1188e352e9c184a2065bf6a2c808c6254a603",
+    "contract_hash": "df45f3a95f6bf4d8e6964e51129c9308cd4e012229b4a52afcc404176d8f7c34",
     "created_at": "2025-11-28T03:50:31.443766+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 137,
-    "updated_at": "2025-12-17T23:49:38.545552+00:00"
+    "updated_at": "2025-12-18T07:16:05.007435+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -221,7 +221,9 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q137-REQ"
-    }
+    },
+    "policy_area_label": "Derechos económicos, sociales y culturales",
+    "dimension_label": "RESULTADOS"
   },
   "signal_requirements": {
     "mandatory_signals": [
@@ -419,7 +421,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q137 (D4-Q2): ¿Se explicita la cadena causal que lleva a la mejora social, mencionando 'supuestos' (ej. 'si los padres llevan a sus...",
+        "title": "## Análisis Q137 (D4-Q2): ¿Se explicita la cadena causal que lleva a la mejora social, mencionando 'supuestos' (ej. 'si los padres llevan a sus... | Derechos económicos, sociales y culturales",
         "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
         "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
@@ -1625,7 +1627,7 @@
             "Pawson & Tilley (1997) realistic evaluation",
             "Results-based management for public policy monitoring"
           ],
-          "justification": "Chosen because Resultados / Indicadores in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
+          "justification": "Chosen because RESULTADOS in PA04 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
         },
         "technical_approach": {
           "method_type": "graph_based_evidence_fusion",
@@ -1645,7 +1647,7 @@
             },
             {
               "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for downstream scoring (Q137/D4-Q2)."
+              "description": "Compute completeness, gaps, and confidence interval for Q137/D4-Q2."
             }
           ],
           "assumptions": [
