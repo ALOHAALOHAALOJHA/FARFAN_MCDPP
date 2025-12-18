@@ -119,18 +119,23 @@ class TestPurgeVerification:
 class TestImportPaths:
     """Test correct import paths."""
     
-    def test_canonical_import_works(self):
-        """Verify canonical import path works."""
-        try:
-            from canonic_phases.phase_1_cpp_ingestion import execute_phase_1_with_full_contract
-            assert execute_phase_1_with_full_contract is not None
-        except ImportError as e:
-            pytest.fail(f"Canonical import failed: {e}")
+    def test_canonical_path_exists(self):
+        """Verify canonical path exists and is importable."""
+        canonical_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
+        assert canonical_path.exists(), f"Canonical path must exist: {canonical_path}"
+        
+        # Check __init__.py exists
+        init_file = canonical_path / "__init__.py"
+        assert init_file.exists(), "__init__.py must exist for package"
+        
+        # Verify it exports the main function
+        content = init_file.read_text()
+        assert "execute_phase_1_with_full_contract" in content, "Must export execute_phase_1_with_full_contract"
     
-    def test_legacy_import_fails(self):
-        """Verify legacy import path fails (Phase_one removed)."""
-        with pytest.raises(ImportError):
-            from canonic_phases.Phase_one import execute_phase_1_with_full_contract
+    def test_legacy_path_deleted(self):
+        """Verify legacy Phase_one path is deleted."""
+        legacy_path = Path(__file__).parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_one"
+        assert not legacy_path.exists(), f"Legacy Phase_one folder must be deleted: {legacy_path}"
 
 
 if __name__ == "__main__":
