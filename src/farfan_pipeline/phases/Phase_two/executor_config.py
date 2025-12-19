@@ -1,6 +1,8 @@
 """
 ExecutorConfig: Runtime parametrization for executors (HOW we execute).
 
+PHASE_LABEL: Phase 2
+
 CRITICAL SEPARATION:
 - This file contains ONLY runtime parameters (timeout, retry, etc.)
 - NO calibration values (quality scores, fusion weights) are stored here
@@ -98,7 +100,7 @@ class ExecutorConfig:
         5. Conservative defaults
         
         Args:
-            executor_id: Executor identifier (e.g., "D3_Q2_TargetProportionalityAnalyzer")
+            executor_id: Executor identifier (e.g., "Q001" or legacy "D3_Q2_TargetProportionalityAnalyzer")
             environment: Environment name (development, staging, production)
             cli_overrides: CLI argument overrides
         

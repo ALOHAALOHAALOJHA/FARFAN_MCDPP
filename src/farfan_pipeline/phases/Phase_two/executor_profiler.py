@@ -1,5 +1,9 @@
 """Executor performance profiling framework with regression detection and dispensary analytics.
 
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Executor Instrumentation and Profiling
+PHASE_ROLE: Runtime performance measurement and regression detection for contract execution
+
 This module provides comprehensive profiling for executor performance including:
 - Per-executor timing, memory, and serialization metrics
 - Method call tracking with granular statistics
@@ -18,7 +22,7 @@ Architecture:
 METHOD DISPENSARY INTEGRATION:
 ==============================
 This profiler is aware of the factory's method dispensary pattern where:
-- 30 executors orchestrate methods from ~20 monolith classes
+- 300 executor contracts orchestrate methods from ~20 monolith classes
 - Methods are called via MethodExecutor.execute(class_name, method_name, **payload)
 - Same methods are PARTIALLY reused across different executors
 - Dispensary classes: PDETMunicipalPlanAnalyzer (52+ methods), CausalExtractor (28), etc.
@@ -30,9 +34,9 @@ The profiler tracks:
 4. Executor-specific vs dispensary-wide bottlenecks
 
 Usage:
-    # Basic profiling
+    # Basic profiling (supports both question_id and legacy base_slot)
     profiler = ExecutorProfiler()
-    with profiler.profile_executor("D1-Q1"):
+    with profiler.profile_executor("Q001"):  # or legacy "D1-Q1"
         result = executor.execute(context)
     report = profiler.generate_report()
 
@@ -309,6 +313,13 @@ class ExecutorProfiler:
         self.dispensary_execution_times: dict[str, list[float]] = defaultdict(list)
         self.executor_dispensary_usage: dict[str, set[str]] = defaultdict(set)
 
+        # Initialize memory tracking (psutil)
+        self._initialize_memory_tracking()
+
+        # Load baseline if provided
+        if self.baseline_path and self.baseline_path.exists():
+            self.load_baseline(self.baseline_path)
+
     def _load_default_thresholds(self) -> dict[str, float]:
         """Load default thresholds (can be overridden by canonical config)."""
         return {
@@ -317,23 +328,33 @@ class ExecutorProfiler:
             "serialization_ms": DEFAULT_HIGH_SERIALIZATION_MS,
         }
 
+    def _initialize_memory_tracking(self) -> None:
+        """Initialize psutil for memory tracking if available and enabled.
+        
+        Sets self._psutil and self._psutil_process if psutil is available.
+        Disables memory_tracking and emits structured warning if psutil unavailable.
+        
+        Postconditions:
+            - If memory_tracking=True and psutil available: self._psutil_process is not None
+            - If psutil unavailable: self.memory_tracking=False and warning logged
+        """
         self._psutil = None
         self._psutil_process = None
-        if memory_tracking:
-            try:
-                import psutil
+        
+        if not self.memory_tracking:
+            return
+            
+        try:
+            import psutil
 
-                self._psutil = psutil
-                self._psutil_process = psutil.Process()
-            except ImportError:
-                logger.warning(
-                    "psutil not available, memory tracking disabled. "
-                    "Install with: pip install psutil"
-                )
-                self.memory_tracking = False
-
-        if self.baseline_path and self.baseline_path.exists():
-            self.load_baseline(self.baseline_path)
+            self._psutil = psutil
+            self._psutil_process = psutil.Process()
+        except ImportError:
+            logger.warning(
+                "psutil not available, memory tracking disabled. "
+                "Install with: pip install psutil"
+            )
+            self.memory_tracking = False
 
     def _get_memory_usage_mb(self) -> float:
         """Get current memory usage in MB."""

@@ -29,12 +29,12 @@ import math
 import pytest
 from dataclasses import FrozenInstanceError
 
-from canonic_phases.Phase_four_five_six_seven.choquet_aggregator import (
+from canonic_phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationConfigError,
 )
-from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
     EnhancedClusterAggregator,
     DispersionMetrics,
 )

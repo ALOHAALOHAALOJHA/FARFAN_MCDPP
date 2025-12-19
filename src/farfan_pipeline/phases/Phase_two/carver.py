@@ -1,5 +1,10 @@
 """
 Doctoral-Carver Narrative Synthesizer v3.0 (FULL EXTRACTION Edition)
+
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Carver Synthesizer
+PHASE_ROLE: Generates PhD-level narrative responses with Raymond Carver minimalist style
+
 =====================================================================
 
 Genera respuestas PhD-level con estilo minimalista Raymond Carver:

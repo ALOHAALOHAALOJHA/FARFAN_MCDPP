@@ -12,7 +12,7 @@ import pytest
 from unittest.mock import Mock, MagicMock
 from dataclasses import dataclass
 
-from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
+from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
     EnhancedClusterAggregator,

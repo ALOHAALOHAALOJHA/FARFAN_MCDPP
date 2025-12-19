@@ -1,0 +1,547 @@
+================================================================================
+                    REPOSITORY INVENTORY ARTIFACT (RIA)
+                    PHASE 4-7: AGGREGATION PIPELINE
+                    
+                    Document ID: RIA-P4-7-2025-12-18
+                    Generated: 2025-12-18T00:00:00Z
+                    Status: CANONICAL
+================================================================================
+
+═══════════════════════════════════════════════════════════════════════════════
+SECTION A: COMPLETE FILE INVENTORY
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SOURCE LOCATION (LEGACY):                                                    │
+│ src/farfan_pipeline/phases/Phase_four_five_six_seven/                       │
+│                                                                              │
+│ CANONICAL LOCATION:                                                          │
+│ src/canonic_phases/phase_4_7_aggregation_pipeline/                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 001: __init__.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/__init__.py
+Byte Size:     2,553 bytes
+SHA-256:       958475c8e028c81aa703c19576d8a8da042ab00ecb2faa890aec6711ac1b09c0
+Module Type:   CORE
+Criticality:   REQUIRED
+Purpose:       Package façade with comprehensive exports
+
+Upstream Dependencies:
+  - .aggregation
+  - .choquet_aggregator
+  - .aggregation_enhancements
+  - .aggregation_validation
+
+Downstream Dependents:
+  - External importers (re-exports all symbols)
+
+Exports:
+  - DimensionAggregator, AreaPolicyAggregator, ClusterAggregator
+  - AggregationSettings, DimensionScore, AreaScore, ClusterScore, MacroScore
+  - ChoquetAggregator, ChoquetConfig, CalibrationResult, CalibrationBreakdown
+  - EnhancedDimensionAggregator, EnhancedAreaAggregator, EnhancedClusterAggregator
+  - EnhancedMacroAggregator, ConfidenceInterval, DispersionMetrics
+  - HermeticityDiagnosis, StrategicAlignmentMetrics, enhance_aggregator
+  - validate_phase4_output, validate_phase5_output, validate_phase6_output
+  - validate_phase7_output, validate_full_aggregation_pipeline
+  - enforce_validation_or_fail, ValidationResult, AggregationValidationError
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 002: aggregation.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/aggregation.py
+Byte Size:     98,687 bytes
+SHA-256:       03ef0c994bef355ce3a865884f26f67c27a7813af58b45bbf95344e3ef214f54
+Module Type:   CORE
+Criticality:   CRITICAL
+Purpose:       Core aggregators and dataclasses for Phase 4-7
+
+Upstream Dependencies:
+  - logging (stdlib)
+  - collections.defaultdict (stdlib)
+  - dataclasses (stdlib)
+  - typing (stdlib)
+  - farfan_pipeline.core.parameters.ParameterLoaderV2
+  - farfan_pipeline.processing.aggregation_provenance.AggregationDAG
+  - farfan_pipeline.processing.aggregation_provenance.ProvenanceNode
+  - farfan_pipeline.processing.uncertainty_quantification.BootstrapAggregator
+  - farfan_pipeline.processing.uncertainty_quantification.UncertaintyMetrics
+  - farfan_pipeline.processing.uncertainty_quantification.aggregate_with_uncertainty
+  - farfan_pipeline.processing.choquet_adapter.ChoquetProcessingAdapter
+  - farfan_pipeline.processing.choquet_adapter.create_default_choquet_adapter
+  - farfan_pipeline.core.canonical_notation (optional)
+  - cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry (TYPE_CHECKING)
+
+Downstream Dependents:
+  - __init__.py (exports all)
+  - aggregation_enhancements.py (wraps base aggregators)
+  - aggregation_validation.py (validates outputs)
+  - aggregation_integration.py (orchestrator integration)
+  - orchestrator.py (main pipeline)
+
+Exports:
+  Classes:
+    - AggregationSettings (frozen dataclass)
+    - ScoredResult (dataclass)
+    - DimensionScore (dataclass)
+    - AreaScore (dataclass)
+    - ClusterScore (dataclass)
+    - MacroScore (dataclass)
+    - DimensionAggregator (class)
+    - AreaPolicyAggregator (class)
+    - ClusterAggregator (class)
+    - MacroAggregator (class)
+  Exceptions:
+    - AggregationError
+    - ValidationError
+    - WeightValidationError
+    - ThresholdValidationError
+    - HermeticityValidationError
+    - CoverageError
+  Functions:
+    - group_by()
+    - validate_scored_results()
+    - calculate_weighted_average()
+    - run_aggregation_pipeline()
+
+Internal Calls:
+  - ParameterLoaderV2.get() for calibration parameters
+  - AggregationDAG for provenance tracking
+  - BootstrapAggregator for uncertainty quantification
+  - ChoquetProcessingAdapter for Choquet aggregation
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 003: choquet_aggregator.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/choquet_aggregator.py
+Byte Size:     17,370 bytes
+SHA-256:       bea4ee03966c63629a9daa227d6e8332d8604bd0e4d1562041cfabd8dee31f6b
+Module Type:   CORE
+Criticality:   CRITICAL
+Purpose:       Choquet integral implementation for multi-layer calibration
+
+Upstream Dependencies:
+  - logging (stdlib)
+  - dataclasses (stdlib)
+  - typing (stdlib)
+
+Downstream Dependents:
+  - __init__.py (exports)
+  - choquet_examples/run_examples.py
+
+Exports:
+  - ChoquetConfig (frozen dataclass)
+  - CalibrationBreakdown (dataclass)
+  - CalibrationResult (dataclass)
+  - ChoquetAggregator (class)
+  - CalibrationConfigError (exception)
+
+Formula:
+  Cal(I) = Σ(aₗ·xₗ) + Σ(aₗₖ·min(xₗ,xₖ))
+
+Invariants:
+  - Boundedness: 0.0 ≤ Cal(I) ≤ 1.0
+  - Monotonicity: Higher layer scores → higher aggregate
+  - Weight normalization enforced
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 004: aggregation_enhancements.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/aggregation_enhancements.py
+Byte Size:     20,295 bytes
+SHA-256:       19354a02b387041955eac44376a110f806bed3b7b12a9976911f6e8f220d88d5
+Module Type:   ENHANCEMENT
+Criticality:   HIGH
+Purpose:       Enhanced aggregators with CI, dispersion, hermeticity, contracts
+
+Upstream Dependencies:
+  - logging (stdlib)
+  - dataclasses (stdlib)
+  - typing (stdlib)
+  - cross_cutting_infrastructure.contractual.dura_lex.aggregation_contract
+
+Downstream Dependents:
+  - __init__.py (exports)
+  - orchestrator.py
+
+Exports:
+  Dataclasses:
+    - ConfidenceInterval
+    - DispersionMetrics
+    - HermeticityDiagnosis
+    - StrategicAlignmentMetrics
+  Classes:
+    - EnhancedDimensionAggregator [EW-001]
+    - EnhancedAreaAggregator [EW-002]
+    - EnhancedClusterAggregator [EW-003]
+    - EnhancedMacroAggregator [EW-004]
+  Functions:
+    - enhance_aggregator()
+
+Enhancement Windows:
+  [EW-001] DimensionAggregator: Confidence interval tracking
+  [EW-002] AreaPolicyAggregator: Enhanced hermeticity with diagnosis
+  [EW-003] ClusterAggregator: Adaptive coherence thresholds
+  [EW-004] MacroAggregator: Strategic alignment with PA×DIM matrix
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 005: aggregation_validation.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/aggregation_validation.py
+Byte Size:     14,732 bytes
+SHA-256:       008bc3a938a65df4fc42ea5667a554538d8dba4e56897c7f766433e0de1c8b96
+Module Type:   VALIDATION
+Criticality:   HIGH
+Purpose:       Hard validation for Phases 4-7
+
+Upstream Dependencies:
+  - dataclasses (stdlib)
+  - typing (stdlib)
+  - .aggregation (TYPE_CHECKING)
+
+Downstream Dependents:
+  - __init__.py (exports)
+  - orchestrator.py
+
+Exports:
+  - ValidationResult (dataclass)
+  - AggregationValidationError (exception)
+  - validate_phase4_output() → ValidationResult
+  - validate_phase5_output() → ValidationResult
+  - validate_phase6_output() → ValidationResult
+  - validate_phase7_output() → ValidationResult
+  - validate_full_aggregation_pipeline() → tuple[bool, list[ValidationResult]]
+  - enforce_validation_or_fail()
+
+Invariants Enforced:
+  - Phase 4: Non-empty dimension scores, traceable to source, scores ∈ [0, 3]
+  - Phase 5: Non-empty area scores, traceable to dimensions, scores ∈ [0, 3]
+  - Phase 6: Non-empty cluster scores, traceable to areas, scores ∈ [0, 3]
+  - Phase 7: Non-zero macro score for valid inputs, coherence/alignment ∈ [0, 1]
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 006: aggregation_provenance.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/aggregation_provenance.py
+Byte Size:     16,558 bytes
+SHA-256:       0a80c3fb35acbd2cf031e4df6d2520fb902d67d989a56679c23bdbd374f51e0b
+Module Type:   PROVENANCE
+Criticality:   HIGH
+Purpose:       DAG-based lineage tracking with Shapley attribution
+
+Upstream Dependencies:
+  - hashlib (stdlib)
+  - json (stdlib)
+  - logging (stdlib)
+  - collections.defaultdict (stdlib)
+  - dataclasses (stdlib)
+  - datetime (stdlib)
+  - typing (stdlib)
+  - networkx
+  - numpy
+
+Downstream Dependents:
+  - aggregation.py (provenance tracking)
+
+Exports:
+  - ProvenanceNode (frozen dataclass)
+  - AggregationEdge (dataclass)
+  - AggregationDAG (class)
+
+Features:
+  - W3C PROV-compliant serialization
+  - GraphML export for visualization
+  - Shapley value attribution
+  - Topological sorting
+  - Cycle detection (enforces DAG property)
+
+Integration Status: IMPLEMENTED, WIRED into aggregation.py
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 007: signal_enriched_aggregation.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/signal_enriched_aggregation.py
+Byte Size:     20,486 bytes
+SHA-256:       e23dc6a04bbe193ea7a65a46ac72a8d2d4be0ecf4f41c8ca6dacf07a78a49e9f
+Module Type:   SIGNAL
+Criticality:   HIGH
+Purpose:       SISAS-aware weight adjustment for aggregation
+
+Upstream Dependencies:
+  - logging (stdlib)
+  - typing (stdlib)
+  - cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry (TYPE_CHECKING)
+
+Downstream Dependents:
+  - aggregation.py (signal-driven configuration)
+  - orchestrator.py (signal registry injection)
+
+Exports:
+  - SignalEnrichedAggregator (class)
+  - adjust_weights() (function)
+  - interpret_dispersion() (function)
+
+Signal Consumption Points:
+  1. adjust_aggregation_weights(): Boost weights for critical scores
+  2. analyze_score_dispersion(): CV-based scenario classification
+  3. select_aggregation_method(): Method selection based on dispersion
+  4. enrich_aggregation_metadata(): Add signal provenance
+
+Constants:
+  - CRITICAL_SCORE_THRESHOLD = 0.4
+  - CRITICAL_SCORE_BOOST_FACTOR = 1.2
+  - HIGH_SIGNAL_PATTERN_THRESHOLD = 15
+  - HIGH_SIGNAL_BOOST_FACTOR = 1.05
+
+─────────────────────────────────────────────────────────────────────────────
+FILE 008: adaptive_meso_scoring.py
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/adaptive_meso_scoring.py
+Byte Size:     17,704 bytes
+SHA-256:       dc73844bf46b576c03d8fc637bc90c2265fd27ba203bac807ff0d4881f73c806
+Module Type:   ENHANCEMENT
+Criticality:   STANDARD
+Purpose:       Adaptive penalty computation for Phase 6 cluster aggregation
+
+Upstream Dependencies:
+  - logging (stdlib)
+  - dataclasses (stdlib)
+  - typing (stdlib)
+
+Downstream Dependents:
+  - aggregation_enhancements.py (can use adaptive penalty)
+
+Exports:
+  - AdaptiveScoringConfig (dataclass)
+  - ScoringMetrics (dataclass)
+  - AdaptiveMesoScoring (class)
+  - create_adaptive_scorer() (factory function)
+
+Formula:
+  adjusted_score = weighted_score × penalty_factor
+  penalty_factor = 1.0 - (base_penalty × sensitivity_multiplier × shape_factor)
+
+Scenarios:
+  - convergence: CV < 0.15, multiplier = 0.5
+  - moderate: CV < 0.40, multiplier = 1.0
+  - high_dispersion: CV < 0.60, multiplier = 1.5
+  - extreme_dispersion: CV ≥ 0.60, multiplier = 2.0
+
+─────────────────────────────────────────────────────────────────────────────
+FOLDER 009: choquet_examples/
+─────────────────────────────────────────────────────────────────────────────
+Full Path:     src/farfan_pipeline/phases/Phase_four_five_six_seven/choquet_examples/
+Type:          DOCUMENTATION
+Status:        KEEP → RELOCATE to docs/choquet_examples/
+Criticality:   DOCUMENTATION
+
+Contents:
+  ├── README.md                         (9,657 bytes, SHA256: 8afe665e...)
+  ├── example_1_basic_calculation.md    (2,371 bytes, SHA256: bf2b6cf9...)
+  ├── example_2_with_interactions.md    (5,323 bytes, SHA256: b645a61e...)
+  ├── example_3_normalization.md        (5,735 bytes, SHA256: 8dde3f92...)
+  ├── example_4_boundary_cases.md       (7,451 bytes, SHA256: 2e33b2fb...)
+  └── run_examples.py                   (13,601 bytes, SHA256: 4358e2e6...)
+
+Purpose:
+  - Pedagogical materials explaining Choquet integral
+  - Executable verification script
+  - Living documentation for domain experts
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SECTION B: IMPORT GRAPH (COMPLETE WIRING MAP)
+═══════════════════════════════════════════════════════════════════════════════
+
+MODULE: aggregation.py
+├── IMPORTS FROM:
+│   ├── logging (stdlib)
+│   ├── collections.defaultdict (stdlib)
+│   ├── dataclasses (stdlib)
+│   ├── typing (stdlib)
+│   ├── farfan_pipeline.core.parameters.ParameterLoaderV2
+│   ├── farfan_pipeline.processing.aggregation_provenance.AggregationDAG
+│   ├── farfan_pipeline.processing.aggregation_provenance.ProvenanceNode
+│   ├── farfan_pipeline.processing.uncertainty_quantification.BootstrapAggregator
+│   ├── farfan_pipeline.processing.uncertainty_quantification.UncertaintyMetrics
+│   ├── farfan_pipeline.processing.uncertainty_quantification.aggregate_with_uncertainty
+│   ├── farfan_pipeline.processing.choquet_adapter.ChoquetProcessingAdapter
+│   └── farfan_pipeline.core.canonical_notation (optional)
+├── IMPORTED BY:
+│   ├── __init__.py (exports all aggregators)
+│   ├── aggregation_enhancements.py (wraps base aggregators)
+│   ├── aggregation_validation.py (validates outputs)
+│   ├── farfan_pipeline/orchestration/aggregation_integration.py
+│   ├── farfan_pipeline/orchestration/orchestrator.py
+│   └── orchestration/orchestrator.py
+└── EXPORTS: 18+ symbols (see FILE 002)
+
+MODULE: choquet_aggregator.py
+├── IMPORTS FROM:
+│   ├── logging (stdlib)
+│   ├── dataclasses (stdlib)
+│   └── typing (stdlib)
+├── IMPORTED BY:
+│   ├── __init__.py
+│   └── choquet_examples/run_examples.py
+└── EXPORTS: 5 symbols
+
+MODULE: aggregation_enhancements.py
+├── IMPORTS FROM:
+│   ├── logging (stdlib)
+│   ├── dataclasses (stdlib)
+│   ├── typing (stdlib)
+│   └── cross_cutting_infrastructure.contractual.dura_lex.aggregation_contract
+├── IMPORTED BY:
+│   ├── __init__.py
+│   ├── farfan_pipeline/orchestration/orchestrator.py
+│   └── orchestration/orchestrator.py
+└── EXPORTS: 9 symbols
+
+MODULE: aggregation_validation.py
+├── IMPORTS FROM:
+│   ├── dataclasses (stdlib)
+│   ├── typing (stdlib)
+│   └── .aggregation (TYPE_CHECKING only)
+├── IMPORTED BY:
+│   ├── __init__.py
+│   ├── farfan_pipeline/orchestration/orchestrator.py
+│   └── orchestration/orchestrator.py
+└── EXPORTS: 7 symbols
+
+MODULE: aggregation_provenance.py
+├── IMPORTS FROM:
+│   ├── hashlib, json, logging (stdlib)
+│   ├── collections.defaultdict (stdlib)
+│   ├── dataclasses (stdlib)
+│   ├── datetime (stdlib)
+│   ├── typing (stdlib)
+│   ├── networkx
+│   └── numpy
+├── IMPORTED BY:
+│   └── aggregation.py (provenance tracking)
+└── EXPORTS: 3 symbols
+
+MODULE: signal_enriched_aggregation.py
+├── IMPORTS FROM:
+│   ├── logging (stdlib)
+│   ├── typing (stdlib)
+│   └── cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry (TYPE_CHECKING)
+├── IMPORTED BY:
+│   └── aggregation.py (signal-driven configuration)
+└── EXPORTS: 3 symbols
+
+MODULE: adaptive_meso_scoring.py
+├── IMPORTS FROM:
+│   ├── logging (stdlib)
+│   ├── dataclasses (stdlib)
+│   └── typing (stdlib)
+├── IMPORTED BY:
+│   └── aggregation_enhancements.py (can use adaptive penalty)
+└── EXPORTS: 4 symbols
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SECTION C: CROSS-PHASE WIRING VERIFICATION
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────┬──────────────┬─────────────────────────────┬──────────────────────────────┬─────────────┬────────────────────────────────────────────┬──────────────────────────────────────────────────────────────┬───────────┐
+│ Wire ID │ Source Phase │ Source Module               │ Source Symbol                │ Target Phase│ Target Module                              │ Target Symbol                                                │ Wire Type │
+├─────────┼──────────────┼─────────────────────────────┼──────────────────────────────┼─────────────┼────────────────────────────────────────────┼──────────────────────────────────────────────────────────────┼───────────┤
+│ W4-001  │ Phase 3      │ phase3_score_extraction.py  │ ScoredMicroQuestion          │ Phase 4     │ aggregation.py                             │ DimensionAggregator.run()                                    │ DATA      │
+│ W4-002  │ Phase 4      │ aggregation.py              │ DimensionScore               │ Phase 5     │ aggregation.py                             │ AreaPolicyAggregator.run()                                   │ DATA      │
+│ W4-003  │ Phase 5      │ aggregation.py              │ AreaScore                    │ Phase 6     │ aggregation.py                             │ ClusterAggregator.run()                                      │ DATA      │
+│ W4-004  │ Phase 6      │ aggregation.py              │ ClusterScore                 │ Phase 7     │ aggregation.py                             │ MacroAggregator.evaluate_macro()                             │ DATA      │
+│ W4-005  │ SISAS        │ signal_registry.py          │ QuestionnaireSignalRegistry  │ Phase 4-7   │ signal_enriched_aggregation.py             │ SignalEnrichedAggregator                                     │ DI        │
+│ W4-006  │ SISAS        │ signal_registry.py          │ AssemblySignalPack           │ Phase 4-7   │ aggregation.py                             │ AggregationSettings.from_signal_registry()                   │ DI        │
+│ W4-007  │ Phase 4-7    │ aggregation.py              │ MacroScore                   │ Orchestrator│ orchestrator.py                            │ _aggregate_results_async()                                   │ DATA      │
+│ W4-008  │ Calibration  │ parameter_loader_v2.py      │ ParameterLoaderV2            │ Phase 4-7   │ aggregation.py                             │ Various threshold/weight lookups                             │ CONFIG    │
+│ W4-009  │ Phase 4-7    │ aggregation.py              │ ProvenanceNode               │ Provenance  │ aggregation_provenance.py                  │ AggregationDAG.add_node()                                    │ PROV      │
+│ W4-010  │ Contracts    │ aggregation_contract.py     │ create_aggregation_contract  │ Phase 4-7   │ aggregation_enhancements.py                │ Enhanced*Aggregator.__init__()                               │ CONTRACT  │
+└─────────┴──────────────┴─────────────────────────────┴──────────────────────────────┴─────────────┴────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┴───────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SECTION D: TRANSVERSAL NODES (CROSS-CUTTING DEPENDENCIES)
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────┬──────────────────────────────────┬─────────────────────────────────────────────────────────────────┬─────────────────────────────┬───────────────────────┐
+│ Node ID │ Node Name                        │ Source Module                                                    │ Phases Using                │ Injection Mechanism   │
+├─────────┼──────────────────────────────────┼─────────────────────────────────────────────────────────────────┼─────────────────────────────┼───────────────────────┤
+│ TN-001  │ QuestionnaireSignalRegistry      │ cross_cutting_infrastructure.irrigation_using_signals.SISAS     │ Phase 1, 2, 3, 4-7          │ Constructor DI        │
+│ TN-002  │ ParameterLoaderV2                │ farfan_pipeline.core.parameters                                 │ Phase 4-7                   │ Import + get()        │
+│ TN-003  │ AggregationDAG                   │ farfan_pipeline.processing.aggregation_provenance               │ Phase 4-7                   │ Instance attribute    │
+│ TN-004  │ BootstrapAggregator              │ farfan_pipeline.processing.uncertainty_quantification           │ Phase 4-7                   │ Instance attribute    │
+│ TN-005  │ ChoquetProcessingAdapter         │ farfan_pipeline.processing.choquet_adapter                      │ Phase 4-7                   │ Factory function      │
+│ TN-006  │ create_aggregation_contract      │ cross_cutting_infrastructure.contractual.dura_lex               │ Phase 4-7 (enhancements)    │ Factory function      │
+└─────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────┴─────────────────────────────┴───────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SECTION E: ORCHESTRATOR INTEGRATION POINTS
+═══════════════════════════════════════════════════════════════════════════════
+
+ORCHESTRATOR IMPORT POINTS (from orchestrator.py):
+
+Line 48-60:
+  from canonic_phases.Phase_four_five_six_seven.aggregation import (
+      DimensionAggregator,
+      DimensionScore,
+      AreaPolicyAggregator,
+      AreaScore,
+      ClusterAggregator,
+      ClusterScore,
+      MacroAggregator,
+      MacroScore,
+      AggregationSettings,
+      group_by,
+      validate_scored_results,
+  )
+
+Line 62-67:
+  from canonic_phases.Phase_four_five_six_seven.aggregation_validation import (
+      validate_phase4_output,
+      validate_phase5_output,
+      validate_phase6_output,
+      validate_phase7_output,
+  )
+
+Line 69-73:
+  from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
+      EnhancedDimensionAggregator,
+      EnhancedAreaAggregator,
+      EnhancedClusterAggregator,
+      EnhancedMacroAggregator,
+  )
+
+AGGREGATION INTEGRATION MODULE:
+  src/farfan_pipeline/orchestration/aggregation_integration.py
+  
+  Provides:
+    - aggregate_dimensions_async() → Phase 4
+    - aggregate_policy_areas_async() → Phase 5
+    - aggregate_clusters() → Phase 6
+    - evaluate_macro() → Phase 7
+    - macro_score_to_evaluation() → Output conversion
+    - validate_with_contracts() → Contract validation
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SECTION F: VALIDATION STATUS
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ GATE G4-7.1 — Repository Inventory Artifact: ✅ COMPLETE                     │
+│ GATE G4-7.2 — Node Inventory: ✅ COMPLETE (52 nodes documented)              │
+│ GATE G4-7.3 — Signal Wiring Verification: ✅ VERIFIED                        │
+│ GATE G4-7.4 — Provenance DAG Verification: ✅ INTEGRATED in aggregation.py   │
+│ GATE G4-7.5 — Orchestrator Transcription: ⏳ SEE README.md                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+END OF REPOSITORY INVENTORY ARTIFACT
+═══════════════════════════════════════════════════════════════════════════════

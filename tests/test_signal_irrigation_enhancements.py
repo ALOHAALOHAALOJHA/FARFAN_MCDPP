@@ -113,7 +113,7 @@ class TestPhase47SignalEnrichment:
     
     def test_weight_adjustment_critical_scores(self):
         """Test weight adjustment for critical scores."""
-        from canonic_phases.Phase_four_five_six_seven.signal_enriched_aggregation import (
+        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -149,7 +149,7 @@ class TestPhase47SignalEnrichment:
     
     def test_dispersion_analysis_convergence(self):
         """Test dispersion analysis with convergent scores."""
-        from canonic_phases.Phase_four_five_six_seven.signal_enriched_aggregation import (
+        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -169,7 +169,7 @@ class TestPhase47SignalEnrichment:
     
     def test_dispersion_analysis_high_dispersion(self):
         """Test dispersion analysis with high dispersion."""
-        from canonic_phases.Phase_four_five_six_seven.signal_enriched_aggregation import (
+        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -188,7 +188,7 @@ class TestPhase47SignalEnrichment:
     
     def test_aggregation_method_selection(self):
         """Test aggregation method selection based on dispersion."""
-        from canonic_phases.Phase_four_five_six_seven.signal_enriched_aggregation import (
+        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -426,7 +426,7 @@ class TestSignalIrrigationIntegration:
         from canonic_phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
-        from canonic_phases.Phase_four_five_six_seven.signal_enriched_aggregation import (
+        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -454,7 +454,7 @@ class TestSignalIrrigationIntegration:
     
     def test_phase47_to_phase8_flow(self):
         """Test signal enrichment flow from Phase 4-7 to Phase 8."""
-        from canonic_phases.Phase_four_five_six_seven.signal_enriched_aggregation import (
+        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         from canonic_phases.Phase_eight.signal_enriched_recommendations import (
@@ -495,7 +495,7 @@ class TestSignalIrrigationIntegration:
         from canonic_phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
-        from canonic_phases.Phase_four_five_six_seven.signal_enriched_aggregation import (
+        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         from canonic_phases.Phase_eight.signal_enriched_recommendations import (

@@ -1,3 +1,9 @@
+"""Base Executor with Contract-driven execution.
+
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Base Executor
+PHASE_ROLE: Abstract base class for contract-driven executors with method routing
+
 from __future__ import annotations
 
 import json
@@ -2075,3 +2081,197 @@ class BaseExecutorWithContract(ABC):
             parts.append(f"**Evidence Fusion**: {fusion}")
 
         return "\n".join(parts) if format_type != "html" else "<br>".join(parts)
+
+
+class DynamicContractExecutor(BaseExecutorWithContract):
+    """Dynamic contract executor that accepts question_id at construction time.
+    
+    This executor enables the 300-contract model where each question has its own
+    contract (Q001.v3.json through Q300.v3.json). Instead of requiring 300 subclasses,
+    this single class can execute any contract by accepting the question_id parameter.
+    
+    The question_id is used to:
+    1. Derive the base_slot (e.g., "Q001" -> "D1-Q1")
+    2. Load the appropriate contract from executor_contracts/specialized/
+    3. Execute the contract's method_binding sequence
+    
+    Architecture Note:
+    ==================
+    OLD (30-executor multiplier pattern):
+        - 30 executor classes (D1Q1_Executor through D6Q5_Executor)
+        - Each executor answering 10 questions (multiplier pattern)
+        - Required executors.py with hardcoded class definitions
+        
+    NEW (300-contract direct pattern):
+        - Single DynamicContractExecutor class
+        - 300 individual contracts (Q001.v3.json through Q300.v3.json)
+        - Contract loaded dynamically by question_id
+    
+    Example:
+        >>> executor = DynamicContractExecutor(
+        ...     question_id="Q001",
+        ...     method_executor=method_executor,
+        ...     signal_registry=signal_registry,
+        ...     config=config,
+        ...     questionnaire_provider=questionnaire,
+        ... )
+        >>> result = executor.execute(document, method_executor, question_context=ctx)
+    """
+    
+    # Class-level cache for question_id -> base_slot mapping
+    _question_to_base_slot_cache: dict[str, str] = {}
+    
+    def __init__(
+        self,
+        method_executor: MethodExecutor,
+        signal_registry: Any,
+        config: Any,
+        questionnaire_provider: Any,
+        question_id: str,
+        calibration_orchestrator: Any | None = None,
+        enriched_packs: dict[str, Any] | None = None,
+        validation_orchestrator: Any | None = None,
+        calibration_policy: CalibrationPolicy | None = None,
+    ) -> None:
+        """Initialize dynamic contract executor for a specific question.
+        
+        Args:
+            method_executor: MethodExecutor instance for method routing
+            signal_registry: Signal registry for signal access
+            config: ExecutorConfig for runtime parameters
+            questionnaire_provider: Questionnaire provider
+            question_id: Question identifier (e.g., "Q001", "Q150")
+            calibration_orchestrator: Optional calibration orchestrator
+            enriched_packs: Optional enriched signal packs
+            validation_orchestrator: Optional validation orchestrator
+            calibration_policy: Optional calibration policy
+        """
+        super().__init__(
+            method_executor=method_executor,
+            signal_registry=signal_registry,
+            config=config,
+            questionnaire_provider=questionnaire_provider,
+            calibration_orchestrator=calibration_orchestrator,
+            enriched_packs=enriched_packs,
+            validation_orchestrator=validation_orchestrator,
+            calibration_policy=calibration_policy,
+        )
+        self._question_id = question_id
+        self._base_slot = self._derive_base_slot(question_id)
+    
+    @classmethod
+    def _derive_base_slot(cls, question_id: str) -> str:
+        """Derive base_slot from question_id.
+        
+        Conversion: Q001 -> D1-Q1, Q006 -> D2-Q1, Q031 -> D1-Q1 (for 6 dimensions × 5 questions per area)
+        
+        Args:
+            question_id: Question identifier (e.g., "Q001", "Q150")
+            
+        Returns:
+            Base slot string (e.g., "D1-Q1")
+        """
+        if question_id in cls._question_to_base_slot_cache:
+            return cls._question_to_base_slot_cache[question_id]
+        
+        # Extract numeric part of question_id (e.g., "Q001" -> 1)
+        try:
+            q_number = int(question_id[1:])
+        except (ValueError, IndexError):
+            # Fallback: try to load contract and get base_slot from identity
+            return cls._derive_base_slot_from_contract(question_id)
+        
+        # Calculate dimension and question within dimension
+        # Assuming 6 dimensions × 5 questions per policy area × 10 policy areas = 300 questions
+        # Pattern: D1-Q1 through D6-Q5, cycling through policy areas
+        
+        # Each "slot" covers 10 questions (one per policy area)
+        slot_index = (q_number - 1) % 30  # 0-29 for the 30 slots
+        dimension = (slot_index // 5) + 1  # 1-6
+        question_in_dimension = (slot_index % 5) + 1  # 1-5
+        
+        base_slot = f"D{dimension}-Q{question_in_dimension}"
+        cls._question_to_base_slot_cache[question_id] = base_slot
+        
+        return base_slot
+    
+    @classmethod
+    def _derive_base_slot_from_contract(cls, question_id: str) -> str:
+        """Fallback: derive base_slot by loading the contract's identity.base_slot.
+        
+        Args:
+            question_id: Question identifier
+            
+        Returns:
+            Base slot from contract identity
+            
+        Raises:
+            FileNotFoundError: If contract not found
+        """
+        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+        
+        # Try specialized contract
+        v3_path = contracts_dir / "specialized" / f"{question_id}.v3.json"
+        v2_path = contracts_dir / "specialized" / f"{question_id}.json"
+        
+        contract_path = v3_path if v3_path.exists() else v2_path
+        if not contract_path.exists():
+            raise FileNotFoundError(f"Contract not found for {question_id}")
+        
+        contract = json.loads(contract_path.read_text(encoding="utf-8"))
+        base_slot = contract.get("identity", {}).get("base_slot", "D1-Q1")
+        
+        cls._question_to_base_slot_cache[question_id] = base_slot
+        return base_slot
+    
+    @classmethod
+    def get_base_slot(cls) -> str:
+        """Get base slot - required by ABC but should use instance _base_slot.
+        
+        Note: This returns a default value for class-level operations.
+        Instance-level operations should use self._base_slot.
+        """
+        # This is a slight hack - for dynamic executors, use instance._base_slot
+        return "DYNAMIC"
+    
+    def _get_instance_base_slot(self) -> str:
+        """Get the actual base_slot for this instance."""
+        return self._base_slot
+    
+    def execute(
+        self,
+        document: PreprocessedDocument,
+        method_executor: MethodExecutor,
+        *,
+        question_context: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Execute the contract for this question.
+        
+        Overrides base to load contract using instance's question_id.
+        """
+        if method_executor is not self.method_executor:
+            raise RuntimeError(
+                "Mismatched MethodExecutor instance for contract executor"
+            )
+
+        base_slot = self._base_slot
+        if question_context.get("base_slot") and question_context.get("base_slot") != base_slot:
+            # Allow mismatch if question_context uses the derived slot
+            import logging
+            logging.warning(
+                f"Question base_slot {question_context.get('base_slot')} "
+                f"differs from derived {base_slot}, using derived"
+            )
+
+        # Load contract using instance's question_id
+        contract = self._load_contract(question_id=self._question_id)
+        contract_version = contract.get("_contract_version", "v2")
+
+        if contract_version == "v3":
+            return self._execute_v3(document, question_context, contract)
+        else:
+            return self._execute_v2(document, question_context, contract)
+
+
+# Export the dynamic executor
+__all__ = ["BaseExecutorWithContract", "DynamicContractExecutor"]

@@ -1,0 +1,1 @@
+{"blocks": {"micro_questions": [{"question_id": "Q001", "base_slot": "D1-Q1", "patterns": [{"id": "PAT-001", "category": "TEST", "confidence_weight": 0.8}], "expected_elements": [{"type": "element1", "required": true}], "method_sets": []}]}}

@@ -1,5 +1,9 @@
 """Argument routing with special routes, strict validation, and comprehensive metrics.
 
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Argument Router
+PHASE_ROLE: Routes arguments to executor methods with special handlers and strict validation
+
 This module provides ExtendedArgRouter (and legacy ArgRouter for compatibility):
 - 30+ special route handlers for commonly-called methods
 - Strict validation (no silent parameter drops)
