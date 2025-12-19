@@ -52,7 +52,6 @@ from typing import Any
 
 # Local imports
 from src.canonic_phases.phase_2 import base_module
-from src.orchestration import orchestrator
 
 
 # Module-level constants
