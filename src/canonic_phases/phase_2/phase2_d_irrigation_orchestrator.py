@@ -196,7 +196,7 @@ class ChunkMatrix:
     def _find_missing_combinations(chunks_dict: dict) -> list[str]:
         """Find missing (PA, DIM) combinations."""
         expected = {
-            (f"PA{i:02d}", f"DIM{j:02d}")
+            (f"PA{i:02d}", f"D{j}")
             for i in range(1, 11)
             for j in range(1, 7)
         }
