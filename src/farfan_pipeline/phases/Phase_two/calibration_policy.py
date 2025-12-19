@@ -16,6 +16,11 @@ Calibration scores are expected to be in [0, 1] using FARFAN thresholds:
 - [0.70, 0.85): BUENO - minor downweight
 - [0.55, 0.70): ACEPTABLE - significant downweight
 - [0.0, 0.55): INSUFICIENTE - major downweight or exclusion
+
+Nota de sincronización:
+- MICRO_LEVELS (canonical_specs) debe ser consistente con
+  questionnaire_monolith.json → blocks.scoring.micro_levels.
+  El contrato NO debe transportar calibration/parameterization; la política vive en código.
 """
 
 from __future__ import annotations
@@ -132,30 +137,49 @@ class CalibrationPolicy:
         self.quality_bands = custom_thresholds or self.QUALITY_BANDS
         self.adjustment_factors = custom_factors or self.WEIGHT_ADJUSTMENT_FACTORS
         self._metrics_history: list[CalibrationMetrics] = []
-        
-        # Quality gate: Validate monotonicity of custom thresholds
+
         if custom_thresholds:
-            band_values = list(custom_thresholds.values())
-            for i in range(len(band_values) - 1):
-                if band_values[i][1] <= band_values[i + 1][0]:
-                    raise ValueError(
-                        f"Non-monotonic custom thresholds: {custom_thresholds}"
-                    )
-    
+            self._validate_thresholds(custom_thresholds)
+
+    @staticmethod
+    def _normalize_score(score: float) -> float:
+        if 0.0 <= score <= 1.0:
+            return score
+        clamped = min(1.0, max(0.0, score))
+        logger.warning("Calibration score fuera de rango: %.6f -> %.6f", score, clamped)
+        return clamped
+
+    @staticmethod
+    def _validate_thresholds(thresholds: dict[str, tuple[float, float]]) -> None:
+        bands = sorted(thresholds.items(), key=lambda kv: kv[1][0])
+        for band, (low, high) in bands:
+            if not (0.0 <= low < high <= 1.0):
+                raise ValueError(f"Invalid threshold range for {band}: {(low, high)}")
+
+        for (_, (_, prev_high)), (next_band, (next_low, _)) in zip(bands, bands[1:], strict=False):
+            if prev_high > next_low:
+                raise ValueError(
+                    f"Overlapping custom thresholds near {next_band}: {thresholds}"
+                )
+
     def get_quality_band(self, calibration_score: float) -> str:
         """Determine quality band for a calibration score.
-        
+
         Args:
-            calibration_score: Score in [0, 1]
-            
+            calibration_score: Score en [0, 1] (se clamp si llega fuera de rango)
+
         Returns:
-            Quality band string (EXCELLENT, GOOD, ACCEPTABLE, POOR)
+            Banda: EXCELENTE | BUENO | ACEPTABLE | INSUFICIENTE
         """
-        for band, (low, high) in self.quality_bands.items():
-            if low <= calibration_score < high:
+        score = self._normalize_score(calibration_score)
+
+        bands = sorted(self.quality_bands.items(), key=lambda kv: kv[1][0], reverse=True)
+        for band, (low, high) in bands:
+            if low <= score < high or (score == 1.0 and high == 1.0):
                 return band
-        return "POOR"
-    
+
+        return "INSUFICIENTE"
+
     def should_execute_method(
         self, method_id: str, calibration_score: float | None
     ) -> tuple[bool, str]:
@@ -170,7 +194,9 @@ class CalibrationPolicy:
         """
         if calibration_score is None:
             return True, "No calibration data available - executing by default"
-        
+
+        calibration_score = self._normalize_score(calibration_score)
+
         if calibration_score < self.MIN_EXECUTION_THRESHOLD:
             if self.strict_mode:
                 return (
@@ -213,7 +239,8 @@ class CalibrationPolicy:
                 quality_band="UNKNOWN",
                 reason="No calibration data - using base weight",
             )
-        
+
+        calibration_score = self._normalize_score(calibration_score)
         quality_band = self.get_quality_band(calibration_score)
         adjustment_factor = self.adjustment_factors.get(quality_band, 1.0)
         adjusted_weight = base_weight * adjustment_factor
@@ -289,6 +316,7 @@ class CalibrationPolicy:
             influenced_output: Whether calibration changed the output
             **metadata: Additional context
         """
+        calibration_score = self._normalize_score(calibration_score)
         quality_band = self.get_quality_band(calibration_score)
         
         metric = CalibrationMetrics(

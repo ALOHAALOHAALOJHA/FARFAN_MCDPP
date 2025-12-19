@@ -1,35 +1,183 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://farfan.pipeline/schemas/executor_contract.v3.schema.json",
-  "title": "Executor Contract v3 Schema",
-  "description": "JSON Schema for Phase 2 executor contracts (Q001-Q300)",
-  "type": "object",
-  "required": ["identity", "executor_binding", "method_binding"],
-  "properties": {
-    "identity": {
+  "title": "Executor Contract Schema (v3 legacy + current)",
+  "description": "JSON Schema for Phase 2 executor contracts (supports legacy v3 and current structure).",
+
+  "allOf": [
+    {
+      "not": { "required": ["calibration"] }
+    },
+    {
+      "not": { "required": ["parametrizacion"] }
+    },
+    {
+      "not": { "required": ["parameterization"] }
+    }
+  ],
+
+  "examples": [
+    {
+      "identity": {
+        "base_slot": "D5-Q4",
+        "question_id": "Q234",
+        "dimension_id": "DIM05",
+        "policy_area_id": "PA07",
+        "cluster_id": "CL01",
+        "question_global": 234,
+        "contract_version": "3.0.0",
+        "validated_against_schema": "executor_contract.v3.schema.json"
+      },
+      "executor_binding": {
+        "executor_class": "D5_Q4_Executor",
+        "executor_module": "farfan_core.core.orchestrator.executors"
+      },
+      "method_binding": {
+        "orchestration_mode": "multi_method_pipeline",
+        "method_count": 2,
+        "methods": [
+          {
+            "class_name": "OperationalizationAuditor",
+            "method_name": "_audit_systemic_risk",
+            "priority": 1,
+            "provides": "operationalizationauditor.audit_systemic_risk",
+            "role": "_audit_systemic_risk_execution"
+          },
+          {
+            "class_name": "AdaptivePriorCalculator",
+            "method_name": "sensitivity_analysis",
+            "priority": 2,
+            "provides": "adaptivepriorcalculator.sensitivity_analysis",
+            "role": "sensitivity_analysis_execution"
+          }
+        ]
+      },
+      "compatibility": {
+        "questionnaire_monolith_version": "3.0.0"
+      },
+      "error_handling": {
+        "failure_contract": { "abort_if": ["missing_required_element"], "emit_code": "ABORT-Q234-REQ" },
+        "on_assembly_failure": "propagate_with_trace",
+        "on_method_failure": "propagate_with_trace",
+        "on_method_not_found": "raise"
+      },
+      "evidence_assembly": {
+        "class_name": "EvidenceNexus",
+        "engine": "EVIDENCE_NEXUS",
+        "method_name": "assemble",
+        "module": "canonic_phases.Phase_two.evidence_nexus",
+        "assembly_rules": [
+          {
+            "merge_strategy": "concat",
+            "sources": [
+              "operationalizationauditor.audit_systemic_risk",
+              "adaptivepriorcalculator.sensitivity_analysis"
+            ],
+            "target": "elements_found"
+          }
+        ],
+        "output_schema": {
+          "type": "object",
+          "required": ["elements_found", "raw_results"],
+          "properties": {
+            "elements_found": { "type": "array" },
+            "raw_results": { "type": "object", "additionalProperties": true }
+          },
+          "additionalProperties": true
+        }
+      },
+      "output_contract": {
+        "result_type": "Phase2QuestionResult",
+        "schema": { "type": "object" }
+      },
+      "question_context": {
+        "question_type": "micro",
+        "question_text": "¿Los impactos territoriales se alinean con marcos nacionales/globales y consideran riesgos sistémicos que podrían romper el mecanismo causal?",
+        "expected_elements": [
+          { "type": "alineacion_marcos", "required": true, "minimum": 1 },
+          { "type": "riesgos_sistemicos", "required": true, "minimum": 1 }
+        ],
+        "patterns": [
+          { "id": "PAT-Q234-000", "match_type": "REGEX", "pattern": "Agenda\\s+2030", "policy_area": "PA07" },
+          { "id": "PAT-Q234-001", "match_type": "LITERAL", "pattern": "riesgo sistémico", "policy_area": "PA07" }
+        ]
+      },
+      "traceability": {
+        "source_question_id": "Q234",
+        "specialized_from_base_slot": "D5-Q4",
+        "source_file": "data/questionnaire_monolith.json",
+        "method_source": "src/farfan_core/core/orchestrator/executors.py:D5_Q4_Executor"
+      },
+      "validation_rules": {
+        "class_name": "ValidationEngine",
+        "engine": "VALIDATION_ENGINE",
+        "method_name": "validate",
+        "module": "canonic_phases.Phase_two.evidence_nexus",
+        "rules": [
+          {
+            "type": "array",
+            "field": "elements_found",
+            "must_contain": { "count": 2, "elements": ["alineacion_marcos", "riesgos_sistemicos"] }
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "schema_id": "https://farfan.pipeline/schemas/executor_contract.v3.schema.json",
+        "schema_version": "1.0.0",
+        "contract_version": "3.0.0"
+      },
+      "identity": {
+        "base_slot": "D1-Q1",
+        "question_id": "Q001",
+        "dimension_id": "DIM01",
+        "policy_area_id": "PA01",
+        "contract_version": "3.0.0"
+      },
+      "bindings": {
+        "executor": {
+          "executor_class": "SomeExecutor",
+          "executor_module": "farfan_core.executors.some_executor"
+        },
+        "methods": {
+          "orchestration_mode": "single_method",
+          "method_count": 1,
+          "methods": [
+            { "class_name": "SomeMethod", "method_name": "run", "priority": 1 }
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "questionIdQ001toQ300": {
+      "type": "string",
+      "pattern": "^Q(00[1-9]|0[1-9][0-9]|[12][0-9]{2}|300)$",
+      "description": "Question identifier (Q001-Q300)"
+    },
+    "policyAreaIdPA01toPA10": {
+      "type": "string",
+      "pattern": "^PA(0[1-9]|10)$",
+      "description": "Policy area identifier (PA01-PA10)"
+    },
+    "baseSlotD1toD6_Q01toQ30": {
+      "type": "string",
+      "pattern": "^D[1-6]-Q(0?[1-9]|1[0-9]|2[0-9]|30)$",
+      "description": "Dimension-BaseQuestion slot identifier (Q1-Q30 or Q01-Q30)"
+    },
+    "identityCommon": {
       "type": "object",
       "required": ["base_slot", "question_id", "dimension_id", "policy_area_id", "contract_version"],
       "properties": {
-        "base_slot": {
-          "type": "string",
-          "pattern": "^D[1-6]-Q[1-9][0-9]?$",
-          "description": "Dimension-Question slot identifier"
-        },
-        "question_id": {
-          "type": "string",
-          "pattern": "^Q[0-9]{3}$",
-          "description": "Question identifier (Q001-Q300)"
-        },
+        "base_slot": { "$ref": "#/$defs/baseSlotD1toD6_Q01toQ30" },
+        "question_id": { "$ref": "#/$defs/questionIdQ001toQ300" },
         "dimension_id": {
           "type": "string",
           "pattern": "^DIM0[1-6]$",
           "description": "Dimension identifier (DIM01-DIM06)"
         },
-        "policy_area_id": {
-          "type": "string",
-          "pattern": "^PA[0-9]{2}$",
-          "description": "Policy area identifier (PA01-PA10)"
-        },
+        "policy_area_id": { "$ref": "#/$defs/policyAreaIdPA01toPA10" },
         "contract_version": {
           "type": "string",
           "description": "Semantic version of contract"
@@ -38,43 +186,22 @@
           "type": "string",
           "description": "SHA-256 hash of contract content"
         },
-        "created_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "validated_against_schema": {
-          "type": "string"
-        },
-        "cluster_id": {
-          "type": "string",
-          "pattern": "^CL[0-9]{2}$"
-        },
-        "question_global": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 300
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time"
-        }
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "validated_against_schema": { "type": "string" },
+        "cluster_id": { "type": "string", "pattern": "^CL[0-9]{2}$" },
+        "question_global": { "type": "integer", "minimum": 1, "maximum": 300 }
       }
     },
-    "executor_binding": {
+    "executorBinding": {
       "type": "object",
       "required": ["executor_class", "executor_module"],
       "properties": {
-        "executor_class": {
-          "type": "string",
-          "description": "Python class name for executor"
-        },
-        "executor_module": {
-          "type": "string",
-          "description": "Python module path for executor"
-        }
+        "executor_class": { "type": "string", "description": "Python class name for executor" },
+        "executor_module": { "type": "string", "description": "Python module path for executor" }
       }
     },
-    "method_binding": {
+    "methodBinding": {
       "type": "object",
       "required": ["orchestration_mode", "method_count", "methods"],
       "properties": {
@@ -82,10 +209,7 @@
           "type": "string",
           "enum": ["single_method", "multi_method_pipeline", "multi_method_ensemble"]
         },
-        "method_count": {
-          "type": "integer",
-          "minimum": 1
-        },
+        "method_count": { "type": "integer", "minimum": 1 },
         "methods": {
           "type": "array",
           "minItems": 1,
@@ -93,29 +217,251 @@
             "type": "object",
             "required": ["class_name", "method_name", "priority"],
             "properties": {
-              "class_name": {
-                "type": "string"
-              },
-              "method_name": {
-                "type": "string"
-              },
-              "priority": {
-                "type": "integer",
-                "minimum": 1
-              },
-              "provides": {
-                "type": "string"
-              },
-              "role": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              }
+              "class_name": { "type": "string" },
+              "method_name": { "type": "string" },
+              "priority": { "type": "integer", "minimum": 1 },
+              "provides": { "type": "string" },
+              "role": { "type": "string" },
+              "description": { "type": "string" }
             }
           }
         }
       }
+    },
+    "legacyV3Contract": {
+      "type": "object",
+      "required": ["identity", "executor_binding", "method_binding"],
+      "properties": {
+        "identity": { "$ref": "#/$defs/identityCommon" },
+        "executor_binding": { "$ref": "#/$defs/executorBinding" },
+        "method_binding": { "$ref": "#/$defs/methodBinding" }
+      }
+    },
+    "currentContract": {
+      "type": "object",
+      "required": ["meta", "identity", "bindings"],
+      "properties": {
+        "meta": {
+          "type": "object",
+          "required": ["schema_id", "schema_version", "contract_version"],
+          "properties": {
+            "schema_id": { "type": "string", "description": "Schema identifier URI" },
+            "schema_version": { "type": "string", "description": "Schema semantic version" },
+            "contract_version": { "type": "string", "description": "Semantic version of contract" },
+            "contract_hash": { "type": "string", "description": "SHA-256 hash of contract content" },
+            "created_at": { "type": "string", "format": "date-time" },
+            "updated_at": { "type": "string", "format": "date-time" },
+            "validated_against_schema": { "type": "string" }
+          }
+        },
+        "identity": { "$ref": "#/$defs/identityCommon" },
+        "bindings": {
+          "type": "object",
+          "required": ["executor", "methods"],
+          "properties": {
+            "executor": { "$ref": "#/$defs/executorBinding" },
+            "methods": { "$ref": "#/$defs/methodBinding" }
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "nonTodoVersionString": {
+      "type": "string",
+      "pattern": "^(?!TODO_).+",
+      "description": "No permite placeholders tipo TODO_VERSION."
+    },
+    "patternSpec": {
+      "type": "object",
+      "required": ["match_type", "pattern"],
+      "properties": {
+        "match_type": { "type": "string", "enum": ["REGEX", "LITERAL"] },
+        "pattern": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "match_type": { "const": "LITERAL" } }, "required": ["match_type"] },
+          "then": {
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "not": { "pattern": "\\\\s\\+|\\\\d\\+|\\|\\(|\\)\\||\\[\\^|\\(\\?\\:|\\(\\?=|\\(\\?!" }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": true
+    },
+    "specializedV3Contract": {
+      "type": "object",
+      "required": [
+        "identity",
+        "executor_binding",
+        "method_binding",
+        "compatibility",
+        "error_handling",
+        "evidence_assembly",
+        "output_contract",
+        "question_context",
+        "traceability",
+        "validation_rules"
+      ],
+      "properties": {
+        "identity": { "$ref": "#/$defs/identityCommon" },
+        "executor_binding": { "$ref": "#/$defs/executorBinding" },
+        "method_binding": { "$ref": "#/$defs/methodBinding" },
+
+        "compatibility": {
+          "type": "object",
+          "required": ["questionnaire_monolith_version"],
+          "properties": {
+            "questionnaire_monolith_version": { "$ref": "#/$defs/nonTodoVersionString" },
+            "method_executor_min_version": { "$ref": "#/$defs/nonTodoVersionString" },
+            "orchestrator_min_version": { "$ref": "#/$defs/nonTodoVersionString" },
+            "phase2_types_version": { "$ref": "#/$defs/nonTodoVersionString" },
+            "signal_registry_min_version": { "$ref": "#/$defs/nonTodoVersionString" }
+          },
+          "additionalProperties": true
+        },
+
+        "error_handling": {
+          "type": "object",
+          "required": ["failure_contract", "on_assembly_failure", "on_method_failure", "on_method_not_found"],
+          "properties": {
+            "failure_contract": {
+              "type": "object",
+              "required": ["abort_if", "emit_code"],
+              "properties": {
+                "abort_if": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+                "emit_code": { "type": "string" }
+              },
+              "additionalProperties": true
+            },
+            "on_assembly_failure": { "type": "string" },
+            "on_method_failure": { "type": "string" },
+            "on_method_not_found": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+
+        "evidence_assembly": {
+          "type": "object",
+          "required": ["assembly_rules", "class_name", "engine", "method_name", "module", "output_schema"],
+          "properties": {
+            "assembly_rules": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+            "class_name": { "type": "string" },
+            "engine": { "type": "string" },
+            "method_name": { "type": "string" },
+            "module": { "type": "string" },
+            "output_schema": {
+              "type": "object",
+              "required": ["type", "properties", "required"],
+              "properties": {
+                "type": { "const": "object" },
+                "properties": {
+                  "type": "object",
+                  "required": ["elements_found", "raw_results"],
+                  "properties": {
+                    "elements_found": { "type": "array" },
+                    "raw_results": { "type": "object" }
+                  },
+                  "additionalProperties": true
+                },
+                "required": {
+                  "type": "array",
+                  "minItems": 2,
+                  "allOf": [
+                    { "contains": { "const": "elements_found" } },
+                    { "contains": { "const": "raw_results" } }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+
+        "fallback_strategy": { "type": "object", "additionalProperties": true },
+        "human_answer_structure": { "type": "object", "additionalProperties": true },
+
+        "method_outputs": {
+          "type": "object",
+          "additionalProperties": { "type": "object" }
+        },
+
+        "methodological_depth": { "type": "object", "additionalProperties": true },
+
+        "output_contract": {
+          "type": "object",
+          "required": ["result_type", "schema"],
+          "properties": {
+            "result_type": { "type": "string" },
+            "schema": { "type": "object" },
+            "consumer_modules": { "type": "array", "items": { "type": "string" } },
+            "human_readable_output": { "type": "object" }
+          },
+          "additionalProperties": true
+        },
+
+        "question_context": {
+          "type": "object",
+          "required": ["question_text", "question_type", "expected_elements", "patterns"],
+          "properties": {
+            "question_text": { "type": "string" },
+            "question_type": { "type": "string" },
+            "expected_elements": { "type": "array", "items": { "type": "object" }, "minItems": 1 },
+            "patterns": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/patternSpec" }
+            },
+            "failure_contract": { "type": "object" }
+          },
+          "additionalProperties": true
+        },
+
+        "signal_requirements": { "type": "object", "additionalProperties": true },
+        "test_configuration": { "type": "object", "additionalProperties": true },
+
+        "traceability": {
+          "type": "object",
+          "required": ["source_question_id", "specialized_from_base_slot"],
+          "properties": {
+            "source_question_id": { "$ref": "#/$defs/questionIdQ001toQ300" },
+            "specialized_from_base_slot": { "$ref": "#/$defs/baseSlotD1toD6_Q01toQ30" },
+            "method_source": { "type": "string" },
+            "source_file": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+
+        "validation_rules": {
+          "type": "object",
+          "required": ["class_name", "engine", "method_name", "module", "rules"],
+          "properties": {
+            "class_name": { "type": "string" },
+            "engine": { "type": "string" },
+            "method_name": { "type": "string" },
+            "module": { "type": "string" },
+            "rules": { "type": "array", "items": { "type": "object" } }
+          },
+          "additionalProperties": true
+        },
+
+        "extensions": { "type": "object", "additionalProperties": true },
+
+        "calibration": false,
+        "parametrizacion": false,
+        "parameterization": false
+      },
+      "unevaluatedProperties": false
     }
-  }
+  },
+
+  "oneOf": [
+    { "$ref": "#/$defs/specializedV3Contract" },
+    { "$ref": "#/$defs/legacyV3Contract" },
+    { "$ref": "#/$defs/currentContract" }
+  ]
 }
