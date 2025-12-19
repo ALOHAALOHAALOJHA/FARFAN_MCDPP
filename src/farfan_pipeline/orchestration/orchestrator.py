@@ -67,7 +67,7 @@ from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
     EnhancedClusterAggregator,
     EnhancedMacroAggregator,
 )
-from canonic_phases.Phase_two.executors import GenericContractExecutor
+from canonic_phases.Phase_two.executors import BaseExecutorWithContract
 from canonic_phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,
@@ -2176,9 +2176,9 @@ class Orchestrator:
                     continue
 
                 try:
-                    # Create GenericContractExecutor with question_id
+                    # Create BaseExecutorWithContract with question_id
                     # This loads the contract from executor_contracts/specialized/{question_id}.v3.json
-                    instance = GenericContractExecutor(
+                    instance = BaseExecutorWithContract(
                         method_executor=self.executor,
                         signal_registry=getattr(self.executor, "signal_registry", None),
                         config=self.executor_config,
@@ -2327,8 +2327,8 @@ class Orchestrator:
                     continue
 
                 try:
-                    # Use GenericContractExecutor with question_id
-                    instance = GenericContractExecutor(
+                    # Use BaseExecutorWithContract with question_id
+                    instance = BaseExecutorWithContract(
                         method_executor=self.executor,
                         signal_registry=self.executor.signal_registry,
                         config=self.executor_config,

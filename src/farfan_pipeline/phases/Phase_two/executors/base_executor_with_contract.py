@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
 try:
@@ -22,15 +21,34 @@ else:  # pragma: no cover - runtime avoids import to break cycles
     PreprocessedDocument = Any
 
 
-class BaseExecutorWithContract(ABC):
-    """Contract-driven executor that routes all calls through MethodExecutor.
-
+class BaseExecutorWithContract:
+    """Contract-driven executor that executes ANY question contract by question_id.
+    
+    This executor loads contracts dynamically from executor_contracts/specialized/
+    and executes them using the 300 JSON contracts (Q001-Q300).
+    
+    Architecture:
+    - Loads contract JSON by question_id from executor_contracts/specialized/
+    - Executes methods defined in contract's method_binding
+    - Returns evidence and results per contract specification
+    - NO hardcoded executor classes required
+    
     Supports both v2 and v3 contract formats:
     - v2: Legacy format with method_inputs, assembly_rules, validation_rules at top level
     - v3: New format with identity, executor_binding, method_binding, question_context,
           evidence_assembly, output_contract, validation_rules, etc.
 
     Contract version is auto-detected based on file name (.v3.json vs .json) and structure.
+    
+    Usage:
+        executor = BaseExecutorWithContract(
+            method_executor=method_executor,
+            signal_registry=signal_registry,
+            config=config,
+            questionnaire_provider=questionnaire_provider,
+            question_id=question_id  # e.g., "Q001"
+        )
+        result = executor.execute(document=doc, question_context=ctx)
     """
 
     _contract_cache: dict[str, dict[str, Any]] = {}
@@ -44,10 +62,24 @@ class BaseExecutorWithContract(ABC):
         signal_registry: Any,
         config: Any,
         questionnaire_provider: Any,
+        question_id: str | None = None,
         calibration_orchestrator: Any | None = None,
         enriched_packs: dict[str, Any] | None = None,
         validation_orchestrator: Any | None = None,
     ) -> None:
+        """Initialize contract executor.
+        
+        Args:
+            method_executor: MethodExecutor for executing contract methods
+            signal_registry: Signal registry for SISAS coordination
+            config: ExecutorConfig with runtime parameters
+            questionnaire_provider: Questionnaire data provider
+            question_id: Question identifier (Q001-Q300) to load contract from
+                        executor_contracts/specialized/{question_id}.v3.json
+            calibration_orchestrator: Optional calibration orchestrator
+            enriched_packs: Optional enriched signal packs
+            validation_orchestrator: Optional validation orchestrator
+        """
         self.method_executor = method_executor
         self.signal_registry = signal_registry
         self.config = config
@@ -59,11 +91,26 @@ class BaseExecutorWithContract(ABC):
         # VALIDATION ORCHESTRATOR: Comprehensive validation tracking
         self.validation_orchestrator = validation_orchestrator
         self._use_validation_orchestrator = validation_orchestrator is not None
+        
+        # Store question_id and load contract to get actual base_slot
+        self._question_id = question_id
+        if question_id:
+            contract = self._load_contract(question_id=question_id)
+            self._actual_base_slot = contract.get("identity", {}).get("base_slot", "UNKNOWN")
+        else:
+            self._actual_base_slot = "UNKNOWN"
 
     @classmethod
-    @abstractmethod
     def get_base_slot(cls) -> str:
-        raise NotImplementedError
+        """Return generic base slot for class-level operations.
+        
+        For instance-level operations, use the _actual_base_slot attribute
+        which is loaded from the contract.
+        
+        Returns:
+            "GENERIC" for class-level operations
+        """
+        return "GENERIC"
 
     @classmethod
     def verify_all_base_contracts(
@@ -681,13 +728,17 @@ class BaseExecutorWithContract(ABC):
                 "Mismatched MethodExecutor instance for contract executor"
             )
 
-        base_slot = self.get_base_slot()
-        if question_context.get("base_slot") != base_slot:
-            raise ValueError(
-                f"Question base_slot {question_context.get('base_slot')} does not match executor {base_slot}"
-            )
+        # Use question_id from initialization if available, otherwise from context
+        question_id = self._question_id or question_context.get("question_id")
+        
+        # For backward compatibility: still check base_slot if not using question_id
+        if not self._question_id:
+            base_slot = self.get_base_slot()
+            if question_context.get("base_slot") != base_slot:
+                raise ValueError(
+                    f"Question base_slot {question_context.get('base_slot')} does not match executor {base_slot}"
+                )
 
-        question_id = question_context.get("question_id")
         contract = self._load_contract(question_id=question_id)
         contract_version = contract.get("_contract_version", "v2")
 

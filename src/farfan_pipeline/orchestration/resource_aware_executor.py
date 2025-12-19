@@ -162,7 +162,7 @@ class ResourceAwareExecutor:
     ) -> dict[str, Any]:
         """Synchronous execution wrapper."""
         try:
-            from canonic_phases.Phase_two.executors import GenericContractExecutor
+            from canonic_phases.Phase_two.executors import BaseExecutorWithContract
             
             # Extract question_id from context or executor_id
             # executor_id format could be "D3-Q3" but we need question_id like "Q013"
@@ -181,7 +181,7 @@ class ResourceAwareExecutor:
             if not question_id:
                 raise ValueError(f"Cannot determine question_id from executor_id: {executor_id}")
             
-            # Create GenericContractExecutor with question_id
+            # Create BaseExecutorWithContract with question_id
             # TODO: ResourceAwareExecutor needs update to support BaseExecutorWithContract dependencies.
             # Currently missing signal_registry, config, questionnaire_provider.
             # Bypassing execution for now to maintain structure integrity.
