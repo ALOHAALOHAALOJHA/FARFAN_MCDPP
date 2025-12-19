@@ -1,5 +1,7 @@
 """Irrigation Synchronizer - Question→Chunk→Task→Plan Coordination.
 
+
+PHASE_LABEL: Phase 2
 This module implements the synchronization layer that maps questionnaire questions
 to document chunks, generating an ExecutionPlan with 300 tasks (6 dimensions × 50
 questions/dimension × 10 policy areas) for deterministic pipeline execution.

@@ -1,6 +1,8 @@
 """
 ExecutorConfig: Runtime parametrization for executors (HOW we execute).
 
+PHASE_LABEL: Phase 2
+
 CRITICAL SEPARATION:
 - This file contains ONLY runtime parameters (timeout, retry, etc.)
 - NO calibration values (quality scores, fusion weights) are stored here

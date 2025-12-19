@@ -1,6 +1,8 @@
 """
 Generate complete executor configuration files for all 30 D[1-6]Q[1-5] executors.
 
+PHASE_LABEL: Phase 2
+
 This script creates comprehensive JSON config files for each executor that separate:
 - Calibration data (WHAT quality scores) → loaded from intrinsic_calibration.json
 - Runtime parameters (HOW execution) → stored in executor_configs/{executor_id}.json

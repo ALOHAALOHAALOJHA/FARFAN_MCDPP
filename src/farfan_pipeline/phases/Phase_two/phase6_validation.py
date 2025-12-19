@@ -1,5 +1,9 @@
 """Phase 6: Schema Validation Pipeline - Four Subphase Architecture.
 
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Schema Validation (Phase 6 validation logic)
+PHASE_ROLE: Validates schema compatibility between questions and chunks during task construction
+
 This module implements Phase 6 as a complete validation pipeline with four subphases:
 
 Phase 6.1: Classification & Extraction

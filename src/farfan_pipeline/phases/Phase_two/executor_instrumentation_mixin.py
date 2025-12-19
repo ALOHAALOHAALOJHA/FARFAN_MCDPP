@@ -1,6 +1,10 @@
 """
 Executor Instrumentation Mixin for Calibration Integration.
 
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Executor Instrumentation
+PHASE_ROLE: Adds calibration instrumentation to executors for runtime metrics capture
+
 This mixin adds calibration instrumentation to all D[1-6]Q[1-5] executors,
 capturing runtime metrics and retrieving quality scores from the calibration system.
 
@@ -17,7 +21,7 @@ from __future__ import annotations
 import time
 from typing import Any, Dict, Optional
 
-from executor_calibration_integration import (
+from farfan_pipeline.phases.Phase_two.executor_calibration_integration import (
     instrument_executor,
     get_executor_config,
     CalibrationResult,

@@ -123,6 +123,83 @@ Artefactos: artifacts/plan1/verification_manifest.json
 
 ---
 
+## 🔬 Fase 2: Orquestación de Contratos y Ejecución Determinística
+
+**La Fase 2 es el motor de ejecución de F.A.R.F.A.N**—el componente que transforma preguntas analíticas abstractas en evidencia concreta mediante orquestación de contratos, enrutamiento de argumentos y ensamblaje de evidencia con trazabilidad completa.
+
+### Resumen Ejecutivo
+
+La Fase 2 procesa 300 preguntas evaluativas mediante:
+- **Orquestación de Contratos**: Carga y validación de 300 contratos JSON con esquemas v3
+- **Enrutamiento de Argumentos**: 30+ rutas especiales sin caídas silenciosas de parámetros
+- **Ejecución de Métodos**: Pattern de dispensario con ~20 clases monolito
+- **Ensamblaje de Evidencia**: Construcción de grafos acíclicos con provenance completo
+- **Validación de Esquemas**: Pipeline de 4 subfases (clasificación → estructural → semántica → orquestación)
+- **Instrumentación de Calibración**: Captura de métricas runtime y scores de calidad
+
+### Propiedades Clave
+
+| Propiedad | Especificación | Verificación |
+|-----------|----------------|--------------|
+| **Determinismo** | 10 ejecuciones → SHA-256 idéntico | Tests de reproducibilidad |
+| **Cobertura ArgRouter** | 30/30 rutas (100%) | Unit tests + coverage |
+| **Provenance Completeness** | 100% trazabilidad | Golden tests |
+| **Contract Validation** | CQVR 3-tier scoring | Pre-execution validation |
+| **Label Compliance** | 17/17 archivos etiquetados | `verify_phase2_labels.py` |
+| **Test Pass Rate** | 40/40 tests passing | pytest suite |
+
+### Archivos y Roles
+
+Todos los archivos en `src/farfan_pipeline/phases/Phase_two/` tienen etiqueta `PHASE_LABEL: Phase 2`:
+
+- **`executor_profiler.py`**: Medición de rendimiento con regression detection
+- **`executor_instrumentation_mixin.py`**: Mixin de calibración para executors
+- **`executor_calibration_integration.py`**: Interface de calibración (stub)
+- **`arg_router.py`**: Enrutamiento de argumentos con 30+ special routes
+- **`base_executor_with_contract.py`**: Clase base contract-driven
+- **`evidence_nexus.py`**: Ensamblaje de grafos de evidencia
+- **`carver.py`**: Síntesis narrativa con estilo doctoral Raymond Carver
+- **`calibration_policy.py`**: Políticas de weighting por calibration scores
+- **`contract_validator_cqvr.py`**: Validación CQVR multi-tier
+- **`phase6_validation.py`**: Validación de esquemas (4 subfases)
+- **`executor_config.py`**: Configuración runtime de executors
+- **`irrigation_synchronizer.py`**: Sincronización de señales transversales
+
+### Regla de Etiquetado
+
+**Explícita y Verificable**: Todo archivo `.py` en `Phase_two/` debe contener `PHASE_LABEL: Phase 2` en su docstring de módulo (primeras 20 líneas).
+
+**Racionalidad**: Archivos como `phase6_validation.py` describen lógica de "Phase 6" pero viven en `Phase_two/` porque son parte de la orquestación de Fase 2. La etiqueta hace esto explícito y auditable.
+
+**Verificación**:
+```bash
+python verify_phase2_labels.py
+# Salida: JSON report con SHA-256, exit 0 si compliant, 1 si violaciones
+```
+
+### Modelo de Amenazas y Mitigaciones
+
+| Amenaza | Mitigación | Detección |
+|---------|------------|-----------|
+| **Contract Drift** | Hash SHA-256 verificado | Falla si hash != esperado |
+| **Schema Drift** | Phase 6 validation pipeline | ValueError en incompatibilidad |
+| **Silent Parameter Drops** | ArgRouter + special routes | Log warning + test coverage |
+| **Evidence Cycles** | Validación acíclica | Falla en `is_acyclic()` |
+
+### 📚 Documentación Completa
+
+Para especificación exhaustiva con:
+- Narrativa de ejecución paso a paso
+- Mapa completo de archivos con invariantes
+- Propiedades técnicas formales (determinismo, contratos, validación)
+- Semántica de ensamblaje de evidencia
+- Estrategia de verificación
+- Referencias teóricas
+
+**Ver**: [PHASE_2_SPECIFICATION.md](PHASE_2_SPECIFICATION.md)
+
+---
+
 ## 💡 ¿Qué es F.A.R.F.A.N?
 
 F.A.R.F.A.N (Framework for Advanced Retrieval of Administrative Narratives) es un pipeline mecanístico de políticas diseñado para el análisis riguroso y basado en evidencia de planes de desarrollo municipales colombianos.
