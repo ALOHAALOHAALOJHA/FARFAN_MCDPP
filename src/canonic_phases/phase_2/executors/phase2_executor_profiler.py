@@ -309,17 +309,10 @@ class ExecutorProfiler:
         self.dispensary_execution_times: dict[str, list[float]] = defaultdict(list)
         self.executor_dispensary_usage: dict[str, set[str]] = defaultdict(set)
 
-    def _load_default_thresholds(self) -> dict[str, float]:
-        """Load default thresholds (can be overridden by canonical config)."""
-        return {
-            "execution_time_ms": DEFAULT_HIGH_EXECUTION_TIME_MS,
-            "memory_mb": DEFAULT_HIGH_MEMORY_MB,
-            "serialization_ms": DEFAULT_HIGH_SERIALIZATION_MS,
-        }
-
+        # psutil-based memory tracking setup
         self._psutil = None
         self._psutil_process = None
-        if memory_tracking:
+        if self.memory_tracking:
             try:
                 import psutil
 
@@ -330,9 +323,18 @@ class ExecutorProfiler:
                     "psutil not available, memory tracking disabled. "
                     "Install with: pip install psutil"
                 )
+        # Load existing baseline metrics if available
                 self.memory_tracking = False
 
         if self.baseline_path and self.baseline_path.exists():
+    def _load_default_thresholds(self) -> dict[str, float]:
+        """Load default thresholds (can be overridden by canonical config)."""
+        return {
+            "execution_time_ms": DEFAULT_HIGH_EXECUTION_TIME_MS,
+            "memory_mb": DEFAULT_HIGH_MEMORY_MB,
+            "serialization_ms": DEFAULT_HIGH_SERIALIZATION_MS,
+        }
+
             self.load_baseline(self.baseline_path)
 
     def _get_memory_usage_mb(self) -> float:
