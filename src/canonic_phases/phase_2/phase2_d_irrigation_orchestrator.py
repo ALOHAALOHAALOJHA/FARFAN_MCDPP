@@ -400,16 +400,22 @@ class IrrigationOrchestrator:
     def _extract_questions(self) -> list[dict[str, Any]]:
         """Subfase 2.1.1 - Extract 300 questions from monolith."""
         blocks = self.questionnaire_monolith.get("blocks", [])
+        all_questions: list[dict[str, Any]] = []
         for block in blocks:
             if block.get("block_type") == "micro_questions":
-                questions = block.get("micro_questions", [])
-                # Sort for deterministic ordering
-                questions.sort(key=lambda q: (
-                    q.get("policy_area_id", ""),
-                    q.get("question_global", 0)
-                ))
-                return questions
-        return []
+                micro_questions = block.get("micro_questions", [])
+                if micro_questions:
+                    all_questions.extend(micro_questions)
+        if not all_questions:
+            return []
+        # Sort for deterministic ordering across all micro_question blocks
+        all_questions.sort(
+            key=lambda q: (
+                q.get("policy_area_id", ""),
+                q.get("question_global", 0),
+            )
+        )
+        return all_questions
     
     def _validate_chunk_routing(self, question: dict) -> ChunkRoutingResult:
         """Subfase 2.1.3 - Route question to target chunk."""
