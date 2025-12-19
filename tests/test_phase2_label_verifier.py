@@ -37,7 +37,7 @@ PHASE_COMPONENT: Test Module
 """
 ''')
         
-        violation = check_file_for_phase2_label(test_file)
+        violation = check_file_for_phase2_label(test_file, tmp_path)
         
         assert violation is None
     
@@ -48,7 +48,7 @@ PHASE_COMPONENT: Test Module
 import sys
 ''')
         
-        violation = check_file_for_phase2_label(test_file)
+        violation = check_file_for_phase2_label(test_file, tmp_path)
         
         assert violation is not None
         assert violation.violation_type == "MISSING_DOCSTRING"
@@ -63,7 +63,7 @@ This module does not have the required label.
 """
 ''')
         
-        violation = check_file_for_phase2_label(test_file)
+        violation = check_file_for_phase2_label(test_file, tmp_path)
         
         assert violation is not None
         assert violation.violation_type == "MISSING_LABEL"
@@ -75,7 +75,7 @@ This module does not have the required label.
         lines = ['"""Module docstring.\n'] + ['\n'] * 25 + ['PHASE_LABEL: Phase 2\n', '"""\n']
         test_file.write_text(''.join(lines))
         
-        violation = check_file_for_phase2_label(test_file)
+        violation = check_file_for_phase2_label(test_file, tmp_path)
         
         # Should be violation because label is after line 20
         assert violation is not None
@@ -193,7 +193,7 @@ class TestViolationDetails:
 """
 ''')
         
-        violation = check_file_for_phase2_label(violated)
+        violation = check_file_for_phase2_label(violated, tmp_path)
         
         assert violation is not None
         assert "module.py" in violation.file_path
@@ -205,7 +205,7 @@ class TestViolationDetails:
 """
 ''')
         
-        violation = check_file_for_phase2_label(violated)
+        violation = check_file_for_phase2_label(violated, tmp_path)
         
         assert violation is not None
         assert violation.details != ""

@@ -114,11 +114,12 @@ class VerificationReport:
         }
 
 
-def check_file_for_phase2_label(file_path: Path, max_lines: int = MAX_LINES_TO_SCAN) -> Violation | None:
+def check_file_for_phase2_label(file_path: Path, phase_two_dir: Path, max_lines: int = MAX_LINES_TO_SCAN) -> Violation | None:
     """Check if a Python file has the required Phase 2 label in its docstring.
     
     Args:
         file_path: Path to the Python file to check
+        phase_two_dir: Base Phase_two directory for relative path calculation
         max_lines: Maximum number of lines to scan for the label
     
     Returns:
@@ -134,7 +135,7 @@ def check_file_for_phase2_label(file_path: Path, max_lines: int = MAX_LINES_TO_S
             lines = [f.readline() for _ in range(max_lines)]
     except Exception as e:
         return Violation(
-            file_path=str(file_path.relative_to(file_path.parent.parent.parent.parent.parent)),
+            file_path=str(file_path.relative_to(phase_two_dir.parent.parent.parent)),
             violation_type="READ_ERROR",
             line_number=0,
             details=f"Failed to read file: {e}",
@@ -144,7 +145,7 @@ def check_file_for_phase2_label(file_path: Path, max_lines: int = MAX_LINES_TO_S
     first_line = lines[0].strip() if lines else ""
     if not first_line.startswith('"""') and not first_line.startswith("'''"):
         return Violation(
-            file_path=str(file_path.relative_to(file_path.parent.parent.parent.parent.parent)),
+            file_path=str(file_path.relative_to(phase_two_dir.parent.parent.parent)),
             violation_type="MISSING_DOCSTRING",
             line_number=1,
             details="File does not start with a module docstring (triple quotes)",
@@ -157,7 +158,7 @@ def check_file_for_phase2_label(file_path: Path, max_lines: int = MAX_LINES_TO_S
     
     # Label not found
     return Violation(
-        file_path=str(file_path.relative_to(file_path.parent.parent.parent.parent.parent)),
+        file_path=str(file_path.relative_to(phase_two_dir.parent.parent.parent)),
         violation_type="MISSING_LABEL",
         line_number=0,
         details=f"'{REQUIRED_LABEL}' not found in first {max_lines} lines of docstring",
@@ -215,7 +216,7 @@ def verify_phase2_labels(
     
     for py_file in py_files:
         files_scanned += 1
-        violation = check_file_for_phase2_label(py_file)
+        violation = check_file_for_phase2_label(py_file, phase_two_dir)
         
         if violation:
             violations.append(violation)
