@@ -191,3 +191,6 @@ artifacts/deployment_*.json
 backups/pre_rollback_*
 backups/staging_*
 backups/production_*
+
+# Local conversation backups (do not version)
+artifacts/*conversation*_backup_*.tgz
