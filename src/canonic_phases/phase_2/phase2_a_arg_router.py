@@ -53,16 +53,16 @@ class ContractPayload(Protocol):
     @property
     def contract_type(self) -> str:
         """Return the contract type identifier."""
-        ...
+        pass
 
     @property
     def chunk_id(self) -> str:
         """Return the originating chunk identifier."""
-        ...
+        pass
 
     def validate(self) -> bool:
         """Validate payload integrity."""
-        ...
+        pass
 
 
 class ExecutorResult(Protocol):
@@ -71,17 +71,17 @@ class ExecutorResult(Protocol):
     @property
     def task_id(self) -> str:
         """Return the task identifier."""
-        ...
+        pass
 
     @property
     def chunk_id(self) -> str:
         """Return the originating chunk identifier."""
-        ...
+        pass
 
     @property
     def success(self) -> bool:
         """Return execution success status."""
-        ...
+        pass
 
 
 class Executor(Protocol[PayloadT, ResultT]):
@@ -89,12 +89,12 @@ class Executor(Protocol[PayloadT, ResultT]):
 
     def run(self, payload: PayloadT) -> ResultT:
         """Execute the payload and return result."""
-        ...
+        pass
 
     @property
     def executor_id(self) -> str:
         """Return the executor identifier."""
-        ...
+        pass
 
 
 # === EXCEPTION TAXONOMY ===
