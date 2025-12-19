@@ -1,0 +1,4925 @@
+{
+  "contracts": 30,
+  "contracts_root": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized",
+  "generated_at": "2025-12-19T06:17:09Z",
+  "meta_schema": {
+    "constants_count": 725,
+    "constants_top_200": [
+      {
+        "json_path": "$",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.calibration",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.calibration.note",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.calibration.source",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.calibration.source.canonical_spec",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.calibration.source.fusion_specification",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.calibration.source.intrinsic_calibration",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.calibration.source.layer_calibrations_dir",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.calibration.status",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.compatibility",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.compatibility.method_executor_min_version",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.compatibility.orchestrator_min_version",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.compatibility.phase2_types_version",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.compatibility.questionnaire_monolith_version",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.compatibility.signal_registry_min_version",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.failure_contract",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.failure_contract.abort_if",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.failure_contract.abort_if[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.failure_contract.abort_if[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.failure_contract.emit_code",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.on_assembly_failure",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.on_method_failure",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.error_handling.on_method_not_found",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].merge_strategy",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[3]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[4]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[5]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].target",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[1].default",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[1].description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[1].merge_strategy",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[1].sources",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[1].target",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2].default",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2].description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2].merge_strategy",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2].sources",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2].target",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[3]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[3].description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[3].merge_strategy",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[3].sources",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[3].target",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.class_name",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.engine",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.method_name",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.module",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.additionalProperties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "bool": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.required",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.required[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.required[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.executor_binding",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.executor_binding.executor_class",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.executor_binding.executor_module",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.fallback_strategy",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.fallback_strategy.note",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.fallback_strategy.use_heuristics",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "bool": 30
+        }
+      },
+      {
+        "json_path": "$.fallback_strategy.use_llm_direct",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "bool": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow.step_1_method_execution",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow.step_3_validation",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.bayesian_insights",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.bayesian_insights.metrics_with_high_uncertainty",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.bayesian_insights.significant_comparisons",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.BayesianNumericalAnalyzer",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.CausalExtractor",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.FinancialAuditor",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.IndustrialPolicyProcessor",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.PDETMunicipalPlanAnalyzer",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.PolicyContradictionDetector",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.SemanticProcessor",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.by_method.TextMiningEngine",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.max",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.mean",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.min",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.confidence_scores.std",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.contradictions",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.contradictions.found",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.contradictions.interpretation",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.contradictions.tests_performed",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.critical_links",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.critical_links[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.critical_links[0].cause",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.critical_links[0].coherence",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.critical_links[0].criticality",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.critical_links[0].effect",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type.causal_links",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type.cobertura_territorial_especificada",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type.financial_amounts",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type.fuentes_oficiales",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type.indicadores_cuantitativos",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type.policy_goals",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.by_type.series_temporales_años",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_summary.total_count",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.financial_summary",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.financial_summary.amounts_found",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.financial_summary.by_category",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.financial_summary.by_category.SGR",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.financial_summary.by_category.recursos_propios",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.financial_summary.total_budget_cop",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.goals_summary",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.goals_summary.goals_with_complete_context",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.goals_summary.quantified_goals",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.goals_summary.total_goals",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.metadata",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.metadata.analysis_timestamp",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.metadata.document_length",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.metadata.execution_time_ms",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.metadata.methods_executed",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[0].avg_confidence",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[0].count",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[0].pattern_id",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[1].avg_confidence",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[1].count",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.pattern_matches[1].pattern_id",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.semantic_processing",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.semantic_processing.avg_semantic_similarity_to_query",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.semantic_processing.chunks_created",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.semantic_processing.embeddings_generated",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights.description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights.properties.metrics_with_high_uncertainty",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights.properties.metrics_with_high_uncertainty.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights.properties.significant_comparisons",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights.properties.significant_comparisons.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.bayesian_insights.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.by_method",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.by_method.description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.by_method.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.max",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.max.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.mean",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.mean.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.min",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.min.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.std",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.properties.std.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.confidence_scores.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.properties.found",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.properties.found.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.properties.interpretation",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.properties.interpretation.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.properties.tests_performed",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.properties.tests_performed.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.contradictions.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.description",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.cause",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.cause.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.coherence",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.coherence.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.criticality",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.criticality.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.effect",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.properties.effect.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.items.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.critical_links.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.elements_summary",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.elements_summary.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.elements_summary.properties.by_type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.elements_summary.properties.by_type.properties",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.elements_summary.properties.by_type.properties.cobertura_territorial_especificada",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.elements_summary.properties.by_type.properties.cobertura_territorial_especificada.minimum_expected",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 30
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_schema.properties.elements_summary.properties.by_type.properties.cobertura_territorial_especificada.type",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 30
+        }
+      }
+    ],
+    "missing_paths_count": 6924,
+    "missing_paths_top_200": [
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[10]",
+        "presence_ratio": 0.36666666666666664,
+        "present_in_contracts": 11,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 11
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[11]",
+        "presence_ratio": 0.3,
+        "present_in_contracts": 9,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 9
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[12]",
+        "presence_ratio": 0.26666666666666666,
+        "present_in_contracts": 8,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 8
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[13]",
+        "presence_ratio": 0.23333333333333334,
+        "present_in_contracts": 7,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 7
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[14]",
+        "presence_ratio": 0.23333333333333334,
+        "present_in_contracts": 7,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 7
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[15]",
+        "presence_ratio": 0.23333333333333334,
+        "present_in_contracts": 7,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 7
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[16]",
+        "presence_ratio": 0.2,
+        "present_in_contracts": 6,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 6
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[17]",
+        "presence_ratio": 0.16666666666666666,
+        "present_in_contracts": 5,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 5
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[18]",
+        "presence_ratio": 0.16666666666666666,
+        "present_in_contracts": 5,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 5
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[19]",
+        "presence_ratio": 0.16666666666666666,
+        "present_in_contracts": 5,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 5
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[20]",
+        "presence_ratio": 0.16666666666666666,
+        "present_in_contracts": 5,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 5
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[21]",
+        "presence_ratio": 0.13333333333333333,
+        "present_in_contracts": 4,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 4
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[22]",
+        "presence_ratio": 0.1,
+        "present_in_contracts": 3,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 3
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[23]",
+        "presence_ratio": 0.1,
+        "present_in_contracts": 3,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 3
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[24]",
+        "presence_ratio": 0.1,
+        "present_in_contracts": 3,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 3
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[25]",
+        "presence_ratio": 0.06666666666666667,
+        "present_in_contracts": 2,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 2
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[26]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[27]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[6]",
+        "presence_ratio": 0.9333333333333333,
+        "present_in_contracts": 28,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 28
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[7]",
+        "presence_ratio": 0.7333333333333333,
+        "present_in_contracts": 22,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 22
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[8]",
+        "presence_ratio": 0.4666666666666667,
+        "present_in_contracts": 14,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 14
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[0].sources[9]",
+        "presence_ratio": 0.4,
+        "present_in_contracts": 12,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 12
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2].sources[0]",
+        "presence_ratio": 0.1,
+        "present_in_contracts": 3,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 3
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.assembly_rules[2].sources[1]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness.enum",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness.enum[0]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness.enum[1]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness.enum[2]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness.enum[3]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.completeness.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.elements",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.elements.description",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.elements.type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.by_type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.by_type.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.by_type.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.confidence_scores",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.confidence_scores.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.confidence_scores.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.elements",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.elements.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.elements.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.graph_hash",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.graph_hash.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.properties.graph_hash.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.evidence.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.graph_statistics",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.graph_statistics.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.graph_statistics.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.human_readable_output",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.human_readable_output.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.human_readable_output.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.overall_confidence",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.overall_confidence.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.overall_confidence.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.additionalProperties",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "bool": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.confidence_scores",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.confidence_scores.description",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.confidence_scores.type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.metadata",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.metadata.description",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.metadata.type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.pattern_matches",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.pattern_matches.description",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.pattern_matches.type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.semantic_similarity",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.properties.semantic_similarity.description",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.raw_results.type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.synthesized_answer",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.synthesized_answer.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.synthesized_answer.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.trace",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.trace.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.trace.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.description",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.consistency_score",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.consistency_score.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.errors",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.errors.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.valid",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.valid.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.warnings",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.properties.warnings.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.properties.validation.type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.evidence_assembly.output_schema.required[2]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow.step_2_evidence_assembly",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow.step_2_evidence_nexus",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow.step_4_carver_synthesis",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow.step_4_output_generation",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.assembly_flow.step_5_output_generation",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].confidence",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].element_id",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].position",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].position.end",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].position.start",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].sentence_id",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].source_method",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].source_sentence",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[0].value",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].bayesian_posterior",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].bayesian_posterior.ci_95",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].bayesian_posterior.ci_95[0]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].bayesian_posterior.ci_95[1]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].bayesian_posterior.mean",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].confidence",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].element_id",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].normalized_value",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].sentence_id",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].source_method",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].unit",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[1].value",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].confidence",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].element_id",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].source_method",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].years",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].years[0]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].years[1]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[2].years[2]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[3]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[3].confidence",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[3].coverage",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[3].element_id",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[3].source_method",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements[3].type",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].confidence",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].element_id",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].position",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].position.end",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].position.start",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].sentence_id",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].source_method",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].source_sentence",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[0].value",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].bayesian_posterior",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].bayesian_posterior.ci_95",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].bayesian_posterior.ci_95[0]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].bayesian_posterior.ci_95[1]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].bayesian_posterior.mean",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].confidence",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].element_id",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].normalized_value",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].sentence_id",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].source_method",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].unit",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[1].value",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].confidence",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].element_id",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].source_method",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].years",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].years[0]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].years[1]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[2].years[2]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "int": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[3]",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[3].confidence",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "float": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[3].coverage",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[3].element_id",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[3].source_method",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.concrete_example.elements_found[3].type",
+        "presence_ratio": 0.9666666666666667,
+        "present_in_contracts": 29,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 29
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "array": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[0]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[0].from",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[0].to",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[1]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[1].from",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[1].to",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[2]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[2].from",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[2].to",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[3]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[3].from",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[3].to",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[4]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[4].from",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[4].to",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[5]",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.human_answer_structure.evidence_structure_post_nexus.edges[5].from",
+        "presence_ratio": 0.03333333333333333,
+        "present_in_contracts": 1,
+        "type_entropy_proxy": 1,
+        "types": {
+          "str": 1
+        }
+      }
+    ],
+    "path_profile_count": 7682,
+    "variable_type_paths_count": 33,
+    "variable_type_paths_top_200": [
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[0].technical_approach.steps[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[0].technical_approach.steps[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[0].technical_approach.steps[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[1].technical_approach.steps[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[1].technical_approach.steps[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[1].technical_approach.steps[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[2].technical_approach.steps[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[2].technical_approach.steps[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[2].technical_approach.steps[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[3].technical_approach.steps[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[3].technical_approach.steps[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[3].technical_approach.steps[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[4].technical_approach.steps[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[4].technical_approach.steps[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[4].technical_approach.steps[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[5].technical_approach.steps[0]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[5].technical_approach.steps[1]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.output_contract.human_readable_output.methodological_depth.methods[5].technical_approach.steps[2]",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "object": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[0].context_requirement",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[0].semantic_expansion",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[0].validation_rule",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[1].context_requirement",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[1].semantic_expansion",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 28,
+          "object": 2
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[1].validation_rule",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[2].context_requirement",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 28,
+          "str": 2
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[2].semantic_expansion",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 28,
+          "object": 2
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[2].validation_rule",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 28,
+          "str": 2
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[3].context_requirement",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[3].semantic_expansion",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[3].validation_rule",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[4].context_requirement",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[4].semantic_expansion",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "object": 1
+        }
+      },
+      {
+        "json_path": "$.question_context.patterns[4].validation_rule",
+        "presence_ratio": 1.0,
+        "present_in_contracts": 30,
+        "type_entropy_proxy": 2,
+        "types": {
+          "null": 29,
+          "str": 1
+        }
+      }
+    ]
+  },
+  "method_binding_summaries": [
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "method_count": 17,
+      "methods_len": 17,
+      "provides_len": 17,
+      "question_id": "Q001"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "method_count": 12,
+      "methods_len": 12,
+      "provides_len": 12,
+      "question_id": "Q002"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "method_count": 13,
+      "methods_len": 13,
+      "provides_len": 13,
+      "question_id": "Q003"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "method_count": 11,
+      "methods_len": 11,
+      "provides_len": 11,
+      "question_id": "Q004"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "method_count": 7,
+      "methods_len": 7,
+      "provides_len": 7,
+      "question_id": "Q005"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "method_count": 7,
+      "methods_len": 7,
+      "provides_len": 7,
+      "question_id": "Q006"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "method_count": 11,
+      "methods_len": 11,
+      "provides_len": 11,
+      "question_id": "Q007"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "method_count": 9,
+      "methods_len": 9,
+      "provides_len": 9,
+      "question_id": "Q008"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "method_count": 10,
+      "methods_len": 10,
+      "provides_len": 10,
+      "question_id": "Q009"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q010"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q011"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "method_count": 21,
+      "methods_len": 21,
+      "provides_len": 21,
+      "question_id": "Q012"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "method_count": 22,
+      "methods_len": 22,
+      "provides_len": 22,
+      "question_id": "Q013"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "method_count": 26,
+      "methods_len": 26,
+      "provides_len": 26,
+      "question_id": "Q014"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "method_count": 25,
+      "methods_len": 25,
+      "provides_len": 25,
+      "question_id": "Q015"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "method_count": 16,
+      "methods_len": 16,
+      "provides_len": 16,
+      "question_id": "Q016"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q017"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q018"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "method_count": 7,
+      "methods_len": 7,
+      "provides_len": 7,
+      "question_id": "Q019"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "method_count": 6,
+      "methods_len": 6,
+      "provides_len": 6,
+      "question_id": "Q020"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q021"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "method_count": 28,
+      "methods_len": 28,
+      "provides_len": 28,
+      "question_id": "Q022"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "method_count": 6,
+      "methods_len": 6,
+      "provides_len": 6,
+      "question_id": "Q023"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "method_count": 7,
+      "methods_len": 7,
+      "provides_len": 7,
+      "question_id": "Q024"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q025"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q026"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "method_count": 7,
+      "methods_len": 7,
+      "provides_len": 7,
+      "question_id": "Q027"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "method_count": 8,
+      "methods_len": 8,
+      "provides_len": 8,
+      "question_id": "Q028"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "method_count": 7,
+      "methods_len": 7,
+      "provides_len": 7,
+      "question_id": "Q029"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "method_count": 9,
+      "methods_len": 9,
+      "provides_len": 9,
+      "question_id": "Q030"
+    }
+  ],
+  "monolith_loaded": false,
+  "monolith_mismatches": [],
+  "monolith_mismatches_count": 0,
+  "monolith_path": "data/questionnaire_monolith.json",
+  "pattern_findings": [],
+  "pattern_findings_count": 0,
+  "placeholder_hits": [
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.question_context.patterns[2].glossary_metadata.founding_year",
+      "match": "\\bTBD\\b",
+      "value_excerpt": "TBD"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.question_context.patterns[2].glossary_metadata.full_name",
+      "match": "\\bTBD\\b",
+      "value_excerpt": "TBD"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.question_context.patterns[2].glossary_metadata.legal_mandate",
+      "match": "\\bTBD\\b",
+      "value_excerpt": "TBD"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.question_context.patterns[7].glossary_metadata.founding_year",
+      "match": "\\bTBD\\b",
+      "value_excerpt": "TBD"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.question_context.patterns[7].glossary_metadata.full_name",
+      "match": "\\bTBD\\b",
+      "value_excerpt": "TBD"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.question_context.patterns[7].glossary_metadata.legal_mandate",
+      "match": "\\bTBD\\b",
+      "value_excerpt": "TBD"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "json_path": "$.compatibility.method_executor_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "json_path": "$.compatibility.orchestrator_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "json_path": "$.compatibility.phase2_types_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "json_path": "$.compatibility.signal_registry_min_version",
+      "match": "\\bTODO_VERSION\\b",
+      "value_excerpt": "TODO_VERSION"
+    }
+  ],
+  "placeholder_hits_count": 126,
+  "range": "Q001-Q030"
+}
