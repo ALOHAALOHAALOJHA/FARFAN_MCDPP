@@ -64,6 +64,10 @@ ERROR_CODES: Final[dict[str, ErrorCode]] = {
         code="E2006",
         message_template="Cannot import EvidenceNexus: {error}",
     ),
+    "E2007": ErrorCode(
+        code="E2007",
+        message_template="Task execution failed: {error}",
+    ),
 }
 
 # === EXECUTOR REGISTRY DEFINITION ===

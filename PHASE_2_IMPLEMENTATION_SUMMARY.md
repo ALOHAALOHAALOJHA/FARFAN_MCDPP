@@ -250,11 +250,94 @@ ExecutionPlan → Phase 2.2 (Task Execution)
 EvidenceNexus → Synthesized Narrative
 ```
 
-### 5. Supporting Infrastructure
+### 5. **NEW: Task Executor Module (`phase2_e_task_executor.py`)**
+
+**Purpose**: Phase 2.2 - Execute 300 tasks from ExecutionPlan
+
+**Key Features**:
+- Iterates over ExecutionPlan.tasks (300 tasks)
+- DynamicContractExecutor with automatic base_slot derivation
+- Question lookup from questionnaire_monolith
+- QuestionContext construction for each task
+- Executor caching for performance
+- Optional calibration and validation orchestration
+- Progress tracking and error handling
+- Returns 300 TaskResult objects
+
+**Contracts Enforced**:
+- ExecutionContract: All 300 tasks execute successfully
+- DeterminismContract: Same task inputs produce identical outputs
+- ProvenanceContract: Each output traces to originating task
+- CalibrationContract: Optional method calibration before execution
+
+**DynamicContractExecutor**:
+
+Implements the 300-contract model with automatic base_slot derivation:
+
+**Base Slot Derivation Formula**:
+```python
+# Extract question number (Q001 -> 1, Q150 -> 150)
+q_number = int(question_id[1:])
+
+# Derive slot_index (cycles every 30 questions)
+slot_index = (q_number - 1) % 30
+
+# Derive dimension and question_in_dimension
+dimension = (slot_index // 5) + 1          # 1-6
+question_in_dimension = (slot_index % 5) + 1  # 1-5
+
+# Build base_slot
+base_slot = f"D{dimension}-Q{question_in_dimension}"
+```
+
+**Examples**:
+- Q001 → slot_index=0 → D1-Q1
+- Q006 → slot_index=5 → D2-Q1
+- Q030 → slot_index=29 → D6-Q5
+- Q031 → slot_index=0 → D1-Q1 (wraps every 30)
+
+**Caching**: Derivations cached in class-level `_question_to_base_slot_cache` for O(1) lookup
+
+**Task Execution Flow**:
+```
+For each task in ExecutionPlan.tasks:
+    1. Lookup question from questionnaire_monolith
+    2. Build QuestionContext (question + task data)
+    3. Get/create DynamicContractExecutor (cached)
+    4. Derive base_slot from question_id
+    5. Build method_context with all data
+    6. Execute methods (with optional calibration)
+    7. Collect output as TaskResult
+```
+
+**Data Structures**:
+- `TaskResult`: Execution result with success/output/error/timing
+- `QuestionContext`: Complete context for executor dispatch
+- `ExecutionError`: Task execution failure exception (E2007)
+- `CalibrationError`: Method calibration failure
+
+**Integration with Phase 2.1**:
+```
+Phase 2.1 Output: ExecutionPlan (300 tasks)
+    ↓
+Phase 2.2: TaskExecutor
+    • Iterate over tasks
+    • For each task:
+      - Lookup question
+      - Build context
+      - Execute with DynamicContractExecutor
+      - Collect result
+    ↓
+Phase 2.2 Output: list[TaskResult] (300 results)
+    ↓
+Feed to Carver (Phase 2b) or collect as executor outputs
+```
+
+### 6. Supporting Infrastructure
 
 #### Constants Module (`constants/phase2_constants.py`)
 - Cardinality constants (CPP_CHUNK_COUNT=60, MICRO_ANSWER_COUNT=300, SHARDS_PER_CHUNK=5)
-- Error code definitions with templates (E2001-E2006)
+- Error code definitions with templates (E2001-E2007)
 - Executor registry configuration
 - Determinism configuration (DEFAULT_RANDOM_SEED, HASH_ALGORITHM)
 
@@ -273,7 +356,7 @@ EvidenceNexus → Synthesized Narrative
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
-│ Phase 2.1: Irrigation Orchestrator ← NEW                │
+│ Phase 2.1: Irrigation Orchestrator                      │
 │ • ChunkMatrix validation (60 chunks)                    │
 │ • Question extraction (300 questions)                   │
 │ • Chunk routing (Q→Chunk mapping)                       │
@@ -287,7 +370,21 @@ EvidenceNexus → Synthesized Narrative
                      │
                      ▼ ExecutionPlan (300 tasks)
 ┌─────────────────────────────────────────────────────────┐
-│ Phase 2a: Argument Router                               │
+│ Phase 2.2: Task Executor ← NEW                          │
+│ • Iterate over 300 tasks                                │
+│ • For each task:                                        │
+│   - Lookup question from monolith                       │
+│   - Build QuestionContext                               │
+│   - Get/create DynamicContractExecutor                  │
+│   - Derive base_slot (D{1-6}-Q{1-5})                    │
+│   - Execute methods                                     │
+│   - Collect TaskResult                                  │
+│ • Return 300 TaskResult objects                         │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼ 300 TaskResult objects
+┌─────────────────────────────────────────────────────────┐
+│ Phase 2a: Argument Router (if needed)                   │
 │ • Validates payload signature                           │
 │ • Routes to appropriate executor                        │
 │ • Enforces exhaustive dispatch                          │

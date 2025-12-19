@@ -11,6 +11,7 @@ This package provides the canonical Phase 2 implementation with:
 - Deterministic carving of 60 CPP chunks into 300 micro-answers
 - EvidenceNexus integration for graph-based evidence synthesis
 - Phase 2.1 Irrigation orchestration (Question→Chunk→Task→Plan)
+- Phase 2.2 Task execution (ExecutionPlan → 300 task results)
 - Full provenance tracking and validation
 - Strict cardinality contracts
 """
@@ -48,6 +49,15 @@ from .phase2_d_irrigation_orchestrator import (
     OrchestrationError,
     build_irrigation_plan,
 )
+from .phase2_e_task_executor import (
+    TaskExecutor,
+    DynamicContractExecutor,
+    TaskResult,
+    QuestionContext,
+    ExecutionError,
+    CalibrationError,
+    execute_tasks,
+)
 
 __all__ = [
     # Router
@@ -78,4 +88,12 @@ __all__ = [
     "ChunkRoutingResult",
     "OrchestrationError",
     "build_irrigation_plan",
+    # Task Execution (Phase 2.2)
+    "TaskExecutor",
+    "DynamicContractExecutor",
+    "TaskResult",
+    "QuestionContext",
+    "ExecutionError",
+    "CalibrationError",
+    "execute_tasks",
 ]
