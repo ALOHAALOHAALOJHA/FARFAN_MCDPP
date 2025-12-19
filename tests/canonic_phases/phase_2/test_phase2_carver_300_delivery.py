@@ -13,7 +13,6 @@ from src.canonic_phases.phase_2.phase2_b_carver import (
     CPPChunk,
     MicroAnswer,
     CarverError,
-    ProvenanceError,
     carve_chunks,
 )
 from src.canonic_phases.phase_2.constants.phase2_constants import (
