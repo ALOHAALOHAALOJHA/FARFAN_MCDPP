@@ -331,10 +331,16 @@ The canonical implementation **complements** the existing `Phase_two` implementa
 
 ### Short-Term Actions (Next Sprint)
 
-1. **Implement method executor integration** (HIGH)
-2. **Create comprehensive integration tests** (HIGH)
-3. **Implement specialized contract loader** (MEDIUM)
-4. **Enforce SignalRegistry initialization** (MEDIUM)
+1. ✅ **Implement specialized contract loader** (MEDIUM) - **COMPLETED**
+   - Extended `base_executor_with_contract.py` with `load_all_contracts()`
+   - Batch loads all 300 v3 contracts with caching and validation
+   - See `CONTRACT_LOADER_IMPLEMENTATION.md` for details
+2. ✅ **Enforce SignalRegistry initialization** (MEDIUM) - **COMPLETED**
+   - Made `signal_registry` required parameter (no `| None`, no default)
+   - Added runtime validation in Phase 2.1 and Phase 2.2
+   - See `SIGNAL_REGISTRY_ENFORCEMENT.md` for details
+3. **Create comprehensive integration tests** (HIGH) - **IN PROGRESS**
+4. **Integrate ValidationOrchestrator** (MEDIUM) - **PENDING**
 
 ### Long-Term Actions (Future Sprints)
 

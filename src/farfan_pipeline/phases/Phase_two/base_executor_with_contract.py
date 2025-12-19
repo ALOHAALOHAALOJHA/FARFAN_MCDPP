@@ -673,6 +673,183 @@ class BaseExecutorWithContract(ABC):
                     f"Execution aborted by failure contract due to '{condition}'. Emit code: {emit_code}"
                 )
 
+    @classmethod
+    def load_all_contracts(
+        cls,
+        contracts_dir: str | None = None,
+        version: str = "v3",
+        validate_schema: bool = True,
+    ) -> list[dict[str, Any]]:
+        """Load all 300 specialized contracts from directory.
+        
+        Batch loads Q001.v3.json through Q300.v3.json with validation and caching.
+        Leverages existing _load_contract() infrastructure for consistency.
+        
+        Args:
+            contracts_dir: Directory containing specialized contracts.
+                          Defaults to PROJECT_ROOT/../executor_contracts/specialized/
+            version: Contract version to load ("v2" or "v3")
+            validate_schema: Whether to validate contracts against JSON schema
+        
+        Returns:
+            List of 300 contract dicts, ordered by question_id (Q001-Q300)
+        
+        Raises:
+            FileNotFoundError: If contracts directory doesn't exist
+            ValueError: If any contract fails to load or validate
+        
+        Example:
+            >>> contracts = BaseExecutorWithContract.load_all_contracts()
+            >>> len(contracts)
+            300
+            >>> contracts[0]['identity']['question_id']
+            'Q001'
+        """
+        from pathlib import Path
+        
+        if contracts_dir is None:
+            contracts_dir = str(PROJECT_ROOT / ".." / "executor_contracts" / "specialized")
+        
+        contracts_path = Path(contracts_dir)
+        if not contracts_path.exists():
+            raise FileNotFoundError(
+                f"Contracts directory not found: {contracts_dir}"
+            )
+        
+        contracts = []
+        failed_loads = []
+        
+        for q_num in range(1, 301):
+            question_id = f"Q{q_num:03d}"
+            try:
+                # Use existing _load_contract infrastructure
+                contract = cls._load_contract_from_file(
+                    question_id=question_id,
+                    contracts_dir=contracts_dir,
+                    version=version,
+                    validate_schema=validate_schema
+                )
+                contracts.append(contract)
+            except Exception as e:
+                failed_loads.append(f"{question_id}: {str(e)}")
+        
+        if failed_loads:
+            error_msg = (
+                f"Failed to load {len(failed_loads)} contracts:\n"
+                + "\n".join(failed_loads[:10])
+            )
+            if len(failed_loads) > 10:
+                error_msg += f"\n... and {len(failed_loads) - 10} more"
+            raise ValueError(error_msg)
+        
+        return contracts
+
+    @classmethod
+    def _load_contract_from_file(
+        cls,
+        question_id: str,
+        contracts_dir: str,
+        version: str = "v3",
+        validate_schema: bool = True
+    ) -> dict[str, Any]:
+        """Load a single contract from file with caching and validation.
+        
+        Helper method for load_all_contracts() that handles individual contract loading.
+        Integrates with existing _contract_cache infrastructure.
+        
+        Args:
+            question_id: Question identifier (e.g., "Q001")
+            contracts_dir: Directory containing contract files
+            version: Contract version ("v2" or "v3")
+            validate_schema: Whether to validate against JSON schema
+        
+        Returns:
+            Contract dictionary
+        
+        Raises:
+            FileNotFoundError: If contract file doesn't exist
+            json.JSONDecodeError: If contract JSON is invalid
+            ValueError: If contract fails schema validation
+        """
+        from pathlib import Path
+        
+        cache_key = f"{question_id}_{version}_{contracts_dir}"
+        
+        if cache_key in cls._contract_cache:
+            return cls._contract_cache[cache_key]
+        
+        contracts_path = Path(contracts_dir)
+        ext = f".{version}.json" if version == "v3" else ".json"
+        contract_file = contracts_path / f"{question_id}{ext}"
+        
+        if not contract_file.exists():
+            raise FileNotFoundError(
+                f"Contract file not found: {contract_file}"
+            )
+        
+        with open(contract_file, "r", encoding="utf-8") as f:
+            contract = json.load(f)
+        
+        if validate_schema and version == "v3":
+            cls._validate_contract_schema(contract, question_id)
+        
+        cls._contract_cache[cache_key] = contract
+        return contract
+
+    @classmethod
+    def _validate_contract_schema(
+        cls,
+        contract: dict[str, Any],
+        question_id: str
+    ) -> None:
+        """Validate contract against v3 JSON schema.
+        
+        Args:
+            contract: Contract dictionary to validate
+            question_id: Question identifier for error messages
+        
+        Raises:
+            ValueError: If contract fails schema validation
+        """
+        required_v3_keys = [
+            "identity",
+            "executor_binding",
+            "method_binding",
+            "question_context",
+            "evidence_assembly",
+            "output_contract"
+        ]
+        
+        missing_keys = [key for key in required_v3_keys if key not in contract]
+        if missing_keys:
+            raise ValueError(
+                f"Contract {question_id} missing required v3 keys: {missing_keys}"
+            )
+        
+        identity = contract.get("identity", {})
+        if identity.get("question_id") != question_id:
+            raise ValueError(
+                f"Contract identity mismatch: expected {question_id}, "
+                f"got {identity.get('question_id')}"
+            )
+
+    @classmethod
+    def clear_contract_cache(cls) -> None:
+        """Clear the contract cache.
+        
+        Useful for testing or when contracts are updated on disk.
+        """
+        cls._contract_cache.clear()
+
+    @classmethod
+    def get_cached_contract_count(cls) -> int:
+        """Get number of contracts currently in cache.
+        
+        Returns:
+            Number of cached contracts
+        """
+        return len(cls._contract_cache)
+
     def execute(
         self,
         document: PreprocessedDocument,
