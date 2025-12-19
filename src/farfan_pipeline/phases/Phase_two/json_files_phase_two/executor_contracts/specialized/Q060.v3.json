@@ -1,219 +1,22 @@
 {
-  "identity": {
-    "base_slot": "D6-Q5",
-    "question_id": "Q060",
-    "dimension_id": "DIM06",
-    "policy_area_id": "PA10",
-    "contract_version": "3.0.0",
-    "contract_hash": "f456d71e13731ae48d864142d74b91ae43eaf84364c31133c4d6d3c04a4d0695",
-    "created_at": "2025-11-28T03:50:05.986564+00:00",
-    "validated_against_schema": "executor_contract.v3.schema.json",
-    "cluster_id": "CL04",
-    "question_global": 60,
-    "updated_at": "2025-12-18T07:16:05.997799+00:00"
+  "calibration": {
+    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
+    "source": {
+      "canonical_spec": "canonic_calibration_methods.md",
+      "fusion_specification": "config/fusion_specification.json",
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "layer_calibrations_dir": "config/layer_calibrations/"
+    },
+    "status": "placeholder"
   },
-  "executor_binding": {
-    "executor_class": "D6_Q5_Executor",
-    "executor_module": "farfan_core.core.orchestrator.executors"
+  "compatibility": {
+    "method_executor_min_version": "TODO_VERSION",
+    "orchestrator_min_version": "TODO_VERSION",
+    "phase2_types_version": "TODO_VERSION",
+    "questionnaire_monolith_version": "3.0.0",
+    "signal_registry_min_version": "TODO_VERSION"
   },
-  "method_binding": {
-    "orchestration_mode": "multi_method_pipeline",
-    "method_count": 9,
-    "methods": [
-      {
-        "class_name": "CausalExtractor",
-        "method_name": "_calculate_language_specificity",
-        "priority": 1,
-        "provides": "causal_extraction.calculate_language_specificity",
-        "role": "_calculate_language_specificity_calculation",
-        "description": "CausalExtractor._calculate_language_specificity"
-      },
-      {
-        "class_name": "CausalExtractor",
-        "method_name": "_assess_temporal_coherence",
-        "priority": 2,
-        "provides": "causal_extraction.assess_temporal_coherence",
-        "role": "_assess_temporal_coherence_execution",
-        "description": "CausalExtractor._assess_temporal_coherence"
-      },
-      {
-        "class_name": "TextMiningEngine",
-        "method_name": "diagnose_critical_links",
-        "priority": 3,
-        "provides": "text_mining.diagnose_critical_links",
-        "role": "diagnose_critical_links_diagnosis",
-        "description": "TextMiningEngine.diagnose_critical_links"
-      },
-      {
-        "class_name": "CausalInferenceSetup",
-        "method_name": "identify_failure_points",
-        "priority": 4,
-        "provides": "causalinferencesetup.identify_failure_points",
-        "role": "identify_failure_points_execution",
-        "description": "CausalInferenceSetup.identify_failure_points"
-      },
-      {
-        "class_name": "CausalInferenceSetup",
-        "method_name": "_get_dynamics_pattern",
-        "priority": 5,
-        "provides": "causalinferencesetup.get_dynamics_pattern",
-        "role": "_get_dynamics_pattern_execution",
-        "description": "CausalInferenceSetup._get_dynamics_pattern"
-      },
-      {
-        "class_name": "SemanticProcessor",
-        "method_name": "chunk_text",
-        "priority": 6,
-        "provides": "semantic_processing.chunk_text",
-        "role": "chunk_text_chunking",
-        "description": "SemanticProcessor.chunk_text"
-      },
-      {
-        "class_name": "SemanticProcessor",
-        "method_name": "_detect_pdm_structure",
-        "priority": 7,
-        "provides": "semantic_processing.detect_pdm_structure",
-        "role": "_detect_pdm_structure_detection",
-        "description": "SemanticProcessor._detect_pdm_structure"
-      },
-      {
-        "class_name": "SemanticProcessor",
-        "method_name": "_detect_table",
-        "priority": 8,
-        "provides": "semantic_processing.detect_table",
-        "role": "_detect_table_detection",
-        "description": "SemanticProcessor._detect_table"
-      },
-      {
-        "class_name": "AdaptivePriorCalculator",
-        "method_name": "generate_traceability_record",
-        "priority": 9,
-        "provides": "adaptivepriorcalculator.generate_traceability_record",
-        "role": "generate_traceability_record_execution",
-        "description": "AdaptivePriorCalculator.generate_traceability_record"
-      }
-    ],
-    "note": "All 9 methods extracted from D6_Q5_Executor in executors.py"
-  },
-  "question_context": {
-    "question_text": "¿La lógica causal para la migración considera el contexto, reconociendo 'grupos afectados' (NNA no acompañados, mujeres migrantes, caminantes) y 'restricciones' territoriales o de seguridad?",
-    "question_type": "micro",
-    "scoring_modality": "TYPE_A",
-    "modality": "count_and_scale",
-    "expected_output_type": "score",
-    "patterns": [
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q060-000",
-        "match_type": "REGEX",
-        "pattern": "enfoque diferencial|enfoque de género|enfoque etario",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q060-001",
-        "match_type": "REGEX",
-        "pattern": "Niños, Niñas y Adolescentes (NNA) no acompañados o separados",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q060-002",
-        "match_type": "REGEX",
-        "pattern": "mujeres gestantes o lactantes|víctimas de VBG en la ruta migratoria",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q060-003",
-        "match_type": "REGEX",
-        "pattern": "caminantes|población en tránsito con alta vulnerabilidad",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q060-004",
-        "match_type": "REGEX",
-        "pattern": "restricciones de seguridad en la ruta (ej. Darién)|presencia de grupos criminales",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q060-005",
-        "match_type": "REGEX",
-        "pattern": "contexto de frontera|dinámicas de economía informal",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
-      },
-      {
-        "category": "TERRITORIAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q060-006",
-        "match_type": "REGEX",
-        "pattern": "estrategias territorializadas|acciones adaptadas al tipo de flujo (tránsito vs. permanencia)",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
-      }
-    ],
-    "expected_elements": [
-      {
-        "required": true,
-        "type": "analisis_contextual",
-        "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "enfoque_diferencial",
-        "minimum": 1
-      }
-    ],
-    "validations": {},
+  "error_handling": {
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
@@ -221,70 +24,15 @@
       ],
       "emit_code": "ABORT-Q060-REQ"
     },
-    "policy_area_label": "Migración transfronteriza",
-    "dimension_label": "CAUSALIDAD"
-  },
-  "signal_requirements": {
-    "mandatory_signals": [
-      "cultural_assets",
-      "differential_needs",
-      "heritage_protection",
-      "territorial_diagnosis",
-      "tourism_infrastructure"
-    ],
-    "optional_signals": [
-      "cultural_programming",
-      "economic_impact",
-      "equity_considerations",
-      "participation_evidence",
-      "visitor_statistics"
-    ],
-    "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "on_assembly_failure": "propagate_with_trace",
+    "on_method_failure": "propagate_with_trace",
+    "on_method_not_found": "raise"
   },
   "evidence_assembly": {
-    "module": "canonic_phases.Phase_two.evidence_nexus",
-    "class_name": "EvidenceNexus",
-    "method_name": "assemble",
-    "output_schema": {
-      "type": "object",
-      "required": [
-        "elements",
-        "raw_results"
-      ],
-      "properties": {
-        "elements": {
-          "type": "array",
-          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta."
-        },
-        "raw_results": {
-          "type": "object",
-          "properties": {
-            "confidence_scores": {
-              "type": "array",
-              "description": "Scores de confianza usados por el scorer."
-            },
-            "semantic_similarity": {
-              "description": "Métrica de similitud semántica (si aplica)."
-            },
-            "pattern_matches": {
-              "type": "object",
-              "description": "Matches de patrones esperados vs texto."
-            },
-            "metadata": {
-              "type": "object",
-              "description": "Metadatos arbitrarios pasados al scorer."
-            }
-          },
-          "additionalProperties": true
-        }
-      },
-      "additionalProperties": true
-    },
     "assembly_rules": [
       {
-        "target": "elements_found",
+        "description": "Combine evidence from 9 methods",
+        "merge_strategy": "concat",
         "sources": [
           "adaptivepriorcalculator.generate_traceability_record",
           "causal_extraction.assess_temporal_coherence",
@@ -296,120 +44,879 @@
           "semantic_processing.detect_table",
           "text_mining.diagnose_critical_links"
         ],
-        "merge_strategy": "concat",
-        "description": "Combine evidence from 9 methods"
+        "target": "elements_found"
       },
       {
-        "target": "confidence_scores",
-        "sources": [],
-        "merge_strategy": "weighted_mean",
         "default": [],
-        "description": "Aggregate confidence scores across all methods"
+        "description": "Aggregate confidence scores across all methods",
+        "merge_strategy": "weighted_mean",
+        "sources": [],
+        "target": "confidence_scores"
       },
       {
-        "target": "pattern_matches",
+        "default": {},
+        "description": "Combine pattern matches from text mining methods",
+        "merge_strategy": "concat",
         "sources": [
           "text_mining.diagnose_critical_links"
         ],
-        "merge_strategy": "concat",
-        "default": {},
-        "description": "Combine pattern matches from text mining methods"
+        "target": "pattern_matches"
       },
       {
-        "target": "metadata",
-        "sources": [],
+        "description": "Combine metadata from all 17 methods for full traceability",
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "sources": [],
+        "target": "metadata"
       }
     ],
-    "engine": "EVIDENCE_NEXUS"
-  },
-  "output_contract": {
-    "result_type": "Phase2QuestionResult",
-    "schema": {
-      "type": "object",
-      "required": [
-        "base_slot",
-        "question_id",
-        "question_global",
-        "evidence",
-        "validation"
-      ],
+    "class_name": "EvidenceNexus",
+    "engine": "EVIDENCE_NEXUS",
+    "method_name": "assemble",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "output_schema": {
+      "additionalProperties": true,
       "properties": {
-        "base_slot": {
-          "type": "string",
-          "description": "Debe coincidir con identity.base_slot.",
-          "const": "D6-Q5"
+        "elements": {
+          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta.",
+          "type": "array"
         },
-        "question_id": {
-          "type": "string",
-          "description": "Debe coincidir con identity.question_id.",
-          "const": "Q060"
-        },
-        "question_global": {
-          "type": "integer",
-          "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 60
-        },
-        "policy_area_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA10"
-        },
-        "dimension_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": "DIM06"
-        },
-        "cluster_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": "CL04"
-        },
-        "evidence": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
-          "additionalProperties": true
-        },
-        "validation": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
-          "additionalProperties": true
-        },
-        "trace": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
-          "additionalProperties": true
-        },
-        "metadata": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
-          "additionalProperties": true
+        "raw_results": {
+          "additionalProperties": true,
+          "properties": {
+            "confidence_scores": {
+              "description": "Scores de confianza usados por el scorer.",
+              "type": "array"
+            },
+            "metadata": {
+              "description": "Metadatos arbitrarios pasados al scorer.",
+              "type": "object"
+            },
+            "pattern_matches": {
+              "description": "Matches de patrones esperados vs texto.",
+              "type": "object"
+            },
+            "semantic_similarity": {
+              "description": "Métrica de similitud semántica (si aplica)."
+            }
+          },
+          "type": "object"
         }
       },
-      "additionalProperties": false
+      "required": [
+        "elements",
+        "raw_results"
+      ],
+      "type": "object"
+    }
+  },
+  "executor_binding": {
+    "executor_class": "D6_Q5_Executor",
+    "executor_module": "farfan_core.core.orchestrator.executors"
+  },
+  "fallback_strategy": {
+    "note": "No fallback strategies enabled. All failures propagate according to error_handling configuration.",
+    "use_heuristics": false,
+    "use_llm_direct": false
+  },
+  "human_answer_structure": {
+    "assembly_flow": {
+      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
+      "step_3_validation": "ValidationEngine checks against validation_rules",
+      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
     },
+    "concrete_example": {
+      "bayesian_insights": {
+        "metrics_with_high_uncertainty": [],
+        "significant_comparisons": 1
+      },
+      "confidence_scores": {
+        "by_method": {
+          "BayesianNumericalAnalyzer": 0.92,
+          "CausalExtractor": 0.79,
+          "FinancialAuditor": 0.94,
+          "IndustrialPolicyProcessor": 0.91,
+          "PDETMunicipalPlanAnalyzer": 0.88,
+          "PolicyContradictionDetector": 0.9,
+          "SemanticProcessor": 0.85,
+          "TextMiningEngine": 0.83
+        },
+        "max": 0.98,
+        "mean": 0.876,
+        "min": 0.72,
+        "std": 0.089
+      },
+      "contradictions": {
+        "found": 0,
+        "interpretation": "No statistical contradictions in quantitative claims",
+        "tests_performed": 15
+      },
+      "critical_links": [
+        {
+          "cause": "alta tasa de VBG",
+          "coherence": 0.82,
+          "criticality": 0.87,
+          "effect": "baja autonomía económica"
+        }
+      ],
+      "elements_found": [
+        {
+          "confidence": 0.95,
+          "element_id": "E-001",
+          "position": {
+            "end": 145,
+            "start": 123
+          },
+          "sentence_id": 45,
+          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
+          "source_sentence": "según datos de DANE para el año 2022",
+          "type": "fuentes_oficiales",
+          "value": "DANE"
+        },
+        {
+          "bayesian_posterior": {
+            "ci_95": [
+              0.11,
+              0.145
+            ],
+            "mean": 0.123
+          },
+          "confidence": 0.89,
+          "element_id": "E-002",
+          "normalized_value": 12.3,
+          "sentence_id": 45,
+          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
+          "type": "indicadores_cuantitativos",
+          "unit": "%",
+          "value": "tasa de VBG: 12.3%"
+        },
+        {
+          "confidence": 0.92,
+          "element_id": "E-003",
+          "source_method": "TextMiningEngine.diagnose_critical_links",
+          "type": "series_temporales_años",
+          "years": [
+            2020,
+            2021,
+            2022
+          ]
+        },
+        {
+          "confidence": 0.88,
+          "coverage": "municipal - zona rural y urbana",
+          "element_id": "E-004",
+          "source_method": "CausalExtractor._parse_goal_context",
+          "type": "cobertura_territorial_especificada"
+        }
+      ],
+      "elements_summary": {
+        "by_type": {
+          "causal_links": 5,
+          "cobertura_territorial_especificada": 1,
+          "financial_amounts": 8,
+          "fuentes_oficiales": 5,
+          "indicadores_cuantitativos": 12,
+          "policy_goals": 7,
+          "series_temporales_años": 4
+        },
+        "total_count": 38
+      },
+      "financial_summary": {
+        "amounts_found": 12,
+        "by_category": {
+          "SGR": 250000000.0,
+          "recursos_propios": 180000000.0
+        },
+        "total_budget_cop": 850000000.0
+      },
+      "goals_summary": {
+        "goals_with_complete_context": 4,
+        "quantified_goals": 5,
+        "total_goals": 7
+      },
+      "metadata": {
+        "analysis_timestamp": "2025-11-26T12:34:56Z",
+        "document_length": 15230,
+        "execution_time_ms": 2845,
+        "methods_executed": 9
+      },
+      "pattern_matches": [
+        {
+          "avg_confidence": 0.87,
+          "count": 3,
+          "pattern_id": "PAT-Q001-000"
+        },
+        {
+          "avg_confidence": 0.95,
+          "count": 5,
+          "pattern_id": "PAT-Q001-002"
+        }
+      ],
+      "semantic_processing": {
+        "avg_semantic_similarity_to_query": 0.78,
+        "chunks_created": 45,
+        "embeddings_generated": 45
+      }
+    },
+    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "evidence_structure_schema": {
+      "description": "Assembled evidence after all methods complete",
+      "properties": {
+        "bayesian_insights": {
+          "description": "Results from BayesianNumericalAnalyzer",
+          "properties": {
+            "metrics_with_high_uncertainty": {
+              "type": "array"
+            },
+            "significant_comparisons": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "confidence_scores": {
+          "description": "Aggregated confidence metrics (weighted_mean strategy)",
+          "properties": {
+            "by_method": {
+              "description": "Average confidence per analyzer class",
+              "type": "object"
+            },
+            "max": {
+              "type": "number"
+            },
+            "mean": {
+              "type": "number"
+            },
+            "min": {
+              "type": "number"
+            },
+            "std": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "contradictions": {
+          "description": "Results from PolicyContradictionDetector",
+          "properties": {
+            "found": {
+              "type": "integer"
+            },
+            "interpretation": {
+              "type": "string"
+            },
+            "tests_performed": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "critical_links": {
+          "description": "Causal links extracted by TextMiningEngine",
+          "items": {
+            "properties": {
+              "cause": {
+                "type": "string"
+              },
+              "coherence": {
+                "type": "number"
+              },
+              "criticality": {
+                "type": "number"
+              },
+              "effect": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "elements_found": {
+          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
+          "example_count": "Expected 15-50 elements for a complete diagnostic",
+          "items": {
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "context": {
+                "type": "string"
+              },
+              "element_id": {
+                "example": "E-001",
+                "type": "string"
+              },
+              "sentence_id": {
+                "type": "integer"
+              },
+              "source_method": {
+                "example": "IndustrialPolicyProcessor._extract_point_evidence",
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "fuentes_oficiales",
+                  "indicadores_cuantitativos",
+                  "series_temporales_años",
+                  "cobertura_territorial_especificada",
+                  "financial_amounts",
+                  "policy_goals",
+                  "causal_links"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "example": "DANE",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "elements_summary": {
+          "properties": {
+            "by_type": {
+              "properties": {
+                "cobertura_territorial_especificada": {
+                  "minimum_expected": 1,
+                  "type": "integer"
+                },
+                "fuentes_oficiales": {
+                  "minimum_expected": 2,
+                  "type": "integer"
+                },
+                "indicadores_cuantitativos": {
+                  "minimum_expected": 3,
+                  "type": "integer"
+                },
+                "series_temporales_años": {
+                  "minimum_expected": 3,
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "total_count": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "financial_summary": {
+          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
+          "properties": {
+            "amounts_found": {
+              "type": "integer"
+            },
+            "by_category": {
+              "properties": {
+                "SGR": {
+                  "type": "number"
+                },
+                "recursos_propios": {
+                  "type": "number"
+                },
+                "transferencias": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "total_budget_cop": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "goals_summary": {
+          "description": "Policy goals extracted by CausalExtractor",
+          "properties": {
+            "goals_with_complete_context": {
+              "type": "integer"
+            },
+            "quantified_goals": {
+              "type": "integer"
+            },
+            "total_goals": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "metadata": {
+          "properties": {
+            "analysis_timestamp": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "document_length": {
+              "type": "integer"
+            },
+            "execution_time_ms": {
+              "type": "number"
+            },
+            "methods_executed": {
+              "const": 9,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "pattern_matches": {
+          "description": "Aggregated pattern matches from text mining methods",
+          "items": {
+            "properties": {
+              "avg_confidence": {
+                "type": "number"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "pattern_id": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "semantic_processing": {
+          "description": "Results from SemanticProcessor",
+          "properties": {
+            "avg_semantic_similarity_to_query": {
+              "type": "number"
+            },
+            "chunks_created": {
+              "type": "integer"
+            },
+            "embeddings_generated": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "template_variable_bindings": {
+      "description": "These variables are available for human_readable_output template",
+      "variables": {
+        "{evidence.confidence_scores.mean}": "87.6%",
+        "{evidence.elements_found_count}": 38,
+        "{evidence.official_sources_count}": 5,
+        "{evidence.pattern_matches_count}": 14,
+        "{evidence.quantitative_indicators_count}": 12,
+        "{evidence.temporal_series_count}": 4,
+        "{evidence.territorial_coverage}": "municipal - zona rural y urbana",
+        "{quality_level}": "ALTO",
+        "{score}": "Calculated by scorer based on elements"
+      }
+    },
+    "usage_notes": {
+      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence.",
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_validators": "Use this to verify that actual execution output matches expected structure."
+    },
+    "validation_against_expected_elements": {
+      "cobertura_territorial_especificada": {
+        "example_element_id": "E-004",
+        "found_in_example": true,
+        "required": true
+      },
+      "fuentes_oficiales": {
+        "found_in_example": 5,
+        "minimum": 2,
+        "status": "PASS"
+      },
+      "indicadores_cuantitativos": {
+        "found_in_example": 12,
+        "minimum": 3,
+        "status": "PASS"
+      },
+      "overall_validation_result": "PASS - All required and minimum elements present",
+      "series_temporales_años": {
+        "found_in_example": 4,
+        "minimum": 3,
+        "status": "PASS"
+      }
+    }
+  },
+  "identity": {
+    "base_slot": "D6-Q5",
+    "cluster_id": "CL04",
+    "contract_hash": "f456d71e13731ae48d864142d74b91ae43eaf84364c31133c4d6d3c04a4d0695",
+    "contract_version": "3.0.0",
+    "created_at": "2025-11-28T03:50:05.986564+00:00",
+    "dimension_id": "DIM06",
+    "policy_area_id": "PA10",
+    "question_global": 60,
+    "question_id": "Q060",
+    "updated_at": "2025-12-18T07:16:05.997799+00:00",
+    "validated_against_schema": "executor_contract.v3.schema.json"
+  },
+  "method_binding": {
+    "method_count": 9,
+    "methods": [
+      {
+        "class_name": "CausalExtractor",
+        "description": "CausalExtractor._calculate_language_specificity",
+        "method_name": "_calculate_language_specificity",
+        "priority": 1,
+        "provides": "causal_extraction.calculate_language_specificity",
+        "role": "_calculate_language_specificity_calculation"
+      },
+      {
+        "class_name": "CausalExtractor",
+        "description": "CausalExtractor._assess_temporal_coherence",
+        "method_name": "_assess_temporal_coherence",
+        "priority": 2,
+        "provides": "causal_extraction.assess_temporal_coherence",
+        "role": "_assess_temporal_coherence_execution"
+      },
+      {
+        "class_name": "TextMiningEngine",
+        "description": "TextMiningEngine.diagnose_critical_links",
+        "method_name": "diagnose_critical_links",
+        "priority": 3,
+        "provides": "text_mining.diagnose_critical_links",
+        "role": "diagnose_critical_links_diagnosis"
+      },
+      {
+        "class_name": "CausalInferenceSetup",
+        "description": "CausalInferenceSetup.identify_failure_points",
+        "method_name": "identify_failure_points",
+        "priority": 4,
+        "provides": "causalinferencesetup.identify_failure_points",
+        "role": "identify_failure_points_execution"
+      },
+      {
+        "class_name": "CausalInferenceSetup",
+        "description": "CausalInferenceSetup._get_dynamics_pattern",
+        "method_name": "_get_dynamics_pattern",
+        "priority": 5,
+        "provides": "causalinferencesetup.get_dynamics_pattern",
+        "role": "_get_dynamics_pattern_execution"
+      },
+      {
+        "class_name": "SemanticProcessor",
+        "description": "SemanticProcessor.chunk_text",
+        "method_name": "chunk_text",
+        "priority": 6,
+        "provides": "semantic_processing.chunk_text",
+        "role": "chunk_text_chunking"
+      },
+      {
+        "class_name": "SemanticProcessor",
+        "description": "SemanticProcessor._detect_pdm_structure",
+        "method_name": "_detect_pdm_structure",
+        "priority": 7,
+        "provides": "semantic_processing.detect_pdm_structure",
+        "role": "_detect_pdm_structure_detection"
+      },
+      {
+        "class_name": "SemanticProcessor",
+        "description": "SemanticProcessor._detect_table",
+        "method_name": "_detect_table",
+        "priority": 8,
+        "provides": "semantic_processing.detect_table",
+        "role": "_detect_table_detection"
+      },
+      {
+        "class_name": "AdaptivePriorCalculator",
+        "description": "AdaptivePriorCalculator.generate_traceability_record",
+        "method_name": "generate_traceability_record",
+        "priority": 9,
+        "provides": "adaptivepriorcalculator.generate_traceability_record",
+        "role": "generate_traceability_record_execution"
+      }
+    ],
+    "note": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+    "orchestration_mode": "multi_method_pipeline"
+  },
+  "method_outputs": {
+    "AdaptivePriorCalculator.generate_traceability_record": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.generate_traceability_record",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from generate_traceability_record",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "adaptivepriorcalculator.generate_traceability_record"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "CausalExtractor._assess_temporal_coherence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._assess_temporal_coherence",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from _assess_temporal_coherence",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "causal_extraction.assess_temporal_coherence"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "CausalExtractor._calculate_language_specificity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_language_specificity",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from _calculate_language_specificity",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "causal_extraction.calculate_language_specificity"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "CausalInferenceSetup._get_dynamics_pattern": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup._get_dynamics_pattern",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from _get_dynamics_pattern",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "causalinferencesetup.get_dynamics_pattern"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "CausalInferenceSetup.identify_failure_points": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup.identify_failure_points",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from identify_failure_points",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "causalinferencesetup.identify_failure_points"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "SemanticProcessor._detect_pdm_structure": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor._detect_pdm_structure",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from _detect_pdm_structure",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "semantic_processing.detect_pdm_structure"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "SemanticProcessor._detect_table": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor._detect_table",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from _detect_table",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "semantic_processing.detect_table"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "SemanticProcessor.chunk_text": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor.chunk_text",
+        "properties": {
+          "chunks": {
+            "description": "Text chunks",
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "semantic_processing.chunk_text"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "TextMiningEngine.diagnose_critical_links": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine.diagnose_critical_links",
+        "properties": {
+          "context": {
+            "description": "Contextual information",
+            "type": "object"
+          },
+          "critical_links": {
+            "description": "List of critical causal links",
+            "type": "array"
+          },
+          "link_scores": {
+            "description": "Criticality scores for each link",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "text_mining.diagnose_critical_links"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "class_name": "EvidenceNexus",
+        "epistemological_foundation": {
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "justification": "Chosen because CAUSALIDAD in PA10 must explain why the plan's commitments are coherent, measurable, and traceable to evidence.",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "paradigm": "critical_realist",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ]
+        },
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "technical_approach": {
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation.",
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "method_type": "graph_based_evidence_fusion",
+          "steps": [
+            {
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope.",
+              "step": 1
+            },
+            {
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements.",
+              "step": 2
+            },
+            {
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation.",
+              "step": 3
+            },
+            {
+              "description": "Compute completeness, gaps, and confidence interval for Q060/D6-Q5.",
+              "step": 4
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "output_contract": {
     "consumer_modules": [
       "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
       "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
@@ -417,529 +924,791 @@
     ],
     "human_readable_output": {
       "format": "markdown",
+      "methodological_depth": {
+        "method_combination_logic": {
+          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
+          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
+          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
+          "trade_offs": [
+            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
+            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
+            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+          ]
+        },
+        "methods": [
+          {
+            "class_name": "CausalExtractor",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q5 analysis",
+              "ontological_basis": "Analysis via CausalExtractor._calculate_language_specificity",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "theoretical_framework": [
+                "Method _calculate_language_specificity implements structured analysis for D6-Q5"
+              ]
+            },
+            "method_name": "_calculate_language_specificity",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use _calculate_language_specificity results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from _calculate_language_specificity"
+              }
+            },
+            "priority": 1,
+            "provides": "causal_extraction.calculate_language_specificity",
+            "role": "_calculate_language_specificity_calculation",
+            "technical_approach": {
+              "algorithm": "CausalExtractor._calculate_language_specificity algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `CausalExtractor._calculate_language_specificity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.calculate_language_specificity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "CausalExtractor",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q5 analysis",
+              "ontological_basis": "Analysis via CausalExtractor._assess_temporal_coherence",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "theoretical_framework": [
+                "Method _assess_temporal_coherence implements structured analysis for D6-Q5"
+              ]
+            },
+            "method_name": "_assess_temporal_coherence",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use _assess_temporal_coherence results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from _assess_temporal_coherence"
+              }
+            },
+            "priority": 2,
+            "provides": "causal_extraction.assess_temporal_coherence",
+            "role": "_assess_temporal_coherence",
+            "technical_approach": {
+              "algorithm": "CausalExtractor._assess_temporal_coherence algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `CausalExtractor._assess_temporal_coherence` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.assess_temporal_coherence'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "TextMiningEngine",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-interpretive: Knowledge about policy mechanisms emerges from detecting linguistic markers of causality in policy documents",
+              "justification": "Diagnosing critical causal links in baseline diagnostics reveals whether policymakers understand the causal pathways between gender inequalities and their determinants",
+              "ontological_basis": "Texts contain latent causal structures that can be detected through linguistic patterns indicating causal relationships (because, therefore, leads to, etc.)",
+              "paradigm": "Critical text mining with causal link detection",
+              "theoretical_framework": [
+                "Causal discourse analysis: Texts reveal causal beliefs through specific linguistic constructions (Fairclough, 2003)",
+                "Theory of change reconstruction: Policy documents implicitly encode theories of change that can be extracted via causal link detection (Weiss, 1995)"
+              ]
+            },
+            "method_name": "diagnose_critical_links",
+            "output_interpretation": {
+              "actionable_insights": [
+                "If few critical links found: Diagnosis lacks causal depth, may be purely descriptive",
+                "If many links but low criticality: Diagnosis discusses tangential issues, not core gender inequalities"
+              ],
+              "interpretation_guide": {
+                "high_criticality": "≥0.8: Link directly connects to gender inequality outcomes",
+                "low_criticality": "<0.5: Peripheral causal relationship",
+                "medium_criticality": "0.5-0.79: Link relates to intermediate factors"
+              },
+              "output_structure": {
+                "critical_links": "List of detected causal links with source/target entities",
+                "link_scores": "Criticality scores (0-1) based on relevance to gender outcomes"
+              }
+            },
+            "priority": 1,
+            "provides": "text_mining.diagnose_critical_links",
+            "role": "critical_link_diagnosis",
+            "technical_approach": {
+              "algorithm": "Multi-pattern regex matching with context window analysis",
+              "assumptions": [
+                "Causal language reflects causal understanding",
+                "Critical links mention gender-related outcomes"
+              ],
+              "complexity": "O(n*p) where n=sentences, p=causal patterns",
+              "limitations": [
+                "Cannot detect implicit causality without linguistic markers",
+                "May miss causal relationships expressed across distant sentences"
+              ],
+              "method_type": "pattern_based_causal_link_extraction",
+              "steps": [
+                {
+                  "description": "Identify causal connectors (porque, por lo tanto, conduce a, genera, resulta en)",
+                  "step": 1
+                },
+                {
+                  "description": "Extract entities before and after connector (cause → effect)",
+                  "step": 2
+                },
+                {
+                  "description": "Classify link criticality based on proximity to gender indicators",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "CausalInferenceSetup",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q5 analysis",
+              "ontological_basis": "Analysis via CausalInferenceSetup.identify_failure_points",
+              "paradigm": "CausalInferenceSetup analytical paradigm",
+              "theoretical_framework": [
+                "Method identify_failure_points implements structured analysis for D6-Q5"
+              ]
+            },
+            "method_name": "identify_failure_points",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use identify_failure_points results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from identify_failure_points"
+              }
+            },
+            "priority": 4,
+            "provides": "causalinferencesetup.identify_failure_points",
+            "role": "identify_failure_points_identification",
+            "technical_approach": {
+              "algorithm": "CausalInferenceSetup.identify_failure_points algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `CausalInferenceSetup.identify_failure_points` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.identify_failure_points'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "CausalInferenceSetup",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q5 analysis",
+              "ontological_basis": "Analysis via CausalInferenceSetup._get_dynamics_pattern",
+              "paradigm": "CausalInferenceSetup analytical paradigm",
+              "theoretical_framework": [
+                "Method _get_dynamics_pattern implements structured analysis for D6-Q5"
+              ]
+            },
+            "method_name": "_get_dynamics_pattern",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use _get_dynamics_pattern results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from _get_dynamics_pattern"
+              }
+            },
+            "priority": 5,
+            "provides": "causalinferencesetup.get_dynamics_pattern",
+            "role": "_get_dynamics_pattern",
+            "technical_approach": {
+              "algorithm": "CausalInferenceSetup._get_dynamics_pattern algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `CausalInferenceSetup._get_dynamics_pattern` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.get_dynamics_pattern'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "SemanticProcessor",
+            "epistemological_foundation": {
+              "epistemological_stance": "Pragmatism: Chunking strategies are justified by their utility for downstream tasks (embedding, retrieval)",
+              "justification": "Semantic search and embedding require chunked text; good chunking preserves semantic units (paragraphs, sections)",
+              "ontological_basis": "Long documents must be divided into chunks that fit neural model context windows while preserving semantic coherence",
+              "paradigm": "Semantic preprocessing for neural methods",
+              "theoretical_framework": [
+                "Information retrieval: Chunk granularity affects retrieval precision and recall",
+                "Neural model constraints: Transformer models have fixed context windows requiring chunking"
+              ]
+            },
+            "method_name": "chunk_text",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Chunk boundaries split semantic units: Consider different chunking strategy",
+                "Chunks align with document structure: Good chunking"
+              ],
+              "interpretation_guide": {
+                "few_large_chunks": "Document is sparse or unstructured",
+                "many_small_chunks": "Document is dense or highly structured"
+              },
+              "output_structure": {
+                "chunks": "List of {chunk_text, start_pos, end_pos, chunk_id}"
+              }
+            },
+            "priority": 16,
+            "role": "text_chunking_for_embedding",
+            "technical_approach": {
+              "algorithm": "Chunk by paragraph/section with overlap to preserve context",
+              "assumptions": [
+                "Document has clear structural boundaries",
+                "Overlap improves retrieval (empirical assumption)"
+              ],
+              "complexity": "O(n) where n=document length",
+              "limitations": [
+                "Fixed chunk size may split semantic units",
+                "Overlap increases storage and computation"
+              ],
+              "method_type": "semantic_aware_text_chunking",
+              "steps": [
+                {
+                  "description": "Identify natural boundaries (paragraphs, sections)",
+                  "step": 1
+                },
+                {
+                  "description": "Create chunks respecting boundaries, max N tokens",
+                  "step": 2
+                },
+                {
+                  "description": "Add overlap (e.g., 50 tokens) between chunks for continuity",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "SemanticProcessor",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q5 analysis",
+              "ontological_basis": "Analysis via SemanticProcessor._detect_pdm_structure",
+              "paradigm": "SemanticProcessor analytical paradigm",
+              "theoretical_framework": [
+                "Method _detect_pdm_structure implements structured analysis for D6-Q5"
+              ]
+            },
+            "method_name": "_detect_pdm_structure",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use _detect_pdm_structure results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from _detect_pdm_structure"
+              }
+            },
+            "priority": 7,
+            "role": "_detect_pdm_structure_detection",
+            "technical_approach": {
+              "algorithm": "SemanticProcessor._detect_pdm_structure algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Execute _detect_pdm_structure",
+                  "step": 1
+                },
+                {
+                  "description": "Process results",
+                  "step": 2
+                },
+                {
+                  "description": "Return structured output",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "SemanticProcessor",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q5 analysis",
+              "ontological_basis": "Analysis via SemanticProcessor._detect_table",
+              "paradigm": "SemanticProcessor analytical paradigm",
+              "theoretical_framework": [
+                "Method _detect_table implements structured analysis for D6-Q5"
+              ]
+            },
+            "method_name": "_detect_table",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use _detect_table results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from _detect_table"
+              }
+            },
+            "priority": 8,
+            "role": "_detect_table_detection",
+            "technical_approach": {
+              "algorithm": "SemanticProcessor._detect_table algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Execute _detect_table",
+                  "step": 1
+                },
+                {
+                  "description": "Process results",
+                  "step": 2
+                },
+                {
+                  "description": "Return structured output",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "AdaptivePriorCalculator",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q5 analysis",
+              "ontological_basis": "Analysis via AdaptivePriorCalculator.generate_traceability_record",
+              "paradigm": "AdaptivePriorCalculator analytical paradigm",
+              "theoretical_framework": [
+                "Method generate_traceability_record implements structured analysis for D6-Q5"
+              ]
+            },
+            "method_name": "generate_traceability_record",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use generate_traceability_record results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from generate_traceability_record"
+              }
+            },
+            "priority": 9,
+            "role": "generate_traceability_record_generation",
+            "technical_approach": {
+              "algorithm": "AdaptivePriorCalculator.generate_traceability_record algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Execute generate_traceability_record",
+                  "step": 1
+                },
+                {
+                  "description": "Process results",
+                  "step": 2
+                },
+                {
+                  "description": "Return structured output",
+                  "step": 3
+                }
+              ]
+            }
+          }
+        ]
+      },
       "template": {
-        "title": "## Q060 | Análisis D6-Q5: Línea Base Cuantitativa en Derechos de las Mujeres | Migración transfronteriza",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
           "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
           "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
           "**Series temporales**: {evidence.temporal_series_count}",
           "**Cobertura territorial**: {evidence.territorial_coverage}"
         ],
+        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
-        "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
-      },
-      "methodological_depth": {
-        "methods": [
-          {
-            "method_name": "_calculate_language_specificity",
-            "class_name": "CausalExtractor",
-            "priority": 1,
-            "role": "_calculate_language_specificity_calculation",
-            "epistemological_foundation": {
-              "paradigm": "CausalExtractor analytical paradigm",
-              "ontological_basis": "Analysis via CausalExtractor._calculate_language_specificity",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _calculate_language_specificity implements structured analysis for D6-Q5"
-              ],
-              "justification": "This method contributes to D6-Q5 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "CausalExtractor._calculate_language_specificity algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `CausalExtractor._calculate_language_specificity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.calculate_language_specificity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _calculate_language_specificity"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _calculate_language_specificity results for downstream analysis"
-              ]
-            },
-            "provides": "causal_extraction.calculate_language_specificity"
-          },
-          {
-            "method_name": "_assess_temporal_coherence",
-            "class_name": "CausalExtractor",
-            "priority": 2,
-            "role": "_assess_temporal_coherence",
-            "epistemological_foundation": {
-              "paradigm": "CausalExtractor analytical paradigm",
-              "ontological_basis": "Analysis via CausalExtractor._assess_temporal_coherence",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _assess_temporal_coherence implements structured analysis for D6-Q5"
-              ],
-              "justification": "This method contributes to D6-Q5 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "CausalExtractor._assess_temporal_coherence algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `CausalExtractor._assess_temporal_coherence` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causal_extraction.assess_temporal_coherence'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _assess_temporal_coherence"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _assess_temporal_coherence results for downstream analysis"
-              ]
-            },
-            "provides": "causal_extraction.assess_temporal_coherence"
-          },
-          {
-            "method_name": "diagnose_critical_links",
-            "class_name": "TextMiningEngine",
-            "priority": 1,
-            "role": "critical_link_diagnosis",
-            "epistemological_foundation": {
-              "paradigm": "Critical text mining with causal link detection",
-              "ontological_basis": "Texts contain latent causal structures that can be detected through linguistic patterns indicating causal relationships (because, therefore, leads to, etc.)",
-              "epistemological_stance": "Empirical-interpretive: Knowledge about policy mechanisms emerges from detecting linguistic markers of causality in policy documents",
-              "theoretical_framework": [
-                "Causal discourse analysis: Texts reveal causal beliefs through specific linguistic constructions (Fairclough, 2003)",
-                "Theory of change reconstruction: Policy documents implicitly encode theories of change that can be extracted via causal link detection (Weiss, 1995)"
-              ],
-              "justification": "Diagnosing critical causal links in baseline diagnostics reveals whether policymakers understand the causal pathways between gender inequalities and their determinants"
-            },
-            "technical_approach": {
-              "method_type": "pattern_based_causal_link_extraction",
-              "algorithm": "Multi-pattern regex matching with context window analysis",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Identify causal connectors (porque, por lo tanto, conduce a, genera, resulta en)"
-                },
-                {
-                  "step": 2,
-                  "description": "Extract entities before and after connector (cause → effect)"
-                },
-                {
-                  "step": 3,
-                  "description": "Classify link criticality based on proximity to gender indicators"
-                }
-              ],
-              "assumptions": [
-                "Causal language reflects causal understanding",
-                "Critical links mention gender-related outcomes"
-              ],
-              "limitations": [
-                "Cannot detect implicit causality without linguistic markers",
-                "May miss causal relationships expressed across distant sentences"
-              ],
-              "complexity": "O(n*p) where n=sentences, p=causal patterns"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "critical_links": "List of detected causal links with source/target entities",
-                "link_scores": "Criticality scores (0-1) based on relevance to gender outcomes"
-              },
-              "interpretation_guide": {
-                "high_criticality": "≥0.8: Link directly connects to gender inequality outcomes",
-                "medium_criticality": "0.5-0.79: Link relates to intermediate factors",
-                "low_criticality": "<0.5: Peripheral causal relationship"
-              },
-              "actionable_insights": [
-                "If few critical links found: Diagnosis lacks causal depth, may be purely descriptive",
-                "If many links but low criticality: Diagnosis discusses tangential issues, not core gender inequalities"
-              ]
-            },
-            "provides": "text_mining.diagnose_critical_links"
-          },
-          {
-            "method_name": "identify_failure_points",
-            "class_name": "CausalInferenceSetup",
-            "priority": 4,
-            "role": "identify_failure_points_identification",
-            "epistemological_foundation": {
-              "paradigm": "CausalInferenceSetup analytical paradigm",
-              "ontological_basis": "Analysis via CausalInferenceSetup.identify_failure_points",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method identify_failure_points implements structured analysis for D6-Q5"
-              ],
-              "justification": "This method contributes to D6-Q5 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "CausalInferenceSetup.identify_failure_points algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `CausalInferenceSetup.identify_failure_points` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.identify_failure_points'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from identify_failure_points"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use identify_failure_points results for downstream analysis"
-              ]
-            },
-            "provides": "causalinferencesetup.identify_failure_points"
-          },
-          {
-            "method_name": "_get_dynamics_pattern",
-            "class_name": "CausalInferenceSetup",
-            "priority": 5,
-            "role": "_get_dynamics_pattern",
-            "epistemological_foundation": {
-              "paradigm": "CausalInferenceSetup analytical paradigm",
-              "ontological_basis": "Analysis via CausalInferenceSetup._get_dynamics_pattern",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _get_dynamics_pattern implements structured analysis for D6-Q5"
-              ],
-              "justification": "This method contributes to D6-Q5 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "CausalInferenceSetup._get_dynamics_pattern algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `CausalInferenceSetup._get_dynamics_pattern` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='causalinferencesetup.get_dynamics_pattern'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _get_dynamics_pattern"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _get_dynamics_pattern results for downstream analysis"
-              ]
-            },
-            "provides": "causalinferencesetup.get_dynamics_pattern"
-          },
-          {
-            "method_name": "chunk_text",
-            "class_name": "SemanticProcessor",
-            "priority": 16,
-            "role": "text_chunking_for_embedding",
-            "epistemological_foundation": {
-              "paradigm": "Semantic preprocessing for neural methods",
-              "ontological_basis": "Long documents must be divided into chunks that fit neural model context windows while preserving semantic coherence",
-              "epistemological_stance": "Pragmatism: Chunking strategies are justified by their utility for downstream tasks (embedding, retrieval)",
-              "theoretical_framework": [
-                "Information retrieval: Chunk granularity affects retrieval precision and recall",
-                "Neural model constraints: Transformer models have fixed context windows requiring chunking"
-              ],
-              "justification": "Semantic search and embedding require chunked text; good chunking preserves semantic units (paragraphs, sections)"
-            },
-            "technical_approach": {
-              "method_type": "semantic_aware_text_chunking",
-              "algorithm": "Chunk by paragraph/section with overlap to preserve context",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Identify natural boundaries (paragraphs, sections)"
-                },
-                {
-                  "step": 2,
-                  "description": "Create chunks respecting boundaries, max N tokens"
-                },
-                {
-                  "step": 3,
-                  "description": "Add overlap (e.g., 50 tokens) between chunks for continuity"
-                }
-              ],
-              "assumptions": [
-                "Document has clear structural boundaries",
-                "Overlap improves retrieval (empirical assumption)"
-              ],
-              "limitations": [
-                "Fixed chunk size may split semantic units",
-                "Overlap increases storage and computation"
-              ],
-              "complexity": "O(n) where n=document length"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "chunks": "List of {chunk_text, start_pos, end_pos, chunk_id}"
-              },
-              "interpretation_guide": {
-                "many_small_chunks": "Document is dense or highly structured",
-                "few_large_chunks": "Document is sparse or unstructured"
-              },
-              "actionable_insights": [
-                "Chunk boundaries split semantic units: Consider different chunking strategy",
-                "Chunks align with document structure: Good chunking"
-              ]
-            }
-          },
-          {
-            "method_name": "_detect_pdm_structure",
-            "class_name": "SemanticProcessor",
-            "priority": 7,
-            "role": "_detect_pdm_structure_detection",
-            "epistemological_foundation": {
-              "paradigm": "SemanticProcessor analytical paradigm",
-              "ontological_basis": "Analysis via SemanticProcessor._detect_pdm_structure",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _detect_pdm_structure implements structured analysis for D6-Q5"
-              ],
-              "justification": "This method contributes to D6-Q5 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "SemanticProcessor._detect_pdm_structure algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _detect_pdm_structure"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _detect_pdm_structure"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _detect_pdm_structure results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "_detect_table",
-            "class_name": "SemanticProcessor",
-            "priority": 8,
-            "role": "_detect_table_detection",
-            "epistemological_foundation": {
-              "paradigm": "SemanticProcessor analytical paradigm",
-              "ontological_basis": "Analysis via SemanticProcessor._detect_table",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method _detect_table implements structured analysis for D6-Q5"
-              ],
-              "justification": "This method contributes to D6-Q5 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "SemanticProcessor._detect_table algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute _detect_table"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from _detect_table"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use _detect_table results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "generate_traceability_record",
-            "class_name": "AdaptivePriorCalculator",
-            "priority": 9,
-            "role": "generate_traceability_record_generation",
-            "epistemological_foundation": {
-              "paradigm": "AdaptivePriorCalculator analytical paradigm",
-              "ontological_basis": "Analysis via AdaptivePriorCalculator.generate_traceability_record",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method generate_traceability_record implements structured analysis for D6-Q5"
-              ],
-              "justification": "This method contributes to D6-Q5 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "AdaptivePriorCalculator.generate_traceability_record algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute generate_traceability_record"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from generate_traceability_record"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use generate_traceability_record results for downstream analysis"
-              ]
-            }
-          }
-        ],
-        "method_combination_logic": {
-          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
-          "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
-            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+        "recommendations": "### Recomendaciones\n\n{evidence.recommendations}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Q060 | Análisis D6-Q5: Línea Base Cuantitativa en Derechos de las Mujeres | Migración transfronteriza"
+      }
+    },
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "base_slot": {
+          "const": "D6-Q5",
+          "description": "Debe coincidir con identity.base_slot.",
+          "type": "string"
+        },
+        "cluster_id": {
+          "const": "CL04",
+          "description": "Cluster de análisis según el monolith, si aplica.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dimension_id": {
+          "const": "DIM06",
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "additionalProperties": true,
+          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "policy_area_id": {
+          "const": "PA10",
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_global": {
+          "const": 60,
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
+          "type": "integer"
+        },
+        "question_id": {
+          "const": "Q060",
+          "description": "Debe coincidir con identity.question_id.",
+          "type": "string"
+        },
+        "trace": {
+          "additionalProperties": true,
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "validation": {
+          "additionalProperties": true,
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
+          "type": [
+            "object",
+            "null"
           ]
         }
-      }
+      },
+      "required": [
+        "base_slot",
+        "question_id",
+        "question_global",
+        "evidence",
+        "validation"
+      ],
+      "type": "object"
     }
   },
+  "question_context": {
+    "dimension_label": "CAUSALIDAD",
+    "expected_elements": [
+      {
+        "minimum": 1,
+        "required": true,
+        "type": "analisis_contextual"
+      },
+      {
+        "minimum": 1,
+        "required": true,
+        "type": "enfoque_diferencial"
+      }
+    ],
+    "expected_output_type": "score",
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q060-REQ"
+    },
+    "modality": "count_and_scale",
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q060-000",
+        "match_type": "REGEX",
+        "pattern": "enfoque diferencial|enfoque de género|enfoque etario",
+        "policy_area": "PA10",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q060-001",
+        "match_type": "REGEX",
+        "pattern": "Niños, Niñas y Adolescentes (NNA) no acompañados o separados",
+        "policy_area": "PA10",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q060-002",
+        "match_type": "REGEX",
+        "pattern": "mujeres gestantes o lactantes|víctimas de VBG en la ruta migratoria",
+        "policy_area": "PA10",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q060-003",
+        "match_type": "REGEX",
+        "pattern": "caminantes|población en tránsito con alta vulnerabilidad",
+        "policy_area": "PA10",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q060-004",
+        "match_type": "REGEX",
+        "pattern": "restricciones de seguridad en la ruta (ej. Darién)|presencia de grupos criminales",
+        "policy_area": "PA10",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q060-005",
+        "match_type": "REGEX",
+        "pattern": "contexto de frontera|dinámicas de economía informal",
+        "policy_area": "PA10",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q060-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas al tipo de flujo (tránsito vs. permanencia)",
+        "policy_area": "PA10",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      }
+    ],
+    "policy_area_label": "Migración transfronteriza",
+    "question_text": "¿La lógica causal para la migración considera el contexto, reconociendo 'grupos afectados' (NNA no acompañados, mujeres migrantes, caminantes) y 'restricciones' territoriales o de seguridad?",
+    "question_type": "micro",
+    "scoring_modality": "TYPE_A",
+    "validations": {}
+  },
+  "signal_requirements": {
+    "mandatory_signals": [
+      "cultural_assets",
+      "differential_needs",
+      "heritage_protection",
+      "territorial_diagnosis",
+      "tourism_infrastructure"
+    ],
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01.",
+    "optional_signals": [
+      "cultural_programming",
+      "economic_impact",
+      "equity_considerations",
+      "participation_evidence",
+      "visitor_statistics"
+    ],
+    "signal_aggregation": "weighted_mean"
+  },
+  "test_configuration": {
+    "expected_test_coverage": ">=90%",
+    "integration_test_required": true,
+    "test_document_fixtures": [
+      "tests/fixtures/preprocessed_documents/sample_pdet_plan.json"
+    ],
+    "test_files": [
+      "tests/core/orchestrator/test_executors_contract.py",
+      "tests/core/phases/test_phase2.py"
+    ]
+  },
+  "traceability": {
+    "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
+    "contract_generation_method": "automated_specialization_from_monolith",
+    "json_path": "blocks.micro_questions[59]",
+    "method_mapping_source": "executor_methods_mapping.json",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D6_Q5_Executor",
+    "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "source_file": "data/questionnaire_monolith.json",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
+    "source_question_id": "Q060",
+    "specialization_timestamp": "2025-11-28T03:50:05.986609+00:00",
+    "specialized_from_base_slot": "D6-Q5"
+  },
   "validation_rules": {
+    "class_name": "ValidationEngine",
+    "engine": "VALIDATION_ENGINE",
+    "method_name": "validate",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
     "na_policy": "abort_on_critical",
     "rules": [
       {
@@ -959,775 +1728,6 @@
         "field": "elements_found",
         "should_contain": [],
         "type": "array"
-      }
-    ],
-    "engine": "VALIDATION_ENGINE",
-    "module": "canonic_phases.Phase_two.evidence_nexus",
-    "class_name": "ValidationEngine",
-    "method_name": "validate"
-  },
-  "traceability": {
-    "source_file": "data/questionnaire_monolith.json",
-    "json_path": "blocks.micro_questions[299]",
-    "method_source": "src/farfan_core/core/orchestrator/executors.py:D6_Q5_Executor",
-    "method_mapping_source": "executor_methods_mapping.json",
-    "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
-    "contract_generation_method": "automated_specialization_from_monolith",
-    "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
-    "source_question_id": "Q060",
-    "specialized_from_base_slot": "D6-Q5",
-    "specialization_timestamp": "2025-11-28T03:50:05.986609+00:00"
-  },
-  "error_handling": {
-    "on_method_not_found": "raise",
-    "on_method_failure": "propagate_with_trace",
-    "on_assembly_failure": "propagate_with_trace",
-    "failure_contract": {
-      "abort_if": [
-        "missing_required_element",
-        "incomplete_text"
-      ],
-      "emit_code": "ABORT-Q060-REQ"
-    }
-  },
-  "fallback_strategy": {
-    "use_llm_direct": false,
-    "use_heuristics": false,
-    "note": "No fallback strategies enabled. All failures propagate according to error_handling configuration."
-  },
-  "test_configuration": {
-    "test_files": [
-      "tests/core/orchestrator/test_executors_contract.py",
-      "tests/core/phases/test_phase2.py"
-    ],
-    "test_document_fixtures": [
-      "tests/fixtures/preprocessed_documents/sample_pdet_plan.json"
-    ],
-    "expected_test_coverage": ">=90%",
-    "integration_test_required": true
-  },
-  "compatibility": {
-    "orchestrator_min_version": "TODO_VERSION",
-    "signal_registry_min_version": "TODO_VERSION",
-    "method_executor_min_version": "TODO_VERSION",
-    "questionnaire_monolith_version": "3.0.0",
-    "phase2_types_version": "TODO_VERSION"
-  },
-  "calibration": {
-    "status": "placeholder",
-    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
-    "source": {
-      "intrinsic_calibration": "config/intrinsic_calibration.json",
-      "fusion_specification": "config/fusion_specification.json",
-      "layer_calibrations_dir": "config/layer_calibrations/",
-      "canonical_spec": "canonic_calibration_methods.md"
-    }
-  },
-  "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
-    "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
-      "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
-      "step_3_validation": "ValidationEngine checks against validation_rules",
-      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
-    },
-    "evidence_structure_schema": {
-      "type": "object",
-      "description": "Assembled evidence after all methods complete",
-      "properties": {
-        "elements_found": {
-          "type": "array",
-          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
-          "items": {
-            "type": "object",
-            "properties": {
-              "element_id": {
-                "type": "string",
-                "example": "E-001"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "fuentes_oficiales",
-                  "indicadores_cuantitativos",
-                  "series_temporales_años",
-                  "cobertura_territorial_especificada",
-                  "financial_amounts",
-                  "policy_goals",
-                  "causal_links"
-                ]
-              },
-              "value": {
-                "type": "string",
-                "example": "DANE"
-              },
-              "confidence": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1
-              },
-              "source_method": {
-                "type": "string",
-                "example": "IndustrialPolicyProcessor._extract_point_evidence"
-              },
-              "sentence_id": {
-                "type": "integer"
-              },
-              "context": {
-                "type": "string"
-              }
-            }
-          },
-          "example_count": "Expected 15-50 elements for a complete diagnostic"
-        },
-        "elements_summary": {
-          "type": "object",
-          "properties": {
-            "total_count": {
-              "type": "integer"
-            },
-            "by_type": {
-              "type": "object",
-              "properties": {
-                "fuentes_oficiales": {
-                  "type": "integer",
-                  "minimum_expected": 2
-                },
-                "indicadores_cuantitativos": {
-                  "type": "integer",
-                  "minimum_expected": 3
-                },
-                "series_temporales_años": {
-                  "type": "integer",
-                  "minimum_expected": 3
-                },
-                "cobertura_territorial_especificada": {
-                  "type": "integer",
-                  "minimum_expected": 1
-                }
-              }
-            }
-          }
-        },
-        "confidence_scores": {
-          "type": "object",
-          "description": "Aggregated confidence metrics (weighted_mean strategy)",
-          "properties": {
-            "mean": {
-              "type": "number"
-            },
-            "std": {
-              "type": "number"
-            },
-            "min": {
-              "type": "number"
-            },
-            "max": {
-              "type": "number"
-            },
-            "by_method": {
-              "type": "object",
-              "description": "Average confidence per analyzer class"
-            }
-          }
-        },
-        "pattern_matches": {
-          "type": "array",
-          "description": "Aggregated pattern matches from text mining methods",
-          "items": {
-            "type": "object",
-            "properties": {
-              "pattern_id": {
-                "type": "string"
-              },
-              "count": {
-                "type": "integer"
-              },
-              "avg_confidence": {
-                "type": "number"
-              }
-            }
-          }
-        },
-        "critical_links": {
-          "type": "array",
-          "description": "Causal links extracted by TextMiningEngine",
-          "items": {
-            "type": "object",
-            "properties": {
-              "cause": {
-                "type": "string"
-              },
-              "effect": {
-                "type": "string"
-              },
-              "criticality": {
-                "type": "number"
-              },
-              "coherence": {
-                "type": "number"
-              }
-            }
-          }
-        },
-        "financial_summary": {
-          "type": "object",
-          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
-          "properties": {
-            "total_budget_cop": {
-              "type": "number"
-            },
-            "amounts_found": {
-              "type": "integer"
-            },
-            "by_category": {
-              "type": "object",
-              "properties": {
-                "SGR": {
-                  "type": "number"
-                },
-                "recursos_propios": {
-                  "type": "number"
-                },
-                "transferencias": {
-                  "type": "number"
-                }
-              }
-            }
-          }
-        },
-        "goals_summary": {
-          "type": "object",
-          "description": "Policy goals extracted by CausalExtractor",
-          "properties": {
-            "total_goals": {
-              "type": "integer"
-            },
-            "quantified_goals": {
-              "type": "integer"
-            },
-            "goals_with_complete_context": {
-              "type": "integer"
-            }
-          }
-        },
-        "contradictions": {
-          "type": "object",
-          "description": "Results from PolicyContradictionDetector",
-          "properties": {
-            "found": {
-              "type": "integer"
-            },
-            "tests_performed": {
-              "type": "integer"
-            },
-            "interpretation": {
-              "type": "string"
-            }
-          }
-        },
-        "bayesian_insights": {
-          "type": "object",
-          "description": "Results from BayesianNumericalAnalyzer",
-          "properties": {
-            "metrics_with_high_uncertainty": {
-              "type": "array"
-            },
-            "significant_comparisons": {
-              "type": "integer"
-            }
-          }
-        },
-        "semantic_processing": {
-          "type": "object",
-          "description": "Results from SemanticProcessor",
-          "properties": {
-            "chunks_created": {
-              "type": "integer"
-            },
-            "embeddings_generated": {
-              "type": "integer"
-            },
-            "avg_semantic_similarity_to_query": {
-              "type": "number"
-            }
-          }
-        },
-        "metadata": {
-          "type": "object",
-          "properties": {
-            "methods_executed": {
-              "type": "integer",
-              "const": 9
-            },
-            "execution_time_ms": {
-              "type": "number"
-            },
-            "document_length": {
-              "type": "integer"
-            },
-            "analysis_timestamp": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        }
-      }
-    },
-    "concrete_example": {
-      "elements_found": [
-        {
-          "element_id": "E-001",
-          "type": "fuentes_oficiales",
-          "value": "DANE",
-          "confidence": 0.95,
-          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "según datos de DANE para el año 2022",
-          "sentence_id": 45,
-          "position": {
-            "start": 123,
-            "end": 145
-          }
-        },
-        {
-          "element_id": "E-002",
-          "type": "indicadores_cuantitativos",
-          "value": "tasa de VBG: 12.3%",
-          "normalized_value": 12.3,
-          "unit": "%",
-          "confidence": 0.89,
-          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
-          "bayesian_posterior": {
-            "mean": 0.123,
-            "ci_95": [
-              0.11,
-              0.145
-            ]
-          },
-          "sentence_id": 45
-        },
-        {
-          "element_id": "E-003",
-          "type": "series_temporales_años",
-          "years": [
-            2020,
-            2021,
-            2022
-          ],
-          "confidence": 0.92,
-          "source_method": "TextMiningEngine.diagnose_critical_links"
-        },
-        {
-          "element_id": "E-004",
-          "type": "cobertura_territorial_especificada",
-          "coverage": "municipal - zona rural y urbana",
-          "confidence": 0.88,
-          "source_method": "CausalExtractor._parse_goal_context"
-        }
-      ],
-      "elements_summary": {
-        "total_count": 38,
-        "by_type": {
-          "fuentes_oficiales": 5,
-          "indicadores_cuantitativos": 12,
-          "series_temporales_años": 4,
-          "cobertura_territorial_especificada": 1,
-          "financial_amounts": 8,
-          "policy_goals": 7,
-          "causal_links": 5
-        }
-      },
-      "confidence_scores": {
-        "mean": 0.876,
-        "std": 0.089,
-        "min": 0.72,
-        "max": 0.98,
-        "by_method": {
-          "TextMiningEngine": 0.83,
-          "IndustrialPolicyProcessor": 0.91,
-          "CausalExtractor": 0.79,
-          "FinancialAuditor": 0.94,
-          "PDETMunicipalPlanAnalyzer": 0.88,
-          "PolicyContradictionDetector": 0.9,
-          "BayesianNumericalAnalyzer": 0.92,
-          "SemanticProcessor": 0.85
-        }
-      },
-      "pattern_matches": [
-        {
-          "pattern_id": "PAT-Q001-000",
-          "count": 3,
-          "avg_confidence": 0.87
-        },
-        {
-          "pattern_id": "PAT-Q001-002",
-          "count": 5,
-          "avg_confidence": 0.95
-        }
-      ],
-      "critical_links": [
-        {
-          "cause": "alta tasa de VBG",
-          "effect": "baja autonomía económica",
-          "criticality": 0.87,
-          "coherence": 0.82
-        }
-      ],
-      "financial_summary": {
-        "total_budget_cop": 850000000.0,
-        "amounts_found": 12,
-        "by_category": {
-          "SGR": 250000000.0,
-          "recursos_propios": 180000000.0
-        }
-      },
-      "goals_summary": {
-        "total_goals": 7,
-        "quantified_goals": 5,
-        "goals_with_complete_context": 4
-      },
-      "contradictions": {
-        "found": 0,
-        "tests_performed": 15,
-        "interpretation": "No statistical contradictions in quantitative claims"
-      },
-      "bayesian_insights": {
-        "metrics_with_high_uncertainty": [],
-        "significant_comparisons": 1
-      },
-      "semantic_processing": {
-        "chunks_created": 45,
-        "embeddings_generated": 45,
-        "avg_semantic_similarity_to_query": 0.78
-      },
-      "metadata": {
-        "methods_executed": 9,
-        "execution_time_ms": 2845,
-        "document_length": 15230,
-        "analysis_timestamp": "2025-11-26T12:34:56Z"
-      }
-    },
-    "validation_against_expected_elements": {
-      "cobertura_territorial_especificada": {
-        "required": true,
-        "found_in_example": true,
-        "example_element_id": "E-004"
-      },
-      "fuentes_oficiales": {
-        "minimum": 2,
-        "found_in_example": 5,
-        "status": "PASS"
-      },
-      "indicadores_cuantitativos": {
-        "minimum": 3,
-        "found_in_example": 12,
-        "status": "PASS"
-      },
-      "series_temporales_años": {
-        "minimum": 3,
-        "found_in_example": 4,
-        "status": "PASS"
-      },
-      "overall_validation_result": "PASS - All required and minimum elements present"
-    },
-    "template_variable_bindings": {
-      "description": "These variables are available for human_readable_output template",
-      "variables": {
-        "{evidence.elements_found_count}": 38,
-        "{score}": "Calculated by scorer based on elements",
-        "{quality_level}": "ALTO",
-        "{evidence.confidence_scores.mean}": "87.6%",
-        "{evidence.pattern_matches_count}": 14,
-        "{evidence.official_sources_count}": 5,
-        "{evidence.quantitative_indicators_count}": 12,
-        "{evidence.temporal_series_count}": 4,
-        "{evidence.territorial_coverage}": "municipal - zona rural y urbana"
-      }
-    },
-    "usage_notes": {
-      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
-      "for_validators": "Use this to verify that actual execution output matches expected structure.",
-      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
-    }
-  },
-  "method_outputs": {
-    "CausalExtractor._calculate_language_specificity": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from CausalExtractor._calculate_language_specificity",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from _calculate_language_specificity"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "causal_extraction.calculate_language_specificity",
-        "merge_strategy": "replace"
-      }
-    },
-    "CausalExtractor._assess_temporal_coherence": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from CausalExtractor._assess_temporal_coherence",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from _assess_temporal_coherence"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "causal_extraction.assess_temporal_coherence",
-        "merge_strategy": "replace"
-      }
-    },
-    "TextMiningEngine.diagnose_critical_links": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from TextMiningEngine.diagnose_critical_links",
-        "type": "object",
-        "properties": {
-          "critical_links": {
-            "type": "array",
-            "description": "List of critical causal links"
-          },
-          "link_scores": {
-            "type": "object",
-            "description": "Criticality scores for each link"
-          },
-          "context": {
-            "type": "object",
-            "description": "Contextual information"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "text_mining.diagnose_critical_links",
-        "merge_strategy": "replace"
-      }
-    },
-    "CausalInferenceSetup.identify_failure_points": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from CausalInferenceSetup.identify_failure_points",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from identify_failure_points"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "causalinferencesetup.identify_failure_points",
-        "merge_strategy": "replace"
-      }
-    },
-    "CausalInferenceSetup._get_dynamics_pattern": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from CausalInferenceSetup._get_dynamics_pattern",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from _get_dynamics_pattern"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "causalinferencesetup.get_dynamics_pattern",
-        "merge_strategy": "replace"
-      }
-    },
-    "SemanticProcessor.chunk_text": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from SemanticProcessor.chunk_text",
-        "type": "object",
-        "properties": {
-          "chunks": {
-            "type": "array",
-            "description": "Text chunks"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "semantic_processing.chunk_text",
-        "merge_strategy": "replace"
-      }
-    },
-    "SemanticProcessor._detect_pdm_structure": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from SemanticProcessor._detect_pdm_structure",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from _detect_pdm_structure"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "semantic_processing.detect_pdm_structure",
-        "merge_strategy": "replace"
-      }
-    },
-    "SemanticProcessor._detect_table": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from SemanticProcessor._detect_table",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from _detect_table"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "semantic_processing.detect_table",
-        "merge_strategy": "replace"
-      }
-    },
-    "AdaptivePriorCalculator.generate_traceability_record": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from AdaptivePriorCalculator.generate_traceability_record",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from generate_traceability_record"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "adaptivepriorcalculator.generate_traceability_record",
-        "merge_strategy": "replace"
-      }
-    }
-  },
-  "methodological_depth": {
-    "methods": [
-      {
-        "method_name": "contract_orchestrated_evidence_fusion",
-        "class_name": "EvidenceNexus",
-        "priority": 1,
-        "role": "evidence_graph_construction_and_synthesis",
-        "epistemological_foundation": {
-          "paradigm": "critical_realist",
-          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
-          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
-          "theoretical_framework": [
-            "Pearl (2009) causal reasoning (why mechanisms matter)",
-            "Pawson & Tilley (1997) realistic evaluation",
-            "Results-based management for public policy monitoring"
-          ],
-          "justification": "Chosen because CAUSALIDAD in PA10 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
-        },
-        "technical_approach": {
-          "method_type": "graph_based_evidence_fusion",
-          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
-          "steps": [
-            {
-              "step": 1,
-              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
-            },
-            {
-              "step": 2,
-              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
-            },
-            {
-              "step": 3,
-              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
-            },
-            {
-              "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for Q060/D6-Q5."
-            }
-          ],
-          "assumptions": [
-            "The source plan contains at least one relevant section or table for this question.",
-            "Expected element types map to observable text spans or tabular cells."
-          ],
-          "limitations": [
-            "Evidence quality depends on document structure and explicitness of commitments.",
-            "Pattern-only extraction is conservative to preserve determinism."
-          ],
-          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
-        }
       }
     ]
   }

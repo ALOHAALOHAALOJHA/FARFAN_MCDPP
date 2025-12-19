@@ -1,0 +1,1897 @@
+{
+  "applied_at": "2025-12-19T03:07:00Z",
+  "changes": [
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path_after": "blocks.micro_questions[0]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA01",
+      "question_id": "Q001"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "json_path_after": "blocks.micro_questions[1]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA01",
+      "question_id": "Q002"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "json_path_after": "blocks.micro_questions[2]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA01",
+      "question_id": "Q003"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path_after": "blocks.micro_questions[3]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA01",
+      "question_id": "Q004"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "json_path_after": "blocks.micro_questions[4]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA01",
+      "question_id": "Q005"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "json_path_after": "blocks.micro_questions[5]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA01",
+      "question_id": "Q006"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "json_path_after": "blocks.micro_questions[6]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA01",
+      "question_id": "Q007"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "json_path_after": "blocks.micro_questions[7]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA01",
+      "question_id": "Q008"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "json_path_after": "blocks.micro_questions[8]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA01",
+      "question_id": "Q009"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "json_path_after": "blocks.micro_questions[9]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA01",
+      "question_id": "Q010"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "json_path_after": "blocks.micro_questions[10]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA01",
+      "question_id": "Q011"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "json_path_after": "blocks.micro_questions[11]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA01",
+      "question_id": "Q012"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "json_path_after": "blocks.micro_questions[12]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA01",
+      "question_id": "Q013"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "json_path_after": "blocks.micro_questions[13]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA01",
+      "question_id": "Q014"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "json_path_after": "blocks.micro_questions[14]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA01",
+      "question_id": "Q015"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "json_path_after": "blocks.micro_questions[15]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA01",
+      "question_id": "Q016"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "json_path_after": "blocks.micro_questions[16]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA01",
+      "question_id": "Q017"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "json_path_after": "blocks.micro_questions[17]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA01",
+      "question_id": "Q018"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "json_path_after": "blocks.micro_questions[18]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA01",
+      "question_id": "Q019"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "json_path_after": "blocks.micro_questions[19]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA01",
+      "question_id": "Q020"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "json_path_after": "blocks.micro_questions[20]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA01",
+      "question_id": "Q021"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "json_path_after": "blocks.micro_questions[21]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA01",
+      "question_id": "Q022"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "json_path_after": "blocks.micro_questions[22]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA01",
+      "question_id": "Q023"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "json_path_after": "blocks.micro_questions[23]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA01",
+      "question_id": "Q024"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "json_path_after": "blocks.micro_questions[24]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA01",
+      "question_id": "Q025"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "json_path_after": "blocks.micro_questions[25]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA01",
+      "question_id": "Q026"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "json_path_after": "blocks.micro_questions[26]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA01",
+      "question_id": "Q027"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "json_path_after": "blocks.micro_questions[27]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA01",
+      "question_id": "Q028"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "json_path_after": "blocks.micro_questions[28]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA01",
+      "question_id": "Q029"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "json_path_after": "blocks.micro_questions[29]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA01",
+      "question_id": "Q030"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q031.v3.json",
+      "json_path_after": "blocks.micro_questions[30]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA10",
+      "question_id": "Q031"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q032.v3.json",
+      "json_path_after": "blocks.micro_questions[31]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA10",
+      "question_id": "Q032"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q033.v3.json",
+      "json_path_after": "blocks.micro_questions[32]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA10",
+      "question_id": "Q033"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q034.v3.json",
+      "json_path_after": "blocks.micro_questions[33]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA10",
+      "question_id": "Q034"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q035.v3.json",
+      "json_path_after": "blocks.micro_questions[34]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA10",
+      "question_id": "Q035"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q036.v3.json",
+      "json_path_after": "blocks.micro_questions[35]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA10",
+      "question_id": "Q036"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q037.v3.json",
+      "json_path_after": "blocks.micro_questions[36]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA10",
+      "question_id": "Q037"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q038.v3.json",
+      "json_path_after": "blocks.micro_questions[37]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA10",
+      "question_id": "Q038"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q039.v3.json",
+      "json_path_after": "blocks.micro_questions[38]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA10",
+      "question_id": "Q039"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q040.v3.json",
+      "json_path_after": "blocks.micro_questions[39]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA10",
+      "question_id": "Q040"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q041.v3.json",
+      "json_path_after": "blocks.micro_questions[40]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA10",
+      "question_id": "Q041"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q042.v3.json",
+      "json_path_after": "blocks.micro_questions[41]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA10",
+      "question_id": "Q042"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q043.v3.json",
+      "json_path_after": "blocks.micro_questions[42]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA10",
+      "question_id": "Q043"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q044.v3.json",
+      "json_path_after": "blocks.micro_questions[43]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA10",
+      "question_id": "Q044"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q045.v3.json",
+      "json_path_after": "blocks.micro_questions[44]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA10",
+      "question_id": "Q045"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q046.v3.json",
+      "json_path_after": "blocks.micro_questions[45]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA10",
+      "question_id": "Q046"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q047.v3.json",
+      "json_path_after": "blocks.micro_questions[46]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA10",
+      "question_id": "Q047"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q048.v3.json",
+      "json_path_after": "blocks.micro_questions[47]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA10",
+      "question_id": "Q048"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q049.v3.json",
+      "json_path_after": "blocks.micro_questions[48]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA10",
+      "question_id": "Q049"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q050.v3.json",
+      "json_path_after": "blocks.micro_questions[49]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA10",
+      "question_id": "Q050"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q051.v3.json",
+      "json_path_after": "blocks.micro_questions[50]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA10",
+      "question_id": "Q051"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q052.v3.json",
+      "json_path_after": "blocks.micro_questions[51]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA10",
+      "question_id": "Q052"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q053.v3.json",
+      "json_path_after": "blocks.micro_questions[52]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA10",
+      "question_id": "Q053"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q054.v3.json",
+      "json_path_after": "blocks.micro_questions[53]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA10",
+      "question_id": "Q054"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q055.v3.json",
+      "json_path_after": "blocks.micro_questions[54]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA10",
+      "question_id": "Q055"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q056.v3.json",
+      "json_path_after": "blocks.micro_questions[55]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA10",
+      "question_id": "Q056"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q057.v3.json",
+      "json_path_after": "blocks.micro_questions[56]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA10",
+      "question_id": "Q057"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q058.v3.json",
+      "json_path_after": "blocks.micro_questions[57]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA10",
+      "question_id": "Q058"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q059.v3.json",
+      "json_path_after": "blocks.micro_questions[58]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA10",
+      "question_id": "Q059"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q060.v3.json",
+      "json_path_after": "blocks.micro_questions[59]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA10",
+      "question_id": "Q060"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q061.v3.json",
+      "json_path_after": "blocks.micro_questions[60]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA02",
+      "question_id": "Q061"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q062.v3.json",
+      "json_path_after": "blocks.micro_questions[61]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA02",
+      "question_id": "Q062"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q063.v3.json",
+      "json_path_after": "blocks.micro_questions[62]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA02",
+      "question_id": "Q063"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q064.v3.json",
+      "json_path_after": "blocks.micro_questions[63]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA02",
+      "question_id": "Q064"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q065.v3.json",
+      "json_path_after": "blocks.micro_questions[64]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA02",
+      "question_id": "Q065"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q066.v3.json",
+      "json_path_after": "blocks.micro_questions[65]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA02",
+      "question_id": "Q066"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q067.v3.json",
+      "json_path_after": "blocks.micro_questions[66]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA02",
+      "question_id": "Q067"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q068.v3.json",
+      "json_path_after": "blocks.micro_questions[67]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA02",
+      "question_id": "Q068"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q069.v3.json",
+      "json_path_after": "blocks.micro_questions[68]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA02",
+      "question_id": "Q069"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q070.v3.json",
+      "json_path_after": "blocks.micro_questions[69]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA02",
+      "question_id": "Q070"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q071.v3.json",
+      "json_path_after": "blocks.micro_questions[70]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA02",
+      "question_id": "Q071"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q072.v3.json",
+      "json_path_after": "blocks.micro_questions[71]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA02",
+      "question_id": "Q072"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q073.v3.json",
+      "json_path_after": "blocks.micro_questions[72]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA02",
+      "question_id": "Q073"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q074.v3.json",
+      "json_path_after": "blocks.micro_questions[73]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA02",
+      "question_id": "Q074"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q075.v3.json",
+      "json_path_after": "blocks.micro_questions[74]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA02",
+      "question_id": "Q075"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q076.v3.json",
+      "json_path_after": "blocks.micro_questions[75]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA02",
+      "question_id": "Q076"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q077.v3.json",
+      "json_path_after": "blocks.micro_questions[76]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA02",
+      "question_id": "Q077"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q078.v3.json",
+      "json_path_after": "blocks.micro_questions[77]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA02",
+      "question_id": "Q078"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q079.v3.json",
+      "json_path_after": "blocks.micro_questions[78]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA02",
+      "question_id": "Q079"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q080.v3.json",
+      "json_path_after": "blocks.micro_questions[79]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA02",
+      "question_id": "Q080"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q081.v3.json",
+      "json_path_after": "blocks.micro_questions[80]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA02",
+      "question_id": "Q081"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q082.v3.json",
+      "json_path_after": "blocks.micro_questions[81]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA02",
+      "question_id": "Q082"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q083.v3.json",
+      "json_path_after": "blocks.micro_questions[82]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA02",
+      "question_id": "Q083"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q084.v3.json",
+      "json_path_after": "blocks.micro_questions[83]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA02",
+      "question_id": "Q084"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q085.v3.json",
+      "json_path_after": "blocks.micro_questions[84]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA02",
+      "question_id": "Q085"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q086.v3.json",
+      "json_path_after": "blocks.micro_questions[85]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA02",
+      "question_id": "Q086"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q087.v3.json",
+      "json_path_after": "blocks.micro_questions[86]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA02",
+      "question_id": "Q087"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q088.v3.json",
+      "json_path_after": "blocks.micro_questions[87]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA02",
+      "question_id": "Q088"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q089.v3.json",
+      "json_path_after": "blocks.micro_questions[88]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA02",
+      "question_id": "Q089"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q090.v3.json",
+      "json_path_after": "blocks.micro_questions[89]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA02",
+      "question_id": "Q090"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q091.v3.json",
+      "json_path_after": "blocks.micro_questions[90]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA03",
+      "question_id": "Q091"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q092.v3.json",
+      "json_path_after": "blocks.micro_questions[91]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA03",
+      "question_id": "Q092"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q093.v3.json",
+      "json_path_after": "blocks.micro_questions[92]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA03",
+      "question_id": "Q093"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q094.v3.json",
+      "json_path_after": "blocks.micro_questions[93]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA03",
+      "question_id": "Q094"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q095.v3.json",
+      "json_path_after": "blocks.micro_questions[94]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA03",
+      "question_id": "Q095"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q096.v3.json",
+      "json_path_after": "blocks.micro_questions[95]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA03",
+      "question_id": "Q096"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q097.v3.json",
+      "json_path_after": "blocks.micro_questions[96]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA03",
+      "question_id": "Q097"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q098.v3.json",
+      "json_path_after": "blocks.micro_questions[97]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA03",
+      "question_id": "Q098"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q099.v3.json",
+      "json_path_after": "blocks.micro_questions[98]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA03",
+      "question_id": "Q099"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q100.v3.json",
+      "json_path_after": "blocks.micro_questions[99]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA03",
+      "question_id": "Q100"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q101.v3.json",
+      "json_path_after": "blocks.micro_questions[100]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA03",
+      "question_id": "Q101"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q102.v3.json",
+      "json_path_after": "blocks.micro_questions[101]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA03",
+      "question_id": "Q102"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q103.v3.json",
+      "json_path_after": "blocks.micro_questions[102]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA03",
+      "question_id": "Q103"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q104.v3.json",
+      "json_path_after": "blocks.micro_questions[103]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA03",
+      "question_id": "Q104"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q105.v3.json",
+      "json_path_after": "blocks.micro_questions[104]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA03",
+      "question_id": "Q105"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q106.v3.json",
+      "json_path_after": "blocks.micro_questions[105]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA03",
+      "question_id": "Q106"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q107.v3.json",
+      "json_path_after": "blocks.micro_questions[106]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA03",
+      "question_id": "Q107"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q108.v3.json",
+      "json_path_after": "blocks.micro_questions[107]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA03",
+      "question_id": "Q108"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q109.v3.json",
+      "json_path_after": "blocks.micro_questions[108]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA03",
+      "question_id": "Q109"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q110.v3.json",
+      "json_path_after": "blocks.micro_questions[109]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA03",
+      "question_id": "Q110"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q111.v3.json",
+      "json_path_after": "blocks.micro_questions[110]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA03",
+      "question_id": "Q111"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q112.v3.json",
+      "json_path_after": "blocks.micro_questions[111]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA03",
+      "question_id": "Q112"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q113.v3.json",
+      "json_path_after": "blocks.micro_questions[112]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA03",
+      "question_id": "Q113"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q114.v3.json",
+      "json_path_after": "blocks.micro_questions[113]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA03",
+      "question_id": "Q114"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q115.v3.json",
+      "json_path_after": "blocks.micro_questions[114]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA03",
+      "question_id": "Q115"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q116.v3.json",
+      "json_path_after": "blocks.micro_questions[115]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA03",
+      "question_id": "Q116"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q117.v3.json",
+      "json_path_after": "blocks.micro_questions[116]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA03",
+      "question_id": "Q117"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q118.v3.json",
+      "json_path_after": "blocks.micro_questions[117]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA03",
+      "question_id": "Q118"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q119.v3.json",
+      "json_path_after": "blocks.micro_questions[118]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA03",
+      "question_id": "Q119"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q120.v3.json",
+      "json_path_after": "blocks.micro_questions[119]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA03",
+      "question_id": "Q120"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q121.v3.json",
+      "json_path_after": "blocks.micro_questions[120]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA04",
+      "question_id": "Q121"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q122.v3.json",
+      "json_path_after": "blocks.micro_questions[121]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA04",
+      "question_id": "Q122"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q123.v3.json",
+      "json_path_after": "blocks.micro_questions[122]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA04",
+      "question_id": "Q123"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q124.v3.json",
+      "json_path_after": "blocks.micro_questions[123]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA04",
+      "question_id": "Q124"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q125.v3.json",
+      "json_path_after": "blocks.micro_questions[124]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA04",
+      "question_id": "Q125"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q126.v3.json",
+      "json_path_after": "blocks.micro_questions[125]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA04",
+      "question_id": "Q126"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q127.v3.json",
+      "json_path_after": "blocks.micro_questions[126]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA04",
+      "question_id": "Q127"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q128.v3.json",
+      "json_path_after": "blocks.micro_questions[127]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA04",
+      "question_id": "Q128"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q129.v3.json",
+      "json_path_after": "blocks.micro_questions[128]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA04",
+      "question_id": "Q129"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q130.v3.json",
+      "json_path_after": "blocks.micro_questions[129]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA04",
+      "question_id": "Q130"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q131.v3.json",
+      "json_path_after": "blocks.micro_questions[130]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA04",
+      "question_id": "Q131"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q132.v3.json",
+      "json_path_after": "blocks.micro_questions[131]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA04",
+      "question_id": "Q132"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q133.v3.json",
+      "json_path_after": "blocks.micro_questions[132]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA04",
+      "question_id": "Q133"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q134.v3.json",
+      "json_path_after": "blocks.micro_questions[133]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA04",
+      "question_id": "Q134"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q135.v3.json",
+      "json_path_after": "blocks.micro_questions[134]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA04",
+      "question_id": "Q135"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q136.v3.json",
+      "json_path_after": "blocks.micro_questions[135]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA04",
+      "question_id": "Q136"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q137.v3.json",
+      "json_path_after": "blocks.micro_questions[136]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA04",
+      "question_id": "Q137"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q138.v3.json",
+      "json_path_after": "blocks.micro_questions[137]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA04",
+      "question_id": "Q138"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q139.v3.json",
+      "json_path_after": "blocks.micro_questions[138]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA04",
+      "question_id": "Q139"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q140.v3.json",
+      "json_path_after": "blocks.micro_questions[139]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA04",
+      "question_id": "Q140"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q141.v3.json",
+      "json_path_after": "blocks.micro_questions[140]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA04",
+      "question_id": "Q141"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q142.v3.json",
+      "json_path_after": "blocks.micro_questions[141]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA04",
+      "question_id": "Q142"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q143.v3.json",
+      "json_path_after": "blocks.micro_questions[142]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA04",
+      "question_id": "Q143"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q144.v3.json",
+      "json_path_after": "blocks.micro_questions[143]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA04",
+      "question_id": "Q144"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q145.v3.json",
+      "json_path_after": "blocks.micro_questions[144]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA04",
+      "question_id": "Q145"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q146.v3.json",
+      "json_path_after": "blocks.micro_questions[145]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA04",
+      "question_id": "Q146"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q147.v3.json",
+      "json_path_after": "blocks.micro_questions[146]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA04",
+      "question_id": "Q147"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q148.v3.json",
+      "json_path_after": "blocks.micro_questions[147]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA04",
+      "question_id": "Q148"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q149.v3.json",
+      "json_path_after": "blocks.micro_questions[148]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA04",
+      "question_id": "Q149"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q150.v3.json",
+      "json_path_after": "blocks.micro_questions[149]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA04",
+      "question_id": "Q150"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q151.v3.json",
+      "json_path_after": "blocks.micro_questions[150]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA05",
+      "question_id": "Q151"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q152.v3.json",
+      "json_path_after": "blocks.micro_questions[151]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA05",
+      "question_id": "Q152"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q153.v3.json",
+      "json_path_after": "blocks.micro_questions[152]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA05",
+      "question_id": "Q153"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q154.v3.json",
+      "json_path_after": "blocks.micro_questions[153]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA05",
+      "question_id": "Q154"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q155.v3.json",
+      "json_path_after": "blocks.micro_questions[154]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA05",
+      "question_id": "Q155"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q156.v3.json",
+      "json_path_after": "blocks.micro_questions[155]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA05",
+      "question_id": "Q156"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q157.v3.json",
+      "json_path_after": "blocks.micro_questions[156]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA05",
+      "question_id": "Q157"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q158.v3.json",
+      "json_path_after": "blocks.micro_questions[157]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA05",
+      "question_id": "Q158"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q159.v3.json",
+      "json_path_after": "blocks.micro_questions[158]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA05",
+      "question_id": "Q159"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q160.v3.json",
+      "json_path_after": "blocks.micro_questions[159]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA05",
+      "question_id": "Q160"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q161.v3.json",
+      "json_path_after": "blocks.micro_questions[160]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA05",
+      "question_id": "Q161"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q162.v3.json",
+      "json_path_after": "blocks.micro_questions[161]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA05",
+      "question_id": "Q162"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q163.v3.json",
+      "json_path_after": "blocks.micro_questions[162]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA05",
+      "question_id": "Q163"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q164.v3.json",
+      "json_path_after": "blocks.micro_questions[163]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA05",
+      "question_id": "Q164"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q165.v3.json",
+      "json_path_after": "blocks.micro_questions[164]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA05",
+      "question_id": "Q165"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q166.v3.json",
+      "json_path_after": "blocks.micro_questions[165]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA05",
+      "question_id": "Q166"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q167.v3.json",
+      "json_path_after": "blocks.micro_questions[166]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA05",
+      "question_id": "Q167"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q168.v3.json",
+      "json_path_after": "blocks.micro_questions[167]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA05",
+      "question_id": "Q168"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q169.v3.json",
+      "json_path_after": "blocks.micro_questions[168]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA05",
+      "question_id": "Q169"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q170.v3.json",
+      "json_path_after": "blocks.micro_questions[169]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA05",
+      "question_id": "Q170"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q171.v3.json",
+      "json_path_after": "blocks.micro_questions[170]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA05",
+      "question_id": "Q171"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q172.v3.json",
+      "json_path_after": "blocks.micro_questions[171]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA05",
+      "question_id": "Q172"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q173.v3.json",
+      "json_path_after": "blocks.micro_questions[172]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA05",
+      "question_id": "Q173"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q174.v3.json",
+      "json_path_after": "blocks.micro_questions[173]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA05",
+      "question_id": "Q174"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q175.v3.json",
+      "json_path_after": "blocks.micro_questions[174]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA05",
+      "question_id": "Q175"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q176.v3.json",
+      "json_path_after": "blocks.micro_questions[175]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA05",
+      "question_id": "Q176"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q177.v3.json",
+      "json_path_after": "blocks.micro_questions[176]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA05",
+      "question_id": "Q177"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q178.v3.json",
+      "json_path_after": "blocks.micro_questions[177]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA05",
+      "question_id": "Q178"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q179.v3.json",
+      "json_path_after": "blocks.micro_questions[178]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA05",
+      "question_id": "Q179"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q180.v3.json",
+      "json_path_after": "blocks.micro_questions[179]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA05",
+      "question_id": "Q180"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q181.v3.json",
+      "json_path_after": "blocks.micro_questions[180]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA06",
+      "question_id": "Q181"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q182.v3.json",
+      "json_path_after": "blocks.micro_questions[181]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA06",
+      "question_id": "Q182"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q183.v3.json",
+      "json_path_after": "blocks.micro_questions[182]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA06",
+      "question_id": "Q183"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q184.v3.json",
+      "json_path_after": "blocks.micro_questions[183]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA06",
+      "question_id": "Q184"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q185.v3.json",
+      "json_path_after": "blocks.micro_questions[184]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA06",
+      "question_id": "Q185"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q186.v3.json",
+      "json_path_after": "blocks.micro_questions[185]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA06",
+      "question_id": "Q186"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q187.v3.json",
+      "json_path_after": "blocks.micro_questions[186]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA06",
+      "question_id": "Q187"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q188.v3.json",
+      "json_path_after": "blocks.micro_questions[187]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA06",
+      "question_id": "Q188"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q189.v3.json",
+      "json_path_after": "blocks.micro_questions[188]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA06",
+      "question_id": "Q189"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q190.v3.json",
+      "json_path_after": "blocks.micro_questions[189]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA06",
+      "question_id": "Q190"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q191.v3.json",
+      "json_path_after": "blocks.micro_questions[190]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA06",
+      "question_id": "Q191"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q192.v3.json",
+      "json_path_after": "blocks.micro_questions[191]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA06",
+      "question_id": "Q192"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q193.v3.json",
+      "json_path_after": "blocks.micro_questions[192]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA06",
+      "question_id": "Q193"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q194.v3.json",
+      "json_path_after": "blocks.micro_questions[193]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA06",
+      "question_id": "Q194"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q195.v3.json",
+      "json_path_after": "blocks.micro_questions[194]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA06",
+      "question_id": "Q195"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q196.v3.json",
+      "json_path_after": "blocks.micro_questions[195]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA06",
+      "question_id": "Q196"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q197.v3.json",
+      "json_path_after": "blocks.micro_questions[196]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA06",
+      "question_id": "Q197"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q198.v3.json",
+      "json_path_after": "blocks.micro_questions[197]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA06",
+      "question_id": "Q198"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q199.v3.json",
+      "json_path_after": "blocks.micro_questions[198]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA06",
+      "question_id": "Q199"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q200.v3.json",
+      "json_path_after": "blocks.micro_questions[199]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA06",
+      "question_id": "Q200"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q201.v3.json",
+      "json_path_after": "blocks.micro_questions[200]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA06",
+      "question_id": "Q201"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q202.v3.json",
+      "json_path_after": "blocks.micro_questions[201]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA06",
+      "question_id": "Q202"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q203.v3.json",
+      "json_path_after": "blocks.micro_questions[202]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA06",
+      "question_id": "Q203"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q204.v3.json",
+      "json_path_after": "blocks.micro_questions[203]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA06",
+      "question_id": "Q204"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q205.v3.json",
+      "json_path_after": "blocks.micro_questions[204]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA06",
+      "question_id": "Q205"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q206.v3.json",
+      "json_path_after": "blocks.micro_questions[205]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA06",
+      "question_id": "Q206"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q207.v3.json",
+      "json_path_after": "blocks.micro_questions[206]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA06",
+      "question_id": "Q207"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q208.v3.json",
+      "json_path_after": "blocks.micro_questions[207]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA06",
+      "question_id": "Q208"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q209.v3.json",
+      "json_path_after": "blocks.micro_questions[208]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA06",
+      "question_id": "Q209"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q210.v3.json",
+      "json_path_after": "blocks.micro_questions[209]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA06",
+      "question_id": "Q210"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q211.v3.json",
+      "json_path_after": "blocks.micro_questions[210]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA07",
+      "question_id": "Q211"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q212.v3.json",
+      "json_path_after": "blocks.micro_questions[211]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA07",
+      "question_id": "Q212"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q213.v3.json",
+      "json_path_after": "blocks.micro_questions[212]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA07",
+      "question_id": "Q213"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q214.v3.json",
+      "json_path_after": "blocks.micro_questions[213]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA07",
+      "question_id": "Q214"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q215.v3.json",
+      "json_path_after": "blocks.micro_questions[214]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA07",
+      "question_id": "Q215"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q216.v3.json",
+      "json_path_after": "blocks.micro_questions[215]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA07",
+      "question_id": "Q216"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q217.v3.json",
+      "json_path_after": "blocks.micro_questions[216]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA07",
+      "question_id": "Q217"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q218.v3.json",
+      "json_path_after": "blocks.micro_questions[217]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA07",
+      "question_id": "Q218"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q219.v3.json",
+      "json_path_after": "blocks.micro_questions[218]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA07",
+      "question_id": "Q219"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q220.v3.json",
+      "json_path_after": "blocks.micro_questions[219]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA07",
+      "question_id": "Q220"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q221.v3.json",
+      "json_path_after": "blocks.micro_questions[220]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA07",
+      "question_id": "Q221"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q222.v3.json",
+      "json_path_after": "blocks.micro_questions[221]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA07",
+      "question_id": "Q222"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q223.v3.json",
+      "json_path_after": "blocks.micro_questions[222]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA07",
+      "question_id": "Q223"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q224.v3.json",
+      "json_path_after": "blocks.micro_questions[223]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA07",
+      "question_id": "Q224"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q225.v3.json",
+      "json_path_after": "blocks.micro_questions[224]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA07",
+      "question_id": "Q225"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q226.v3.json",
+      "json_path_after": "blocks.micro_questions[225]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA07",
+      "question_id": "Q226"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q227.v3.json",
+      "json_path_after": "blocks.micro_questions[226]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA07",
+      "question_id": "Q227"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q228.v3.json",
+      "json_path_after": "blocks.micro_questions[227]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA07",
+      "question_id": "Q228"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q229.v3.json",
+      "json_path_after": "blocks.micro_questions[228]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA07",
+      "question_id": "Q229"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q230.v3.json",
+      "json_path_after": "blocks.micro_questions[229]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA07",
+      "question_id": "Q230"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q231.v3.json",
+      "json_path_after": "blocks.micro_questions[230]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA07",
+      "question_id": "Q231"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q232.v3.json",
+      "json_path_after": "blocks.micro_questions[231]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA07",
+      "question_id": "Q232"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q233.v3.json",
+      "json_path_after": "blocks.micro_questions[232]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA07",
+      "question_id": "Q233"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q234.v3.json",
+      "json_path_after": "blocks.micro_questions[233]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA07",
+      "question_id": "Q234"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q235.v3.json",
+      "json_path_after": "blocks.micro_questions[234]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA07",
+      "question_id": "Q235"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q236.v3.json",
+      "json_path_after": "blocks.micro_questions[235]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA07",
+      "question_id": "Q236"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q237.v3.json",
+      "json_path_after": "blocks.micro_questions[236]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA07",
+      "question_id": "Q237"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q238.v3.json",
+      "json_path_after": "blocks.micro_questions[237]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA07",
+      "question_id": "Q238"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q239.v3.json",
+      "json_path_after": "blocks.micro_questions[238]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA07",
+      "question_id": "Q239"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q240.v3.json",
+      "json_path_after": "blocks.micro_questions[239]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA07",
+      "question_id": "Q240"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q241.v3.json",
+      "json_path_after": "blocks.micro_questions[240]",
+      "json_path_before": "blocks.micro_questions[270]",
+      "policy_area_id": "PA08",
+      "question_id": "Q241"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q242.v3.json",
+      "json_path_after": "blocks.micro_questions[241]",
+      "json_path_before": "blocks.micro_questions[271]",
+      "policy_area_id": "PA08",
+      "question_id": "Q242"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q243.v3.json",
+      "json_path_after": "blocks.micro_questions[242]",
+      "json_path_before": "blocks.micro_questions[272]",
+      "policy_area_id": "PA08",
+      "question_id": "Q243"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q244.v3.json",
+      "json_path_after": "blocks.micro_questions[243]",
+      "json_path_before": "blocks.micro_questions[273]",
+      "policy_area_id": "PA08",
+      "question_id": "Q244"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q245.v3.json",
+      "json_path_after": "blocks.micro_questions[244]",
+      "json_path_before": "blocks.micro_questions[274]",
+      "policy_area_id": "PA08",
+      "question_id": "Q245"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q246.v3.json",
+      "json_path_after": "blocks.micro_questions[245]",
+      "json_path_before": "blocks.micro_questions[275]",
+      "policy_area_id": "PA08",
+      "question_id": "Q246"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q247.v3.json",
+      "json_path_after": "blocks.micro_questions[246]",
+      "json_path_before": "blocks.micro_questions[276]",
+      "policy_area_id": "PA08",
+      "question_id": "Q247"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q248.v3.json",
+      "json_path_after": "blocks.micro_questions[247]",
+      "json_path_before": "blocks.micro_questions[277]",
+      "policy_area_id": "PA08",
+      "question_id": "Q248"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q249.v3.json",
+      "json_path_after": "blocks.micro_questions[248]",
+      "json_path_before": "blocks.micro_questions[278]",
+      "policy_area_id": "PA08",
+      "question_id": "Q249"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q250.v3.json",
+      "json_path_after": "blocks.micro_questions[249]",
+      "json_path_before": "blocks.micro_questions[279]",
+      "policy_area_id": "PA08",
+      "question_id": "Q250"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q251.v3.json",
+      "json_path_after": "blocks.micro_questions[250]",
+      "json_path_before": "blocks.micro_questions[280]",
+      "policy_area_id": "PA08",
+      "question_id": "Q251"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q252.v3.json",
+      "json_path_after": "blocks.micro_questions[251]",
+      "json_path_before": "blocks.micro_questions[281]",
+      "policy_area_id": "PA08",
+      "question_id": "Q252"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q253.v3.json",
+      "json_path_after": "blocks.micro_questions[252]",
+      "json_path_before": "blocks.micro_questions[282]",
+      "policy_area_id": "PA08",
+      "question_id": "Q253"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q254.v3.json",
+      "json_path_after": "blocks.micro_questions[253]",
+      "json_path_before": "blocks.micro_questions[283]",
+      "policy_area_id": "PA08",
+      "question_id": "Q254"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q255.v3.json",
+      "json_path_after": "blocks.micro_questions[254]",
+      "json_path_before": "blocks.micro_questions[284]",
+      "policy_area_id": "PA08",
+      "question_id": "Q255"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q256.v3.json",
+      "json_path_after": "blocks.micro_questions[255]",
+      "json_path_before": "blocks.micro_questions[285]",
+      "policy_area_id": "PA08",
+      "question_id": "Q256"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q257.v3.json",
+      "json_path_after": "blocks.micro_questions[256]",
+      "json_path_before": "blocks.micro_questions[286]",
+      "policy_area_id": "PA08",
+      "question_id": "Q257"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q258.v3.json",
+      "json_path_after": "blocks.micro_questions[257]",
+      "json_path_before": "blocks.micro_questions[287]",
+      "policy_area_id": "PA08",
+      "question_id": "Q258"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q259.v3.json",
+      "json_path_after": "blocks.micro_questions[258]",
+      "json_path_before": "blocks.micro_questions[288]",
+      "policy_area_id": "PA08",
+      "question_id": "Q259"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q260.v3.json",
+      "json_path_after": "blocks.micro_questions[259]",
+      "json_path_before": "blocks.micro_questions[289]",
+      "policy_area_id": "PA08",
+      "question_id": "Q260"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q261.v3.json",
+      "json_path_after": "blocks.micro_questions[260]",
+      "json_path_before": "blocks.micro_questions[290]",
+      "policy_area_id": "PA08",
+      "question_id": "Q261"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q262.v3.json",
+      "json_path_after": "blocks.micro_questions[261]",
+      "json_path_before": "blocks.micro_questions[291]",
+      "policy_area_id": "PA08",
+      "question_id": "Q262"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q263.v3.json",
+      "json_path_after": "blocks.micro_questions[262]",
+      "json_path_before": "blocks.micro_questions[292]",
+      "policy_area_id": "PA08",
+      "question_id": "Q263"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q264.v3.json",
+      "json_path_after": "blocks.micro_questions[263]",
+      "json_path_before": "blocks.micro_questions[293]",
+      "policy_area_id": "PA08",
+      "question_id": "Q264"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q265.v3.json",
+      "json_path_after": "blocks.micro_questions[264]",
+      "json_path_before": "blocks.micro_questions[294]",
+      "policy_area_id": "PA08",
+      "question_id": "Q265"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q266.v3.json",
+      "json_path_after": "blocks.micro_questions[265]",
+      "json_path_before": "blocks.micro_questions[295]",
+      "policy_area_id": "PA08",
+      "question_id": "Q266"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q267.v3.json",
+      "json_path_after": "blocks.micro_questions[266]",
+      "json_path_before": "blocks.micro_questions[296]",
+      "policy_area_id": "PA08",
+      "question_id": "Q267"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q268.v3.json",
+      "json_path_after": "blocks.micro_questions[267]",
+      "json_path_before": "blocks.micro_questions[297]",
+      "policy_area_id": "PA08",
+      "question_id": "Q268"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q269.v3.json",
+      "json_path_after": "blocks.micro_questions[268]",
+      "json_path_before": "blocks.micro_questions[298]",
+      "policy_area_id": "PA08",
+      "question_id": "Q269"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q270.v3.json",
+      "json_path_after": "blocks.micro_questions[269]",
+      "json_path_before": "blocks.micro_questions[299]",
+      "policy_area_id": "PA08",
+      "question_id": "Q270"
+    }
+  ],
+  "monolith_path": "canonic_questionnaire_central/questionnaire_monolith.json",
+  "touched_contracts": 270
+}

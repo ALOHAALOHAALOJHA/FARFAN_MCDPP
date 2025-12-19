@@ -1,205 +1,22 @@
 {
-  "identity": {
-    "base_slot": "D6-Q1",
-    "question_id": "Q236",
-    "dimension_id": "DIM06",
-    "policy_area_id": "PA07",
-    "contract_version": "3.0.0",
-    "contract_hash": "3e2be0ae18f37dacd74fffeea26a0444d6abde323291f1119427ef0556c52aa3",
-    "created_at": "2025-11-28T03:50:42.085890+00:00",
-    "validated_against_schema": "executor_contract.v3.schema.json",
-    "cluster_id": "CL01",
-    "question_global": 236,
-    "updated_at": "2025-12-18T07:16:05.768690+00:00"
+  "calibration": {
+    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
+    "source": {
+      "canonical_spec": "canonic_calibration_methods.md",
+      "fusion_specification": "config/fusion_specification.json",
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "layer_calibrations_dir": "config/layer_calibrations/"
+    },
+    "status": "placeholder"
   },
-  "executor_binding": {
-    "executor_class": "D6_Q1_Executor",
-    "executor_module": "farfan_core.core.orchestrator.executors"
+  "compatibility": {
+    "method_executor_min_version": "TODO_VERSION",
+    "orchestrator_min_version": "TODO_VERSION",
+    "phase2_types_version": "TODO_VERSION",
+    "questionnaire_monolith_version": "3.0.0",
+    "signal_registry_min_version": "TODO_VERSION"
   },
-  "method_binding": {
-    "orchestration_mode": "multi_method_pipeline",
-    "method_count": 8,
-    "methods": [
-      {
-        "class_name": "TeoriaCambio",
-        "method_name": "construir_grafo_causal",
-        "priority": 1,
-        "provides": "teoriacambio.construir_grafo_causal",
-        "role": "construir_grafo_causal_execution",
-        "description": "TeoriaCambio.construir_grafo_causal"
-      },
-      {
-        "class_name": "TeoriaCambio",
-        "method_name": "validacion_completa",
-        "priority": 2,
-        "provides": "teoriacambio.validacion_completa",
-        "role": "validacion_completa_execution",
-        "description": "TeoriaCambio.validacion_completa"
-      },
-      {
-        "class_name": "TeoriaCambio",
-        "method_name": "export_nodes",
-        "priority": 3,
-        "provides": "teoriacambio.export_nodes",
-        "role": "export_nodes_execution",
-        "description": "TeoriaCambio.export_nodes"
-      },
-      {
-        "class_name": "ReportingEngine",
-        "method_name": "generate_causal_diagram",
-        "priority": 4,
-        "provides": "reportingengine.generate_causal_diagram",
-        "role": "generate_causal_diagram_execution",
-        "description": "ReportingEngine.generate_causal_diagram"
-      },
-      {
-        "class_name": "ReportingEngine",
-        "method_name": "generate_causal_model_json",
-        "priority": 5,
-        "provides": "reportingengine.generate_causal_model_json",
-        "role": "generate_causal_model_json_execution",
-        "description": "ReportingEngine.generate_causal_model_json"
-      },
-      {
-        "class_name": "AdvancedDAGValidator",
-        "method_name": "export_nodes",
-        "priority": 6,
-        "provides": "advanceddagvalidator.export_nodes",
-        "role": "export_nodes_execution",
-        "description": "AdvancedDAGValidator.export_nodes"
-      },
-      {
-        "class_name": "PDETMunicipalPlanAnalyzer",
-        "method_name": "export_causal_network",
-        "priority": 7,
-        "provides": "pdet_analysis.export_causal_network",
-        "role": "export_causal_network_execution",
-        "description": "PDETMunicipalPlanAnalyzer.export_causal_network"
-      },
-      {
-        "class_name": "CausalExtractor",
-        "method_name": "extract_causal_hierarchy",
-        "priority": 8,
-        "provides": "causal_extraction.extract_causal_hierarchy",
-        "role": "extract_causal_hierarchy_extraction",
-        "description": "CausalExtractor.extract_causal_hierarchy"
-      }
-    ],
-    "note": "All 8 methods extracted from D6_Q1_Executor in executors.py"
-  },
-  "question_context": {
-    "question_text": "¿Existe una 'teoría de cambio' explícita para la política de tierras, preferiblemente en un 'diagrama', que identifique causas (ej. catastro desactualizado), mediadores y 'supuestos verificables'?",
-    "question_type": "micro",
-    "scoring_modality": "TYPE_A",
-    "modality": "count_and_scale",
-    "expected_output_type": "score",
-    "patterns": [
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q236-000",
-        "match_type": "REGEX",
-        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de desarrollo rural",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
-      },
-      {
-        "category": "CAUSAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q236-001",
-        "match_type": "REGEX",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "evidence_modality": "FIGURE",
-        "context_scope": "PARAGRAPH",
-        "pattern_ref": "PAT-0051",
-        "pattern": "diagrama causal|gráfico de la teoría de cambio|ruta causal",
-        "policy_area": "PA07"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q236-002",
-        "match_type": "REGEX",
-        "pattern": "causa raíz de la informalidad|determinante estructural del subdesarrollo rural",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q236-003",
-        "match_type": "REGEX",
-        "pattern": "mediador|variable intermedia|eslabón|seguridad jurídica|acceso a crédito|productividad",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q236-004",
-        "match_type": "REGEX",
-        "pattern": "moderador|factor contextual|calidad del suelo|conflicto armado",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
-      },
-      {
-        "category": "GENERAL",
-        "confidence_weight": 0.85,
-        "flags": "i",
-        "id": "PAT-Q236-005",
-        "match_type": "LITERAL",
-        "specificity": "MEDIUM",
-        "validation_rule": null,
-        "context_requirement": null,
-        "semantic_expansion": null,
-        "context_scope": "PARAGRAPH",
-        "pattern_ref": "PAT-0104",
-        "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable",
-        "policy_area": "PA07"
-      }
-    ],
-    "expected_elements": [
-      {
-        "required": true,
-        "type": "diagrama_causal",
-        "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "supuestos_verificables",
-        "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "teoria_cambio_explicita",
-        "minimum": 1
-      }
-    ],
-    "validations": {},
+  "error_handling": {
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
@@ -207,70 +24,15 @@
       ],
       "emit_code": "ABORT-Q236-REQ"
     },
-    "policy_area_label": "Tierras y territorios",
-    "dimension_label": "CAUSALIDAD"
-  },
-  "signal_requirements": {
-    "mandatory_signals": [
-      "differential_needs",
-      "environmental_baseline",
-      "protection_areas",
-      "risk_zones",
-      "territorial_diagnosis"
-    ],
-    "optional_signals": [
-      "biodiversity",
-      "deforestation_rates",
-      "equity_considerations",
-      "participation_evidence",
-      "water_quality"
-    ],
-    "signal_aggregation": "weighted_mean",
-    "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "on_assembly_failure": "propagate_with_trace",
+    "on_method_failure": "propagate_with_trace",
+    "on_method_not_found": "raise"
   },
   "evidence_assembly": {
-    "module": "canonic_phases.Phase_two.evidence_nexus",
-    "class_name": "EvidenceNexus",
-    "method_name": "assemble",
-    "output_schema": {
-      "type": "object",
-      "required": [
-        "elements",
-        "raw_results"
-      ],
-      "properties": {
-        "elements": {
-          "type": "array",
-          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta."
-        },
-        "raw_results": {
-          "type": "object",
-          "properties": {
-            "confidence_scores": {
-              "type": "array",
-              "description": "Scores de confianza usados por el scorer."
-            },
-            "semantic_similarity": {
-              "description": "Métrica de similitud semántica (si aplica)."
-            },
-            "pattern_matches": {
-              "type": "object",
-              "description": "Matches de patrones esperados vs texto."
-            },
-            "metadata": {
-              "type": "object",
-              "description": "Metadatos arbitrarios pasados al scorer."
-            }
-          },
-          "additionalProperties": true
-        }
-      },
-      "additionalProperties": true
-    },
     "assembly_rules": [
       {
-        "target": "elements_found",
+        "description": "Combine evidence from 8 methods",
+        "merge_strategy": "concat",
         "sources": [
           "advanceddagvalidator.export_nodes",
           "causal_extraction.extract_causal_hierarchy",
@@ -281,118 +43,844 @@
           "teoriacambio.export_nodes",
           "teoriacambio.validacion_completa"
         ],
-        "merge_strategy": "concat",
-        "description": "Combine evidence from 8 methods"
+        "target": "elements_found"
       },
       {
-        "target": "confidence_scores",
-        "sources": [],
-        "merge_strategy": "weighted_mean",
         "default": [],
-        "description": "Aggregate confidence scores across all methods"
+        "description": "Aggregate confidence scores across all methods",
+        "merge_strategy": "weighted_mean",
+        "sources": [],
+        "target": "confidence_scores"
       },
       {
-        "target": "pattern_matches",
-        "sources": [],
-        "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from text mining methods"
+        "description": "Combine pattern matches from text mining methods",
+        "merge_strategy": "concat",
+        "sources": [],
+        "target": "pattern_matches"
       },
       {
-        "target": "metadata",
-        "sources": [],
+        "description": "Combine metadata from all 17 methods for full traceability",
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "sources": [],
+        "target": "metadata"
       }
     ],
-    "engine": "EVIDENCE_NEXUS"
-  },
-  "output_contract": {
-    "result_type": "Phase2QuestionResult",
-    "schema": {
-      "type": "object",
-      "required": [
-        "base_slot",
-        "question_id",
-        "question_global",
-        "evidence",
-        "validation"
-      ],
+    "class_name": "EvidenceNexus",
+    "engine": "EVIDENCE_NEXUS",
+    "method_name": "assemble",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "output_schema": {
+      "additionalProperties": true,
       "properties": {
-        "base_slot": {
-          "type": "string",
-          "description": "Debe coincidir con identity.base_slot.",
-          "const": "D6-Q1"
+        "elements": {
+          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta.",
+          "type": "array"
         },
-        "question_id": {
-          "type": "string",
-          "description": "Debe coincidir con identity.question_id.",
-          "const": "Q236"
-        },
-        "question_global": {
-          "type": "integer",
-          "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 236
-        },
-        "policy_area_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA07"
-        },
-        "dimension_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": "DIM06"
-        },
-        "cluster_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": "CL01"
-        },
-        "evidence": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
-          "additionalProperties": true
-        },
-        "validation": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
-          "additionalProperties": true
-        },
-        "trace": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
-          "additionalProperties": true
-        },
-        "metadata": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
-          "additionalProperties": true
+        "raw_results": {
+          "additionalProperties": true,
+          "properties": {
+            "confidence_scores": {
+              "description": "Scores de confianza usados por el scorer.",
+              "type": "array"
+            },
+            "metadata": {
+              "description": "Metadatos arbitrarios pasados al scorer.",
+              "type": "object"
+            },
+            "pattern_matches": {
+              "description": "Matches de patrones esperados vs texto.",
+              "type": "object"
+            },
+            "semantic_similarity": {
+              "description": "Métrica de similitud semántica (si aplica)."
+            }
+          },
+          "type": "object"
         }
       },
-      "additionalProperties": false
+      "required": [
+        "elements",
+        "raw_results"
+      ],
+      "type": "object"
+    }
+  },
+  "executor_binding": {
+    "executor_class": "D6_Q1_Executor",
+    "executor_module": "farfan_core.core.orchestrator.executors"
+  },
+  "fallback_strategy": {
+    "note": "No fallback strategies enabled. All failures propagate according to error_handling configuration.",
+    "use_heuristics": false,
+    "use_llm_direct": false
+  },
+  "human_answer_structure": {
+    "assembly_flow": {
+      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
+      "step_3_validation": "ValidationEngine checks against validation_rules",
+      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
     },
+    "concrete_example": {
+      "bayesian_insights": {
+        "metrics_with_high_uncertainty": [],
+        "significant_comparisons": 1
+      },
+      "confidence_scores": {
+        "by_method": {
+          "BayesianNumericalAnalyzer": 0.92,
+          "CausalExtractor": 0.79,
+          "FinancialAuditor": 0.94,
+          "IndustrialPolicyProcessor": 0.91,
+          "PDETMunicipalPlanAnalyzer": 0.88,
+          "PolicyContradictionDetector": 0.9,
+          "SemanticProcessor": 0.85,
+          "TextMiningEngine": 0.83
+        },
+        "max": 0.98,
+        "mean": 0.876,
+        "min": 0.72,
+        "std": 0.089
+      },
+      "contradictions": {
+        "found": 0,
+        "interpretation": "No statistical contradictions in quantitative claims",
+        "tests_performed": 15
+      },
+      "critical_links": [
+        {
+          "cause": "alta tasa de VBG",
+          "coherence": 0.82,
+          "criticality": 0.87,
+          "effect": "baja autonomía económica"
+        }
+      ],
+      "elements_found": [
+        {
+          "confidence": 0.95,
+          "element_id": "E-001",
+          "position": {
+            "end": 145,
+            "start": 123
+          },
+          "sentence_id": 45,
+          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
+          "source_sentence": "según datos de DANE para el año 2022",
+          "type": "fuentes_oficiales",
+          "value": "DANE"
+        },
+        {
+          "bayesian_posterior": {
+            "ci_95": [
+              0.11,
+              0.145
+            ],
+            "mean": 0.123
+          },
+          "confidence": 0.89,
+          "element_id": "E-002",
+          "normalized_value": 12.3,
+          "sentence_id": 45,
+          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
+          "type": "indicadores_cuantitativos",
+          "unit": "%",
+          "value": "tasa de VBG: 12.3%"
+        },
+        {
+          "confidence": 0.92,
+          "element_id": "E-003",
+          "source_method": "TextMiningEngine.diagnose_critical_links",
+          "type": "series_temporales_años",
+          "years": [
+            2020,
+            2021,
+            2022
+          ]
+        },
+        {
+          "confidence": 0.88,
+          "coverage": "municipal - zona rural y urbana",
+          "element_id": "E-004",
+          "source_method": "CausalExtractor._parse_goal_context",
+          "type": "cobertura_territorial_especificada"
+        }
+      ],
+      "elements_summary": {
+        "by_type": {
+          "causal_links": 5,
+          "cobertura_territorial_especificada": 1,
+          "financial_amounts": 8,
+          "fuentes_oficiales": 5,
+          "indicadores_cuantitativos": 12,
+          "policy_goals": 7,
+          "series_temporales_años": 4
+        },
+        "total_count": 38
+      },
+      "financial_summary": {
+        "amounts_found": 12,
+        "by_category": {
+          "SGR": 250000000.0,
+          "recursos_propios": 180000000.0
+        },
+        "total_budget_cop": 850000000.0
+      },
+      "goals_summary": {
+        "goals_with_complete_context": 4,
+        "quantified_goals": 5,
+        "total_goals": 7
+      },
+      "metadata": {
+        "analysis_timestamp": "2025-11-26T12:34:56Z",
+        "document_length": 15230,
+        "execution_time_ms": 2845,
+        "methods_executed": 8
+      },
+      "pattern_matches": [
+        {
+          "avg_confidence": 0.87,
+          "count": 3,
+          "pattern_id": "PAT-Q001-000"
+        },
+        {
+          "avg_confidence": 0.95,
+          "count": 5,
+          "pattern_id": "PAT-Q001-002"
+        }
+      ],
+      "semantic_processing": {
+        "avg_semantic_similarity_to_query": 0.78,
+        "chunks_created": 45,
+        "embeddings_generated": 45
+      }
+    },
+    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "evidence_structure_schema": {
+      "description": "Assembled evidence after all methods complete",
+      "properties": {
+        "bayesian_insights": {
+          "description": "Results from BayesianNumericalAnalyzer",
+          "properties": {
+            "metrics_with_high_uncertainty": {
+              "type": "array"
+            },
+            "significant_comparisons": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "confidence_scores": {
+          "description": "Aggregated confidence metrics (weighted_mean strategy)",
+          "properties": {
+            "by_method": {
+              "description": "Average confidence per analyzer class",
+              "type": "object"
+            },
+            "max": {
+              "type": "number"
+            },
+            "mean": {
+              "type": "number"
+            },
+            "min": {
+              "type": "number"
+            },
+            "std": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "contradictions": {
+          "description": "Results from PolicyContradictionDetector",
+          "properties": {
+            "found": {
+              "type": "integer"
+            },
+            "interpretation": {
+              "type": "string"
+            },
+            "tests_performed": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "critical_links": {
+          "description": "Causal links extracted by TextMiningEngine",
+          "items": {
+            "properties": {
+              "cause": {
+                "type": "string"
+              },
+              "coherence": {
+                "type": "number"
+              },
+              "criticality": {
+                "type": "number"
+              },
+              "effect": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "elements_found": {
+          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
+          "example_count": "Expected 15-50 elements for a complete diagnostic",
+          "items": {
+            "properties": {
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "context": {
+                "type": "string"
+              },
+              "element_id": {
+                "example": "E-001",
+                "type": "string"
+              },
+              "sentence_id": {
+                "type": "integer"
+              },
+              "source_method": {
+                "example": "IndustrialPolicyProcessor._extract_point_evidence",
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "fuentes_oficiales",
+                  "indicadores_cuantitativos",
+                  "series_temporales_años",
+                  "cobertura_territorial_especificada",
+                  "financial_amounts",
+                  "policy_goals",
+                  "causal_links"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "example": "DANE",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "elements_summary": {
+          "properties": {
+            "by_type": {
+              "properties": {
+                "cobertura_territorial_especificada": {
+                  "minimum_expected": 1,
+                  "type": "integer"
+                },
+                "fuentes_oficiales": {
+                  "minimum_expected": 2,
+                  "type": "integer"
+                },
+                "indicadores_cuantitativos": {
+                  "minimum_expected": 3,
+                  "type": "integer"
+                },
+                "series_temporales_años": {
+                  "minimum_expected": 3,
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "total_count": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "financial_summary": {
+          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
+          "properties": {
+            "amounts_found": {
+              "type": "integer"
+            },
+            "by_category": {
+              "properties": {
+                "SGR": {
+                  "type": "number"
+                },
+                "recursos_propios": {
+                  "type": "number"
+                },
+                "transferencias": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "total_budget_cop": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "goals_summary": {
+          "description": "Policy goals extracted by CausalExtractor",
+          "properties": {
+            "goals_with_complete_context": {
+              "type": "integer"
+            },
+            "quantified_goals": {
+              "type": "integer"
+            },
+            "total_goals": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "metadata": {
+          "properties": {
+            "analysis_timestamp": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "document_length": {
+              "type": "integer"
+            },
+            "execution_time_ms": {
+              "type": "number"
+            },
+            "methods_executed": {
+              "const": 8,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "pattern_matches": {
+          "description": "Aggregated pattern matches from text mining methods",
+          "items": {
+            "properties": {
+              "avg_confidence": {
+                "type": "number"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "pattern_id": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "semantic_processing": {
+          "description": "Results from SemanticProcessor",
+          "properties": {
+            "avg_semantic_similarity_to_query": {
+              "type": "number"
+            },
+            "chunks_created": {
+              "type": "integer"
+            },
+            "embeddings_generated": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "template_variable_bindings": {
+      "description": "These variables are available for human_readable_output template",
+      "variables": {
+        "{evidence.confidence_scores.mean}": "87.6%",
+        "{evidence.elements_found_count}": 38,
+        "{evidence.official_sources_count}": 5,
+        "{evidence.pattern_matches_count}": 14,
+        "{evidence.quantitative_indicators_count}": 12,
+        "{evidence.temporal_series_count}": 4,
+        "{evidence.territorial_coverage}": "municipal - zona rural y urbana",
+        "{quality_level}": "ALTO",
+        "{score}": "Calculated by scorer based on elements"
+      }
+    },
+    "usage_notes": {
+      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence.",
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_validators": "Use this to verify that actual execution output matches expected structure."
+    },
+    "validation_against_expected_elements": {
+      "cobertura_territorial_especificada": {
+        "example_element_id": "E-004",
+        "found_in_example": true,
+        "required": true
+      },
+      "fuentes_oficiales": {
+        "found_in_example": 5,
+        "minimum": 2,
+        "status": "PASS"
+      },
+      "indicadores_cuantitativos": {
+        "found_in_example": 12,
+        "minimum": 3,
+        "status": "PASS"
+      },
+      "overall_validation_result": "PASS - All required and minimum elements present",
+      "series_temporales_años": {
+        "found_in_example": 4,
+        "minimum": 3,
+        "status": "PASS"
+      }
+    }
+  },
+  "identity": {
+    "base_slot": "D6-Q1",
+    "cluster_id": "CL01",
+    "contract_hash": "3e2be0ae18f37dacd74fffeea26a0444d6abde323291f1119427ef0556c52aa3",
+    "contract_version": "3.0.0",
+    "created_at": "2025-11-28T03:50:42.085890+00:00",
+    "dimension_id": "DIM06",
+    "policy_area_id": "PA07",
+    "question_global": 236,
+    "question_id": "Q236",
+    "updated_at": "2025-12-18T07:16:05.768690+00:00",
+    "validated_against_schema": "executor_contract.v3.schema.json"
+  },
+  "method_binding": {
+    "method_count": 8,
+    "methods": [
+      {
+        "class_name": "TeoriaCambio",
+        "description": "TeoriaCambio.construir_grafo_causal",
+        "method_name": "construir_grafo_causal",
+        "priority": 1,
+        "provides": "teoriacambio.construir_grafo_causal",
+        "role": "construir_grafo_causal_execution"
+      },
+      {
+        "class_name": "TeoriaCambio",
+        "description": "TeoriaCambio.validacion_completa",
+        "method_name": "validacion_completa",
+        "priority": 2,
+        "provides": "teoriacambio.validacion_completa",
+        "role": "validacion_completa_execution"
+      },
+      {
+        "class_name": "TeoriaCambio",
+        "description": "TeoriaCambio.export_nodes",
+        "method_name": "export_nodes",
+        "priority": 3,
+        "provides": "teoriacambio.export_nodes",
+        "role": "export_nodes_execution"
+      },
+      {
+        "class_name": "ReportingEngine",
+        "description": "ReportingEngine.generate_causal_diagram",
+        "method_name": "generate_causal_diagram",
+        "priority": 4,
+        "provides": "reportingengine.generate_causal_diagram",
+        "role": "generate_causal_diagram_execution"
+      },
+      {
+        "class_name": "ReportingEngine",
+        "description": "ReportingEngine.generate_causal_model_json",
+        "method_name": "generate_causal_model_json",
+        "priority": 5,
+        "provides": "reportingengine.generate_causal_model_json",
+        "role": "generate_causal_model_json_execution"
+      },
+      {
+        "class_name": "AdvancedDAGValidator",
+        "description": "AdvancedDAGValidator.export_nodes",
+        "method_name": "export_nodes",
+        "priority": 6,
+        "provides": "advanceddagvalidator.export_nodes",
+        "role": "export_nodes_execution"
+      },
+      {
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "description": "PDETMunicipalPlanAnalyzer.export_causal_network",
+        "method_name": "export_causal_network",
+        "priority": 7,
+        "provides": "pdet_analysis.export_causal_network",
+        "role": "export_causal_network_execution"
+      },
+      {
+        "class_name": "CausalExtractor",
+        "description": "CausalExtractor.extract_causal_hierarchy",
+        "method_name": "extract_causal_hierarchy",
+        "priority": 8,
+        "provides": "causal_extraction.extract_causal_hierarchy",
+        "role": "extract_causal_hierarchy_extraction"
+      }
+    ],
+    "note": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+    "orchestration_mode": "multi_method_pipeline"
+  },
+  "method_outputs": {
+    "AdvancedDAGValidator.export_nodes": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdvancedDAGValidator.export_nodes",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from export_nodes",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "advanceddagvalidator.export_nodes"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "CausalExtractor.extract_causal_hierarchy": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor.extract_causal_hierarchy",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from extract_causal_hierarchy",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "concat",
+        "provides_key": "causal_extraction.extract_causal_hierarchy"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "PDETMunicipalPlanAnalyzer.export_causal_network": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer.export_causal_network",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from export_causal_network",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "pdet_analysis.export_causal_network"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "ReportingEngine.generate_causal_diagram": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ReportingEngine.generate_causal_diagram",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from generate_causal_diagram",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "reportingengine.generate_causal_diagram"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "ReportingEngine.generate_causal_model_json": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from ReportingEngine.generate_causal_model_json",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from generate_causal_model_json",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "reportingengine.generate_causal_model_json"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "TeoriaCambio.construir_grafo_causal": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio.construir_grafo_causal",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from construir_grafo_causal",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "teoriacambio.construir_grafo_causal"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "TeoriaCambio.export_nodes": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio.export_nodes",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from export_nodes",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "teoriacambio.export_nodes"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    },
+    "TeoriaCambio.validacion_completa": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TeoriaCambio.validacion_completa",
+        "properties": {
+          "metadata": {
+            "description": "Execution metadata",
+            "type": "object"
+          },
+          "result": {
+            "description": "Result from validacion_completa",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "usage_in_assembly": {
+        "merge_strategy": "replace",
+        "provides_key": "teoriacambio.validacion_completa"
+      },
+      "validation": {
+        "non_empty": true,
+        "required": true
+      }
+    }
+  },
+  "methodological_depth": {
+    "methods": [
+      {
+        "class_name": "EvidenceNexus",
+        "epistemological_foundation": {
+          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
+          "justification": "Chosen because CAUSALIDAD in PA07 must explain why the plan's commitments are coherent, measurable, and traceable to evidence.",
+          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
+          "paradigm": "critical_realist",
+          "theoretical_framework": [
+            "Pearl (2009) causal reasoning (why mechanisms matter)",
+            "Pawson & Tilley (1997) realistic evaluation",
+            "Results-based management for public policy monitoring"
+          ]
+        },
+        "method_name": "contract_orchestrated_evidence_fusion",
+        "priority": 1,
+        "role": "evidence_graph_construction_and_synthesis",
+        "technical_approach": {
+          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
+          "assumptions": [
+            "The source plan contains at least one relevant section or table for this question.",
+            "Expected element types map to observable text spans or tabular cells."
+          ],
+          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation.",
+          "limitations": [
+            "Evidence quality depends on document structure and explicitness of commitments.",
+            "Pattern-only extraction is conservative to preserve determinism."
+          ],
+          "method_type": "graph_based_evidence_fusion",
+          "steps": [
+            {
+              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope.",
+              "step": 1
+            },
+            {
+              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements.",
+              "step": 2
+            },
+            {
+              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation.",
+              "step": 3
+            },
+            {
+              "description": "Compute completeness, gaps, and confidence interval for Q236/D6-Q1.",
+              "step": 4
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "output_contract": {
     "consumer_modules": [
       "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
       "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
@@ -400,468 +888,724 @@
     ],
     "human_readable_output": {
       "format": "markdown",
+      "methodological_depth": {
+        "method_combination_logic": {
+          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
+          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
+          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
+          "trade_offs": [
+            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
+            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
+            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+          ]
+        },
+        "methods": [
+          {
+            "class_name": "TeoriaCambio",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via TeoriaCambio.construir_grafo_causal",
+              "paradigm": "TeoriaCambio analytical paradigm",
+              "theoretical_framework": [
+                "Method construir_grafo_causal implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "construir_grafo_causal",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use construir_grafo_causal results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from construir_grafo_causal"
+              }
+            },
+            "priority": 1,
+            "provides": "teoriacambio.construir_grafo_causal",
+            "role": "construir_grafo_causal",
+            "technical_approach": {
+              "algorithm": "TeoriaCambio.construir_grafo_causal algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `TeoriaCambio.construir_grafo_causal` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.construir_grafo_causal'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "TeoriaCambio",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via TeoriaCambio.validacion_completa",
+              "paradigm": "TeoriaCambio analytical paradigm",
+              "theoretical_framework": [
+                "Method validacion_completa implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "validacion_completa",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use validacion_completa results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from validacion_completa"
+              }
+            },
+            "priority": 2,
+            "provides": "teoriacambio.validacion_completa",
+            "role": "validacion_completa",
+            "technical_approach": {
+              "algorithm": "TeoriaCambio.validacion_completa algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `TeoriaCambio.validacion_completa` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.validacion_completa'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "TeoriaCambio",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via TeoriaCambio.export_nodes",
+              "paradigm": "TeoriaCambio analytical paradigm",
+              "theoretical_framework": [
+                "Method export_nodes implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "export_nodes",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use export_nodes results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from export_nodes"
+              }
+            },
+            "priority": 3,
+            "provides": "teoriacambio.export_nodes",
+            "role": "export_nodes",
+            "technical_approach": {
+              "algorithm": "TeoriaCambio.export_nodes algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `TeoriaCambio.export_nodes` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.export_nodes'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "ReportingEngine",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via ReportingEngine.generate_causal_diagram",
+              "paradigm": "ReportingEngine analytical paradigm",
+              "theoretical_framework": [
+                "Method generate_causal_diagram implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "generate_causal_diagram",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use generate_causal_diagram results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from generate_causal_diagram"
+              }
+            },
+            "priority": 4,
+            "provides": "reportingengine.generate_causal_diagram",
+            "role": "generate_causal_diagram_generation",
+            "technical_approach": {
+              "algorithm": "ReportingEngine.generate_causal_diagram algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `ReportingEngine.generate_causal_diagram` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_diagram'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "ReportingEngine",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via ReportingEngine.generate_causal_model_json",
+              "paradigm": "ReportingEngine analytical paradigm",
+              "theoretical_framework": [
+                "Method generate_causal_model_json implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "generate_causal_model_json",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use generate_causal_model_json results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from generate_causal_model_json"
+              }
+            },
+            "priority": 5,
+            "provides": "reportingengine.generate_causal_model_json",
+            "role": "generate_causal_model_json_generation",
+            "technical_approach": {
+              "algorithm": "ReportingEngine.generate_causal_model_json algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Invocar `ReportingEngine.generate_causal_model_json` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles).",
+                  "step": 1
+                },
+                {
+                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`).",
+                  "step": 2
+                },
+                {
+                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_model_json'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista.",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "AdvancedDAGValidator",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via AdvancedDAGValidator.export_nodes",
+              "paradigm": "AdvancedDAGValidator analytical paradigm",
+              "theoretical_framework": [
+                "Method export_nodes implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "export_nodes",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use export_nodes results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from export_nodes"
+              }
+            },
+            "priority": 6,
+            "role": "export_nodes",
+            "technical_approach": {
+              "algorithm": "AdvancedDAGValidator.export_nodes algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Execute export_nodes",
+                  "step": 1
+                },
+                {
+                  "description": "Process results",
+                  "step": 2
+                },
+                {
+                  "description": "Return structured output",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer.export_causal_network",
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "theoretical_framework": [
+                "Method export_causal_network implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "export_causal_network",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use export_causal_network results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from export_causal_network"
+              }
+            },
+            "priority": 7,
+            "role": "export_causal_network",
+            "technical_approach": {
+              "algorithm": "PDETMunicipalPlanAnalyzer.export_causal_network algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Execute export_causal_network",
+                  "step": 1
+                },
+                {
+                  "description": "Process results",
+                  "step": 2
+                },
+                {
+                  "description": "Return structured output",
+                  "step": 3
+                }
+              ]
+            }
+          },
+          {
+            "class_name": "CausalExtractor",
+            "epistemological_foundation": {
+              "epistemological_stance": "Empirical-analytical approach",
+              "justification": "This method contributes to D6-Q1 analysis",
+              "ontological_basis": "Analysis via CausalExtractor.extract_causal_hierarchy",
+              "paradigm": "CausalExtractor analytical paradigm",
+              "theoretical_framework": [
+                "Method extract_causal_hierarchy implements structured analysis for D6-Q1"
+              ]
+            },
+            "method_name": "extract_causal_hierarchy",
+            "output_interpretation": {
+              "actionable_insights": [
+                "Use extract_causal_hierarchy results for downstream analysis"
+              ],
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "low_confidence": "<0.5: Weak evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence"
+              },
+              "output_structure": {
+                "result": "Structured output from extract_causal_hierarchy"
+              }
+            },
+            "priority": 8,
+            "role": "extract_causal_hierarchy_extraction",
+            "technical_approach": {
+              "algorithm": "CausalExtractor.extract_causal_hierarchy algorithm",
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "complexity": "O(n) where n=input size",
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "method_type": "analytical_processing",
+              "steps": [
+                {
+                  "description": "Execute extract_causal_hierarchy",
+                  "step": 1
+                },
+                {
+                  "description": "Process results",
+                  "step": 2
+                },
+                {
+                  "description": "Return structured output",
+                  "step": 3
+                }
+              ]
+            }
+          }
+        ]
+      },
       "template": {
-        "title": "## Q236 | Análisis D6-Q1: Línea Base Cuantitativa en Derechos de las Mujeres | Tierras y territorios",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "details": [
           "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
           "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
           "**Series temporales**: {evidence.temporal_series_count}",
           "**Cobertura territorial**: {evidence.territorial_coverage}"
         ],
+        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
-        "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
-      },
-      "methodological_depth": {
-        "methods": [
-          {
-            "method_name": "construir_grafo_causal",
-            "class_name": "TeoriaCambio",
-            "priority": 1,
-            "role": "construir_grafo_causal",
-            "epistemological_foundation": {
-              "paradigm": "TeoriaCambio analytical paradigm",
-              "ontological_basis": "Analysis via TeoriaCambio.construir_grafo_causal",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method construir_grafo_causal implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "TeoriaCambio.construir_grafo_causal algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `TeoriaCambio.construir_grafo_causal` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.construir_grafo_causal'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from construir_grafo_causal"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use construir_grafo_causal results for downstream analysis"
-              ]
-            },
-            "provides": "teoriacambio.construir_grafo_causal"
-          },
-          {
-            "method_name": "validacion_completa",
-            "class_name": "TeoriaCambio",
-            "priority": 2,
-            "role": "validacion_completa",
-            "epistemological_foundation": {
-              "paradigm": "TeoriaCambio analytical paradigm",
-              "ontological_basis": "Analysis via TeoriaCambio.validacion_completa",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method validacion_completa implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "TeoriaCambio.validacion_completa algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `TeoriaCambio.validacion_completa` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.validacion_completa'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from validacion_completa"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use validacion_completa results for downstream analysis"
-              ]
-            },
-            "provides": "teoriacambio.validacion_completa"
-          },
-          {
-            "method_name": "export_nodes",
-            "class_name": "TeoriaCambio",
-            "priority": 3,
-            "role": "export_nodes",
-            "epistemological_foundation": {
-              "paradigm": "TeoriaCambio analytical paradigm",
-              "ontological_basis": "Analysis via TeoriaCambio.export_nodes",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method export_nodes implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "TeoriaCambio.export_nodes algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `TeoriaCambio.export_nodes` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='teoriacambio.export_nodes'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from export_nodes"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use export_nodes results for downstream analysis"
-              ]
-            },
-            "provides": "teoriacambio.export_nodes"
-          },
-          {
-            "method_name": "generate_causal_diagram",
-            "class_name": "ReportingEngine",
-            "priority": 4,
-            "role": "generate_causal_diagram_generation",
-            "epistemological_foundation": {
-              "paradigm": "ReportingEngine analytical paradigm",
-              "ontological_basis": "Analysis via ReportingEngine.generate_causal_diagram",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method generate_causal_diagram implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "ReportingEngine.generate_causal_diagram algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `ReportingEngine.generate_causal_diagram` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_diagram'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from generate_causal_diagram"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use generate_causal_diagram results for downstream analysis"
-              ]
-            },
-            "provides": "reportingengine.generate_causal_diagram"
-          },
-          {
-            "method_name": "generate_causal_model_json",
-            "class_name": "ReportingEngine",
-            "priority": 5,
-            "role": "generate_causal_model_json_generation",
-            "epistemological_foundation": {
-              "paradigm": "ReportingEngine analytical paradigm",
-              "ontological_basis": "Analysis via ReportingEngine.generate_causal_model_json",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method generate_causal_model_json implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "ReportingEngine.generate_causal_model_json algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Invocar `ReportingEngine.generate_causal_model_json` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
-                },
-                {
-                  "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
-                },
-                {
-                  "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='reportingengine.generate_causal_model_json'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from generate_causal_model_json"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use generate_causal_model_json results for downstream analysis"
-              ]
-            },
-            "provides": "reportingengine.generate_causal_model_json"
-          },
-          {
-            "method_name": "export_nodes",
-            "class_name": "AdvancedDAGValidator",
-            "priority": 6,
-            "role": "export_nodes",
-            "epistemological_foundation": {
-              "paradigm": "AdvancedDAGValidator analytical paradigm",
-              "ontological_basis": "Analysis via AdvancedDAGValidator.export_nodes",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method export_nodes implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "AdvancedDAGValidator.export_nodes algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute export_nodes"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from export_nodes"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use export_nodes results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "export_causal_network",
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "priority": 7,
-            "role": "export_causal_network",
-            "epistemological_foundation": {
-              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
-              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer.export_causal_network",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method export_causal_network implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "PDETMunicipalPlanAnalyzer.export_causal_network algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute export_causal_network"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from export_causal_network"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use export_causal_network results for downstream analysis"
-              ]
-            }
-          },
-          {
-            "method_name": "extract_causal_hierarchy",
-            "class_name": "CausalExtractor",
-            "priority": 8,
-            "role": "extract_causal_hierarchy_extraction",
-            "epistemological_foundation": {
-              "paradigm": "CausalExtractor analytical paradigm",
-              "ontological_basis": "Analysis via CausalExtractor.extract_causal_hierarchy",
-              "epistemological_stance": "Empirical-analytical approach",
-              "theoretical_framework": [
-                "Method extract_causal_hierarchy implements structured analysis for D6-Q1"
-              ],
-              "justification": "This method contributes to D6-Q1 analysis"
-            },
-            "technical_approach": {
-              "method_type": "analytical_processing",
-              "algorithm": "CausalExtractor.extract_causal_hierarchy algorithm",
-              "steps": [
-                {
-                  "step": 1,
-                  "description": "Execute extract_causal_hierarchy"
-                },
-                {
-                  "step": 2,
-                  "description": "Process results"
-                },
-                {
-                  "step": 3,
-                  "description": "Return structured output"
-                }
-              ],
-              "assumptions": [
-                "Input data is preprocessed and valid"
-              ],
-              "limitations": [
-                "Method-specific limitations apply"
-              ],
-              "complexity": "O(n) where n=input size"
-            },
-            "output_interpretation": {
-              "output_structure": {
-                "result": "Structured output from extract_causal_hierarchy"
-              },
-              "interpretation_guide": {
-                "high_confidence": "≥0.8: Strong evidence",
-                "medium_confidence": "0.5-0.79: Moderate evidence",
-                "low_confidence": "<0.5: Weak evidence"
-              },
-              "actionable_insights": [
-                "Use extract_causal_hierarchy results for downstream analysis"
-              ]
-            }
-          }
-        ],
-        "method_combination_logic": {
-          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
-          "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
-            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+        "recommendations": "### Recomendaciones\n\n{evidence.recommendations}",
+        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
+        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Q236 | Análisis D6-Q1: Línea Base Cuantitativa en Derechos de las Mujeres | Tierras y territorios"
+      }
+    },
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "base_slot": {
+          "const": "D6-Q1",
+          "description": "Debe coincidir con identity.base_slot.",
+          "type": "string"
+        },
+        "cluster_id": {
+          "const": "CL01",
+          "description": "Cluster de análisis según el monolith, si aplica.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dimension_id": {
+          "const": "DIM06",
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "additionalProperties": true,
+          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "policy_area_id": {
+          "const": "PA07",
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question_global": {
+          "const": 236,
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
+          "type": "integer"
+        },
+        "question_id": {
+          "const": "Q236",
+          "description": "Debe coincidir con identity.question_id.",
+          "type": "string"
+        },
+        "trace": {
+          "additionalProperties": true,
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "validation": {
+          "additionalProperties": true,
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
+          "type": [
+            "object",
+            "null"
           ]
         }
-      }
+      },
+      "required": [
+        "base_slot",
+        "question_id",
+        "question_global",
+        "evidence",
+        "validation"
+      ],
+      "type": "object"
     }
   },
+  "question_context": {
+    "dimension_label": "CAUSALIDAD",
+    "expected_elements": [
+      {
+        "minimum": 1,
+        "required": true,
+        "type": "diagrama_causal"
+      },
+      {
+        "minimum": 1,
+        "required": true,
+        "type": "supuestos_verificables"
+      },
+      {
+        "minimum": 1,
+        "required": true,
+        "type": "teoria_cambio_explicita"
+      }
+    ],
+    "expected_output_type": "score",
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q236-REQ"
+    },
+    "modality": "count_and_scale",
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q236-000",
+        "match_type": "REGEX",
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de desarrollo rural",
+        "policy_area": "PA07",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "evidence_modality": "FIGURE",
+        "flags": "i",
+        "id": "PAT-Q236-001",
+        "match_type": "REGEX",
+        "pattern": "diagrama causal|gráfico de la teoría de cambio|ruta causal",
+        "pattern_ref": "PAT-0051",
+        "policy_area": "PA07",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q236-002",
+        "match_type": "REGEX",
+        "pattern": "causa raíz de la informalidad|determinante estructural del subdesarrollo rural",
+        "policy_area": "PA07",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q236-003",
+        "match_type": "REGEX",
+        "pattern": "mediador|variable intermedia|eslabón|seguridad jurídica|acceso a crédito|productividad",
+        "policy_area": "PA07",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q236-004",
+        "match_type": "REGEX",
+        "pattern": "moderador|factor contextual|calidad del suelo|conflicto armado",
+        "policy_area": "PA07",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "context_requirement": null,
+        "context_scope": "PARAGRAPH",
+        "flags": "i",
+        "id": "PAT-Q236-005",
+        "match_type": "LITERAL",
+        "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable",
+        "pattern_ref": "PAT-0104",
+        "policy_area": "PA07",
+        "semantic_expansion": null,
+        "specificity": "MEDIUM",
+        "validation_rule": null
+      }
+    ],
+    "policy_area_label": "Tierras y territorios",
+    "question_text": "¿Existe una 'teoría de cambio' explícita para la política de tierras, preferiblemente en un 'diagrama', que identifique causas (ej. catastro desactualizado), mediadores y 'supuestos verificables'?",
+    "question_type": "micro",
+    "scoring_modality": "TYPE_A",
+    "validations": {}
+  },
+  "signal_requirements": {
+    "mandatory_signals": [
+      "differential_needs",
+      "environmental_baseline",
+      "protection_areas",
+      "risk_zones",
+      "territorial_diagnosis"
+    ],
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01.",
+    "optional_signals": [
+      "biodiversity",
+      "deforestation_rates",
+      "equity_considerations",
+      "participation_evidence",
+      "water_quality"
+    ],
+    "signal_aggregation": "weighted_mean"
+  },
+  "test_configuration": {
+    "expected_test_coverage": ">=90%",
+    "integration_test_required": true,
+    "test_document_fixtures": [
+      "tests/fixtures/preprocessed_documents/sample_pdet_plan.json"
+    ],
+    "test_files": [
+      "tests/core/orchestrator/test_executors_contract.py",
+      "tests/core/phases/test_phase2.py"
+    ]
+  },
+  "traceability": {
+    "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
+    "contract_generation_method": "automated_specialization_from_monolith",
+    "json_path": "blocks.micro_questions[235]",
+    "method_mapping_source": "executor_methods_mapping.json",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D6_Q1_Executor",
+    "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "source_file": "data/questionnaire_monolith.json",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
+    "source_question_id": "Q236",
+    "specialization_timestamp": "2025-11-28T03:50:42.085931+00:00",
+    "specialized_from_base_slot": "D6-Q1"
+  },
   "validation_rules": {
+    "class_name": "ValidationEngine",
+    "engine": "VALIDATION_ENGINE",
+    "method_name": "validate",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
     "na_policy": "abort_on_critical",
     "rules": [
       {
@@ -882,750 +1626,6 @@
         "field": "elements_found",
         "should_contain": [],
         "type": "array"
-      }
-    ],
-    "engine": "VALIDATION_ENGINE",
-    "module": "canonic_phases.Phase_two.evidence_nexus",
-    "class_name": "ValidationEngine",
-    "method_name": "validate"
-  },
-  "traceability": {
-    "source_file": "data/questionnaire_monolith.json",
-    "json_path": "blocks.micro_questions[295]",
-    "method_source": "src/farfan_core/core/orchestrator/executors.py:D6_Q1_Executor",
-    "method_mapping_source": "executor_methods_mapping.json",
-    "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
-    "contract_generation_method": "automated_specialization_from_monolith",
-    "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
-    "source_question_id": "Q236",
-    "specialized_from_base_slot": "D6-Q1",
-    "specialization_timestamp": "2025-11-28T03:50:42.085931+00:00"
-  },
-  "error_handling": {
-    "on_method_not_found": "raise",
-    "on_method_failure": "propagate_with_trace",
-    "on_assembly_failure": "propagate_with_trace",
-    "failure_contract": {
-      "abort_if": [
-        "missing_required_element",
-        "incomplete_text"
-      ],
-      "emit_code": "ABORT-Q236-REQ"
-    }
-  },
-  "fallback_strategy": {
-    "use_llm_direct": false,
-    "use_heuristics": false,
-    "note": "No fallback strategies enabled. All failures propagate according to error_handling configuration."
-  },
-  "test_configuration": {
-    "test_files": [
-      "tests/core/orchestrator/test_executors_contract.py",
-      "tests/core/phases/test_phase2.py"
-    ],
-    "test_document_fixtures": [
-      "tests/fixtures/preprocessed_documents/sample_pdet_plan.json"
-    ],
-    "expected_test_coverage": ">=90%",
-    "integration_test_required": true
-  },
-  "compatibility": {
-    "orchestrator_min_version": "TODO_VERSION",
-    "signal_registry_min_version": "TODO_VERSION",
-    "method_executor_min_version": "TODO_VERSION",
-    "questionnaire_monolith_version": "3.0.0",
-    "phase2_types_version": "TODO_VERSION"
-  },
-  "calibration": {
-    "status": "placeholder",
-    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
-    "source": {
-      "intrinsic_calibration": "config/intrinsic_calibration.json",
-      "fusion_specification": "config/fusion_specification.json",
-      "layer_calibrations_dir": "config/layer_calibrations/",
-      "canonical_spec": "canonic_calibration_methods.md"
-    }
-  },
-  "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
-    "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
-      "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
-      "step_3_validation": "ValidationEngine checks against validation_rules",
-      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
-    },
-    "evidence_structure_schema": {
-      "type": "object",
-      "description": "Assembled evidence after all methods complete",
-      "properties": {
-        "elements_found": {
-          "type": "array",
-          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
-          "items": {
-            "type": "object",
-            "properties": {
-              "element_id": {
-                "type": "string",
-                "example": "E-001"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "fuentes_oficiales",
-                  "indicadores_cuantitativos",
-                  "series_temporales_años",
-                  "cobertura_territorial_especificada",
-                  "financial_amounts",
-                  "policy_goals",
-                  "causal_links"
-                ]
-              },
-              "value": {
-                "type": "string",
-                "example": "DANE"
-              },
-              "confidence": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1
-              },
-              "source_method": {
-                "type": "string",
-                "example": "IndustrialPolicyProcessor._extract_point_evidence"
-              },
-              "sentence_id": {
-                "type": "integer"
-              },
-              "context": {
-                "type": "string"
-              }
-            }
-          },
-          "example_count": "Expected 15-50 elements for a complete diagnostic"
-        },
-        "elements_summary": {
-          "type": "object",
-          "properties": {
-            "total_count": {
-              "type": "integer"
-            },
-            "by_type": {
-              "type": "object",
-              "properties": {
-                "fuentes_oficiales": {
-                  "type": "integer",
-                  "minimum_expected": 2
-                },
-                "indicadores_cuantitativos": {
-                  "type": "integer",
-                  "minimum_expected": 3
-                },
-                "series_temporales_años": {
-                  "type": "integer",
-                  "minimum_expected": 3
-                },
-                "cobertura_territorial_especificada": {
-                  "type": "integer",
-                  "minimum_expected": 1
-                }
-              }
-            }
-          }
-        },
-        "confidence_scores": {
-          "type": "object",
-          "description": "Aggregated confidence metrics (weighted_mean strategy)",
-          "properties": {
-            "mean": {
-              "type": "number"
-            },
-            "std": {
-              "type": "number"
-            },
-            "min": {
-              "type": "number"
-            },
-            "max": {
-              "type": "number"
-            },
-            "by_method": {
-              "type": "object",
-              "description": "Average confidence per analyzer class"
-            }
-          }
-        },
-        "pattern_matches": {
-          "type": "array",
-          "description": "Aggregated pattern matches from text mining methods",
-          "items": {
-            "type": "object",
-            "properties": {
-              "pattern_id": {
-                "type": "string"
-              },
-              "count": {
-                "type": "integer"
-              },
-              "avg_confidence": {
-                "type": "number"
-              }
-            }
-          }
-        },
-        "critical_links": {
-          "type": "array",
-          "description": "Causal links extracted by TextMiningEngine",
-          "items": {
-            "type": "object",
-            "properties": {
-              "cause": {
-                "type": "string"
-              },
-              "effect": {
-                "type": "string"
-              },
-              "criticality": {
-                "type": "number"
-              },
-              "coherence": {
-                "type": "number"
-              }
-            }
-          }
-        },
-        "financial_summary": {
-          "type": "object",
-          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
-          "properties": {
-            "total_budget_cop": {
-              "type": "number"
-            },
-            "amounts_found": {
-              "type": "integer"
-            },
-            "by_category": {
-              "type": "object",
-              "properties": {
-                "SGR": {
-                  "type": "number"
-                },
-                "recursos_propios": {
-                  "type": "number"
-                },
-                "transferencias": {
-                  "type": "number"
-                }
-              }
-            }
-          }
-        },
-        "goals_summary": {
-          "type": "object",
-          "description": "Policy goals extracted by CausalExtractor",
-          "properties": {
-            "total_goals": {
-              "type": "integer"
-            },
-            "quantified_goals": {
-              "type": "integer"
-            },
-            "goals_with_complete_context": {
-              "type": "integer"
-            }
-          }
-        },
-        "contradictions": {
-          "type": "object",
-          "description": "Results from PolicyContradictionDetector",
-          "properties": {
-            "found": {
-              "type": "integer"
-            },
-            "tests_performed": {
-              "type": "integer"
-            },
-            "interpretation": {
-              "type": "string"
-            }
-          }
-        },
-        "bayesian_insights": {
-          "type": "object",
-          "description": "Results from BayesianNumericalAnalyzer",
-          "properties": {
-            "metrics_with_high_uncertainty": {
-              "type": "array"
-            },
-            "significant_comparisons": {
-              "type": "integer"
-            }
-          }
-        },
-        "semantic_processing": {
-          "type": "object",
-          "description": "Results from SemanticProcessor",
-          "properties": {
-            "chunks_created": {
-              "type": "integer"
-            },
-            "embeddings_generated": {
-              "type": "integer"
-            },
-            "avg_semantic_similarity_to_query": {
-              "type": "number"
-            }
-          }
-        },
-        "metadata": {
-          "type": "object",
-          "properties": {
-            "methods_executed": {
-              "type": "integer",
-              "const": 8
-            },
-            "execution_time_ms": {
-              "type": "number"
-            },
-            "document_length": {
-              "type": "integer"
-            },
-            "analysis_timestamp": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        }
-      }
-    },
-    "concrete_example": {
-      "elements_found": [
-        {
-          "element_id": "E-001",
-          "type": "fuentes_oficiales",
-          "value": "DANE",
-          "confidence": 0.95,
-          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
-          "source_sentence": "según datos de DANE para el año 2022",
-          "sentence_id": 45,
-          "position": {
-            "start": 123,
-            "end": 145
-          }
-        },
-        {
-          "element_id": "E-002",
-          "type": "indicadores_cuantitativos",
-          "value": "tasa de VBG: 12.3%",
-          "normalized_value": 12.3,
-          "unit": "%",
-          "confidence": 0.89,
-          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
-          "bayesian_posterior": {
-            "mean": 0.123,
-            "ci_95": [
-              0.11,
-              0.145
-            ]
-          },
-          "sentence_id": 45
-        },
-        {
-          "element_id": "E-003",
-          "type": "series_temporales_años",
-          "years": [
-            2020,
-            2021,
-            2022
-          ],
-          "confidence": 0.92,
-          "source_method": "TextMiningEngine.diagnose_critical_links"
-        },
-        {
-          "element_id": "E-004",
-          "type": "cobertura_territorial_especificada",
-          "coverage": "municipal - zona rural y urbana",
-          "confidence": 0.88,
-          "source_method": "CausalExtractor._parse_goal_context"
-        }
-      ],
-      "elements_summary": {
-        "total_count": 38,
-        "by_type": {
-          "fuentes_oficiales": 5,
-          "indicadores_cuantitativos": 12,
-          "series_temporales_años": 4,
-          "cobertura_territorial_especificada": 1,
-          "financial_amounts": 8,
-          "policy_goals": 7,
-          "causal_links": 5
-        }
-      },
-      "confidence_scores": {
-        "mean": 0.876,
-        "std": 0.089,
-        "min": 0.72,
-        "max": 0.98,
-        "by_method": {
-          "TextMiningEngine": 0.83,
-          "IndustrialPolicyProcessor": 0.91,
-          "CausalExtractor": 0.79,
-          "FinancialAuditor": 0.94,
-          "PDETMunicipalPlanAnalyzer": 0.88,
-          "PolicyContradictionDetector": 0.9,
-          "BayesianNumericalAnalyzer": 0.92,
-          "SemanticProcessor": 0.85
-        }
-      },
-      "pattern_matches": [
-        {
-          "pattern_id": "PAT-Q001-000",
-          "count": 3,
-          "avg_confidence": 0.87
-        },
-        {
-          "pattern_id": "PAT-Q001-002",
-          "count": 5,
-          "avg_confidence": 0.95
-        }
-      ],
-      "critical_links": [
-        {
-          "cause": "alta tasa de VBG",
-          "effect": "baja autonomía económica",
-          "criticality": 0.87,
-          "coherence": 0.82
-        }
-      ],
-      "financial_summary": {
-        "total_budget_cop": 850000000.0,
-        "amounts_found": 12,
-        "by_category": {
-          "SGR": 250000000.0,
-          "recursos_propios": 180000000.0
-        }
-      },
-      "goals_summary": {
-        "total_goals": 7,
-        "quantified_goals": 5,
-        "goals_with_complete_context": 4
-      },
-      "contradictions": {
-        "found": 0,
-        "tests_performed": 15,
-        "interpretation": "No statistical contradictions in quantitative claims"
-      },
-      "bayesian_insights": {
-        "metrics_with_high_uncertainty": [],
-        "significant_comparisons": 1
-      },
-      "semantic_processing": {
-        "chunks_created": 45,
-        "embeddings_generated": 45,
-        "avg_semantic_similarity_to_query": 0.78
-      },
-      "metadata": {
-        "methods_executed": 8,
-        "execution_time_ms": 2845,
-        "document_length": 15230,
-        "analysis_timestamp": "2025-11-26T12:34:56Z"
-      }
-    },
-    "validation_against_expected_elements": {
-      "cobertura_territorial_especificada": {
-        "required": true,
-        "found_in_example": true,
-        "example_element_id": "E-004"
-      },
-      "fuentes_oficiales": {
-        "minimum": 2,
-        "found_in_example": 5,
-        "status": "PASS"
-      },
-      "indicadores_cuantitativos": {
-        "minimum": 3,
-        "found_in_example": 12,
-        "status": "PASS"
-      },
-      "series_temporales_años": {
-        "minimum": 3,
-        "found_in_example": 4,
-        "status": "PASS"
-      },
-      "overall_validation_result": "PASS - All required and minimum elements present"
-    },
-    "template_variable_bindings": {
-      "description": "These variables are available for human_readable_output template",
-      "variables": {
-        "{evidence.elements_found_count}": 38,
-        "{score}": "Calculated by scorer based on elements",
-        "{quality_level}": "ALTO",
-        "{evidence.confidence_scores.mean}": "87.6%",
-        "{evidence.pattern_matches_count}": 14,
-        "{evidence.official_sources_count}": 5,
-        "{evidence.quantitative_indicators_count}": 12,
-        "{evidence.temporal_series_count}": 4,
-        "{evidence.territorial_coverage}": "municipal - zona rural y urbana"
-      }
-    },
-    "usage_notes": {
-      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
-      "for_validators": "Use this to verify that actual execution output matches expected structure.",
-      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
-    }
-  },
-  "method_outputs": {
-    "TeoriaCambio.construir_grafo_causal": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from TeoriaCambio.construir_grafo_causal",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from construir_grafo_causal"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "teoriacambio.construir_grafo_causal",
-        "merge_strategy": "replace"
-      }
-    },
-    "TeoriaCambio.validacion_completa": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from TeoriaCambio.validacion_completa",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from validacion_completa"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "teoriacambio.validacion_completa",
-        "merge_strategy": "replace"
-      }
-    },
-    "TeoriaCambio.export_nodes": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from TeoriaCambio.export_nodes",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from export_nodes"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "teoriacambio.export_nodes",
-        "merge_strategy": "replace"
-      }
-    },
-    "ReportingEngine.generate_causal_diagram": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from ReportingEngine.generate_causal_diagram",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from generate_causal_diagram"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "reportingengine.generate_causal_diagram",
-        "merge_strategy": "replace"
-      }
-    },
-    "ReportingEngine.generate_causal_model_json": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from ReportingEngine.generate_causal_model_json",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from generate_causal_model_json"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "reportingengine.generate_causal_model_json",
-        "merge_strategy": "replace"
-      }
-    },
-    "AdvancedDAGValidator.export_nodes": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from AdvancedDAGValidator.export_nodes",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from export_nodes"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "advanceddagvalidator.export_nodes",
-        "merge_strategy": "replace"
-      }
-    },
-    "PDETMunicipalPlanAnalyzer.export_causal_network": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from PDETMunicipalPlanAnalyzer.export_causal_network",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from export_causal_network"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "pdet_analysis.export_causal_network",
-        "merge_strategy": "replace"
-      }
-    },
-    "CausalExtractor.extract_causal_hierarchy": {
-      "output_type": "dict",
-      "structure": {
-        "description": "Output from CausalExtractor.extract_causal_hierarchy",
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "object",
-            "description": "Result from extract_causal_hierarchy"
-          },
-          "metadata": {
-            "type": "object",
-            "description": "Execution metadata"
-          }
-        }
-      },
-      "validation": {
-        "required": true,
-        "non_empty": true
-      },
-      "usage_in_assembly": {
-        "provides_key": "causal_extraction.extract_causal_hierarchy",
-        "merge_strategy": "concat"
-      }
-    }
-  },
-  "methodological_depth": {
-    "methods": [
-      {
-        "method_name": "contract_orchestrated_evidence_fusion",
-        "class_name": "EvidenceNexus",
-        "priority": 1,
-        "role": "evidence_graph_construction_and_synthesis",
-        "epistemological_foundation": {
-          "paradigm": "critical_realist",
-          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
-          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
-          "theoretical_framework": [
-            "Pearl (2009) causal reasoning (why mechanisms matter)",
-            "Pawson & Tilley (1997) realistic evaluation",
-            "Results-based management for public policy monitoring"
-          ],
-          "justification": "Chosen because CAUSALIDAD in PA07 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
-        },
-        "technical_approach": {
-          "method_type": "graph_based_evidence_fusion",
-          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
-          "steps": [
-            {
-              "step": 1,
-              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
-            },
-            {
-              "step": 2,
-              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
-            },
-            {
-              "step": 3,
-              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
-            },
-            {
-              "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for Q236/D6-Q1."
-            }
-          ],
-          "assumptions": [
-            "The source plan contains at least one relevant section or table for this question.",
-            "Expected element types map to observable text spans or tabular cells."
-          ],
-          "limitations": [
-            "Evidence quality depends on document structure and explicitness of commitments.",
-            "Pattern-only extraction is conservative to preserve determinism."
-          ],
-          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
-        }
       }
     ]
   }

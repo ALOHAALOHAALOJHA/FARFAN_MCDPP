@@ -1,0 +1,2437 @@
+{
+  "generated_at": "2025-12-19T03:06:23Z",
+  "mismatch_count": 270,
+  "monolith_path": "canonic_questionnaire_central/questionnaire_monolith.json",
+  "plan": [
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 1,
+      "question_id": "Q001",
+      "traceability_json_path_after": "blocks.micro_questions[0]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 2,
+      "question_id": "Q002",
+      "traceability_json_path_after": "blocks.micro_questions[1]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 3,
+      "question_id": "Q003",
+      "traceability_json_path_after": "blocks.micro_questions[2]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 4,
+      "question_id": "Q004",
+      "traceability_json_path_after": "blocks.micro_questions[3]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 5,
+      "question_id": "Q005",
+      "traceability_json_path_after": "blocks.micro_questions[4]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 6,
+      "question_id": "Q006",
+      "traceability_json_path_after": "blocks.micro_questions[5]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 7,
+      "question_id": "Q007",
+      "traceability_json_path_after": "blocks.micro_questions[6]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 8,
+      "question_id": "Q008",
+      "traceability_json_path_after": "blocks.micro_questions[7]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 9,
+      "question_id": "Q009",
+      "traceability_json_path_after": "blocks.micro_questions[8]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 10,
+      "question_id": "Q010",
+      "traceability_json_path_after": "blocks.micro_questions[9]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 11,
+      "question_id": "Q011",
+      "traceability_json_path_after": "blocks.micro_questions[10]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 12,
+      "question_id": "Q012",
+      "traceability_json_path_after": "blocks.micro_questions[11]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 13,
+      "question_id": "Q013",
+      "traceability_json_path_after": "blocks.micro_questions[12]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 14,
+      "question_id": "Q014",
+      "traceability_json_path_after": "blocks.micro_questions[13]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 15,
+      "question_id": "Q015",
+      "traceability_json_path_after": "blocks.micro_questions[14]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 16,
+      "question_id": "Q016",
+      "traceability_json_path_after": "blocks.micro_questions[15]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 17,
+      "question_id": "Q017",
+      "traceability_json_path_after": "blocks.micro_questions[16]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 18,
+      "question_id": "Q018",
+      "traceability_json_path_after": "blocks.micro_questions[17]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 19,
+      "question_id": "Q019",
+      "traceability_json_path_after": "blocks.micro_questions[18]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 20,
+      "question_id": "Q020",
+      "traceability_json_path_after": "blocks.micro_questions[19]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 21,
+      "question_id": "Q021",
+      "traceability_json_path_after": "blocks.micro_questions[20]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 22,
+      "question_id": "Q022",
+      "traceability_json_path_after": "blocks.micro_questions[21]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 23,
+      "question_id": "Q023",
+      "traceability_json_path_after": "blocks.micro_questions[22]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 24,
+      "question_id": "Q024",
+      "traceability_json_path_after": "blocks.micro_questions[23]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 25,
+      "question_id": "Q025",
+      "traceability_json_path_after": "blocks.micro_questions[24]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 26,
+      "question_id": "Q026",
+      "traceability_json_path_after": "blocks.micro_questions[25]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 27,
+      "question_id": "Q027",
+      "traceability_json_path_after": "blocks.micro_questions[26]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 28,
+      "question_id": "Q028",
+      "traceability_json_path_after": "blocks.micro_questions[27]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 29,
+      "question_id": "Q029",
+      "traceability_json_path_after": "blocks.micro_questions[28]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "policy_area_id": "PA01",
+      "question_global": 30,
+      "question_id": "Q030",
+      "traceability_json_path_after": "blocks.micro_questions[29]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q031.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 31,
+      "question_id": "Q031",
+      "traceability_json_path_after": "blocks.micro_questions[30]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q032.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 32,
+      "question_id": "Q032",
+      "traceability_json_path_after": "blocks.micro_questions[31]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q033.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 33,
+      "question_id": "Q033",
+      "traceability_json_path_after": "blocks.micro_questions[32]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q034.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 34,
+      "question_id": "Q034",
+      "traceability_json_path_after": "blocks.micro_questions[33]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q035.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 35,
+      "question_id": "Q035",
+      "traceability_json_path_after": "blocks.micro_questions[34]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q036.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 36,
+      "question_id": "Q036",
+      "traceability_json_path_after": "blocks.micro_questions[35]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q037.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 37,
+      "question_id": "Q037",
+      "traceability_json_path_after": "blocks.micro_questions[36]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q038.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 38,
+      "question_id": "Q038",
+      "traceability_json_path_after": "blocks.micro_questions[37]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q039.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 39,
+      "question_id": "Q039",
+      "traceability_json_path_after": "blocks.micro_questions[38]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q040.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 40,
+      "question_id": "Q040",
+      "traceability_json_path_after": "blocks.micro_questions[39]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q041.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 41,
+      "question_id": "Q041",
+      "traceability_json_path_after": "blocks.micro_questions[40]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q042.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 42,
+      "question_id": "Q042",
+      "traceability_json_path_after": "blocks.micro_questions[41]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q043.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 43,
+      "question_id": "Q043",
+      "traceability_json_path_after": "blocks.micro_questions[42]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q044.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 44,
+      "question_id": "Q044",
+      "traceability_json_path_after": "blocks.micro_questions[43]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q045.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 45,
+      "question_id": "Q045",
+      "traceability_json_path_after": "blocks.micro_questions[44]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q046.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 46,
+      "question_id": "Q046",
+      "traceability_json_path_after": "blocks.micro_questions[45]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q047.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 47,
+      "question_id": "Q047",
+      "traceability_json_path_after": "blocks.micro_questions[46]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q048.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 48,
+      "question_id": "Q048",
+      "traceability_json_path_after": "blocks.micro_questions[47]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q049.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 49,
+      "question_id": "Q049",
+      "traceability_json_path_after": "blocks.micro_questions[48]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q050.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 50,
+      "question_id": "Q050",
+      "traceability_json_path_after": "blocks.micro_questions[49]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q051.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 51,
+      "question_id": "Q051",
+      "traceability_json_path_after": "blocks.micro_questions[50]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q052.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 52,
+      "question_id": "Q052",
+      "traceability_json_path_after": "blocks.micro_questions[51]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q053.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 53,
+      "question_id": "Q053",
+      "traceability_json_path_after": "blocks.micro_questions[52]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q054.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 54,
+      "question_id": "Q054",
+      "traceability_json_path_after": "blocks.micro_questions[53]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q055.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 55,
+      "question_id": "Q055",
+      "traceability_json_path_after": "blocks.micro_questions[54]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q056.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 56,
+      "question_id": "Q056",
+      "traceability_json_path_after": "blocks.micro_questions[55]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q057.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 57,
+      "question_id": "Q057",
+      "traceability_json_path_after": "blocks.micro_questions[56]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q058.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 58,
+      "question_id": "Q058",
+      "traceability_json_path_after": "blocks.micro_questions[57]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q059.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 59,
+      "question_id": "Q059",
+      "traceability_json_path_after": "blocks.micro_questions[58]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q060.v3.json",
+      "policy_area_id": "PA10",
+      "question_global": 60,
+      "question_id": "Q060",
+      "traceability_json_path_after": "blocks.micro_questions[59]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q061.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 61,
+      "question_id": "Q061",
+      "traceability_json_path_after": "blocks.micro_questions[60]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q062.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 62,
+      "question_id": "Q062",
+      "traceability_json_path_after": "blocks.micro_questions[61]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q063.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 63,
+      "question_id": "Q063",
+      "traceability_json_path_after": "blocks.micro_questions[62]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q064.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 64,
+      "question_id": "Q064",
+      "traceability_json_path_after": "blocks.micro_questions[63]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q065.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 65,
+      "question_id": "Q065",
+      "traceability_json_path_after": "blocks.micro_questions[64]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q066.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 66,
+      "question_id": "Q066",
+      "traceability_json_path_after": "blocks.micro_questions[65]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q067.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 67,
+      "question_id": "Q067",
+      "traceability_json_path_after": "blocks.micro_questions[66]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q068.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 68,
+      "question_id": "Q068",
+      "traceability_json_path_after": "blocks.micro_questions[67]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q069.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 69,
+      "question_id": "Q069",
+      "traceability_json_path_after": "blocks.micro_questions[68]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q070.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 70,
+      "question_id": "Q070",
+      "traceability_json_path_after": "blocks.micro_questions[69]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q071.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 71,
+      "question_id": "Q071",
+      "traceability_json_path_after": "blocks.micro_questions[70]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q072.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 72,
+      "question_id": "Q072",
+      "traceability_json_path_after": "blocks.micro_questions[71]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q073.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 73,
+      "question_id": "Q073",
+      "traceability_json_path_after": "blocks.micro_questions[72]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q074.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 74,
+      "question_id": "Q074",
+      "traceability_json_path_after": "blocks.micro_questions[73]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q075.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 75,
+      "question_id": "Q075",
+      "traceability_json_path_after": "blocks.micro_questions[74]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q076.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 76,
+      "question_id": "Q076",
+      "traceability_json_path_after": "blocks.micro_questions[75]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q077.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 77,
+      "question_id": "Q077",
+      "traceability_json_path_after": "blocks.micro_questions[76]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q078.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 78,
+      "question_id": "Q078",
+      "traceability_json_path_after": "blocks.micro_questions[77]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q079.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 79,
+      "question_id": "Q079",
+      "traceability_json_path_after": "blocks.micro_questions[78]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q080.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 80,
+      "question_id": "Q080",
+      "traceability_json_path_after": "blocks.micro_questions[79]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q081.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 81,
+      "question_id": "Q081",
+      "traceability_json_path_after": "blocks.micro_questions[80]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q082.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 82,
+      "question_id": "Q082",
+      "traceability_json_path_after": "blocks.micro_questions[81]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q083.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 83,
+      "question_id": "Q083",
+      "traceability_json_path_after": "blocks.micro_questions[82]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q084.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 84,
+      "question_id": "Q084",
+      "traceability_json_path_after": "blocks.micro_questions[83]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q085.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 85,
+      "question_id": "Q085",
+      "traceability_json_path_after": "blocks.micro_questions[84]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q086.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 86,
+      "question_id": "Q086",
+      "traceability_json_path_after": "blocks.micro_questions[85]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q087.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 87,
+      "question_id": "Q087",
+      "traceability_json_path_after": "blocks.micro_questions[86]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q088.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 88,
+      "question_id": "Q088",
+      "traceability_json_path_after": "blocks.micro_questions[87]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q089.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 89,
+      "question_id": "Q089",
+      "traceability_json_path_after": "blocks.micro_questions[88]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q090.v3.json",
+      "policy_area_id": "PA02",
+      "question_global": 90,
+      "question_id": "Q090",
+      "traceability_json_path_after": "blocks.micro_questions[89]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q091.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 91,
+      "question_id": "Q091",
+      "traceability_json_path_after": "blocks.micro_questions[90]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q092.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 92,
+      "question_id": "Q092",
+      "traceability_json_path_after": "blocks.micro_questions[91]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q093.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 93,
+      "question_id": "Q093",
+      "traceability_json_path_after": "blocks.micro_questions[92]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q094.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 94,
+      "question_id": "Q094",
+      "traceability_json_path_after": "blocks.micro_questions[93]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q095.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 95,
+      "question_id": "Q095",
+      "traceability_json_path_after": "blocks.micro_questions[94]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q096.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 96,
+      "question_id": "Q096",
+      "traceability_json_path_after": "blocks.micro_questions[95]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q097.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 97,
+      "question_id": "Q097",
+      "traceability_json_path_after": "blocks.micro_questions[96]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q098.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 98,
+      "question_id": "Q098",
+      "traceability_json_path_after": "blocks.micro_questions[97]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q099.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 99,
+      "question_id": "Q099",
+      "traceability_json_path_after": "blocks.micro_questions[98]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q100.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 100,
+      "question_id": "Q100",
+      "traceability_json_path_after": "blocks.micro_questions[99]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q101.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 101,
+      "question_id": "Q101",
+      "traceability_json_path_after": "blocks.micro_questions[100]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q102.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 102,
+      "question_id": "Q102",
+      "traceability_json_path_after": "blocks.micro_questions[101]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q103.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 103,
+      "question_id": "Q103",
+      "traceability_json_path_after": "blocks.micro_questions[102]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q104.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 104,
+      "question_id": "Q104",
+      "traceability_json_path_after": "blocks.micro_questions[103]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q105.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 105,
+      "question_id": "Q105",
+      "traceability_json_path_after": "blocks.micro_questions[104]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q106.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 106,
+      "question_id": "Q106",
+      "traceability_json_path_after": "blocks.micro_questions[105]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q107.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 107,
+      "question_id": "Q107",
+      "traceability_json_path_after": "blocks.micro_questions[106]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q108.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 108,
+      "question_id": "Q108",
+      "traceability_json_path_after": "blocks.micro_questions[107]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q109.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 109,
+      "question_id": "Q109",
+      "traceability_json_path_after": "blocks.micro_questions[108]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q110.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 110,
+      "question_id": "Q110",
+      "traceability_json_path_after": "blocks.micro_questions[109]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q111.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 111,
+      "question_id": "Q111",
+      "traceability_json_path_after": "blocks.micro_questions[110]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q112.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 112,
+      "question_id": "Q112",
+      "traceability_json_path_after": "blocks.micro_questions[111]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q113.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 113,
+      "question_id": "Q113",
+      "traceability_json_path_after": "blocks.micro_questions[112]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q114.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 114,
+      "question_id": "Q114",
+      "traceability_json_path_after": "blocks.micro_questions[113]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q115.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 115,
+      "question_id": "Q115",
+      "traceability_json_path_after": "blocks.micro_questions[114]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q116.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 116,
+      "question_id": "Q116",
+      "traceability_json_path_after": "blocks.micro_questions[115]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q117.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 117,
+      "question_id": "Q117",
+      "traceability_json_path_after": "blocks.micro_questions[116]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q118.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 118,
+      "question_id": "Q118",
+      "traceability_json_path_after": "blocks.micro_questions[117]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q119.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 119,
+      "question_id": "Q119",
+      "traceability_json_path_after": "blocks.micro_questions[118]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q120.v3.json",
+      "policy_area_id": "PA03",
+      "question_global": 120,
+      "question_id": "Q120",
+      "traceability_json_path_after": "blocks.micro_questions[119]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q121.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 121,
+      "question_id": "Q121",
+      "traceability_json_path_after": "blocks.micro_questions[120]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q122.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 122,
+      "question_id": "Q122",
+      "traceability_json_path_after": "blocks.micro_questions[121]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q123.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 123,
+      "question_id": "Q123",
+      "traceability_json_path_after": "blocks.micro_questions[122]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q124.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 124,
+      "question_id": "Q124",
+      "traceability_json_path_after": "blocks.micro_questions[123]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q125.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 125,
+      "question_id": "Q125",
+      "traceability_json_path_after": "blocks.micro_questions[124]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q126.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 126,
+      "question_id": "Q126",
+      "traceability_json_path_after": "blocks.micro_questions[125]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q127.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 127,
+      "question_id": "Q127",
+      "traceability_json_path_after": "blocks.micro_questions[126]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q128.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 128,
+      "question_id": "Q128",
+      "traceability_json_path_after": "blocks.micro_questions[127]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q129.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 129,
+      "question_id": "Q129",
+      "traceability_json_path_after": "blocks.micro_questions[128]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q130.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 130,
+      "question_id": "Q130",
+      "traceability_json_path_after": "blocks.micro_questions[129]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q131.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 131,
+      "question_id": "Q131",
+      "traceability_json_path_after": "blocks.micro_questions[130]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q132.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 132,
+      "question_id": "Q132",
+      "traceability_json_path_after": "blocks.micro_questions[131]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q133.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 133,
+      "question_id": "Q133",
+      "traceability_json_path_after": "blocks.micro_questions[132]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q134.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 134,
+      "question_id": "Q134",
+      "traceability_json_path_after": "blocks.micro_questions[133]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q135.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 135,
+      "question_id": "Q135",
+      "traceability_json_path_after": "blocks.micro_questions[134]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q136.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 136,
+      "question_id": "Q136",
+      "traceability_json_path_after": "blocks.micro_questions[135]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q137.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 137,
+      "question_id": "Q137",
+      "traceability_json_path_after": "blocks.micro_questions[136]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q138.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 138,
+      "question_id": "Q138",
+      "traceability_json_path_after": "blocks.micro_questions[137]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q139.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 139,
+      "question_id": "Q139",
+      "traceability_json_path_after": "blocks.micro_questions[138]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q140.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 140,
+      "question_id": "Q140",
+      "traceability_json_path_after": "blocks.micro_questions[139]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q141.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 141,
+      "question_id": "Q141",
+      "traceability_json_path_after": "blocks.micro_questions[140]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q142.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 142,
+      "question_id": "Q142",
+      "traceability_json_path_after": "blocks.micro_questions[141]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q143.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 143,
+      "question_id": "Q143",
+      "traceability_json_path_after": "blocks.micro_questions[142]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q144.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 144,
+      "question_id": "Q144",
+      "traceability_json_path_after": "blocks.micro_questions[143]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q145.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 145,
+      "question_id": "Q145",
+      "traceability_json_path_after": "blocks.micro_questions[144]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q146.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 146,
+      "question_id": "Q146",
+      "traceability_json_path_after": "blocks.micro_questions[145]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q147.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 147,
+      "question_id": "Q147",
+      "traceability_json_path_after": "blocks.micro_questions[146]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q148.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 148,
+      "question_id": "Q148",
+      "traceability_json_path_after": "blocks.micro_questions[147]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q149.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 149,
+      "question_id": "Q149",
+      "traceability_json_path_after": "blocks.micro_questions[148]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q150.v3.json",
+      "policy_area_id": "PA04",
+      "question_global": 150,
+      "question_id": "Q150",
+      "traceability_json_path_after": "blocks.micro_questions[149]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q151.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 151,
+      "question_id": "Q151",
+      "traceability_json_path_after": "blocks.micro_questions[150]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q152.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 152,
+      "question_id": "Q152",
+      "traceability_json_path_after": "blocks.micro_questions[151]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q153.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 153,
+      "question_id": "Q153",
+      "traceability_json_path_after": "blocks.micro_questions[152]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q154.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 154,
+      "question_id": "Q154",
+      "traceability_json_path_after": "blocks.micro_questions[153]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q155.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 155,
+      "question_id": "Q155",
+      "traceability_json_path_after": "blocks.micro_questions[154]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q156.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 156,
+      "question_id": "Q156",
+      "traceability_json_path_after": "blocks.micro_questions[155]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q157.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 157,
+      "question_id": "Q157",
+      "traceability_json_path_after": "blocks.micro_questions[156]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q158.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 158,
+      "question_id": "Q158",
+      "traceability_json_path_after": "blocks.micro_questions[157]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q159.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 159,
+      "question_id": "Q159",
+      "traceability_json_path_after": "blocks.micro_questions[158]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q160.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 160,
+      "question_id": "Q160",
+      "traceability_json_path_after": "blocks.micro_questions[159]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q161.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 161,
+      "question_id": "Q161",
+      "traceability_json_path_after": "blocks.micro_questions[160]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q162.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 162,
+      "question_id": "Q162",
+      "traceability_json_path_after": "blocks.micro_questions[161]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q163.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 163,
+      "question_id": "Q163",
+      "traceability_json_path_after": "blocks.micro_questions[162]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q164.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 164,
+      "question_id": "Q164",
+      "traceability_json_path_after": "blocks.micro_questions[163]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q165.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 165,
+      "question_id": "Q165",
+      "traceability_json_path_after": "blocks.micro_questions[164]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q166.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 166,
+      "question_id": "Q166",
+      "traceability_json_path_after": "blocks.micro_questions[165]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q167.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 167,
+      "question_id": "Q167",
+      "traceability_json_path_after": "blocks.micro_questions[166]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q168.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 168,
+      "question_id": "Q168",
+      "traceability_json_path_after": "blocks.micro_questions[167]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q169.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 169,
+      "question_id": "Q169",
+      "traceability_json_path_after": "blocks.micro_questions[168]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q170.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 170,
+      "question_id": "Q170",
+      "traceability_json_path_after": "blocks.micro_questions[169]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q171.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 171,
+      "question_id": "Q171",
+      "traceability_json_path_after": "blocks.micro_questions[170]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q172.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 172,
+      "question_id": "Q172",
+      "traceability_json_path_after": "blocks.micro_questions[171]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q173.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 173,
+      "question_id": "Q173",
+      "traceability_json_path_after": "blocks.micro_questions[172]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q174.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 174,
+      "question_id": "Q174",
+      "traceability_json_path_after": "blocks.micro_questions[173]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q175.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 175,
+      "question_id": "Q175",
+      "traceability_json_path_after": "blocks.micro_questions[174]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q176.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 176,
+      "question_id": "Q176",
+      "traceability_json_path_after": "blocks.micro_questions[175]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q177.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 177,
+      "question_id": "Q177",
+      "traceability_json_path_after": "blocks.micro_questions[176]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q178.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 178,
+      "question_id": "Q178",
+      "traceability_json_path_after": "blocks.micro_questions[177]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q179.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 179,
+      "question_id": "Q179",
+      "traceability_json_path_after": "blocks.micro_questions[178]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q180.v3.json",
+      "policy_area_id": "PA05",
+      "question_global": 180,
+      "question_id": "Q180",
+      "traceability_json_path_after": "blocks.micro_questions[179]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q181.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 181,
+      "question_id": "Q181",
+      "traceability_json_path_after": "blocks.micro_questions[180]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q182.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 182,
+      "question_id": "Q182",
+      "traceability_json_path_after": "blocks.micro_questions[181]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q183.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 183,
+      "question_id": "Q183",
+      "traceability_json_path_after": "blocks.micro_questions[182]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q184.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 184,
+      "question_id": "Q184",
+      "traceability_json_path_after": "blocks.micro_questions[183]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q185.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 185,
+      "question_id": "Q185",
+      "traceability_json_path_after": "blocks.micro_questions[184]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q186.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 186,
+      "question_id": "Q186",
+      "traceability_json_path_after": "blocks.micro_questions[185]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q187.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 187,
+      "question_id": "Q187",
+      "traceability_json_path_after": "blocks.micro_questions[186]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q188.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 188,
+      "question_id": "Q188",
+      "traceability_json_path_after": "blocks.micro_questions[187]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q189.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 189,
+      "question_id": "Q189",
+      "traceability_json_path_after": "blocks.micro_questions[188]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q190.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 190,
+      "question_id": "Q190",
+      "traceability_json_path_after": "blocks.micro_questions[189]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q191.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 191,
+      "question_id": "Q191",
+      "traceability_json_path_after": "blocks.micro_questions[190]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q192.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 192,
+      "question_id": "Q192",
+      "traceability_json_path_after": "blocks.micro_questions[191]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q193.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 193,
+      "question_id": "Q193",
+      "traceability_json_path_after": "blocks.micro_questions[192]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q194.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 194,
+      "question_id": "Q194",
+      "traceability_json_path_after": "blocks.micro_questions[193]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q195.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 195,
+      "question_id": "Q195",
+      "traceability_json_path_after": "blocks.micro_questions[194]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q196.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 196,
+      "question_id": "Q196",
+      "traceability_json_path_after": "blocks.micro_questions[195]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q197.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 197,
+      "question_id": "Q197",
+      "traceability_json_path_after": "blocks.micro_questions[196]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q198.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 198,
+      "question_id": "Q198",
+      "traceability_json_path_after": "blocks.micro_questions[197]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q199.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 199,
+      "question_id": "Q199",
+      "traceability_json_path_after": "blocks.micro_questions[198]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q200.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 200,
+      "question_id": "Q200",
+      "traceability_json_path_after": "blocks.micro_questions[199]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q201.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 201,
+      "question_id": "Q201",
+      "traceability_json_path_after": "blocks.micro_questions[200]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q202.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 202,
+      "question_id": "Q202",
+      "traceability_json_path_after": "blocks.micro_questions[201]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q203.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 203,
+      "question_id": "Q203",
+      "traceability_json_path_after": "blocks.micro_questions[202]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q204.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 204,
+      "question_id": "Q204",
+      "traceability_json_path_after": "blocks.micro_questions[203]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q205.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 205,
+      "question_id": "Q205",
+      "traceability_json_path_after": "blocks.micro_questions[204]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q206.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 206,
+      "question_id": "Q206",
+      "traceability_json_path_after": "blocks.micro_questions[205]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q207.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 207,
+      "question_id": "Q207",
+      "traceability_json_path_after": "blocks.micro_questions[206]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q208.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 208,
+      "question_id": "Q208",
+      "traceability_json_path_after": "blocks.micro_questions[207]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q209.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 209,
+      "question_id": "Q209",
+      "traceability_json_path_after": "blocks.micro_questions[208]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q210.v3.json",
+      "policy_area_id": "PA06",
+      "question_global": 210,
+      "question_id": "Q210",
+      "traceability_json_path_after": "blocks.micro_questions[209]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q211.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 211,
+      "question_id": "Q211",
+      "traceability_json_path_after": "blocks.micro_questions[210]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q212.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 212,
+      "question_id": "Q212",
+      "traceability_json_path_after": "blocks.micro_questions[211]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q213.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 213,
+      "question_id": "Q213",
+      "traceability_json_path_after": "blocks.micro_questions[212]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q214.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 214,
+      "question_id": "Q214",
+      "traceability_json_path_after": "blocks.micro_questions[213]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q215.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 215,
+      "question_id": "Q215",
+      "traceability_json_path_after": "blocks.micro_questions[214]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q216.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 216,
+      "question_id": "Q216",
+      "traceability_json_path_after": "blocks.micro_questions[215]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q217.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 217,
+      "question_id": "Q217",
+      "traceability_json_path_after": "blocks.micro_questions[216]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q218.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 218,
+      "question_id": "Q218",
+      "traceability_json_path_after": "blocks.micro_questions[217]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q219.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 219,
+      "question_id": "Q219",
+      "traceability_json_path_after": "blocks.micro_questions[218]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q220.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 220,
+      "question_id": "Q220",
+      "traceability_json_path_after": "blocks.micro_questions[219]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q221.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 221,
+      "question_id": "Q221",
+      "traceability_json_path_after": "blocks.micro_questions[220]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q222.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 222,
+      "question_id": "Q222",
+      "traceability_json_path_after": "blocks.micro_questions[221]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q223.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 223,
+      "question_id": "Q223",
+      "traceability_json_path_after": "blocks.micro_questions[222]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q224.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 224,
+      "question_id": "Q224",
+      "traceability_json_path_after": "blocks.micro_questions[223]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q225.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 225,
+      "question_id": "Q225",
+      "traceability_json_path_after": "blocks.micro_questions[224]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q226.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 226,
+      "question_id": "Q226",
+      "traceability_json_path_after": "blocks.micro_questions[225]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q227.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 227,
+      "question_id": "Q227",
+      "traceability_json_path_after": "blocks.micro_questions[226]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q228.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 228,
+      "question_id": "Q228",
+      "traceability_json_path_after": "blocks.micro_questions[227]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q229.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 229,
+      "question_id": "Q229",
+      "traceability_json_path_after": "blocks.micro_questions[228]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q230.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 230,
+      "question_id": "Q230",
+      "traceability_json_path_after": "blocks.micro_questions[229]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q231.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 231,
+      "question_id": "Q231",
+      "traceability_json_path_after": "blocks.micro_questions[230]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q232.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 232,
+      "question_id": "Q232",
+      "traceability_json_path_after": "blocks.micro_questions[231]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q233.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 233,
+      "question_id": "Q233",
+      "traceability_json_path_after": "blocks.micro_questions[232]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q234.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 234,
+      "question_id": "Q234",
+      "traceability_json_path_after": "blocks.micro_questions[233]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q235.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 235,
+      "question_id": "Q235",
+      "traceability_json_path_after": "blocks.micro_questions[234]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q236.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 236,
+      "question_id": "Q236",
+      "traceability_json_path_after": "blocks.micro_questions[235]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q237.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 237,
+      "question_id": "Q237",
+      "traceability_json_path_after": "blocks.micro_questions[236]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q238.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 238,
+      "question_id": "Q238",
+      "traceability_json_path_after": "blocks.micro_questions[237]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q239.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 239,
+      "question_id": "Q239",
+      "traceability_json_path_after": "blocks.micro_questions[238]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q240.v3.json",
+      "policy_area_id": "PA07",
+      "question_global": 240,
+      "question_id": "Q240",
+      "traceability_json_path_after": "blocks.micro_questions[239]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    },
+    {
+      "base_slot": "D1-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q241.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 241,
+      "question_id": "Q241",
+      "traceability_json_path_after": "blocks.micro_questions[240]",
+      "traceability_json_path_before": "blocks.micro_questions[270]"
+    },
+    {
+      "base_slot": "D1-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q242.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 242,
+      "question_id": "Q242",
+      "traceability_json_path_after": "blocks.micro_questions[241]",
+      "traceability_json_path_before": "blocks.micro_questions[271]"
+    },
+    {
+      "base_slot": "D1-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q243.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 243,
+      "question_id": "Q243",
+      "traceability_json_path_after": "blocks.micro_questions[242]",
+      "traceability_json_path_before": "blocks.micro_questions[272]"
+    },
+    {
+      "base_slot": "D1-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q244.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 244,
+      "question_id": "Q244",
+      "traceability_json_path_after": "blocks.micro_questions[243]",
+      "traceability_json_path_before": "blocks.micro_questions[273]"
+    },
+    {
+      "base_slot": "D1-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q245.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 245,
+      "question_id": "Q245",
+      "traceability_json_path_after": "blocks.micro_questions[244]",
+      "traceability_json_path_before": "blocks.micro_questions[274]"
+    },
+    {
+      "base_slot": "D2-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q246.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 246,
+      "question_id": "Q246",
+      "traceability_json_path_after": "blocks.micro_questions[245]",
+      "traceability_json_path_before": "blocks.micro_questions[275]"
+    },
+    {
+      "base_slot": "D2-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q247.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 247,
+      "question_id": "Q247",
+      "traceability_json_path_after": "blocks.micro_questions[246]",
+      "traceability_json_path_before": "blocks.micro_questions[276]"
+    },
+    {
+      "base_slot": "D2-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q248.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 248,
+      "question_id": "Q248",
+      "traceability_json_path_after": "blocks.micro_questions[247]",
+      "traceability_json_path_before": "blocks.micro_questions[277]"
+    },
+    {
+      "base_slot": "D2-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q249.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 249,
+      "question_id": "Q249",
+      "traceability_json_path_after": "blocks.micro_questions[248]",
+      "traceability_json_path_before": "blocks.micro_questions[278]"
+    },
+    {
+      "base_slot": "D2-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q250.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 250,
+      "question_id": "Q250",
+      "traceability_json_path_after": "blocks.micro_questions[249]",
+      "traceability_json_path_before": "blocks.micro_questions[279]"
+    },
+    {
+      "base_slot": "D3-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q251.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 251,
+      "question_id": "Q251",
+      "traceability_json_path_after": "blocks.micro_questions[250]",
+      "traceability_json_path_before": "blocks.micro_questions[280]"
+    },
+    {
+      "base_slot": "D3-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q252.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 252,
+      "question_id": "Q252",
+      "traceability_json_path_after": "blocks.micro_questions[251]",
+      "traceability_json_path_before": "blocks.micro_questions[281]"
+    },
+    {
+      "base_slot": "D3-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q253.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 253,
+      "question_id": "Q253",
+      "traceability_json_path_after": "blocks.micro_questions[252]",
+      "traceability_json_path_before": "blocks.micro_questions[282]"
+    },
+    {
+      "base_slot": "D3-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q254.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 254,
+      "question_id": "Q254",
+      "traceability_json_path_after": "blocks.micro_questions[253]",
+      "traceability_json_path_before": "blocks.micro_questions[283]"
+    },
+    {
+      "base_slot": "D3-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q255.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 255,
+      "question_id": "Q255",
+      "traceability_json_path_after": "blocks.micro_questions[254]",
+      "traceability_json_path_before": "blocks.micro_questions[284]"
+    },
+    {
+      "base_slot": "D4-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q256.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 256,
+      "question_id": "Q256",
+      "traceability_json_path_after": "blocks.micro_questions[255]",
+      "traceability_json_path_before": "blocks.micro_questions[285]"
+    },
+    {
+      "base_slot": "D4-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q257.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 257,
+      "question_id": "Q257",
+      "traceability_json_path_after": "blocks.micro_questions[256]",
+      "traceability_json_path_before": "blocks.micro_questions[286]"
+    },
+    {
+      "base_slot": "D4-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q258.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 258,
+      "question_id": "Q258",
+      "traceability_json_path_after": "blocks.micro_questions[257]",
+      "traceability_json_path_before": "blocks.micro_questions[287]"
+    },
+    {
+      "base_slot": "D4-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q259.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 259,
+      "question_id": "Q259",
+      "traceability_json_path_after": "blocks.micro_questions[258]",
+      "traceability_json_path_before": "blocks.micro_questions[288]"
+    },
+    {
+      "base_slot": "D4-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q260.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 260,
+      "question_id": "Q260",
+      "traceability_json_path_after": "blocks.micro_questions[259]",
+      "traceability_json_path_before": "blocks.micro_questions[289]"
+    },
+    {
+      "base_slot": "D5-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q261.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 261,
+      "question_id": "Q261",
+      "traceability_json_path_after": "blocks.micro_questions[260]",
+      "traceability_json_path_before": "blocks.micro_questions[290]"
+    },
+    {
+      "base_slot": "D5-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q262.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 262,
+      "question_id": "Q262",
+      "traceability_json_path_after": "blocks.micro_questions[261]",
+      "traceability_json_path_before": "blocks.micro_questions[291]"
+    },
+    {
+      "base_slot": "D5-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q263.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 263,
+      "question_id": "Q263",
+      "traceability_json_path_after": "blocks.micro_questions[262]",
+      "traceability_json_path_before": "blocks.micro_questions[292]"
+    },
+    {
+      "base_slot": "D5-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q264.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 264,
+      "question_id": "Q264",
+      "traceability_json_path_after": "blocks.micro_questions[263]",
+      "traceability_json_path_before": "blocks.micro_questions[293]"
+    },
+    {
+      "base_slot": "D5-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q265.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 265,
+      "question_id": "Q265",
+      "traceability_json_path_after": "blocks.micro_questions[264]",
+      "traceability_json_path_before": "blocks.micro_questions[294]"
+    },
+    {
+      "base_slot": "D6-Q1",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q266.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 266,
+      "question_id": "Q266",
+      "traceability_json_path_after": "blocks.micro_questions[265]",
+      "traceability_json_path_before": "blocks.micro_questions[295]"
+    },
+    {
+      "base_slot": "D6-Q2",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q267.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 267,
+      "question_id": "Q267",
+      "traceability_json_path_after": "blocks.micro_questions[266]",
+      "traceability_json_path_before": "blocks.micro_questions[296]"
+    },
+    {
+      "base_slot": "D6-Q3",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q268.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 268,
+      "question_id": "Q268",
+      "traceability_json_path_after": "blocks.micro_questions[267]",
+      "traceability_json_path_before": "blocks.micro_questions[297]"
+    },
+    {
+      "base_slot": "D6-Q4",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q269.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 269,
+      "question_id": "Q269",
+      "traceability_json_path_after": "blocks.micro_questions[268]",
+      "traceability_json_path_before": "blocks.micro_questions[298]"
+    },
+    {
+      "base_slot": "D6-Q5",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q270.v3.json",
+      "policy_area_id": "PA08",
+      "question_global": 270,
+      "question_id": "Q270",
+      "traceability_json_path_after": "blocks.micro_questions[269]",
+      "traceability_json_path_before": "blocks.micro_questions[299]"
+    }
+  ]
+}
