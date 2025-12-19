@@ -1,6 +1,8 @@
 """
 Test suite for executor calibration integration.
 
+PHASE_LABEL: Phase 2
+
 Tests verify:
 1. All 30+ executors are instrumented with calibration calls
 2. Calibration data (WHAT) is loaded from intrinsic_calibration.json

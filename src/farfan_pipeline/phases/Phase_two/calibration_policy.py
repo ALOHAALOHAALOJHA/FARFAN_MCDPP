@@ -1,5 +1,9 @@
 """Calibration Policy System for Method Selection and Weighting.
 
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Calibration Policy
+PHASE_ROLE: Implements policies for calibration score influence on method selection and weighting
+
 This module implements policies for how calibration scores influence:
 - Method selection when alternatives exist
 - Weighting in aggregation layers

@@ -1,6 +1,8 @@
 """
 Generate executor-specific configuration files for all 30+ D[1-6]Q[1-5] executors.
 
+PHASE_LABEL: Phase 2
+
 This script creates JSON configuration files with runtime parameters (HOW)
 for each executor, ensuring NO hardcoded calibration values (WHAT).
 """

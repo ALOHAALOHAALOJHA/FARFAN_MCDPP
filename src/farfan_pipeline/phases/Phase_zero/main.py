@@ -717,11 +717,11 @@ def cli() -> None:
         self.log_claim("start", "spc_ingestion", "Starting SPC ingestion (phase-one)")
 
         try:
-            from canonic_phases.Phase_one.phase0_input_validation import (
+            from farfan_pipeline.phases.Phase_zero.phase0_input_validation import (
                 Phase0Input,
                 Phase0ValidationContract,
             )
-            from canonic_phases.Phase_one.phase1_spc_ingestion_full import (
+            from canonic_phases.phase_1_cpp_ingestion import (
                 execute_phase_1_with_full_contract,
             )
 
