@@ -21,7 +21,7 @@ Inputs:
     - execution_plan: ExecutionPlan — 300 tasks from Phase 2.1
     - preprocessed_document: PreprocessedDocument — 60 CPP chunks
     - questionnaire_monolith: dict — 300 questions for context
-    - signal_registry: SignalRegistry — SISAS signal resolution
+    - signal_registry: SignalRegistry — REQUIRED SISAS signal resolution
     - calibration_orchestrator: Optional — Method calibration
     - validation_orchestrator: Optional — Validation tracking
 
@@ -382,7 +382,7 @@ class TaskExecutor:
         self,
         questionnaire_monolith: dict[str, Any],
         preprocessed_document: Any,
-        signal_registry: Any | None = None,
+        signal_registry: Any,
         calibration_orchestrator: Any | None = None,
         validation_orchestrator: Any | None = None,
     ) -> None:
@@ -392,10 +392,20 @@ class TaskExecutor:
         Args:
             questionnaire_monolith: 300 questions
             preprocessed_document: 60 CPP chunks
-            signal_registry: SISAS signal resolution
+            signal_registry: REQUIRED SISAS signal resolution (must be initialized in Phase 0)
             calibration_orchestrator: Optional calibration
             validation_orchestrator: Optional validation tracking
+            
+        Raises:
+            ValueError: If signal_registry is None
         """
+        # Validate SignalRegistry is provided
+        if signal_registry is None:
+            raise ValueError(
+                "SignalRegistry is required for Phase 2.2. "
+                "Must be initialized in Phase 0."
+            )
+        
         self.questionnaire_monolith = questionnaire_monolith
         self.preprocessed_document = preprocessed_document
         self.signal_registry = signal_registry

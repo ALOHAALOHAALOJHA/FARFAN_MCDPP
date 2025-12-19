@@ -20,7 +20,7 @@ Determinism:
 Inputs:
     - questionnaire_monolith: dict — 300 micro questions (Q001-Q300)
     - preprocessed_document: PreprocessedDocument — 60 CPP chunks
-    - signal_registry: SignalRegistry — Optional SISAS signal resolution
+    - signal_registry: SignalRegistry — REQUIRED SISAS signal resolution
     - specialized_contracts: list[dict] — Optional Q{nnn}.v3.json contracts
 
 Outputs:
@@ -259,7 +259,7 @@ class IrrigationOrchestrator:
         self,
         questionnaire_monolith: dict[str, Any],
         preprocessed_document: Any,
-        signal_registry: Any | None = None,
+        signal_registry: Any,
         specialized_contracts: list[dict[str, Any]] | None = None,
         enable_join_table: bool = False,
     ) -> None:
@@ -269,10 +269,20 @@ class IrrigationOrchestrator:
         Args:
             questionnaire_monolith: 300 micro questions
             preprocessed_document: 60 CPP chunks
-            signal_registry: Optional SISAS signal resolution
+            signal_registry: REQUIRED SISAS signal resolution (must be initialized in Phase 0)
             specialized_contracts: Optional Q{nnn}.v3.json contracts
             enable_join_table: Enable contract-based pattern filtering
+            
+        Raises:
+            ValueError: If signal_registry is None
         """
+        # Validate SignalRegistry is provided
+        if signal_registry is None:
+            raise ValueError(
+                "SignalRegistry is required for Phase 2.1. "
+                "Initialize in Phase 0 with SISAS signal packs."
+            )
+        
         # Generate correlation_id for traceability
         self.correlation_id: Final = str(uuid.uuid4())
         
