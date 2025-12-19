@@ -76,19 +76,19 @@ ERROR_CODES: Final[dict[str, ErrorCode]] = {
 class ExecutorRegistryEntry:
     """Definition of an executor and its contract types."""
     executor_id: str
-    contract_types: list[str]
+    contract_types: tuple[str, ...]
     description: str
 
 
 EXECUTOR_REGISTRY: Final[dict[str, ExecutorRegistryEntry]] = {
     "specialized_executor": ExecutorRegistryEntry(
         executor_id="specialized_executor",
-        contract_types=["specialized_contract"],
+        contract_types=("specialized_contract",),
         description="Handles specialized contract payloads",
     ),
     "general_executor": ExecutorRegistryEntry(
         executor_id="general_executor",
-        contract_types=["general_contract"],
+        contract_types=("general_contract",),
         description="Handles general contract payloads",
     ),
 }
