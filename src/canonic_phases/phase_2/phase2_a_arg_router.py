@@ -2,10 +2,23 @@
 Module: src.canonic_phases.phase_2.phase2_a_arg_router
 Purpose: Route contract payloads to appropriate executors with exhaustive dispatch
 Owner: phase2_orchestration
-Lifecycle: ACTIVE
+Lifecycle: OPTIONAL (future extensibility - not required for current Phase 2.1/2.2 pipeline)
 Version: 1.0.0
 Effective-Date: 2025-12-18
 Python-Version: 3.12+ (uses PEP 695 generic syntax)
+
+USAGE CLARIFICATION:
+    This router is for CONTRACT-BASED PAYLOAD DISPATCH (e.g., routing based on
+    payload.contract_type to select executor). Current Phase 2.1/2.2 pipeline does
+    NOT require this - tasks are constructed deterministically, not routed.
+    
+    For METHOD ARGUMENT VALIDATION, see ExtendedArgRouter in Phase_two/arg_router.py
+    (embedded in MethodExecutor, operational, handles kwargs validation).
+    
+    This module is implemented for future scenarios requiring contract-type-based
+    executor selection (A/B testing, load balancing, multiple implementations).
+    
+    See ROUTER_ARCHITECTURE_CLARIFICATION.md for complete architecture decision.
 
 Contracts-Enforced:
     - RoutingContract: Every contract type maps to exactly one executor
