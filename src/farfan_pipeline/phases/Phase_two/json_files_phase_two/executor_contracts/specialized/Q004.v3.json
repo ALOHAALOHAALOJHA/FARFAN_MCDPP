@@ -31,7 +31,7 @@
   "evidence_assembly": {
     "assembly_rules": [
       {
-        "description": "Combine all evidence elements from 17 method invocations",
+        "description": "Combine all evidence elements from multiple method invocations",
         "merge_strategy": "concat",
         "sources": [
           "pdet_analysis.identify_responsible_entities",
@@ -63,7 +63,7 @@
         "target": "pattern_matches"
       },
       {
-        "description": "Combine metadata from all 17 methods for full traceability",
+        "description": "Combine metadata from all multiple methods for full traceability",
         "merge_strategy": "concat",
         "sources": [],
         "target": "metadata"
@@ -120,7 +120,7 @@
   },
   "human_answer_structure": {
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "multiple methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -258,7 +258,7 @@
         "embeddings_generated": 45
       }
     },
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all multiple methods execute and evidence is assembled according to assembly_rules",
     "evidence_structure_schema": {
       "description": "Assembled evidence after all methods complete",
       "properties": {
@@ -650,7 +650,7 @@
         "role": "audit_evidence_traceability_execution"
       }
     ],
-    "note": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+    "note": "All multiple methods extracted from D1_Q4_Executor in executors.py",
     "orchestration_mode": "multi_method_pipeline"
   },
   "method_outputs": {
@@ -1026,7 +1026,7 @@
           },
           "evidence_fusion": "Hierarchical NOT flat fusion. Entities from NER (method 2) and syntax (method 3) merged via Levenshtein similarity (≥0.85 threshold) in consolidation (method 6). Entity-activity pairs (method 7) are NOT directly fused; instead, each pair is independently validated (method 9) and assigned calibrated confidence (method 10). Final evidence set = {consolidated_entities with specificity≥0.50} ∪ {entity_activity_pairs with calibrated_conf≥0.70}. No averaging of overlapping pairs; each pair represents distinct entity-activity claim with independent provenance.",
           "execution_order": "Strict DAG topology with parallel and sequential stages:\n  Stage 1 (Entry): identify_responsible_entities (method 1) orchestrates pipeline\n  Stage 2 (Parallel Extraction): [_extract_entities_ner (method 2) || _extract_entities_syntax (method 3)] - independent execution, no data dependencies\n  Stage 3 (Sequential Processing): _classify_entity_type (method 4) → _score_entity_specificity (method 5) → _consolidate_entities (method 6) - strict sequential dependency, each method requires prior outputs\n  Stage 4 (Activity Linkage): extract_entity_activity (method 7) consumes consolidated entities → _normalize_entity (method 8) → _validate_entity_activity (method 9) → _calculate_ea_confidence (method 10)\n  Stage 5 (Audit): audit_evidence_traceability (method 11) validates provenance of all prior outputs\n  Critical paths: {1→2→4→5→6→7→8→9→10→11} (length 10, NER path) and {1→3→4→5→6→7→8→9→10→11} (length 10, syntax path). Longest path determines minimum execution time.",
-          "rationale": "D1-Q4 requires identification of responsible entities AND their institutional activities (capacidades para gestionar). The 11 methods implement a 4-layer hierarchy: (Layer 1) Parallel entity extraction via NER (method 2) and syntax parsing (method 3) to maximize recall through complementary techniques (NER captures learned entity patterns, syntax captures rule-based structures). (Layer 2) Entity classification (method 4) and specificity scoring (method 5) filter and rank entities by operationalizability. (Layer 3) Entity consolidation (method 6) deduplicates and resolves coreference. (Layer 4) Entity-activity linkage via semantic role labeling (method 7) with normalization (method 8), validation (method 9), and calibrated confidence (method 10). Final provenance audit (method 11) ensures traceability. This pipeline balances NLP breadth (NER+syntax) with domain-grounded validation (ontology checks, specificity thresholds).",
+          "rationale": "D1-Q4 requires identification of responsible entities AND their institutional activities (capacidades para gestionar). The multiple methods implement a 4-layer hierarchy: (Layer 1) Parallel entity extraction via NER (method 2) and syntax parsing (method 3) to maximize recall through complementary techniques (NER captures learned entity patterns, syntax captures rule-based structures). (Layer 2) Entity classification (method 4) and specificity scoring (method 5) filter and rank entities by operationalizability. (Layer 3) Entity consolidation (method 6) deduplicates and resolves coreference. (Layer 4) Entity-activity linkage via semantic role labeling (method 7) with normalization (method 8), validation (method 9), and calibrated confidence (method 10). Final provenance audit (method 11) ensures traceability. This pipeline balances NLP breadth (NER+syntax) with domain-grounded validation (ontology checks, specificity thresholds).",
           "trade_offs": [
             "NER vs. Syntax Precision-Recall: NER (spaCy BiLSTM-CRF) achieves higher precision (0.89 F1 on ORG entities) but lower recall on out-of-vocabulary entities (misses novel municipal agencies). Syntax (dependency parsing + regex) has lower precision (0.82 estimated) but higher recall on canonical patterns ('Secretaría de...'). Parallel execution captures union of both (↑recall) with consolidation deduplication (→precision). Empirical: NER-only recall=0.76, Syntax-only recall=0.68, Combined recall=0.91 (from 25-plan validation corpus).",
             "Specificity Threshold: Filtering entities at specificity<0.50 removes vague mentions ('entidad competente') but may discard valid generic references ('la Secretaría' without full name). Tuned threshold 0.50 balances precision (0.78 → 0.85 after filtering) vs. recall (0.91 → 0.83). F1-optimal threshold=0.50 from grid search on validation set.",
@@ -2413,7 +2413,7 @@
     "method_mapping_source": "executor_methods_mapping.json",
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q4_Executor",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all multiple methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
     "source_file": "data/questionnaire_monolith.json",
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "source_question_id": "Q004",

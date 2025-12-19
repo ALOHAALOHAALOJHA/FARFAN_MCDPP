@@ -31,7 +31,7 @@
   "evidence_assembly": {
     "assembly_rules": [
       {
-        "description": "Combine evidence from 7 methods",
+        "description": "Combine evidence from multiple methods",
         "merge_strategy": "concat",
         "sources": [
           "adaptivepriorcalculator.sensitivity_analysis",
@@ -59,7 +59,7 @@
         "target": "pattern_matches"
       },
       {
-        "description": "Combine metadata from all 17 methods for full traceability",
+        "description": "Combine metadata from all multiple methods for full traceability",
         "merge_strategy": "concat",
         "sources": [],
         "target": "metadata"
@@ -116,7 +116,7 @@
   },
   "human_answer_structure": {
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "multiple methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -254,7 +254,7 @@
         "embeddings_generated": 45
       }
     },
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all multiple methods execute and evidence is assembled according to assembly_rules",
     "evidence_structure_schema": {
       "description": "Assembled evidence after all methods complete",
       "properties": {
@@ -614,7 +614,7 @@
         "role": "sensitivity_analysis_execution"
       }
     ],
-    "note": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+    "note": "All multiple methods extracted from D5_Q4_Executor in executors.py",
     "orchestration_mode": "multi_method_pipeline"
   },
   "method_outputs": {
@@ -858,11 +858,11 @@
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
           "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
+          "evidence_fusion": "Evidence from all multiple methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
           "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
+          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The multiple methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
           "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
+            "Comprehensiveness vs. Complexity: multiple methods ensure thorough coverage but increase computational cost and maintenance burden",
             "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
             "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
           ]
@@ -1516,7 +1516,7 @@
     "method_mapping_source": "executor_methods_mapping.json",
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D5_Q4_Executor",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all multiple methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
     "source_file": "data/questionnaire_monolith.json",
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "source_question_id": "Q114",

@@ -1,0 +1,3025 @@
+{
+  "contracts_root": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized",
+  "files_scanned": 300,
+  "files_with_changes": 300,
+  "generated_at": "2025-12-19T05:16:11Z",
+  "plan": [
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q031.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q032.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q033.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q034.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q035.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q036.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q037.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q038.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q039.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q040.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q041.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q042.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q043.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q044.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q045.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q046.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q047.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q048.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q049.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q050.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q051.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q052.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q053.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q054.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q055.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q056.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q057.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q058.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q059.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q060.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q061.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q062.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q063.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q064.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q065.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q066.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q067.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q068.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q069.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q070.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q071.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q072.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q073.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q074.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q075.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q076.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q077.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q078.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q079.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q080.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q081.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q082.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q083.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q084.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q085.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q086.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q087.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q088.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q089.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q090.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q091.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q092.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q093.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q094.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q095.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q096.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q097.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q098.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q099.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q100.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q101.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q102.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q103.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q104.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q105.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q106.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q107.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q108.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q109.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q110.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q111.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q112.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q113.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q114.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q115.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q116.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q117.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q118.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q119.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q120.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q121.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q122.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q123.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q124.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q125.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q126.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q127.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q128.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q129.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q130.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q131.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q132.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q133.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q134.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q135.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q136.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q137.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q138.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q139.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q140.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q141.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q142.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q143.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q144.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q145.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q146.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q147.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q148.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q149.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q150.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q151.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q152.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q153.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q154.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q155.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q156.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q157.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q158.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q159.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q160.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q161.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q162.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q163.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q164.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q165.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q166.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q167.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q168.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q169.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q170.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q171.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q172.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q173.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q174.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q175.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q176.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q177.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q178.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q179.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q180.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q181.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q182.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q183.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q184.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q185.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q186.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q187.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q188.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q189.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q190.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q191.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q192.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q193.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q194.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q195.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q196.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q197.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q198.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q199.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q200.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q201.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q202.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q203.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q204.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q205.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q206.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q207.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q208.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q209.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q210.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q211.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q212.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q213.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q214.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q215.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q216.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q217.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q218.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q219.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q220.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q221.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q222.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q223.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q224.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q225.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q226.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q227.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q228.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q229.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q230.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q231.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q232.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q233.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q234.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q235.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q236.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q237.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q238.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q239.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q240.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q241.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q242.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q243.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q244.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q245.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q246.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q247.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q248.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q249.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q250.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q251.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q252.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q253.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q254.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q255.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q256.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q257.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q258.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q259.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q260.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q261.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q262.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q263.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q264.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q265.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q266.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q267.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q268.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q269.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q270.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q1_Executor in executors.py",
+      "before": "All 17 methods extracted from D1_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q271.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q2_Executor in executors.py",
+      "before": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q272.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q3_Executor in executors.py",
+      "before": "All 13 methods extracted from D1_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q273.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q4_Executor in executors.py",
+      "before": "All 11 methods extracted from D1_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q274.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D1_Q5_Executor in executors.py",
+      "before": "All 7 methods extracted from D1_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q275.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q1_Executor in executors.py",
+      "before": "All 7 methods extracted from D2_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q276.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q2_Executor in executors.py",
+      "before": "All 11 methods extracted from D2_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q277.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q3_Executor in executors.py",
+      "before": "All 9 methods extracted from D2_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q278.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q4_Executor in executors.py",
+      "before": "All 10 methods extracted from D2_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q279.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D2_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D2_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q280.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D3_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q281.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q2_Executor in executors.py",
+      "before": "All 21 methods extracted from D3_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q282.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q3_Executor in executors.py",
+      "before": "All 22 methods extracted from D3_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q283.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q4_Executor in executors.py",
+      "before": "All 26 methods extracted from D3_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q284.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D3_Q5_Executor in executors.py",
+      "before": "All 25 methods extracted from D3_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q285.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q1_Executor in executors.py",
+      "before": "All 16 methods extracted from D4_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q286.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q2_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q287.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D4_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q288.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D4_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q289.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D4_Q5_Executor in executors.py",
+      "before": "All 6 methods extracted from D4_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q290.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q291.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q2_Executor in executors.py",
+      "before": "All 28 methods extracted from D5_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q292.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q3_Executor in executors.py",
+      "before": "All 6 methods extracted from D5_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q293.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D5_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q294.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D5_Q5_Executor in executors.py",
+      "before": "All 8 methods extracted from D5_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q295.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q1_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q1_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q296.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q2_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q2_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q297.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q3_Executor in executors.py",
+      "before": "All 8 methods extracted from D6_Q3_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q298.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q4_Executor in executors.py",
+      "before": "All 7 methods extracted from D6_Q4_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q299.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    },
+    {
+      "after": "All multiple methods extracted from D6_Q5_Executor in executors.py",
+      "before": "All 9 methods extracted from D6_Q5_Executor in executors.py",
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q300.v3.json",
+      "json_path": "$.method_binding.note",
+      "replacement_count": 1,
+      "rules_applied": [
+        "rule_methods_count_free"
+      ]
+    }
+  ],
+  "plan_count": 300,
+  "policy": "count_free_narrative_method_mentions",
+  "rules": [
+    {
+      "pattern": "\\b\\d+\\s+methods\\b",
+      "replacement": "multiple methods",
+      "rule_id": "rule_methods_count_free"
+    },
+    {
+      "pattern": "\\b\\d+\\s+method\\s+invocations\\b",
+      "replacement": "multiple method invocations",
+      "rule_id": "rule_method_invocations_count_free"
+    }
+  ],
+  "whitelist_paths": [
+    "$.method_binding.note"
+  ]
+}

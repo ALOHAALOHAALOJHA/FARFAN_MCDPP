@@ -31,7 +31,7 @@
   "evidence_assembly": {
     "assembly_rules": [
       {
-        "description": "Combine all evidence elements from 12 method invocations",
+        "description": "Combine all evidence elements from multiple method invocations",
         "merge_strategy": "concat",
         "sources": [
           "operationalizationauditor.audit_direct_evidence",
@@ -64,7 +64,7 @@
         "target": "pattern_matches"
       },
       {
-        "description": "Combine metadata from all 12 methods for full traceability",
+        "description": "Combine metadata from all multiple methods for full traceability",
         "merge_strategy": "concat",
         "sources": [],
         "target": "metadata"
@@ -121,7 +121,7 @@
   },
   "human_answer_structure": {
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "multiple methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -259,7 +259,7 @@
         "embeddings_generated": 45
       }
     },
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all multiple methods execute and evidence is assembled according to assembly_rules",
     "evidence_structure_schema": {
       "description": "Assembled evidence after all methods complete",
       "properties": {
@@ -659,7 +659,7 @@
         "role": "analyze_performance_analysis"
       }
     ],
-    "note": "All 12 methods extracted from D1_Q2_Executor in executors.py",
+    "note": "All multiple methods extracted from D1_Q2_Executor in executors.py",
     "orchestration_mode": "multi_method_pipeline"
   },
   "method_outputs": {
@@ -1053,7 +1053,7 @@
           },
           "evidence_fusion": "Hierarchical fusion NOT flat aggregation: Layer 1 (_audit_direct_evidence) outputs feed Layer 2 (_audit_systemic_risk), which combines via Dempster-Shafer rule m1⊕m2 = ∑(m1(A)×m2(B))/(1-conflict) for omission beliefs. Layer 3 (financial, mechanism inference) provides independent evidence streams. Layer 4 (contradictions) flags data quality. Layer 5 (counterfactuals) validates causal necessity/sufficiency. Layer 6 (performance) monetizes aggregate losses. EvidenceNexus respects dependency graph - no naive averaging of dependent posteriors.",
           "execution_order": "Strict DAG topology enforced: {1→2→[3,4,5]→[6,7,8]→[9,10]→11→12}. Methods 1-2 are sequential (systemic risk depends on direct evidence). Methods 3-5 are parallel (independent gap sources). Methods 6-8 are parallel (counterfactual validation of different gap types). Methods 9-10 are sequential (divergence calculation needs inconsistencies). Method 11 aggregates 1-10. Method 12 consumes all. Violations → runtime dependency error.",
-          "rationale": "D1-Q2 evaluates recognition of gender data gaps and quantification of disparities - requires detecting ABSENCES (what's NOT stated). 12 methods form 4-layer hierarchy: (1) Bayesian evidence audit for gap detection, (2) Causal risk propagation via Dempster-Shafer, (3) Financial/mechanism gap inference, (4) Contradiction detection for data quality, (5) Counterfactual validation of causal claims, (6) Performance loss quantification. Unlike Q001's additive evidence extraction, Q002 uses multiplicative risk accumulation - omissions compound via causal cascades.",
+          "rationale": "D1-Q2 evaluates recognition of gender data gaps and quantification of disparities - requires detecting ABSENCES (what's NOT stated). multiple methods form 4-layer hierarchy: (1) Bayesian evidence audit for gap detection, (2) Causal risk propagation via Dempster-Shafer, (3) Financial/mechanism gap inference, (4) Contradiction detection for data quality, (5) Counterfactual validation of causal claims, (6) Performance loss quantification. Unlike Q001's additive evidence extraction, Q002 uses multiplicative risk accumulation - omissions compound via causal cascades.",
           "trade_offs": [
             "Sensitivity vs. Specificity: Bayesian priors tuned for rare omissions (P(explicit_bias_recognition)≈0.15) maximize sensitivity (detect gaps) at cost of false positives; validated against corpus showing precision=0.82, recall=0.91 for gap detection",
             "Computational Cost vs. Robustness: MCMC sampling (methods 4,6,7,8) requires O(10000) iterations per method = ~40K total samples. Amortized cost: 15-30s per contract on standard hardware. Justified by robustness to prior misspecification and uncertainty quantification unavailable in frequentist methods",
@@ -1843,7 +1843,7 @@
     "method_mapping_source": "executor_methods_mapping.json",
     "method_source": "src/farfan_core/core/orchestrator/executors.py:D1_Q2_Executor",
     "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all multiple methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
     "source_file": "data/questionnaire_monolith.json",
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "source_question_id": "Q002",

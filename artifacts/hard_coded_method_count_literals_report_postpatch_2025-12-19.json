@@ -1,0 +1,18 @@
+{
+  "bad_count": 0,
+  "bad_hits": [],
+  "contracts_root": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized",
+  "file_count": 300,
+  "generated_at": "2025-12-19T05:13:43Z",
+  "regexes": [
+    "\\b(\\d+)\\s+methods\\b",
+    "\\b(\\d+)\\s+method\\s+invocations\\b"
+  ],
+  "top_json_paths_by_hit_count": [
+    {
+      "hits": 300,
+      "json_path": "$.method_binding.note"
+    }
+  ],
+  "total_hits": 300
+}
