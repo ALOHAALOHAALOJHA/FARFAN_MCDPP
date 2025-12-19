@@ -317,12 +317,22 @@ class DynamicContractExecutor:
         """
         Execute methods for this question.
         
-        Simplified implementation - actual executor would:
-        1. Iterate over method_sets
-        2. Instantiate each method executor
-        3. Apply calibration if available
-        4. Execute method with context
-        5. Collect outputs
+        TODO: INTEGRATION REQUIRED
+        This is a placeholder implementation. Actual executor should:
+        1. Iterate over method_sets from question_context
+        2. Instantiate each method executor from methods_dispensary/
+        3. Apply calibration if calibration_orchestrator is available
+        4. Execute method with method_context
+        5. Collect outputs from all methods
+        6. Validate outputs if validation_orchestrator is available
+        
+        Integration Points:
+        - methods_dispensary/: 40 method classes (e.g., BasicNLPExtractor, 
+          SemanticAnalyzer, etc.)
+        - CalibrationOrchestrator: Method parameter calibration
+        - ValidationOrchestrator: Output validation tracking
+        
+        See PHASE_2_STABILITY_REPORT.md for detailed integration requirements.
         """
         # Placeholder implementation
         return {
