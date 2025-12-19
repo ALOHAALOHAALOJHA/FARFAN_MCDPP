@@ -1384,7 +1384,7 @@
       ],
       "emit_code": "ABORT-Q036-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1494,6 +1494,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿Las actividades para la población migrante se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

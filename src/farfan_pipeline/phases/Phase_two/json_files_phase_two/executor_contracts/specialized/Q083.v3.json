@@ -1287,7 +1287,7 @@
       ],
       "emit_code": "ABORT-Q083-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1379,6 +1379,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "Cuando un impacto en la paz es difícil de medir (ej. 'restablecimiento del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

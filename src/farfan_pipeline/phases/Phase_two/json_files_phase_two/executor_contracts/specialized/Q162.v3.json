@@ -2569,17 +2569,6 @@
     "dimension_label": "PRODUCTOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "dosificacion_definida"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "proporcionalidad_meta_brecha"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "proporcionalidad_meta_problema"
       }
@@ -2592,7 +2581,7 @@
       ],
       "emit_code": "ABORT-Q162-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -2683,6 +2672,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿Las metas de los productos (ej. 'reparar a 1.000 víctimas') son proporcionales a la magnitud del universo de víctimas diagnosticado?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

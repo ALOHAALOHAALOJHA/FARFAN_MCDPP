@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q175-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1567,6 +1567,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿La ambición del impacto de la construcción de paz (ej. 'paz total y duradera') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

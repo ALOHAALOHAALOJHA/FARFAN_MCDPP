@@ -1786,34 +1786,16 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "cuantificacion_brecha"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "sesgos_reconocidos"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "vacios_explicitos"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "analisis_causal_problema"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "cuantificacion_magnitud"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "analisis_vulnerabilidad"
       }
     ],
     "expected_output_type": "score",
@@ -1824,7 +1806,7 @@
       ],
       "emit_code": "ABORT-Q062-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1942,6 +1924,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿El texto dimensiona el problema de la violencia y el conflicto cuantificando la brecha o el aumento de casos? Se debe buscar si se mencionan explícitamente limitaciones en los datos, como 'subregistro', 'cifra negra' o 'vacíos de información'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

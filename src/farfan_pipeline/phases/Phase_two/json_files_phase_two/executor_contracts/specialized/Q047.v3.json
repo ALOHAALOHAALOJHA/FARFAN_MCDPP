@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q047-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1569,6 +1569,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿Se explicita la cadena causal que lleva a la integración de la población migrante, mencionando 'supuestos' clave (ej. 'si el sector privado contrata a migrantes regularizados') o 'condiciones habilitantes'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

@@ -1,0 +1,1286 @@
+{
+  "applied_at": "2025-12-19T03:36:50Z",
+  "changes": [
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[1]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[3]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[4]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "instrumento_especificado",
+        "logica_causal_explicita",
+        "poblacion_objetivo_definida",
+        "mecanismo_causal_completo"
+      ],
+      "expected_elements_types_before": [
+        "instrumento_especificado",
+        "logica_causal_explicita",
+        "poblacion_objetivo_definida"
+      ],
+      "json_path": "blocks.micro_questions[6]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[11]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[17]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_ods",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[19]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q031.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[30]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q032.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[31]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q034.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "gobernanza",
+        "infraestructura_fisica",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[33]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q035.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_competencias",
+        "restricciones_legales",
+        "restricciones_presupuestales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[34]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q042.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[41]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q044.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "financiamiento_realista",
+        "capacidad_institucional_realista"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_recursos",
+        "factibilidad_tecnica",
+        "realismo_plazos"
+      ],
+      "json_path": "blocks.micro_questions[43]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q048.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[47]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q050.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_ods",
+        "alineacion_otros_marcos",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[49]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q062.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[61]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q064.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[63]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q065.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[64]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q072.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[71]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q078.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[77]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q080.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_ods",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[79]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q091.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[90]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q092.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_vulnerabilidad",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[91]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q094.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[93]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q095.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_tecnicas"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[94]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q102.v3.json",
+      "expected_elements_count_after": 1,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[101]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q108.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[107]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q110.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_ods",
+        "alineacion_otros_marcos",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[109]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q121.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[120]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q122.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[121]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q124.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "gobernanza",
+        "infraestructura_fisica",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[123]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q125.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_capacidad",
+        "restricciones_legales",
+        "restricciones_presupuestales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[124]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q132.v3.json",
+      "expected_elements_count_after": 1,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[131]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q138.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[137]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q140.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_ods",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[139]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q151.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[150]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q152.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[151]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q154.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "gobernanza",
+        "infraestructura_fisica",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[153]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q155.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_competencias",
+        "restricciones_legales",
+        "restricciones_presupuestales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[154]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q162.v3.json",
+      "expected_elements_count_after": 1,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[161]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q168.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[167]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q170.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_acuerdo_paz",
+        "alineacion_ods",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[169]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q181.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[180]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q182.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[181]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q184.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "gobernanza",
+        "infraestructura_fisica",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[183]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q185.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_competencias",
+        "restricciones_legales",
+        "restricciones_presupuestales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[184]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q192.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[191]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q198.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[197]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q200.v3.json",
+      "expected_elements_count_after": 2,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_ods",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[199]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q211.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[210]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q212.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[211]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q214.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "gobernanza",
+        "infraestructura_tecnologica",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[213]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q215.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_tecnicas"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[214]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q222.v3.json",
+      "expected_elements_count_after": 1,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[221]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q228.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[227]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q230.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_acuerdo_paz",
+        "alineacion_ods",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[229]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q241.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[240]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q242.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[241]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q244.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[243]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q245.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_competencias",
+        "restricciones_legales",
+        "restricciones_presupuestales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[244]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q252.v3.json",
+      "expected_elements_count_after": 1,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[251]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q258.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[257]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q260.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[259]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q271.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "expected_elements_types_before": [
+        "cobertura_territorial_especificada",
+        "fuentes_oficiales",
+        "indicadores_cuantitativos",
+        "series_temporales_años"
+      ],
+      "json_path": "blocks.micro_questions[270]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q272.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 6,
+      "expected_elements_types_after": [
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "vacios_explicitos"
+      ],
+      "expected_elements_types_before": [
+        "cuantificacion_brecha",
+        "sesgos_reconocidos",
+        "vacios_explicitos",
+        "analisis_causal_problema",
+        "cuantificacion_magnitud",
+        "analisis_vulnerabilidad"
+      ],
+      "json_path": "blocks.micro_questions[271]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q274.v3.json",
+      "expected_elements_count_after": 5,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "cuellos_botella",
+        "gobernanza",
+        "infraestructura_fisica",
+        "procesos",
+        "talento_humano"
+      ],
+      "expected_elements_types_before": [
+        "cuellos_botella",
+        "datos_sistemas",
+        "gobernanza",
+        "procesos",
+        "talento_humano",
+        "infraestructura_fisica",
+        "infraestructura_tecnologica"
+      ],
+      "json_path": "blocks.micro_questions[273]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q275.v3.json",
+      "expected_elements_count_after": 4,
+      "expected_elements_count_before": 7,
+      "expected_elements_types_after": [
+        "coherencia_demostrada",
+        "restricciones_competencias",
+        "restricciones_legales",
+        "restricciones_presupuestales"
+      ],
+      "expected_elements_types_before": [
+        "coherencia_demostrada",
+        "restricciones_legales",
+        "restricciones_presupuestales",
+        "restricciones_temporales",
+        "restricciones_competencias",
+        "restricciones_tecnicas",
+        "restricciones_capacidad"
+      ],
+      "json_path": "blocks.micro_questions[274]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q282.v3.json",
+      "expected_elements_count_after": 1,
+      "expected_elements_count_before": 3,
+      "expected_elements_types_after": [
+        "proporcionalidad_meta_problema"
+      ],
+      "expected_elements_types_before": [
+        "dosificacion_definida",
+        "proporcionalidad_meta_brecha",
+        "proporcionalidad_meta_problema"
+      ],
+      "json_path": "blocks.micro_questions[281]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q288.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 4,
+      "expected_elements_types_after": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos"
+      ],
+      "expected_elements_types_before": [
+        "evidencia_comparada",
+        "justificacion_capacidad",
+        "justificacion_recursos",
+        "justificacion_tecnica"
+      ],
+      "json_path": "blocks.micro_questions[287]"
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q290.v3.json",
+      "expected_elements_count_after": 3,
+      "expected_elements_count_before": 5,
+      "expected_elements_types_after": [
+        "alineacion_jurisprudencia",
+        "alineacion_ods",
+        "alineacion_pnd"
+      ],
+      "expected_elements_types_before": [
+        "alineacion_ods",
+        "alineacion_pnd",
+        "alineacion_otros_marcos",
+        "alineacion_acuerdo_paz",
+        "alineacion_jurisprudencia"
+      ],
+      "json_path": "blocks.micro_questions[289]"
+    }
+  ],
+  "input_cases_path": "artifacts/expected_elements_mismatch_cases_2025-12-19.json",
+  "monolith_path": "canonic_questionnaire_central/questionnaire_monolith.json",
+  "touched_contracts": 70
+}

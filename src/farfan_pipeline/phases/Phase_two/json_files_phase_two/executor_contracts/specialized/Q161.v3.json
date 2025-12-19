@@ -1472,7 +1472,7 @@
       ],
       "emit_code": "ABORT-Q161-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -1622,6 +1622,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿Los indicadores de producto para víctimas (ej. indemnizaciones pagadas, familias retornadas) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación' (ej. RUV)?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

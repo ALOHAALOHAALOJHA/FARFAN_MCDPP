@@ -2935,7 +2935,7 @@
       ],
       "emit_code": "ABORT-Q075-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3028,6 +3028,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿El PDM explica cómo los productos de protección (ej. 'personas atendidas en albergues') contribuyen a generar resultados (ej. 'reducción de la vulnerabilidad')? Se debe buscar la descripción de este 'mecanismo' causal.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

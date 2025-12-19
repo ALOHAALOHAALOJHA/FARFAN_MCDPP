@@ -1630,7 +1630,7 @@
       ],
       "emit_code": "ABORT-Q159-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1750,6 +1750,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿El plan identifica posibles riesgos en la implementación de la política de víctimas (ej. revictimización, riesgos de seguridad en retornos) y propone 'medidas de mitigación'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

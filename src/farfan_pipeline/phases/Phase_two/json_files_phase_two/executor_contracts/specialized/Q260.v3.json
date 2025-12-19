@@ -1264,29 +1264,16 @@
     "dimension_label": "RESULTADOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "alineacion_ods"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "alineacion_pnd"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "alineacion_otros_marcos"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "alineacion_acuerdo_paz"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "alineacion_jurisprudencia"
+      },
+      {
+        "required": true,
+        "type": "alineacion_pnd"
       }
     ],
     "expected_output_type": "score",
@@ -1297,7 +1284,7 @@
       ],
       "emit_code": "ABORT-Q260-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1374,6 +1361,7 @@
     "policy_area_label": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "question_text": "¿El plan declara la alineación de sus resultados de protección de líderes con marcos superiores como el PND, los Acuerdos de Paz o sentencias de la Corte Constitucional?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

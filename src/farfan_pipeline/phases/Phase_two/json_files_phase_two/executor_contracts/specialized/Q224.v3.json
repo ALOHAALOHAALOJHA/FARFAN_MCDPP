@@ -3037,7 +3037,7 @@
       ],
       "emit_code": "ABORT-Q224-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3129,6 +3129,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿Existe una relación factible entre la actividad (ej. 'un convenio con la ANT') y la meta del producto asociado (ej. '2.000 títulos entregados') para el área de tierras? Se debe evaluar si los 'plazos' son realistas.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

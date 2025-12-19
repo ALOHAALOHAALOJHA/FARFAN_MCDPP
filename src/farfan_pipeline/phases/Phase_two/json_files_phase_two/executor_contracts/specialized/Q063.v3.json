@@ -1896,7 +1896,7 @@
       ],
       "emit_code": "ABORT-Q063-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2035,6 +2035,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de prevención, protección, atención a víctimas o funcionamiento del Sistema de Alertas Tempranas (SAT)?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

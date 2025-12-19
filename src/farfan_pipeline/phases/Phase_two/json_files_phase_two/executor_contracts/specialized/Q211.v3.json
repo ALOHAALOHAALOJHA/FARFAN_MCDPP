@@ -2219,11 +2219,6 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "cobertura_territorial_especificada"
-      },
-      {
         "minimum": 2,
         "type": "fuentes_oficiales"
       },
@@ -2232,7 +2227,7 @@
         "type": "indicadores_cuantitativos"
       },
       {
-        "minimum": 3,
+        "minimum": 2,
         "type": "series_temporales_años"
       }
     ],
@@ -2244,7 +2239,7 @@
       ],
       "emit_code": "ABORT-Q211-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2448,6 +2443,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿El diagnóstico presenta datos numéricos (porcentaje de predios sin formalizar, km de vías terciarias en mal estado, avance del catastro multipropósito) sobre el área de Tierras y territorios que sirvan como línea base? Se debe verificar el año y fuentes (ej. IGAC, ANT, INVIAS).",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {
       "buscar_indicadores_cuantitativos": {

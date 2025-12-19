@@ -1722,7 +1722,7 @@
       ],
       "emit_code": "ABORT-Q127-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1856,6 +1856,7 @@
     "policy_area_label": "Derechos económicos, sociales y culturales",
     "question_text": "¿La descripción de las actividades sociales detalla el instrumento ('mediante subsidios', 'a través de la construcción de aulas'), la población objetivo ('hogares con IPM alto', 'estudiantes de zonas rurales') y la lógica causal?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

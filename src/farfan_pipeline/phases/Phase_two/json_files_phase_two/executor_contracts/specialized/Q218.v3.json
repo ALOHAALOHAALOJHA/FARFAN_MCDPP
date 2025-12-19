@@ -1553,7 +1553,7 @@
       ],
       "emit_code": "ABORT-Q218-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1658,6 +1658,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿El PDM vincula explícitamente las actividades (ej. actualización catastral) con las 'causas raíz' de los problemas (ej. baja tributación predial, conflictos por linderos) identificadas en el diagnóstico?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

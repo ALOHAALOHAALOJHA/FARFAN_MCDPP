@@ -1471,7 +1471,7 @@
       ],
       "emit_code": "ABORT-Q205-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1577,6 +1577,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿La ambición del impacto (ej. 'pleno desarrollo de todos los jóvenes') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

@@ -1,0 +1,11 @@
+{
+  "added_pattern_ids": [
+    "PAT-Q007-009"
+  ],
+  "applied_at": "2025-12-19T03:38:45Z",
+  "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+  "json_path": "blocks.micro_questions[6]",
+  "monolith_path": "canonic_questionnaire_central/questionnaire_monolith.json",
+  "patterns_count_after": 10,
+  "patterns_count_before": 9
+}

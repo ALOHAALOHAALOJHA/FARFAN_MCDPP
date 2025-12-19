@@ -3004,19 +3004,12 @@
     "dimension_label": "PRODUCTOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
-        "type": "coherencia_recursos"
+        "type": "financiamiento_realista"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "factibilidad_tecnica"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "realismo_plazos"
+        "type": "capacidad_institucional_realista"
       }
     ],
     "expected_output_type": "score",
@@ -3027,7 +3020,7 @@
       ],
       "emit_code": "ABORT-Q044-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3122,6 +3115,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿Existe una relación factible entre la actividad (ej. 'una jornada de atención') y la meta del producto asociado (ej. '10.000 migrantes con acceso a salud') para la política migratoria? Se debe evaluar si los 'plazos' son realistas.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

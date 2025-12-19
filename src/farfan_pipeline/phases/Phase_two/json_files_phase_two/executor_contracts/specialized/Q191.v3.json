@@ -1472,7 +1472,7 @@
       ],
       "emit_code": "ABORT-Q191-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -1622,6 +1622,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿Los indicadores de producto para niñez y juventud (ej. cupos en CDI, raciones de PAE entregadas) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

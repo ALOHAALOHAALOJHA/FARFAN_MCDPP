@@ -1472,7 +1472,7 @@
       ],
       "emit_code": "ABORT-Q071-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -1608,6 +1608,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿Los indicadores de producto para prevención (ej. alertas gestionadas, personas en rutas de protección) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

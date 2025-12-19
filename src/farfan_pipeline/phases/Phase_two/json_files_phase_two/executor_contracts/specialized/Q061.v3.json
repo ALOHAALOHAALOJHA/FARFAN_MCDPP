@@ -2234,7 +2234,7 @@
       ],
       "emit_code": "ABORT-Q061-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2460,6 +2460,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿El diagnóstico presenta datos numéricos (tasas de homicidio, cifras de desplazamiento, casos de reclutamiento) para el área de Prevención de la violencia y protección frente al conflicto que sirvan como línea base? Se debe verificar el año de referencia y fuentes (ej. Policía Nacional, UARIV, Defensoría del Pueblo).",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {
       "buscar_indicadores_cuantitativos": {

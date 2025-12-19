@@ -1896,7 +1896,7 @@
       ],
       "emit_code": "ABORT-Q183-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2034,6 +2034,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de primera infancia, alimentación escolar (PAE), prevención del reclutamiento o empleo juvenil?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

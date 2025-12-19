@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q081-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "TERRITORIAL",
@@ -1568,6 +1568,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿El PDM define 'impactos' o 'transformaciones estructurales' de largo plazo (ej. 'consolidación de la paz territorial')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

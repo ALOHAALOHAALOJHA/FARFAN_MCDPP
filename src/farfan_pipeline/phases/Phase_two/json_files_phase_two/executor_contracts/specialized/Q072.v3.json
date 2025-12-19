@@ -2569,19 +2569,12 @@
     "dimension_label": "PRODUCTOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "dosificacion_definida"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "proporcionalidad_meta_brecha"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "proporcionalidad_meta_problema"
       }
     ],
     "expected_output_type": "score",
@@ -2592,7 +2585,7 @@
       ],
       "emit_code": "ABORT-Q072-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -2697,6 +2690,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿Las metas de los productos (ej. 'cobertura del 80% de las alertas tempranas') son proporcionales a la magnitud del riesgo diagnosticado? Se debe buscar si se define la 'frecuencia' de la respuesta.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

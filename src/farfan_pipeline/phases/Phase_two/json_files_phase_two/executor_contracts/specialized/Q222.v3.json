@@ -2579,17 +2579,6 @@
     "dimension_label": "PRODUCTOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "dosificacion_definida"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "proporcionalidad_meta_brecha"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "proporcionalidad_meta_problema"
       }
@@ -2602,7 +2591,7 @@
       ],
       "emit_code": "ABORT-Q222-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -2678,6 +2667,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿Las metas de los productos de tierras (ej. 'formalizar 500 predios') son proporcionales a la magnitud del problema diagnosticado (ej. 'existen 5.000 predios informales')?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

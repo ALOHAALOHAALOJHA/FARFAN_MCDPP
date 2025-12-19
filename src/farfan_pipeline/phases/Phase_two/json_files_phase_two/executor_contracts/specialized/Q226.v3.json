@@ -2163,7 +2163,7 @@
       ],
       "emit_code": "ABORT-Q226-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -2315,6 +2315,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿Los indicadores de resultado para tierras (ej. 'porcentaje de actualización catastral', 'reducción del tiempo de viaje en zonas rurales') están definidos con línea base, meta y un horizonte temporal?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

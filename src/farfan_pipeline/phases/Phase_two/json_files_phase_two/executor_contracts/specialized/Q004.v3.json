@@ -2181,39 +2181,24 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "cuellos_botella"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "datos_sistemas"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "gobernanza"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "procesos"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "talento_humano"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "infraestructura_fisica"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "infraestructura_tecnologica"
       }
     ],
     "expected_output_type": "score",
@@ -2224,7 +2209,7 @@
       ],
       "emit_code": "ABORT-Q004-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2387,6 +2372,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿El PDM describe las capacidades para gestionar la política de género, mencionando entidades (ej. Secretaría de la Mujer, Comisaría) y sus necesidades? Se debe buscar términos como 'equipo psicosocial', 'protocolo de atención' y si se identifican 'limitaciones' o 'barreras' institucionales.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

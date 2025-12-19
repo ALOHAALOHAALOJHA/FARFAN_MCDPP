@@ -1357,39 +1357,20 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "coherencia_demostrada"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_legales"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_presupuestales"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_temporales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_competencias"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_tecnicas"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_capacidad"
       }
     ],
     "expected_output_type": "score",
@@ -1400,7 +1381,7 @@
       ],
       "emit_code": "ABORT-Q005-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1547,6 +1528,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿El plan justifica su alcance en materia de género mencionando el marco legal (ej. Ley 1257) o reconociendo restricciones explícitas de tipo presupuestal, temporal o de competencias?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_E",
     "scoring_modality": "TYPE_E",
     "validations": {}
   },

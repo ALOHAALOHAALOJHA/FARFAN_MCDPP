@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q167-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1569,6 +1569,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿Se explicita la cadena causal que lleva a la reparación y reconciliación, mencionando 'supuestos' clave (ej. 'si las condiciones de seguridad lo permiten') o 'condiciones habilitantes'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

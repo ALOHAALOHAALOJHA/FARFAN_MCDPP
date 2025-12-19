@@ -1369,7 +1369,7 @@
       ],
       "emit_code": "ABORT-Q087-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1450,6 +1450,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿Los saltos en la cadena causal de la seguridad son proporcionales (ej. la instalación de 10 cámaras no garantiza una reducción del 50% en homicidios)?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

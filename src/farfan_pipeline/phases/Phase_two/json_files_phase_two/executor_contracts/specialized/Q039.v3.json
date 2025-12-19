@@ -1630,7 +1630,7 @@
       ],
       "emit_code": "ABORT-Q039-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1751,6 +1751,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿El plan identifica posibles riesgos en la implementación de la respuesta migratoria (ej. brotes de xenofobia, saturación de servicios sociales) y propone 'medidas de mitigación'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

@@ -1796,34 +1796,16 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "cuantificacion_brecha"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "sesgos_reconocidos"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "vacios_explicitos"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "analisis_causal_problema"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "cuantificacion_magnitud"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "analisis_vulnerabilidad"
+        "type": "vacios_explicitos"
       }
     ],
     "expected_output_type": "score",
@@ -1834,7 +1816,7 @@
       ],
       "emit_code": "ABORT-Q212-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1952,6 +1934,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿El texto dimensiona la magnitud de los problemas de tierras y desarrollo rural, cuantificando el déficit (ej. de formalización, de infraestructura vial) o la población afectada? Se debe buscar si se mencionan 'vacíos de información' (ej. desactualización catastral).",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

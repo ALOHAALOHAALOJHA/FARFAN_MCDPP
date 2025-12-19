@@ -1374,7 +1374,7 @@
       ],
       "emit_code": "ABORT-Q059-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1478,6 +1478,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿Se describe un sistema de monitoreo para la política migratoria que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia ante cambios en los flujos?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

@@ -1722,7 +1722,7 @@
       ],
       "emit_code": "ABORT-Q157-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1857,6 +1857,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿La descripción de las actividades para víctimas detalla el instrumento ('mediante indemnización administrativa', 'a través de proyectos productivos'), la población objetivo ('víctimas de desplazamiento forzado', 'sujetos de reparación colectiva') y la lógica causal?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

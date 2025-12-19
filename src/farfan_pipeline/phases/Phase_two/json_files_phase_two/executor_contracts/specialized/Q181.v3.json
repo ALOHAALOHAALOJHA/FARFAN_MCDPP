@@ -2209,11 +2209,6 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "cobertura_territorial_especificada"
-      },
-      {
         "minimum": 2,
         "type": "fuentes_oficiales"
       },
@@ -2234,7 +2229,7 @@
       ],
       "emit_code": "ABORT-Q181-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2460,6 +2455,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿El diagnóstico presenta datos numéricos (tasa de deserción escolar, embarazo adolescente, trabajo infantil) para el área de Derechos de la niñez, adolescencia y juventud que sirvan como línea base? Se debe verificar el año y fuentes (ej. SIMAT, SISPRO, ICBF).",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {
       "buscar_indicadores_cuantitativos": {

@@ -3201,7 +3201,7 @@
       ],
       "emit_code": "ABORT-Q232-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3293,6 +3293,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿Se utilizan 'índices' (ej. Índice de Competitividad Rural) o 'proxies' para medir los impactos en el desarrollo territorial, justificando su validez?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

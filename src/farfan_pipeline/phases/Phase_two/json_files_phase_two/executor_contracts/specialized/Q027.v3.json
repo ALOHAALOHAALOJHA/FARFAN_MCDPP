@@ -1369,7 +1369,7 @@
       ],
       "emit_code": "ABORT-Q027-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1451,6 +1451,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿Los saltos en la cadena causal de género son proporcionales y realistas (ej. un taller de 2 horas no genera 'empoderamiento económico total')?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

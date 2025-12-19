@@ -1896,7 +1896,7 @@
       ],
       "emit_code": "ABORT-Q153-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2035,6 +2035,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de reparación integral, asistencia humanitaria, retornos, o medidas de satisfacción y memoria?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

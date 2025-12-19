@@ -3027,7 +3027,7 @@
       ],
       "emit_code": "ABORT-Q074-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3120,6 +3120,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿Existe una relación factible entre la actividad (ej. 'conformar un comité') y la meta del producto asociado (ej. '100% de alertas respondidas') para el área de Prevención de la violencia? Se debe evaluar si los 'plazos' y recursos son realistas.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

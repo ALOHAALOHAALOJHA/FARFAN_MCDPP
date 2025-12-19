@@ -1264,29 +1264,12 @@
     "dimension_label": "RESULTADOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "alineacion_ods"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "alineacion_pnd"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "alineacion_otros_marcos"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "alineacion_acuerdo_paz"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "alineacion_jurisprudencia"
       }
     ],
     "expected_output_type": "score",
@@ -1297,7 +1280,7 @@
       ],
       "emit_code": "ABORT-Q200-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1375,6 +1358,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿El plan declara la alineación de sus resultados de niñez y juventud con marcos superiores como el PND o los ODS (4, 5, 8)?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

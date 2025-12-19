@@ -3201,7 +3201,7 @@
       ],
       "emit_code": "ABORT-Q022-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3279,6 +3279,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿Se utilizan 'índices' (ej. Índice de Equidad de Género) o 'proxies' para medir los impactos en la política de género, justificando por qué son válidos para 'capturar el mecanismo' de cambio?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

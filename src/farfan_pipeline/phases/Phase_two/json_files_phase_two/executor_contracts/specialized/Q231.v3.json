@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q231-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "TERRITORIAL",
@@ -1568,6 +1568,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿El PDM define 'impactos' de largo plazo (ej. 'ordenamiento sostenible del territorio', 'desarrollo rural competitivo')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

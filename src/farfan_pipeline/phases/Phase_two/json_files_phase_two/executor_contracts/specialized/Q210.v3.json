@@ -1563,7 +1563,7 @@
       ],
       "emit_code": "ABORT-Q210-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1668,6 +1668,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿La lógica causal para niñez y juventud considera el contexto, reconociendo 'grupos afectados' (jóvenes rurales, NNA migrantes) y 'restricciones' territoriales o culturales?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

@@ -1896,7 +1896,7 @@
       ],
       "emit_code": "ABORT-Q003-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2033,6 +2033,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿Se identifican en el Plan Plurianual de Inversiones (PPI) o en tablas presupuestales, recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas para la equidad de género, la Casa de la Mujer o la atención a VBG?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

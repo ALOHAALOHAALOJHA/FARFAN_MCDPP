@@ -1374,7 +1374,7 @@
       ],
       "emit_code": "ABORT-Q119-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1479,6 +1479,7 @@
     "policy_area_label": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "question_text": "¿Se describe un sistema de monitoreo para la gestión ambiental que incluya 'mecanismos de corrección' o 'aprendizaje' para adaptar la estrategia (ej. ante una nueva mancha de deforestación)?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

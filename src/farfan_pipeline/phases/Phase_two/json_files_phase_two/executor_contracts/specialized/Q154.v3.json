@@ -1699,39 +1699,24 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "cuellos_botella"
       },
       {
-        "minimum": 1,
-        "required": true,
-        "type": "datos_sistemas"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "gobernanza"
       },
       {
-        "minimum": 1,
-        "required": true,
-        "type": "procesos"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "talento_humano"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "infraestructura_fisica"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "infraestructura_tecnologica"
+        "type": "procesos"
+      },
+      {
+        "required": true,
+        "type": "talento_humano"
       }
     ],
     "expected_output_type": "score",
@@ -1742,7 +1727,7 @@
       ],
       "emit_code": "ABORT-Q154-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "TERRITORIAL",
@@ -1890,6 +1875,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿El PDM describe las capacidades para la atención a víctimas, mencionando entidades (Enlace de Víctimas, Mesa de Participación) y sus necesidades? Se debe buscar términos como 'centro de atención', 'equipo psicosocial' y si se identifican 'limitaciones'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

@@ -1357,39 +1357,20 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "coherencia_demostrada"
       },
       {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_legales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_presupuestales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_temporales"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_competencias"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "restricciones_tecnicas"
+        "type": "restricciones_legales"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "restricciones_capacidad"
+        "type": "restricciones_presupuestales"
       }
     ],
     "expected_output_type": "score",
@@ -1400,7 +1381,7 @@
       ],
       "emit_code": "ABORT-Q185-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1534,6 +1515,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿El plan justifica su alcance en niñez y juventud mencionando el marco legal (Código de Infancia y Adolescencia, Ley de Juventud) o reconociendo restricciones explícitas de tipo presupuestal o de competencias?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_E",
     "scoring_modality": "TYPE_E",
     "validations": {}
   },

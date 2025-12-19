@@ -2674,7 +2674,7 @@
       ],
       "emit_code": "ABORT-Q043-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2780,6 +2780,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿Los productos para migración tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

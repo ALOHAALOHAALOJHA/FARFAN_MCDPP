@@ -1896,7 +1896,7 @@
       ],
       "emit_code": "ABORT-Q093-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2034,6 +2034,7 @@
     "policy_area_label": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "question_text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de reforestación, saneamiento básico (PTAR), gestión del riesgo o adaptación al cambio climático?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

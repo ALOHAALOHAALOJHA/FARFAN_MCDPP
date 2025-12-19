@@ -1,0 +1,2409 @@
+{
+  "generated_at": "2025-12-19T03:29:24Z",
+  "missing": [],
+  "missing_count": 0,
+  "monolith_path": "canonic_questionnaire_central/questionnaire_monolith.json",
+  "plan": [
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q001.v3.json",
+      "json_path": "blocks.micro_questions[0]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q002.v3.json",
+      "json_path": "blocks.micro_questions[1]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q003.v3.json",
+      "json_path": "blocks.micro_questions[2]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q004.v3.json",
+      "json_path": "blocks.micro_questions[3]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q005.v3.json",
+      "json_path": "blocks.micro_questions[4]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q006.v3.json",
+      "json_path": "blocks.micro_questions[5]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q007.v3.json",
+      "json_path": "blocks.micro_questions[6]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q008.v3.json",
+      "json_path": "blocks.micro_questions[7]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q009.v3.json",
+      "json_path": "blocks.micro_questions[8]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q010.v3.json",
+      "json_path": "blocks.micro_questions[9]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q011.v3.json",
+      "json_path": "blocks.micro_questions[10]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q012.v3.json",
+      "json_path": "blocks.micro_questions[11]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q013.v3.json",
+      "json_path": "blocks.micro_questions[12]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q014.v3.json",
+      "json_path": "blocks.micro_questions[13]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q015.v3.json",
+      "json_path": "blocks.micro_questions[14]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q016.v3.json",
+      "json_path": "blocks.micro_questions[15]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q017.v3.json",
+      "json_path": "blocks.micro_questions[16]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q018.v3.json",
+      "json_path": "blocks.micro_questions[17]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q019.v3.json",
+      "json_path": "blocks.micro_questions[18]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q020.v3.json",
+      "json_path": "blocks.micro_questions[19]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q021.v3.json",
+      "json_path": "blocks.micro_questions[20]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q022.v3.json",
+      "json_path": "blocks.micro_questions[21]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q023.v3.json",
+      "json_path": "blocks.micro_questions[22]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q024.v3.json",
+      "json_path": "blocks.micro_questions[23]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q025.v3.json",
+      "json_path": "blocks.micro_questions[24]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q026.v3.json",
+      "json_path": "blocks.micro_questions[25]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q027.v3.json",
+      "json_path": "blocks.micro_questions[26]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q028.v3.json",
+      "json_path": "blocks.micro_questions[27]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q029.v3.json",
+      "json_path": "blocks.micro_questions[28]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q030.v3.json",
+      "json_path": "blocks.micro_questions[29]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q031.v3.json",
+      "json_path": "blocks.micro_questions[30]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q032.v3.json",
+      "json_path": "blocks.micro_questions[31]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q033.v3.json",
+      "json_path": "blocks.micro_questions[32]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q034.v3.json",
+      "json_path": "blocks.micro_questions[33]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q035.v3.json",
+      "json_path": "blocks.micro_questions[34]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q036.v3.json",
+      "json_path": "blocks.micro_questions[35]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q037.v3.json",
+      "json_path": "blocks.micro_questions[36]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q038.v3.json",
+      "json_path": "blocks.micro_questions[37]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q039.v3.json",
+      "json_path": "blocks.micro_questions[38]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q040.v3.json",
+      "json_path": "blocks.micro_questions[39]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q041.v3.json",
+      "json_path": "blocks.micro_questions[40]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q042.v3.json",
+      "json_path": "blocks.micro_questions[41]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q043.v3.json",
+      "json_path": "blocks.micro_questions[42]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q044.v3.json",
+      "json_path": "blocks.micro_questions[43]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q045.v3.json",
+      "json_path": "blocks.micro_questions[44]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q046.v3.json",
+      "json_path": "blocks.micro_questions[45]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q047.v3.json",
+      "json_path": "blocks.micro_questions[46]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q048.v3.json",
+      "json_path": "blocks.micro_questions[47]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q049.v3.json",
+      "json_path": "blocks.micro_questions[48]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q050.v3.json",
+      "json_path": "blocks.micro_questions[49]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q051.v3.json",
+      "json_path": "blocks.micro_questions[50]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q052.v3.json",
+      "json_path": "blocks.micro_questions[51]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q053.v3.json",
+      "json_path": "blocks.micro_questions[52]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q054.v3.json",
+      "json_path": "blocks.micro_questions[53]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q055.v3.json",
+      "json_path": "blocks.micro_questions[54]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q056.v3.json",
+      "json_path": "blocks.micro_questions[55]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q057.v3.json",
+      "json_path": "blocks.micro_questions[56]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q058.v3.json",
+      "json_path": "blocks.micro_questions[57]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q059.v3.json",
+      "json_path": "blocks.micro_questions[58]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q060.v3.json",
+      "json_path": "blocks.micro_questions[59]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q061.v3.json",
+      "json_path": "blocks.micro_questions[60]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q062.v3.json",
+      "json_path": "blocks.micro_questions[61]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q063.v3.json",
+      "json_path": "blocks.micro_questions[62]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q064.v3.json",
+      "json_path": "blocks.micro_questions[63]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q065.v3.json",
+      "json_path": "blocks.micro_questions[64]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q066.v3.json",
+      "json_path": "blocks.micro_questions[65]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q067.v3.json",
+      "json_path": "blocks.micro_questions[66]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q068.v3.json",
+      "json_path": "blocks.micro_questions[67]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q069.v3.json",
+      "json_path": "blocks.micro_questions[68]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q070.v3.json",
+      "json_path": "blocks.micro_questions[69]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q071.v3.json",
+      "json_path": "blocks.micro_questions[70]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q072.v3.json",
+      "json_path": "blocks.micro_questions[71]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q073.v3.json",
+      "json_path": "blocks.micro_questions[72]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q074.v3.json",
+      "json_path": "blocks.micro_questions[73]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q075.v3.json",
+      "json_path": "blocks.micro_questions[74]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q076.v3.json",
+      "json_path": "blocks.micro_questions[75]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q077.v3.json",
+      "json_path": "blocks.micro_questions[76]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q078.v3.json",
+      "json_path": "blocks.micro_questions[77]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q079.v3.json",
+      "json_path": "blocks.micro_questions[78]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q080.v3.json",
+      "json_path": "blocks.micro_questions[79]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q081.v3.json",
+      "json_path": "blocks.micro_questions[80]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q082.v3.json",
+      "json_path": "blocks.micro_questions[81]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q083.v3.json",
+      "json_path": "blocks.micro_questions[82]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q084.v3.json",
+      "json_path": "blocks.micro_questions[83]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q085.v3.json",
+      "json_path": "blocks.micro_questions[84]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q086.v3.json",
+      "json_path": "blocks.micro_questions[85]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q087.v3.json",
+      "json_path": "blocks.micro_questions[86]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q088.v3.json",
+      "json_path": "blocks.micro_questions[87]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q089.v3.json",
+      "json_path": "blocks.micro_questions[88]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q090.v3.json",
+      "json_path": "blocks.micro_questions[89]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q091.v3.json",
+      "json_path": "blocks.micro_questions[90]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q092.v3.json",
+      "json_path": "blocks.micro_questions[91]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q093.v3.json",
+      "json_path": "blocks.micro_questions[92]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q094.v3.json",
+      "json_path": "blocks.micro_questions[93]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q095.v3.json",
+      "json_path": "blocks.micro_questions[94]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q096.v3.json",
+      "json_path": "blocks.micro_questions[95]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q097.v3.json",
+      "json_path": "blocks.micro_questions[96]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q098.v3.json",
+      "json_path": "blocks.micro_questions[97]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q099.v3.json",
+      "json_path": "blocks.micro_questions[98]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q100.v3.json",
+      "json_path": "blocks.micro_questions[99]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q101.v3.json",
+      "json_path": "blocks.micro_questions[100]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q102.v3.json",
+      "json_path": "blocks.micro_questions[101]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q103.v3.json",
+      "json_path": "blocks.micro_questions[102]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q104.v3.json",
+      "json_path": "blocks.micro_questions[103]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q105.v3.json",
+      "json_path": "blocks.micro_questions[104]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q106.v3.json",
+      "json_path": "blocks.micro_questions[105]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q107.v3.json",
+      "json_path": "blocks.micro_questions[106]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q108.v3.json",
+      "json_path": "blocks.micro_questions[107]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q109.v3.json",
+      "json_path": "blocks.micro_questions[108]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q110.v3.json",
+      "json_path": "blocks.micro_questions[109]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q111.v3.json",
+      "json_path": "blocks.micro_questions[110]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q112.v3.json",
+      "json_path": "blocks.micro_questions[111]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q113.v3.json",
+      "json_path": "blocks.micro_questions[112]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q114.v3.json",
+      "json_path": "blocks.micro_questions[113]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q115.v3.json",
+      "json_path": "blocks.micro_questions[114]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q116.v3.json",
+      "json_path": "blocks.micro_questions[115]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q117.v3.json",
+      "json_path": "blocks.micro_questions[116]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q118.v3.json",
+      "json_path": "blocks.micro_questions[117]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q119.v3.json",
+      "json_path": "blocks.micro_questions[118]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q120.v3.json",
+      "json_path": "blocks.micro_questions[119]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q121.v3.json",
+      "json_path": "blocks.micro_questions[120]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q122.v3.json",
+      "json_path": "blocks.micro_questions[121]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q123.v3.json",
+      "json_path": "blocks.micro_questions[122]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q124.v3.json",
+      "json_path": "blocks.micro_questions[123]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q125.v3.json",
+      "json_path": "blocks.micro_questions[124]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q126.v3.json",
+      "json_path": "blocks.micro_questions[125]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q127.v3.json",
+      "json_path": "blocks.micro_questions[126]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q128.v3.json",
+      "json_path": "blocks.micro_questions[127]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q129.v3.json",
+      "json_path": "blocks.micro_questions[128]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q130.v3.json",
+      "json_path": "blocks.micro_questions[129]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q131.v3.json",
+      "json_path": "blocks.micro_questions[130]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q132.v3.json",
+      "json_path": "blocks.micro_questions[131]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q133.v3.json",
+      "json_path": "blocks.micro_questions[132]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q134.v3.json",
+      "json_path": "blocks.micro_questions[133]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q135.v3.json",
+      "json_path": "blocks.micro_questions[134]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q136.v3.json",
+      "json_path": "blocks.micro_questions[135]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q137.v3.json",
+      "json_path": "blocks.micro_questions[136]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q138.v3.json",
+      "json_path": "blocks.micro_questions[137]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q139.v3.json",
+      "json_path": "blocks.micro_questions[138]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q140.v3.json",
+      "json_path": "blocks.micro_questions[139]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q141.v3.json",
+      "json_path": "blocks.micro_questions[140]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q142.v3.json",
+      "json_path": "blocks.micro_questions[141]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q143.v3.json",
+      "json_path": "blocks.micro_questions[142]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q144.v3.json",
+      "json_path": "blocks.micro_questions[143]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q145.v3.json",
+      "json_path": "blocks.micro_questions[144]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q146.v3.json",
+      "json_path": "blocks.micro_questions[145]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q147.v3.json",
+      "json_path": "blocks.micro_questions[146]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q148.v3.json",
+      "json_path": "blocks.micro_questions[147]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q149.v3.json",
+      "json_path": "blocks.micro_questions[148]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q150.v3.json",
+      "json_path": "blocks.micro_questions[149]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q151.v3.json",
+      "json_path": "blocks.micro_questions[150]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q152.v3.json",
+      "json_path": "blocks.micro_questions[151]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q153.v3.json",
+      "json_path": "blocks.micro_questions[152]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q154.v3.json",
+      "json_path": "blocks.micro_questions[153]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q155.v3.json",
+      "json_path": "blocks.micro_questions[154]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q156.v3.json",
+      "json_path": "blocks.micro_questions[155]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q157.v3.json",
+      "json_path": "blocks.micro_questions[156]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q158.v3.json",
+      "json_path": "blocks.micro_questions[157]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q159.v3.json",
+      "json_path": "blocks.micro_questions[158]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q160.v3.json",
+      "json_path": "blocks.micro_questions[159]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q161.v3.json",
+      "json_path": "blocks.micro_questions[160]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q162.v3.json",
+      "json_path": "blocks.micro_questions[161]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q163.v3.json",
+      "json_path": "blocks.micro_questions[162]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q164.v3.json",
+      "json_path": "blocks.micro_questions[163]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q165.v3.json",
+      "json_path": "blocks.micro_questions[164]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q166.v3.json",
+      "json_path": "blocks.micro_questions[165]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q167.v3.json",
+      "json_path": "blocks.micro_questions[166]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q168.v3.json",
+      "json_path": "blocks.micro_questions[167]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q169.v3.json",
+      "json_path": "blocks.micro_questions[168]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q170.v3.json",
+      "json_path": "blocks.micro_questions[169]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q171.v3.json",
+      "json_path": "blocks.micro_questions[170]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q172.v3.json",
+      "json_path": "blocks.micro_questions[171]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q173.v3.json",
+      "json_path": "blocks.micro_questions[172]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q174.v3.json",
+      "json_path": "blocks.micro_questions[173]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q175.v3.json",
+      "json_path": "blocks.micro_questions[174]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q176.v3.json",
+      "json_path": "blocks.micro_questions[175]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q177.v3.json",
+      "json_path": "blocks.micro_questions[176]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q178.v3.json",
+      "json_path": "blocks.micro_questions[177]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q179.v3.json",
+      "json_path": "blocks.micro_questions[178]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q180.v3.json",
+      "json_path": "blocks.micro_questions[179]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q181.v3.json",
+      "json_path": "blocks.micro_questions[180]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q182.v3.json",
+      "json_path": "blocks.micro_questions[181]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q183.v3.json",
+      "json_path": "blocks.micro_questions[182]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q184.v3.json",
+      "json_path": "blocks.micro_questions[183]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q185.v3.json",
+      "json_path": "blocks.micro_questions[184]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q186.v3.json",
+      "json_path": "blocks.micro_questions[185]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q187.v3.json",
+      "json_path": "blocks.micro_questions[186]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q188.v3.json",
+      "json_path": "blocks.micro_questions[187]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q189.v3.json",
+      "json_path": "blocks.micro_questions[188]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q190.v3.json",
+      "json_path": "blocks.micro_questions[189]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q191.v3.json",
+      "json_path": "blocks.micro_questions[190]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q192.v3.json",
+      "json_path": "blocks.micro_questions[191]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q193.v3.json",
+      "json_path": "blocks.micro_questions[192]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q194.v3.json",
+      "json_path": "blocks.micro_questions[193]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q195.v3.json",
+      "json_path": "blocks.micro_questions[194]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q196.v3.json",
+      "json_path": "blocks.micro_questions[195]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q197.v3.json",
+      "json_path": "blocks.micro_questions[196]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q198.v3.json",
+      "json_path": "blocks.micro_questions[197]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q199.v3.json",
+      "json_path": "blocks.micro_questions[198]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q200.v3.json",
+      "json_path": "blocks.micro_questions[199]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q201.v3.json",
+      "json_path": "blocks.micro_questions[200]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q202.v3.json",
+      "json_path": "blocks.micro_questions[201]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q203.v3.json",
+      "json_path": "blocks.micro_questions[202]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q204.v3.json",
+      "json_path": "blocks.micro_questions[203]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q205.v3.json",
+      "json_path": "blocks.micro_questions[204]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q206.v3.json",
+      "json_path": "blocks.micro_questions[205]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q207.v3.json",
+      "json_path": "blocks.micro_questions[206]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q208.v3.json",
+      "json_path": "blocks.micro_questions[207]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q209.v3.json",
+      "json_path": "blocks.micro_questions[208]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q210.v3.json",
+      "json_path": "blocks.micro_questions[209]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q211.v3.json",
+      "json_path": "blocks.micro_questions[210]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q212.v3.json",
+      "json_path": "blocks.micro_questions[211]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q213.v3.json",
+      "json_path": "blocks.micro_questions[212]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q214.v3.json",
+      "json_path": "blocks.micro_questions[213]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q215.v3.json",
+      "json_path": "blocks.micro_questions[214]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q216.v3.json",
+      "json_path": "blocks.micro_questions[215]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q217.v3.json",
+      "json_path": "blocks.micro_questions[216]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q218.v3.json",
+      "json_path": "blocks.micro_questions[217]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q219.v3.json",
+      "json_path": "blocks.micro_questions[218]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q220.v3.json",
+      "json_path": "blocks.micro_questions[219]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q221.v3.json",
+      "json_path": "blocks.micro_questions[220]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q222.v3.json",
+      "json_path": "blocks.micro_questions[221]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q223.v3.json",
+      "json_path": "blocks.micro_questions[222]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q224.v3.json",
+      "json_path": "blocks.micro_questions[223]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q225.v3.json",
+      "json_path": "blocks.micro_questions[224]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q226.v3.json",
+      "json_path": "blocks.micro_questions[225]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q227.v3.json",
+      "json_path": "blocks.micro_questions[226]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q228.v3.json",
+      "json_path": "blocks.micro_questions[227]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q229.v3.json",
+      "json_path": "blocks.micro_questions[228]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q230.v3.json",
+      "json_path": "blocks.micro_questions[229]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q231.v3.json",
+      "json_path": "blocks.micro_questions[230]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q232.v3.json",
+      "json_path": "blocks.micro_questions[231]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q233.v3.json",
+      "json_path": "blocks.micro_questions[232]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q234.v3.json",
+      "json_path": "blocks.micro_questions[233]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q235.v3.json",
+      "json_path": "blocks.micro_questions[234]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q236.v3.json",
+      "json_path": "blocks.micro_questions[235]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q237.v3.json",
+      "json_path": "blocks.micro_questions[236]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q238.v3.json",
+      "json_path": "blocks.micro_questions[237]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q239.v3.json",
+      "json_path": "blocks.micro_questions[238]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q240.v3.json",
+      "json_path": "blocks.micro_questions[239]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q241.v3.json",
+      "json_path": "blocks.micro_questions[240]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q242.v3.json",
+      "json_path": "blocks.micro_questions[241]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q243.v3.json",
+      "json_path": "blocks.micro_questions[242]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q244.v3.json",
+      "json_path": "blocks.micro_questions[243]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q245.v3.json",
+      "json_path": "blocks.micro_questions[244]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q246.v3.json",
+      "json_path": "blocks.micro_questions[245]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q247.v3.json",
+      "json_path": "blocks.micro_questions[246]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q248.v3.json",
+      "json_path": "blocks.micro_questions[247]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q249.v3.json",
+      "json_path": "blocks.micro_questions[248]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q250.v3.json",
+      "json_path": "blocks.micro_questions[249]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q251.v3.json",
+      "json_path": "blocks.micro_questions[250]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q252.v3.json",
+      "json_path": "blocks.micro_questions[251]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q253.v3.json",
+      "json_path": "blocks.micro_questions[252]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q254.v3.json",
+      "json_path": "blocks.micro_questions[253]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q255.v3.json",
+      "json_path": "blocks.micro_questions[254]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q256.v3.json",
+      "json_path": "blocks.micro_questions[255]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q257.v3.json",
+      "json_path": "blocks.micro_questions[256]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q258.v3.json",
+      "json_path": "blocks.micro_questions[257]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q259.v3.json",
+      "json_path": "blocks.micro_questions[258]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q260.v3.json",
+      "json_path": "blocks.micro_questions[259]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q261.v3.json",
+      "json_path": "blocks.micro_questions[260]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q262.v3.json",
+      "json_path": "blocks.micro_questions[261]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q263.v3.json",
+      "json_path": "blocks.micro_questions[262]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q264.v3.json",
+      "json_path": "blocks.micro_questions[263]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q265.v3.json",
+      "json_path": "blocks.micro_questions[264]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q266.v3.json",
+      "json_path": "blocks.micro_questions[265]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q267.v3.json",
+      "json_path": "blocks.micro_questions[266]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q268.v3.json",
+      "json_path": "blocks.micro_questions[267]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q269.v3.json",
+      "json_path": "blocks.micro_questions[268]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q270.v3.json",
+      "json_path": "blocks.micro_questions[269]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q271.v3.json",
+      "json_path": "blocks.micro_questions[270]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q272.v3.json",
+      "json_path": "blocks.micro_questions[271]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q273.v3.json",
+      "json_path": "blocks.micro_questions[272]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q274.v3.json",
+      "json_path": "blocks.micro_questions[273]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_B",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q275.v3.json",
+      "json_path": "blocks.micro_questions[274]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_E",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q276.v3.json",
+      "json_path": "blocks.micro_questions[275]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q277.v3.json",
+      "json_path": "blocks.micro_questions[276]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q278.v3.json",
+      "json_path": "blocks.micro_questions[277]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q279.v3.json",
+      "json_path": "blocks.micro_questions[278]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q280.v3.json",
+      "json_path": "blocks.micro_questions[279]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q281.v3.json",
+      "json_path": "blocks.micro_questions[280]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q282.v3.json",
+      "json_path": "blocks.micro_questions[281]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q283.v3.json",
+      "json_path": "blocks.micro_questions[282]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q284.v3.json",
+      "json_path": "blocks.micro_questions[283]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q285.v3.json",
+      "json_path": "blocks.micro_questions[284]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q286.v3.json",
+      "json_path": "blocks.micro_questions[285]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q287.v3.json",
+      "json_path": "blocks.micro_questions[286]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q288.v3.json",
+      "json_path": "blocks.micro_questions[287]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q289.v3.json",
+      "json_path": "blocks.micro_questions[288]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q290.v3.json",
+      "json_path": "blocks.micro_questions[289]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q291.v3.json",
+      "json_path": "blocks.micro_questions[290]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q292.v3.json",
+      "json_path": "blocks.micro_questions[291]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q293.v3.json",
+      "json_path": "blocks.micro_questions[292]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q294.v3.json",
+      "json_path": "blocks.micro_questions[293]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q295.v3.json",
+      "json_path": "blocks.micro_questions[294]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q296.v3.json",
+      "json_path": "blocks.micro_questions[295]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q297.v3.json",
+      "json_path": "blocks.micro_questions[296]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q298.v3.json",
+      "json_path": "blocks.micro_questions[297]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q299.v3.json",
+      "json_path": "blocks.micro_questions[298]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    },
+    {
+      "contract_file": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q300.v3.json",
+      "json_path": "blocks.micro_questions[299]",
+      "modality_after": null,
+      "modality_before": "count_and_scale",
+      "scoring_definition_ref_after": "scoring_modalities.TYPE_A",
+      "scoring_definition_ref_before": null
+    }
+  ],
+  "plan_count": 300
+}

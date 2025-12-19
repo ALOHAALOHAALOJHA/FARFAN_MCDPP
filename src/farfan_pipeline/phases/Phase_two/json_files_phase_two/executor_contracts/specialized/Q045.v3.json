@@ -2935,7 +2935,7 @@
       ],
       "emit_code": "ABORT-Q045-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3025,6 +3025,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿El PDM explica cómo los productos (ej. 'migrantes con estatus regularizado') contribuyen a generar resultados (ej. 'aumento de la integración socioeconómica')? Se debe buscar este 'mecanismo'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

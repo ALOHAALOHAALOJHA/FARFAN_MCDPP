@@ -1357,39 +1357,20 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "coherencia_demostrada"
       },
       {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_legales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_presupuestales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_temporales"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_competencias"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "restricciones_tecnicas"
+        "type": "restricciones_legales"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "restricciones_capacidad"
+        "type": "restricciones_presupuestales"
       }
     ],
     "expected_output_type": "score",
@@ -1400,7 +1381,7 @@
       ],
       "emit_code": "ABORT-Q245-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1544,6 +1525,7 @@
     "policy_area_label": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "question_text": "¿El plan justifica su alcance en la protección de líderes mencionando el marco legal (ej. Decretos de protección, Acuerdo de Paz) o reconociendo restricciones explícitas de tipo presupuestal o de articulación con la UNP?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_E",
     "scoring_modality": "TYPE_E",
     "validations": {}
   },

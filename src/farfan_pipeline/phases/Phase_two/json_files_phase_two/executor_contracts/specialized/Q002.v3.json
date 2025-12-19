@@ -1650,34 +1650,16 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "cuantificacion_brecha"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "sesgos_reconocidos"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "vacios_explicitos"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "analisis_causal_problema"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "cuantificacion_magnitud"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "analisis_vulnerabilidad"
       }
     ],
     "expected_output_type": "score",
@@ -1688,7 +1670,7 @@
       ],
       "emit_code": "ABORT-Q002-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1820,6 +1802,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿El texto dimensiona el problema de la desigualdad de género cuantificando la brecha o déficit? Se debe buscar si se mencionan explícitamente limitaciones en los datos, como 'subregistro', 'información insuficiente' o 'vacíos de información'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

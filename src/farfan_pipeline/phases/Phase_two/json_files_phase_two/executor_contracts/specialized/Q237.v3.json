@@ -1369,7 +1369,7 @@
       ],
       "emit_code": "ABORT-Q237-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1464,6 +1464,7 @@
     "policy_area_label": "Tierras y territorios",
     "question_text": "¿Los saltos en la cadena causal de tierras son proporcionales (ej. la formalización de un predio no genera por sí sola 'desarrollo rural integral')?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

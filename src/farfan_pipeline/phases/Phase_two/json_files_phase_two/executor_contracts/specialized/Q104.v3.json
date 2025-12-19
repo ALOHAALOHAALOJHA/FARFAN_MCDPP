@@ -3027,7 +3027,7 @@
       ],
       "emit_code": "ABORT-Q104-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3120,6 +3120,7 @@
     "policy_area_label": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "question_text": "¿Existe una relación factible entre la actividad (ej. 'un programa de educación ambiental') y la meta del producto asociado (ej. 'reducción del 50% de residuos sólidos') para el área ambiental? Se debe evaluar si los 'plazos' son realistas.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

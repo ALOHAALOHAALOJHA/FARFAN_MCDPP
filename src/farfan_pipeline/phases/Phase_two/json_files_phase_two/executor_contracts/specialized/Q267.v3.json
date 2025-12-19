@@ -1369,7 +1369,7 @@
       ],
       "emit_code": "ABORT-Q267-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1464,6 +1464,7 @@
     "policy_area_label": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "question_text": "¿Los saltos en la cadena causal de protección son proporcionales (ej. una campaña de comunicación no elimina por sí sola las amenazas)?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

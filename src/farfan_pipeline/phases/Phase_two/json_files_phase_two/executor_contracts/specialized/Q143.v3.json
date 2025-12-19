@@ -1287,7 +1287,7 @@
       ],
       "emit_code": "ABORT-Q143-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1378,6 +1378,7 @@
     "policy_area_label": "Derechos económicos, sociales y culturales",
     "question_text": "Cuando un impacto social es difícil de medir (ej. 'fortalecimiento del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

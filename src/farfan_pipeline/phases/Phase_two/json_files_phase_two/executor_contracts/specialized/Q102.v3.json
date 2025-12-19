@@ -2569,17 +2569,6 @@
     "dimension_label": "PRODUCTOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "dosificacion_definida"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "proporcionalidad_meta_brecha"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "proporcionalidad_meta_problema"
       }
@@ -2592,7 +2581,7 @@
       ],
       "emit_code": "ABORT-Q102-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -2682,6 +2671,7 @@
     "policy_area_label": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "question_text": "¿Las metas de los productos ambientales (ej. 'reforestar 100 hectáreas') son proporcionales a la magnitud del problema diagnosticado (ej. 'se deforestan 500 hectáreas/año')?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

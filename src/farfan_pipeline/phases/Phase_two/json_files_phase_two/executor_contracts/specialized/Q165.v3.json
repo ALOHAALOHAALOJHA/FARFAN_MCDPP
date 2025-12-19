@@ -2935,7 +2935,7 @@
       ],
       "emit_code": "ABORT-Q165-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3027,6 +3027,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿El PDM explica cómo los productos (ej. 'medidas de satisfacción') contribuyen a generar resultados (ej. 'restablecimiento de la confianza')? Se debe buscar la descripción de este 'mecanismo'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

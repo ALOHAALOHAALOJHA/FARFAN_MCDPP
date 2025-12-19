@@ -1357,39 +1357,20 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "coherencia_demostrada"
       },
       {
-        "minimum": 1,
+        "required": true,
+        "type": "restricciones_capacidad"
+      },
+      {
         "required": true,
         "type": "restricciones_legales"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_presupuestales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_temporales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_competencias"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_tecnicas"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_capacidad"
       }
     ],
     "expected_output_type": "score",
@@ -1400,7 +1381,7 @@
       ],
       "emit_code": "ABORT-Q125-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1547,6 +1528,7 @@
     "policy_area_label": "Derechos económicos, sociales y culturales",
     "question_text": "¿El plan justifica su alcance en DESC mencionando el marco legal (ej. leyes de salud/educación, SGP) o reconociendo restricciones explícitas de tipo presupuestal, de competencias o de capacidad instalada?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_E",
     "scoring_modality": "TYPE_E",
     "validations": {}
   },

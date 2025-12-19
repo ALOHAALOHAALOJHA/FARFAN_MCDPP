@@ -1786,34 +1786,16 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "cuantificacion_brecha"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "sesgos_reconocidos"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "vacios_explicitos"
-      },
-      {
-        "minimum": 1,
         "required": true,
         "type": "analisis_causal_problema"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "cuantificacion_magnitud"
       },
       {
-        "minimum": 1,
         "required": true,
-        "type": "analisis_vulnerabilidad"
+        "type": "vacios_explicitos"
       }
     ],
     "expected_output_type": "score",
@@ -1824,7 +1806,7 @@
       ],
       "emit_code": "ABORT-Q182-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1956,6 +1938,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿El texto dimensiona la magnitud de los problemas de la niñez y juventud (ej. consumo de SPA, violencia intrafamiliar) cuantificando el déficit de atención o la población en riesgo? Se debe buscar si se mencionan 'vacíos de información'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_B",
     "scoring_modality": "TYPE_B",
     "validations": {}
   },

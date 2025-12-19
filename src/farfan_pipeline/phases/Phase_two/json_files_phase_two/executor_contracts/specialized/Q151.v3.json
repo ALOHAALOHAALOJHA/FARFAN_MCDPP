@@ -2209,11 +2209,6 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
-        "required": true,
-        "type": "cobertura_territorial_especificada"
-      },
-      {
         "minimum": 2,
         "type": "fuentes_oficiales"
       },
@@ -2234,7 +2229,7 @@
       ],
       "emit_code": "ABORT-Q151-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -2409,6 +2404,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿El diagnóstico presenta datos numéricos del Registro Único de Víctimas (RUV) para el área de Derechos de las víctimas y construcción de paz, como número de personas a reparar o solicitudes de retorno, que sirvan como línea base? Se debe verificar el año y fuentes (ej. UARIV, personería).",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {
       "buscar_indicadores_cuantitativos": {

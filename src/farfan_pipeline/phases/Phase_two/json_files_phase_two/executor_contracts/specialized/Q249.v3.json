@@ -1630,7 +1630,7 @@
       ],
       "emit_code": "ABORT-Q249-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1750,6 +1750,7 @@
     "policy_area_label": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "question_text": "¿El plan identifica posibles riesgos en la implementación de las medidas de protección (ej. fallas en los esquemas, filtración de información) y propone 'medidas de mitigación'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

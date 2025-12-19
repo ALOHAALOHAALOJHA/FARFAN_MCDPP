@@ -3027,7 +3027,7 @@
       ],
       "emit_code": "ABORT-Q194-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3120,6 +3120,7 @@
     "policy_area_label": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "question_text": "¿Existe una relación factible entre la actividad (ej. 'un taller vocacional') y la meta del producto asociado (ej. '500 jóvenes con proyecto de vida estructurado') para el área de niñez y juventud? Se debe evaluar si los 'plazos' son realistas.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

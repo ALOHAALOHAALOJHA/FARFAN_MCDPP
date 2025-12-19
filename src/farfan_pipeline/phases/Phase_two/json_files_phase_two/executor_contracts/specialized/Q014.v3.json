@@ -3027,7 +3027,7 @@
       ],
       "emit_code": "ABORT-Q014-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3120,6 +3120,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿Existe una relación factible entre la actividad (ej. 'un taller de formación') y la meta del producto asociado (ej. '5.000 mujeres emprendedoras') para el área de Derechos de las mujeres e igualdad de género? Se debe evaluar si los 'plazos' y recursos son realistas.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

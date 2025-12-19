@@ -1369,7 +1369,7 @@
       ],
       "emit_code": "ABORT-Q264-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1475,6 +1475,7 @@
     "policy_area_label": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "question_text": "¿Los impactos en el liderazgo social se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambios en las dinámicas del conflicto) que podrían romper el mecanismo causal?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

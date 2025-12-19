@@ -1384,7 +1384,7 @@
       ],
       "emit_code": "ABORT-Q006-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1499,6 +1499,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿Las actividades para la equidad de género se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto' o 'entregable', 'cronograma' y 'costo' o 'presupuesto'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

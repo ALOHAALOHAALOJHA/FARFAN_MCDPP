@@ -1357,39 +1357,20 @@
     "dimension_label": "INSUMOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "coherencia_demostrada"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_legales"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_presupuestales"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "restricciones_temporales"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_competencias"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_tecnicas"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "restricciones_capacidad"
       }
     ],
     "expected_output_type": "score",
@@ -1400,7 +1381,7 @@
       ],
       "emit_code": "ABORT-Q065-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1533,6 +1514,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿El plan justifica su alcance en prevención de violencia mencionando el marco legal (ej. Ley 1448) o reconociendo restricciones explícitas de tipo presupuestal o de coordinación interinstitucional?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_E",
     "scoring_modality": "TYPE_E",
     "validations": {}
   },

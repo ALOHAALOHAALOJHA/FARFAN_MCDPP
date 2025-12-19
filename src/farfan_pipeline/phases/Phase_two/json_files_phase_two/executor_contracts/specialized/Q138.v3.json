@@ -1438,24 +1438,16 @@
     "dimension_label": "RESULTADOS",
     "expected_elements": [
       {
-        "minimum": 1,
         "required": true,
         "type": "evidencia_comparada"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "justificacion_capacidad"
       },
       {
-        "minimum": 1,
         "required": true,
         "type": "justificacion_recursos"
-      },
-      {
-        "minimum": 1,
-        "required": true,
-        "type": "justificacion_tecnica"
       }
     ],
     "expected_output_type": "score",
@@ -1466,7 +1458,7 @@
       ],
       "emit_code": "ABORT-Q138-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1557,6 +1549,7 @@
     "policy_area_label": "Derechos económicos, sociales y culturales",
     "question_text": "¿La ambición de las metas de resultado social (ej. 'aumentar la cobertura educativa en 5 puntos') se justifica en función de la inversión, la capacidad instalada o se compara con 'casos' similares?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

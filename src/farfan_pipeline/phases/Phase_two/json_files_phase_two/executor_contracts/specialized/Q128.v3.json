@@ -1543,7 +1543,7 @@
       ],
       "emit_code": "ABORT-Q128-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1662,6 +1662,7 @@
     "policy_area_label": "Derechos económicos, sociales y culturales",
     "question_text": "¿El PDM vincula explícitamente las actividades (ej. programa de alimentación escolar) con las 'causas raíz' de los problemas sociales (ej. desnutrición crónica) identificadas en el diagnóstico?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

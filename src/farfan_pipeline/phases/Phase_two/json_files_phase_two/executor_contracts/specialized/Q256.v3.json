@@ -2163,7 +2163,7 @@
       ],
       "emit_code": "ABORT-Q256-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -2299,6 +2299,7 @@
     "policy_area_label": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "question_text": "¿Los indicadores de resultado para la protección de líderes (ej. 'reducción del número de amenazas', 'tasa de homicidios de defensores') están definidos con línea base, meta y un horizonte temporal?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

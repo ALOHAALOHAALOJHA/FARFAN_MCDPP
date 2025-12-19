@@ -2935,7 +2935,7 @@
       ],
       "emit_code": "ABORT-Q105-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -3027,6 +3027,7 @@
     "policy_area_label": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "question_text": "¿El PDM explica cómo los productos (ej. 'construcción de una PTAR') contribuyen a generar resultados (ej. 'mejora de la calidad del agua del río')? Se debe buscar la descripción de este 'mecanismo' causal.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

@@ -2163,7 +2163,7 @@
       ],
       "emit_code": "ABORT-Q106-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -2301,6 +2301,7 @@
     "policy_area_label": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "question_text": "¿Los indicadores de resultado ambiental (ej. 'Índice de Riesgo de la Calidad del Agua - IRCA', 'reducción de emisiones GEI') están definidos con línea base, meta y un horizonte temporal?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

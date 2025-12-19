@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q116-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1554,6 +1554,7 @@
     "policy_area_label": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "question_text": "¿Existe una 'teoría de cambio' explícita para la gestión ambiental, preferiblemente en un 'diagrama', que identifique causas (ej. falta de POT), mediadores y 'supuestos verificables'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

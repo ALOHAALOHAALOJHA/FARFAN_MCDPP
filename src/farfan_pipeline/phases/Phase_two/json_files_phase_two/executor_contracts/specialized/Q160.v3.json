@@ -1456,7 +1456,7 @@
       ],
       "emit_code": "ABORT-Q160-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1546,6 +1546,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "¿El conjunto de actividades para las víctimas demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. reparación individual + reparación colectiva) o una 'secuencia' lógica.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

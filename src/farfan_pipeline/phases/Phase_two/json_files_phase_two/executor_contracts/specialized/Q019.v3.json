@@ -1369,7 +1369,7 @@
       ],
       "emit_code": "ABORT-Q019-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1479,6 +1479,7 @@
     "policy_area_label": "Derechos de las mujeres e igualdad de género",
     "question_text": "¿Los resultados propuestos para la igualdad de género (ej. 'aumento de la autonomía económica') 'atienden' o 'abordan' directamente los problemas priorizados en el diagnóstico?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

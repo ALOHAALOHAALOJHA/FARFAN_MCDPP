@@ -1472,7 +1472,7 @@
       ],
       "emit_code": "ABORT-Q131-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "INDICADOR",
@@ -1608,6 +1608,7 @@
     "policy_area_label": "Derechos económicos, sociales y culturales",
     "question_text": "¿Los indicadores de producto social (ej. cupos escolares creados, familias con subsidio de vivienda) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

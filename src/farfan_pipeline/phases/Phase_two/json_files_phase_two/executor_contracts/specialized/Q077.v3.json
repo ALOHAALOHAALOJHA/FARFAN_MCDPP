@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q077-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1569,6 +1569,7 @@
     "policy_area_label": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "question_text": "¿Se explicita la cadena causal que lleva a la reducción de la violencia, mencionando los 'supuestos' clave (ej. 'si la comunidad confía en las instituciones') o las 'condiciones habilitantes'?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

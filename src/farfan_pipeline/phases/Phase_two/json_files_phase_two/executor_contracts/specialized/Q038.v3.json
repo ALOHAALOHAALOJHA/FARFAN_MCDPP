@@ -1543,7 +1543,7 @@
       ],
       "emit_code": "ABORT-Q038-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1662,6 +1662,7 @@
     "policy_area_label": "Migración transfronteriza",
     "question_text": "¿El PDM vincula explícitamente las actividades (ej. ferias de empleo) con las 'causas raíz' de los problemas de la población migrante (ej. barreras de acceso al mercado laboral) identificadas en el diagnóstico?",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

@@ -1287,7 +1287,7 @@
       ],
       "emit_code": "ABORT-Q173-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1379,6 +1379,7 @@
     "policy_area_label": "Derechos de las víctimas y construcción de paz",
     "question_text": "Cuando un impacto en la paz es difícil de medir (ej. 'sanación del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },

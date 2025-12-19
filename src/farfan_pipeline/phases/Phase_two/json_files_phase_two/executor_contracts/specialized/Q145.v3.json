@@ -1461,7 +1461,7 @@
       ],
       "emit_code": "ABORT-Q145-REQ"
     },
-    "modality": "count_and_scale",
+    "modality": null,
     "patterns": [
       {
         "category": "GENERAL",
@@ -1567,6 +1567,7 @@
     "policy_area_label": "Derechos económicos, sociales y culturales",
     "question_text": "¿La ambición del impacto social (ej. 'pobreza cero') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
     "question_type": "micro",
+    "scoring_definition_ref": "scoring_modalities.TYPE_A",
     "scoring_modality": "TYPE_A",
     "validations": {}
   },
