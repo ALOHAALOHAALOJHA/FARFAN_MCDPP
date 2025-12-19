@@ -146,7 +146,111 @@ Evidence Graph + Validation + Narrative
 NexusResult (with graph, narrative, provenance)
 ```
 
-### 4. Supporting Infrastructure
+### 4. **NEW: Irrigation Orchestrator Module (`phase2_d_irrigation_orchestrator.py`)**
+
+**Purpose**: Phase 2.1 - Question→Chunk→Task→Plan coordination bridging Phase 1 output to execution
+
+**Key Features**:
+- Maps 300 questions from questionnaire_monolith to 60 CPP chunks
+- Generates ExecutionPlan with 300 deterministic tasks
+- Implements 8-subfase orchestration process (2.1.0 through 2.1.8)
+- ChunkMatrix validation (exactly 60 unique chunks required)
+- Optional JOIN table for contract-based pattern filtering
+- SISAS SignalRegistry integration for signal resolution
+- Blake3/SHA-256 integrity hashing for plan verification
+- Deterministic plan_id from task ordering
+
+**Contracts Enforced**:
+- TaskGenerationContract: 300 questions → 300 executable tasks
+- ChunkRoutingContract: Each task routes to exactly one of 60 chunks
+- DeterminismContract: Same inputs produce identical ExecutionPlan with same plan_id
+- IntegrityContract: Cryptographic hash verification
+
+**8-Subfase Process** (Phase 2.1):
+
+**Subfase 2.1.0 - JOIN Table Construction**:
+- If enabled, builds lookup table from specialized contracts (Q001.v3.json - Q300.v3.json)
+- Maps question_id to contract for optimized pattern filtering
+- Allows contract-based patterns to override generic monolith patterns
+
+**Subfase 2.1.1 - Question Extraction**:
+- Extracts 300 micro questions from questionnaire_monolith
+- Sorts by (policy_area_id, question_global) for deterministic ordering
+- Normalizes question structure with required fields
+
+**Subfase 2.1.2 - Iteration Setup**:
+- Initializes task_id tracking set for duplicate detection
+- Sets up success/failure counters for observability
+
+**Subfase 2.1.3 - Chunk Routing**:
+- For each question, extracts (policy_area_id, dimension_id)
+- Performs O(1) lookup in ChunkMatrix
+- Validates chunk exists, has non-empty text, IDs match
+- Returns ChunkRoutingResult with chunk reference and metadata
+- Raises ValueError on routing failure
+
+**Subfase 2.1.4 - Pattern Filtering**:
+- If JOIN table enabled: lookup contract, extract patterns from question_context
+- Else: filter monolith patterns by policy_area_id equality
+- Returns list of patterns specific to this question-chunk pairing
+
+**Subfase 2.1.5 - Signal Resolution**:
+- If SignalRegistry available: extract signal_requirements from question
+- Calls signal_registry.get_signals_for_chunk(chunk, requirements)
+- Validates returned signals have signal_id, signal_type, content
+- Indexes signals by signal_type for executor access
+- Returns empty dict if registry unavailable or resolution fails
+
+**Subfase 2.1.6 - Schema Validation**:
+- Validates compatibility between question.expected_elements and chunk.expected_elements
+- Checks for intersection of required element types
+- Emits warning if no overlap found (potential incompatibility)
+
+**Subfase 2.1.7 - Task Construction**:
+- Generates task_id in format "MQC-{question_global:03d}_{policy_area_id}"
+- Checks task_id not in generated_task_ids set (duplicate detection)
+- Creates UTC ISO 8601 timestamp
+- Constructs ExecutableTask with all resolved data
+- Adds task_id to tracking set
+
+**Subfase 2.1.8 - Plan Assembly**:
+- Validates task count == question count (300 expected)
+- Detects duplicates using Counter
+- Sorts tasks lexicographically by task_id for determinism
+- Serializes tasks to JSON with sort_keys=True
+- Computes plan_id as SHA-256(serialized_tasks)
+- Computes integrity_hash as Blake3 or SHA-256
+- Validates plan_id is 64-char lowercase hex
+- Returns immutable ExecutionPlan
+
+**Data Structures**:
+- `ChunkMatrix`: Validates 60 chunks, provides O(1) lookup by (PA, DIM)
+- `ChunkRoutingResult`: Encapsulates routing success with chunk reference
+- `ExecutableTask`: Single unit of work ready for executor dispatch
+- `ExecutionPlan`: Immutable plan with 300 tasks and integrity hash
+
+**Integration with Canonical Pipeline**:
+```
+Phase 1 Output (60 chunks)
+    ↓
+Phase 2.1: Irrigation Orchestrator
+    • Build ChunkMatrix (validate 60 chunks)
+    • Extract 300 questions
+    • Route each question to chunk
+    • Filter patterns, resolve signals
+    • Construct 300 ExecutableTasks
+    • Assemble ExecutionPlan with plan_id
+    ↓
+ExecutionPlan → Phase 2.2 (Task Execution)
+    • Each task dispatched via Router (Phase 2a)
+    • Executor outputs collected
+    • 60 chunks of outputs → Carver (Phase 2b)
+    • 300 micro-answers → Nexus Integration (Phase 2c)
+    ↓
+EvidenceNexus → Synthesized Narrative
+```
+
+### 5. Supporting Infrastructure
 
 #### Constants Module (`constants/phase2_constants.py`)
 - Cardinality constants (CPP_CHUNK_COUNT=60, MICRO_ANSWER_COUNT=300, SHARDS_PER_CHUNK=5)
@@ -163,10 +267,25 @@ NexusResult (with graph, narrative, provenance)
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Phase 1: CPP Ingestion                                  │
-│ Output: 60 CPP Chunks                                   │
+│ Output: PreprocessedDocument + 60 CPP Chunks            │
+│         + questionnaire_monolith (300 questions)        │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
+┌─────────────────────────────────────────────────────────┐
+│ Phase 2.1: Irrigation Orchestrator ← NEW                │
+│ • ChunkMatrix validation (60 chunks)                    │
+│ • Question extraction (300 questions)                   │
+│ • Chunk routing (Q→Chunk mapping)                       │
+│ • Pattern filtering (contract or monolith)              │
+│ • Signal resolution (SISAS)                             │
+│ • Task construction (300 ExecutableTasks)               │
+│ • Plan assembly (ExecutionPlan with plan_id)            │
+│                                                          │
+│ 8 Subfases: 2.1.0 → 2.1.1 → ... → 2.1.8                │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼ ExecutionPlan (300 tasks)
 ┌─────────────────────────────────────────────────────────┐
 │ Phase 2a: Argument Router                               │
 │ • Validates payload signature                           │
@@ -174,7 +293,7 @@ NexusResult (with graph, narrative, provenance)
 │ • Enforces exhaustive dispatch                          │
 └────────────────────┬────────────────────────────────────┘
                      │
-                     ▼
+                     ▼ Executor outputs
 ┌─────────────────────────────────────────────────────────┐
 │ Phase 2b: Carver                                        │
 │ • Transforms 60 chunks → 300 micro-answers              │
@@ -183,16 +302,16 @@ NexusResult (with graph, narrative, provenance)
 │ • Content hashing (SHA-256)                             │
 └────────────────────┬────────────────────────────────────┘
                      │
-                     ▼
+                     ▼ 300 micro-answers
 ┌─────────────────────────────────────────────────────────┐
-│ Phase 2c: Nexus Integration ← NEW                       │
+│ Phase 2c: Nexus Integration                             │
 │ • Groups micro-answers by chunk_id                      │
 │ • Transforms to method outputs format                   │
 │ • Sends to EvidenceNexus                                │
 │ • Builds provenance mapping                             │
 └────────────────────┬────────────────────────────────────┘
                      │
-                     ▼
+                     ▼ Method outputs
 ┌─────────────────────────────────────────────────────────┐
 │ EvidenceNexus (existing)                                │
 │ • Constructs evidence graph                             │

@@ -10,6 +10,7 @@ This package provides the canonical Phase 2 implementation with:
 - Exhaustive argument routing with contract enforcement
 - Deterministic carving of 60 CPP chunks into 300 micro-answers
 - EvidenceNexus integration for graph-based evidence synthesis
+- Phase 2.1 Irrigation orchestration (Question→Chunk→Task→Plan)
 - Full provenance tracking and validation
 - Strict cardinality contracts
 """
@@ -38,6 +39,15 @@ from .phase2_c_nexus_integration import (
     NexusResult,
     integrate_with_nexus,
 )
+from .phase2_d_irrigation_orchestrator import (
+    IrrigationOrchestrator,
+    ExecutionPlan,
+    ExecutableTask,
+    ChunkMatrix,
+    ChunkRoutingResult,
+    OrchestrationError,
+    build_irrigation_plan,
+)
 
 __all__ = [
     # Router
@@ -60,4 +70,12 @@ __all__ = [
     "NexusIntegrationError",
     "NexusResult",
     "integrate_with_nexus",
+    # Irrigation Orchestration (Phase 2.1)
+    "IrrigationOrchestrator",
+    "ExecutionPlan",
+    "ExecutableTask",
+    "ChunkMatrix",
+    "ChunkRoutingResult",
+    "OrchestrationError",
+    "build_irrigation_plan",
 ]
