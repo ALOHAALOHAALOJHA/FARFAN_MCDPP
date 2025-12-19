@@ -1,4 +1,9 @@
-"""Orchestrator utilities with contract validation on import."""
+"""Orchestrator utilities with contract validation on import.
+
+PHASE_LABEL: Phase 2
+PHASE_COMPONENT: Phase 2 Orchestration Utilities
+PHASE_ROLE: Provides import interface for Phase 2 orchestration components
+"""
 
 from __future__ import annotations
 
