@@ -1,3 +1,9 @@
+"""
+Module: phase2_h_metrics_persistence
+PHASE_LABEL: Phase 2
+Sequence: H
+
+"""
 """Metrics persistence for PhaseInstrumentation telemetry.
 
 This module provides functions to persist Orchestrator metrics and telemetry

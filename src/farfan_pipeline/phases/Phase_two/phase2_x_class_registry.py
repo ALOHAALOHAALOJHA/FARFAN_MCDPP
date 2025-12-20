@@ -1,3 +1,9 @@
+"""
+Module: phase2_x_class_registry
+PHASE_LABEL: Phase 2
+Sequence: X
+
+"""
 """Dynamic class registry for orchestrator method execution."""
 from __future__ import annotations
 

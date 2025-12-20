@@ -1,24 +1,16 @@
-"""Calibration Policy for JSON Contract-Based Execution.
+"""
+Module: phase2_d_calibration_policy
+PHASE_LABEL: Phase 2
+Sequence: D
+Description: Calibration policies for quality scoring
 
-This module implements calibration and parametrization policies for the
-300 JSON contract executors (Q001-Q300.v3.json).
+Version: 1.0.0
+Last Modified: 2025-12-20
+Author: F.A.R.F.A.N Policy Pipeline
+License: Proprietary
 
-Architecture:
-- CalibrationPolicy: Defines calibration rules per dimension/policy area
-- ParametrizationManager: Manages runtime parameters from contracts
-- ConfidenceCalibrator: Bayesian confidence calibration for multi-method outputs
-
-Calibration Hierarchy:
-1. Global defaults (all contracts)
-2. Dimension-specific (D1-D6 overrides)
-3. Policy area-specific (PA01-PA10 overrides)
-4. Contract-specific (individual Q001-Q300 overrides)
-
-Integration with Contracts:
-Each Q{i}.v3.json contract may specify:
-- calibration.confidence_threshold: Minimum confidence for output validity
-- calibration.method_weights: Weights for multi-method aggregation
-- calibration.bayesian_priors: Prior distributions for Bayesian methods
+This module is part of Phase 2: Analysis & Question Execution.
+All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
 """
 from __future__ import annotations
 

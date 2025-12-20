@@ -1,3 +1,9 @@
+"""
+Module: phase2_l_resource_manager
+PHASE_LABEL: Phase 2
+Sequence: L
+
+"""
 """Adaptive Resource Management System.
 
 Provides dynamic resource allocation, degradation strategies, circuit breakers,

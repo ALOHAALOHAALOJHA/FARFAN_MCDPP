@@ -1,4 +1,10 @@
 """
+Module: phase2_m_signature_runtime_validator
+PHASE_LABEL: Phase 2
+Sequence: M
+
+"""
+"""
 Runtime Signature Validation for Chain Layer
 
 Provides runtime validation of method calls against signature definitions:

@@ -1,3 +1,9 @@
+"""
+Module: phase2_j_resource_integration
+PHASE_LABEL: Phase 2
+Sequence: J
+
+"""
 """Resource Management Integration.
 
 Factory functions and helpers to integrate adaptive resource management

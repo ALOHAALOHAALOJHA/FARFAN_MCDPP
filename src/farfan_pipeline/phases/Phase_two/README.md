@@ -1,656 +1,653 @@
 # Phase 2: Deterministic Executor Orchestration for Reproducible Policy Analysis
 
-**A Contract-Driven Multi-Method Synthesis Architecture for Computational Social Science**
+**A Contract-Driven Multi-Method Synthesis Architecture with Signal-Irrigated Evidence Assembly**
 
 *F.A.R.F.A.N Mechanistic Policy Pipeline*  
-Version 3.0.0 | December 2025
+Version 3.1.0 | December 2025
 
 ---
 
 ## Abstract
 
-The computational analysis of policy documents confronts three persistent challenges: (1) reproducibility of analytical pipelines across research teams, (2) systematic integration of multiple analytical methods without ad-hoc selection bias, and (3) transparent evidence trails from source documents to synthesized insights. While recent advances in computational text analysis have expanded methodological repertoires, the field lacks standardized architectures for deterministic, multi-method policy analysis at scale.
+Phase 2 constitutes the analytical core of the F.A.R.F.A.N deterministic policy pipeline, implementing contract-driven executor orchestration with Signal-Irrigated Smart Augmentation System (SISAS) integration. This module transforms 60-chunk Canonical Policy Packages into 300 evidence-rich analytical responses through a five-stage transformation pipeline guaranteeing bitwise-identical reproducibility. The architecture comprises 29 Python modules organized in strict alphabetical sequence (a–z, aa–ac), each labeled with `PHASE_LABEL: Phase 2` for provenance tracking. This document specifies the complete technical architecture, execution semantics, signal irrigation mechanics, and formal verification properties required for peer-reviewed computational social science.
 
-This article introduces Phase 2, a canonical pipeline architecture that addresses these challenges through executor contract formalism, deterministic orchestration guarantees, and multi-method evidence synthesis with Bayesian confidence calibration. We demonstrate the approach through 300 specialized analytical contracts spanning 10 policy domains and 30 analytical dimensions, processing 60-chunk canonical policy packages through a five-stage transformation pipeline with bitwise-identical reproducibility guarantees.
-
-**Keywords**: reproducible computational social science, contract-driven execution, multi-method synthesis, evidence traceability, deterministic orchestration, policy analysis automation
+**Keywords**: deterministic orchestration, contract-driven execution, signal irrigation, multi-method synthesis, evidence provenance, reproducible policy analysis
 
 ---
 
-## 1. Introduction: The Reproducibility Crisis in Policy Analysis
+## 1. Introduction
 
-### 1.1 Motivation and Context
+### 1.1 Phase Position in Pipeline
 
-The deterministic executor orchestration framework presented here responds to urgent calls for reproducible computational social science [Freese & Peterson 2017; Peng 2011; Lazer et al. 2020]. By enforcing strict determinism guarantees through seeded random operations (PHASE2_RANDOM_SEED=42), immutable contract specifications, and schema-validated execution flows, this architecture ensures bitwise-identical outputs across computational environments—a critical advancement for policy evidence synthesis.
+```
+┌──────────┐   ┌──────────┐   ┌────────────┐   ┌──────────┐   ┌────────────┐   ┌──────────┐
+│ Phase 0  │ → │ Phase 1  │ → │  PHASE 2   │ → │ Phase 3  │ → │ Phase 4-7  │ → │ Phase 8-9│
+│ Config   │   │ Ingestion│   │ Execution  │   │ Scoring  │   │ Aggregation│   │ Reports  │
+└──────────┘   └──────────┘   └────────────┘   └──────────┘   └────────────┘   └──────────┘
+                    │               ▲
+                    │               │
+                    └───────────────┘
+                    60 chunks → 300 responses
+```
 
-Contemporary policy analysis increasingly recognizes that single-method approaches produce brittle inferences [Lazer et al. 2020; Grimmer et al. 2021]. Yet current practice relies on ad-hoc method selection, manual evidence assembly, and opaque analytical workflows that resist validation and replication. The methodological pluralism required for robust policy inference demands systematic orchestration infrastructure that current tools fail to provide.
+### 1.2 Input/Output Contract
 
-### 1.2 Architectural Innovation
+**Input** (from Phase 1):
+- `CanonPolicyPackage`: 60 preprocessed document chunks
+- `questionnaire_monolith.json`: 300 analytical questions
+- `SignalRegistry`: SISAS signal specifications
 
-We introduce executor contracts as first-class computational artifacts—JSON Schema-validated specifications that bind analytical questions to methodological implementations with explicit theoretical provenance. This contract-driven paradigm extends design-by-contract principles [Meyer 1992] to scientific computing, enabling formal verification of analytical workflows before execution.
+**Output** (to Phase 3):
+- `ExecutorResults`: 300 `Phase2QuestionResult` objects
+- Each result contains: synthesized narrative, evidence graph, confidence scores, gap analysis, provenance metadata
 
-Each analytical output maintains complete lineage from raw policy documents through 60-chunk canonical representations to evidence-rich syntheses, with explicit citations to source materials and method execution metadata. This end-to-end provenance addresses growing demands for transparent, auditable policy analysis in democratic contexts [Desposato 2016; Christensen & Miguel 2018].
+### 1.3 Core Guarantees
 
-### 1.3 Contribution and Scope
-
-Phase 2 constitutes the core analytical processor of the F.A.R.F.A.N Mechanistic Policy Pipeline. This article presents:
-
-1. **Contract formalism** (§2): JSON Schema-validated executor contracts as computational artifacts
-2. **Deterministic orchestration** (§3): Five-stage transformation pipeline with reproducibility guarantees  
-3. **Multi-method synthesis** (§4): Integration of 240+ analytical methods through priority-ordered execution
-4. **Evidence traceability** (§5): Causal graph construction with SHA-256 provenance hashing
-5. **Architectural components** (§6): Complete specification of 22 Python modules implementing the framework
-6. **Validation and compliance** (§7): Formal verification through 15 Dura Lex contractual tests
-
-The architecture processes 300 executor contracts (Q001.v3.json through Q300.v3.json), each binding 1–17 specialized methods to specific analytical questions across 10 policy areas (PA01–PA10: territorial development domains) and 6 causal dimensions (D1–D6: Inputs, Activities, Products, Outcomes, Impacts, Transversal). The contract numbering follows sequential enumeration: 30 base questions (6 dimensions × 5 questions) replicated across 10 policy areas yields precisely 300 contracts.
-
+| Property | Guarantee | Verification |
+|----------|-----------|--------------|
+| **Determinism** | Bitwise-identical outputs for identical inputs | SHA-256 comparison across runs |
+| **Reproducibility** | Same results on any compliant Python 3.12+ environment | Cross-platform test suite |
+| **Traceability** | Complete lineage from source chunk to synthesized claim | Provenance DAG with SHA-256 nodes |
+| **Completeness** | All 300 contracts executed; no silent failures | Execution manifest with checksums |
 
 ---
 
-## 2. Executor Contract Formalism
+## 2. Theoretical Framework
 
-### 2.1 Theoretical Foundation
+### 2.1 Contract Formalism
 
-We introduce executor contracts as first-class computational artifacts—JSON Schema-validated specifications that bind analytical questions to methodological implementations with explicit theoretical provenance. This contract-driven paradigm extends design-by-contract principles [Meyer 1992] to scientific computing, enabling formal verification of analytical workflows before execution.
+**Definition 2.1 (Executor Contract)**: An executor contract $C_i$ is a quintuple:
 
-**Definition 2.1 (Executor Contract)**: An executor contract $C_i$ is a quintuple $C_i = \langle I, M, E, O, T \rangle$ where:
+$$C_i = \langle I, M, E, O, T \rangle$$
 
-- $I$: Identity specification with unique question_id $Q_i \in \{Q001, \ldots, Q300\}$
+Where:
+- $I$: Identity specification with unique $Q_i \in \{Q001, \ldots, Q300\}$
 - $M$: Method binding to implementations $m_j \in \mathcal{M}$ (methods dispensary)
-- $E$: Evidence assembly rules defining graph construction strategies
-- $O$: Output contract specifying Phase2QuestionResult schema
-- $T$: Traceability metadata linking to source questionnaire and ontologies
+- $E$: Evidence assembly rules specifying graph construction strategies
+- $O$: Output contract defining `Phase2QuestionResult` schema
+- $T$: Traceability metadata with SHA-256 content hash
 
-**Theorem 2.1 (Contract Determinism)**: Given identical inputs (canonical policy package $CPP$, contract $C_i$, random seed $\sigma=42$), execution produces bitwise-identical outputs across computational environments.
+**Theorem 2.1 (Contract Determinism)**: Given identical inputs $(CPP, C_i, \sigma)$ where $\sigma=42$ is the random seed, execution produces bitwise-identical outputs across computational environments.
 
-*Proof sketch*: All stochastic operations (Bayesian inference, Monte Carlo sampling, neural network initialization) use fixed seed $\sigma$. Contract specifications are immutable (SHA-256 content hashing). Execution order is deterministically specified via priority fields. □
+*Proof*: All stochastic operations use seeded RNG. Contract specifications are immutable (SHA-256 verified). Execution order is deterministic (priority fields). □
 
-### 2.2 Contract Structure
+### 2.2 Signal Irrigation Model
 
-Each of the 300 contracts (Q001.v3.json through Q300.v3.json) adheres to executor_contract.v3.schema.json, comprising:
+**Definition 2.2 (Signal Irrigation)**: The SISAS system implements a publish-subscribe pattern where:
 
-#### 2.2.1 Identity Block
+$$\text{Signal}: S = \langle id, type, content, source, confidence \rangle$$
+
+Signals flow from questionnaire patterns through the `SignalRegistry` to executor contexts, enriching method execution with contextual evidence.
+
+**Irrigation Equation**:
+$$\text{EnrichedContext}_i = \text{BaseContext}_i \cup \bigcup_{s \in S_i} \text{resolve}(s)$$
+
+Where $S_i$ are signals matching question $Q_i$'s requirements.
+
+---
+
+## 3. Module Architecture
+
+### 3.1 Complete Module Inventory (29 Modules)
+
+Phase 2 comprises **29 Python modules** organized in strict alphabetical sequence. Each module contains `PHASE_LABEL: Phase 2` in its docstring header (first 20 lines).
+
+#### 3.1.1 Core Pipeline Layer (a–f)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **a** | `phase2_a_arg_router.py` | Type-safe argument routing using signature inspection. Routes kwargs to executor methods with 30+ special cases. Fails fast on missing required parameters. | `Dict[str, Any]` kwargs | Validated argument dict |
+| **b** | `phase2_b_base_executor_with_contract.py` | Abstract base class implementing contract lifecycle: load, validate, execute, collect. Manages 300 contract bindings with SHA-256 verification. | Contract path, chunks | Method outputs |
+| **c** | `phase2_c_carver.py` | Doctoral narrative synthesizer implementing Raymond Carver minimalist style. Generates prose with mandatory evidence citations, gap analysis, and calibrated confidence intervals. | EvidenceGraph, contract | CarverAnswer (narrative) |
+| **d** | `phase2_d_calibration_policy.py` | 8-layer calibration policy hierarchy: global → dimension → policy_area → contract. Computes calibrated weights for Choquet integral fusion. | Layer scores | Calibrated weights |
+| **e** | `phase2_e_contract_validator_cqvr.py` | Contract Quality Validation Registry. Validates contracts against `executor_contract.v3.schema.json`. Computes CQVR scores (Calibration, Quality, Validation, Reliability). | Contract JSON | CQVR score + tier |
+| **f** | `phase2_f_evidence_nexus.py` | Graph-native evidence assembly engine. Constructs DAG from method outputs, infers causal/support/contradiction edges, applies Dempster-Shafer belief propagation. | Method outputs | EvidenceGraph |
+
+#### 3.1.2 Validation & Metrics Layer (g–i)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **g** | `phase2_g_method_signature_validator.py` | Validates method signatures against chain layer requirements. Classifies inputs as required/optional/critical-optional. Enforces output type and range specifications. | Method signatures | ValidationResult |
+| **h** | `phase2_h_metrics_persistence.py` | Persists `PhaseInstrumentation` telemetry to `artifacts/` for CI analysis and regression detection. Writes JSON metrics per phase. | Metrics dict | File path |
+| **i** | `phase2_i_precision_tracking.py` | Tracks numerical precision across floating-point operations. Detects precision loss and stability issues in Bayesian computations. | Numeric values | Precision report |
+
+#### 3.1.3 Resource Management Layer (j–l)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **j** | `phase2_j_resource_integration.py` | Integrates resource limits with executor lifecycle. Coordinates memory/CPU monitoring with execution flow. | Resource config | Integrated executor |
+| **k** | `phase2_k_resource_aware_executor.py` | Executor implementation with adaptive resource management. Adjusts batch sizes and parallelism based on available resources. | Task, limits | Execution result |
+| **l** | `phase2_l_resource_manager.py` | Central resource manager enforcing memory (≤2GB) and time (≤5000ms) limits. Implements circuit breaker pattern for resource exhaustion. | Limits config | ResourceManager |
+
+#### 3.1.4 Runtime Validation Layer (m–o)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **m** | `phase2_m_signature_runtime_validator.py` | Runtime validation of method signatures during execution. Catches signature drift between contract and implementation. | Method, args | Validation status |
+| **n** | `phase2_n_task_planner.py` | Deterministic task planning and scheduling. Generates execution order respecting priority constraints and resource availability. | Tasks, resources | Execution schedule |
+| **o** | `phase2_o_methods_registry.py` | Lazy-loading methods registry with TTL-based caching. Instantiates dispensary classes only when first method is called. Manages 240+ methods across 40 classes. | Class/method name | Callable |
+
+#### 3.1.5 Executor Infrastructure Layer (p–s)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **p** | `phase2_p_executor_profiler.py` | Performance profiling capturing execution time, memory peak, serialization overhead, and method call counts. Uses psutil for accurate RSS tracking. | Executor context | ExecutorMetrics |
+| **q** | `phase2_q_executor_instrumentation_mixin.py` | Observability mixin injecting calibration hooks into executor lifecycle. Computes per-layer scores during execution. | Execution events | CalibrationResult |
+| **r** | `phase2_r_executor_calibration_integration.py` | Calibration integration stub connecting runtime metrics to quality scores. Deterministic for identical inputs. | Runtime metrics | Quality scores |
+| **s** | `phase2_s_executor_config.py` | Executor configuration management with conservative defaults. Manages timeouts, memory limits, batch sizes, and seed specification. | Config files | ExecutorConfig |
+
+#### 3.1.6 Synchronization Layer (t–v)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **t** | `phase2_t_irrigation_synchronizer.py` | **Core SISAS integration point**. Orchestrates 60-chunk → 300-task transformation. Builds ChunkMatrix, generates ExecutionPlan with BLAKE3 integrity hash. Coordinates signal irrigation per task. | CPP, SignalRegistry | ExecutionPlan |
+| **u** | `phase2_u_synchronization.py` | ChunkMatrix construction and ExecutionPlan generation. Implements deterministic task ordering with correlation_id propagation through all 10 phases. | Chunks, questions | ChunkMatrix |
+| **v** | `phase2_v_executor_chunk_synchronizer.py` | Executor-chunk JOIN table manager. Ensures 1:1 binding between executors and chunks. Generates verification manifests for audit trail. | Executors, chunks | JOIN table |
+
+#### 3.1.7 Factory & Registry Layer (w–z)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **w** | `phase2_w_factory.py` | **Single authority boundary** for dependency injection. Loads CanonicalQuestionnaire (once, verified). Constructs SignalRegistry, MethodExecutor, and EnrichedSignalPack per executor. | Config paths | Injected dependencies |
+| **x** | `phase2_x_class_registry.py` | Dynamic class registry mapping orchestrator-facing names to import paths. Supports 40+ dispensary classes with 240+ methods. | Class name | Import path |
+| **y** | `phase2_y_schema_validation.py` | Schema compatibility validation between question and chunk schemas. Detects type heterogeneity and structural mismatches. | Schemas | Compatibility report |
+| **z** | `phase2_z_generic_contract_executor.py` | **Universal executor** replacing 300 hardcoded classes. Loads contract dynamically by question_id from `executor_contracts/specialized/Q{i:03d}.v3.json`. | question_id | Phase2QuestionResult |
+
+#### 3.1.8 Extended Modules (aa–ac)
+
+| Seq | Module | Purpose | Input | Output |
+|-----|--------|---------|-------|--------|
+| **aa** | `phase2_aa_method_source_validator.py` | AST-based source code validator. Builds source map of all classes/methods in pipeline for contract verification. | Source paths | Source map |
+| **ab** | `phase2_ab_resource_alerts.py` | Resource threshold alerting system. Emits warnings when memory/CPU approach limits. Integrates with circuit breaker. | Resource metrics | Alerts |
+| **ac** | `phase2_ac_executor_tests.py` | Executor test suite with calibration coverage. Validates contract instrumentation and CQVR compliance. | Test fixtures | Test results |
+
+### 3.2 Module Dependency Graph
+
+```
+                                    ┌─────────────────────────────┐
+                                    │      PHASE 1 OUTPUT         │
+                                    │  CanonPolicyPackage (60)    │
+                                    └─────────────┬───────────────┘
+                                                  │
+                    ┌─────────────────────────────┼─────────────────────────────┐
+                    │                             │                             │
+                    ▼                             ▼                             ▼
+            ┌───────────────┐             ┌───────────────┐             ┌───────────────┐
+            │ t: Irrigation │◄────────────│ u: ChunkMatrix│◄────────────│ v: JOIN Table │
+            │  Synchronizer │             │  Construction │             │   Manager     │
+            └───────┬───────┘             └───────────────┘             └───────────────┘
+                    │
+                    │ ExecutionPlan (300 tasks)
+                    ▼
+            ┌───────────────┐
+            │ w: DI Factory │────────────┐
+            │ (authority)   │            │
+            └───────┬───────┘            │
+                    │                    │
+        ┌───────────┼───────────┐        │
+        │           │           │        │
+        ▼           ▼           ▼        ▼
+┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐
+│x: ClassReg│ │o: Methods │ │ SISAS     │ │s: Config  │
+│           │ │  Registry │ │ Signals   │ │           │
+└─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘
+      │             │             │             │
+      └──────┬──────┴──────┬──────┴──────┬──────┘
+             │             │             │
+             ▼             ▼             ▼
+      ┌─────────────────────────────────────────┐
+      │        z: Generic Contract Executor      │
+      │        ┌─────────────────────────────┐  │
+      │        │ For each Q001...Q300:       │  │
+      │        │  1. Load contract (e)       │  │
+      │        │  2. Validate CQVR           │  │
+      │        │  3. Route args (a)          │  │
+      │        │  4. Execute methods (b)     │  │
+      │        │  5. Profile (p, q, r)       │  │
+      │        │  6. Collect outputs         │  │
+      │        └─────────────────────────────┘  │
+      └───────────────────┬─────────────────────┘
+                          │
+                          ▼ Method outputs
+      ┌─────────────────────────────────────────┐
+      │        f: Evidence Nexus                 │
+      │        ┌─────────────────────────────┐  │
+      │        │ 1. Ingest evidence nodes    │  │
+      │        │ 2. Construct DAG            │  │
+      │        │ 3. Infer edges (Bayesian)   │  │
+      │        │ 4. Validate acyclicity      │  │
+      │        │ 5. Belief propagation (D-S) │  │
+      │        └─────────────────────────────┘  │
+      └───────────────────┬─────────────────────┘
+                          │
+                          ▼ EvidenceGraph
+      ┌─────────────────────────────────────────┐
+      │        c: Doctoral Carver                │
+      │        ┌─────────────────────────────┐  │
+      │        │ 1. Interpret contract       │  │
+      │        │ 2. Analyze gaps             │  │
+      │        │ 3. Calibrate confidence (d) │  │
+      │        │ 4. Render narrative         │  │
+      │        │ 5. Enforce citations        │  │
+      │        └─────────────────────────────┘  │
+      └───────────────────┬─────────────────────┘
+                          │
+                          ▼
+      ┌─────────────────────────────────────────┐
+      │      PHASE 3 INPUT: ExecutorResults      │
+      │      300 × Phase2QuestionResult          │
+      └─────────────────────────────────────────┘
+```
+
+---
+
+## 4. Signal Irrigation Architecture (SISAS)
+
+### 4.1 SISAS Overview
+
+The **Signal-Irrigated Smart Augmentation System (SISAS)** provides contextual enrichment to executor methods through a declarative signal specification framework. SISAS operates as a cross-cutting infrastructure layer, residing in `src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/`.
+
+### 4.2 SISAS Module Inventory
+
+| Module | Purpose |
+|--------|---------|
+| `signals.py` | Core signal definitions and type specifications |
+| `signal_registry.py` | Central registry mapping signals to questions |
+| `signal_loader.py` | Loads signals from questionnaire_monolith |
+| `signal_resolution.py` | Resolves signal requirements to concrete values |
+| `signal_consumption.py` | Tracks signal consumption by executors |
+| `signal_consumption_integration.py` | Integrates consumption metrics with telemetry |
+| `signal_contract_validator.py` | Validates signal contracts against specs |
+| `signal_validation_specs.py` | Signal validation specifications |
+| `signal_semantic_context.py` | Semantic context extraction from signals |
+| `signal_semantic_expander.py` | Expands signals with semantic enrichment |
+| `signal_context_scoper.py` | Scopes signals to execution context |
+| `signal_evidence_extractor.py` | Extracts evidence from resolved signals |
+| `signal_enhancement_integrator.py` | Integrates enhancements into executor flow |
+| `signal_intelligence_layer.py` | AI-augmented signal processing |
+| `signal_method_metadata.py` | Method-level signal metadata |
+| `signal_quality_metrics.py` | Signal quality scoring |
+| `signal_scoring_context.py` | Context for signal-aware scoring |
+| `signal_wiring_fixes.py` | Wiring corrections and patches |
+| `pdt_quality_integration.py` | PDT quality integration with signals |
+
+### 4.3 Signal Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         SISAS SIGNAL IRRIGATION FLOW                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────┐
+│ questionnaire_      │
+│ monolith.json       │──────┐
+│ (300 questions)     │      │
+└─────────────────────┘      │
+                             ▼
+                    ┌─────────────────────┐
+                    │   signal_loader.py  │
+                    │   Parse signal_     │
+                    │   requirements      │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  signal_registry.py │
+                    │  Build Q_id →       │
+                    │  Signal[] mapping   │
+                    └──────────┬──────────┘
+                               │
+         ┌─────────────────────┼─────────────────────┐
+         │                     │                     │
+         ▼                     ▼                     ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│signal_semantic_ │  │signal_context_  │  │signal_evidence_ │
+│context.py       │  │scoper.py        │  │extractor.py     │
+│Extract semantic │  │Scope to current │  │Extract evidence │
+│context          │  │execution        │  │patterns         │
+└────────┬────────┘  └────────┬────────┘  └────────┬────────┘
+         │                     │                     │
+         └──────────┬──────────┴──────────┬──────────┘
+                    │                     │
+                    ▼                     ▼
+         ┌─────────────────────┐  ┌─────────────────────┐
+         │signal_resolution.py │  │signal_semantic_     │
+         │Resolve to concrete  │  │expander.py          │
+         │values               │  │Expand with synonyms │
+         └──────────┬──────────┘  └──────────┬──────────┘
+                    │                        │
+                    └───────────┬────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │ signal_enhancement_ │
+                    │ integrator.py       │
+                    │ Build Enriched      │
+                    │ SignalPack          │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  phase2_w_factory   │
+                    │  (DI Factory)       │
+                    │  Inject into        │
+                    │  executor context   │
+                    └──────────┬──────────┘
+                               │
+         ┌─────────────────────┼─────────────────────┐
+         │                     │                     │
+         ▼                     ▼                     ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│ Executor Q001   │  │ Executor Q002   │  │ Executor Q300   │
+│ + SignalPack    │  │ + SignalPack    │  │ + SignalPack    │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
+         │                     │                     │
+         └──────────┬──────────┴──────────┬──────────┘
+                    │                     │
+                    ▼                     ▼
+         ┌─────────────────────┐  ┌─────────────────────┐
+         │signal_consumption.py│  │signal_quality_     │
+         │Track consumption    │  │metrics.py          │
+         │per executor         │  │Compute hit rate    │
+         └─────────────────────┘  └─────────────────────┘
+```
+
+### 4.4 Signal Integration in Phase 2
+
+The `phase2_t_irrigation_synchronizer.py` module is the **primary integration point** between SISAS and Phase 2 execution:
+
+```python
+# Simplified irrigation flow (phase2_t_irrigation_synchronizer.py)
+
+def generate_execution_plan(cpp: CanonPolicyPackage, 
+                            signal_registry: SignalRegistry) -> ExecutionPlan:
+    """
+    Subfase 2.1.0 - JOIN Table Construction (optional)
+    Subfase 2.1.1 - Question Extraction (300 from monolith)
+    Subfase 2.1.2 - Iteration Setup
+    Subfase 2.1.3 - Chunk Routing (Q → Chunk via ChunkMatrix)
+    Subfase 2.1.4 - Pattern Filtering
+    Subfase 2.1.5 - Signal Resolution (SISAS integration point)
+    Subfase 2.1.6 - Schema Validation
+    Subfase 2.1.7 - Task Construction
+    Subfase 2.1.8 - Plan Assembly
+    """
+    tasks = []
+    for question in extract_questions(monolith):  # 300 questions
+        chunk = route_to_chunk(question, chunk_matrix)  # Subfase 2.1.3
+        
+        # SISAS Integration (Subfase 2.1.5)
+        signals = signal_registry.get_signals_for_chunk(
+            chunk=chunk,
+            requirements=question.signal_requirements
+        )
+        
+        task = ExecutableTask(
+            question_id=question.id,
+            chunk=chunk,
+            signals=signals,  # Enriched context
+            patterns=filter_patterns(question)
+        )
+        tasks.append(task)
+    
+    return ExecutionPlan(
+        tasks=sorted(tasks, key=lambda t: t.task_id),
+        plan_id=sha256(serialize(tasks)),
+        integrity_hash=blake3(tasks)
+    )
+```
+
+### 4.5 Signal Hit Rate Invariant
+
+**Invariant**: Signal hit rate ≥ 95%
+
+```
+Hit Rate = (Signals Resolved / Signals Required) × 100
+
+If Hit Rate < 95%:
+    - Log WARNING with unresolved signals
+    - Continue execution (graceful degradation)
+    - Mark result with reduced confidence
+```
+
+---
+
+## 5. Execution Semantics
+
+### 5.1 Five-Stage Transformation Pipeline
+
+#### Stage 1: Irrigation & Synchronization (t, u, v)
+
+**Input**: CanonPolicyPackage (60 chunks), SignalRegistry  
+**Output**: ExecutionPlan (300 tasks)
+
+**Process**:
+1. Build ChunkMatrix from 60 chunks (validate uniqueness)
+2. Extract 300 questions from questionnaire_monolith
+3. Route each question to its chunk via (dimension, policy_area) lookup
+4. Resolve signals via SISAS for each question-chunk pair
+5. Construct ExecutableTask with enriched context
+6. Assemble ExecutionPlan with deterministic ordering
+7. Compute plan_id (SHA-256) and integrity_hash (BLAKE3)
+
+**Invariants**:
+- Exactly 60 unique chunks
+- Exactly 300 tasks generated
+- plan_id deterministic for identical inputs
+
+#### Stage 2: Contract Loading & Validation (z, e, b)
+
+**Input**: ExecutionPlan  
+**Output**: Validated contracts with method bindings
+
+**Process**:
+1. For each task, load contract from `specialized/Q{i:03d}.v3.json`
+2. Verify SHA-256 matches manifest
+3. Validate against JSON Schema (executor_contract.v3.schema.json)
+4. Compute CQVR score
+5. Extract method_binding (1–17 methods per contract)
+
+**Invariants**:
+- All 300 contracts load successfully
+- CQVR score computed for each
+- No schema violations
+
+#### Stage 3: Method Execution (a, o, w, x, p, q, r, s)
+
+**Input**: Validated contracts, enriched contexts  
+**Output**: Method outputs with provenance
+
+**Process**:
+1. Factory (w) initializes dependencies (questionnaire, signal registry, method executor)
+2. For each contract, for each method in priority order:
+   a. Retrieve from MethodRegistry (o) via ClassRegistry (x)
+   b. Route arguments via ArgRouter (a)
+   c. Execute with seed=42
+   d. Profile via ExecutorProfiler (p)
+   e. Instrument via Mixin (q)
+   f. Collect output with provenance
+
+**Invariants**:
+- Methods execute in ascending priority order
+- All required arguments present
+- Execution time ≤ 5000ms (99th percentile)
+
+#### Stage 4: Evidence Assembly (f)
+
+**Input**: Method outputs  
+**Output**: EvidenceGraph
+
+**Process**:
+1. Transform outputs to EvidenceNode objects (SHA-256 hashed)
+2. Construct DAG with causal/support/contradiction edges
+3. Infer edge probabilities via Bayesian analysis
+4. Validate acyclicity (topological sort)
+5. Apply Dempster-Shafer belief propagation
+
+**Invariants**:
+- INV-001: All nodes have SHA-256 hash
+- INV-002: Graph is acyclic
+- INV-003: Beliefs in [0,1]
+
+#### Stage 5: Narrative Synthesis (c, d)
+
+**Input**: EvidenceGraph, contract  
+**Output**: Phase2QuestionResult
+
+**Process**:
+1. Interpret contract semantics
+2. Analyze evidence gaps
+3. Calibrate confidence via CalibrationPolicy (d)
+4. Render narrative in Carver style
+5. Enforce citation completeness
+
+**Invariants**:
+- INV-004: Every claim has ≥1 citation
+- INV-005: Confidence intervals calibrated (95% CI)
+
+### 5.2 Determinism Properties
+
+| Property | Implementation |
+|----------|----------------|
+| Random seed | `PHASE2_RANDOM_SEED=42` applied to Python RNG, NumPy, PyTorch |
+| Execution order | Tasks sorted by task_id lexicographically |
+| Dictionary iteration | `sorted(dict.items())` where order matters |
+| Hash stability | SHA-256/BLAKE3 with deterministic serialization |
+| Timestamp handling | UTC-only, ISO 8601 format |
+
+---
+
+## 6. Contract Architecture
+
+### 6.1 Contract Enumeration Formula
+
+```
+Q_id = (dim - 1) × 50 + (q - 1) × 10 + pa
+
+Where:
+  dim ∈ {1, 2, 3, 4, 5, 6}     (D1–D6)
+  q   ∈ {1, 2, 3, 4, 5}        (Q1–Q5 per dimension)
+  pa  ∈ {1, 2, ..., 10}        (PA01–PA10)
+
+Example:
+  D3-Q4, PA07 → (3-1)×50 + (4-1)×10 + 7 = 100 + 30 + 7 = 137 → Q137
+```
+
+### 6.2 Contract Schema (v3)
+
 ```json
 {
   "identity": {
-    "base_slot": "D{d}-Q{q}",           // Dimension-Question slot (D1-Q1 ... D6-Q5)
-    "question_id": "Q{i}",              // Global question identifier (Q001-Q300)
-    "dimension_id": "DIM{d:02d}",       // Causal dimension (DIM01-DIM06)
-    "policy_area_id": "PA{p:02d}",      // Policy area (PA01-PA10)
+    "question_id": "Q137",
+    "base_slot": "D3-Q4",
+    "dimension_id": "DIM03",
+    "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "<SHA-256>",       // Immutable content fingerprint
-    "validated_against_schema": "executor_contract.v3.schema.json"
-  }
-}
-```
-
-**Invariant 2.1**: Each contract maps to a unique (dimension, policy_area) coordinate, with 30 base questions (D1-Q1 through D6-Q5) replicated across 10 policy areas.
-
-#### 2.2.2 Method Binding Block
-
-Contracts specify 1-17 methods per question, executed in priority order:
-
-```json
-{
+    "contract_hash": "<SHA-256>"
+  },
   "method_binding": {
     "orchestration_mode": "multi_method_pipeline",
-    "method_count": 17,                 // Variable: 1-17 methods per contract
+    "method_count": 12,
     "methods": [
-      {
-        "class_name": "TextMiningEngine",
-        "method_name": "diagnose_critical_links",
-        "priority": 1,                  // Execution order determinant
-        "provides": "text_mining.diagnose_critical_links",
-        "role": "diagnose_critical_links_diagnosis"
-      }
-      // ... up to 17 method specifications
+      {"class_name": "TextMiningEngine", "method_name": "extract_patterns", "priority": 1},
+      {"class_name": "CausalExtractor", "method_name": "infer_causality", "priority": 2},
+      ...
     ]
-  }
-}
-```
-
-**Definition 2.2 (Priority-Ordered Execution)**: Methods execute in ascending priority order, eliminating race conditions and ensuring deterministic sequencing.
-
-#### 2.2.3 Evidence Assembly Block
-
-```json
-{
+  },
   "evidence_assembly": {
-    "module": "canonic_phases.Phase_two.evidence_nexus",
-    "class_name": "EvidenceNexus",
-    "method_name": "process",
-    "assembly_rules": [
-      {
-        "target": "evidence_graph",
-        "sources": ["text_mining.*", "industrial_policy.*", "causal_extraction.*"],
-        "merge_strategy": "graph_construction"
-      },
-      {
-        "target": "relationships",
-        "merge_strategy": "edge_inference"      // Causal, support, contradiction edges
-      },
-      {
-        "target": "belief_propagation",
-        "merge_strategy": "dempster_shafer"     // Bayesian confidence calibration
-      },
-      {
-        "target": "narrative_synthesis",
-        "merge_strategy": "carver_doctoral_synthesis"
-      }
-    ],
-    "engine": "EVIDENCE_NEXUS"
+    "module": "phase2_f_evidence_nexus",
+    "merge_strategy": "dempster_shafer"
+  },
+  "output_contract": {
+    "schema": "Phase2QuestionResult.v1.schema.json"
   }
 }
 ```
 
-The four-stage assembly preserves all method outputs while constructing a coherent causal evidence graph.
-
 ---
 
-## 3. Deterministic Orchestration Architecture
-
-### 3.1 Five-Stage Transformation Pipeline
-
-The executor orchestration layer implements a five-stage transformation pipeline. Each executor contract $Q_i \in \{Q001, \ldots, Q300\}$ binds to $m_i \in [1,17]$ methodological implementations from the methods dispensary. Given a Canonical Policy Package $CPP$ of dimension 60, the orchestrator:
-
-**Stage 1: Method Discovery**  
-Retrieve methods $\mathcal{M}'$ based on contract method_binding specifications.
-
-**Stage 2: Priority Execution**  
-Invoke methods in precedence order with fixed random seed $\sigma = 42$, ensuring deterministic sequencing.
-
-**Stage 3: Evidence Assembly**  
-Aggregate outputs with source citations via EvidenceNexus graph construction.
-
-**Stage 4: Confidence Calibration**  
-Apply Bayesian inference through Dempster-Shafer belief propagation.
-
-**Stage 5: Synthesis Generation**  
-Produce doctoral-level narrative with explicit provenance via DoctoralCarverSynthesizer.
-
-**Theorem 3.1 (Reproducibility Guarantee)**: Given identical inputs and contract specifications, outputs are bitwise-identical across computational environments.
-
-### 3.2 Core Architectural Components
-
-Phase 2 comprises 22 Python modules organized in four layers:
-
-#### 3.2.1 Core Orchestration Layer
-
-**executors/generic_contract_executor.py** (450 lines):  
-Universal executor replacing 300 hardcoded classes. Loads contracts dynamically via question_id, eliminating code duplication.
-
-```python
-class GenericContractExecutor(BaseExecutorWithContract):
-    """Universal executor for Q001-Q300 contracts.
-    
-    Dynamically loads contract from:
-    executor_contracts/specialized/{question_id}.v3.json
-    """
-    def __init__(self, question_id: str, **kwargs):
-        self._question_id = question_id
-        contract = self._load_contract(question_id)
-        super().__init__(**kwargs)
-```
-
-**executors/base_executor_with_contract.py** (680 lines):  
-Abstract base implementing contract loading, method discovery, and execution orchestration.
-
-**executors/executor_config.py** (320 lines):  
-Runtime configuration management with deterministic seed specification.
-
-#### 3.2.2 Evidence Assembly Layer
-
-**evidence_nexus.py** (1,200 lines):  
-Graph-native evidence reasoning engine implementing:
-
-1. **Evidence Ingestion**: Transform method outputs to EvidenceNode objects with SHA-256 hashing
-2. **Relationship Inference**: Construct causal edges via Bayesian inference
-3. **Consistency Validation**: Graph-theoretic conflict detection ensuring acyclicity
-4. **Narrative Synthesis**: Template-driven generation with mandatory citations
-
-**Theoretical Foundations**:
-- Pearl's Causal Inference [Pearl 2009]: do-calculus for counterfactual reasoning
-- Dempster-Shafer Theory [Shafer 1976]: Belief functions for uncertainty
-- Rhetorical Structure Theory [Mann & Thompson 1988]: Discourse coherence
-
-**Invariants**:
-- [INV-001] All evidence nodes have SHA-256 content hash
-- [INV-002] Graph is acyclic for valid causal reasoning
-- [INV-003] Narrative cites ≥1 evidence node per claim
-- [INV-004] Confidence intervals are calibrated (coverage ≥ 0.95)
-
-**carver.py** (2,100 lines):  
-Doctoral narrative synthesizer with Raymond Carver-inspired minimalist precision:
-
-1. **ContractInterpreter**: Extract semantic depth from contracts
-2. **GapAnalyzer**: Multi-dimensional evidence gap analysis
-3. **BayesianConfidence**: Calibrated uncertainty quantification
-4. **CarverRenderer**: Minimalist prose with epistemic precision
-
-**Style Invariants**:
-- Every claim has ≥1 evidence citation
-- Critical gaps appear explicitly
-- Short sentences, active verbs, no hedging
-
-#### 3.2.3 Synchronization Layer
-
-**irrigation_synchronizer.py** (800 lines):  
-Orchestrates 60-chunk → 300-task transformation:
-
-1. **Chunk Matrix Construction**: Map 60 chunks to 30 base questions
-2. **Task Generation**: Expand to 300 tasks (30 questions × 10 policy areas)
-3. **ExecutionPlan Assembly**: Generate deterministic plan with BLAKE3 integrity hash
-4. **SISAS Coordination**: Emit signals for smart evidence augmentation
-
-**Deterministic Task Generation**:
-```python
-def generate_execution_plan(cpp: CanonPolicyPackage) -> ExecutionPlan:
-    """Generate deterministic 300-task plan from 60-chunk package.
-    
-    Mapping:
-    - 30 base questions (D1-Q1 ... D6-Q5): 6 dimensions × 5 questions
-    - 10 policy areas (PA01-PA10)
-    - Total: 30 × 10 = 300 contracts (Q001-Q300)
-    - Formula: Q_id = (dim-1)*50 + (q-1)*10 + pa
-    
-    Returns ExecutionPlan with integrity hash for verification.
-    """
-    tasks = []
-    question_counter = 1
-    for dim in range(1, 7):          # D1-D6
-        for q in range(1, 6):         # Q1-Q5
-            for pa in range(1, 11):   # PA01-PA10
-                question_id = f"Q{question_counter:03d}"
-                tasks.append(Task(
-                    question_id=question_id,
-                    base_slot=f"D{dim}-Q{q}",
-                    policy_area=f"PA{pa:02d}",
-                    chunks=chunk_matrix.get_chunks(dim, q)
-                ))
-                question_counter += 1
-    return ExecutionPlan(tasks=tasks, integrity_hash=blake3(tasks))
-```
-
-**executor_chunk_synchronizer.py** (400 lines):  
-Manages executor-chunk JOIN table ensuring each contract processes exactly its assigned chunks.
-
-**synchronization.py** (620 lines):  
-ChunkMatrix and ExecutionPlan generation with correlation_id tracking through all 10 phases.
-
-#### 3.2.4 Contract Management Layer
-
-**json_files_phase_two/executor_contracts/contract_transformer.py** (720 lines):  
-Transforms questionnaire_monolith.json (3.0.0) into 300 specialized contracts through automated expansion.
-
-**json_files_phase_two/executor_contracts/cqvr_validator.py** (480 lines):  
-Contract Quality Validation Registry enforcing schema conformance via JSON Schema validation.
-
-### 3.3 Execution Flow Narrative
-
-The complete analytical workflow proceeds deterministically:
-
-**T0 (Initialization)**:  
-1. Load CanonPolicyPackage (60 chunks) from Phase 1  
-2. Generate ExecutionPlan (300 tasks) via IrrigationSynchronizer  
-3. Initialize SignalRegistry for SISAS coordination  
-4. Load MethodDispensary (240 analytical methods)
-
-**T1 (Task Dispatch)**:  
-For each task in execution order:
-1. Load contract from `specialized/Q{i:03d}.v3.json`  
-2. Validate schema via CQVR  
-3. Extract method_binding specifications  
-4. Retrieve assigned chunks
-
-**T2 (Method Execution)**:  
-For each method in priority order:
-1. Retrieve implementation from MethodDispensary  
-2. Route arguments via ArgRouter (type-safe)  
-3. Execute with seed=42 for stochastic operations  
-4. Collect output with provenance metadata
-
-**T3 (Evidence Assembly)**:  
-1. Pass method outputs to EvidenceNexus  
-2. Construct evidence graph with SHA-256 hashed nodes  
-3. Infer causal/support/contradiction edges  
-4. Validate graph consistency  
-5. Apply Dempster-Shafer belief propagation
-
-**T4 (Narrative Synthesis)**:  
-1. Pass evidence graph to DoctoralCarverSynthesizer  
-2. Generate narrative with evidence citations  
-3. Perform gap analysis  
-4. Compute calibrated confidence intervals  
-5. Produce Phase2QuestionResult
-
-**T5 (Output Assembly)**:  
-1. Validate against output_contract schema  
-2. Compute result hash for traceability  
-3. Emit to Phase 3 scoring engine  
-4. Update SISAS with execution metadata
-
----
-
-## 4. Multi-Method Synthesis at Scale
-
-### 4.1 Methods Dispensary Architecture
-
-The methods dispensary comprises 240 analytical methods across 40 classes, organized by paradigm:
-
-**Text Mining** (80 methods):
-- Critical link diagnosis (causal connector extraction)
-- Pattern-based information extraction  
-- Sentence-level semantic analysis
-
-**Industrial Policy Processing** (60 methods):
-- Hierarchical structure extraction
-- Policy pillar identification
-- Evidence point atomization
-
-**Causal Analysis** (40 methods):
-- Goal extraction and parsing
-- Causal pathway reconstruction
-- Theory of change validation
-
-**Financial Auditing** (30 methods):
-- Budget amount parsing and normalization
-- Multi-source aggregation
-- Tabular data extraction
-
-**Contradiction Detection** (20 methods):
-- Quantitative claim extraction
-- Statistical significance testing
-- Consistency checking
-
-**Bayesian Analysis** (10 methods):
-- Policy metric evaluation (posterior inference)
-- Multi-policy comparison
-- Uncertainty quantification
-
-### 4.2 Priority-Ordered Execution
-
-Methods execute in ascending priority order, resolving dependencies deterministically. Lower-priority methods may consume higher-priority outputs, but cross-method dependencies remain minimal through contract design.
-
-### 4.3 Evidence Fusion Strategies
-
-EvidenceNexus implements four merge strategies:
-
-1. **graph_construction**: Transform method outputs into evidence nodes
-2. **edge_inference**: Compute relationship probabilities via Bayesian inference
-3. **dempster_shafer**: Aggregate confidence through belief propagation
-4. **carver_doctoral_synthesis**: Generate structured narrative with citations
-
-### 4.4 Confidence Calibration
-
-Bayesian calibration ensures posterior probabilities achieve nominal 95% coverage through:
-1. Empirical coverage statistics per evidence type
-2. Calibration error computation
-3. Isotonic regression for posterior adjustment
-4. Holdout validation (10% of contracts)
-
----
-
-## 5. Evidence Traceability and Provenance
-
-### 5.1 SHA-256 Content Hashing
-
-Every evidence node receives content-addressable SHA-256 hash enabling:
-- **Deduplication**: Identical evidence merges via hash equality
-- **Tamper detection**: Content modification produces distinct hash
-- **Provenance verification**: Trace from output to method origin
-
-Evidence graphs form Merkle Directed Acyclic Graphs where each node hash incorporates parent hashes, enabling O(1) integrity verification.
-
-### 5.2 Execution Metadata
-
-Every Phase2QuestionResult includes comprehensive trace:
-
-```python
-{
-  "trace": {
-    "correlation_id": "uuid4",              # 10-phase tracking
-    "execution_timestamp": "ISO8601",
-    "contract_hash": "SHA-256",
-    "methods_executed": 17,
-    "method_execution_times_ms": {...},
-    "evidence_graph_hash": "SHA-256",
-    "random_seed": 42
-  }
-}
-```
-
-**Invariant**: correlation_id propagates through all 10 phases, enabling end-to-end tracing.
-
-### 5.3 Audit Trail Generation
-
-Each execution produces complete audit trail:
-
-```
-logs/phase2_audit/{correlation_id}/
-├── contract_Q{i}.v3.json              # Immutable specification
-├── method_outputs/
-│   ├── 01_text_mining.json            # Raw outputs with timestamps
-│   ├── 02_industrial_policy.json
-│   └── ...
-├── evidence_graph.json                # Serialized graph
-├── belief_propagation.json            # Confidence computation
-├── synthesized_narrative.md           # Doctoral output
-└── execution_summary.json             # Provenance metadata
-```
-
-Independent auditors can verify contract integrity, method authenticity, graph construction correctness, and narrative accuracy.
-
----
-
-## 6. Complete File Manifest
-
-Phase 2 comprises 22 Python modules (12,500 total lines):
-
-| File | Lines | Purpose |
-|------|-------|---------|
-| **Core Orchestration** | | |
-| `executors/generic_contract_executor.py` | 450 | Universal Q001-Q300 executor |
-| `executors/base_executor_with_contract.py` | 680 | Abstract base with contract loading |
-| `executors/executor_config.py` | 320 | Runtime configuration |
-| `executors/executor_instrumentation_mixin.py` | 280 | Observability and metrics |
-| `executors/executor_profiler.py` | 190 | Performance profiling |
-| **Evidence Assembly** | | |
-| `evidence_nexus.py` | 1,200 | Graph-native evidence reasoning |
-| `carver.py` | 2,100 | Doctoral narrative synthesizer |
-| `arg_router.py` | 850 | Type-safe argument routing |
-| `contract_validator_cqvr.py` | 540 | Contract quality validation |
-| **Synchronization** | | |
-| `irrigation_synchronizer.py` | 800 | Chunk→Task→Plan coordinator |
-| `executor_chunk_synchronizer.py` | 400 | Executor-chunk JOIN manager |
-| `synchronization.py` | 620 | ChunkMatrix generation |
-| `schema_validation.py` | 290 | Schema compatibility |
-| **Contract Management** | | |
-| `contract_transformer.py` | 720 | Monolith→specialized transformation |
-| `cqvr_validator.py` | 480 | Schema validation |
-| `transform_q011.py` | 340 | Transformation utilities |
-| **Auxiliary** | | |
-| `generate_all_executor_configs.py` | 410 | Batch configuration |
-| `generate_all_executor_configs_complete.py` | 380 | Complete config generation |
-| `generate_executor_configs.py` | 290 | Single config generator |
-| `create_all_executor_configs.sh` | 120 | Automation script |
-| `__init__.py` | 80 | Module exports |
-| **Total (22 executor-focused modules)** | **12,540** | |
-
-**Scope note:** `Phase_two/` currently contains 30 files. The manifest above documents the 22 Python modules that participate directly in deterministic execution orchestration. The remaining 8 files are supporting assets (tests, configuration, documentation, and auxiliary resources) and are excluded from the line-count total to keep architectural metrics focused on executable pipeline components.
-### Component Interaction Diagram
-
-```
-[Phase 1: CanonPolicyPackage (60 chunks)]
-              ↓
-┌─────────────────────────────────────┐
-│   IrrigationSynchronizer            │
-│   - ChunkMatrix construction        │
-│   - 300-task ExecutionPlan          │
-│   - Deterministic ordering          │
-└───────────────┬─────────────────────┘
-                ↓
-┌─────────────────────────────────────┐
-│   GenericContractExecutor (×300)    │
-│   1. Load Q{i}.v3.json contract     │
-│   2. Validate via CQVR              │
-│   3. Discover methods (1-17)        │
-│   4. Execute in priority order      │
-└───────────────┬─────────────────────┘
-                ↓
-┌─────────────────────────────────────┐
-│   EvidenceNexus                     │
-│   1. Graph construction             │
-│   2. Edge inference                 │
-│   3. Belief propagation             │
-└───────────────┬─────────────────────┘
-                ↓
-┌─────────────────────────────────────┐
-│   DoctoralCarverSynthesizer         │
-│   1. Gap analysis                   │
-│   2. Confidence calibration         │
-│   3. Narrative generation           │
-│   4. Schema validation              │
-└───────────────┬─────────────────────┘
-                ↓
-[Phase 3: ExecutorResults (300 responses)]
+## 7. Validation & Compliance
+
+### 7.1 Dura Lex Contractual Tests (15)
+
+| ID | Assertion | Module | Threshold |
+|----|-----------|--------|-----------|
+| DL-01 | Contract schema conformance | e | 100% |
+| DL-02 | Method binding completeness | o, x | 100% |
+| DL-03 | Deterministic execution | z | SHA-256 match |
+| DL-04 | Evidence graph acyclicity | f | 100% |
+| DL-05 | Confidence calibration | c, d | 95% CI coverage ≥ 94% |
+| DL-06 | Citation completeness | c | ≥1 per claim |
+| DL-07 | Output schema conformance | z | 100% |
+| DL-08 | Provenance integrity | f | SHA-256 verified |
+| DL-09 | Execution time bounds | p | 99th pctl ≤ 5000ms |
+| DL-10 | Memory footprint | l, k | Peak RSS ≤ 2GB |
+| DL-11 | Contract immutability | e | Hash match |
+| DL-12 | SISAS signal integrity | t | Hit rate ≥ 95% |
+| DL-13 | Chunk synchronization | v | 60 chunks assigned |
+| DL-14 | Priority ordering | a | Ascending |
+| DL-15 | Error handling | all | No silent failures |
+
+### 7.2 Verification Commands
+
+```bash
+# Verify all Phase 2 files have PHASE_LABEL
+python verify_phase2_labels.py
+# Exit 0 = compliant, Exit 1 = violations
+
+# Run Dura Lex tests
+pytest tests/dura_lex/ -m phase2 -v
+
+# Validate contract integrity
+python -m farfan_pipeline.phases.Phase_two.phase2_e_contract_validator_cqvr \
+    --contracts executor_contracts/specialized/
 ```
 
 ---
 
-## 7. Validation and Compliance
+## 8. Auxiliary Resources
 
-### 7.1 Dura Lex Contractual Tests
+### 8.1 Scripts Directory
 
-Phase 2 enforces 15 contractual tests:
+| Script | Purpose |
+|--------|---------|
+| `scripts/generate_all_executor_configs.py` | Batch configuration generation |
+| `scripts/generate_all_executor_configs_complete.py` | Complete config with all options |
+| `scripts/generate_executor_configs.py` | Single config generator |
+| `scripts/create_all_executor_configs.sh` | Shell automation wrapper |
 
-| Test ID | Assertion | Verification |
-|---------|-----------|--------------|
-| DL-01 | Contract schema conformance | JSON Schema validation |
-| DL-02 | Method binding completeness | All methods resolve |
-| DL-03 | Deterministic execution | Replay produces identical outputs |
-| DL-04 | Evidence graph acyclicity | Topological sort succeeds |
-| DL-05 | Confidence calibration | 95% CI coverage ≥94% |
-| DL-06 | Citation completeness | All claims have ≥1 citation |
-| DL-07 | Output schema conformance | Phase2QuestionResult validation |
-| DL-08 | Provenance integrity | SHA-256 verification |
-| DL-09 | Execution time bounds | 99th percentile ≤5000ms |
-| DL-10 | Memory footprint | Peak RSS ≤2GB |
-| DL-11 | Contract immutability | Hash equality after reload |
-| DL-12 | SISAS signal integrity | Checksum matching |
-| DL-13 | Chunk synchronization | All 60 chunks assigned |
-| DL-14 | Priority ordering | Ascending execution |
-| DL-15 | Error handling | Contract violations raise exceptions |
+### 8.2 Supporting Directories
 
-### 7.2 Automated Verification
-
-Wiring audit script validates:
-- Contract count: Exactly 300 (Q001-Q300.v3.json)
-- Chunk count: Exactly 60 chunks
-- Task count: 300 tasks
-- SISAS channels: 300 initialized
-- Method registry: 240 discoverable
-- Schema versions: v3.0.0 conformance
-
-**Verification Manifest**:
-```json
-{
-  "verification_timestamp": "2025-12-17T03:42:19Z",
-  "contracts_validated": 300,
-  "contracts_passed": 300,
-  "contracts_failed": 0,
-  "schema_version": "executor_contract.v3.schema.json",
-  "total_methods_bound": 4128,
-  "unique_methods_used": 240,
-  "average_methods_per_contract": 13.76,
-  "integrity_checks_passed": 15,
-  "certification_status": "DURA_LEX_COMPLIANT"
-}
-```
+| Directory | Contents |
+|-----------|----------|
+| `json_files_phase_two/` | Contract templates and schemas |
+| `contracts/` | Runtime contract artifacts |
+| `scripts/` | Generator scripts (auxiliary) |
 
 ---
 
-## 8. Discussion and Implications
+## 9. Version History
 
-### 8.1 Reproducibility Infrastructure
-
-The contract-based architecture suggests three implications for computational social science:
-
-**First**, formal workflow specification through schema-validated contracts enables automated verification of methodological coherence before execution—"analytical unit testing" absent from most pipelines. This shifts reproducibility from post-hoc replication to ex-ante architectural enforcement.
-
-**Second**, deterministic guarantees do not constrain flexibility; rather, they relocate researcher degrees of freedom from runtime to contract specification, making choices explicit and auditable. This addresses concerns about "researcher degrees of freedom" [Simmons et al. 2011; Gelman & Loken 2013].
-
-**Third**, multi-method orchestration generalizes beyond policy analysis to any domain requiring systematic integration of heterogeneous methods with confidence calibration.
-
-### 8.2 Scalability and Performance
-
-The architecture demonstrates linear scalability with parallelization potential:
-- Sequential: ~17 minutes for 300 contracts
-- Parallel (30 cores): ~34 seconds
-
-Contracts are independent, enabling embarrassingly parallel execution.
-
-### 8.3 Evidence Quality and Epistemic Guarantees
-
-Bayesian calibration ensures epistemic honesty: posteriors reflect true uncertainty rather than false precision. Gap analysis prevents spurious completeness claims. Carver synthesis enforces evidential discipline through mandatory citations.
-
-### 8.4 Limitations and Future Directions
-
-**Current Limitations**:
-1. Method binding is static; dynamic selection based on data characteristics remains future work
-2. SISAS irrigation semi-automated; full closed-loop requires human validation
-3. Confidence calibration assumes method independence
-4. Scalability beyond 1000 contracts untested
-
-**Future Directions**:
-1. Adaptive contracts via meta-learning
-2. Federated execution with privacy guarantees
-3. Automated causal discovery
-4. Counterfactual policy simulations
+| Version | Date | Changes |
+|---------|------|---------|
+| 3.1.0 | 2025-12-20 | Normalized 29 modules (a–z, aa–ac); added PHASE_LABEL to all; removed legacy duplicates; comprehensive SISAS documentation |
+| 3.0.0 | 2025-12-17 | Contract-driven architecture; 300 Q contracts; CQVR validation |
+| 2.0.0 | 2025-11-01 | Multi-method synthesis; EvidenceNexus |
+| 1.0.0 | 2025-10-01 | Initial implementation |
 
 ---
 
-## 9. Conclusion
+## 10. References
 
-Phase 2 introduces deterministic executor orchestration for reproducible, multi-method policy analysis at scale. Through contract formalism, priority-ordered execution, graph-native evidence assembly, and Bayesian calibration, the system achieves bitwise-identical reproducibility—a critical advancement for computational social science.
-
-The architecture processes 300 contracts spanning 10 policy domains and 6 causal dimensions, orchestrating 240 methods through a five-stage pipeline. Each execution produces evidence-rich syntheses with complete provenance from raw documents to doctoral narratives.
-
-By relocating degrees of freedom to explicit specifications, formalizing multi-method synthesis through graph-theoretic assembly, and enforcing epistemic discipline through calibrated confidence and mandatory citation, this architecture operationalizes reproducibility as architectural property.
-
-The contract-driven paradigm generalizes broadly: any computational social science domain requiring systematic method integration with provenance guarantees can adopt this formalism. As computational methods proliferate and reproducibility demands intensify, architectural solutions like Phase 2 provide essential infrastructure for trustworthy research.
+1. Christensen, G., & Miguel, E. (2018). Transparency, reproducibility, and the credibility of economics research. *Journal of Economic Literature*, 56(3), 920-980.
+2. Freese, J., & Peterson, D. (2017). Replication in social science. *Annual Review of Sociology*, 43, 147-165.
+3. Meyer, B. (1992). Applying "design by contract". *Computer*, 25(10), 40-51.
+4. Pearl, J. (2009). *Causality: Models, reasoning, and inference* (2nd ed.). Cambridge University Press.
+5. Shafer, G. (1976). *A mathematical theory of evidence*. Princeton University Press.
 
 ---
 
-## References
-
-Christensen, G., & Miguel, E. (2018). Transparency, reproducibility, and the credibility of economics research. *Journal of Economic Literature*, 56(3), 920-980.
-
-Desposato, S. (Ed.). (2016). *Ethics and experiments: Problems and solutions for social scientists and policy professionals*. Routledge.
-
-Freese, J., & Peterson, D. (2017). Replication in social science. *Annual Review of Sociology*, 43, 147-165.
-
-Gelman, A., & Loken, E. (2013). The garden of forking paths. Department of Statistics, Columbia University.
-
-Grimmer, J., Roberts, M. E., & Stewart, B. M. (2021). Machine learning for social science. *Annual Review of Political Science*, 24, 395-419.
-
-Lazer, D. M., et al. (2020). Computational social science: Obstacles and opportunities. *Science*, 369(6507), 1060-1062.
-
-Mann, W. C., & Thompson, S. A. (1988). Rhetorical structure theory. *Text*, 8(3), 243-281.
-
-Meyer, B. (1992). Applying "design by contract". *Computer*, 25(10), 40-51.
-
-Pearl, J. (2009). *Causality: Models, reasoning, and inference* (2nd ed.). Cambridge University Press.
-
-Peng, R. D. (2011). Reproducible research in computational science. *Science*, 334(6060), 1226-1227.
-
-Shafer, G. (1976). *A mathematical theory of evidence*. Princeton University Press.
-
-Simmons, J. P., Nelson, L. D., & Simonsohn, U. (2011). False-positive psychology. *Psychological Science*, 22(11), 1359-1366.
-
----
-
-*This document describes Phase 2 of the F.A.R.F.A.N Mechanistic Policy Pipeline, the core analytical processor implementing deterministic, reproducible, multi-method policy analysis through contract-driven orchestration.*
-
-*For implementation details: `src/farfan_pipeline/phases/Phase_two/`*
-
-*For contracts: `src/farfan_pipeline/phases/Phase_two/json_files_phase_two/executor_contracts/specialized/Q{001-300}.v3.json`*
+*Document generated: 2025-12-20*  
+*Maintainer: F.A.R.F.A.N Policy Pipeline Team*  
+*Verification: `python verify_phase2_labels.py`*  
+*Inventory Hash: Computed at verification time*

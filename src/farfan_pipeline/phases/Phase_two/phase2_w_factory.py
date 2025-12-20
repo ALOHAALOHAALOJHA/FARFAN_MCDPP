@@ -1,4 +1,10 @@
 """
+Module: phase2_w_factory
+PHASE_LABEL: Phase 2
+Sequence: W
+
+"""
+"""
 Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N. 
 
 This module is the SINGLE AUTHORITATIVE BOUNDARY for:
@@ -116,14 +122,14 @@ from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
-from canonic_phases.Phase_two.class_registry import build_class_registry, get_class_paths
-from canonic_phases.Phase_two.executor_config import ExecutorConfig
-from canonic_phases.Phase_two.base_executor_with_contract import BaseExecutorWithContract
+from orchestration.class_registry import build_class_registry, get_class_paths
+from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
 
 # Core orchestration
 if TYPE_CHECKING:
-    from canonic_phases.Phase_two.orchestrator import MethodExecutor, Orchestrator
-from canonic_phases.Phase_two.method_registry import (
+    from orchestration.orchestrator import MethodExecutor, Orchestrator
+from orchestration.method_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
 )
@@ -1407,6 +1413,8 @@ def get_method_dispensary_info() -> dict[str, Any]:
 
     # Load executor→methods mapping
     try:
+        import json
+        from pathlib import Path
         executors_methods_path = Path(__file__).parent / "executors_methods.json"
         if executors_methods_path.exists():
             with open(executors_methods_path) as f:
@@ -1516,6 +1524,8 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
 
     # Check 2: Verify executor_methods.json exists
     try:
+        import json
+        from pathlib import Path
         executors_methods_path = Path(__file__).parent / "executors_methods.json"
         if not executors_methods_path.exists():
             validation_results["warnings"].append(

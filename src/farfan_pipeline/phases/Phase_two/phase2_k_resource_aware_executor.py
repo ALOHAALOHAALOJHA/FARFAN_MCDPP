@@ -1,3 +1,9 @@
+"""
+Module: phase2_k_resource_aware_executor
+PHASE_LABEL: Phase 2
+Sequence: K
+
+"""
 """Resource-Aware Executor Wrapper.
 
 Integrates AdaptiveResourceManager with MethodExecutor to provide:
@@ -162,7 +168,7 @@ class ResourceAwareExecutor:
     ) -> dict[str, Any]:
         """Synchronous execution wrapper."""
         try:
-            from canonic_phases.Phase_two.executors import GenericContractExecutor
+            from farfan_pipeline.phases.Phase_two.phase2_b_base_executor_with_contract import DynamicContractExecutor
             
             # Extract question_id from context or executor_id
             # executor_id format could be "D3-Q3" but we need question_id like "Q013"

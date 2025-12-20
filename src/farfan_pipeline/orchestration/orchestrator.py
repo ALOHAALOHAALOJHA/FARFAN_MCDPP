@@ -67,7 +67,7 @@ from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
     EnhancedClusterAggregator,
     EnhancedMacroAggregator,
 )
-from canonic_phases.Phase_two.executors import GenericContractExecutor
+from farfan_pipeline.phases.Phase_two.phase2_b_base_executor_with_contract import DynamicContractExecutor
 from canonic_phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,

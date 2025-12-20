@@ -1,21 +1,17 @@
-"""Executor-Chunk Synchronization with Canonical JOIN Table.
-
-Implements the canonical architecture for binding 300 executor contracts
-to 60 document chunks with explicit 1:1 mapping validation.
-
-This module provides:
-- ExecutorChunkBinding dataclass for explicit chunk→executor relationships
-- build_join_table() for fail-fast binding validation
-- validate_uniqueness() for 1:1 invariant checking
-- generate_verification_manifest() for audit trail generation
-
-Design Principles:
-- Fail-fast validation (pre-flight JOIN table construction)
-- Explicit 1:1 mapping (no implicit bindings)
-- Contract-driven irrigation (patterns from Q{nnn}.v3.json, not monolith)
-- Comprehensive provenance tracking
 """
+Module: phase2_v_executor_chunk_synchronizer
+PHASE_LABEL: Phase 2
+Sequence: V
+Description: Executor-chunk JOIN table synchronization
 
+Version: 1.0.0
+Last Modified: 2025-12-20
+Author: F.A.R.F.A.N Policy Pipeline
+License: Proprietary
+
+This module is part of Phase 2: Analysis & Question Execution.
+All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
+"""
 from __future__ import annotations
 
 import json

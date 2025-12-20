@@ -1,4 +1,10 @@
 """
+Module: phase2_g_method_signature_validator
+PHASE_LABEL: Phase 2
+Sequence: G
+
+"""
+"""
 Method Signature Chain Layer Validation
 
 Implements chain layer validation for method signatures to ensure:

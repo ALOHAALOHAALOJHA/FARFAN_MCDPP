@@ -1,31 +1,16 @@
-"""Method Registry with lazy instantiation and injection pattern.
+"""
+Module: phase2_o_methods_registry
+PHASE_LABEL: Phase 2
+Sequence: O
+Description: Methods registry with lazy loading
 
-This module implements a method injection factory that:
-1. Loads only the methods needed (not full classes)
-2. Instantiates classes lazily (only when first method is called)
-3. Caches instances for reuse with TTL and memory management
-4. Isolates errors per method (failures don't cascade)
-5. Allows direct function injection (bypassing classes)
+Version: 1.0.0
+Last Modified: 2025-12-20
+Author: F.A.R.F.A.N Policy Pipeline
+License: Proprietary
 
-Architecture:
-    MethodRegistry
-        ├─ _class_paths: mapping of class names to import paths
-        ├─ _instance_cache: lazily instantiated class instances with TTL
-        ├─ _direct_methods: directly injected functions
-        └─ get_method(): returns callable for (class_name, method_name)
-
-Memory Management:
-- TTL-based eviction for instance cache entries
-- Weakref support for garbage collection
-- Explicit cache clearing between pipeline runs
-- Memory profiling hooks for observability
-
-Benefits:
-- No upfront class loading (lightweight imports)
-- Failed classes don't block working methods
-- Direct function injection for custom implementations
-- Instance reuse through caching with memory bounds
-- Prevents memory bloat in long-lived processes
+This module is part of Phase 2: Analysis & Question Execution.
+All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
 """
 from __future__ import annotations
 
