@@ -361,7 +361,6 @@ class CQVRValidator:
             technical = method_info.get("technical_approach", {})
             steps = technical.get("steps", [])
             complexity = technical.get("complexity", "")
-            assumptions = technical.get("assumptions", [])
             
             is_specific = True
             
