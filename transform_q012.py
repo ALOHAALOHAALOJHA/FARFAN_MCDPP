@@ -12,10 +12,18 @@ Transform Q012 contract with CQVR audit corrections:
 import json
 from datetime import datetime, timezone
 import hashlib
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
 
 # Load questionnaire monolith
-with open('canonic_questionnaire_central/questionnaire_monolith.json', 'r') as f:
-    monolith = json.load(f)
+canonical_questionnaire = get_canonical_questionnaire(
+    questionnaire_path=Path("canonic_questionnaire_central/questionnaire_monolith.json"),
+)
+monolith = canonical_questionnaire.data
 
 # Extract Q012 contract
 q012 = None

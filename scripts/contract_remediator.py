@@ -29,6 +29,7 @@ from typing import Any
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
+from orchestration.factory import get_canonical_questionnaire
 from farfan_pipeline.phases.Phase_two.contract_validator_cqvr import (
     CQVRValidator,
     ContractTriageDecision,
@@ -151,8 +152,10 @@ class ContractRemediator:
         self.dry_run = dry_run
         self.validator = CQVRValidator()
 
-        with open(monolith_path) as f:
-            self.monolith = json.load(f)
+        canonical_questionnaire = get_canonical_questionnaire(
+            questionnaire_path=monolith_path,
+        )
+        self.monolith = canonical_questionnaire.data
 
     def remediate_contract(
         self, contract_path: Path, strategy: RemediationStrategy

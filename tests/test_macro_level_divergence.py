@@ -12,6 +12,8 @@ import pytest
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from orchestration.factory import get_canonical_questionnaire
+
 # Test markers
 pytestmark = [pytest.mark.updated, pytest.mark.integration]
 
@@ -110,9 +112,9 @@ class TestMacroQuestionStructure:
         if not questionnaire_path.exists():
             pytest.skip("questionnaire_monolith.json not found")
         
-        import json
-        with open(questionnaire_path) as f:
-            questionnaire = json.load(f)
+        questionnaire = get_canonical_questionnaire(
+            questionnaire_path=questionnaire_path,
+        ).data
         
         blocks = questionnaire.get("blocks", {})
         macro_question = blocks.get("macro_question", {})
@@ -130,9 +132,9 @@ class TestMacroQuestionStructure:
         if not questionnaire_path.exists():
             pytest.skip("questionnaire_monolith.json not found")
         
-        import json
-        with open(questionnaire_path) as f:
-            questionnaire = json.load(f)
+        questionnaire = get_canonical_questionnaire(
+            questionnaire_path=questionnaire_path,
+        ).data
         
         macro_question = questionnaire.get("blocks", {}).get("macro_question", {})
         

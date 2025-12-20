@@ -8,6 +8,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from farfan_pipeline.phases.Phase_two.contract_validator_cqvr import CQVRValidator  # noqa: E402
+from orchestration.factory import get_canonical_questionnaire
 
 
 CONTRACTS_DIR = (
@@ -24,7 +25,9 @@ MONOLITH_PATH = REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_mon
 
 
 def _monolith_source_hash() -> str:
-    monolith = json.loads(MONOLITH_PATH.read_text(encoding="utf-8"))
+    monolith = get_canonical_questionnaire(
+        questionnaire_path=MONOLITH_PATH,
+    ).data
     monolith_str = json.dumps(monolith, sort_keys=True)
     return hashlib.sha256(monolith_str.encode()).hexdigest()
 
@@ -138,4 +141,3 @@ def test_batch6_traceability_source_hash_set() -> None:
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
         source_hash = contract.get("traceability", {}).get("source_hash", "")
         assert source_hash == expected_hash
-

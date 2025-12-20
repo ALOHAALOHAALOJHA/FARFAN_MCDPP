@@ -2140,26 +2140,24 @@ class Orchestrator:
             from pathlib import Path
             import hashlib
 
-            questionnaire_path = self._canonical_questionnaire.source_path if hasattr(self._canonical_questionnaire, 'source_path') else None
-            if not questionnaire_path:
+            canonical_questionnaire = getattr(self, "_canonical_questionnaire", None)
+            if canonical_questionnaire is None:
+                raise RuntimeError(
+                    "Canonical questionnaire missing; use AnalysisPipelineFactory"
+                )
+            questionnaire_path = Path(canonical_questionnaire.source_path)
+            if not questionnaire_path.exists():
                 questionnaire_path = resolve_workspace_path(
-                    "canonic_questionnaire_central/questionnaire_monolith.json",
+                    str(questionnaire_path),
                     require_exists=True,
                 )
-            else:
-                questionnaire_path = Path(questionnaire_path)
-                if not questionnaire_path.exists():
-                    questionnaire_path = resolve_workspace_path(
-                        str(questionnaire_path),
-                        require_exists=True,
-                    )
 
             pdf_path_obj = Path(pdf_path)
             if not pdf_path_obj.exists():
                 raise FileNotFoundError(f"PDF not found: {pdf_path}")
 
             pdf_sha256 = hashlib.sha256(pdf_path_obj.read_bytes()).hexdigest()
-            questionnaire_sha256 = hashlib.sha256(questionnaire_path.read_bytes()).hexdigest()
+            questionnaire_sha256 = canonical_questionnaire.sha256
 
             canonical_input = CanonicalInput(
                 document_id=document_id,

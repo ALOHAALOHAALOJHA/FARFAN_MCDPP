@@ -59,7 +59,7 @@ class QuestionnaireResourceProvider:
     def initialize(self, canonical: CanonicalQuestionnaire) -> None:
         """
         Inicializa el provider con el cuestionario canónico.
-        DEBE ser llamado por Factory después de load_questionnaire().
+        DEBE ser llamado por Factory después de la carga canónica.
         """
         object.__setattr__(self, '_canonical', canonical)
 

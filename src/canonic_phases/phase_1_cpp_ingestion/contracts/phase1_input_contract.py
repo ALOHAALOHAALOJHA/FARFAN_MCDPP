@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List
 
+from orchestration.factory import get_canonical_questionnaire
 
 @dataclass(frozen=True)
 class Phase1InputPrecondition:
@@ -87,7 +88,10 @@ def validate_phase1_input_contract(canonical_input: Any) -> bool:
         raise ValueError(f"PRE-03 failed: Questionnaire does not exist: {canonical_input.questionnaire_path}")
     
     # PRE-04: Questionnaire SHA256 matches
-    actual_q_hash = hashlib.sha256(canonical_input.questionnaire_path.read_bytes()).hexdigest()
+    canonical_questionnaire = get_canonical_questionnaire(
+        questionnaire_path=canonical_input.questionnaire_path,
+    )
+    actual_q_hash = canonical_questionnaire.sha256
     if actual_q_hash != canonical_input.questionnaire_sha256:
         raise ValueError(f"PRE-04 failed: Questionnaire SHA256 mismatch")
     

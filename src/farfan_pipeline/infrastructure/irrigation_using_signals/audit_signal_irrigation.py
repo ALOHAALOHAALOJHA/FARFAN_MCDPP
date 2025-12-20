@@ -13,7 +13,6 @@ Date: 2025-01-15
 
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import time
@@ -34,10 +33,9 @@ except ImportError:
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from orchestration.factory import load_questionnaire
+from orchestration.factory import get_questionnaire_resources
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
-    create_signal_registry,
 )
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     SignalConsumptionProof,
@@ -685,11 +683,11 @@ class SignalIrrigationAuditor:
         """Initialize questionnaire and signal registry."""
         try:
             # Load questionnaire
-            canonical_q = load_questionnaire(self.questionnaire_path)
+            canonical_q, signal_registry = get_questionnaire_resources(
+                questionnaire_path=self.questionnaire_path,
+            )
             self.questionnaire = canonical_q
-            
-            # Create signal registry
-            self.signal_registry = create_signal_registry(canonical_q)
+            self.signal_registry = signal_registry
             
             logger.info(
                 "components_initialized",

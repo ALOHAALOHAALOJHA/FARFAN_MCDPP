@@ -24,6 +24,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
+
 # Color codes for terminal output
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -225,12 +229,14 @@ class MicroScoringMathematicalAuditor:
         
         print(f"{GREEN}✓ Loaded {len(self.scoring_formulas)} scoring modality formulas{RESET}")
     
-    def load_questionnaire(self) -> None:
+    def load_questionnaire_data(self) -> None:
         """Load and analyze questionnaire micro questions."""
         print(f"\n{BOLD}Loading questionnaire_monolith.json...{RESET}")
         
-        with open(self.questionnaire_path, 'r', encoding='utf-8') as f:
-            questionnaire = json.load(f)
+        canonical_questionnaire = get_canonical_questionnaire(
+            questionnaire_path=self.questionnaire_path,
+        )
+        questionnaire = canonical_questionnaire.data
         
         micro_questions = questionnaire.get('blocks', {}).get('micro_questions', [])
         
@@ -588,7 +594,7 @@ class MicroScoringMathematicalAuditor:
         
         # Phase 1: Load data
         self.load_scoring_formulas()
-        self.load_questionnaire()
+        self.load_questionnaire_data()
         self.load_executor_contracts()
         
         # Phase 2: Audit procedures

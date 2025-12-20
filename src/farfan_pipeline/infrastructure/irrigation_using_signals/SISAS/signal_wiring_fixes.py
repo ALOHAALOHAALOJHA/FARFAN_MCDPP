@@ -49,9 +49,8 @@ def integrate_context_scoping_in_registry(
         Filtered patterns that match document context
     
     Example:
-        >>> from orchestration.factory import load_questionnaire, create_signal_registry
-        >>> q = load_questionnaire()
-        >>> registry = create_signal_registry(q)
+        >>> from orchestration.factory import get_questionnaire_resources
+        >>> q, registry = get_questionnaire_resources()
         >>> context = {"section": "budget", "chapter": 3}
         >>> filtered = integrate_context_scoping_in_registry(registry, context)
     """
@@ -303,4 +302,3 @@ def validate_injection_timing(
         return False, f"Injection attempted in invalid state: {phase_state}"
     
     return True, None
-

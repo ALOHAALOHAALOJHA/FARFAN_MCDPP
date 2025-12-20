@@ -24,7 +24,7 @@ import tempfile
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import List, Dict
-import json
+from orchestration.factory import get_canonical_questionnaire
 
 # Phase 0 Models
 from canonic_phases.Phase_one.phase0_input_validation import (
@@ -116,10 +116,9 @@ def large_pdf():
 def canonical_input_minimal(minimal_pdf):
     """Minimal CanonicalInput for testing."""
     pdf_hash = hashlib.sha256(minimal_pdf.read_bytes()).hexdigest()
-    
-    questionnaire_path = Path(tempfile.mktemp(suffix='.json'))
-    questionnaire_path.write_text('{"version": "1.0.0"}')
-    q_hash = hashlib.sha256(questionnaire_path.read_bytes()).hexdigest()
+    canonical_questionnaire = get_canonical_questionnaire()
+    questionnaire_path = Path(canonical_questionnaire.source_path)
+    q_hash = canonical_questionnaire.sha256
     
     canonical_input = CanonicalInput(
         document_id="test_minimal",
@@ -139,18 +138,15 @@ def canonical_input_minimal(minimal_pdf):
     
     yield canonical_input
     
-    if questionnaire_path.exists():
-        questionnaire_path.unlink()
 
 
 @pytest.fixture
 def canonical_input_large(large_pdf):
     """Large CanonicalInput for stress testing."""
     pdf_hash = hashlib.sha256(large_pdf.read_bytes()).hexdigest()
-    
-    questionnaire_path = Path(tempfile.mktemp(suffix='.json'))
-    questionnaire_path.write_text('{"version": "1.0.0"}')
-    q_hash = hashlib.sha256(questionnaire_path.read_bytes()).hexdigest()
+    canonical_questionnaire = get_canonical_questionnaire()
+    questionnaire_path = Path(canonical_questionnaire.source_path)
+    q_hash = canonical_questionnaire.sha256
     
     canonical_input = CanonicalInput(
         document_id="test_large",
@@ -170,8 +166,6 @@ def canonical_input_large(large_pdf):
     
     yield canonical_input
     
-    if questionnaire_path.exists():
-        questionnaire_path.unlink()
 
 
 # =============================================================================

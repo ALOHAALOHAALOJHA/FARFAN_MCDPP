@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 from farfan_pipeline.core.policy_area_canonicalization import canonicalize_policy_area_id
+from orchestration.factory import get_canonical_questionnaire
 
 _LEGACY_POLICY_AREA_RE = re.compile(r"\bP(?:10|[1-9])\b")
 
@@ -25,7 +26,9 @@ def test_policy_area_mapping_matches_monolith() -> None:
     monolith_path = repo_root / "canonic_questionnaire_central" / "questionnaire_monolith.json"
 
     mapping_payload = json.loads(mapping_path.read_text(encoding="utf-8"))
-    monolith = json.loads(monolith_path.read_text(encoding="utf-8"))
+    monolith = get_canonical_questionnaire(
+        questionnaire_path=monolith_path,
+    ).data
     policy_areas = monolith["canonical_notation"]["policy_areas"]
 
     expected = [

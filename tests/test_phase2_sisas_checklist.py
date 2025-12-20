@@ -99,13 +99,11 @@ except ImportError:
 try:
     from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry as SISASSignalRegistry,
-        create_signal_registry,
     )
     SISAS_REGISTRY_AVAILABLE = True
 except ImportError:
     SISAS_REGISTRY_AVAILABLE = False
     SISASSignalRegistry = None
-    create_signal_registry = None
 
 # SignalPack with compute_hash - REAL PATH
 try:
@@ -137,22 +135,18 @@ except ImportError:
 
 # Questionnaire loader - check multiple possible locations
 QUESTIONNAIRE_LOADER_AVAILABLE = False
-load_questionnaire = None
+get_canonical_questionnaire = None
+get_questionnaire_resources = None
 
 # Try orchestration.factory first (primary location after reorg)
 try:
-    from orchestration.factory import load_questionnaire
+    from orchestration.factory import (
+        get_canonical_questionnaire,
+        get_questionnaire_resources,
+    )
     QUESTIONNAIRE_LOADER_AVAILABLE = True
 except ImportError:
     pass
-
-# If not found, try canonic_phases.Phase_zero (bootstrap location)
-if not QUESTIONNAIRE_LOADER_AVAILABLE:
-    try:
-        from canonic_phases.Phase_zero.bootstrap import load_questionnaire
-        QUESTIONNAIRE_LOADER_AVAILABLE = True
-    except ImportError:
-        pass
 
 
 # ============================================================================
@@ -442,8 +436,9 @@ class TestSISASPreconditions:
         if not questionnaire_path.exists():
             pytest.skip("Questionnaire not found")
         
-        with open(questionnaire_path, "r", encoding="utf-8") as f:
-            questionnaire = json.load(f)
+        questionnaire = get_canonical_questionnaire(
+            questionnaire_path=questionnaire_path,
+        ).data
         
         # Check for policy areas in various possible locations
         policy_areas_found = set()
@@ -494,11 +489,7 @@ class TestSISASPreconditions:
         warmup_metrics = {}
         
         try:
-            # Load canonical questionnaire
-            questionnaire = load_questionnaire()
-            
-            # Create signal registry
-            signal_registry = create_signal_registry(questionnaire)
+            questionnaire, signal_registry = get_questionnaire_resources()
             
             # Execute warmup - this should pre-load common signals
             signal_registry.warmup()
@@ -538,8 +529,7 @@ class TestSISASPreconditions:
         valid_packs = []
         
         try:
-            # Load canonical questionnaire
-            questionnaire = load_questionnaire()
+            questionnaire = get_canonical_questionnaire()
             
             # Build all signal packs (PA01-PA10)
             signal_packs = build_all_signal_packs(questionnaire=questionnaire)
@@ -606,8 +596,7 @@ class TestSISASPreconditions:
         errors = []
         
         try:
-            # Load canonical questionnaire
-            questionnaire = load_questionnaire()
+            questionnaire = get_canonical_questionnaire()
             
             # Build all signal packs (PA01-PA10)
             signal_packs = build_all_signal_packs(questionnaire=questionnaire)

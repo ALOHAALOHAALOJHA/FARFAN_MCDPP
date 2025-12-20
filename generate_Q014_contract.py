@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 import json
+import sys
 from pathlib import Path
 
-with open('canonic_questionnaire_central/questionnaire_monolith.json') as f:
-    monolith = json.load(f)
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
+
+canonical_questionnaire = get_canonical_questionnaire(
+    questionnaire_path=Path("canonic_questionnaire_central/questionnaire_monolith.json"),
+)
+monolith = canonical_questionnaire.data
 
 q014_data = None
 for question in monolith['blocks']['micro_questions']:

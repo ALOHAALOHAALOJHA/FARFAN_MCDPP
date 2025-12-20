@@ -24,7 +24,12 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
+import sys
 from typing import Any, Dict, List, Optional, Tuple
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
 
 # Type definitions
 PolicyArea = str  # PA01-PA10
@@ -542,26 +547,18 @@ class MacroLevelAuditor:
         
         # Load and analyze
         try:
-            with open(questionnaire_path) as f:
-                questionnaire = json.load(f)
-        except FileNotFoundError:
-            audit.findings.append(AuditFinding(
-                capability="questionnaire_readable",
-                component="Questionnaire",
-                severity=AuditSeverity.CRITICAL,
-                status=CapabilityStatus.MISSING,
-                description="Questionnaire file not found",
-                recommendation="Create questionnaire_monolith.json"
-            ))
-            return audit
-        except json.JSONDecodeError as e:
+            canonical_questionnaire = get_canonical_questionnaire(
+                questionnaire_path=questionnaire_path,
+            )
+            questionnaire = canonical_questionnaire.data
+        except Exception as e:
             audit.findings.append(AuditFinding(
                 capability="questionnaire_parseable",
                 component="Questionnaire",
                 severity=AuditSeverity.CRITICAL,
                 status=CapabilityStatus.MISSING,
-                description=f"Questionnaire has invalid JSON: {str(e)}",
-                recommendation="Fix JSON syntax in questionnaire_monolith.json"
+                description=f"Questionnaire load failed: {str(e)}",
+                recommendation="Fix questionnaire_monolith.json"
             ))
             return audit
         

@@ -49,6 +49,10 @@ MONOLITH_PATH: Final[Path] = REPO_ROOT / "canonic_questionnaire_central" / "ques
 POLICY_AREA_MAPPING_PATH: Final[Path] = REPO_ROOT / "policy_area_mapping.json"
 DIMENSION_MAPPING_PATH: Final[Path] = REPO_ROOT / "dimension_mapping.json"
 
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
+
 NUM_GROUPS: Final[int] = 30
 NUM_POLICY_AREAS: Final[int] = 10
 CONTRACT_RE: Final[re.Pattern[str]] = re.compile(r"^Q\d{3}\.v3\.json$")
@@ -677,7 +681,9 @@ def main() -> int:
 
     _iter_contract_paths(args.contracts_dir)
 
-    monolith = _load_json(MONOLITH_PATH)
+    monolith = get_canonical_questionnaire(
+        questionnaire_path=MONOLITH_PATH,
+    ).data
     if not isinstance(monolith, dict):
         raise TypeError("questionnaire_monolith.json must be an object")
     monolith_source_hash = _compute_monolith_source_hash(monolith)
@@ -737,4 +743,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

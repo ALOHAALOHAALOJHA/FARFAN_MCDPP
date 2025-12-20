@@ -30,7 +30,7 @@ from canonic_phases.Phase_one import execute_phase_1_with_full_contract, Canonic
 from canonic_phases.Phase_three.scoring import transform_micro_result_to_scored
 from canonic_phases.Phase_eight.recommendation_engine import RecommendationEngine
 from canonic_phases.Phase_nine.report_assembly import ReportMetadata
-from orchestration.factory import load_questionnaire
+from orchestration.factory import get_canonical_questionnaire
 from orchestration.seed_registry import get_global_seed_registry
 
 
@@ -67,9 +67,10 @@ def main():
     print("PHASE 1: CPP Ingestion (15 subphases)")
     print("-" * 80)
     
-    questionnaire = load_questionnaire()
+    questionnaire = get_canonical_questionnaire()
     print(f"✓ Questionnaire loaded: {questionnaire.version}")
     
+    questionnaire_path = Path(questionnaire.source_path)
     canonical_input = CanonicalInput(
         document_id="plan_1",
         run_id=f"run_{int(time.time())}",
@@ -77,8 +78,8 @@ def main():
         pdf_sha256="",  # Would compute real hash
         pdf_size_bytes=0,
         pdf_page_count=0,
-        questionnaire_path=Path("canonic_questionnaire_central/questionnaire_monolith.json"),
-        questionnaire_sha256="",
+        questionnaire_path=questionnaire_path,
+        questionnaire_sha256=questionnaire.sha256,
         created_at=datetime.now(),
         phase0_version="1.0.0",
         validation_passed=True,

@@ -47,7 +47,7 @@ class JSONContractLoader:
     It must NOT be used to load questionnaire_monolith.json directly.
 
     For questionnaire access, use:
-    - factory.load_questionnaire() for canonical loading (returns CanonicalQuestionnaire)
+    - factory.get_canonical_questionnaire() for canonical loading
     - QuestionnaireResourceProvider for pattern extraction
     """
 
@@ -94,8 +94,9 @@ class JSONContractLoader:
         if path.name == "questionnaire_monolith.json":
             raise ValueError(
                 "ARCHITECTURAL VIOLATION: questionnaire_monolith.json must ONLY be "
-                "loaded via factory.load_questionnaire() which enforces hash verification. "
-                "Use factory.load_questionnaire() for canonical loading."
+                "loaded via factory.get_canonical_questionnaire() which enforces hash "
+                "verification. Use factory.get_canonical_questionnaire() for canonical "
+                "loading."
             )
 
         text = path.read_text(encoding="utf-8")

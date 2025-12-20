@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pytest
 
-from orchestration.factory import load_questionnaire, create_signal_registry
+from orchestration.factory import get_questionnaire_resources
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
 )
@@ -58,8 +58,9 @@ def questionnaire_and_registry():
     if not questionnaire_path.exists():
         pytest.skip(f"Questionnaire not found at {questionnaire_path}")
     
-    questionnaire = load_questionnaire(questionnaire_path)
-    registry = create_signal_registry(questionnaire)
+    questionnaire, registry = get_questionnaire_resources(
+        questionnaire_path=questionnaire_path,
+    )
     
     return questionnaire, registry
 
@@ -431,4 +432,3 @@ class TestProductionReadiness:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
-

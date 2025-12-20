@@ -1,4 +1,3 @@
-import json
 import sys
 from pathlib import Path
 
@@ -10,6 +9,7 @@ from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
     DimensionAggregator,
     ScoredResult,
 )
+from orchestration.factory import get_canonical_questionnaire
 
 
 def test_dimension_clamps_scores_to_range() -> None:
@@ -17,7 +17,9 @@ def test_dimension_clamps_scores_to_range() -> None:
         REPO_ROOT / "canonic_questionnaire_central"
         / "questionnaire_monolith.json"
     )
-    monolith = json.loads(monolith_path.read_text(encoding="utf-8"))
+    monolith = get_canonical_questionnaire(
+        questionnaire_path=monolith_path,
+    ).data
     settings = AggregationSettings.from_monolith(monolith)
 
     results = [

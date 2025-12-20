@@ -5,9 +5,14 @@ import datetime as dt
 import hashlib
 import json
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterator
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
 
 
 class HarvestError(RuntimeError):
@@ -87,7 +92,10 @@ def type_tag(v: Any) -> str:
 def try_load_monolith(monolith_path: Path) -> Any | None:
     if not monolith_path.exists():
         return None
-    return read_json(monolith_path)
+    canonical_questionnaire = get_canonical_questionnaire(
+        questionnaire_path=monolith_path,
+    )
+    return canonical_questionnaire.data
 
 
 def resolve_monolith_pointer(monolith: Any, json_path: str) -> Any | None:
@@ -127,7 +135,11 @@ def main() -> None:
     )
     ap.add_argument("--range", type=str, default="Q001-Q030")
     ap.add_argument("--date-tag", type=str, default="2025-12-19")
-    ap.add_argument("--monolith-path", type=Path, default=Path("data/questionnaire_monolith.json"))
+    ap.add_argument(
+        "--monolith-path",
+        type=Path,
+        default=Path("canonic_questionnaire_central/questionnaire_monolith.json"),
+    )
     args = ap.parse_args()
 
     subset = parse_range_q(args.range)

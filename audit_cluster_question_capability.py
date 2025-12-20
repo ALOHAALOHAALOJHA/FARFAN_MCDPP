@@ -39,6 +39,10 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 import logging
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
+
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -103,8 +107,10 @@ class ClusterQuestionAuditor:
         
         # A.1: Load questionnaire
         try:
-            with open(self.questionnaire_path, 'r', encoding='utf-8') as f:
-                self.questionnaire = json.load(f)
+            canonical_questionnaire = get_canonical_questionnaire(
+                questionnaire_path=self.questionnaire_path,
+            )
+            self.questionnaire = canonical_questionnaire.data
             self.results.append(AuditResult(
                 passed=True,
                 severity="PASSED",

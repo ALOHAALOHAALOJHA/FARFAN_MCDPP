@@ -4,30 +4,32 @@ Q014 Contract Transformation Script
 Performs CQVR audit, triage, structural corrections, and methodological expansion
 """
 import json
+import sys
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
 
 class Q014ContractTransformer:
     def __init__(self, monolith_path: str):
         self.monolith_path = Path(monolith_path)
+        self.monolith = get_canonical_questionnaire(
+            questionnaire_path=self.monolith_path,
+        ).data
         self.q014_data = self._extract_q014_from_monolith()
         self.q002_data = self._extract_q002_from_monolith()
         self.audit_results = {}
         
     def _extract_q014_from_monolith(self) -> Dict[str, Any]:
-        with open(self.monolith_path) as f:
-            monolith = json.load(f)
-        
-        for question in monolith['blocks']['micro_questions']:
+        for question in self.monolith['blocks']['micro_questions']:
             if question.get('question_id') == 'Q014':
                 return question
         raise ValueError("Q014 not found in monolith")
     
     def _extract_q002_from_monolith(self) -> Dict[str, Any]:
-        with open(self.monolith_path) as f:
-            monolith = json.load(f)
-        
-        for question in monolith['blocks']['micro_questions']:
+        for question in self.monolith['blocks']['micro_questions']:
             if question.get('question_id') == 'Q002':
                 return question
         raise ValueError("Q002 not found in monolith")

@@ -9,11 +9,16 @@ and applies them surgically to fix all contracts.
 
 import json
 import hashlib
+import sys
 from pathlib import Path
 from typing import Dict, List, Set, Any, Tuple
 from datetime import datetime, timezone
 import logging
 from collections import defaultdict
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
 
 logging. basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -33,8 +38,10 @@ class MonolithExtractor:
     def load_monolith(self):
         """Load the 60,000-line monolith"""
         logger.info(f"Loading monolith from {MONOLITH_PATH}")
-        with open(MONOLITH_PATH, 'r', encoding='utf-8') as f:
-            self.monolith = json.load(f)
+        canonical_questionnaire = get_canonical_questionnaire(
+            questionnaire_path=MONOLITH_PATH,
+        )
+        self.monolith = canonical_questionnaire.data
         
         # Build question map from blocks.micro_questions
         micro_questions = self.monolith.get("blocks", {}).get("micro_questions", [])

@@ -27,6 +27,8 @@ from typing import Any
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
+from orchestration.factory import get_canonical_questionnaire
+
 
 def audit_questionnaire_monolith(monolith_path: Path) -> dict[str, Any]:
     """Audit questionnaire_monolith structure and signal richness."""
@@ -34,12 +36,14 @@ def audit_questionnaire_monolith(monolith_path: Path) -> dict[str, Any]:
     print("AUDIT 1: QUESTIONNAIRE_MONOLITH STRUCTURE")
     print("=" * 80)
     
-    with open(monolith_path) as f:
-        monolith = json.load(f)
+    canonical_questionnaire = get_canonical_questionnaire(
+        questionnaire_path=monolith_path,
+    )
+    monolith = canonical_questionnaire.data
     
     results = {
         "file_size_kb": monolith_path.stat().st_size / 1024,
-        "line_count": len(monolith_path.read_text().split('\n')),
+        "line_count": len(json.dumps(monolith).splitlines()),
         "top_level_keys": list(monolith.keys()),
     }
     
@@ -292,8 +296,10 @@ def audit_questionnaire_utilization(monolith_path: Path) -> dict[str, Any]:
     print("AUDIT 5: QUESTIONNAIRE_MONOLITH UTILIZATION")
     print("=" * 80)
     
-    with open(monolith_path) as f:
-        monolith = json.load(f)
+    canonical_questionnaire = get_canonical_questionnaire(
+        questionnaire_path=monolith_path,
+    )
+    monolith = canonical_questionnaire.data
     
     results = {
         "utilization_rate": {},

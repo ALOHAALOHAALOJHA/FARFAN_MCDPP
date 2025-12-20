@@ -22,9 +22,9 @@ Contract:
     - ALWAYS generates failure manifest on abort
 
 Questionnaire Access Architecture:
-    Phase 0 ONLY validates questionnaire file integrity (SHA-256 hash).
+    Phase 0 validates questionnaire integrity via factory-controlled hashing.
     
-    CRITICAL: Phase 0 does NOT load or parse questionnaire content.
+    CRITICAL: Questionnaire access is routed through the factory boundary.
     
     Questionnaire access hierarchy (per factory.py):
         Level 1: AnalysisPipelineFactory (ONLY owner, loads CanonicalQuestionnaire)
@@ -32,7 +32,7 @@ Questionnaire Access Architecture:
         Level 3: Orchestrator (accesses via Provider)
         Level 4: Signals (alternative access path)
     
-    Phase 0 validates FILE INTEGRITY only, NOT content. Factory loads after Phase 0 passes.
+    Phase 0 obtains the canonical hash via factory before proceeding.
 
 Author: Phase 0 Compliance Team
 Version: 2.0.1
@@ -53,6 +53,7 @@ from canonic_phases.Phase_zero.exit_gates import (
     get_gate_summary,
 )
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig
+from orchestration.factory import get_canonical_questionnaire
 
 
 class VerifiedPipelineRunner:
@@ -87,14 +88,13 @@ class VerifiedPipelineRunner:
         This method initializes runtime configuration, seed registry, and
         manifest builder. It does NOT seed RNGs (that happens in P0.3).
         
-        CRITICAL: Phase 0 only validates file integrity (hashing).
-                  Factory loads questionnaire AFTER Phase 0 passes.
+        CRITICAL: Phase 0 uses factory-controlled hashing for questionnaire integrity.
         
         Args:
             plan_pdf_path: Path to input policy plan PDF
             artifacts_dir: Directory for output artifacts
-            questionnaire_path: Path to questionnaire file for hash validation
-                               (Factory will load content after Phase 0)
+            questionnaire_path: Path to questionnaire file for integrity validation
+                               (factory controls canonical access)
             
         Postconditions:
             - self.runtime_config set (or None with _bootstrap_failed=True)
@@ -105,7 +105,7 @@ class VerifiedPipelineRunner:
         """
         self.plan_pdf_path = plan_pdf_path
         self.artifacts_dir = artifacts_dir
-        self.questionnaire_path = questionnaire_path  # For hash validation ONLY
+        self.questionnaire_path = questionnaire_path  # For integrity validation
         self.errors: list[str] = []
         self._bootstrap_failed: bool = False
         
@@ -185,9 +185,8 @@ class VerifiedPipelineRunner:
         - Input policy plan PDF
         - Questionnaire monolith JSON (file integrity, NOT content parsing)
         
-        CRITICAL: Phase 0 does NOT load or parse questionnaire content.
-                  This validates FILE INTEGRITY only. Factory loads content
-                  AFTER Phase 0 passes via load_questionnaire().
+        CRITICAL: Questionnaire access is routed through the factory boundary.
+                  This validates integrity using canonical hashing.
         
         Optionally validates against expected hashes for tamper detection.
         
@@ -229,20 +228,25 @@ class VerifiedPipelineRunner:
             print(f"[P0.1] ERROR: {error}", flush=True)
             return False
         
-        # Verify questionnaire file exists and hash (FILE INTEGRITY ONLY)
-        # NOTE: Phase 0 does NOT parse content. Factory loads after Phase 0 passes.
+        # Verify questionnaire file exists and hash via factory control
         if not self.questionnaire_path.exists():
             error = f"Questionnaire file not found: {self.questionnaire_path}"
             self.errors.append(error)
             print(f"[P0.1] ERROR: {error}", flush=True)
             return False
-        
+
         try:
-            self.questionnaire_sha256 = self._compute_sha256_streaming(self.questionnaire_path)
-            print(f"[P0.1] Questionnaire file hashed (integrity only): {self.questionnaire_sha256[:16]}...", flush=True)
-            print(f"[P0.1] ℹ️  Content will be loaded by Factory after Phase 0 passes", flush=True)
+            canonical_questionnaire = get_canonical_questionnaire(
+                questionnaire_path=self.questionnaire_path,
+            )
+            self.questionnaire_sha256 = canonical_questionnaire.sha256
+            print(
+                "[P0.1] Questionnaire hash loaded via factory: "
+                f"{self.questionnaire_sha256[:16]}...",
+                flush=True,
+            )
         except Exception as e:
-            error = f"Failed to hash questionnaire file: {e}"
+            error = f"Failed to load canonical questionnaire hash: {e}"
             self.errors.append(error)
             print(f"[P0.1] ERROR: {error}", flush=True)
             return False

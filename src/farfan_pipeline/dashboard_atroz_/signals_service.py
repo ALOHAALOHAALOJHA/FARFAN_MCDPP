@@ -30,7 +30,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from sse_starlette.sse import EventSourceResponse
 
-from orchestration.factory import load_questionnaire
+from orchestration.factory import get_canonical_questionnaire
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
 from farfan_pipeline.dashboard_atroz_.api_v1_errors import AtrozAPIException, api_error_response
 from farfan_pipeline.dashboard_atroz_.api_v1_router import router as atroz_router
@@ -50,7 +50,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
     """
     Load signal packs from questionnaire monolith using canonical loader.
 
-    Uses questionnaire.load_questionnaire() for hash verification and immutability.
+    Uses factory get_canonical_questionnaire() for hash verification and immutability.
     This extracts policy-aware patterns, indicators, and thresholds from the
     questionnaire monolith and converts them into SignalPack format.
 
@@ -71,8 +71,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
         )
 
     try:
-        # Use canonical loader (no path parameter - always canonical path)
-        canonical_q = load_questionnaire()
+        canonical_q = get_canonical_questionnaire()
 
         logger.info(
             "signals_loaded_from_monolith",
@@ -192,7 +191,7 @@ async def startup_event() -> None:
     """Load signals on startup."""
     global _signal_store
 
-    # Load from canonical questionnaire path (via questionnaire.load_questionnaire())
+    # Load from canonical questionnaire path via factory control
     # Path parameter is deprecated and ignored - see load_signals_from_monolith() docstring
     _signal_store = load_signals_from_monolith(monolith_path=None)
 

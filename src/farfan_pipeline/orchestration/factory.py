@@ -1183,6 +1183,54 @@ class AnalysisPipelineFactory:
 # Convenience Functions
 # =============================================================================
 
+def get_canonical_questionnaire(
+    questionnaire_path: str | Path | None = None,
+    expected_hash: str | None = None,
+    *,
+    strict_validation: bool = False,
+) -> CanonicalQuestionnaire:
+    """Return the canonical questionnaire via factory-controlled loading."""
+    path_value = (
+        str(questionnaire_path)
+        if isinstance(questionnaire_path, Path)
+        else questionnaire_path
+    )
+    factory = AnalysisPipelineFactory(
+        questionnaire_path=path_value,
+        expected_questionnaire_hash=expected_hash,
+        enable_intelligence_layer=False,
+        strict_validation=strict_validation,
+    )
+    factory._load_canonical_questionnaire()
+    if factory._canonical_questionnaire is None:
+        raise FactoryError("Canonical questionnaire not available")
+    return factory._canonical_questionnaire
+
+
+def get_questionnaire_resources(
+    questionnaire_path: str | Path | None = None,
+    expected_hash: str | None = None,
+    *,
+    strict_validation: bool = False,
+) -> tuple[CanonicalQuestionnaire, QuestionnaireSignalRegistry]:
+    """Return canonical questionnaire and signal registry via factory control."""
+    path_value = (
+        str(questionnaire_path)
+        if isinstance(questionnaire_path, Path)
+        else questionnaire_path
+    )
+    factory = AnalysisPipelineFactory(
+        questionnaire_path=path_value,
+        expected_questionnaire_hash=expected_hash,
+        enable_intelligence_layer=False,
+        strict_validation=strict_validation,
+    )
+    factory._load_canonical_questionnaire()
+    factory._build_signal_registry()
+    if factory._canonical_questionnaire is None or factory._signal_registry is None:
+        raise FactoryError("Questionnaire resources not available")
+    return factory._canonical_questionnaire, factory._signal_registry
+
 
 def create_analysis_pipeline(
     questionnaire_path: str | None = None,

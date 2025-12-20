@@ -10,7 +10,6 @@ This test validates that the aggregation pipeline:
 
 import pytest
 import sys
-import json
 from pathlib import Path
 from unittest.mock import Mock, MagicMock
 
@@ -29,14 +28,16 @@ from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_validation import
     validate_full_aggregation_pipeline,
     AggregationValidationError,
 )
+from orchestration.factory import get_canonical_questionnaire
 
 
 @pytest.fixture
 def real_monolith():
     """Load real questionnaire monolith."""
     monolith_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "questionnaire_monolith.json"
-    with open(monolith_path, 'r') as f:
-        return json.load(f)
+    return get_canonical_questionnaire(
+        questionnaire_path=monolith_path,
+    ).data
 
 
 @pytest.fixture

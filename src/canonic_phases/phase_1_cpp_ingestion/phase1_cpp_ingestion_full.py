@@ -64,6 +64,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Set
 
+from orchestration.factory import get_canonical_questionnaire
 # Core pipeline imports - REAL PATHS based on actual project structure
 # Phase 0/1 models from same directory
 from canonic_phases.Phase_zero.phase0_input_validation import CanonicalInput
@@ -599,7 +600,10 @@ class Phase1CPPIngestionFullContract:
             f"FATAL [PRE-008]: PDF integrity check failed. Expected {canonical_input.pdf_sha256}, got {actual_pdf_hash}"
         
         # [PRE-009] Verify questionnaire integrity
-        actual_q_hash = hashlib.sha256(canonical_input.questionnaire_path.read_bytes()).hexdigest()
+        canonical_questionnaire = get_canonical_questionnaire(
+            questionnaire_path=canonical_input.questionnaire_path,
+        )
+        actual_q_hash = canonical_questionnaire.sha256
         assert actual_q_hash == canonical_input.questionnaire_sha256.lower(), \
             f"FATAL [PRE-009]: Questionnaire integrity check failed. Expected {canonical_input.questionnaire_sha256}, got {actual_q_hash}"
         

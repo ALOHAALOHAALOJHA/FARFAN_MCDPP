@@ -33,7 +33,7 @@ except ImportError:
     import logging
     logger = logging.getLogger(__name__)
 
-from orchestration.factory import load_questionnaire, create_signal_registry
+from orchestration.factory import get_questionnaire_resources
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
 )
@@ -203,11 +203,9 @@ class ComprehensiveSignalAuditor:
                 logger.error("questionnaire_not_found", path=str(self.questionnaire_path))
                 return
             
-            # Load questionnaire
-            self.questionnaire = load_questionnaire(self.questionnaire_path)
-            
-            # Create signal registry
-            self.signal_registry = create_signal_registry(self.questionnaire)
+            self.questionnaire, self.signal_registry = get_questionnaire_resources(
+                questionnaire_path=self.questionnaire_path,
+            )
             
             logger.info(
                 "components_initialized",
@@ -567,4 +565,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

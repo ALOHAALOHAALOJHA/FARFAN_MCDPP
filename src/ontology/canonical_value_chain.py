@@ -3,12 +3,12 @@ Canonical value chain specification and validator.
 """
 from __future__ import annotations
 
-import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from orchestration.factory import get_canonical_questionnaire
 
 VALUE_CHAIN_DIMENSIONS: Dict[str, Dict[str, Any]] = {
     "DIM01": {
@@ -482,15 +482,14 @@ class ValidationResult:
     input_hashes: Dict[str, str]
 
 
-def _sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def validate_value_chain_spec(
     monolith_path: Path,
     output_path: Path,
 ) -> ValidationResult:
-    monolith = json.loads(monolith_path.read_text())
+    canonical_questionnaire = get_canonical_questionnaire(
+        questionnaire_path=monolith_path,
+    )
+    monolith = canonical_questionnaire.data
     micro_questions = monolith.get("blocks", {}).get("micro_questions", [])
     universe_expected = set()
     for mq in micro_questions:
@@ -521,7 +520,7 @@ def validate_value_chain_spec(
                         }
                     )
     passed = len(errors) == 0
-    input_hashes = {str(monolith_path): _sha256_file(monolith_path)}
+    input_hashes = {str(monolith_path): canonical_questionnaire.sha256}
     output = {
         "passed": passed,
         "errors": errors,

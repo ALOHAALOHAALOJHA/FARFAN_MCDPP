@@ -223,8 +223,8 @@ def build_signal_pack_from_monolith(
         SignalPack object with extracted patterns
 
     Example:
-        >>> from farfan_core.core.orchestrator.questionnaire import load_questionnaire
-        >>> canonical = load_questionnaire()
+        >>> from orchestration.factory import get_canonical_questionnaire
+        >>> canonical = get_canonical_questionnaire()
         >>> pack = build_signal_pack_from_monolith("PA01", questionnaire=canonical)
         >>> print(f"Patterns: {len(pack.patterns)}")
         >>> print(f"Indicators: {len(pack.indicators)}")
@@ -332,8 +332,8 @@ def build_all_signal_packs(
         Dict mapping policy_area_id to SignalPack
 
     Example:
-        >>> from farfan_core.core.orchestrator.questionnaire import load_questionnaire
-        >>> canonical = load_questionnaire()
+        >>> from orchestration.factory import get_canonical_questionnaire
+        >>> canonical = get_canonical_questionnaire()
         >>> packs = build_all_signal_packs(questionnaire=canonical)
         >>> print(f"Built {len(packs)} signal packs")
     """
@@ -375,8 +375,8 @@ def build_signal_manifests(
         Dict mapping policy_area_id to SignalManifest
 
     Example:
-        >>> from farfan_core.core.orchestrator.questionnaire import load_questionnaire
-        >>> canonical = load_questionnaire()
+        >>> from orchestration.factory import get_canonical_questionnaire
+        >>> canonical = get_canonical_questionnaire()
         >>> manifests = build_signal_manifests(questionnaire=canonical)
         >>> print(f"Built {len(manifests)} manifests")
     """

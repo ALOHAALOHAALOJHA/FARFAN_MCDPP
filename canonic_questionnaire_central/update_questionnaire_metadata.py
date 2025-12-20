@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from orchestration.factory import get_canonical_questionnaire
 # UPDATED: cuestionario_FIXED.json migrated to questionnaire_monolith.json
 QUESTIONNAIRE_FILES = [
     ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json",
@@ -113,7 +117,8 @@ def apply_updates(path: Path) -> bool:
     if not path.exists():
         return False
     changed = False
-    data = json.loads(path.read_text(encoding="utf-8"))
+    canonical_questionnaire = get_canonical_questionnaire(questionnaire_path=path)
+    data = json.loads(json.dumps(canonical_questionnaire.data, ensure_ascii=False))
 
     preguntas = data.get("preguntas_base", [])
     if isinstance(preguntas, list):

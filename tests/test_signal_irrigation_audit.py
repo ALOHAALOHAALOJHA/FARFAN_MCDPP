@@ -49,19 +49,25 @@ from cross_cutting_infrastructure.irrigation_using_signals.visualization_generat
     StateMachineGenerator,
     generate_visualizations,
 )
-from orchestration.factory import load_questionnaire, create_signal_registry
+from orchestration.factory import get_questionnaire_resources
 
 
 @pytest.fixture
-def sample_questionnaire():
+def questionnaire_and_registry():
+    """Load questionnaire and signal registry for testing."""
+    return get_questionnaire_resources()
+
+
+@pytest.fixture
+def sample_questionnaire(questionnaire_and_registry):
     """Load sample questionnaire for testing."""
-    return load_questionnaire()
+    return questionnaire_and_registry[0]
 
 
 @pytest.fixture
-def sample_registry(sample_questionnaire):
+def sample_registry(questionnaire_and_registry):
     """Create sample signal registry."""
-    return create_signal_registry(sample_questionnaire)
+    return questionnaire_and_registry[1]
 
 
 @pytest.fixture
@@ -440,4 +446,3 @@ class TestAccessAudit:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
-
