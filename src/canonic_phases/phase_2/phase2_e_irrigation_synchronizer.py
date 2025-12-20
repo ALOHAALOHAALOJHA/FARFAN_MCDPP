@@ -1336,7 +1336,6 @@ class IrrigationSynchronizer:
             )
         )
 
-    @synchronization_duration.time()
     def build_execution_plan(self) -> ExecutionPlan:
         """Build deterministic execution plan mapping questions to chunks.
 
@@ -1349,10 +1348,11 @@ class IrrigationSynchronizer:
         Raises:
             ValueError: If question data is invalid or chunk matrix lookup fails
         """
-        if self.chunk_matrix is not None:
-            return self._build_with_chunk_matrix()
-        else:
-            return self._build_with_legacy_chunks()
+        with synchronization_duration.time():
+            if self.chunk_matrix is not None:
+                return self._build_with_chunk_matrix()
+            else:
+                return self._build_with_legacy_chunks()
 
     def _build_with_chunk_matrix(self) -> ExecutionPlan:
         """Build execution plan using validated chunk matrix.
