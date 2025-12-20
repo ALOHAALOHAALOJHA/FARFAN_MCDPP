@@ -1407,8 +1407,6 @@ def get_method_dispensary_info() -> dict[str, Any]:
 
     # Load executor→methods mapping
     try:
-        import json
-        from pathlib import Path
         executors_methods_path = Path(__file__).parent / "executors_methods.json"
         if executors_methods_path.exists():
             with open(executors_methods_path) as f:
