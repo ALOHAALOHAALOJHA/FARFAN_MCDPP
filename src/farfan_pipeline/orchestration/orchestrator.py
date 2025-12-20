@@ -36,16 +36,10 @@ from canonic_phases.Phase_zero.paths import PROJECT_ROOT
 from canonic_phases.Phase_zero.paths import safe_join
 from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
 from canonic_phases.Phase_zero.exit_gates import GateResult
-from farfan_pipeline.resilience import (
-    CircuitBreaker,
-    CircuitBreakerConfig,
-    CircuitBreakerOpen,
-    CircuitState,
-)
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
-from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
+from canonic_phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
     AreaScore,
@@ -59,41 +53,40 @@ from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
     group_by,
     validate_scored_results,
 )
-from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
+from canonic_phases.Phase_four_five_six_seven.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
     enforce_validation_or_fail,
 )
-from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements import (
+from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
     enhance_aggregator,
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
     EnhancedClusterAggregator,
     EnhancedMacroAggregator,
 )
+from canonic_phases.Phase_two.executors import GenericContractExecutor
 from canonic_phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
 )
 from orchestration.class_registry import ClassRegistryError
-from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.executor_config import ExecutorConfig
 from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
-from canonic_phases.phase_3_scoring_transformation.phase3_signal_enriched_scoring import SignalEnrichedScorer
-from canonic_phases.phase_3_scoring_transformation.phase3_validation import (
+from canonic_phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
+from canonic_phases.Phase_three.validation import (
     ValidationCounters,
     validate_micro_results_input,
     validate_and_clamp_score,
     validate_quality_level,
     validate_evidence_presence,
 )
-from canonic_phases.phase_3_scoring_transformation.interface.phase3_entry_contract import MicroQuestionRun
-from canonic_phases.phase_3_scoring_transformation.interface.phase3_exit_contract import ScoredMicroQuestion
 
 logger = structlog.get_logger(__name__)
 _CORE_MODULE_DIR = Path(__file__).resolve().parent
@@ -321,6 +314,32 @@ class PhaseResult:
     aborted: bool = False
 
 
+@dataclass
+class MicroQuestionRun:
+    """Micro-question execution result."""
+    question_id: str
+    question_global: int
+    base_slot: str
+    metadata: dict[str, Any]
+    evidence: Evidence | None
+    error: str | None = None
+    duration_ms: float | None = None
+    aborted: bool = False
+
+
+@dataclass
+class ScoredMicroQuestion:
+    """Scored micro-question."""
+    question_id: str
+    question_global: int
+    base_slot: str
+    score: float | None
+    normalized_score: float | None
+    quality_level: str | None
+    evidence: Evidence | None
+    scoring_details: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
+    error: str | None = None
 
 
 # ============================================================================
@@ -380,7 +399,7 @@ class AbortSignal:
 # ============================================================================
 
 class ResourceLimits:
-    """Adaptive resource management with thread-safe budget prediction."""
+    """Adaptive resource management."""
     
     def __init__(
         self,
@@ -400,7 +419,6 @@ class ResourceLimits:
         self._semaphore: asyncio.Semaphore | None = None
         self._semaphore_limit = self._max_workers
         self._async_lock: asyncio.Lock | None = None
-        self._sync_lock = threading.RLock()  # For thread-safe access to _max_workers
         self._psutil = None
         self._psutil_process = None
         
@@ -413,8 +431,7 @@ class ResourceLimits:
     
     @property
     def max_workers(self) -> int:
-        with self._sync_lock:
-            return self._max_workers
+        return self._max_workers
     
     def attach_semaphore(self, semaphore: asyncio.Semaphore) -> None:
         """Attach semaphore for budget control."""
@@ -422,45 +439,26 @@ class ResourceLimits:
         self._semaphore_limit = self._max_workers
     
     async def apply_worker_budget(self) -> int:
-        """Apply worker budget to semaphore.
-        
-        Thread-safe: acquires both sync and async locks to prevent race conditions
-        between _predict_worker_budget() and this method.
-        """
+        """Apply worker budget to semaphore."""
         if self._semaphore is None:
-            with self._sync_lock:
-                return self._max_workers
+            return self._max_workers
         
         if self._async_lock is None:
             self._async_lock = asyncio.Lock()
         
-        # First acquire sync lock to read _max_workers safely
-        with self._sync_lock:
-            desired = self._max_workers
-        
         async with self._async_lock:
+            desired = self._max_workers
             current = self._semaphore_limit
             
             if desired > current:
-                # Increase capacity
                 for _ in range(desired - current):
                     self._semaphore.release()
-                logger.debug(f"Worker budget increased: {current} → {desired}")
             elif desired < current:
-                # Decrease capacity (must acquire slots first)
                 for _ in range(current - desired):
-                    try:
-                        await asyncio.wait_for(
-                            self._semaphore.acquire(),
-                            timeout=1.0
-                        )
-                    except asyncio.TimeoutError:
-                        logger.warning(f"Timeout acquiring semaphore slot for budget reduction")
-                        break
-                logger.debug(f"Worker budget decreased: {current} → {desired}")
+                    await self._semaphore.acquire()
             
             self._semaphore_limit = desired
-            return desired
+            return self._max_workers
     
     def _record_usage(self, usage: dict[str, float]) -> None:
         """Record usage and predict budget."""
@@ -468,30 +466,25 @@ class ResourceLimits:
         self._predict_worker_budget()
     
     def _predict_worker_budget(self) -> None:
-        """Adaptive worker budget prediction.
-        
-        Thread-safe: MUST be called with _sync_lock held via _record_usage().
-        Modifies _max_workers based on recent resource usage history.
-        """
+        """Adaptive worker budget prediction."""
         if len(self._usage_history) < 5:
             return
         
-        with self._sync_lock:
-            recent_cpu = [e["cpu_percent"] for e in list(self._usage_history)[-5:]]
-            recent_mem = [e["memory_percent"] for e in list(self._usage_history)[-5:]]
-            
-            avg_cpu = statistics.mean(recent_cpu)
-            avg_mem = statistics.mean(recent_mem)
-            
-            new_budget = self._max_workers
-            
-            if (self.max_cpu_percent and avg_cpu > self.max_cpu_percent * 0.95) or \
-               (self.max_memory_mb and avg_mem > 90.0):
-                new_budget = max(self.min_workers, self._max_workers - 1)
-            elif avg_cpu < self.max_cpu_percent * 0.6 and avg_mem < 70.0:
-                new_budget = min(self.hard_max_workers, self._max_workers + 1)
-            
-            self._max_workers = max(self.min_workers, min(new_budget, self.hard_max_workers))
+        recent_cpu = [e["cpu_percent"] for e in list(self._usage_history)[-5:]]
+        recent_mem = [e["memory_percent"] for e in list(self._usage_history)[-5:]]
+        
+        avg_cpu = statistics.mean(recent_cpu)
+        avg_mem = statistics.mean(recent_mem)
+        
+        new_budget = self._max_workers
+        
+        if (self.max_cpu_percent and avg_cpu > self.max_cpu_percent * 0.95) or \
+           (self.max_memory_mb and avg_mem > 90.0):
+            new_budget = max(self.min_workers, self._max_workers - 1)
+        elif avg_cpu < self.max_cpu_percent * 0.6 and avg_mem < 70.0:
+            new_budget = min(self.hard_max_workers, self._max_workers + 1)
+        
+        self._max_workers = max(self.min_workers, min(new_budget, self.hard_max_workers))
     
     def get_resource_usage(self) -> dict[str, float]:
         """Get current resource usage."""
@@ -899,95 +892,6 @@ async def execute_phase_with_timeout(
 
 
 # ============================================================================
-# ASYNC/SYNC BOUNDARY HELPERS
-# ============================================================================
-
-def run_async_safely(coro: Any, timeout: float | None = None) -> Any:
-    """Safely run an async coroutine from either sync or async context.
-    
-    This function enforces the canonical pathway for async execution:
-    - If called from sync context: Uses asyncio.run()
-    - If called from async context: Directly awaits the coroutine
-    - Prevents blocking the event loop in async contexts
-    
-    Args:
-        coro: Coroutine or coroutine function to execute
-        timeout: Optional timeout in seconds
-        
-    Returns:
-        Result from the coroutine execution
-        
-    Raises:
-        RuntimeError: If execution fails or times out
-        
-    Example:
-        >>> # From sync context
-        >>> result = run_async_safely(some_async_function())
-        >>> 
-        >>> # From async context
-        >>> result = await run_async_safely(some_async_function())
-    """
-    import inspect
-    
-    # Ensure we have a coroutine
-    if not inspect.iscoroutine(coro) and inspect.iscoroutinefunction(coro):
-        coro = coro()
-    
-    if not inspect.iscoroutine(coro):
-        raise TypeError(f"Expected coroutine, got {type(coro)}")
-    
-    # Detect if we're in an async context
-    try:
-        loop = asyncio.get_running_loop()
-        in_async_context = loop is not None and loop.is_running()
-    except RuntimeError:
-        in_async_context = False
-    
-    if in_async_context:
-        # Already in async context - this function becomes a coroutine
-        # Caller must await it
-        raise RuntimeError(
-            "run_async_safely() called from async context. "
-            "You must use 'await run_async_safely(coro)' instead of 'run_async_safely(coro)'."
-        )
-    else:
-        # Sync context - safe to use asyncio.run()
-        if timeout:
-            async def _with_timeout():
-                return await asyncio.wait_for(coro, timeout=timeout)
-            return asyncio.run(_with_timeout())
-        else:
-            return asyncio.run(coro)
-
-
-async def run_async_safely_async(coro: Any, timeout: float | None = None) -> Any:
-    """Async version of run_async_safely for use within async contexts.
-    
-    This ensures consistent behavior whether called from sync or async context.
-    
-    Args:
-        coro: Coroutine or coroutine function to execute
-        timeout: Optional timeout in seconds
-        
-    Returns:
-        Result from the coroutine execution
-    """
-    import inspect
-    
-    # Ensure we have a coroutine
-    if not inspect.iscoroutine(coro) and inspect.iscoroutinefunction(coro):
-        coro = coro()
-    
-    if not inspect.iscoroutine(coro):
-        raise TypeError(f"Expected coroutine, got {type(coro)}")
-    
-    if timeout:
-        return await asyncio.wait_for(coro, timeout=timeout)
-    else:
-        return await coro
-
-
-# ============================================================================
 # METHOD EXECUTOR
 # ============================================================================
 
@@ -1257,7 +1161,6 @@ class Orchestrator:
         runtime_config: RuntimeConfig | None = None,
         phase0_validation: Phase0ValidationResult | None = None,
         calibration_orchestrator: Any | None = None,
-        calibration_policy: Any | None = None,
         resource_limits: ResourceLimits | None = None,
         resource_snapshot_interval: int = 10,
         recommendation_engine_port: RecommendationEnginePort | None = None,
@@ -1265,16 +1168,14 @@ class Orchestrator:
     ) -> None:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
-        from canonic_phases.Phase_two.calibration_policy import create_default_policy
-        from canonic_phases.Phase_zero.runtime_config import RuntimeConfig as _RuntimeConfig
         
         validate_phase_definitions(self.FASES, self.__class__)
-
+        
         self.executor = method_executor
         self._canonical_questionnaire = questionnaire
         self._monolith_data = dict(questionnaire.data)
         self.executor_config = executor_config
-        self.runtime_config = runtime_config or _RuntimeConfig.from_env()
+        self.runtime_config = runtime_config
         self.phase0_validation = phase0_validation
         
         if phase0_validation is not None:
@@ -1293,11 +1194,11 @@ class Orchestrator:
                 summary=phase0_validation.get_summary()
             )
         
-        if self.runtime_config is not None:
+        if runtime_config is not None:
             logger.info(
                 "orchestrator_runtime_mode",
-                mode=self.runtime_config.mode.value,
-                strict=self.runtime_config.is_strict_mode(),
+                mode=runtime_config.mode.value,
+                strict=runtime_config.is_strict_mode(),
                 category="phase0_integration"
             )
         else:
@@ -1312,10 +1213,6 @@ class Orchestrator:
             logger.info("CalibrationOrchestrator injected into main orchestrator")
         else:
             self.calibration_orchestrator = None
-        
-        strict_calibration = self.runtime_config.is_strict_mode() if self.runtime_config else False
-        self.calibration_policy = calibration_policy or create_default_policy(strict_mode=strict_calibration)
-        logger.info(f"CalibrationPolicy initialized (strict_mode={strict_calibration})")
         
         self.resource_limits = resource_limits or ResourceLimits()
         self.resource_snapshot_interval = max(1, resource_snapshot_interval)
@@ -1335,73 +1232,51 @@ class Orchestrator:
             raise RuntimeError("MethodExecutor must have signal_registry")
         
         # Validate signal registry health before execution
-        signal_validation_result_raw = self.executor.signal_registry.validate_signals_for_questionnaire(
+        signal_validation_result = self.executor.signal_registry.validate_signals_for_questionnaire(
             expected_question_count=EXPECTED_QUESTION_COUNT
         )
         
         # In production mode, enforce strict validation
         is_prod_mode = (
-            self.runtime_config is not None
-            and hasattr(self.runtime_config, "mode")
-            and self.runtime_config.mode.value == "prod"
+            runtime_config is not None 
+            and hasattr(runtime_config, "mode")
+            and runtime_config.mode.value == "prod"
         )
         
-        if not isinstance(signal_validation_result_raw, dict):
+        if not signal_validation_result["valid"]:
             error_msg = (
-                "Signal registry validation returned an unsupported type: "
-                f"{type(signal_validation_result_raw).__name__}"
+                f"Signal registry validation failed: "
+                f"{len(signal_validation_result['missing_questions'])} questions missing signals, "
+                f"{len(signal_validation_result['malformed_signals'])} questions with malformed signals"
             )
+            
             logger.error(
-                "orchestrator_signal_validation_invalid_result",
-                result_type=type(signal_validation_result_raw).__name__,
+                "orchestrator_signal_validation_failed",
+                validation_result=signal_validation_result,
                 is_prod_mode=is_prod_mode,
             )
+            
             if is_prod_mode:
-                raise RuntimeError(error_msg)
-            logger.warning(
-                "orchestrator_signal_validation_warning",
-                message=f"{error_msg}. Continuing in non-production mode.",
-            )
-        else:
-            signal_validation_result = signal_validation_result_raw
-            valid = bool(signal_validation_result.get("valid", True))
-
-            if not valid:
-                missing_questions = signal_validation_result.get("missing_questions", [])
-                malformed_signals = signal_validation_result.get("malformed_signals", {})
-                error_msg = (
-                    "Signal registry validation failed: "
-                    f"{len(missing_questions)} questions missing signals, "
-                    f"{len(malformed_signals)} questions with malformed signals"
+                raise RuntimeError(
+                    f"{error_msg}. "
+                    f"Production mode requires complete signal coverage. "
+                    f"Missing questions: {signal_validation_result['missing_questions'][:10]}, "
+                    f"Coverage: {signal_validation_result['coverage_percentages']}"
                 )
-
-                logger.error(
-                    "orchestrator_signal_validation_failed",
-                    validation_result=signal_validation_result,
-                    is_prod_mode=is_prod_mode,
-                )
-
-                if is_prod_mode:
-                    raise RuntimeError(
-                        f"{error_msg}. "
-                        "Production mode requires complete signal coverage. "
-                        f"Missing questions: {missing_questions[:10]}, "
-                        f"Coverage: {signal_validation_result.get('coverage_percentages')}"
-                    )
-
+            else:
                 logger.warning(
                     "orchestrator_signal_validation_warning",
                     message=f"{error_msg}. Continuing in non-production mode.",
-                    missing_count=len(missing_questions),
-                    malformed_count=len(malformed_signals),
+                    missing_count=len(signal_validation_result['missing_questions']),
+                    malformed_count=len(signal_validation_result['malformed_signals']),
                 )
-            else:
-                logger.info(
-                    "orchestrator_signal_validation_passed",
-                    total_questions=signal_validation_result.get("total_questions"),
-                    coverage=signal_validation_result.get("coverage_percentages"),
-                    elapsed_seconds=signal_validation_result.get("elapsed_seconds"),
-                )
+        else:
+            logger.info(
+                "orchestrator_signal_validation_passed",
+                total_questions=signal_validation_result["total_questions"],
+                coverage=signal_validation_result["coverage_percentages"],
+                elapsed_seconds=signal_validation_result["elapsed_seconds"],
+            )
         
         try:
             _validate_questionnaire_structure(self._monolith_data)
@@ -1411,6 +1286,9 @@ class Orchestrator:
         if not self.executor.instances:
             raise RuntimeError("MethodExecutor.instances is empty")
         
+        # REMOVED: self.executors dictionary - now using GenericContractExecutor
+        # with direct question_id loading for all 309 contracts (Q001-Q309)
+        
         self.abort_signal = AbortSignal()
         self.phase_results: list[PhaseResult] = []
         self._phase_instrumentation: dict[int, PhaseInstrumentation] = {}
@@ -1419,19 +1297,6 @@ class Orchestrator:
         self._context: dict[str, Any] = {}
         self._start_time: float | None = None
         self._execution_plan: ExecutionPlan | None = None
-        
-        # Circuit breaker for Phase 2 micro-question execution
-        # Protects against systematic failures (e.g., LLM rate limiting)
-        # 5% error budget: 15 failures out of 300 micro-questions
-        self._phase2_circuit_breaker = CircuitBreaker(
-            config=CircuitBreakerConfig(
-                failure_threshold=5,
-                error_rate_threshold=0.05,  # 5% of 300 = 15 failures max
-                window_size=50,
-                timeout_seconds=60.0,
-                success_threshold=3,
-            )
-        )
         
         self.dependency_lockdown = get_dependency_lockdown()
         logger.info(f"Orchestrator initialized: {self.dependency_lockdown.get_mode_description()}")
@@ -1595,18 +1460,18 @@ class Orchestrator:
             
             try:
                 if mode == "sync":
-                    # ALL sync phases must use asyncio.to_thread to avoid blocking event loop
-                    # This is the canonical pathway for executing sync handlers in async context
-                    data = await execute_phase_with_timeout(
-                        phase_id=phase_id,
-                        phase_name=phase_label,
-                        timeout_s=self._get_phase_timeout(phase_id),
-                        handler=handler,
-                        args=tuple(args),
-                        instrumentation=instrumentation,
-                    )
+                    if phase_id in TIMEOUT_SYNC_PHASES:
+                        data = await execute_phase_with_timeout(
+                            phase_id=phase_id,
+                            phase_name=phase_label,
+                            timeout_s=self._get_phase_timeout(phase_id),
+                            coro=asyncio.to_thread,
+                            args=(handler,) + tuple(args),
+                            instrumentation=instrumentation,
+                        )
+                    else:
+                        data = handler(*args)
                 else:
-                    # Async phases can be executed directly
                     data = await execute_phase_with_timeout(
                         phase_id=phase_id,
                         phase_name=phase_label,
@@ -1727,34 +1592,13 @@ class Orchestrator:
     def process_development_plan(
         self, pdf_path: str, preprocessed_document: Any | None = None
     ) -> list[PhaseResult]:
-        """Synchronous entry point for pipeline execution.
-        
-        This method enforces the async/sync boundary by detecting if it's called
-        from within an async context and raising a clear error if so.
-        
-        Args:
-            pdf_path: Path to the PDF document to analyze
-            preprocessed_document: Optional preprocessed document to use
-            
-        Returns:
-            List of PhaseResult objects for each phase executed
-            
-        Raises:
-            RuntimeError: If called from within an async context. Use
-                         process_development_plan_async() instead.
-        """
         try:
             loop = asyncio.get_running_loop()
         except RuntimeError:
-            # No event loop running - safe to proceed
             loop = None
         
         if loop and loop.is_running():
-            raise RuntimeError(
-                "Cannot call process_development_plan() from within an async context. "
-                "This would block the event loop and cause deadlock. "
-                "Use 'await process_development_plan_async()' instead."
-            )
+            raise RuntimeError("Cannot call from within async context")
         
         return asyncio.run(self.process_development_plan_async(pdf_path, preprocessed_document))
     
@@ -1864,8 +1708,6 @@ class Orchestrator:
     def export_metrics(self) -> dict[str, Any]:
         abort_timestamp = self.abort_signal.get_timestamp()
         
-        calibration_metrics = self.calibration_policy.get_metrics_summary()
-        
         return {
             "timestamp": datetime.utcnow().isoformat(),
             "manifest": self._build_execution_manifest(),
@@ -1877,17 +1719,7 @@ class Orchestrator:
                 "timestamp": abort_timestamp.isoformat() if abort_timestamp else None,
             },
             "phase_status": dict(self._phase_status),
-            "calibration_metrics": calibration_metrics,
-            "calibration_detailed": self.calibration_policy.export_metrics() if calibration_metrics["total_metrics"] > 0 else [],
         }
-    
-    def get_calibration_summary(self) -> dict[str, Any]:
-        """Get calibration influence summary.
-        
-        Returns:
-            Summary of calibration metrics and drift detection
-        """
-        return self.calibration_policy.get_metrics_summary()
     
     def calibrate_method(
         self,
@@ -2132,8 +1964,8 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
         
         try:
-            from farfan_pipeline.phases.Phase_zero.phase0_input_validation import CanonicalInput
-            from canonic_phases.phase_1_cpp_ingestion import (
+            from canonic_phases.Phase_one import (
+                CanonicalInput,
                 execute_phase_1_with_full_contract,
                 CanonPolicyPackage,
             )
@@ -2192,81 +2024,20 @@ class Orchestrator:
             if not isinstance(canon_package, CanonPolicyPackage):
                 raise ValueError(f"Phase 1 returned invalid type: {type(canon_package)}")
             
-            # CONSTITUTIONAL INVARIANT: Exactly 60 chunks
             actual_chunk_count = len(canon_package.chunk_graph.chunks)
             if actual_chunk_count != P01_EXPECTED_CHUNK_COUNT:
                 raise ValueError(
-                    f"CONSTITUTIONAL VIOLATION (POST-01): Expected {P01_EXPECTED_CHUNK_COUNT} chunks, "
-                    f"got {actual_chunk_count}. Phase 1 failed to produce required 60-chunk CPP."
+                    f"P01 validation failed: expected {P01_EXPECTED_CHUNK_COUNT} chunks, "
+                    f"got {actual_chunk_count}"
                 )
             
-            # POST-02: All chunks have valid PA and Dimension
-            policy_areas = set()
-            dimensions = set()
-            pa_dim_coverage = set()
             for i, chunk in enumerate(canon_package.chunk_graph.chunks):
                 if not hasattr(chunk, "policy_area") or not chunk.policy_area:
-                    raise ValueError(f"POST-02 violation: Chunk {i} ({getattr(chunk, 'chunk_id', 'unknown')}) missing policy_area")
+                    raise ValueError(f"Chunk {i} missing policy_area")
                 if not hasattr(chunk, "dimension") or not chunk.dimension:
-                    raise ValueError(f"POST-02 violation: Chunk {i} ({getattr(chunk, 'chunk_id', 'unknown')}) missing dimension")
-                
-                policy_areas.add(chunk.policy_area)
-                dimensions.add(chunk.dimension)
-                pa_dim_coverage.add((chunk.policy_area, chunk.dimension))
+                    raise ValueError(f"Chunk {i} missing dimension")
             
-            # Verify 10 Policy Areas
-            if len(policy_areas) != 10:
-                raise ValueError(
-                    f"CONSTITUTIONAL VIOLATION: Expected 10 Policy Areas, got {len(policy_areas)}. "
-                    f"Policy Areas: {sorted(policy_areas)}"
-                )
-            
-            # Verify 6 Dimensions
-            if len(dimensions) != 6:
-                raise ValueError(
-                    f"CONSTITUTIONAL VIOLATION: Expected 6 Dimensions, got {len(dimensions)}. "
-                    f"Dimensions: {sorted(dimensions)}"
-                )
-            
-            # Verify complete PA×Dimension grid coverage (10×6 = 60)
-            if len(pa_dim_coverage) != 60:
-                raise ValueError(
-                    f"CONSTITUTIONAL VIOLATION: Expected 60 unique PA×Dimension combinations, "
-                    f"got {len(pa_dim_coverage)}. Coverage incomplete."
-                )
-            
-            # POST-03: DAG acyclicity check
-            edges = canon_package.chunk_graph.edges
-            visited = set()
-            rec_stack = set()
-            
-            def has_cycle(node_id: str) -> bool:
-                visited.add(node_id)
-                rec_stack.add(node_id)
-                for edge in edges:
-                    if edge.source_id == node_id:
-                        target = edge.target_id
-                        if target not in visited:
-                            if has_cycle(target):
-                                return True
-                        elif target in rec_stack:
-                            return True
-                rec_stack.remove(node_id)
-                return False
-            
-            for chunk in canon_package.chunk_graph.chunks:
-                chunk_id = getattr(chunk, 'chunk_id', None)
-                if chunk_id and chunk_id not in visited:
-                    if has_cycle(chunk_id):
-                        raise ValueError(
-                            f"POST-03 violation: Chunk graph contains cycle starting at {chunk_id}. "
-                            f"DAG property violated."
-                        )
-            
-            logger.info(
-                f"✓ Phase 1 constitutional invariants verified: {actual_chunk_count} chunks, "
-                f"{len(policy_areas)} PAs, {len(dimensions)} Dims, DAG acyclic"
-            )
+            logger.info(f"✓ P01-ES v1.0 validation passed: {actual_chunk_count} chunks")
             return canon_package
             
         except Exception as e:
@@ -2313,9 +2084,6 @@ class Orchestrator:
         """
         self._ensure_not_aborted()
         instrumentation = self._phase_instrumentation[2]
-
-        if self._execution_plan is None and self.runtime_config.mode == RuntimeMode.PROD:
-            raise RuntimeError("Execution plan missing")
         
         # Use execution_plan if available, fallback to legacy config-based approach
         if self._execution_plan is not None:
@@ -2328,15 +2096,14 @@ class Orchestrator:
             tasks_executed = set()
             tasks_failed = set()
             
-            for task_index, task in enumerate(tasks):
+            for idx, task in enumerate(tasks):
                 self._ensure_not_aborted()
-                
-                # Resource limit checks every 10 tasks (MERGED from feature branch)
-                if task_index > 0 and task_index % 10 == 0:
+
+                # Resource limit checks every 10 tasks in long-running Phase 2
+                if idx > 0 and idx % 10 == 0:
                     await self._check_and_enforce_resource_limits(
-                        2, f"FASE 2 - Task {task_index}/{len(tasks)}"
+                        2, f"FASE 2 - Task {idx}/{len(tasks)}"
                     )
-                
                 task_id = task.task_id
                 start_q = time.perf_counter()
                 
@@ -2387,67 +2154,39 @@ class Orchestrator:
                         aborted=False
                     ))
                     continue
-                
+
+                # Use GenericContractExecutor with question_id for direct contract loading
+                question_id = question.get("id")
+                if not question_id:
+                    error_msg = f"Task {task_id}: Question missing 'id' field"
+                    logger.warning(error_msg)
+                    task_status[task_id] = "failed"
+                    tasks_failed.add(task_id)
+                    instrumentation.record_error("question_missing_id", task_id)
+                    
+                    results.append(MicroQuestionRun(
+                        question_id="UNKNOWN",
+                        question_global=question.get("global_id", UNKNOWN_QUESTION_GLOBAL),
+                        base_slot=base_slot,
+                        metadata={"task_id": task_id, "error": "question_missing_id"},
+                        evidence=None,
+                        error=error_msg,
+                        aborted=False
+                    ))
+                    continue
+
                 try:
-                    # Circuit breaker check - fail fast if error rate too high
-                    if not self._phase2_circuit_breaker.can_execute():
-                        time_until_retry = self._phase2_circuit_breaker.config.timeout_seconds - (
-                            time.monotonic() - self._phase2_circuit_breaker.last_failure_time
-                        )
-                        raise CircuitBreakerOpen("phase2_micro_questions", time_until_retry)
-
-                    # 300-CONTRACT MODEL: Load contract directly by question_id
-                    # This replaces the old 30-executor pattern from executors.py
-                    from canonic_phases.Phase_two.base_executor_with_contract import DynamicContractExecutor
-
-                    question_id = question.get("id")
-                    if not question_id:
-                        error_msg = f"Task {task_id}: question missing 'id' field"
-                        logger.error(error_msg)
-                        task_status[task_id] = "failed"
-                        tasks_failed.add(task_id)
-                        instrumentation.record_error("missing_question_id", task_id)
-                        results.append(
-                            MicroQuestionRun(
-                                question_id=None,
-                                question_global=question.get("global_id"),
-                                base_slot=base_slot,
-                                metadata={"task_id": task_id, "error": "missing_question_id"},
-                                evidence=None,
-                                error=error_msg,
-                                aborted=False,
-                            )
-                        )
-                        continue
-
-                    try:
-                        instance = DynamicContractExecutor(
-                            question_id=question_id,
-                            method_executor=self.executor,
-                            signal_registry=self.executor.signal_registry,
-                            config=self.executor_config,
-                            questionnaire_provider=self._canonical_questionnaire,
-                            calibration_orchestrator=self.calibration_orchestrator,
-                            enriched_packs=self._enriched_packs or {},
-                        )
-                    except FileNotFoundError as e:
-                        error_msg = f"Task {task_id}: Contract not found for question '{question_id}': {e}"
-                        logger.error(error_msg)
-                        task_status[task_id] = "failed"
-                        tasks_failed.add(task_id)
-                        instrumentation.record_error("contract_not_found", task_id)
-                        results.append(
-                            MicroQuestionRun(
-                                question_id=question_id,
-                                question_global=question.get("global_id"),
-                                base_slot=base_slot,
-                                metadata={"task_id": task_id, "error": "contract_not_found"},
-                                evidence=None,
-                                error=error_msg,
-                                aborted=False,
-                            )
-                        )
-                        continue
+                    # Create GenericContractExecutor with question_id
+                    # This loads the contract from executor_contracts/specialized/{question_id}.v3.json
+                    instance = GenericContractExecutor(
+                        method_executor=self.executor,
+                        signal_registry=getattr(self.executor, "signal_registry", None),
+                        config=self.executor_config,
+                        questionnaire_provider=self._canonical_questionnaire,
+                        question_id=question_id,  # Direct contract loading by question_id
+                        calibration_orchestrator=self.calibration_orchestrator,
+                        enriched_packs=self._enriched_packs or {},
+                    )
 
                     # Validate dimension_id consistency
                     question_dimension = question.get("dimension_id")
@@ -2522,39 +2261,11 @@ class Orchestrator:
 
                     logger.debug(f"Task {task_id} completed successfully in {duration:.2f}ms")
 
-                except CircuitBreakerOpen as cb_error:
-                    # Circuit breaker is open - fail fast
-                    logger.error(
-                        f"Circuit breaker OPEN for Phase 2 - stopping execution. "
-                        f"Retry in {cb_error.time_until_retry:.1f}s. "
-                        f"Stats: {self._phase2_circuit_breaker.get_stats()}"
-                    )
-                    task_status[task_id] = "failed"
-                    tasks_failed.add(task_id)
-                    instrumentation.record_error("circuit_breaker_open", task_id)
-                    
-                    results.append(MicroQuestionRun(
-                        question_id=question.get("id"),
-                        question_global=question.get("global_id"),
-                        base_slot=base_slot,
-                        metadata={"task_id": task_id, "error": "circuit_breaker_open"},
-                        evidence=None,
-                        error=str(cb_error),
-                        aborted=False
-                    ))
-                    
-                    # Abort pipeline when circuit breaker opens
-                    self.request_abort(str(cb_error))
-                    break
-                    
                 except Exception as e:
                     logger.error(f"Task {task_id}: Executor {base_slot} failed: {e}", exc_info=True)
                     task_status[task_id] = "failed"
                     tasks_failed.add(task_id)
                     instrumentation.record_error("execution", f"{task_id}: {str(e)}")
-                    
-                    # Record failure in circuit breaker
-                    self._phase2_circuit_breaker.record_failure(e)
                     
                     results.append(MicroQuestionRun(
                         question_id=question.get("id"),
@@ -2574,13 +2285,13 @@ class Orchestrator:
                 instrumentation.record_error("orphan_tasks", str(len(orphan_tasks)))
                 # Orphan tasks indicate a serious logic error - fail in all modes
                 # In PROD mode, this is a hard failure; in DEV, log as critical warning
-                if self.runtime_config.mode == RuntimeMode.PROD:
+                if self.runtime_config.mode == RuntimeMode.PRODUCTION:
                     self.request_abort(error_msg)
                 else:
                     logger.critical(f"DEVELOPMENT MODE WARNING: {error_msg}")
             
             # In PROD mode, fail Phase 2 if any tasks failed
-            if tasks_failed and self.runtime_config.mode == RuntimeMode.PROD:
+            if tasks_failed and self.runtime_config.mode == RuntimeMode.PRODUCTION:
                 error_msg = f"Phase 2 failed: {len(tasks_failed)} tasks failed in PROD mode"
                 logger.error(error_msg)
                 self.request_abort(error_msg)
@@ -2605,14 +2316,30 @@ class Orchestrator:
                 self._ensure_not_aborted()
                 start_q = time.perf_counter()
 
+                question_id = question.get("id")
+                if not question_id:
+                    logger.warning(f"Question missing 'id': {question}")
+                    continue
+
                 base_slot = question.get("base_slot")
                 if not base_slot:
-                    logger.warning(f"Question missing base_slot: {question.get('id')}")
+                    logger.warning(f"Question missing base_slot: {question_id}")
                     continue
 
                 try:
+                    # Use GenericContractExecutor with question_id
+                    instance = GenericContractExecutor(
+                        method_executor=self.executor,
+                        signal_registry=self.executor.signal_registry,
+                        config=self.executor_config,
+                        questionnaire_provider=self._canonical_questionnaire,
+                        question_id=question_id,  # Direct contract loading
+                        calibration_orchestrator=self.calibration_orchestrator,
+                        enriched_packs=self._enriched_packs or {},
+                    )
+
                     q_context = {
-                        "question_id": question.get("id"),
+                        "question_id": question_id,
                         "question_global": question.get("global_id"),
                         "base_slot": base_slot,
                         "patterns": question.get("patterns", []),
@@ -2623,18 +2350,16 @@ class Orchestrator:
                         }
                     }
 
-                    # Execute via MethodExecutor using contracts (fallback path)
-                    result_data = {
-                        "metadata": {"base_slot": base_slot},
-                        "evidence": f"Fallback execution for {base_slot}",
-                    }
-                    
-                    # TODO: Implement proper contract-based execution for fallback path
+                    result_data = instance.execute(
+                        document=document,
+                        method_executor=self.executor,
+                        question_context=q_context
+                    )
 
                     duration = (time.perf_counter() - start_q) * 1000
 
                     run_result = MicroQuestionRun(
-                        question_id=question.get("id"),
+                        question_id=question_id,
                         question_global=question.get("global_id"),
                         base_slot=base_slot,
                         metadata=result_data.get("metadata", {}),
@@ -3366,8 +3091,4 @@ __all__ = [
     "ScoredMicroQuestion",
     "Evidence",
     "MacroEvaluation",
-    "run_async_safely",
-    "run_async_safely_async",
-    "execute_phase_with_timeout",
-    "PhaseTimeoutError",
 ]

@@ -729,10 +729,16 @@ class AnalysisPipelineFactory:
                         logger.warning("base_pack_missing policy_area=%s", policy_area_id)
                         continue
 
+                    base_metadata = getattr(base_pack, "metadata", {}) or {}
+                    pattern_specs = base_metadata.get("pattern_specs", [])
+                    if not isinstance(pattern_specs, list):
+                        pattern_specs = []
+
                     # Create enriched pack (semantic expansion + context filtering)
+                    # NOTE: EnrichedSignalPack expects dict-based pattern specs, not raw strings.
                     enriched_pack = create_enriched_signal_pack(
-                        base_pack=base_pack,
-                        questionnaire=self._canonical_questionnaire,
+                        base_signal_pack={"patterns": pattern_specs},
+                        enable_semantic_expansion=True,
                     )
 
                     enriched_packs[policy_area_id] = enriched_pack

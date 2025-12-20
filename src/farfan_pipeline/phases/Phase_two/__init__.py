@@ -1,16 +1,20 @@
-"""Orchestrator utilities with contract validation on import.
+"""Phase 2: Analysis & Question Execution - Contract-Driven Processing.
 
-PHASE_LABEL: Phase 2
-PHASE_COMPONENT: Phase 2 Orchestration Utilities
-PHASE_ROLE: Provides import interface for Phase 2 orchestration components
+This phase implements contract-driven question execution with evidence assembly,
+narrative synthesis, and SISAS integration for deterministic policy analysis.
+
+Architecture:
+- 309 individual question contracts (Q001-Q309.v3.json)
+- BaseExecutorWithContract loads contracts by question_id
+- NO hardcoded D1Q1-D6Q5 executor classes
+- Direct contract execution without class intermediaries
 """
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-# NEW: Evidence processing - REAL PATH: canonic_phases.Phase_two.evidence_nexus
-# Replaces evidence_assembler, evidence_validator, evidence_registry
+# Evidence processing - EvidenceNexus for causal graph construction
 from canonic_phases.Phase_two.evidence_nexus import (
     EvidenceNexus,
     EvidenceGraph,
@@ -18,34 +22,28 @@ from canonic_phases.Phase_two.evidence_nexus import (
     process_evidence,
 )
 
-# NEW: Narrative synthesis - REAL PATH: canonic_phases.Phase_two.carver
+# Narrative synthesis - Doctoral Carver for PhD-level responses
 from canonic_phases.Phase_two.carver import (
     DoctoralCarverSynthesizer,
     CarverAnswer,
 )
 
-# Executor config - REAL PATH: canonic_phases.Phase_two.executor_config
-from canonic_phases.Phase_two.executor_config import ExecutorConfig
+# Executor configuration and base class
+from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.executors.base_executor_with_contract import (
+    BaseExecutorWithContract,
+)
 
 __all__ = [
-    # NEW: Evidence processing (EvidenceNexus)
+    # Evidence processing (EvidenceNexus)
     "EvidenceNexus",
     "EvidenceGraph",
     "EvidenceNode",
     "process_evidence",
-    # NEW: Narrative synthesis (Carver)
+    # Narrative synthesis (Carver)
     "DoctoralCarverSynthesizer",
     "CarverAnswer",
-    # Orchestration core
-    "Orchestrator",
-    "MethodExecutor",
-    "Evidence",
-    "AbortSignal",
-    "AbortRequested",
-    "ResourceLimits",
-    "PhaseInstrumentation",
-    "PhaseResult",
-    "MicroQuestionRun",
-    "ScoredMicroQuestion",
+    # Executor configuration
     "ExecutorConfig",
+    "BaseExecutorWithContract",
 ]

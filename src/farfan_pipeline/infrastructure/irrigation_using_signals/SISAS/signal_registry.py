@@ -79,6 +79,7 @@ stdlib_logger = logging.getLogger(__name__)
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
+from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
     create_enhancement_integrator,
     SignalEnhancementIntegrator
@@ -354,6 +355,73 @@ class MicroAnsweringSignalPack(BaseModel):
         default_factory=dict, description="Additional metadata"
     )
 
+    @property
+    def question_id(self) -> str | None:
+        question_id = self.metadata.get("question_id")
+        return str(question_id) if question_id else None
+
+    @property
+    def policy_area_id(self) -> str | None:
+        policy_area = self.metadata.get("policy_area")
+        return str(policy_area) if policy_area else None
+
+    @property
+    def patterns(self) -> list[str]:
+        question_id = self.question_id
+        if question_id and question_id in self.question_patterns:
+            patterns = self.question_patterns[question_id]
+        else:
+            patterns = [
+                pattern
+                for pattern_list in self.question_patterns.values()
+                for pattern in pattern_list
+            ]
+        return [p.pattern for p in patterns]
+
+    @property
+    def pattern_specs(self) -> list[dict[str, Any]]:
+        question_id = self.question_id
+        if question_id and question_id in self.question_patterns:
+            patterns = self.question_patterns[question_id]
+        else:
+            patterns = [
+                pattern
+                for pattern_list in self.question_patterns.values()
+                for pattern in pattern_list
+            ]
+
+        policy_area = self.policy_area_id
+        return [
+            {
+                "id": p.id,
+                "pattern": p.pattern,
+                "match_type": p.match_type,
+                "confidence_weight": p.confidence_weight,
+                "category": p.category,
+                "flags": p.flags,
+                "semantic_expansion": p.semantic_expansion,
+                "context_requirement": p.context_requirement,
+                "evidence_boost": p.evidence_boost,
+                "policy_area": policy_area,
+                "question_id": question_id,
+            }
+            for p in patterns
+        ]
+
+    @property
+    def indicators(self) -> list[str]:
+        policy_area = self.policy_area_id
+        if policy_area and policy_area in self.indicators_by_pa:
+            return list(self.indicators_by_pa[policy_area])
+        if self.indicators_by_pa:
+            first_key = sorted(self.indicators_by_pa.keys())[0]
+            return list(self.indicators_by_pa.get(first_key, []))
+        return []
+
+    @property
+    def entities(self) -> list[str]:
+        return list(self.official_sources)
+
 
 class ValidationSignalPack(BaseModel):
     """Type-safe signal pack for Response Validation."""
@@ -437,6 +505,16 @@ class ScoringSignalPack(BaseModel):
     metadata: dict[str, Any] = Field(
         default_factory=dict, description="Additional metadata"
     )
+
+    @property
+    def question_id(self) -> str | None:
+        question_id = self.metadata.get("question_id")
+        return str(question_id) if question_id else None
+
+    @property
+    def scoring_modality(self) -> str:
+        modality = self.metadata.get("modality")
+        return str(modality) if modality else "UNKNOWN"
 
 
 # ============================================================================
@@ -696,6 +774,7 @@ class QuestionnaireSignalRegistry:
         self._validation_cache: dict[str, ValidationSignalPack] = {}
         self._assembly_cache: dict[str, AssemblySignalPack] = {}
         self._scoring_cache: dict[str, ScoringSignalPack] = {}
+        self._policy_area_cache: dict[str, SignalPack] = {}
         
         # Metrics
         self._metrics = RegistryMetrics()
@@ -750,6 +829,47 @@ class QuestionnaireSignalRegistry:
     # ========================================================================
     # PUBLIC API: Signal Pack Getters
     # ========================================================================
+
+    def get_all_policy_areas(self) -> list[str]:
+        policy_areas = self._questionnaire.data.get("canonical_notation", {}).get("policy_areas", {})
+        if isinstance(policy_areas, dict) and policy_areas:
+            return sorted(str(k) for k in policy_areas.keys())
+
+        blocks = dict(self._questionnaire.data.get("blocks", {}))
+        micro_questions = blocks.get("micro_questions", [])
+        derived = {
+            str(q.get("policy_area_id"))
+            for q in micro_questions
+            if isinstance(q, dict) and q.get("policy_area_id")
+        }
+        return sorted(derived)
+
+    def get_signal_pack(self, policy_area_id: PolicyArea) -> SignalPack:
+        pack = self.get(str(policy_area_id))
+        if pack is None:
+            raise SignalExtractionError("policy_area_pack", f"Missing signal pack for {policy_area_id}")
+        return pack
+
+    def get(self, policy_area_id: str, default: SignalPack | None = None) -> SignalPack | None:
+        if policy_area_id in self._policy_area_cache:
+            self._metrics.cache_hits += 1
+            return self._policy_area_cache[policy_area_id]
+
+        self._metrics.cache_misses += 1
+        try:
+            pack = self._build_policy_area_signal_pack(policy_area_id)
+        except Exception as e:
+            self._metrics.errors += 1
+            logger.error(
+                "policy_area_pack_build_failed",
+                policy_area_id=policy_area_id,
+                error=str(e),
+                exc_info=True,
+            )
+            return default
+
+        self._policy_area_cache[policy_area_id] = pack
+        return pack
 
     def get_chunking_signals(self) -> ChunkingSignalPack:
         """Get signals for Smart Policy Chunking.
@@ -1052,7 +1172,7 @@ class QuestionnaireSignalRegistry:
                     section_patterns[category].append(pattern)
 
         # Deduplicate
-        section_patterns = {k: list(set(v)) for k, v in section_patterns.items()}
+        section_patterns = {k: sorted(set(v)) for k, v in section_patterns.items()}
 
         # Section weights (calibrated values from PDM structure)
         section_weights = {
@@ -1198,15 +1318,44 @@ class QuestionnaireSignalRegistry:
         scoring = blocks.get("scoring", {})
 
         # Extract validation rules
-        validations_raw = question.get("validations", {})
+        validations_raw: Any = question.get("validations")
+        if validations_raw is None:
+            validations_raw = question.get("validation_rules", {})
+
         validation_rules = {}
-        for rule_name, rule_data in validations_raw.items():
-            validation_rules[rule_name] = ValidationCheck(
-                patterns=rule_data.get("patterns", []),
-                minimum_required=rule_data.get("minimum_required", 1),
-                minimum_years=rule_data.get("minimum_years", 0),
-                specificity=rule_data.get("specificity", "MEDIUM"),
-            )
+        if isinstance(validations_raw, dict):
+            for rule_name, rule_data in validations_raw.items():
+                if not isinstance(rule_data, dict):
+                    continue
+                validation_rules[str(rule_name)] = ValidationCheck(
+                    patterns=rule_data.get("patterns", []),
+                    minimum_required=rule_data.get("minimum_required", 1),
+                    minimum_years=rule_data.get("minimum_years", 0),
+                    specificity=rule_data.get("specificity", "MEDIUM"),
+                )
+        elif isinstance(validations_raw, list):
+            for idx, item in enumerate(validations_raw):
+                if isinstance(item, str):
+                    rule_name = f"rule_{idx:02d}"
+                    validation_rules[rule_name] = ValidationCheck(
+                        patterns=[item],
+                        minimum_required=1,
+                        minimum_years=0,
+                        specificity="MEDIUM",
+                    )
+                    continue
+                if isinstance(item, dict):
+                    raw_name = item.get("name") or item.get("rule") or f"rule_{idx:02d}"
+                    patterns = item.get("patterns")
+                    if not isinstance(patterns, list):
+                        maybe_pattern = item.get("rule")
+                        patterns = [maybe_pattern] if isinstance(maybe_pattern, str) else []
+                    validation_rules[str(raw_name)] = ValidationCheck(
+                        patterns=patterns,
+                        minimum_required=item.get("minimum_required", 1),
+                        minimum_years=item.get("minimum_years", 0),
+                        specificity=item.get("specificity", "MEDIUM"),
+                    )
 
         # Extract failure contract
         failure_contract_raw = question.get("failure_contract", {})
@@ -1344,6 +1493,13 @@ class QuestionnaireSignalRegistry:
             )
             for lvl in micro_levels
         ]
+        if not quality_levels:
+            quality_levels = [
+                QualityLevel(level="EXCELENTE", min_score=0.8, color="green", description=""),
+                QualityLevel(level="BUENO", min_score=0.6, color="blue", description=""),
+                QualityLevel(level="ACEPTABLE", min_score=0.4, color="yellow", description=""),
+                QualityLevel(level="INSUFICIENTE", min_score=0.0, color="red", description=""),
+            ]
 
         # Failure codes
         failure_codes = {
@@ -1385,9 +1541,27 @@ class QuestionnaireSignalRegistry:
         Raises:
             QuestionNotFoundError: If question not found
         """
-        for q in self._questionnaire.micro_questions:
-            if dict(q).get("question_id") == question_id:
+        micro_questions: list[Any] | None = None
+        try:
+            maybe_micro_questions = getattr(self._questionnaire, "micro_questions", None)
+            if isinstance(maybe_micro_questions, list):
+                micro_questions = maybe_micro_questions
+        except Exception:
+            micro_questions = None
+
+        if micro_questions is None:
+            blocks = dict(self._questionnaire.data.get("blocks", {}))
+            micro_questions = list(blocks.get("micro_questions", []))
+
+        for q in micro_questions:
+            if isinstance(q, dict) and q.get("question_id") == question_id:
                 return dict(q)
+            if not isinstance(q, dict):
+                try:
+                    if dict(q).get("question_id") == question_id:
+                        return dict(q)
+                except Exception:
+                    continue
         raise QuestionNotFoundError(question_id)
 
     def _extract_indicators_for_pa(self, policy_area: str) -> list[str]:
@@ -1404,7 +1578,7 @@ class QuestionnaireSignalRegistry:
                     if pattern_obj.get("category") == "INDICADOR":
                         indicators.append(pattern_obj.get("pattern", ""))
 
-        return list(set(indicators))
+        return sorted({i for i in indicators if i})
 
     def _extract_official_sources(self) -> list[str]:
         """Extract official source patterns from all questions."""
@@ -1421,7 +1595,82 @@ class QuestionnaireSignalRegistry:
                     # Split on | for multiple sources in one pattern
                     sources.extend(p.strip() for p in pattern.split("|") if p.strip())
 
-        return list(set(sources))
+        return sorted(set(sources))
+
+    def _build_policy_area_signal_pack(self, policy_area_id: str) -> SignalPack:
+        blocks = dict(self._questionnaire.data.get("blocks", {}))
+        micro_questions = blocks.get("micro_questions", [])
+
+        pattern_specs: list[dict[str, Any]] = []
+        indicators: list[str] = []
+        entities: list[str] = []
+        confidence_weights: list[float] = []
+
+        for q in micro_questions:
+            if not isinstance(q, dict) or q.get("policy_area_id") != policy_area_id:
+                continue
+
+            for pattern_obj in q.get("patterns", []):
+                if not isinstance(pattern_obj, dict):
+                    continue
+
+                pattern = str(pattern_obj.get("pattern", "")).strip()
+                if not pattern:
+                    continue
+
+                spec = dict(pattern_obj)
+                spec.setdefault("policy_area", policy_area_id)
+                pattern_specs.append(spec)
+
+                if pattern_obj.get("category") == "INDICADOR":
+                    indicators.append(pattern)
+                if pattern_obj.get("category") == "FUENTE_OFICIAL":
+                    entities.extend(p.strip() for p in pattern.split("|") if p.strip())
+
+                weight = pattern_obj.get("confidence_weight")
+                if isinstance(weight, (int, float)):
+                    confidence_weights.append(float(weight))
+
+        patterns = [str(p.get("pattern", "")).strip() for p in pattern_specs if p.get("pattern")]
+        patterns = list(dict.fromkeys([p for p in patterns if p]))
+
+        indicator_list = sorted(set(indicators))
+        entity_list = sorted(set(entities))
+
+        if confidence_weights:
+            min_conf = min(confidence_weights)
+            max_conf = max(confidence_weights)
+            avg_conf = sum(confidence_weights) / len(confidence_weights)
+        else:
+            min_conf = max_conf = avg_conf = 0.85
+
+        thresholds = {
+            "min_confidence": round(min_conf, 2),
+            "max_confidence": round(max_conf, 2),
+            "avg_confidence": round(avg_conf, 2),
+            "min_evidence": 0.70,
+        }
+
+        return SignalPack(
+            version="2.0.0",
+            policy_area=policy_area_id,  # type: ignore[arg-type]
+            patterns=patterns,
+            indicators=indicator_list,
+            regex=list(patterns),
+            verbs=[],
+            entities=entity_list,
+            thresholds=thresholds,
+            ttl_s=86400,
+            source_fingerprint=self._source_hash[:64],
+            metadata={
+                "mode": "questionnaire_derived",
+                "policy_area_id": policy_area_id,
+                "pattern_specs": pattern_specs,
+                "pattern_count": len(pattern_specs),
+                "questionnaire_version": getattr(self._questionnaire, "version", "unknown"),
+                "questionnaire_sha256": getattr(self._questionnaire, "sha256", ""),
+            },
+        )
 
     # ========================================================================
     # OBSERVABILITY & MANAGEMENT

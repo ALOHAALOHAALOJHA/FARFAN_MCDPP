@@ -1,13 +1,13 @@
 {
   "certificate_version": "1.0.0",
   "certificate_type": "executor_calibration",
-  "generated_at": "2025-12-10T18:06:39.056368+00:00",
+  "generated_at": "2025-12-17T23:42:58.025571+00:00",
   "executor_identity": {
     "base_slot": "D3-Q1",
     "question_id": "Q011",
     "dimension_id": "DIM03",
     "contract_version": "3.0.0",
-    "contract_hash": "5487db3fb89d96e9"
+    "contract_hash": "18cc43b223d50f59"
   },
   "execution_summary": {
     "methods_invoked": 8,

@@ -39,15 +39,15 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
-from canonic_phases.Phase_two.phase6_validation import (
+from canonic_phases.Phase_two.schema_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
-from farfan_pipeline.synchronization import ChunkMatrix
+from canonic_phases.Phase_two.synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table
 try:
-    from orchestration.executor_chunk_synchronizer import (
+    from canonic_phases.Phase_two.executor_chunk_synchronizer import (
         ExecutorChunkBinding,
         build_join_table,
         generate_verification_manifest,
@@ -63,25 +63,25 @@ except ImportError as e:
     class ExecutorChunkBinding:  # type: ignore
         def __init__(self, *args: Any, **kwargs: Any) -> None:
             raise ImportError(
-                "orchestration.executor_chunk_synchronizer is not available. "
+                "canonic_phases.Phase_two.executor_chunk_synchronizer is not available. "
                 "Please ensure the dependency is installed and importable."
             ) from _import_error
     
     def build_join_table(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "orchestration.executor_chunk_synchronizer is not available. "
+            "canonic_phases.Phase_two.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def generate_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "orchestration.executor_chunk_synchronizer is not available. "
+            "canonic_phases.Phase_two.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def save_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "orchestration.executor_chunk_synchronizer is not available. "
+            "canonic_phases.Phase_two.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     

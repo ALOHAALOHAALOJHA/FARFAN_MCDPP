@@ -1,13 +1,13 @@
 {
   "certificate_version": "1.0.0",
   "certificate_type": "executor_calibration",
-  "generated_at": "2025-12-10T18:06:39.059626+00:00",
+  "generated_at": "2025-12-17T23:42:58.028625+00:00",
   "executor_identity": {
     "base_slot": "D3-Q3",
     "question_id": "Q013",
     "dimension_id": "DIM03",
     "contract_version": "3.0.0",
-    "contract_hash": "3f54f44da6566d84"
+    "contract_hash": "ddd3da5d56865989"
   },
   "execution_summary": {
     "methods_invoked": 22,
@@ -33,7 +33,7 @@
   },
   "evidence_summary": {
     "total_evidence_items": 44,
-    "average_confidence": 0.9550000000000001
+    "average_confidence": 0.955
   },
   "validation": {
     "contract_valid": true,

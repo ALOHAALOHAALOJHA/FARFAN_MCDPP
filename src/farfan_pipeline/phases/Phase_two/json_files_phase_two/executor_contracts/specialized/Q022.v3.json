@@ -5,12 +5,12 @@
     "dimension_id": "DIM05",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "83cedede42fc14aa1ae23cb20d037866a0a9621aab5527e74d8e757a0e56337a",
+    "contract_hash": "7b64173c3c2dee50e87c23d520f3c70dee3af10fbb02afe4ac9f051eb3ae528d",
     "created_at": "2025-11-28T03:50:01.821125+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 22,
-    "updated_at": "2025-12-18T07:16:05.363407+00:00"
+    "updated_at": "2025-12-16T04:42:57.423651+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q2_Executor",
@@ -351,28 +351,19 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q022-REQ"
-    },
-    "policy_area_label": "Derechos de las mujeres e igualdad de género",
-    "dimension_label": "IMPACTOS"
+    }
   },
   "signal_requirements": {
-    "mandatory_signals": [
-      "gender_baseline_data",
-      "long_term_vision",
-      "policy_coverage",
-      "transformative_potential",
-      "vbg_statistics"
-    ],
-    "optional_signals": [
-      "scalability",
-      "source_validation",
-      "sustainability_mechanisms",
-      "temporal_series",
-      "territorial_scope"
-    ],
+    "mandatory_signals": [],
+    "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM05; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "preferred_signal_types": [
+      "policy_instrument_detected",
+      "activity_specification_found",
+      "implementation_timeline_present"
+    ]
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -447,27 +438,27 @@
           "reportingengine.calculate_quality_score"
         ],
         "merge_strategy": "concat",
-        "description": "Combine evidence from 28 methods"
+        "description": "Combine evidence elements from 28 method invocations"
       },
       {
         "target": "confidence_scores",
         "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
-        "description": "Aggregate confidence scores across all methods"
+        "description": "Aggregate confidence scores across 28 methods"
       },
       {
         "target": "pattern_matches",
         "sources": [],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from text mining methods"
+        "description": "Combine pattern matches across 28 methods"
       },
       {
         "target": "metadata",
         "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from 28 methods for full traceability"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
@@ -566,17 +557,11 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q022 | Análisis D5-Q2: Línea Base Cuantitativa en Derechos de las Mujeres | Derechos de las mujeres e igualdad de género",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
-        "details": [
-          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
-          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
-          "**Series temporales**: {evidence.temporal_series_count}",
-          "**Cobertura territorial**: {evidence.territorial_coverage}"
-        ],
-        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
+        "title": "## Análisis Q022 (D5-Q2): ¿Se utilizan 'índices' (ej. Índice de Equidad de Género) o 'proxies' para medir los impactos en la política de género, justificando por q...",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: IMPACTOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
+        "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "interpretation": "### Interpretación\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -601,15 +586,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Invocar `PDETMunicipalPlanAnalyzer.calculate_quality_score` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
+                  "description": "Run PDETMunicipalPlanAnalyzer.calculate_quality_score using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.calculate_quality_score'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -632,8 +617,7 @@
               "actionable_insights": [
                 "Use calculate_quality_score results for downstream analysis"
               ]
-            },
-            "provides": "pdet_analysis.calculate_quality_score"
+            }
           },
           {
             "method_name": "_estimate_score_confidence",
@@ -655,15 +639,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Invocar `PDETMunicipalPlanAnalyzer._estimate_score_confidence` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
+                  "description": "Run PDETMunicipalPlanAnalyzer._estimate_score_confidence using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.estimate_score_confidence'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -686,8 +670,7 @@
               "actionable_insights": [
                 "Use _estimate_score_confidence results for downstream analysis"
               ]
-            },
-            "provides": "pdet_analysis.estimate_score_confidence"
+            }
           },
           {
             "method_name": "_compute_e_value",
@@ -709,15 +692,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Invocar `PDETMunicipalPlanAnalyzer._compute_e_value` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
+                  "description": "Run PDETMunicipalPlanAnalyzer._compute_e_value using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.compute_e_value'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -740,8 +723,7 @@
               "actionable_insights": [
                 "Use _compute_e_value results for downstream analysis"
               ]
-            },
-            "provides": "pdet_analysis.compute_e_value"
+            }
           },
           {
             "method_name": "_compute_robustness_value",
@@ -763,15 +745,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Invocar `PDETMunicipalPlanAnalyzer._compute_robustness_value` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
+                  "description": "Run PDETMunicipalPlanAnalyzer._compute_robustness_value using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.compute_robustness_value'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -794,8 +776,7 @@
               "actionable_insights": [
                 "Use _compute_robustness_value results for downstream analysis"
               ]
-            },
-            "provides": "pdet_analysis.compute_robustness_value"
+            }
           },
           {
             "method_name": "_interpret_sensitivity",
@@ -817,15 +798,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Invocar `PDETMunicipalPlanAnalyzer._interpret_sensitivity` mediante `MethodExecutor.execute` con el contexto del documento y señales irrigadas (cuando estén disponibles)."
+                  "description": "Run PDETMunicipalPlanAnalyzer._interpret_sensitivity using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Validar que la salida sea JSON-serializable y capturar fallos en trazas si aplica (sin detener el pipeline salvo política de `error_handling`)."
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Persistir el resultado en `method_outputs` bajo `provides='pdet_analysis.interpret_sensitivity'` usando `_set_nested_value` (dot-notation) para ensamblaje determinista."
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -848,8 +829,7 @@
               "actionable_insights": [
                 "Use _interpret_sensitivity results for downstream analysis"
               ]
-            },
-            "provides": "pdet_analysis.interpret_sensitivity"
+            }
           },
           {
             "method_name": "_calculate_quality_score",
@@ -871,15 +851,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_quality_score"
+                  "description": "Run ReportingEngine._calculate_quality_score using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -924,15 +904,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _aggregate_bayesian_confidence"
+                  "description": "Run BayesianMechanismInference._aggregate_bayesian_confidence using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -977,15 +957,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute evaluate_policy_numerical_consistency"
+                  "description": "Run PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1030,15 +1010,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute get_diagnostics"
+                  "description": "Run PolicyAnalysisEmbedder.get_diagnostics using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1083,15 +1063,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute process_document"
+                  "description": "Run PolicyAnalysisEmbedder.process_document using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1136,15 +1116,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _generate_query_from_pdq"
+                  "description": "Run PolicyAnalysisEmbedder._generate_query_from_pdq using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1189,15 +1169,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _filter_by_pdq"
+                  "description": "Run PolicyAnalysisEmbedder._filter_by_pdq using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1242,15 +1222,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _extract_numerical_values"
+                  "description": "Run PolicyAnalysisEmbedder._extract_numerical_values using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1295,15 +1275,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _embed_texts"
+                  "description": "Run PolicyAnalysisEmbedder._embed_texts using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1348,15 +1328,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compute_overall_confidence"
+                  "description": "Run PolicyAnalysisEmbedder._compute_overall_confidence using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1401,15 +1381,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _calculate_sufficiency"
+                  "description": "Run FinancialAuditor._calculate_sufficiency using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1454,15 +1434,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _interpret_overall_quality"
+                  "description": "Run PDETMunicipalPlanAnalyzer._interpret_overall_quality using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1507,15 +1487,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute aggregate_risk_and_prioritize"
+                  "description": "Run BayesianCounterfactualAuditor.aggregate_risk_and_prioritize using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1560,15 +1540,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute normalize_unicode"
+                  "description": "Run PolicyTextProcessor.normalize_unicode using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1613,15 +1593,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute segment_into_sentences"
+                  "description": "Run PolicyTextProcessor.segment_into_sentences using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1666,15 +1646,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compute_evidence_confidence"
+                  "description": "Run IndustrialPolicyProcessor._compute_evidence_confidence using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1719,15 +1699,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _compute_avg_confidence"
+                  "description": "Run IndustrialPolicyProcessor._compute_avg_confidence using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1772,15 +1752,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _quality_to_dict"
+                  "description": "Run PDETMunicipalPlanAnalyzer._quality_to_dict using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1825,15 +1805,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute _construct_evidence_bundle"
+                  "description": "Run IndustrialPolicyProcessor._construct_evidence_bundle using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1878,15 +1858,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute compile_pattern"
+                  "description": "Run PolicyTextProcessor.compile_pattern using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1931,15 +1911,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute extract_contextual_window"
+                  "description": "Run PolicyTextProcessor.extract_contextual_window using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -1984,15 +1964,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute generate_executive_report"
+                  "description": "Run PDETMunicipalPlanAnalyzer.generate_executive_report using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -2037,15 +2017,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Execute export_results"
+                  "description": "Run IndustrialPolicyProcessor.export_results using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process results"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Return structured output"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -2073,14 +2053,14 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 requires comprehensive extraction of quantitative baseline data from multiple sources (text, tables, causal links). The 17 methods cover complementary aspects: text mining (methods 1-5), goal extraction (6-7), financial analysis (8-10), contradiction detection (11-13), Bayesian inference (14-15), and semantic processing (16-17).",
-          "evidence_fusion": "Evidence from all 17 methods is aggregated by the EvidenceNexus. Overlapping evidence (e.g., same numeric value detected by multiple methods) is deduplicated. Confidence scores are combined via weighted averaging.",
-          "confidence_aggregation": "Final confidence per evidence element = weighted_mean([confidence_method1, confidence_method2, ...]) where weights reflect method reliability (e.g., Bayesian methods have higher weight than simple regex).",
-          "execution_order": "Methods execute in priority order (1→17). Later methods can access outputs of earlier methods (e.g., method 7 uses goals extracted by method 6).",
+          "rationale": "D5-Q2 (Q022) for PA01/DIM05 requires consistent extraction, validation, and synthesis across 28 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
+          "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
+          "execution_order": "Methods execute in priority order (1→28).",
           "trade_offs": [
-            "Comprehensiveness vs. Complexity: 17 methods ensure thorough coverage but increase computational cost and maintenance burden",
-            "Precision vs. Recall: Multiple methods increase recall (find more evidence) but may introduce redundancy; deduplication and confidence weighting mitigate this",
-            "Interpretability vs. Sophistication: Bayesian and embedding methods are powerful but less transparent than regex; human_readable_output compensates via methodological documentation"
+            "Coverage vs. cost: using 28 methods increases coverage but raises computation and maintenance burden.",
+            "Recall vs. precision: multiple detectors increase recall but can introduce redundancy; deduplication and weighting mitigate this.",
+            "Sophistication vs. interpretability: advanced models can be less transparent; human_readable_output documents assumptions and limitations."
           ]
         }
       }
@@ -2123,7 +2103,7 @@
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 28 methods from D5_Q2_Executor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q022",
     "specialized_from_base_slot": "D5-Q2",
     "specialization_timestamp": "2025-11-28T03:50:01.821228+00:00"
@@ -2174,9 +2154,9 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all 28 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "28 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -3301,57 +3281,5 @@
         "merge_strategy": "replace"
       }
     }
-  },
-  "methodological_depth": {
-    "methods": [
-      {
-        "method_name": "contract_orchestrated_evidence_fusion",
-        "class_name": "EvidenceNexus",
-        "priority": 1,
-        "role": "evidence_graph_construction_and_synthesis",
-        "epistemological_foundation": {
-          "paradigm": "critical_realist",
-          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
-          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
-          "theoretical_framework": [
-            "Pearl (2009) causal reasoning (why mechanisms matter)",
-            "Pawson & Tilley (1997) realistic evaluation",
-            "Results-based management for public policy monitoring"
-          ],
-          "justification": "Chosen because IMPACTOS in PA01 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
-        },
-        "technical_approach": {
-          "method_type": "graph_based_evidence_fusion",
-          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
-          "steps": [
-            {
-              "step": 1,
-              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
-            },
-            {
-              "step": 2,
-              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
-            },
-            {
-              "step": 3,
-              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
-            },
-            {
-              "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for Q022/D5-Q2."
-            }
-          ],
-          "assumptions": [
-            "The source plan contains at least one relevant section or table for this question.",
-            "Expected element types map to observable text spans or tabular cells."
-          ],
-          "limitations": [
-            "Evidence quality depends on document structure and explicitness of commitments.",
-            "Pattern-only extraction is conservative to preserve determinism."
-          ],
-          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
-        }
-      }
-    ]
   }
 }

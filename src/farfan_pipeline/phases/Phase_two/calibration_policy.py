@@ -1,423 +1,270 @@
-"""Calibration Policy System for Method Selection and Weighting.
+"""Calibration Policy for JSON Contract-Based Execution.
 
-PHASE_LABEL: Phase 2
-PHASE_COMPONENT: Calibration Policy
-PHASE_ROLE: Implements policies for calibration score influence on method selection and weighting
+This module implements calibration and parametrization policies for the
+300 JSON contract executors (Q001-Q300.v3.json).
 
-This module implements policies for how calibration scores influence:
-- Method selection when alternatives exist
-- Weighting in aggregation layers
-- Diagnostic output in manifests and reports
+Architecture:
+- CalibrationPolicy: Defines calibration rules per dimension/policy area
+- ParametrizationManager: Manages runtime parameters from contracts
+- ConfidenceCalibrator: Bayesian confidence calibration for multi-method outputs
 
-CANONICAL REFACTORING:
-- Uses MICRO_LEVELS from canonical_specs (FARFAN-sensitive thresholds)
-- No CalibrationOrchestrator - this is a wiring layer, not a router
-- Constants are injected, not runtime-loaded
-- Aligns with DEREK_BEACH methodology (0.85/0.70/0.55/0.00)
+Calibration Hierarchy:
+1. Global defaults (all contracts)
+2. Dimension-specific (D1-D6 overrides)
+3. Policy area-specific (PA01-PA10 overrides)
+4. Contract-specific (individual Q001-Q300 overrides)
 
-Calibration scores are expected to be in [0, 1] using FARFAN thresholds:
-- [0.85, 1.0]: EXCELENTE - full weight
-- [0.70, 0.85): BUENO - minor downweight
-- [0.55, 0.70): ACEPTABLE - significant downweight
-- [0.0, 0.55): INSUFICIENTE - major downweight or exclusion
+Integration with Contracts:
+Each Q{i}.v3.json contract may specify:
+- calibration.confidence_threshold: Minimum confidence for output validity
+- calibration.method_weights: Weights for multi-method aggregation
+- calibration.bayesian_priors: Prior distributions for Bayesian methods
 """
-
 from __future__ import annotations
 
 import logging
-import statistics
 from dataclasses import dataclass, field
-from datetime import datetime
 from typing import Any
-
-# CANONICAL IMPORT - No runtime JSON loading
-from farfan_pipeline.core.canonical_specs import MICRO_LEVELS
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
-class CalibrationWeight:
-    """Calibration-adjusted weight for a method or result."""
+class CalibrationParameters:
+    """Calibration parameters for a specific scope (global/dimension/PA/contract)."""
     
-    base_weight: float
-    calibration_score: float
-    adjusted_weight: float
-    adjustment_factor: float
-    quality_band: str
-    reason: str
+    confidence_threshold: float = 0.7
+    method_weights: dict[str, float] = field(default_factory=dict)
+    bayesian_priors: dict[str, Any] = field(default_factory=dict)
+    random_seed: int = 42
+    enable_belief_propagation: bool = True
+    dempster_shafer_enabled: bool = True
     
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "base_weight": self.base_weight,
-            "calibration_score": self.calibration_score,
-            "adjusted_weight": self.adjusted_weight,
-            "adjustment_factor": self.adjustment_factor,
-            "quality_band": self.quality_band,
-            "reason": self.reason,
-        }
-
-
-@dataclass
-class CalibrationMetrics:
-    """Metrics for tracking calibration influence over time."""
-    
-    timestamp: str
-    phase_id: int | str
-    method_id: str
-    calibration_score: float
-    quality_band: str
-    weight_adjustment: float
-    influenced_output: bool
-    metadata: dict[str, Any] = field(default_factory=dict)
-    
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "timestamp": self.timestamp,
-            "phase_id": self.phase_id,
-            "method_id": self.method_id,
-            "calibration_score": self.calibration_score,
-            "quality_band": self.quality_band,
-            "weight_adjustment": self.weight_adjustment,
-            "influenced_output": self.influenced_output,
-            "metadata": self.metadata,
-        }
+    def validate(self) -> None:
+        """Validate calibration parameters."""
+        if not 0 <= self.confidence_threshold <= 1:
+            raise ValueError(
+                f"confidence_threshold must be in [0, 1], got {self.confidence_threshold}"
+            )
+        if self.random_seed < 0:
+            raise ValueError(f"random_seed must be non-negative, got {self.random_seed}")
 
 
 class CalibrationPolicy:
-    """Policy engine for calibration-based adjustments.
+    """Manages calibration policies for JSON contract-based execution.
     
-    FARFAN-SENSITIVE: Uses MICRO_LEVELS from canonical_specs aligned with
-    DEREK_BEACH methodology. Thresholds are deterministic and traceable.
+    Provides hierarchical calibration:
+    - Global defaults
+    - Dimension overrides (D1-D6)
+    - Policy area overrides (PA01-PA10)
+    - Contract overrides (Q001-Q300)
     """
     
-    # CANONICAL QUALITY BANDS - Aligned with MICRO_LEVELS
-    # Source: farfan_pipeline.core.canonical_specs.MICRO_LEVELS
-    # Derived from: derek_beach.py MICRO_LEVELS (0.85/0.70/0.55/0.00)
-    QUALITY_BANDS = {
-        "EXCELENTE": (MICRO_LEVELS["EXCELENTE"], 1.0),          # [0.85, 1.0]
-        "BUENO": (MICRO_LEVELS["BUENO"], MICRO_LEVELS["EXCELENTE"]),  # [0.70, 0.85)
-        "ACEPTABLE": (MICRO_LEVELS["ACEPTABLE"], MICRO_LEVELS["BUENO"]),  # [0.55, 0.70)
-        "INSUFICIENTE": (MICRO_LEVELS["INSUFICIENTE"], MICRO_LEVELS["ACEPTABLE"]),  # [0.0, 0.55)
-    }
-    
-    # CANONICAL WEIGHT FACTORS - Aligned with quality bands
-    # Formula: Progressive downweighting from EXCELENTE baseline
-    WEIGHT_ADJUSTMENT_FACTORS = {
-        "EXCELENTE": 1.0,      # Full weight - no downgrade
-        "BUENO": 0.90,         # 10% downweight - minor reduction
-        "ACEPTABLE": 0.75,     # 25% downweight - significant reduction
-        "INSUFICIENTE": 0.40,  # 60% downweight - major reduction
-    }
-    
-    # CANONICAL EXECUTION THRESHOLD
-    # Derived: Slightly below ACEPTABLE to allow marginal methods
-    # Formula: MICRO_LEVELS["ACEPTABLE"] - safety_margin
-    MIN_EXECUTION_THRESHOLD = 0.50  # Below ACEPTABLE (0.55) with 0.05 margin
-    
-    def __init__(
+    def __init__(self) -> None:
+        self._global_params = CalibrationParameters()
+        self._dimension_params: dict[str, CalibrationParameters] = {}
+        self._policy_area_params: dict[str, CalibrationParameters] = {}
+        self._contract_params: dict[str, CalibrationParameters] = {}
+        
+    def get_parameters(
         self,
-        strict_mode: bool = False,
-        custom_thresholds: dict[str, tuple[float, float]] | None = None,
-        custom_factors: dict[str, float] | None = None,
+        question_id: str,
+        dimension_id: str | None = None,
+        policy_area_id: str | None = None,
+    ) -> CalibrationParameters:
+        """Get calibration parameters for a specific context.
+        
+        Resolution order:
+        1. Contract-specific (Q{i})
+        2. Policy area-specific (PA{j})
+        3. Dimension-specific (DIM{k})
+        4. Global defaults
+        """
+        # Check contract-specific
+        if question_id in self._contract_params:
+            return self._contract_params[question_id]
+        
+        # Check policy area-specific
+        if policy_area_id and policy_area_id in self._policy_area_params:
+            return self._policy_area_params[policy_area_id]
+        
+        # Check dimension-specific
+        if dimension_id and dimension_id in self._dimension_params:
+            return self._dimension_params[dimension_id]
+        
+        # Return global defaults
+        return self._global_params
+    
+    def set_dimension_parameters(
+        self, dimension_id: str, params: CalibrationParameters
     ) -> None:
-        """Initialize calibration policy with FARFAN-sensitive defaults.
-        
-        CANONICAL: Uses MICRO_LEVELS by default. Custom overrides are permitted
-        for method-specific calibration (e.g., CDAFFramework logit transformation).
-        
-        Args:
-            strict_mode: If True, reject methods below MIN_EXECUTION_THRESHOLD
-            custom_thresholds: Override MICRO_LEVELS-based bands (for method-specific logic)
-            custom_factors: Override weight adjustment factors (for method-specific logic)
-        """
-        self.strict_mode = strict_mode
-        # Use canonical thresholds unless method-specific override provided
-        self.quality_bands = custom_thresholds or self.QUALITY_BANDS
-        self.adjustment_factors = custom_factors or self.WEIGHT_ADJUSTMENT_FACTORS
-        self._metrics_history: list[CalibrationMetrics] = []
-        
-        # Quality gate: Validate monotonicity of custom thresholds
-        if custom_thresholds:
-            band_values = list(custom_thresholds.values())
-            for i in range(len(band_values) - 1):
-                if band_values[i][1] <= band_values[i + 1][0]:
-                    raise ValueError(
-                        f"Non-monotonic custom thresholds: {custom_thresholds}"
-                    )
+        """Set calibration parameters for a specific dimension (D1-D6)."""
+        params.validate()
+        self._dimension_params[dimension_id] = params
+        logger.info(f"Set calibration parameters for dimension {dimension_id}")
     
-    def get_quality_band(self, calibration_score: float) -> str:
-        """Determine quality band for a calibration score.
-        
-        Args:
-            calibration_score: Score in [0, 1]
-            
-        Returns:
-            Quality band string (EXCELLENT, GOOD, ACCEPTABLE, POOR)
-        """
-        for band, (low, high) in self.quality_bands.items():
-            if low <= calibration_score < high:
-                return band
-        return "POOR"
-    
-    def should_execute_method(
-        self, method_id: str, calibration_score: float | None
-    ) -> tuple[bool, str]:
-        """Decide whether a method should be executed based on calibration.
-        
-        Args:
-            method_id: Method identifier
-            calibration_score: Calibration score or None if not available
-            
-        Returns:
-            (should_execute, reason) tuple
-        """
-        if calibration_score is None:
-            return True, "No calibration data available - executing by default"
-        
-        if calibration_score < self.MIN_EXECUTION_THRESHOLD:
-            if self.strict_mode:
-                return (
-                    False,
-                    f"Method {method_id} calibration {calibration_score:.3f} "
-                    f"below threshold {self.MIN_EXECUTION_THRESHOLD}",
-                )
-            else:
-                logger.warning(
-                    f"Method {method_id} has low calibration {calibration_score:.3f} "
-                    f"but executing anyway (strict_mode=False)"
-                )
-                return True, "Low calibration but executing (non-strict mode)"
-        
-        quality_band = self.get_quality_band(calibration_score)
-        return True, f"Calibration {calibration_score:.3f} ({quality_band}) - executing"
-    
-    def compute_adjusted_weight(
-        self,
-        base_weight: float,
-        calibration_score: float | None,
-        method_id: str = "",
-    ) -> CalibrationWeight:
-        """Compute calibration-adjusted weight for aggregation.
-        
-        Args:
-            base_weight: Original weight before calibration adjustment
-            calibration_score: Calibration score or None
-            method_id: Optional method identifier for logging
-            
-        Returns:
-            CalibrationWeight with adjustment details
-        """
-        if calibration_score is None:
-            return CalibrationWeight(
-                base_weight=base_weight,
-                calibration_score=0.0,
-                adjusted_weight=base_weight,
-                adjustment_factor=1.0,
-                quality_band="UNKNOWN",
-                reason="No calibration data - using base weight",
-            )
-        
-        quality_band = self.get_quality_band(calibration_score)
-        adjustment_factor = self.adjustment_factors.get(quality_band, 1.0)
-        adjusted_weight = base_weight * adjustment_factor
-        
-        reason = (
-            f"Calibration {calibration_score:.3f} ({quality_band}) "
-            f"→ weight {base_weight:.3f} × {adjustment_factor:.2f} = {adjusted_weight:.3f}"
-        )
-        
-        if method_id:
-            logger.info(f"[{method_id}] {reason}")
-        
-        return CalibrationWeight(
-            base_weight=base_weight,
-            calibration_score=calibration_score,
-            adjusted_weight=adjusted_weight,
-            adjustment_factor=adjustment_factor,
-            quality_band=quality_band,
-            reason=reason,
-        )
-    
-    def select_best_method(
-        self,
-        candidates: dict[str, float],
-    ) -> tuple[str, float, str]:
-        """Select best method from alternatives based on calibration.
-        
-        Args:
-            candidates: Dict mapping method_id to calibration_score
-            
-        Returns:
-            (selected_method_id, calibration_score, reason) tuple
-        """
-        if not candidates:
-            raise ValueError("No candidate methods provided")
-        
-        if len(candidates) == 1:
-            method_id, score = next(iter(candidates.items()))
-            return method_id, score, "Only one candidate"
-        
-        sorted_candidates = sorted(
-            candidates.items(), key=lambda x: x[1], reverse=True
-        )
-        
-        best_method, best_score = sorted_candidates[0]
-        second_best = sorted_candidates[1][1] if len(sorted_candidates) > 1 else 0.0
-        
-        margin = best_score - second_best
-        reason = (
-            f"Selected {best_method} (calibration {best_score:.3f}) "
-            f"over alternatives (margin {margin:.3f})"
-        )
-        
-        logger.info(reason)
-        return best_method, best_score, reason
-    
-    def record_influence(
-        self,
-        phase_id: int | str,
-        method_id: str,
-        calibration_score: float,
-        weight_adjustment: float,
-        influenced_output: bool,
-        **metadata: Any,
+    def set_policy_area_parameters(
+        self, policy_area_id: str, params: CalibrationParameters
     ) -> None:
-        """Record calibration influence for drift detection.
+        """Set calibration parameters for a specific policy area (PA01-PA10)."""
+        params.validate()
+        self._policy_area_params[policy_area_id] = params
+        logger.info(f"Set calibration parameters for policy area {policy_area_id}")
+    
+    def set_contract_parameters(
+        self, question_id: str, params: CalibrationParameters
+    ) -> None:
+        """Set calibration parameters for a specific contract (Q001-Q300)."""
+        params.validate()
+        self._contract_params[question_id] = params
+        logger.info(f"Set calibration parameters for contract {question_id}")
+    
+    def load_from_contract(self, contract: dict[str, Any]) -> CalibrationParameters:
+        """Load calibration parameters from a contract specification.
         
         Args:
-            phase_id: Pipeline phase identifier
-            method_id: Method identifier
-            calibration_score: Calibration score used
-            weight_adjustment: How much weight was adjusted
-            influenced_output: Whether calibration changed the output
-            **metadata: Additional context
+            contract: Q{i}.v3.json contract dict
+            
+        Returns:
+            CalibrationParameters extracted from contract or defaults
         """
-        quality_band = self.get_quality_band(calibration_score)
+        calibration_spec = contract.get("calibration", {})
         
-        metric = CalibrationMetrics(
-            timestamp=datetime.now().astimezone().isoformat(),
-            phase_id=phase_id,
-            method_id=method_id,
-            calibration_score=calibration_score,
-            quality_band=quality_band,
-            weight_adjustment=weight_adjustment,
-            influenced_output=influenced_output,
-            metadata=metadata,
+        params = CalibrationParameters(
+            confidence_threshold=calibration_spec.get("confidence_threshold", 0.7),
+            method_weights=calibration_spec.get("method_weights", {}),
+            bayesian_priors=calibration_spec.get("bayesian_priors", {}),
+            random_seed=calibration_spec.get("random_seed", 42),
+            enable_belief_propagation=calibration_spec.get(
+                "enable_belief_propagation", True
+            ),
+            dempster_shafer_enabled=calibration_spec.get(
+                "dempster_shafer_enabled", True
+            ),
         )
         
-        self._metrics_history.append(metric)
+        params.validate()
+        return params
+
+
+class ParametrizationManager:
+    """Manages runtime parametrization for 300 JSON contract executors."""
     
-    def detect_drift(
-        self, window_size: int = 50, threshold: float = 0.15
+    def __init__(self, calibration_policy: CalibrationPolicy) -> None:
+        self._calibration_policy = calibration_policy
+        
+    def get_execution_parameters(
+        self, contract: dict[str, Any]
     ) -> dict[str, Any]:
-        """Detect calibration drift over time.
+        """Extract execution parameters from contract for executor.
         
-        Args:
-            window_size: Number of recent metrics to analyze
-            threshold: Drift threshold (std dev relative to mean)
-            
-        Returns:
-            Drift analysis dict with detected issues
+        Returns dict suitable for passing to GenericContractExecutor.
         """
-        if len(self._metrics_history) < window_size:
-            return {
-                "drift_detected": False,
-                "reason": f"Insufficient data ({len(self._metrics_history)} < {window_size})",
-            }
+        identity = contract.get("identity", {})
+        question_id = identity.get("question_id")
+        dimension_id = identity.get("dimension_id")
+        policy_area_id = identity.get("policy_area_id")
         
-        recent_metrics = self._metrics_history[-window_size:]
-        scores = [m.calibration_score for m in recent_metrics]
+        # Get calibration parameters
+        calib_params = self._calibration_policy.get_parameters(
+            question_id=question_id,
+            dimension_id=dimension_id,
+            policy_area_id=policy_area_id,
+        )
         
-        mean_score = statistics.mean(scores)
-        std_score = statistics.stdev(scores) if len(scores) > 1 else 0.0
-        
-        drift_detected = std_score > (mean_score * threshold) if mean_score > 0 else False
-        
-        band_distribution = {}
-        for metric in recent_metrics:
-            band = metric.quality_band
-            band_distribution[band] = band_distribution.get(band, 0) + 1
-        
-        influenced_count = sum(1 for m in recent_metrics if m.influenced_output)
-        
+        # Build execution parameters
         return {
-            "drift_detected": drift_detected,
-            "window_size": window_size,
-            "mean_score": mean_score,
-            "std_score": std_score,
-            "drift_threshold": threshold,
-            "band_distribution": band_distribution,
-            "influenced_outputs": influenced_count,
-            "total_metrics": len(recent_metrics),
-            "drift_ratio": std_score / mean_score if mean_score > 0 else 0.0,
+            "question_id": question_id,
+            "dimension_id": dimension_id,
+            "policy_area_id": policy_area_id,
+            "calibration": {
+                "confidence_threshold": calib_params.confidence_threshold,
+                "method_weights": calib_params.method_weights,
+                "random_seed": calib_params.random_seed,
+                "enable_belief_propagation": calib_params.enable_belief_propagation,
+                "dempster_shafer_enabled": calib_params.dempster_shafer_enabled,
+            },
+            "method_binding": contract.get("method_binding", {}),
+            "evidence_assembly": contract.get("evidence_assembly", {}),
         }
-    
-    def get_metrics_summary(self) -> dict[str, Any]:
-        """Get summary of all calibration metrics.
-        
-        Returns:
-            Summary dict with statistics and history
-        """
-        if not self._metrics_history:
-            return {
-                "total_metrics": 0,
-                "summary": "No calibration metrics recorded",
-            }
-        
-        scores = [m.calibration_score for m in self._metrics_history]
-        adjustments = [m.weight_adjustment for m in self._metrics_history]
-        influenced = sum(1 for m in self._metrics_history if m.influenced_output)
-        
-        by_phase: dict[str, int] = {}
-        by_band: dict[str, int] = {}
-        
-        for metric in self._metrics_history:
-            phase_key = str(metric.phase_id)
-            by_phase[phase_key] = by_phase.get(phase_key, 0) + 1
-            by_band[metric.quality_band] = by_band.get(metric.quality_band, 0) + 1
-        
-        return {
-            "total_metrics": len(self._metrics_history),
-            "mean_calibration_score": statistics.mean(scores),
-            "median_calibration_score": statistics.median(scores),
-            "std_calibration_score": statistics.stdev(scores) if len(scores) > 1 else 0.0,
-            "mean_weight_adjustment": statistics.mean(adjustments),
-            "influenced_outputs": influenced,
-            "influence_rate": influenced / len(self._metrics_history),
-            "by_phase": by_phase,
-            "by_quality_band": by_band,
-            "drift_analysis": self.detect_drift(),
-        }
-    
-    def export_metrics(self) -> list[dict[str, Any]]:
-        """Export all metrics for external analysis.
-        
-        Returns:
-            List of metric dictionaries
-        """
-        return [m.to_dict() for m in self._metrics_history]
 
 
-def create_default_policy(strict_mode: bool = False) -> CalibrationPolicy:
-    """Factory function for FARFAN-sensitive calibration policy.
+class ConfidenceCalibrator:
+    """Bayesian confidence calibration for multi-method outputs.
     
-    CANONICAL: Returns policy using MICRO_LEVELS from canonical_specs.
-    No CalibrationOrchestrator - this is a wiring layer for injecting
-    calibration constants, not a centralized router.
-    
-    Args:
-        strict_mode: Whether to enforce strict calibration thresholds
-        
-    Returns:
-        CalibrationPolicy configured with FARFAN MICRO_LEVELS
+    Implements Dempster-Shafer belief propagation and calibrated
+    confidence intervals for method aggregation.
     """
-    return CalibrationPolicy(strict_mode=strict_mode)
-
-
-__all__ = [
-    "CalibrationPolicy",
-    "CalibrationWeight",
-    "CalibrationMetrics",
-    "create_default_policy",
-]
+    
+    def __init__(self, calibration_policy: CalibrationPolicy) -> None:
+        self._calibration_policy = calibration_policy
+        
+    def calibrate_confidence(
+        self,
+        method_outputs: list[dict[str, Any]],
+        question_id: str,
+        dimension_id: str,
+        policy_area_id: str,
+    ) -> float:
+        """Calibrate overall confidence from multi-method outputs.
+        
+        Uses Bayesian aggregation with method-specific weights.
+        
+        Returns:
+            Calibrated confidence score in [0, 1]
+        """
+        params = self._calibration_policy.get_parameters(
+            question_id=question_id,
+            dimension_id=dimension_id,
+            policy_area_id=policy_area_id,
+        )
+        
+        if not method_outputs:
+            return 0.0
+        
+        # Extract confidence scores from method outputs
+        confidences = []
+        weights = []
+        
+        for output in method_outputs:
+            conf = output.get("confidence", 0.5)
+            method_name = output.get("method_name", "unknown")
+            weight = params.method_weights.get(method_name, 1.0)
+            
+            confidences.append(conf)
+            weights.append(weight)
+        
+        # Weighted average
+        if sum(weights) == 0:
+            return 0.0
+        
+        calibrated = sum(c * w for c, w in zip(confidences, weights)) / sum(weights)
+        
+        # Apply Dempster-Shafer if enabled
+        if params.dempster_shafer_enabled:
+            calibrated = self._apply_dempster_shafer(calibrated, method_outputs)
+        
+        return min(max(calibrated, 0.0), 1.0)
+    
+    def _apply_dempster_shafer(
+        self, base_confidence: float, method_outputs: list[dict[str, Any]]
+    ) -> float:
+        """Apply Dempster-Shafer belief propagation.
+        
+        This is a simplified implementation. Full Dempster-Shafer
+        is implemented in EvidenceNexus.
+        """
+        # Simplified: adjust confidence based on method agreement
+        if len(method_outputs) < 2:
+            return base_confidence
+        
+        # Calculate variance in method confidences
+        confidences = [o.get("confidence", 0.5) for o in method_outputs]
+        variance = sum((c - base_confidence) ** 2 for c in confidences) / len(
+            confidences
+        )
+        
+        # Reduce confidence if high variance (methods disagree)
+        disagreement_penalty = min(variance * 2, 0.3)
+        
+        return base_confidence * (1 - disagreement_penalty)

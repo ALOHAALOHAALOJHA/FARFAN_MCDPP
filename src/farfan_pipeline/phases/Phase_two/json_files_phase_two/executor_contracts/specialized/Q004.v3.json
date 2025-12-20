@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "c29f201b5f55ce8681bf0693e645d3d0f19382b232e8580c29434ba63820365e",
+    "contract_hash": "e4101c78927e848e4d5d9f3f777f56f9e68974e6e5be882d3b34f687c0eab4c8",
     "created_at": "2025-11-28T03:49:29.791441+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 4,
-    "updated_at": "2025-12-18T07:16:03.388364+00:00"
+    "updated_at": "2025-12-16T04:42:57.328649+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -301,16 +301,6 @@
         "required": true,
         "type": "talento_humano",
         "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "infraestructura_fisica",
-        "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "infraestructura_tecnologica",
-        "minimum": 1
       }
     ],
     "validations": {},
@@ -320,28 +310,19 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q004-REQ"
-    },
-    "policy_area_label": "Derechos de las mujeres e igualdad de género",
-    "dimension_label": "INSUMOS"
+    }
   },
   "signal_requirements": {
-    "mandatory_signals": [
-      "baseline_completeness",
-      "data_sources",
-      "gender_baseline_data",
-      "policy_coverage",
-      "vbg_statistics"
-    ],
-    "optional_signals": [
-      "geographic_scope",
-      "source_validation",
-      "temporal_coverage",
-      "temporal_series",
-      "territorial_scope"
-    ],
+    "mandatory_signals": [],
+    "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are currently under development. Signal IDs will be populated once the signal_registry provides a canonical mapping for PA01/DIM01."
+    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM01; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "preferred_signal_types": [
+      "policy_instrument_detected",
+      "activity_specification_found",
+      "implementation_timeline_present"
+    ]
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -386,40 +367,40 @@
       {
         "target": "elements_found",
         "sources": [
-          "pdet_analysis.identify_responsible_entities",
-          "pdet_analysis.extract_entities_ner",
-          "pdet_analysis.extract_entities_syntax",
-          "pdet_analysis.classify_entity_type",
-          "pdet_analysis.score_entity_specificity",
-          "pdet_analysis.consolidate_entities",
+          "mechanismpartextractor.calculate_ea_confidence",
           "mechanismpartextractor.extract_entity_activity",
           "mechanismpartextractor.normalize_entity",
           "mechanismpartextractor.validate_entity_activity",
-          "mechanismpartextractor.calculate_ea_confidence",
-          "operationalizationauditor.audit_evidence_traceability"
+          "operationalizationauditor.audit_evidence_traceability",
+          "pdet_analysis.classify_entity_type",
+          "pdet_analysis.consolidate_entities",
+          "pdet_analysis.extract_entities_ner",
+          "pdet_analysis.extract_entities_syntax",
+          "pdet_analysis.identify_responsible_entities",
+          "pdet_analysis.score_entity_specificity"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 17 method invocations"
+        "description": "Combine evidence elements from 11 method invocations"
       },
       {
         "target": "confidence_scores",
         "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
-        "description": "Aggregate confidence scores across all methods"
+        "description": "Aggregate confidence scores across 11 methods"
       },
       {
         "target": "pattern_matches",
         "sources": [],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from text mining methods"
+        "description": "Combine pattern matches across 11 methods"
       },
       {
         "target": "metadata",
         "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 17 methods for full traceability"
+        "description": "Combine metadata from 11 methods for full traceability"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
@@ -518,17 +499,11 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q004 | Análisis D1-Q4: Línea Base Cuantitativa en Derechos de las Mujeres | Derechos de las mujeres e igualdad de género",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia cuantitativa relacionados con la línea base diagnóstica en el área de Derechos de las Mujeres e Igualdad de Género.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
-        "details": [
-          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
-          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
-          "**Series temporales**: {evidence.temporal_series_count}",
-          "**Cobertura territorial**: {evidence.territorial_coverage}"
-        ],
-        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
+        "title": "## Análisis Q004 (D1-Q4): ¿El PDM describe las capacidades para gestionar la política de género, mencionando entidades (ej. Secretaría de la Mujer, Comisaría) y su...",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
+        "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "interpretation": "### Interpretación\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -652,8 +627,7 @@
                 "If Secretaría Especializada found: Extract for entity-activity linkage in downstream MechanismPartExtractor analysis",
                 "If Comisaría found: Cross-validate with 'ruta de atención' patterns (PAT-Q004-003) to confirm violence response capacity"
               ]
-            },
-            "provides": "pdet_analysis.identify_responsible_entities"
+            }
           },
           {
             "method_name": "_extract_entities_ner",
@@ -687,32 +661,15 @@
               "steps": [
                 {
                   "step": 1,
-                  "description": "Load spaCy model: nlp = spacy.load('es_core_news_lg') with transformer pipeline (RoBERTa-based embeddings)",
-                  "model_details": "310MB model, 560k vocabulary, 12-layer transformer encoder"
+                  "description": "Run PDETMunicipalPlanAnalyzer._extract_entities_ner using contract-scoped inputs and produce intermediate artifacts"
                 },
                 {
                   "step": 2,
-                  "description": "Process text: doc = nlp(text). spaCy pipeline executes tokenization → POS tagging → dependency parsing → NER in sequence.",
-                  "ner_layer": "Transition-based NER with Viterbi decoding of CRF tag sequence: argmax_y P(y|x) where y=IOB tags, x=token embeddings"
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
                 },
                 {
                   "step": 3,
-                  "description": "Filter entities to ORG and PER labels: entities = [ent for ent in doc.ents if ent.label_ in {'ORG', 'PER'}]",
-                  "rationale": "Secretarías/Comisarías tagged as ORG, individual officials as PER. Filter out LOC/MISC to reduce noise."
-                },
-                {
-                  "step": 4,
-                  "description": "Compute confidence from model softmax: confidence = max(ent._.scores) where scores are CRF marginal probabilities",
-                  "calibration": "spaCy confidence uncalibrated; apply Platt scaling: calibrated_conf = 1/(1+exp(-1.5*(raw_conf-0.6)))"
-                },
-                {
-                  "step": 5,
-                  "description": "Map sentence_id: match ent.start_char to preprocessed_document.sentences[] by character offsets",
-                  "complexity_substep": "O(e×s) where e=entities, s=sentences; typically s<200 so fast lookup"
-                },
-                {
-                  "step": 6,
-                  "description": "Return entities list with fields {text, label, start_char, end_char, confidence, sentence_id}"
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
                 }
               ],
               "assumptions": [
@@ -761,8 +718,7 @@
                 "Cross-reference NER entities with patterns PAT-Q004-000 ('Secretaría') and PAT-Q004-001 ('Comisaría') for validation",
                 "High-confidence ORG entities (≥0.85) can skip syntax validation → direct input to _classify_entity_type"
               ]
-            },
-            "provides": "pdet_analysis.extract_entities_ner"
+            }
           },
           {
             "method_name": "_extract_entities_syntax",
@@ -866,8 +822,7 @@
                 "Entities with dependency_path containing 'nsubj' or 'dobj' are likely main clause actors (high importance for responsibility attribution)",
                 "Entities in subordinate clauses (dependency_path with 'acl', 'advcl') are contextual mentions (lower priority unless no main clause entities found)"
               ]
-            },
-            "provides": "pdet_analysis.extract_entities_syntax"
+            }
           },
           {
             "method_name": "_classify_entity_type",
@@ -950,8 +905,7 @@
                 "Comisaría entities should be cross-referenced with 'violencia' or 'atención' keywords to confirm violence response capacity",
                 "High proportion of Genérico (>50%): Low entity typing accuracy → improve NER/syntax extraction quality or expand type taxonomy"
               ]
-            },
-            "provides": "pdet_analysis.classify_entity_type"
+            }
           },
           {
             "method_name": "_score_entity_specificity",
@@ -1049,8 +1003,7 @@
                 "High-specificity entities (≥0.75) are candidates for automatic entity-activity linkage (MechanismPartExtractor)",
                 "Low-specificity entities with type='Secretaría Especializada' are CONTRADICTIONS (specialized office should have specific name) → flag for manual review"
               ]
-            },
-            "provides": "pdet_analysis.score_entity_specificity"
+            }
           },
           {
             "method_name": "_consolidate_entities",
@@ -1573,17 +1526,15 @@
           }
         ],
         "method_combination_logic": {
-          "combination_strategy": "Hierarchical Entity-Activity Pipeline with Parallel NER+Syntax Extraction, Consolidation, and Provenance Audit",
-          "rationale": "D1-Q4 requires identification of responsible entities AND their institutional activities (capacidades para gestionar). The 11 methods implement a 4-layer hierarchy: (Layer 1) Parallel entity extraction via NER (method 2) and syntax parsing (method 3) to maximize recall through complementary techniques (NER captures learned entity patterns, syntax captures rule-based structures). (Layer 2) Entity classification (method 4) and specificity scoring (method 5) filter and rank entities by operationalizability. (Layer 3) Entity consolidation (method 6) deduplicates and resolves coreference. (Layer 4) Entity-activity linkage via semantic role labeling (method 7) with normalization (method 8), validation (method 9), and calibrated confidence (method 10). Final provenance audit (method 11) ensures traceability. This pipeline balances NLP breadth (NER+syntax) with domain-grounded validation (ontology checks, specificity thresholds).",
-          "evidence_fusion": "Hierarchical NOT flat fusion. Entities from NER (method 2) and syntax (method 3) merged via Levenshtein similarity (≥0.85 threshold) in consolidation (method 6). Entity-activity pairs (method 7) are NOT directly fused; instead, each pair is independently validated (method 9) and assigned calibrated confidence (method 10). Final evidence set = {consolidated_entities with specificity≥0.50} ∪ {entity_activity_pairs with calibrated_conf≥0.70}. No averaging of overlapping pairs; each pair represents distinct entity-activity claim with independent provenance.",
-          "confidence_aggregation": "Non-uniform weights reflecting extraction method reliability and transformation depth. Entity confidence = geometric_mean(NER_conf^0.6, Syntax_conf^0.4) if extracted by both (prioritizes learned model NER over rules), else individual method confidence. Entity-activity pair confidence = geometric_mean(entity_conf^0.5, syntactic_distance_conf^0.3, validation_conf^0.2) → Platt calibration with a=2.3, b=-0.8 (learned from 150 manual annotations, Brier score 0.12). Geometric mean penalizes low components more than arithmetic mean, reflecting multiplicative uncertainty propagation.",
-          "execution_order": "Strict DAG topology with parallel and sequential stages:\n  Stage 1 (Entry): identify_responsible_entities (method 1) orchestrates pipeline\n  Stage 2 (Parallel Extraction): [_extract_entities_ner (method 2) || _extract_entities_syntax (method 3)] - independent execution, no data dependencies\n  Stage 3 (Sequential Processing): _classify_entity_type (method 4) → _score_entity_specificity (method 5) → _consolidate_entities (method 6) - strict sequential dependency, each method requires prior outputs\n  Stage 4 (Activity Linkage): extract_entity_activity (method 7) consumes consolidated entities → _normalize_entity (method 8) → _validate_entity_activity (method 9) → _calculate_ea_confidence (method 10)\n  Stage 5 (Audit): audit_evidence_traceability (method 11) validates provenance of all prior outputs\n  Critical paths: {1→2→4→5→6→7→8→9→10→11} (length 10, NER path) and {1→3→4→5→6→7→8→9→10→11} (length 10, syntax path). Longest path determines minimum execution time.",
+          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "rationale": "D1-Q4 (Q004) for PA01/DIM01 requires consistent extraction, validation, and synthesis across 11 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
+          "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
+          "execution_order": "Methods execute in priority order (1→11).",
           "trade_offs": [
-            "NER vs. Syntax Precision-Recall: NER (spaCy BiLSTM-CRF) achieves higher precision (0.89 F1 on ORG entities) but lower recall on out-of-vocabulary entities (misses novel municipal agencies). Syntax (dependency parsing + regex) has lower precision (0.82 estimated) but higher recall on canonical patterns ('Secretaría de...'). Parallel execution captures union of both (↑recall) with consolidation deduplication (→precision). Empirical: NER-only recall=0.76, Syntax-only recall=0.68, Combined recall=0.91 (from 25-plan validation corpus).",
-            "Specificity Threshold: Filtering entities at specificity<0.50 removes vague mentions ('entidad competente') but may discard valid generic references ('la Secretaría' without full name). Tuned threshold 0.50 balances precision (0.78 → 0.85 after filtering) vs. recall (0.91 → 0.83). F1-optimal threshold=0.50 from grid search on validation set.",
-            "Calibration Overhead: Platt scaling adds ~5% computational cost (sigmoid evaluation per pair) but critical for decision-making. Uncalibrated confidence has Brier score 0.18 (poor calibration), calibrated Brier=0.12 (25% improvement). Trade-off: small cost for large epistemic gain.",
-            "Provenance Storage: Full provenance metadata (sentence_id, source_method, confidence, timestamp per entity/pair) increases JSON size by ≈20% but enables audit and reproducibility. Essential for transparency (Colombian Law 1712/2014) despite storage overhead.",
-            "Entity-Activity Linkage Recall vs. Precision: Syntactic distance threshold affects trade-off. Current threshold = dependency_path_length ≤3 achieves precision=0.81, recall=0.74 (validation set). Relaxing to ≤5 increases recall to 0.82 but drops precision to 0.72. Chosen ≤3 for higher precision (fewer false entity-activity claims)."
+            "Coverage vs. cost: using 11 methods increases coverage but raises computation and maintenance burden.",
+            "Recall vs. precision: multiple detectors increase recall but can introduce redundancy; deduplication and weighting mitigate this.",
+            "Sophistication vs. interpretability: advanced models can be less transparent; human_readable_output documents assumptions and limitations."
           ],
           "dependency_graph": {
             "independent_roots": [
@@ -1626,15 +1577,13 @@
         "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
         "must_contain": {
-          "count": 7,
+          "count": 5,
           "elements": [
             "cuellos_botella",
             "datos_sistemas",
             "gobernanza",
             "procesos",
-            "talento_humano",
-            "infraestructura_fisica",
-            "infraestructura_tecnologica"
+            "talento_humano"
           ]
         },
         "type": "array"
@@ -1660,7 +1609,7 @@
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 11 methods from D1_Q4_Executor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q004",
     "specialized_from_base_slot": "D1-Q4",
     "specialization_timestamp": "2025-11-28T03:49:29.791489+00:00"
@@ -1711,9 +1660,9 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all 11 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "11 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -2413,57 +2362,5 @@
         "merge_strategy": "replace"
       }
     }
-  },
-  "methodological_depth": {
-    "methods": [
-      {
-        "method_name": "contract_orchestrated_evidence_fusion",
-        "class_name": "EvidenceNexus",
-        "priority": 1,
-        "role": "evidence_graph_construction_and_synthesis",
-        "epistemological_foundation": {
-          "paradigm": "critical_realist",
-          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
-          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
-          "theoretical_framework": [
-            "Pearl (2009) causal reasoning (why mechanisms matter)",
-            "Pawson & Tilley (1997) realistic evaluation",
-            "Results-based management for public policy monitoring"
-          ],
-          "justification": "Chosen because INSUMOS in PA01 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
-        },
-        "technical_approach": {
-          "method_type": "graph_based_evidence_fusion",
-          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
-          "steps": [
-            {
-              "step": 1,
-              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
-            },
-            {
-              "step": 2,
-              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
-            },
-            {
-              "step": 3,
-              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
-            },
-            {
-              "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for Q004/D1-Q4."
-            }
-          ],
-          "assumptions": [
-            "The source plan contains at least one relevant section or table for this question.",
-            "Expected element types map to observable text spans or tabular cells."
-          ],
-          "limitations": [
-            "Evidence quality depends on document structure and explicitness of commitments.",
-            "Pattern-only extraction is conservative to preserve determinism."
-          ],
-          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
-        }
-      }
-    ]
   }
 }

@@ -5,12 +5,12 @@
     "dimension_id": "DIM01",
     "policy_area_id": "PA01",
     "contract_version": "3.0.0",
-    "contract_hash": "f7b7644c58cfabda64e54b43dc8684b819e0889dc9f397da370fc22336d6e7ca",
+    "contract_hash": "81680c2b43a7373d8729eb989036b0f65e2645a567f5ca36eab779a30ad40de4",
     "created_at": "2025-11-28T03:49:29.784078+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 2,
-    "updated_at": "2025-12-18T07:16:03.210280+00:00"
+    "updated_at": "2025-12-16T04:42:57.316919+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
@@ -268,21 +268,6 @@
         "required": true,
         "type": "vacios_explicitos",
         "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "analisis_causal_problema",
-        "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "cuantificacion_magnitud",
-        "minimum": 1
-      },
-      {
-        "required": true,
-        "type": "analisis_vulnerabilidad",
-        "minimum": 1
       }
     ],
     "validations": {},
@@ -292,28 +277,19 @@
         "incomplete_text"
       ],
       "emit_code": "ABORT-Q002-REQ"
-    },
-    "policy_area_label": "Derechos de las mujeres e igualdad de género",
-    "dimension_label": "INSUMOS"
+    }
   },
   "signal_requirements": {
-    "mandatory_signals": [
-      "baseline_completeness",
-      "data_sources",
-      "gender_baseline_data",
-      "policy_coverage",
-      "vbg_statistics"
-    ],
-    "optional_signals": [
-      "geographic_scope",
-      "source_validation",
-      "temporal_coverage",
-      "temporal_series",
-      "territorial_scope"
-    ],
+    "mandatory_signals": [],
+    "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements enforce minimum quality threshold of 0.5. Mandatory signals must be present with sufficient strength for execution to proceed."
+    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM01; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "preferred_signal_types": [
+      "policy_instrument_detected",
+      "activity_specification_found",
+      "implementation_timeline_present"
+    ]
   },
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
@@ -358,41 +334,41 @@
       {
         "target": "elements_found",
         "sources": [
-          "operationalizationauditor.audit_direct_evidence",
-          "operationalizationauditor.audit_systemic_risk",
-          "financial_audit.detect_allocation_gaps",
-          "bayesianmechanisminference.detect_gaps",
-          "pdet_analysis.generate_optimal_remediations",
-          "pdet_analysis.simulate_intervention",
+          "bayesianconfidencecalculator.calculate_posterior",
           "bayesiancounterfactualauditor.counterfactual_query",
           "bayesiancounterfactualauditor.test_effect_stability",
-          "contradiction_detection.detect_numerical_inconsistencies",
+          "bayesianmechanisminference.detect_gaps",
           "contradiction_detection.calculate_numerical_divergence",
-          "bayesianconfidencecalculator.calculate_posterior",
+          "contradiction_detection.detect_numerical_inconsistencies",
+          "financial_audit.detect_allocation_gaps",
+          "operationalizationauditor.audit_direct_evidence",
+          "operationalizationauditor.audit_systemic_risk",
+          "pdet_analysis.generate_optimal_remediations",
+          "pdet_analysis.simulate_intervention",
           "performanceanalyzer.analyze_performance"
         ],
         "merge_strategy": "concat",
-        "description": "Combine all evidence elements from 12 method invocations"
+        "description": "Combine evidence elements from 12 method invocations"
       },
       {
         "target": "confidence_scores",
         "sources": [],
         "merge_strategy": "weighted_mean",
         "default": [],
-        "description": "Aggregate confidence scores across all methods"
+        "description": "Aggregate confidence scores across 12 methods"
       },
       {
         "target": "pattern_matches",
         "sources": [],
         "merge_strategy": "concat",
         "default": {},
-        "description": "Combine pattern matches from analysis methods"
+        "description": "Combine pattern matches across 12 methods"
       },
       {
         "target": "metadata",
         "sources": [],
         "merge_strategy": "concat",
-        "description": "Combine metadata from all 12 methods for full traceability"
+        "description": "Combine metadata from 12 methods for full traceability"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
@@ -491,17 +467,11 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Q002 | Análisis D1-Q2: Cuantificación de Brecha de Género y Vacíos de Datos | Derechos de las mujeres e igualdad de género",
-        "summary": "### Resumen Ejecutivo\n\nSe analizó la cuantificación de brecha de género y el reconocimiento de vacíos de datos, identificando **{evidence.elements_found_count}** elementos de evidencia. Q002 evalúa si el texto dimensiona el problema cuantificando déficits y limitaciones de información.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
-        "score_section": "### Evaluación Cuantitativa\n\n- **Puntaje bruto**: {score}/3.0\n- **Nivel de calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}%\n- **Cobertura de patrones**: {evidence.pattern_matches_count}/14 patrones detectados",
-        "elements_section": "### Elementos de Evidencia Identificados\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
-        "details": [
-          "**Fuentes oficiales identificadas**: {evidence.official_sources_count}",
-          "**Indicadores cuantitativos**: {evidence.quantitative_indicators_count}",
-          "**Series temporales**: {evidence.temporal_series_count}",
-          "**Cobertura territorial**: {evidence.territorial_coverage}"
-        ],
-        "interpretation": "### Interpretación de Resultados\n\n{methodological_interpretation}",
+        "title": "## Análisis Q002 (D1-Q2): ¿El texto dimensiona el problema de la desigualdad de género cuantificando la brecha o déficit? Se debe buscar si se mencionan explícitam...",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
+        "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "interpretation": "### Interpretación\n\n{methodological_interpretation}",
         "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
       },
       "methodological_depth": {
@@ -989,16 +959,15 @@
           }
         ],
         "method_combination_logic": {
-          "combination_strategy": "Hierarchical Bayesian pipeline with contrafactual validation and operational loss quantification",
-          "rationale": "D1-Q2 evaluates recognition of gender data gaps and quantification of disparities - requires detecting ABSENCES (what's NOT stated). 12 methods form 4-layer hierarchy: (1) Bayesian evidence audit for gap detection, (2) Causal risk propagation via Dempster-Shafer, (3) Financial/mechanism gap inference, (4) Contradiction detection for data quality, (5) Counterfactual validation of causal claims, (6) Performance loss quantification. Unlike Q001's additive evidence extraction, Q002 uses multiplicative risk accumulation - omissions compound via causal cascades.",
-          "evidence_fusion": "Hierarchical fusion NOT flat aggregation: Layer 1 (_audit_direct_evidence) outputs feed Layer 2 (_audit_systemic_risk), which combines via Dempster-Shafer rule m1⊕m2 = ∑(m1(A)×m2(B))/(1-conflict) for omission beliefs. Layer 3 (financial, mechanism inference) provides independent evidence streams. Layer 4 (contradictions) flags data quality. Layer 5 (counterfactuals) validates causal necessity/sufficiency. Layer 6 (performance) monetizes aggregate losses. EvidenceNexus respects dependency graph - no naive averaging of dependent posteriors.",
-          "confidence_aggregation": "Non-uniform weighting by method reliability corpus-validated: Bayesian methods (1,2,4,7,8,11) weight=0.95, causal inference (6) weight=0.90, statistical tests (9,10) weight=0.85, financial heuristics (3) weight=0.75, performance loss (12) weight=0.80. Final posterior P(gap|all_evidence) = mixture ∑ w_i × P(gap|method_i) / ∑w_i. Credible intervals via hierarchical Bayesian aggregation, NOT frequentist averaging which violates dependency assumptions.",
-          "execution_order": "Strict DAG topology enforced: {1→2→[3,4,5]→[6,7,8]→[9,10]→11→12}. Methods 1-2 are sequential (systemic risk depends on direct evidence). Methods 3-5 are parallel (independent gap sources). Methods 6-8 are parallel (counterfactual validation of different gap types). Methods 9-10 are sequential (divergence calculation needs inconsistencies). Method 11 aggregates 1-10. Method 12 consumes all. Violations → runtime dependency error.",
+          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "rationale": "D1-Q2 (Q002) for PA01/DIM01 requires consistent extraction, validation, and synthesis across 12 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
+          "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
+          "execution_order": "Methods execute in priority order (1→12).",
           "trade_offs": [
-            "Sensitivity vs. Specificity: Bayesian priors tuned for rare omissions (P(explicit_bias_recognition)≈0.15) maximize sensitivity (detect gaps) at cost of false positives; validated against corpus showing precision=0.82, recall=0.91 for gap detection",
-            "Computational Cost vs. Robustness: MCMC sampling (methods 4,6,7,8) requires O(10000) iterations per method = ~40K total samples. Amortized cost: 15-30s per contract on standard hardware. Justified by robustness to prior misspecification and uncertainty quantification unavailable in frequentist methods",
-            "Interpretability vs. Causal Rigor: Counterfactual analysis (methods 7-8) operationally complex (twin networks, graph surgery) vs. simple correlation. Justified by policy context: attributing implementation failure to diagnostic omissions requires counterfactual reasoning ('would plan succeed if gap HAD been recognized?') - correlational analysis insufficient for causal policy recommendations",
-            "Aggregation Complexity vs. Coherence: Hierarchical Bayesian aggregation mathematically principled but complex vs. naive averaging. Trade-off: principled uncertainty propagation and dependency-aware fusion vs. simplicity. Critical for Q002 where omissions are causally dependent (missing baseline → unmeasurable outcome → unaccountable program)"
+            "Coverage vs. cost: using 12 methods increases coverage but raises computation and maintenance burden.",
+            "Recall vs. precision: multiple detectors increase recall but can introduce redundancy; deduplication and weighting mitigate this.",
+            "Sophistication vs. interpretability: advanced models can be less transparent; human_readable_output documents assumptions and limitations."
           ],
           "dependency_graph": {
             "independent_roots": [
@@ -1034,14 +1003,11 @@
         "description": "Auto-generated: require all required expected_elements types",
         "field": "elements_found",
         "must_contain": {
-          "count": 6,
+          "count": 3,
           "elements": [
             "cuantificacion_brecha",
             "sesgos_reconocidos",
-            "vacios_explicitos",
-            "analisis_causal_problema",
-            "cuantificacion_magnitud",
-            "analisis_vulnerabilidad"
+            "vacios_explicitos"
           ]
         },
         "type": "array"
@@ -1067,7 +1033,7 @@
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 17 methods from D1_Q1_QuantitativeBaselineExtractor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 12 methods from D1_Q2_Executor, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q002",
     "specialized_from_base_slot": "D1-Q2",
     "specialization_timestamp": "2025-11-28T03:49:29.784133+00:00"
@@ -1118,9 +1084,9 @@
     }
   },
   "human_answer_structure": {
-    "description": "Expected structure of evidence dict after all 17 methods execute and evidence is assembled according to assembly_rules",
+    "description": "Expected structure of evidence dict after all 12 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "17 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "12 methods execute in priority order, outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
@@ -1845,57 +1811,5 @@
         "merge_strategy": "replace"
       }
     }
-  },
-  "methodological_depth": {
-    "methods": [
-      {
-        "method_name": "contract_orchestrated_evidence_fusion",
-        "class_name": "EvidenceNexus",
-        "priority": 1,
-        "role": "evidence_graph_construction_and_synthesis",
-        "epistemological_foundation": {
-          "paradigm": "critical_realist",
-          "ontological_basis": "Policy plans encode mechanisms via activities, outputs, and indicators; evidence is treated as fallible observations of underlying commitments.",
-          "epistemological_stance": "Triangulation across heterogeneous sources with explicit uncertainty.",
-          "theoretical_framework": [
-            "Pearl (2009) causal reasoning (why mechanisms matter)",
-            "Pawson & Tilley (1997) realistic evaluation",
-            "Results-based management for public policy monitoring"
-          ],
-          "justification": "Chosen because INSUMOS in PA01 must explain why the plan's commitments are coherent, measurable, and traceable to evidence."
-        },
-        "technical_approach": {
-          "method_type": "graph_based_evidence_fusion",
-          "algorithm": "pattern extraction + multi-method pipeline + evidence graph synthesis",
-          "steps": [
-            {
-              "step": 1,
-              "description": "Extract candidate claims and table structures from the document using contract patterns and policy-area scope."
-            },
-            {
-              "step": 2,
-              "description": "Populate method outputs under provides slots and construct evidence nodes aligned to expected_elements."
-            },
-            {
-              "step": 3,
-              "description": "Assemble aggregate evidence for elements_found and infer relationships to support synthesis and validation."
-            },
-            {
-              "step": 4,
-              "description": "Compute completeness, gaps, and confidence interval for Q002/D1-Q2."
-            }
-          ],
-          "assumptions": [
-            "The source plan contains at least one relevant section or table for this question.",
-            "Expected element types map to observable text spans or tabular cells."
-          ],
-          "limitations": [
-            "Evidence quality depends on document structure and explicitness of commitments.",
-            "Pattern-only extraction is conservative to preserve determinism."
-          ],
-          "complexity": "O(n_patterns × n_text) for bounded regex matching + O(n_nodes + n_edges) for graph propagation."
-        }
-      }
-    ]
   }
 }
