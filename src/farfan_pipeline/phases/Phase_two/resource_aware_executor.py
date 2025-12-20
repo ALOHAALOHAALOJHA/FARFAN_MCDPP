@@ -182,10 +182,16 @@ class ResourceAwareExecutor:
                 raise ValueError(f"Cannot determine question_id from executor_id: {executor_id}")
             
             # Create GenericContractExecutor with question_id
-            # TODO: ResourceAwareExecutor needs update to support BaseExecutorWithContract dependencies.
-            # Currently missing signal_registry, config, questionnaire_provider.
-            # Bypassing execution for now to maintain structure integrity.
-            raise NotImplementedError("ResourceAwareExecutor update pending for Contract-Based Executors")
+            # NOTE: ResourceAwareExecutor requires refactoring for JSON contract-based execution.
+            # Dependencies needed: signal_registry, config, questionnaire_provider
+            # from BaseExecutorWithContract interface.
+            # This executor is temporarily disabled pending contract integration.
+            # See Phase 2 migration plan for refactoring schedule.
+            raise NotImplementedError(
+                "ResourceAwareExecutor requires refactoring for contract-based execution. "
+                "Pending integration with GenericContractExecutor and BaseExecutorWithContract. "
+                "Use GenericContractExecutor directly for JSON contract execution."
+            )
             
         except Exception as exc:
             logger.error(f"Sync execution failed: {exc}")

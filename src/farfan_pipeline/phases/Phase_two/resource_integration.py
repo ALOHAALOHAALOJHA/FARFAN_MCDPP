@@ -10,15 +10,15 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from orchestration.orchestrator import MethodExecutor, Orchestrator, ResourceLimits
+    from canonic_phases.Phase_two.orchestrator import MethodExecutor, Orchestrator, ResourceLimits
 
-from orchestration.resource_alerts import (
+from canonic_phases.Phase_two.resource_alerts import (
     AlertChannel,
     AlertThresholds,
     ResourceAlertManager,
 )
-from orchestration.resource_aware_executor import ResourceAwareExecutor
-from orchestration.resource_manager import (
+from canonic_phases.Phase_two.resource_aware_executor import ResourceAwareExecutor
+from canonic_phases.Phase_two.resource_manager import (
     AdaptiveResourceManager,
     ExecutorPriority,
     ResourceAllocationPolicy,

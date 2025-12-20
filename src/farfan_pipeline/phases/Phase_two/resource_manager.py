@@ -1,11 +1,11 @@
 """Adaptive Resource Management System.
 
-Provides dynamic resource allocation, degradation strategies, circuit breakers,
+Provides dynamic resource allocation, constraint handling, circuit breakers,
 and priority-based resource allocation for policy analysis executors.
 
 This module integrates with ResourceLimits to provide:
 - Real-time resource monitoring and adaptive allocation
-- Graceful degradation strategies when resources are constrained
+- Resource constraint detection and enforcement
 - Circuit breakers for memory-intensive executors
 - Priority-based resource allocation (critical executors first)
 - Comprehensive observability with alerts
@@ -15,10 +15,9 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Callable
 
@@ -102,7 +101,7 @@ class CircuitBreaker:
         
         if self.state == CircuitState.OPEN:
             if self.last_state_change:
-                elapsed = (datetime.utcnow() - self.last_state_change).total_seconds()
+                elapsed = (datetime.now(timezone.utc) - self.last_state_change).total_seconds()
                 if elapsed >= self.config.timeout_seconds:
                     self.state = CircuitState.HALF_OPEN
                     self.success_count = 0
@@ -365,7 +364,6 @@ class AdaptiveResourceManager:
         usage = self.resource_limits.get_resource_usage()
         
         cpu_percent = usage.get("cpu_percent", 0.0)
-        memory_percent = usage.get("memory_percent", 0.0)
         rss_mb = usage.get("rss_mb", 0.0)
         
         max_memory_mb = self.resource_limits.max_memory_mb or 4096.0
