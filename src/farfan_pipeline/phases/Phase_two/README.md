@@ -474,8 +474,9 @@ Phase 2 comprises 22 Python modules (12,500 total lines):
 | `generate_executor_configs.py` | 290 | Single config generator |
 | `create_all_executor_configs.sh` | 120 | Automation script |
 | `__init__.py` | 80 | Module exports |
-| **Total** | **12,540** | |
+| **Total (22 executor-focused modules)** | **12,540** | |
 
+**Scope note:** `Phase_two/` currently contains 30 files. The manifest above documents the 22 Python modules that participate directly in deterministic execution orchestration. The remaining 8 files are supporting assets (tests, configuration, documentation, and auxiliary resources) and are excluded from the line-count total to keep architectural metrics focused on executable pipeline components.
 ### Component Interaction Diagram
 
 ```
