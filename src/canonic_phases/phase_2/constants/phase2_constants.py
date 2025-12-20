@@ -1,41 +1,94 @@
 """
 Module: src.canonic_phases.phase_2.constants.phase2_constants
-Purpose: Constants for Phase 2 contract enforcement
+Purpose: Constants and configuration for Phase 2 processing
 Owner: phase2_orchestration
 Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2025-12-18
-
-Constants used across Phase 2 contract modules for determinism,
-error codes, and cryptographic operations.
 """
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Final
 
-# === ERROR CODES ===
-ERROR_CODES: Final[dict[str, str]] = {
-    "E2001": "ROUTING_CONTRACT_VIOLATION - Executor routing failed",
-    "E2002": "PAYLOAD_VALIDATION_FAILURE - Invalid payload structure",
-    "E2003": "EXECUTOR_NOT_FOUND - No executor for contract type",
-    "E2004": "AMBIGUOUS_MAPPING - Multiple executors match",
-    "E2005": "SIGNATURE_MISMATCH - Payload signature invalid",
-    "E2006": "CONCURRENCY_DETERMINISM_VIOLATION - Parallel != Serial",
-    "E2007": "RUNTIME_CONTRACT_VIOLATION - Pre/Post/Invariant failed",
-    "E2008": "REGISTRY_INCOMPLETE - Missing contract type mappings",
-    "E2009": "INVARIANT_CORRUPTION - State consistency violated",
-}
+# === CARDINALITY CONSTANTS ===
+
+CPP_CHUNK_COUNT: Final[int] = 60
+"""Expected number of CPP chunks from Phase 1."""
+
+MICRO_ANSWER_COUNT: Final[int] = 300
+"""Expected number of micro-answers produced by carving."""
+
+SHARDS_PER_CHUNK: Final[int] = 5
+"""Number of micro-answer shards per CPP chunk."""
 
 # === DETERMINISM CONFIGURATION ===
+
 DEFAULT_RANDOM_SEED: Final[int] = 42
+"""Default seed for deterministic operations."""
 
-# === CRYPTOGRAPHIC CONFIGURATION ===
 HASH_ALGORITHM: Final[str] = "sha256"
+"""Hash algorithm for content integrity verification."""
 
-# === CONCURRENCY CONFIGURATION ===
-DEFAULT_MAX_WORKERS: Final[int] = 4
-CONCURRENCY_TIMEOUT_SECONDS: Final[int] = 300
+# === ERROR CODES ===
 
-# === VALIDATION THRESHOLDS ===
-MAX_PAYLOAD_SIZE_BYTES: Final[int] = 10 * 1024 * 1024  # 10MB
-MAX_EXECUTOR_REGISTRY_SIZE: Final[int] = 1000
+@dataclass(frozen=True)
+class ErrorCode:
+    """Error code definition."""
+    code: str
+    message_template: str
+
+
+ERROR_CODES: Final[dict[str, ErrorCode]] = {
+    "E2001": ErrorCode(
+        code="E2001",
+        message_template="No executor mapping found for contract_type: {contract_type}",
+    ),
+    "E2002": ErrorCode(
+        code="E2002",
+        message_template="Cardinality violation: expected {expected}, got {actual}",
+    ),
+    "E2003": ErrorCode(
+        code="E2003",
+        message_template="Validation failed: {details}",
+    ),
+    "E2004": ErrorCode(
+        code="E2004",
+        message_template="Provenance tracking failed: {details}",
+    ),
+    "E2005": ErrorCode(
+        code="E2005",
+        message_template="EvidenceNexus processing failed: {error}",
+    ),
+    "E2006": ErrorCode(
+        code="E2006",
+        message_template="Cannot import EvidenceNexus: {error}",
+    ),
+    "E2007": ErrorCode(
+        code="E2007",
+        message_template="Task execution failed: {error}",
+    ),
+}
+
+# === EXECUTOR REGISTRY DEFINITION ===
+
+@dataclass(frozen=True)
+class ExecutorRegistryEntry:
+    """Definition of an executor and its contract types."""
+    executor_id: str
+    contract_types: tuple[str, ...]
+    description: str
+
+
+EXECUTOR_REGISTRY: Final[dict[str, ExecutorRegistryEntry]] = {
+    "specialized_executor": ExecutorRegistryEntry(
+        executor_id="specialized_executor",
+        contract_types=("specialized_contract",),
+        description="Handles specialized contract payloads",
+    ),
+    "general_executor": ExecutorRegistryEntry(
+        executor_id="general_executor",
+        contract_types=("general_contract",),
+        description="Handles general contract payloads",
+    ),
+}

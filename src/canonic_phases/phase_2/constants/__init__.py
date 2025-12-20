@@ -1,22 +1,29 @@
-"""Constants module for Phase 2."""
+"""
+Module: src.canonic_phases.phase_2.constants
+Purpose: Constants package for Phase 2
+"""
 from __future__ import annotations
 
 from .phase2_constants import (
-    CONCURRENCY_TIMEOUT_SECONDS,
-    DEFAULT_MAX_WORKERS,
+    CPP_CHUNK_COUNT,
     DEFAULT_RANDOM_SEED,
     ERROR_CODES,
+    EXECUTOR_REGISTRY,
     HASH_ALGORITHM,
-    MAX_EXECUTOR_REGISTRY_SIZE,
-    MAX_PAYLOAD_SIZE_BYTES,
+    MICRO_ANSWER_COUNT,
+    SHARDS_PER_CHUNK,
+    ErrorCode,
+    ExecutorRegistryEntry,
 )
 
 __all__ = [
-    "CONCURRENCY_TIMEOUT_SECONDS",
-    "DEFAULT_MAX_WORKERS",
+    "CPP_CHUNK_COUNT",
     "DEFAULT_RANDOM_SEED",
     "ERROR_CODES",
+    "EXECUTOR_REGISTRY",
     "HASH_ALGORITHM",
-    "MAX_EXECUTOR_REGISTRY_SIZE",
-    "MAX_PAYLOAD_SIZE_BYTES",
+    "MICRO_ANSWER_COUNT",
+    "SHARDS_PER_CHUNK",
+    "ErrorCode",
+    "ExecutorRegistryEntry",
 ]

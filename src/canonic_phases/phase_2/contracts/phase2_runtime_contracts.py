@@ -1,254 +1,93 @@
 """
 Module: src.canonic_phases.phase_2.contracts.phase2_runtime_contracts
-Purpose: Design-by-Contract primitives for runtime enforcement
+Purpose: Runtime contract decorators for preconditions, postconditions, and invariants
 Owner: phase2_orchestration
-Lifecycle:  ACTIVE
+Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2025-12-18
-
-Contracts-Enforced:
-    - Precondition: Input validation before execution
-    - Postcondition: Output validation after execution
-    - Invariant: State consistency throughout execution
-
-Determinism:
-    Seed-Strategy: NOT_APPLICABLE
-    State-Management: Stateless decorators
-
-Inputs:
-    - condition: Callable[[...], bool] — Predicate to check
-    - message: str — Error message on violation
-
-Outputs:
-    - Decorated function with contract enforcement
-
-Failure-Modes:
-    - PreconditionViolation: RuntimeContractViolation — Input invalid
-    - PostconditionViolation: RuntimeContractViolation — Output invalid
-    - InvariantViolation: RuntimeContractViolation — State corrupted
 """
 from __future__ import annotations
 
-import logging
 from collections.abc import Callable
-from dataclasses import dataclass
 from functools import wraps
-from typing import Any, Final, ParamSpec, TypeVar
+from typing import Any, TypeVar
 
-logger: Final = logging.getLogger(__name__)
-
-P = ParamSpec("P")
-R = TypeVar("R")
+F = TypeVar("F", bound=Callable[..., Any])
 
 
-# === EXCEPTION TAXONOMY ===
-
-
-@dataclass(frozen=True)
-class RuntimeContractViolation(Exception):
-    """Base exception for runtime contract violations."""
-
-    error_code: str
-    contract_type: str  # PRECONDITION, POSTCONDITION, INVARIANT
-    function_name: str
-    message: str
-
-    def __str__(self) -> str:
-        return (
-            f"[{self.error_code}] {self.contract_type}_VIOLATION in "
-            f"{self.function_name}: {self.message}"
-        )
-
-
-class PreconditionViolation(RuntimeContractViolation):
-    """Raised when precondition fails."""
-
-    pass
-
-
-class PostconditionViolation(RuntimeContractViolation):
-    """Raised when postcondition fails."""
-
-    pass
-
-
-class InvariantViolation(RuntimeContractViolation):
-    """Raised when invariant fails."""
-
-    pass
-
-
-# === CONTRACT DECORATORS ===
-
-
-def precondition(
-    condition: Callable[..., bool],
-    message: str,
-) -> Callable[[Callable[P, R]], Callable[P, R]]:
+def precondition(check: Callable[..., bool], message: str) -> Callable[[F], F]:
     """
-    Decorator enforcing precondition on function inputs.
-
-    SUCCESS_CRITERIA:
-        - condition(*args, **kwargs) returns True
-
-    FAILURE_MODES:
-        - PreconditionViolation: condition returns False
+    Decorator to enforce preconditions on function execution.
 
     Args:
-        condition: Predicate receiving same args as decorated function
-        message: Error message on violation
+        check: Function that takes the same arguments as the decorated function
+               and returns True if precondition is satisfied
+        message: Error message to display if precondition fails
 
     Returns:
-        Decorated function with precondition enforcement
-    """
+        Decorated function that validates preconditions
 
-    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+    Raises:
+        AssertionError: If precondition check fails
+    """
+    def decorator(func: F) -> F:
         @wraps(func)
-        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-            if not condition(*args, **kwargs):
-                raise PreconditionViolation(
-                    error_code="E2007",
-                    contract_type="PRECONDITION",
-                    function_name=func.__qualname__,
-                    message=message,
-                )
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            if not check(*args, **kwargs):
+                raise AssertionError(f"Precondition failed: {message}")
             return func(*args, **kwargs)
-
-        return wrapper
-
+        return wrapper  # type: ignore
     return decorator
 
 
-def postcondition(
-    condition: Callable[[R], bool],
-    message: str,
-) -> Callable[[Callable[P, R]], Callable[P, R]]:
+def postcondition(check: Callable[[Any], bool], message: str) -> Callable[[F], F]:
     """
-    Decorator enforcing postcondition on function output.
-
-    SUCCESS_CRITERIA:
-        - condition(result) returns True
-
-    FAILURE_MODES:
-        - PostconditionViolation: condition returns False
+    Decorator to enforce postconditions on function execution.
 
     Args:
-        condition: Predicate receiving function result
-        message: Error message on violation
+        check: Function that takes the result of the decorated function
+               and returns True if postcondition is satisfied
+        message: Error message to display if postcondition fails
 
     Returns:
-        Decorated function with postcondition enforcement
-    """
+        Decorated function that validates postconditions
 
-    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+    Raises:
+        AssertionError: If postcondition check fails
+    """
+    def decorator(func: F) -> F:
         @wraps(func)
-        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             result = func(*args, **kwargs)
-            if not condition(result):
-                raise PostconditionViolation(
-                    error_code="E2007",
-                    contract_type="POSTCONDITION",
-                    function_name=func.__qualname__,
-                    message=message,
-                )
+            if not check(result):
+                raise AssertionError(f"Postcondition failed: {message}")
             return result
-
-        return wrapper
-
+        return wrapper  # type: ignore
     return decorator
 
 
-def invariant(
-    condition: Callable[[Any], bool],
-    message: str,
-) -> Callable[[Callable[P, R]], Callable[P, R]]:
+def invariant(check: Callable[..., bool], message: str) -> Callable[[F], F]:
     """
-    Decorator enforcing invariant on object state before and after execution.
-
-    SUCCESS_CRITERIA:
-        - condition(self) returns True before execution
-        - condition(self) returns True after execution
-
-    FAILURE_MODES:
-        - InvariantViolation: condition returns False at any checkpoint
+    Decorator to enforce invariants on class methods.
 
     Args:
-        condition: Predicate receiving self (first argument)
-        message: Error message on violation
+        check: Function that takes self and returns True if invariant holds
+        message: Error message to display if invariant fails
 
     Returns:
-        Decorated method with invariant enforcement
-    """
+        Decorated method that validates invariants before and after execution
 
-    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+    Raises:
+        AssertionError: If invariant check fails
+    """
+    def decorator(func: F) -> F:
         @wraps(func)
-        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-            # Extract self (assumes method)
-            if not args:
-                raise RuntimeContractViolation(
-                    error_code="E2007",
-                    contract_type="INVARIANT",
-                    function_name=func.__qualname__,
-                    message="Invariant decorator requires method with self",
-                )
-
-            self_obj = args[0]
-
-            # Check invariant before
-            if not condition(self_obj):
-                raise InvariantViolation(
-                    error_code="E2007",
-                    contract_type="INVARIANT_PRE",
-                    function_name=func.__qualname__,
-                    message=f"Invariant violated BEFORE execution: {message}",
-                )
-
-            result = func(*args, **kwargs)
-
-            # Check invariant after
-            if not condition(self_obj):
-                raise InvariantViolation(
-                    error_code="E2007",
-                    contract_type="INVARIANT_POST",
-                    function_name=func.__qualname__,
-                    message=f"Invariant violated AFTER execution: {message}",
-                )
-
+        def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
+            if not check(self):
+                raise AssertionError(f"Invariant failed (before): {message}")
+            result = func(self, *args, **kwargs)
+            if not check(self):
+                raise AssertionError(f"Invariant failed (after): {message}")
             return result
-
-        return wrapper
-
-    return decorator
-
-
-# === CONTRACT COMPOSITION ===
-
-
-def contract(
-    pre: Callable[..., bool] | None = None,
-    pre_msg: str = "Precondition failed",
-    post: Callable[[R], bool] | None = None,
-    post_msg: str = "Postcondition failed",
-) -> Callable[[Callable[P, R]], Callable[P, R]]:
-    """
-    Composite decorator applying both precondition and postcondition.
-
-    Args:
-        pre: Precondition predicate (optional)
-        pre_msg: Precondition error message
-        post: Postcondition predicate (optional)
-        post_msg: Postcondition error message
-
-    Returns:
-        Decorated function with both contracts enforced
-    """
-
-    def decorator(func: Callable[P, R]) -> Callable[P, R]:
-        wrapped = func
-        if post is not None:
-            wrapped = postcondition(post, post_msg)(wrapped)
-        if pre is not None:
-            wrapped = precondition(pre, pre_msg)(wrapped)
-        return wrapped
-
+        return wrapper  # type: ignore
     return decorator
