@@ -1518,8 +1518,6 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
 
     # Check 2: Verify executor_methods.json exists
     try:
-        import json
-        from pathlib import Path
         executors_methods_path = Path(__file__).parent / "executors_methods.json"
         if not executors_methods_path.exists():
             validation_results["warnings"].append(
