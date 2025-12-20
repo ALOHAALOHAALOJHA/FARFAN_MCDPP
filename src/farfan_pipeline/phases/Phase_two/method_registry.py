@@ -90,7 +90,7 @@ class MethodRegistry:
         """
         # Import class paths from existing registry
         if class_paths is None:
-            from orchestration.class_registry import get_class_paths
+            from .class_registry import get_class_paths
             class_paths = dict(get_class_paths())
 
         self._class_paths = class_paths
