@@ -62,7 +62,7 @@ from orchestration.verification_manifest import (
     VerificationManifest as VerificationManifestBuilder,
     verify_manifest_integrity,
 )
-from farfan_pipeline.core.phases.phase2_types import validate_phase2_result
+from canonic_phases.phase_2.phase2_types import validate_phase2_result
 from orchestration.versions import get_all_versions
 
 
