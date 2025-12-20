@@ -46,7 +46,6 @@ def _collect_paths(root: Path) -> list[Path]:
         "README.md",
         "README.ES.md",
         "pdt_analysis_report.json",
-        "canonic_questionnaire_central/questionnaire_monolith.json",
         "canonic_questionnaire_central/pattern_registry.json",
     ]:
         path = root / rel
