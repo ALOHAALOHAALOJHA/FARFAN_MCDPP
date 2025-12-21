@@ -15,34 +15,34 @@ This phase implements contract-driven question execution with evidence assembly,
 narrative synthesis, and SISAS integration for deterministic policy analysis.
 
 File Sequence (a-z, aa-ac):
-- phase2_a_arg_router.py          : Argument routing
-- phase2_b_base_executor_with_contract.py : Executor base class
-- phase2_c_carver.py              : Narrative synthesis
-- phase2_d_calibration_policy.py  : Calibration policies
-- phase2_e_contract_validator_cqvr.py : Contract validation
-- phase2_f_evidence_nexus.py      : Evidence assembly
-- phase2_g_method_signature_validator.py : Signature validation
-- phase2_h_metrics_persistence.py : Metrics persistence
-- phase2_i_precision_tracking.py  : Precision tracking
-- phase2_j_resource_integration.py : Resource integration
-- phase2_k_resource_aware_executor.py : Resource-aware executor
-- phase2_l_resource_manager.py    : Resource management
-- phase2_m_signature_runtime_validator.py : Runtime validation
-- phase2_n_task_planner.py        : Task planning
-- phase2_o_methods_registry.py    : Methods registry
-- phase2_p_executor_profiler.py   : Profiling
-- phase2_q_executor_instrumentation_mixin.py : Instrumentation
-- phase2_r_executor_calibration_integration.py : Calibration integration
-- phase2_s_executor_config.py     : Executor config
-- phase2_t_irrigation_synchronizer.py : Signal irrigation
-- phase2_u_synchronization.py     : Sync utilities
-- phase2_v_executor_chunk_synchronizer.py : Chunk sync
-- phase2_w_factory.py             : DI Factory
-- phase2_x_class_registry.py      : Class registry
-- phase2_y_schema_validation.py   : Schema validation
+- phase2_60_02_arg_router.py          : Argument routing
+- phase2_60_00_base_executor_with_contract.py : Executor base class
+- phase2_90_00_carver.py              : Narrative synthesis
+- phase2_60_04_calibration_policy.py  : Calibration policies
+- phase2_60_01_contract_validator_cqvr.py : Contract validation
+- phase2_80_00_evidence_nexus.py      : Evidence assembly
+- phase2_20_00_method_signature_validator.py : Signature validation
+- phase2_95_01_metrics_persistence.py : Metrics persistence
+- phase2_95_02_precision_tracking.py  : Precision tracking
+- phase2_30_01_resource_integration.py : Resource integration
+- phase2_30_03_resource_aware_executor.py : Resource-aware executor
+- phase2_30_00_resource_manager.py    : Resource management
+- phase2_60_03_signature_runtime_validator.py : Runtime validation
+- phase2_50_01_task_planner.py        : Task planning
+- phase2_10_02_methods_registry.py    : Methods registry
+- phase2_95_00_executor_profiler.py   : Profiling
+- phase2_60_05_executor_instrumentation_mixin.py : Instrumentation
+- phase2_95_03_executor_calibration_integration.py : Calibration integration
+- phase2_10_03_executor_config.py     : Executor config
+- phase2_40_03_irrigation_synchronizer.py : Signal irrigation
+- phase2_40_00_synchronization.py     : Sync utilities
+- phase2_40_01_executor_chunk_synchronizer.py : Chunk sync
+- phase2_10_00_factory.py             : DI Factory
+- phase2_10_01_class_registry.py      : Class registry
+- phase2_40_02_schema_validation.py   : Schema validation
 - phase2_z_generic_contract_executor.py : Generic executor
-- phase2_aa_method_source_validator.py : Source validation
-- phase2_ab_resource_alerts.py    : Resource alerts
+- phase2_20_01_method_source_validator.py : Source validation
+- phase2_30_02_resource_alerts.py    : Resource alerts
 - phase2_ac_executor_tests.py     : Executor tests
 """
 
@@ -51,7 +51,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 # Evidence processing - EvidenceNexus for causal graph construction
-from farfan_pipeline.phases.Phase_two.phase2_f_evidence_nexus import (
+from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
     EvidenceNexus,
     EvidenceGraph,
     EvidenceNode,
@@ -59,14 +59,14 @@ from farfan_pipeline.phases.Phase_two.phase2_f_evidence_nexus import (
 )
 
 # Narrative synthesis - Doctoral Carver for PhD-level responses
-from farfan_pipeline.phases.Phase_two.phase2_c_carver import (
+from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import (
     DoctoralCarverSynthesizer,
     CarverAnswer,
 )
 
 # Executor configuration and base class
-from farfan_pipeline.phases.Phase_two.phase2_s_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_two.phase2_b_base_executor_with_contract import (
+from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import (
     BaseExecutorWithContract,
 )
 

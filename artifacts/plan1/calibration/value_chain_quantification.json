@@ -1,9 +1,0 @@
-{
-  "success": false,
-  "reason": "Pending integration",
-  "hashes": {
-    "monolith_hash": "e383e5cfecd3fae329e3b2ff6f702407398190336be40284480f76b8b6e2bd6c",
-    "pattern_registry_hash": "508e8f0ce1ee94b98b9e5e5f68ddd6b7a849023e81fb9548c43eae76fe08701a",
-    "pdt_analysis_report_hash": "28fa177d16172cb5c587410dd543c9b7e13a6985839d2c5fe7fff6976bb231f9"
-  }
-}

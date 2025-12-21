@@ -73,14 +73,14 @@ from canonic_phases.phase_4_7_aggregation_pipeline.aggregation_enhancements impo
     EnhancedClusterAggregator,
     EnhancedMacroAggregator,
 )
-from farfan_pipeline.phases.Phase_two.phase2_a_arg_router import (
+from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
 )
 from orchestration.class_registry import ClassRegistryError
-from farfan_pipeline.phases.Phase_two.phase2_s_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_two.phase2_t_irrigation_synchronizer import (
+from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_two.phase2_40_03_irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
@@ -1265,7 +1265,7 @@ class Orchestrator:
     ) -> None:
         """Initialize orchestrator with Phase 0 integration."""
         from orchestration.questionnaire_validation import _validate_questionnaire_structure
-        from farfan_pipeline.phases.Phase_two.phase2_d_calibration_policy import create_default_policy
+        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import create_default_policy
         from canonic_phases.Phase_zero.runtime_config import RuntimeConfig as _RuntimeConfig
 
         validate_phase_definitions(self.FASES, self.__class__)
