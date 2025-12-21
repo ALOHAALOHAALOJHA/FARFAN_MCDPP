@@ -3,8 +3,8 @@
     "base_slot": "D1-Q5",
     "question_id": "Q215",
     "dimension_id": "DIM01",
-    "policy_area_id": "PA07",
-    "contract_version": "3.0.0",
+    "policy_area_id": "PA08",
+    "contract_version": "3.1.0-Jurist-Massive",
     "contract_hash": "9943c341f0477f751598dce07d70b25a369f2f776021d749785715b02ba545c0",
     "created_at": "2025-11-28T03:50:41.924025+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
@@ -260,7 +260,7 @@
     "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are under development. Canonical mapping pending for PA07/DIM01; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM01; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
     "preferred_signal_types": [
       "policy_instrument_detected",
       "activity_specification_found",
@@ -345,101 +345,11 @@
     "engine": "EVIDENCE_NEXUS"
   },
   "output_contract": {
-    "result_type": "Phase2QuestionResult",
-    "schema": {
-      "type": "object",
-      "required": [
-        "base_slot",
-        "question_id",
-        "question_global",
-        "evidence",
-        "validation"
-      ],
-      "properties": {
-        "base_slot": {
-          "type": "string",
-          "description": "Debe coincidir con identity.base_slot.",
-          "const": "D1-Q5"
-        },
-        "question_id": {
-          "type": "string",
-          "description": "Debe coincidir con identity.question_id.",
-          "const": "Q215"
-        },
-        "question_global": {
-          "type": "integer",
-          "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 215
-        },
-        "policy_area_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA07"
-        },
-        "dimension_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": "DIM01"
-        },
-        "cluster_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": "CL01"
-        },
-        "evidence": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
-          "additionalProperties": true
-        },
-        "validation": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
-          "additionalProperties": true
-        },
-        "trace": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
-          "additionalProperties": true
-        },
-        "metadata": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
-          "additionalProperties": true
-        }
-      },
-      "additionalProperties": false
-    },
-    "consumer_modules": [
-      "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
-      "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
-      "src.farfan_core.analysis.scoring.MicroQuestionScorer"
-    ],
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q215 (D1-Q5): ¿El plan justifica su alcance en tierras mencionando el marco legal (ej. Ley 388, Acuerdo de Paz) o reconociendo restricciones explícitas...",
-        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Tierras y territorios\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Análisis Q215: PA08 - D1-Q5",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "interpretation": "### Interpretación\n\n{methodological_interpretation}",
@@ -826,7 +736,7 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q5 (Q215) for PA07/DIM01 requires consistent extraction, validation, and synthesis across 7 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "rationale": "D1-Q5 (Q005) for PA01/DIM01 requires consistent extraction, validation, and synthesis across 7 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
           "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
           "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
           "execution_order": "Methods execute in priority order (1→7).",

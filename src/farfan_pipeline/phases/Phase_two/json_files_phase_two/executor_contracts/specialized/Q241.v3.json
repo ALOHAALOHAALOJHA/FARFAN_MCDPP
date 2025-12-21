@@ -3,8 +3,8 @@
     "base_slot": "D1-Q1",
     "question_id": "Q241",
     "dimension_id": "DIM01",
-    "policy_area_id": "PA08",
-    "contract_version": "3.0.0",
+    "policy_area_id": "PA09",
+    "contract_version": "3.1.0-Jurist-Massive",
     "contract_hash": "86cedde2f77a8126d4ee6f1091425078010b9ee2a1ba7c6a2140c32f67be9cbf",
     "created_at": "2025-11-28T03:50:42.183265+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
@@ -450,7 +450,7 @@
     "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are under development. Canonical mapping pending for PA08/DIM01; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM01; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
     "preferred_signal_types": [
       "policy_instrument_detected",
       "activity_specification_found",
@@ -460,45 +460,91 @@
   "evidence_assembly": {
     "module": "canonic_phases.Phase_two.evidence_nexus",
     "class_name": "EvidenceNexus",
-    "method_name": "assemble",
+    "method_name": "process",
     "output_schema": {
       "type": "object",
       "required": [
-        "elements",
-        "raw_results"
+        "evidence",
+        "validation",
+        "trace"
       ],
       "properties": {
-        "elements": {
-          "type": "array",
-          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta."
-        },
-        "raw_results": {
+        "evidence": {
           "type": "object",
+          "description": "Legacy-compatible evidence dict with elements, by_type, confidence_scores",
           "properties": {
-            "confidence_scores": {
+            "elements": {
               "type": "array",
-              "description": "Scores de confianza usados por el scorer."
+              "description": "Evidence nodes from graph"
             },
-            "semantic_similarity": {
-              "description": "Métrica de similitud semántica (si aplica)."
-            },
-            "pattern_matches": {
+            "by_type": {
               "type": "object",
-              "description": "Matches de patrones esperados vs texto."
+              "description": "Count of elements by evidence type"
             },
-            "metadata": {
+            "confidence_scores": {
               "type": "object",
-              "description": "Metadatos arbitrarios pasados al scorer."
+              "description": "Confidence statistics (mean, min, max)"
+            },
+            "graph_hash": {
+              "type": "string",
+              "description": "SHA-256 hash of evidence graph"
             }
-          },
-          "additionalProperties": true
+          }
+        },
+        "validation": {
+          "type": "object",
+          "description": "Validation report from ValidationEngine",
+          "properties": {
+            "valid": {
+              "type": "boolean"
+            },
+            "consistency_score": {
+              "type": "number"
+            },
+            "errors": {
+              "type": "array"
+            },
+            "warnings": {
+              "type": "array"
+            }
+          }
+        },
+        "trace": {
+          "type": "object",
+          "description": "Execution trace and graph statistics"
+        },
+        "synthesized_answer": {
+          "type": "object",
+          "description": "Complete synthesized answer from NarrativeSynthesizer"
+        },
+        "human_readable_output": {
+          "type": "string",
+          "description": "Formatted narrative (Carver-style) for human consumption"
+        },
+        "overall_confidence": {
+          "type": "number",
+          "description": "Overall confidence for Phase 3 scoring"
+        },
+        "completeness": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "partial",
+            "insufficient",
+            "not_applicable"
+          ],
+          "description": "Answer completeness level"
+        },
+        "graph_statistics": {
+          "type": "object",
+          "description": "Evidence graph metrics (node_count, edge_count, etc.)"
         }
       },
       "additionalProperties": true
     },
     "assembly_rules": [
       {
-        "target": "elements_found",
+        "target": "evidence_graph",
         "sources": [
           "bayesian_analysis.compare_policies",
           "bayesian_analysis.evaluate_policy_metric",
@@ -518,131 +564,37 @@
           "text_mining.analyze_link_text",
           "text_mining.diagnose_critical_links"
         ],
-        "merge_strategy": "concat",
-        "description": "Combine evidence elements from 17 method invocations"
+        "merge_strategy": "graph_construction",
+        "description": "EvidenceNexus transforms ALL 17 method outputs into EvidenceNode objects with SHA-256 hashing and builds causal evidence graph"
       },
       {
-        "target": "confidence_scores",
+        "target": "relationships",
         "sources": [],
-        "merge_strategy": "weighted_mean",
+        "merge_strategy": "edge_inference",
+        "description": "Nexus infers EvidenceEdge relationships (SUPPORTS, CONTRADICTS, CAUSES, CORRELATES) between nodes"
+      },
+      {
+        "target": "belief_propagation",
+        "sources": [],
+        "merge_strategy": "dempster_shafer",
         "default": [],
-        "description": "Aggregate confidence scores across 17 methods"
+        "description": "Apply Dempster-Shafer belief propagation across graph for calibrated confidence intervals"
       },
       {
-        "target": "pattern_matches",
-        "sources": [
-          "text_mining.diagnose_critical_links",
-          "industrial_policy.match_patterns_in_sentences"
-        ],
-        "merge_strategy": "concat",
-        "default": {},
-        "description": "Combine pattern matches across 17 methods"
-      },
-      {
-        "target": "metadata",
+        "target": "narrative_synthesis",
         "sources": [],
-        "merge_strategy": "concat",
-        "description": "Combine metadata from 17 methods for full traceability"
+        "merge_strategy": "carver_doctoral_synthesis",
+        "description": "DoctoralCarverSynthesizer generates Raymond Carver-style PhD-level narrative with citations and gap analysis"
       }
     ],
     "engine": "EVIDENCE_NEXUS"
   },
   "output_contract": {
-    "result_type": "Phase2QuestionResult",
-    "schema": {
-      "type": "object",
-      "required": [
-        "base_slot",
-        "question_id",
-        "question_global",
-        "evidence",
-        "validation"
-      ],
-      "properties": {
-        "base_slot": {
-          "type": "string",
-          "description": "Debe coincidir con identity.base_slot.",
-          "const": "D1-Q1"
-        },
-        "question_id": {
-          "type": "string",
-          "description": "Debe coincidir con identity.question_id.",
-          "const": "Q241"
-        },
-        "question_global": {
-          "type": "integer",
-          "description": "Índice global de la pregunta (de questionnaire_monolith).",
-          "const": 241
-        },
-        "policy_area_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA08"
-        },
-        "dimension_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Dimensión canónica, coherente con identity.dimension_id.",
-          "const": "DIM01"
-        },
-        "cluster_id": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "description": "Cluster de análisis según el monolith, si aplica.",
-          "const": "CL03"
-        },
-        "evidence": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
-          "additionalProperties": true
-        },
-        "validation": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
-          "additionalProperties": true
-        },
-        "trace": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
-          "additionalProperties": true
-        },
-        "metadata": {
-          "type": [
-            "object",
-            "null"
-          ],
-          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
-          "additionalProperties": true
-        }
-      },
-      "additionalProperties": false
-    },
-    "consumer_modules": [
-      "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
-      "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
-      "src.farfan_core.analysis.scoring.MicroQuestionScorer"
-    ],
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q241 (D1-Q1): ¿El diagnóstico presenta datos numéricos (número de amenazas, homicidios de líderes, medidas de protección activas) sobre la situación de...",
-        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Análisis Q241: PA09 - D1-Q1",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "interpretation": "### Interpretación\n\n{methodological_interpretation}",
@@ -1642,7 +1594,7 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D1-Q1 (Q241) for PA08/DIM01 requires consistent extraction, validation, and synthesis across 17 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "rationale": "D1-Q1 (Q001) for PA01/DIM01 requires consistent extraction, validation, and synthesis across 17 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
           "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
           "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
           "execution_order": "Methods execute in priority order (1→17).",
