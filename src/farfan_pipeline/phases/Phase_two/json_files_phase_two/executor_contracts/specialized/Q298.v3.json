@@ -747,7 +747,7 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D6-Q3 (Q028) for PA01/DIM06 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "rationale": "D6-Q3 (Q298) for PA09/DIM06 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
           "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
           "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
           "execution_order": "Methods execute in priority order (1→8).",
