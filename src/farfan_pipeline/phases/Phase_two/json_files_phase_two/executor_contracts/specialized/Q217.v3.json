@@ -141,7 +141,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0081",
         "pattern": "mediante|a través de|con la implementación de",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -155,7 +155,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -169,7 +169,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -183,7 +183,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -198,7 +198,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0086",
         "pattern": "población objetivo:|dirigido a|beneficiarios serán",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -212,7 +212,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -226,7 +226,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -240,7 +240,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -254,7 +254,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       }
     ],
     "expected_elements": [
