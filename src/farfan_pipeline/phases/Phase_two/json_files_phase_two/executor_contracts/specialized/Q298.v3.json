@@ -3,7 +3,7 @@
     "base_slot": "D6-Q3",
     "question_id": "Q298",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA09",
     "contract_version": "3.1.0-Jurist-Massive",
     "contract_hash": "8d05c0132cdcac082fc43e92377fdf99bd1703184d8101ff3f2fbd3955d6359b",
     "created_at": "2025-11-28T03:50:42.553535+00:00",
