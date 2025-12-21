@@ -163,6 +163,10 @@ CORE_MODULE_FACTORY_AVAILABLE = False
 from orchestration.seed_registry import SeedRegistry
 SEED_REGISTRY_AVAILABLE = True
 
+# CP-0.1 & CP-0.2: Phase 1 Validation
+from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValidator
+from farfan_pipeline.core.types import PreprocessedDocument
+
 logger = logging.getLogger(__name__)
 
 
@@ -567,6 +571,47 @@ class AnalysisPipelineFactory:
         except Exception as e:
             logger.error("factory_create_orchestrator_failed error=%s", str(e), exc_info=True)
             raise FactoryError(f"Failed to create orchestrator: {e}") from e
+
+    def validate_phase1_handoff(self, doc: PreprocessedDocument, artifacts_path: Path | None = None) -> bool:
+        """
+        CP-0.1 & CP-0.2: Validates the handoff from Phase 1.
+        
+        Args:
+            doc: The PreprocessedDocument to validate.
+            artifacts_path: Optional path to artifacts directory for manifest validation.
+            
+        Returns:
+            bool: True if validation passes, False otherwise.
+        """
+        logger.info("phase1_handoff_validation_start document_id=%s", doc.document_id)
+        
+        # 1. Validate Document Structure (Matrix 60x6)
+        matrix_result = Phase1OutputValidator.validate_matrix_coordinates(doc)
+        if not matrix_result.is_valid:
+            logger.error(
+                "phase1_handoff_validation_failed matrix_errors=%s",
+                matrix_result.errors
+            )
+            if self._strict:
+                return False
+        else:
+             logger.info(
+                "phase1_matrix_validation_passed score=%.2f%% integrity_hash=%s",
+                matrix_result.matrix_completeness_score,
+                matrix_result.integrity_hash
+            )
+
+        # 2. Validate Manifest (if path provided)
+        if artifacts_path:
+            manifest_valid = Phase1OutputValidator.validate_phase1_manifest(artifacts_path)
+            if not manifest_valid:
+                 logger.error("phase1_manifest_validation_failed")
+                 if self._strict:
+                     return False
+            else:
+                logger.info("phase1_manifest_validation_passed")
+        
+        return True
 
     # =========================================================================
     # Internal Construction Methods

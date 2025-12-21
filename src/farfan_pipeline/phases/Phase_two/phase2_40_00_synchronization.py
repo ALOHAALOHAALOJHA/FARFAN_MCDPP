@@ -156,6 +156,7 @@ class SmartPolicyChunk:
     dimension_id: str
     text: str
     document_position: tuple[int, int] | None
+    content_hash: str
     raw_chunk: Any | None = None
 
     @property
@@ -239,6 +240,9 @@ class ChunkMatrix:
             if not text.strip():
                 raise ValueError(f"Chunk {expected_chunk_id} has empty text")
 
+            # Calculate content hash
+            content_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+
             document_position = _extract_document_position(chunk)
 
             key = (policy_area_id, dimension_id)
@@ -254,6 +258,7 @@ class ChunkMatrix:
                 dimension_id=dimension_id,
                 text=text,
                 document_position=document_position,
+                content_hash=content_hash,
                 raw_chunk=chunk,
             )
 
