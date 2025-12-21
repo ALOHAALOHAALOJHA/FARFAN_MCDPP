@@ -655,7 +655,7 @@
   "human_answer_structure": {
     "description": "Expected structure of evidence dict after all 9 methods execute and evidence is assembled according to assembly_rules",
     "assembly_flow": {
-      "step_1_method_execution": "9 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_1_method_execution": "9 methods execute according to epistemological layer dependencies (L1_empirical → L2_inferential → L3_audit → L4_synthesis), outputs stored with dot-notation keys",
       "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
       "step_3_validation": "ValidationEngine checks against validation_rules",
       "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
