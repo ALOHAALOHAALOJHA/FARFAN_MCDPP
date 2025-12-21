@@ -1,8 +1,8 @@
 {
   "metadata": {
     "source": "questionnaire_monolith.json",
-    "extracted_at": "2025-12-21",
-    "note": "CANONICAL, CLOSED ontology. Updated to correct PA ordering (PA01→PA02→...→PA10) after fixing questionnaire monolith ordering error."
+    "extracted_at": "2025-11-08",
+    "note": "This is the CANONICAL, CLOSED ontology. No modifications allowed."
   },
   "dimensions_of_analysis": {
     "DIM01": {
@@ -383,42 +383,6 @@
       "id": "PA02",
       "question_count": 30,
       "questions": [
-        "Q031",
-        "Q032",
-        "Q033",
-        "Q034",
-        "Q035",
-        "Q036",
-        "Q037",
-        "Q038",
-        "Q039",
-        "Q040",
-        "Q041",
-        "Q042",
-        "Q043",
-        "Q044",
-        "Q045",
-        "Q046",
-        "Q047",
-        "Q048",
-        "Q049",
-        "Q050",
-        "Q051",
-        "Q052",
-        "Q053",
-        "Q054",
-        "Q055",
-        "Q056",
-        "Q057",
-        "Q058",
-        "Q059",
-        "Q060"
-      ]
-    },
-    "PA03": {
-      "id": "PA03",
-      "question_count": 30,
-      "questions": [
         "Q061",
         "Q062",
         "Q063",
@@ -451,8 +415,8 @@
         "Q090"
       ]
     },
-    "PA04": {
-      "id": "PA04",
+    "PA03": {
+      "id": "PA03",
       "question_count": 30,
       "questions": [
         "Q091",
@@ -487,8 +451,8 @@
         "Q120"
       ]
     },
-    "PA05": {
-      "id": "PA05",
+    "PA04": {
+      "id": "PA04",
       "question_count": 30,
       "questions": [
         "Q121",
@@ -523,8 +487,8 @@
         "Q150"
       ]
     },
-    "PA06": {
-      "id": "PA06",
+    "PA05": {
+      "id": "PA05",
       "question_count": 30,
       "questions": [
         "Q151",
@@ -559,8 +523,8 @@
         "Q180"
       ]
     },
-    "PA07": {
-      "id": "PA07",
+    "PA06": {
+      "id": "PA06",
       "question_count": 30,
       "questions": [
         "Q181",
@@ -595,8 +559,8 @@
         "Q210"
       ]
     },
-    "PA08": {
-      "id": "PA08",
+    "PA07": {
+      "id": "PA07",
       "question_count": 30,
       "questions": [
         "Q211",
@@ -631,8 +595,8 @@
         "Q240"
       ]
     },
-    "PA09": {
-      "id": "PA09",
+    "PA08": {
+      "id": "PA08",
       "question_count": 30,
       "questions": [
         "Q241",
@@ -667,8 +631,8 @@
         "Q270"
       ]
     },
-    "PA10": {
-      "id": "PA10",
+    "PA09": {
+      "id": "PA09",
       "question_count": 30,
       "questions": [
         "Q271",
@@ -701,6 +665,42 @@
         "Q298",
         "Q299",
         "Q300"
+      ]
+    },
+    "PA10": {
+      "id": "PA10",
+      "question_count": 30,
+      "questions": [
+        "Q031",
+        "Q032",
+        "Q033",
+        "Q034",
+        "Q035",
+        "Q036",
+        "Q037",
+        "Q038",
+        "Q039",
+        "Q040",
+        "Q041",
+        "Q042",
+        "Q043",
+        "Q044",
+        "Q045",
+        "Q046",
+        "Q047",
+        "Q048",
+        "Q049",
+        "Q050",
+        "Q051",
+        "Q052",
+        "Q053",
+        "Q054",
+        "Q055",
+        "Q056",
+        "Q057",
+        "Q058",
+        "Q059",
+        "Q060"
       ]
     }
   }
