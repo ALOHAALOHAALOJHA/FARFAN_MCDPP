@@ -3,7 +3,7 @@
     "base_slot": "D3-Q3",
     "question_id": "Q283",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA09",
     "contract_version": "3.1.0-Jurist-Massive",
     "contract_hash": "525c9ea59acc7b519697cc15e9aa00504e46d3942d5ed5ed68bbeb6fdea9a219",
     "created_at": "2025-11-28T03:50:42.500636+00:00",
@@ -435,8 +435,8 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q283: PA10 - D3-Q3",
-        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: PRODUCTOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Análisis Q283: PA09 - D3-Q3",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Crisis de derechos de personas privadas de la libertad\n\n**Dimensión**: PRODUCTOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "interpretation": "### Interpretación\n\n{methodological_interpretation}",
