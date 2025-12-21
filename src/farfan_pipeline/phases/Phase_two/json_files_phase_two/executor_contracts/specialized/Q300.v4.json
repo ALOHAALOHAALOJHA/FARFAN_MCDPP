@@ -1,0 +1,1349 @@
+{
+  "identity": {
+    "base_slot": "D6-Q5",
+    "question_id": "Q300",
+    "dimension_id": "DIM06",
+    "policy_area_id": "PA10",
+    "contract_version": "4.0.0-epistemological",
+    "contract_hash": "7dc88706550b4e170576e7d84b17af4febf59e1f43db996ed8b075f24fc34bcc",
+    "created_at": "2025-11-28T03:50:42.561025+00:00",
+    "validated_against_schema": "executor_contract.v3.schema.json",
+    "cluster_id": "CL04",
+    "question_global": 300,
+    "updated_at": "2025-12-21T19:03:47.786959+00:00",
+    "refactoring_date": "2025-12-21T22:18:31.373759+00:00",
+    "refactoring_rationale": "Stratified epistemological architecture to address flatness critique"
+  },
+  "executor_binding": {
+    "executor_class": "D6_Q5_Executor",
+    "executor_module": "farfan_core.core.orchestrator.executors"
+  },
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "method_count": 9,
+    "execution_graph": {
+      "L1_empirical": {
+        "description": "Empirical observation layer - direct document extraction",
+        "methods": [
+          {
+            "class_name": "SemanticProcessor",
+            "method_name": "chunk_text",
+            "provides": "semantic_processing.chunk_text",
+            "role": "L1-EMP",
+            "description": "SemanticProcessor.chunk_text"
+          },
+          {
+            "class_name": "SemanticProcessor",
+            "method_name": "_detect_pdm_structure",
+            "provides": "semantic_processing.detect_pdm_structure",
+            "role": "L1-EMP",
+            "description": "SemanticProcessor._detect_pdm_structure"
+          },
+          {
+            "class_name": "SemanticProcessor",
+            "method_name": "_detect_table",
+            "provides": "semantic_processing.detect_table",
+            "role": "L1-EMP",
+            "description": "SemanticProcessor._detect_table"
+          }
+        ],
+        "dependencies": [],
+        "output_target": "raw_facts"
+      },
+      "L2_inferential": {
+        "description": "Inferential analysis layer - transformation of observations into analytical constructs",
+        "methods": [
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_calculate_language_specificity",
+            "provides": "causal_extraction.calculate_language_specificity",
+            "role": "L2-INF",
+            "description": "CausalExtractor._calculate_language_specificity",
+            "requires": [
+              "raw_facts"
+            ]
+          },
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_assess_temporal_coherence",
+            "provides": "causal_extraction.assess_temporal_coherence",
+            "role": "L2-INF",
+            "description": "CausalExtractor._assess_temporal_coherence",
+            "requires": [
+              "raw_facts"
+            ]
+          },
+          {
+            "class_name": "TextMiningEngine",
+            "method_name": "diagnose_critical_links",
+            "provides": "text_mining.diagnose_critical_links",
+            "role": "L2-INF",
+            "description": "TextMiningEngine.diagnose_critical_links",
+            "requires": [
+              "raw_facts"
+            ]
+          },
+          {
+            "class_name": "CausalInferenceSetup",
+            "method_name": "identify_failure_points",
+            "provides": "causalinferencesetup.identify_failure_points",
+            "role": "L2-INF",
+            "description": "CausalInferenceSetup.identify_failure_points",
+            "requires": [
+              "raw_facts"
+            ]
+          },
+          {
+            "class_name": "CausalInferenceSetup",
+            "method_name": "_get_dynamics_pattern",
+            "provides": "causalinferencesetup.get_dynamics_pattern",
+            "role": "L2-INF",
+            "description": "CausalInferenceSetup._get_dynamics_pattern",
+            "requires": [
+              "raw_facts"
+            ]
+          }
+        ],
+        "dependencies": [
+          "L1_empirical"
+        ],
+        "output_target": "inferences"
+      },
+      "L3_audit": {
+        "description": "Audit layer - validation and refutation of prior layers",
+        "methods": [],
+        "dependencies": [
+          "L1_empirical",
+          "L2_inferential"
+        ],
+        "output_target": "audit_results",
+        "fusion_mode": "modulation"
+      },
+      "L4_synthesis": {
+        "description": "Synthesis layer - narrative construction for human consumption",
+        "methods": [
+          {
+            "class_name": "AdaptivePriorCalculator",
+            "method_name": "generate_traceability_record",
+            "provides": "adaptivepriorcalculator.generate_traceability_record",
+            "role": "L4-SYN",
+            "description": "AdaptivePriorCalculator.generate_traceability_record",
+            "requires": [
+              "raw_facts",
+              "inferences",
+              "audit_results"
+            ]
+          }
+        ],
+        "dependencies": [
+          "L1_empirical",
+          "L2_inferential",
+          "L3_audit"
+        ],
+        "output_target": "final_narrative"
+      }
+    }
+  },
+  "question_context": {
+    "question_text": "\u00bfLa l\u00f3gica causal para la crisis carcelaria considera el contexto, reconociendo 'grupos afectados' (mujeres, poblaci\u00f3n LGBTI, ind\u00edgenas PPL) y 'restricciones' normativas?",
+    "question_type": "micro",
+    "scoring_modality": "TYPE_A",
+    "modality": "count_and_scale",
+    "expected_output_type": "score",
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-000",
+        "match_type": "REGEX",
+        "pattern": "enfoque diferencial|enfoque de g\u00e9nero en prisiones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-001",
+        "match_type": "REGEX",
+        "pattern": "mujeres gestantes o lactantes privadas de la libertad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-002",
+        "match_type": "REGEX",
+        "pattern": "poblaci\u00f3n LGBTI en riesgo de discriminaci\u00f3n",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-003",
+        "match_type": "REGEX",
+        "pattern": "PPL pertenecientes a comunidades ind\u00edgenas o afrodescendientes|afrodescendiente|comunidad negra|palenquero|raizal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-004",
+        "match_type": "REGEX",
+        "pattern": "adultos mayores o PPL con enfermedades graves",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-005",
+        "match_type": "REGEX",
+        "pattern": "restricciones normativas del C\u00f3digo Penitenciario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-006",
+        "match_type": "REGEX",
+        "pattern": "contexto de seguridad y gobernabilidad del centro de reclusi\u00f3n",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q300-007",
+        "match_type": "REGEX",
+        "pattern": "estrategias adaptadas para la poblaci\u00f3n sindicada vs. la condenada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_contextual",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "enfoque_diferencial",
+        "minimum": 1
+      }
+    ],
+    "validations": {},
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q300-REQ"
+    }
+  },
+  "signal_requirements": {
+    "mandatory_signals": [],
+    "optional_signals": [],
+    "signal_aggregation": "weighted_mean",
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements are under development. Canonical mapping pending for PA09/DIM06; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "preferred_signal_types": [
+      "policy_instrument_detected",
+      "activity_specification_found",
+      "implementation_timeline_present"
+    ]
+  },
+  "evidence_assembly": {
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "elements",
+        "raw_results"
+      ],
+      "properties": {
+        "elements": {
+          "type": "array",
+          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta."
+        },
+        "raw_results": {
+          "type": "object",
+          "properties": {
+            "confidence_scores": {
+              "type": "array",
+              "description": "Scores de confianza usados por el scorer."
+            },
+            "semantic_similarity": {
+              "description": "M\u00e9trica de similitud sem\u00e1ntica (si aplica)."
+            },
+            "pattern_matches": {
+              "type": "object",
+              "description": "Matches de patrones esperados vs texto."
+            },
+            "metadata": {
+              "type": "object",
+              "description": "Metadatos arbitrarios pasados al scorer."
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_empirical_consolidation",
+        "description": "Consolidate empirical observations from L1 methods",
+        "target": "raw_facts",
+        "sources": [
+          "semantic_processing.chunk_text",
+          "semantic_processing.detect_pdm_structure",
+          "semantic_processing.detect_table"
+        ],
+        "merge_strategy": "concat_with_deduplication",
+        "deduplication_key": "element_id",
+        "confidence_propagation": "preserve_individual"
+      },
+      {
+        "rule_id": "R2_inferential_aggregation",
+        "description": "Aggregate analytical inferences from L2 methods",
+        "target": "inferences",
+        "sources": [
+          "causal_extraction.calculate_language_specificity",
+          "causal_extraction.assess_temporal_coherence",
+          "text_mining.diagnose_critical_links",
+          "causalinferencesetup.identify_failure_points",
+          "causalinferencesetup.get_dynamics_pattern"
+        ],
+        "input_dependencies": [
+          "raw_facts"
+        ],
+        "merge_strategy": "weighted_aggregation",
+        "confidence_propagation": "conservative_bayesian"
+      },
+      {
+        "rule_id": "R3_audit_modulation",
+        "description": "Apply audit results to modulate confidence of L1 and L2 outputs",
+        "target": "validated_facts",
+        "sources": [],
+        "input_dependencies": [
+          "raw_facts",
+          "inferences"
+        ],
+        "merge_strategy": "confidence_modulation",
+        "modulation_rules": {
+          "contradiction_detected": {
+            "action": "suppress_fact",
+            "confidence_multiplier": 0.0,
+            "flag": "CONTRADICTION"
+          },
+          "validation_failure": {
+            "action": "reduce_confidence",
+            "confidence_multiplier": 0.5,
+            "flag": "VALIDATION_FAILURE"
+          },
+          "high_uncertainty": {
+            "action": "flag_caution",
+            "confidence_multiplier": 0.7,
+            "flag": "HIGH_UNCERTAINTY"
+          }
+        }
+      },
+      {
+        "rule_id": "R4_narrative_synthesis",
+        "description": "Construct human-readable narrative from all layers",
+        "target": "human_answer",
+        "sources": [
+          "adaptivepriorcalculator.generate_traceability_record"
+        ],
+        "input_dependencies": [
+          "validated_facts",
+          "inferences",
+          "audit_results"
+        ],
+        "merge_strategy": "narrative_construction"
+      }
+    ],
+    "engine": "EVIDENCE_NEXUS"
+  },
+  "output_contract": {
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "type": "object",
+      "required": [
+        "base_slot",
+        "question_id",
+        "question_global",
+        "evidence",
+        "validation"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string",
+          "description": "Debe coincidir con identity.base_slot.",
+          "const": "D6-Q5"
+        },
+        "question_id": {
+          "type": "string",
+          "description": "Debe coincidir con identity.question_id.",
+          "const": "Q300"
+        },
+        "question_global": {
+          "type": "integer",
+          "description": "\u00cdndice global de la pregunta (de questionnaire_monolith).",
+          "const": 300
+        },
+        "policy_area_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "PA can\u00f3nica, debe ser coherente con identity.policy_area_id.",
+          "const": "PA10"
+        },
+        "dimension_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Dimensi\u00f3n can\u00f3nica, coherente con identity.dimension_id.",
+          "const": "DIM06"
+        },
+        "cluster_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cluster de an\u00e1lisis seg\u00fan el monolith, si aplica.",
+          "const": "CL04"
+        },
+        "evidence": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
+          "additionalProperties": true
+        },
+        "validation": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Resultado de validaciones l\u00f3gicas de la respuesta (coherencia, integridad, etc.).",
+          "additionalProperties": true
+        },
+        "trace": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Informaci\u00f3n de trazabilidad (provenance, logs) espec\u00edfica de la ejecuci\u00f3n.",
+          "additionalProperties": true
+        },
+        "metadata": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumer_modules": [
+      "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
+      "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
+      "src.farfan_core.analysis.scoring.MicroQuestionScorer"
+    ],
+    "human_readable_output": {
+      "format": "markdown",
+      "template_mode": "epistemological_narrative",
+      "sections": [
+        {
+          "section_id": "S1_empirical_base",
+          "title": "### 1. Empirical Base: Observed Facts",
+          "layer": "L1",
+          "data_source": "validated_facts",
+          "narrative_style": "descriptive",
+          "template": "**Observed Elements**: {fact_count} factual elements detected across {document_coverage_pct}% of analyzed text.\n\n**Text Chunks Processed**: {chunks_created}\n\n**Structural Elements**: PDM structures: {pdm_structures_count}, Tables: {tables_count}\n\n**Direct Observations**: {direct_observations_list}",
+          "epistemological_note": "These are direct observations from source documents without interpretive transformation."
+        },
+        {
+          "section_id": "S2_inferential_analysis",
+          "title": "### 2. Inferential Analysis: Patterns and Relationships",
+          "layer": "L2",
+          "data_source": "inferences",
+          "narrative_style": "analytical",
+          "template": "**Language Specificity Analysis**: {language_specificity_summary}\n\n**Temporal Coherence Assessment**: {temporal_coherence_summary}\n\n**Critical Causal Links**: {critical_links_count} causal relationships identified with mean criticality {mean_criticality}\n\n**Failure Point Analysis**: {failure_points_summary}\n\n**Dynamics Patterns**: {dynamics_patterns_summary}\n\n**Confidence Metrics**: Mean confidence = {mean_confidence}, \u03c3 = {std_confidence}",
+          "epistemological_note": "These are analytical constructs derived from empirical observations, representing inferred patterns and relationships."
+        },
+        {
+          "section_id": "S3_audit_findings",
+          "title": "### 3. Audit Layer: Robustness and Limitations",
+          "layer": "L3",
+          "data_source": "audit_results",
+          "narrative_style": "critical",
+          "template": "**Validation Results**: No dedicated audit methods in this contract; validation occurs through conservative confidence propagation.\n\n**Contradictions Detected**: {contradiction_count}\n\n**Suppressed Facts**: {suppressed_facts_count} empirical observations were suppressed\n\n**Confidence Modulations**: {confidence_adjustment_summary}\n\n**Methodological Limitations**: This contract lacks explicit L3 audit methods; reliability depends on L2 inferential quality and conservative Bayesian aggregation.",
+          "epistemological_note": "This section presents meta-judgments about the reliability and coherence of prior layers. Note: Q300 has no dedicated L3 methods; modulation is implicit through conservative confidence propagation."
+        },
+        {
+          "section_id": "S4_integrated_synthesis",
+          "title": "### 4. Integrated Synthesis: Policy Implications",
+          "layer": "L4",
+          "data_source": "final_narrative",
+          "narrative_style": "argumentative",
+          "template": "**Verdict**: {verdict}\n\n**Traceability Record**: {traceability_summary}\n\n**Integrated Interpretation**: Analysis combines {l1_method_count} empirical extraction methods, {l2_method_count} inferential analysis methods, and {l4_method_count} synthesis method.\n\n**Policy Context**: {question_context_summary}\n\n**Epistemological Guarantee**: This analysis integrates {method_count} methods across 3 active epistemological layers (L1, L2, L4). Final confidence: {final_confidence_pct}%.",
+          "epistemological_note": "This synthesis integrates all epistemological layers into an actionable narrative, explicitly acknowledging the provenance and reliability of constituent elements."
+        }
+      ],
+      "confidence_interpretation": {
+        "high": "\u226580%: Multiple corroborating observations, no contradictions, passed all audits",
+        "medium": "50-79%: Evidence present but with limitations or minor inconsistencies",
+        "low": "<50%: Weak evidence, contradictions detected, or failed validation"
+      }
+    }
+  },
+  "validation_rules": {
+    "na_policy": "abort_on_critical",
+    "rules": [
+      {
+        "description": "Auto-generated: require all required expected_elements types",
+        "field": "elements_found",
+        "must_contain": {
+          "count": 2,
+          "elements": [
+            "analisis_contextual",
+            "enfoque_diferencial"
+          ]
+        },
+        "type": "array"
+      },
+      {
+        "description": "Auto-generated: encourage optional evidence types when available",
+        "field": "elements_found",
+        "should_contain": [],
+        "type": "array"
+      }
+    ],
+    "engine": "VALIDATION_ENGINE",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "ValidationEngine",
+    "method_name": "validate"
+  },
+  "traceability": {
+    "source_file": "data/questionnaire_monolith.json",
+    "json_path": "blocks.micro_questions[299]",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D6_Q5_Executor",
+    "method_mapping_source": "executor_methods_mapping.json",
+    "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
+    "contract_generation_method": "automated_specialization_from_monolith",
+    "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 9 methods from D6_Q5_Executor, and human_answer_structure documents the expected evidence output after execution.",
+    "source_question_id": "Q300",
+    "specialized_from_base_slot": "D6-Q5",
+    "specialization_timestamp": "2025-11-28T03:50:42.561075+00:00",
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-21T22:18:31.373759+00:00",
+        "rationale": "Transformed from flat method list to hierarchical execution graph with epistemological stratification",
+        "changes": [
+          "Introduced execution_graph in method_binding with L1-L4 layers",
+          "Decomposed assembly_rules into 4-stage pipeline (R1-R4)",
+          "Added fusion_specification with asymmetric L3 modulation",
+          "Restructured human_answer_structure with 4 epistemological sections",
+          "Updated contract_version to 4.0.0-epistemological"
+        ]
+      }
+    ]
+  },
+  "error_handling": {
+    "on_method_not_found": "raise",
+    "on_method_failure": "propagate_with_trace",
+    "on_assembly_failure": "propagate_with_trace",
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q300-REQ"
+    }
+  },
+  "fallback_strategy": {
+    "use_llm_direct": false,
+    "use_heuristics": false,
+    "note": "No fallback strategies enabled. All failures propagate according to error_handling configuration."
+  },
+  "test_configuration": {
+    "test_files": [
+      "tests/core/orchestrator/test_executors_contract.py",
+      "tests/core/phases/test_phase2.py"
+    ],
+    "test_document_fixtures": [
+      "tests/fixtures/preprocessed_documents/sample_pdet_plan.json"
+    ],
+    "expected_test_coverage": ">=90%",
+    "integration_test_required": true
+  },
+  "compatibility": {
+    "orchestrator_min_version": "TODO_VERSION",
+    "signal_registry_min_version": "TODO_VERSION",
+    "method_executor_min_version": "TODO_VERSION",
+    "questionnaire_monolith_version": "3.0.0",
+    "phase2_types_version": "TODO_VERSION"
+  },
+  "calibration": {
+    "status": "placeholder",
+    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
+    "source": {
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "fusion_specification": "config/fusion_specification.json",
+      "layer_calibrations_dir": "config/layer_calibrations/",
+      "canonical_spec": "canonic_calibration_methods.md"
+    }
+  },
+  "human_answer_structure": {
+    "description": "Expected structure of evidence dict after all 9 methods execute and evidence is assembled according to assembly_rules",
+    "assembly_flow": {
+      "step_1_method_execution": "9 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
+      "step_3_validation": "ValidationEngine checks against validation_rules",
+      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
+    },
+    "evidence_structure_schema": {
+      "type": "object",
+      "description": "Assembled evidence after all methods complete",
+      "properties": {
+        "elements_found": {
+          "type": "array",
+          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "element_id": {
+                "type": "string",
+                "example": "E-001"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "fuentes_oficiales",
+                  "indicadores_cuantitativos",
+                  "series_temporales_a\u00f1os",
+                  "cobertura_territorial_especificada",
+                  "financial_amounts",
+                  "policy_goals",
+                  "causal_links"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "example": "DANE"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "source_method": {
+                "type": "string",
+                "example": "IndustrialPolicyProcessor._extract_point_evidence"
+              },
+              "sentence_id": {
+                "type": "integer"
+              },
+              "context": {
+                "type": "string"
+              }
+            }
+          },
+          "example_count": "Expected 15-50 elements for a complete diagnostic"
+        },
+        "elements_summary": {
+          "type": "object",
+          "properties": {
+            "total_count": {
+              "type": "integer"
+            },
+            "by_type": {
+              "type": "object",
+              "properties": {
+                "fuentes_oficiales": {
+                  "type": "integer",
+                  "minimum_expected": 2
+                },
+                "indicadores_cuantitativos": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "series_temporales_a\u00f1os": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "cobertura_territorial_especificada": {
+                  "type": "integer",
+                  "minimum_expected": 1
+                }
+              }
+            }
+          }
+        },
+        "confidence_scores": {
+          "type": "object",
+          "description": "Aggregated confidence metrics (weighted_mean strategy)",
+          "properties": {
+            "mean": {
+              "type": "number"
+            },
+            "std": {
+              "type": "number"
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "by_method": {
+              "type": "object",
+              "description": "Average confidence per analyzer class"
+            }
+          }
+        },
+        "pattern_matches": {
+          "type": "array",
+          "description": "Aggregated pattern matches from text mining methods",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern_id": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "avg_confidence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "critical_links": {
+          "type": "array",
+          "description": "Causal links extracted by TextMiningEngine",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cause": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string"
+              },
+              "criticality": {
+                "type": "number"
+              },
+              "coherence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "financial_summary": {
+          "type": "object",
+          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
+          "properties": {
+            "total_budget_cop": {
+              "type": "number"
+            },
+            "amounts_found": {
+              "type": "integer"
+            },
+            "by_category": {
+              "type": "object",
+              "properties": {
+                "SGR": {
+                  "type": "number"
+                },
+                "recursos_propios": {
+                  "type": "number"
+                },
+                "transferencias": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "goals_summary": {
+          "type": "object",
+          "description": "Policy goals extracted by CausalExtractor",
+          "properties": {
+            "total_goals": {
+              "type": "integer"
+            },
+            "quantified_goals": {
+              "type": "integer"
+            },
+            "goals_with_complete_context": {
+              "type": "integer"
+            }
+          }
+        },
+        "contradictions": {
+          "type": "object",
+          "description": "Results from PolicyContradictionDetector",
+          "properties": {
+            "found": {
+              "type": "integer"
+            },
+            "tests_performed": {
+              "type": "integer"
+            },
+            "interpretation": {
+              "type": "string"
+            }
+          }
+        },
+        "bayesian_insights": {
+          "type": "object",
+          "description": "Results from BayesianNumericalAnalyzer",
+          "properties": {
+            "metrics_with_high_uncertainty": {
+              "type": "array"
+            },
+            "significant_comparisons": {
+              "type": "integer"
+            }
+          }
+        },
+        "semantic_processing": {
+          "type": "object",
+          "description": "Results from SemanticProcessor",
+          "properties": {
+            "chunks_created": {
+              "type": "integer"
+            },
+            "embeddings_generated": {
+              "type": "integer"
+            },
+            "avg_semantic_similarity_to_query": {
+              "type": "number"
+            }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "methods_executed": {
+              "type": "integer",
+              "const": 9
+            },
+            "execution_time_ms": {
+              "type": "number"
+            },
+            "document_length": {
+              "type": "integer"
+            },
+            "analysis_timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "concrete_example": {
+      "elements_found": [
+        {
+          "element_id": "E-001",
+          "type": "fuentes_oficiales",
+          "value": "DANE",
+          "confidence": 0.95,
+          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
+          "source_sentence": "seg\u00fan datos de DANE para el a\u00f1o 2022",
+          "sentence_id": 45,
+          "position": {
+            "start": 123,
+            "end": 145
+          }
+        },
+        {
+          "element_id": "E-002",
+          "type": "indicadores_cuantitativos",
+          "value": "tasa de VBG: 12.3%",
+          "normalized_value": 12.3,
+          "unit": "%",
+          "confidence": 0.89,
+          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
+          "bayesian_posterior": {
+            "mean": 0.123,
+            "ci_95": [
+              0.11,
+              0.145
+            ]
+          },
+          "sentence_id": 45
+        },
+        {
+          "element_id": "E-003",
+          "type": "series_temporales_a\u00f1os",
+          "years": [
+            2020,
+            2021,
+            2022
+          ],
+          "confidence": 0.92,
+          "source_method": "TextMiningEngine.diagnose_critical_links"
+        },
+        {
+          "element_id": "E-004",
+          "type": "cobertura_territorial_especificada",
+          "coverage": "municipal - zona rural y urbana",
+          "confidence": 0.88,
+          "source_method": "CausalExtractor._parse_goal_context"
+        }
+      ],
+      "elements_summary": {
+        "total_count": 38,
+        "by_type": {
+          "fuentes_oficiales": 5,
+          "indicadores_cuantitativos": 12,
+          "series_temporales_a\u00f1os": 4,
+          "cobertura_territorial_especificada": 1,
+          "financial_amounts": 8,
+          "policy_goals": 7,
+          "causal_links": 5
+        }
+      },
+      "confidence_scores": {
+        "mean": 0.876,
+        "std": 0.089,
+        "min": 0.72,
+        "max": 0.98,
+        "by_method": {
+          "TextMiningEngine": 0.83,
+          "IndustrialPolicyProcessor": 0.91,
+          "CausalExtractor": 0.79,
+          "FinancialAuditor": 0.94,
+          "PDETMunicipalPlanAnalyzer": 0.88,
+          "PolicyContradictionDetector": 0.9,
+          "BayesianNumericalAnalyzer": 0.92,
+          "SemanticProcessor": 0.85
+        }
+      },
+      "pattern_matches": [
+        {
+          "pattern_id": "PAT-Q001-000",
+          "count": 3,
+          "avg_confidence": 0.87
+        },
+        {
+          "pattern_id": "PAT-Q001-002",
+          "count": 5,
+          "avg_confidence": 0.95
+        }
+      ],
+      "critical_links": [
+        {
+          "cause": "alta tasa de VBG",
+          "effect": "baja autonom\u00eda econ\u00f3mica",
+          "criticality": 0.87,
+          "coherence": 0.82
+        }
+      ],
+      "financial_summary": {
+        "total_budget_cop": 850000000.0,
+        "amounts_found": 12,
+        "by_category": {
+          "SGR": 250000000.0,
+          "recursos_propios": 180000000.0
+        }
+      },
+      "goals_summary": {
+        "total_goals": 7,
+        "quantified_goals": 5,
+        "goals_with_complete_context": 4
+      },
+      "contradictions": {
+        "found": 0,
+        "tests_performed": 15,
+        "interpretation": "No statistical contradictions in quantitative claims"
+      },
+      "bayesian_insights": {
+        "metrics_with_high_uncertainty": [],
+        "significant_comparisons": 1
+      },
+      "semantic_processing": {
+        "chunks_created": 45,
+        "embeddings_generated": 45,
+        "avg_semantic_similarity_to_query": 0.78
+      },
+      "metadata": {
+        "methods_executed": 9,
+        "execution_time_ms": 2845,
+        "document_length": 15230,
+        "analysis_timestamp": "2025-11-26T12:34:56Z"
+      }
+    },
+    "validation_against_expected_elements": {
+      "cobertura_territorial_especificada": {
+        "required": true,
+        "found_in_example": true,
+        "example_element_id": "E-004"
+      },
+      "fuentes_oficiales": {
+        "minimum": 2,
+        "found_in_example": 5,
+        "status": "PASS"
+      },
+      "indicadores_cuantitativos": {
+        "minimum": 3,
+        "found_in_example": 12,
+        "status": "PASS"
+      },
+      "series_temporales_a\u00f1os": {
+        "minimum": 3,
+        "found_in_example": 4,
+        "status": "PASS"
+      },
+      "overall_validation_result": "PASS - All required and minimum elements present"
+    },
+    "template_variable_bindings": {
+      "description": "These variables are available for human_readable_output template",
+      "variables": {
+        "{evidence.elements_found_count}": 38,
+        "{score}": "Calculated by scorer based on elements",
+        "{quality_level}": "ALTO",
+        "{evidence.confidence_scores.mean}": "87.6%",
+        "{evidence.pattern_matches_count}": 14,
+        "{evidence.official_sources_count}": 5,
+        "{evidence.quantitative_indicators_count}": 12,
+        "{evidence.temporal_series_count}": 4,
+        "{evidence.territorial_coverage}": "municipal - zona rural y urbana"
+      }
+    },
+    "usage_notes": {
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_validators": "Use this to verify that actual execution output matches expected structure.",
+      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "CausalExtractor._calculate_language_specificity": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_language_specificity",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_language_specificity"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_language_specificity",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._assess_temporal_coherence": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._assess_temporal_coherence",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _assess_temporal_coherence"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.assess_temporal_coherence",
+        "merge_strategy": "replace"
+      }
+    },
+    "TextMiningEngine.diagnose_critical_links": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from TextMiningEngine.diagnose_critical_links",
+        "type": "object",
+        "properties": {
+          "critical_links": {
+            "type": "array",
+            "description": "List of critical causal links"
+          },
+          "link_scores": {
+            "type": "object",
+            "description": "Criticality scores for each link"
+          },
+          "context": {
+            "type": "object",
+            "description": "Contextual information"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "text_mining.diagnose_critical_links",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalInferenceSetup.identify_failure_points": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup.identify_failure_points",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from identify_failure_points"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causalinferencesetup.identify_failure_points",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalInferenceSetup._get_dynamics_pattern": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalInferenceSetup._get_dynamics_pattern",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _get_dynamics_pattern"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causalinferencesetup.get_dynamics_pattern",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor.chunk_text": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor.chunk_text",
+        "type": "object",
+        "properties": {
+          "chunks": {
+            "type": "array",
+            "description": "Text chunks"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.chunk_text",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor._detect_pdm_structure": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor._detect_pdm_structure",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_pdm_structure"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.detect_pdm_structure",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticProcessor._detect_table": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticProcessor._detect_table",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _detect_table"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semantic_processing.detect_table",
+        "merge_strategy": "replace"
+      }
+    },
+    "AdaptivePriorCalculator.generate_traceability_record": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from AdaptivePriorCalculator.generate_traceability_record",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from generate_traceability_record"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "adaptivepriorcalculator.generate_traceability_record",
+        "merge_strategy": "replace"
+      }
+    }
+  },
+  "fusion_specification": {
+    "L1_empirical_fusion": {
+      "strategy": "corroborative_aggregation",
+      "description": "Multiple detections of same fact increase confidence via Bayesian updating",
+      "algorithm": "independent_corroboration",
+      "formula": "P(fact|A,B) \u221d P(fact|A) \u00d7 P(fact|B)",
+      "independence_assumption": true
+    },
+    "L2_inferential_fusion": {
+      "strategy": "coherence_alignment",
+      "description": "Inferences must satisfy logical consistency constraints",
+      "algorithm": "constraint_satisfaction",
+      "independence_assumption": false,
+      "conflict_resolution": "weighted_voting",
+      "coherence_threshold": 0.7
+    },
+    "L3_audit_fusion": {
+      "strategy": "asymmetric_modulation",
+      "description": "Audit failures can suppress or modulate L1/L2 findings",
+      "algorithm": "veto_gate_with_multiplier",
+      "asymmetry_principle": "audit_dominates",
+      "suppression_rules": {
+        "contradiction_detected": {
+          "action": "suppress_fact",
+          "rationale": "Logical contradiction invalidates factual claim"
+        },
+        "validation_failure": {
+          "action": "reduce_confidence",
+          "multiplier": 0.5,
+          "rationale": "Failed validation reduces but does not eliminate evidence"
+        }
+      }
+    },
+    "cross_layer_fusion": {
+      "L1_to_L2": "forward_propagation",
+      "L2_to_L3": "audit_submission",
+      "L3_to_L1": "confidence_backpropagation",
+      "L3_to_L2": "inference_modulation"
+    }
+  }
+}
