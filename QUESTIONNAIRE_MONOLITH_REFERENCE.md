@@ -766,13 +766,13 @@ Todos los valores posibles para `expected_elements[].type`:
 Valores posibles para `patterns[].category`:
 
 | Categoría | Descripción | Ejemplos de patterns |
-|-----------|-------------|---------------------|
-| `TEMPORAL` | Referencias temporales | años, periodos, series históricas |
-| `FUENTE_OFICIAL` | Instituciones estatales | DANE, DNP, SIVIGILA, Ministerios |
-| `INDICADOR` | Métricas cuantitativas | porcentajes, tasas, índices |
-| `UNIDAD_MEDIDA` | Denominadores y escalas | "por 100.000", "por 1.000" |
-| `TERRITORIAL` | Ámbitos geográficos | municipal, departamental, rural |
-| `GENERAL` | Conceptos temáticos específicos | VBG, feminicidio, víctimas |
+  |-----------|-------------|---------------------|
+  | `TEMPORAL` | Referencias temporales | años, periodos, series históricas |
+  | `FUENTE_OFICIAL` | Instituciones estatales | DANE, DNP, SIVIGILA, Ministerios |
+  | `INDICADOR` | Métricas cuantitativas | porcentajes, tasas, índices |
+  | `UNIDAD_MEDIDA` | Denominadores y escalas | "por 100.000", "por 1.000" |
+  | `TERRITORIAL` | Ámbitos geográficos | municipal, departamental, rural |
+  | `GENERAL` | Conceptos temáticos específicos | VBG, feminicidio, víctimas |
 
 ---
 
