@@ -3,14 +3,14 @@
     "base_slot": "D4-Q5",
     "question_id": "Q140",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA04",
+    "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "47765df3e12139e75067688b5c4ee7b7c2d3a5844c4a157cdcd2c130061c650b",
+    "contract_hash": "f60e8da88205b87e16c7bd12429e830eb298a4bfc5cb83a95a77abb47058a0d5",
     "created_at": "2025-11-28T03:50:31.452601+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 140,
-    "updated_at": "2025-12-17T10:18:09.109397+00:00"
+    "updated_at": "2025-12-21T19:03:47.294389+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -91,7 +91,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0024",
         "pattern": "alineado con el Plan Nacional de Desarrollo|PND|transformación",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -105,7 +105,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -119,7 +119,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -133,7 +133,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -147,7 +147,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       }
     ],
     "expected_elements": [
@@ -292,7 +292,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA04"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

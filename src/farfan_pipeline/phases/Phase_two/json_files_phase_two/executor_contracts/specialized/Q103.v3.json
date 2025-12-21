@@ -3,14 +3,14 @@
     "base_slot": "D3-Q3",
     "question_id": "Q103",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA03",
+    "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "f0c1523d85d0af2d017ad27c31a4757e9394e9a93418651a150e938992eca0b5",
+    "contract_hash": "88d8ae1b36c7301ed61e91500f83488517f47864a0902796c80c372c8af52257",
     "created_at": "2025-11-28T03:50:31.241828+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 103,
-    "updated_at": "2025-12-16T04:42:57.824327+00:00"
+    "updated_at": "2025-12-21T19:03:47.176057+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -218,7 +218,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -232,7 +232,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -246,7 +246,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -261,7 +261,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0090",
         "pattern": "responsable:|dependencia a cargo:|entidad ejecutora",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -275,7 +275,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -289,7 +289,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -304,7 +304,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0047",
         "pattern": "convenio con|contrato de obra No.",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       }
     ],
     "expected_elements": [
@@ -465,7 +465,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA03"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

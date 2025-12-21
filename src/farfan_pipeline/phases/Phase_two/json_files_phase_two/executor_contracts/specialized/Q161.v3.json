@@ -3,14 +3,14 @@
     "base_slot": "D3-Q1",
     "question_id": "Q161",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA05",
+    "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "154e4649a5de6aea3691bdea0302eb5450697c9a7640187994508d00adf53358",
+    "contract_hash": "750dd50e95cf73bcfe0c8c545ef8b2cbf12b7da1e8829b917b5b7994bcd9be73",
     "created_at": "2025-11-28T03:50:31.690877+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 161,
-    "updated_at": "2025-12-16T04:42:58.118262+00:00"
+    "updated_at": "2025-12-21T19:03:47.355292+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q1_Executor",
@@ -107,7 +107,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0073",
         "pattern": "indicador de producto|meta de producto",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -121,7 +121,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -135,7 +135,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -149,7 +149,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -163,7 +163,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -178,7 +178,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0008",
         "pattern": "Línea Base:|LB:|Valor inicial:",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -193,7 +193,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0013",
         "pattern": "Meta Cuatrienio:|Meta:|Valor esperado:",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -208,7 +208,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0007",
         "pattern": "Fuente de verificación:|Medio de verificación:|Fuente:",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -222,7 +222,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -236,7 +236,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       }
     ],
     "expected_elements": [
@@ -390,7 +390,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA05"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

@@ -3,14 +3,14 @@
     "base_slot": "D2-Q1",
     "question_id": "Q036",
     "dimension_id": "DIM02",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "8d8ba678b13b0492e91e7a83d7b3ea045ad258e0215199b610247d4eab905767",
+    "contract_hash": "ac5f69c7cfebf620deeb9b3299cac7e744856fbcf3eb5b9956bb197df99bf140",
     "created_at": "2025-11-28T03:50:01.872179+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 36,
-    "updated_at": "2025-12-16T04:42:57.489004+00:00"
+    "updated_at": "2025-12-21T19:03:46.970617+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q1_Executor",
@@ -100,7 +100,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0105",
         "pattern": "tabla de actividades|cuadro de seguimiento|matriz de plan de acción",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -114,7 +114,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -129,7 +129,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0038",
         "pattern": "columna producto|entregable|output|meta de producto",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "TEMPORAL",
@@ -144,7 +144,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0037",
         "pattern": "columna cronograma|plazo|vigencia|año\\\\s+\\\\d+|trimestre",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -159,7 +159,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0036",
         "pattern": "columna costo|presupuesto|valor|recursos|monto",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -173,7 +173,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -188,7 +188,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0015",
         "pattern": "Plan Indicativo|Anexo de metas",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       }
     ],
     "expected_elements": [
@@ -349,7 +349,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA10"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

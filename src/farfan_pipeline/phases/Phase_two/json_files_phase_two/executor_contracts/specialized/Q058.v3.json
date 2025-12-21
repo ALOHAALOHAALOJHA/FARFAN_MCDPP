@@ -3,14 +3,14 @@
     "base_slot": "D6-Q3",
     "question_id": "Q058",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "ca86d4091476713ae6b1432d456ded34ef52393d6e4e76497881a528342d7079",
+    "contract_hash": "e7146eb6ec532ef488be10659fa5020251f6ed63a0877d7225e345c5793df911",
     "created_at": "2025-11-28T03:50:05.980596+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 58,
-    "updated_at": "2025-12-16T04:42:57.596941+00:00"
+    "updated_at": "2025-12-21T19:03:47.038869+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q3_Executor",
@@ -107,7 +107,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0071",
         "pattern": "inconsistencia|debilidad en la teoría|supuesto débil",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -121,7 +121,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -135,7 +135,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -149,7 +149,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -163,7 +163,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -178,7 +178,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0065",
         "pattern": "evaluación de mecanismos|monitoreo de la teoría de cambio",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -192,7 +192,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       }
     ],
     "expected_elements": [
@@ -339,7 +339,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA10"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

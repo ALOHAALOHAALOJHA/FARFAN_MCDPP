@@ -3,14 +3,14 @@
     "base_slot": "D4-Q4",
     "question_id": "Q109",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA03",
+    "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "42cee486b8bf7fd925eaff8272ea89189df276a6f5242d6f5ea7acd31fad1745",
+    "contract_hash": "c5ef006f16aaf845524c584a6e9e25c6cd1340a39ca8b2131ac95add90b47e51",
     "created_at": "2025-11-28T03:50:31.266159+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 109,
-    "updated_at": "2025-12-16T04:42:57.859403+00:00"
+    "updated_at": "2025-12-21T19:03:47.198413+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -98,7 +98,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -112,7 +112,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -126,7 +126,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -140,7 +140,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -155,7 +155,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0108",
         "pattern": "umbral de cumplimiento|mínimo aceptable",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -171,7 +171,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0078",
         "pattern": "matriz de coherencia|alineación diagnóstico-estrategia",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       }
     ],
     "expected_elements": [
@@ -317,7 +317,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA03"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

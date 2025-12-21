@@ -3,14 +3,14 @@
     "base_slot": "D1-Q4",
     "question_id": "Q244",
     "dimension_id": "DIM01",
-    "policy_area_id": "PA08",
+    "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "7b1926653a8e2d5cc058bbbe9861bff316bf83be39566da8d681229aa304d0a4",
+    "contract_hash": "7f82cf62b314b0bfc75d1bbbdce7705634b5d494ea280c79b9da7038ab1e1328",
     "created_at": "2025-11-28T03:50:42.196085+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 244,
-    "updated_at": "2025-12-16T04:42:58.564983+00:00"
+    "updated_at": "2025-12-21T19:03:47.614757+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q4_Executor",
@@ -130,7 +130,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "TERRITORIAL",
@@ -145,7 +145,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0014",
         "pattern": "Personería Municipal|Defensoría del Pueblo Regional",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -159,7 +159,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -173,7 +173,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "TERRITORIAL",
@@ -187,7 +187,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -201,7 +201,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "TERRITORIAL",
@@ -215,7 +215,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -229,7 +229,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -243,7 +243,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -257,7 +257,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       }
     ],
     "expected_elements": [
@@ -422,7 +422,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA08"
+          "const": "PA09"
         },
         "dimension_id": {
           "type": [

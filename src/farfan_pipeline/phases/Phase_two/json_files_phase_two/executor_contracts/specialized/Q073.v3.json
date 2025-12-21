@@ -3,14 +3,14 @@
     "base_slot": "D3-Q3",
     "question_id": "Q073",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA02",
+    "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "3f7aa4807b4c1632aa2703b06b45ba5096b52d7b0663443f560056c48bc24688",
+    "contract_hash": "0e18920804552e062a940003c74e683e0344ddfd82130b5bbadfa19b8b79027b",
     "created_at": "2025-11-28T03:50:09.626483+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 73,
-    "updated_at": "2025-12-16T04:42:57.668577+00:00"
+    "updated_at": "2025-12-21T19:03:47.083800+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -218,7 +218,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -233,7 +233,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0087",
         "pattern": "programa del PPI|línea de inversión en víctimas",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -247,7 +247,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -262,7 +262,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0090",
         "pattern": "responsable:|dependencia a cargo:|entidad ejecutora",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "TERRITORIAL",
@@ -276,7 +276,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "FUENTE_OFICIAL",
@@ -301,7 +301,7 @@
           "historical_name"
         ],
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -316,7 +316,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0049",
         "pattern": "corresponsabilidad de|en alianza con",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       }
     ],
     "expected_elements": [
@@ -477,7 +477,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA02"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

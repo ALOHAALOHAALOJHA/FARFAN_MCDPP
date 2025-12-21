@@ -3,14 +3,14 @@
     "base_slot": "D3-Q5",
     "question_id": "Q135",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA04",
+    "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "a94f64e92365135ff3ccb4ee66fc37df13dcb88b7203e8c5cb069c05da18e45e",
+    "contract_hash": "f929143775c8f90f61941f391d1d8f487265d1137884a7851f39d6b63af6b80b",
     "created_at": "2025-11-28T03:50:31.435385+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 135,
-    "updated_at": "2025-12-17T10:18:08.767468+00:00"
+    "updated_at": "2025-12-21T19:03:47.278184+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -243,7 +243,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0063",
         "pattern": "esto permitirá que|lo cual contribuirá a|generando una reducción de",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -257,7 +257,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -271,7 +271,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -285,7 +285,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -299,7 +299,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -314,7 +314,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0030",
         "pattern": "cadena de valor|ruta de cambio",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       }
     ],
     "expected_elements": [
@@ -478,7 +478,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA04"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

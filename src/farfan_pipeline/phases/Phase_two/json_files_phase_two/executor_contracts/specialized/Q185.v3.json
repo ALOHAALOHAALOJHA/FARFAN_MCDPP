@@ -3,14 +3,14 @@
     "base_slot": "D1-Q5",
     "question_id": "Q185",
     "dimension_id": "DIM01",
-    "policy_area_id": "PA06",
+    "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "3fe49308cc428d13d764b7563a9345760dc2d3db9c6e8dfb522dbe1fb9d00545",
+    "contract_hash": "984d6f0f9938f7c3468a46f5d95d759637d43a83a368c8c9f8bfb6001e2e9641",
     "created_at": "2025-11-28T03:50:31.862442+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 185,
-    "updated_at": "2025-12-17T14:44:57.255453+00:00"
+    "updated_at": "2025-12-21T19:03:47.432300+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q5_Executor",
@@ -98,7 +98,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -112,7 +112,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -126,7 +126,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -140,7 +140,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -154,7 +154,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -168,7 +168,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -182,7 +182,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -197,7 +197,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0052",
         "pattern": "durante el cuatrienio|plazo de implementación",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -212,7 +212,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0035",
         "pattern": "coherencia entre metas y recursos disponibles|factibilidad financiera y técnica",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       }
     ],
     "expected_elements": [
@@ -368,7 +368,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA06"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

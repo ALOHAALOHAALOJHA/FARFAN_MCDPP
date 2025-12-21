@@ -3,14 +3,14 @@
     "base_slot": "D4-Q5",
     "question_id": "Q290",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA09",
+    "policy_area_id": "PA10",
     "contract_version": "3.0.0",
-    "contract_hash": "866996fd6f68d970a6a9dedc56bb1281ef84dc7d558837e97d01dd1cd7a68264",
+    "contract_hash": "71f74df1c88f81dcf7b9b5e1a614e262b4a066dac9455429f0a9a9db585f881a",
     "created_at": "2025-11-28T03:50:42.527899+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 290,
-    "updated_at": "2025-12-16T04:42:58.800295+00:00"
+    "updated_at": "2025-12-21T19:03:47.759003+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -90,7 +90,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA09"
+        "policy_area": "PA10"
       },
       {
         "category": "GENERAL",
@@ -105,7 +105,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0046",
         "pattern": "contribuye al ODS 16|Paz, Justicia e Instituciones Sólidas",
-        "policy_area": "PA09"
+        "policy_area": "PA10"
       },
       {
         "category": "GENERAL",
@@ -119,7 +119,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA09"
+        "policy_area": "PA10"
       },
       {
         "category": "GENERAL",
@@ -133,7 +133,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA09"
+        "policy_area": "PA10"
       },
       {
         "category": "GENERAL",
@@ -147,7 +147,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA09"
+        "policy_area": "PA10"
       }
     ],
     "expected_elements": [
@@ -297,7 +297,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA09"
+          "const": "PA10"
         },
         "dimension_id": {
           "type": [

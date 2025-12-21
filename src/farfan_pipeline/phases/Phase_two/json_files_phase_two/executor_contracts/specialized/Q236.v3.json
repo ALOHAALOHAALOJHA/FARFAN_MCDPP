@@ -3,14 +3,14 @@
     "base_slot": "D6-Q1",
     "question_id": "Q236",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA07",
+    "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "ccd64cf97b676ac47954b9a79569552eb4ff5af214f28d00a8927881f4784c6a",
+    "contract_hash": "2babaf4e02060f396ffe854aaf24e9a4a66a45e8c3dfedd074ed45ab524bbc3b",
     "created_at": "2025-11-28T03:50:42.085890+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 236,
-    "updated_at": "2025-12-16T04:42:58.527021+00:00"
+    "updated_at": "2025-12-21T19:03:47.591310+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -106,7 +106,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "CAUSAL",
@@ -122,7 +122,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0051",
         "pattern": "diagrama causal|gráfico de la teoría de cambio|ruta causal",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -136,7 +136,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -150,7 +150,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -164,7 +164,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -179,7 +179,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0104",
         "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       }
     ],
     "expected_elements": [
@@ -331,7 +331,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA07"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

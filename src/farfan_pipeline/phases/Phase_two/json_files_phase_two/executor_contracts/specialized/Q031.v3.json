@@ -3,14 +3,14 @@
     "base_slot": "D1-Q1",
     "question_id": "Q031",
     "dimension_id": "DIM01",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "78e01a53f4d82d3a1fdef035edf15d98d9a68a988e1f71bd15fb3c1081226b54",
+    "contract_hash": "5049597dfe746ecc5c792762b3a709b5c704d56811cfb37195fd63a5437925f4",
     "created_at": "2025-11-28T03:50:01.851833+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 31,
-    "updated_at": "2025-12-16T04:42:57.463660+00:00"
+    "updated_at": "2025-12-21T19:03:46.954508+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q1_Executor",
@@ -178,7 +178,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -193,7 +193,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0067",
         "pattern": "fuente:|según|reportado por|con datos de",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -207,7 +207,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "FUENTE_OFICIAL",
@@ -232,7 +232,7 @@
           "historical_name"
         ],
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "TERRITORIAL",
@@ -246,7 +246,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -260,7 +260,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -274,7 +274,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -288,7 +288,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -302,7 +302,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -316,7 +316,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -330,7 +330,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -344,7 +344,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "INDICADOR",
@@ -358,7 +358,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       }
     ],
     "expected_elements": [
@@ -580,7 +580,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA10"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

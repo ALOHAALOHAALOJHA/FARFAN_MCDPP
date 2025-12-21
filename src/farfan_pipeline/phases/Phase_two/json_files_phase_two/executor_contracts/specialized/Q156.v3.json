@@ -3,14 +3,14 @@
     "base_slot": "D2-Q1",
     "question_id": "Q156",
     "dimension_id": "DIM02",
-    "policy_area_id": "PA05",
+    "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "52d4be5959fe011f3a4f3277fad7e9f0bab702641b8afae007834bfc794e5ced",
+    "contract_hash": "1172c6326462c6b8c3eb5f09e175a6257031f110a2ba15598c874f212c4866b6",
     "created_at": "2025-11-28T03:50:31.594149+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 156,
-    "updated_at": "2025-12-16T04:42:58.095149+00:00"
+    "updated_at": "2025-12-21T19:03:47.341702+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q1_Executor",
@@ -99,7 +99,7 @@
         "semantic_expansion": null,
         "evidence_modality": "TABLE",
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -113,7 +113,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -128,7 +128,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0038",
         "pattern": "columna producto|entregable|output|meta de producto",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "TEMPORAL",
@@ -143,7 +143,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0037",
         "pattern": "columna cronograma|plazo|vigencia|año\\\\s+\\\\d+|trimestre",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -158,7 +158,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0036",
         "pattern": "columna costo|presupuesto|valor|recursos|monto",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -173,7 +173,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0019",
         "pattern": "Secretaría de Gobierno|Enlace de Víctimas|Personería",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -188,7 +188,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0015",
         "pattern": "Plan Indicativo|Anexo de metas",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       }
     ],
     "expected_elements": [
@@ -349,7 +349,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA05"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

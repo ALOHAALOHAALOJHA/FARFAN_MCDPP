@@ -3,14 +3,14 @@
     "base_slot": "D3-Q2",
     "question_id": "Q162",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA05",
+    "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "aa8cf2cf8cd7c55de87d55c5e1e4d17ff78d963aa7431aaf832a1477504c1714",
+    "contract_hash": "a5f53b7ccd528dae5ee66100128b8630f5c7bf1457c4a5476bf003f5ddd7c69a",
     "created_at": "2025-11-28T03:50:31.694815+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 162,
-    "updated_at": "2025-12-16T04:42:58.123208+00:00"
+    "updated_at": "2025-12-21T19:03:47.358278+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q2_Executor",
@@ -210,7 +210,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "INDICADOR",
@@ -224,7 +224,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -238,7 +238,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -252,7 +252,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -266,7 +266,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -281,7 +281,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0075",
         "pattern": "la dosificación de la ayuda humanitaria sigue los estándares",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       }
     ],
     "expected_elements": [
@@ -436,7 +436,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA05"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

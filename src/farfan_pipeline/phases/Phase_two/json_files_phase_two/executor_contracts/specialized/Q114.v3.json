@@ -3,14 +3,14 @@
     "base_slot": "D5-Q4",
     "question_id": "Q114",
     "dimension_id": "DIM05",
-    "policy_area_id": "PA03",
+    "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "38776f35ed3bea6450a05297cc425600039f686a5a9a73d47b7c034987899933",
+    "contract_hash": "872b66f9466df353371116c657ad64c9fef9d022a62f09af2fd3a5a6ffe2eeaf",
     "created_at": "2025-11-28T03:50:31.283156+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 114,
-    "updated_at": "2025-12-16T04:42:57.884474+00:00"
+    "updated_at": "2025-12-21T19:03:47.213222+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -99,7 +99,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0110",
         "pattern": "visión\\\\s+(?:20\\\\d{2}|2050)|Agenda\\\\s+2030 de Desarrollo Sostenible",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -114,7 +114,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0093",
         "pattern": "riesgo sistémico|choque externo|crisis climática",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -128,7 +128,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -142,7 +142,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -156,7 +156,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -170,7 +170,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "TERRITORIAL",
@@ -184,7 +184,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       }
     ],
     "expected_elements": [
@@ -330,7 +330,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA03"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

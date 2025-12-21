@@ -3,14 +3,14 @@
     "base_slot": "D6-Q2",
     "question_id": "Q087",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA02",
+    "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "3046bbbe228b080eff46c50862758eee4694941c90021ce34bf4912b4144988a",
+    "contract_hash": "3c2e6171c127008211629b6ddf238ce1418342b47977b0d5545ab2db7b9a13b5",
     "created_at": "2025-11-28T03:50:13.368622+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 87,
-    "updated_at": "2025-12-16T04:42:57.748062+00:00"
+    "updated_at": "2025-12-21T19:03:47.128623+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q2_Executor",
@@ -99,7 +99,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0088",
         "pattern": "proporcionalidad entre|magnitud del efecto esperado",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -114,7 +114,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0097",
         "pattern": "salto lógico|brecha en la argumentación|milagro de implementación",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -129,7 +129,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0060",
         "pattern": "es realista esperar que|es factible que",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -144,7 +144,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0076",
         "pattern": "la escala de la intervención es coherente con la ambición del resultado",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -159,7 +159,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0098",
         "pattern": "se requieren pasos intermedios|el resultado es de mayor alcance que el producto",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       }
     ],
     "expected_elements": [
@@ -305,7 +305,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA02"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [
