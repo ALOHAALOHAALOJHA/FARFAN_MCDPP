@@ -1074,7 +1074,7 @@
       }
     },
     "usage_notes": {
-      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 9 method executions and evidence assembly.",
       "for_validators": "Use this to verify that actual execution output matches expected structure.",
       "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
     }
