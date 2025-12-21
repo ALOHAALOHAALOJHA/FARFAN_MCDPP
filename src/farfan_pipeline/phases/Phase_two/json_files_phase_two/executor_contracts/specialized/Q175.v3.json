@@ -3,14 +3,14 @@
     "base_slot": "D5-Q5",
     "question_id": "Q175",
     "dimension_id": "DIM05",
-    "policy_area_id": "PA05",
+    "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "77aa92d01e9e5ccaeae14d700a8c29bca5bacc9a44b613504504b9fb15107fcb",
+    "contract_hash": "31fdaf3bdd4d46e552d8965def83005c2c72651b23f238f482731d84bd12e8e1",
     "created_at": "2025-11-28T03:50:31.743243+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 175,
-    "updated_at": "2025-12-16T04:42:58.206206+00:00"
+    "updated_at": "2025-12-21T19:03:47.402501+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q5_Executor",
@@ -106,7 +106,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -121,7 +121,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0053",
         "pattern": "efecto no deseado|consecuencia imprevista|externalidad negativa",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -135,7 +135,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -149,7 +149,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -163,7 +163,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -177,7 +177,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -192,7 +192,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0103",
         "pattern": "supuesto crítico para el impacto a largo plazo",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       }
     ],
     "expected_elements": [
@@ -344,7 +344,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA05"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

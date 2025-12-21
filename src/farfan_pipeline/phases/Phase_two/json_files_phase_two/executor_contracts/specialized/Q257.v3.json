@@ -3,14 +3,14 @@
     "base_slot": "D4-Q2",
     "question_id": "Q257",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA08",
+    "policy_area_id": "PA09",
     "contract_version": "3.0.0",
-    "contract_hash": "997646dfa0531096e8256cfd74859a60a991b22a24074f97c98f5d33d7f5b1a7",
+    "contract_hash": "8ea6c8ffe3626776c0aeea99cad819da755ccfe311ff6a62d50d733976446c67",
     "created_at": "2025-11-28T03:50:42.245957+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 257,
-    "updated_at": "2025-12-16T04:42:58.633923+00:00"
+    "updated_at": "2025-12-21T19:03:47.658702+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q2_Executor",
@@ -107,7 +107,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0028",
         "pattern": "cadena causal|lógica de intervención|si... entonces...",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -122,7 +122,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0057",
         "pattern": "el resultado se logrará siempre y cuando|asumiendo que",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -137,7 +137,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0101",
         "pattern": "supuesto clave|premisa fundamental",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -152,7 +152,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0043",
         "pattern": "condición habilitante|factor crítico|requiere de",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -166,7 +166,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "GENERAL",
@@ -180,7 +180,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       },
       {
         "category": "FUENTE_OFICIAL",
@@ -205,7 +205,7 @@
           "historical_name"
         ],
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA08"
+        "policy_area": "PA09"
       }
     ],
     "expected_elements": [
@@ -357,7 +357,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA08"
+          "const": "PA09"
         },
         "dimension_id": {
           "type": [

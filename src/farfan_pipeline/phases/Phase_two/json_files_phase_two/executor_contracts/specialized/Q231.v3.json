@@ -3,14 +3,14 @@
     "base_slot": "D5-Q1",
     "question_id": "Q231",
     "dimension_id": "DIM05",
-    "policy_area_id": "PA07",
+    "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "8707833e7692380e385ceed06bb54ca9dc8d7c33d8158e3554178c970eb19938",
+    "contract_hash": "8ce67e4b8f5a72c81815a7bf62ca584ade237c8423f7d39990bd954c6afa36c8",
     "created_at": "2025-11-28T03:50:42.069001+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 231,
-    "updated_at": "2025-12-16T04:42:58.500650+00:00"
+    "updated_at": "2025-12-21T19:03:47.576068+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q1_Executor",
@@ -107,7 +107,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0070",
         "pattern": "impacto esperado|visión de largo plazo|transformación territorial",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "TERRITORIAL",
@@ -121,7 +121,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -135,7 +135,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -149,7 +149,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -164,7 +164,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0096",
         "pattern": "ruta de transmisión|cadena de impacto",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "TEMPORAL",
@@ -179,7 +179,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0106",
         "pattern": "tiempo de maduración|se espera observar en \\\\d{1,2}(?:-\\\\d{1,2})? años",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -193,7 +193,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       }
     ],
     "expected_elements": [
@@ -345,7 +345,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA07"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

@@ -3,14 +3,14 @@
     "base_slot": "D2-Q3",
     "question_id": "Q068",
     "dimension_id": "DIM02",
-    "policy_area_id": "PA02",
+    "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "70665f351dccacd39090f21b8667e6b5b277aca53ef94a1482ddfd27deda1139",
+    "contract_hash": "6c0287c604f5b8e35eb3e8edb3600f85d23a5e6b9f330aeb8d0a8cf4aca62800",
     "created_at": "2025-11-28T03:50:09.607222+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 68,
-    "updated_at": "2025-12-16T04:42:57.643757+00:00"
+    "updated_at": "2025-12-21T19:03:47.068475+00:00"
   },
   "executor_binding": {
     "executor_class": "D2_Q3_Executor",
@@ -115,7 +115,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0085",
         "pattern": "para abordar la causa relacionada con|en respuesta al problema de",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -130,7 +130,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0061",
         "pattern": "esta actividad ataca el factor de riesgo de",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -144,7 +144,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -158,7 +158,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "TERRITORIAL",
@@ -172,7 +172,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -186,7 +186,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -200,7 +200,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       }
     ],
     "expected_elements": [
@@ -348,7 +348,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA02"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

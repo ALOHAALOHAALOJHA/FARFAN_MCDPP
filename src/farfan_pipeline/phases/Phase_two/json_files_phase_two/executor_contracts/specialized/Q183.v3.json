@@ -3,14 +3,14 @@
     "base_slot": "D1-Q3",
     "question_id": "Q183",
     "dimension_id": "DIM01",
-    "policy_area_id": "PA06",
+    "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "557dc959f12e8583b5292838d1b298e6ab332cc82cd999c57603c94b1c5507db",
+    "contract_hash": "1b3b245965c4392e58fdc4252e68a3e5e159468b05edfb47a4e3f48af42a1de7",
     "created_at": "2025-11-28T03:50:31.855498+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 183,
-    "updated_at": "2025-12-17T14:44:57.247643+00:00"
+    "updated_at": "2025-12-21T19:03:47.425952+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -147,7 +147,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0016",
         "pattern": "Plan Plurianual de Inversiones|PPI|Plan Indicativo",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -161,7 +161,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -175,7 +175,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -189,7 +189,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -203,7 +203,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -217,7 +217,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -231,7 +231,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -250,7 +250,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0022",
         "pattern": "(?:\\\\$|COP)?\\\\s*\\\\d{1,3}(?:[\\\\.\\\\s]\\\\d{3})*(?:[\\\\.,]\\\\d{1,2})?|(?:\\\\d+[\\\\.,]\\\\d+|\\\\d+)\\\\s+millones?\\\\s+de\\\\s+pesos|entre\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)\\\\s+y\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)|de\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)\\\\s+a\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)|\\\\b(?:uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|trece|catorce|quince|dieciseis|dieciséis|diecisiete|dieciocho|diecinueve|veinte|treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa|cien|ciento|mil|millón|millones)\\\\s+de\\\\s+pesos\\\\b",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -264,7 +264,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       }
     ],
     "expected_elements": [
@@ -421,7 +421,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA06"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

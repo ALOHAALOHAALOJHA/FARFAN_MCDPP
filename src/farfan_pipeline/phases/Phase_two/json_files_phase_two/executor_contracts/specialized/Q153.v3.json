@@ -3,14 +3,14 @@
     "base_slot": "D1-Q3",
     "question_id": "Q153",
     "dimension_id": "DIM01",
-    "policy_area_id": "PA05",
+    "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "a0a9e4196e17127dc7ccf55fcd8b4928a0b33bd351c75d2f0fc6d9edec113e56",
+    "contract_hash": "ad6a5240a167e61d9ab0f5d769387ebb548ff5c70e11e4f3a682660966965d9c",
     "created_at": "2025-11-28T03:50:31.583693+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 153,
-    "updated_at": "2025-12-16T04:42:58.079999+00:00"
+    "updated_at": "2025-12-21T19:03:47.332934+00:00"
   },
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
@@ -147,7 +147,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0016",
         "pattern": "Plan Plurianual de Inversiones|PPI|Plan Indicativo",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -161,7 +161,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "TERRITORIAL",
@@ -176,7 +176,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0089",
         "pattern": "recursos para el Plan de Acción Territorial|PAT",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -190,7 +190,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -204,7 +204,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -218,7 +218,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -232,7 +232,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -251,7 +251,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0022",
         "pattern": "(?:\\\\$|COP)?\\\\s*\\\\d{1,3}(?:[\\\\.\\\\s]\\\\d{3})*(?:[\\\\.,]\\\\d{1,2})?|(?:\\\\d+[\\\\.,]\\\\d+|\\\\d+)\\\\s+millones?\\\\s+de\\\\s+pesos|entre\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)\\\\s+y\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)|de\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)\\\\s+a\\\\s+(?:\\\\d+[\\\\.,]?\\\\d*|\\\\d+)|\\\\b(?:uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|trece|catorce|quince|dieciseis|dieciséis|diecisiete|dieciocho|diecinueve|veinte|treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa|cien|ciento|mil|millón|millones)\\\\s+de\\\\s+pesos\\\\b",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -265,7 +265,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       }
     ],
     "expected_elements": [
@@ -422,7 +422,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA05"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

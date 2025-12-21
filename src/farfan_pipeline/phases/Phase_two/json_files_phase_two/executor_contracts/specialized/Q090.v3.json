@@ -3,14 +3,14 @@
     "base_slot": "D6-Q5",
     "question_id": "Q090",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA02",
+    "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "05ee41f57bb59683b48b102a8026eaa06358c8042ff77dba1332c4ced9524214",
+    "contract_hash": "3582c16788225be5f18d17b45bee0019d93e89bfda1aadbfbb9544384d588463",
     "created_at": "2025-11-28T03:50:13.377702+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 90,
-    "updated_at": "2025-12-16T04:42:57.761201+00:00"
+    "updated_at": "2025-12-21T19:03:47.136031+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -115,7 +115,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0059",
         "pattern": "enfoque diferencial|enfoque territorial",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -129,7 +129,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -143,7 +143,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -157,7 +157,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "CAUSAL",
@@ -173,7 +173,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0051",
         "pattern": "diagrama causal|gráfico de la teoría de cambio|ruta causal",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -187,7 +187,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -201,7 +201,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "TERRITORIAL",
@@ -215,7 +215,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       }
     ],
     "expected_elements": [
@@ -365,7 +365,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA02"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

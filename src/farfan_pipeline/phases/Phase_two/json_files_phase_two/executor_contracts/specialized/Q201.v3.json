@@ -3,14 +3,14 @@
     "base_slot": "D5-Q1",
     "question_id": "Q201",
     "dimension_id": "DIM05",
-    "policy_area_id": "PA06",
+    "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "801bb569d8002837da2052dd6f6744f148d6d48a52dc68ff6e11e556d7cfc6d1",
+    "contract_hash": "85d165c3377906a824aa33aab6e6c984cd8a00cb154dacf320d53aa7a721c2b0",
     "created_at": "2025-11-28T03:50:41.873478+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 201,
-    "updated_at": "2025-12-17T02:49:51.773854",
+    "updated_at": "2025-12-21T19:03:47.483801+00:00",
     "remediation_applied": [
       {
         "date": "2025-12-17T02:49:51.773860",
@@ -116,7 +116,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -130,7 +130,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -144,7 +144,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -158,7 +158,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -172,7 +172,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -187,7 +187,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0096",
         "pattern": "ruta de transmisión|cadena de impacto",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "TEMPORAL",
@@ -202,7 +202,7 @@
         "semantic_expansion": null,
         "dynamic_update": "CURRENT_YEAR_WINDOW",
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       }
     ],
     "expected_elements": [
@@ -354,7 +354,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA06"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

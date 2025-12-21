@@ -3,14 +3,14 @@
     "base_slot": "D5-Q4",
     "question_id": "Q204",
     "dimension_id": "DIM05",
-    "policy_area_id": "PA06",
+    "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "b988b133f78b7e9e5c94099bcb7e5b2f65735024a0d47957b822e625b3c48141",
+    "contract_hash": "3f0471007549ba2ee7d6efc2a6e1450ce48a39721d1b1dbe58f68066ff1b88e4",
     "created_at": "2025-11-28T03:50:41.886382+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 204,
-    "updated_at": "2025-12-17T02:49:51.782475",
+    "updated_at": "2025-12-21T19:03:47.493814+00:00",
     "remediation_applied": [
       {
         "date": "2025-12-17T02:49:51.782478",
@@ -109,7 +109,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0110",
         "pattern": "visión\\\\s+(?:20\\\\d{2}|2050)|Agenda\\\\s+2030 de Desarrollo Sostenible",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -124,7 +124,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0094",
         "pattern": "riesgo sistémico|choque externo|crisis económica|desempleo masivo",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -138,7 +138,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -152,7 +152,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -166,7 +166,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -181,7 +181,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0054",
         "pattern": "el mecanismo causal es vulnerable a|sensible a la situación macroeconómica",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -195,7 +195,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       }
     ],
     "expected_elements": [
@@ -341,7 +341,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA06"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

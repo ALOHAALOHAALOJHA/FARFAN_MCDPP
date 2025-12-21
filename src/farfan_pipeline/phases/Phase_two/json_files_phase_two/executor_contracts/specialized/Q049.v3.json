@@ -3,14 +3,14 @@
     "base_slot": "D4-Q4",
     "question_id": "Q049",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "27e1deb14390db58c0491e036653c60afc34f4dfae0d08c237e2a81c676e460c",
+    "contract_hash": "e3e81d20d87abf1575ed1014adfa8cebc22418630d7716e6d76be481a79bae0f",
     "created_at": "2025-11-28T03:50:05.950174+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 49,
-    "updated_at": "2025-12-16T04:42:57.557663+00:00"
+    "updated_at": "2025-12-21T19:03:47.014044+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q4_Executor",
@@ -98,7 +98,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -112,7 +112,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -126,7 +126,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -140,7 +140,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -155,7 +155,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0108",
         "pattern": "umbral de cumplimiento|mínimo aceptable",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -171,7 +171,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0078",
         "pattern": "matriz de coherencia|alineación diagnóstico-estrategia",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       }
     ],
     "expected_elements": [
@@ -317,7 +317,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA10"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [

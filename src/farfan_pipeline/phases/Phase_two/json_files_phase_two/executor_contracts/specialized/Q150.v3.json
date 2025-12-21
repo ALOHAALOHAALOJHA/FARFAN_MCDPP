@@ -3,14 +3,14 @@
     "base_slot": "D6-Q5",
     "question_id": "Q150",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA04",
+    "policy_area_id": "PA05",
     "contract_version": "3.0.0",
-    "contract_hash": "9f272588f7d70f45338e8a4ee3dda5843aa8999d498606f8c30ecf5fdb5a5471",
+    "contract_hash": "6ff8c9d2f0ddf9232799f2503488140d39c880cc39297f704e78a8f736af5406",
     "created_at": "2025-11-28T03:50:31.571934+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL03",
     "question_global": 150,
-    "updated_at": "2025-12-17T10:21:52.456712+00:00"
+    "updated_at": "2025-12-21T19:03:47.322886+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q5_Executor",
@@ -115,7 +115,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0058",
         "pattern": "enfoque diferencial|enfoque interseccional",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -129,7 +129,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -143,7 +143,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -157,7 +157,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "CAUSAL",
@@ -173,7 +173,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0051",
         "pattern": "diagrama causal|gráfico de la teoría de cambio|ruta causal",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -188,7 +188,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0044",
         "pattern": "contexto cultural|barreras culturales para la salud sexual",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "GENERAL",
@@ -202,7 +202,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       },
       {
         "category": "TERRITORIAL",
@@ -216,7 +216,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA04"
+        "policy_area": "PA05"
       }
     ],
     "expected_elements": [
@@ -366,7 +366,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA04"
+          "const": "PA05"
         },
         "dimension_id": {
           "type": [

@@ -1,0 +1,1667 @@
+{
+  "identity": {
+    "base_slot": "D2-Q3",
+    "question_id": "Q038",
+    "dimension_id": "DIM02",
+    "policy_area_id": "PA10",
+    "contract_version": "3.0.0",
+    "contract_hash": "e4aa8144d0cf23053d7714e04fbfd3be453da638c0d282ca476b723bcbf2064f",
+    "created_at": "2025-11-28T03:50:01.879198+00:00",
+    "validated_against_schema": "executor_contract.v3.schema.json",
+    "cluster_id": "CL04",
+    "question_global": 38,
+    "updated_at": "2025-12-16T04:42:57.497698+00:00"
+  },
+  "executor_binding": {
+    "executor_class": "D2_Q3_Executor",
+    "executor_module": "farfan_core.core.orchestrator.executors"
+  },
+  "method_binding": {
+    "orchestration_mode": "multi_method_pipeline",
+    "method_count": 9,
+    "methods": [
+      {
+        "class_name": "CausalExtractor",
+        "method_name": "_extract_causal_links",
+        "priority": 1,
+        "provides": "causal_extraction.extract_causal_links",
+        "role": "_extract_causal_links_extraction",
+        "description": "CausalExtractor._extract_causal_links"
+      },
+      {
+        "class_name": "CausalExtractor",
+        "method_name": "_calculate_composite_likelihood",
+        "priority": 2,
+        "provides": "causal_extraction.calculate_composite_likelihood",
+        "role": "_calculate_composite_likelihood_calculation",
+        "description": "CausalExtractor._calculate_composite_likelihood"
+      },
+      {
+        "class_name": "CausalExtractor",
+        "method_name": "_initialize_prior",
+        "priority": 3,
+        "provides": "causal_extraction.initialize_prior",
+        "role": "_initialize_prior_execution",
+        "description": "CausalExtractor._initialize_prior"
+      },
+      {
+        "class_name": "CausalExtractor",
+        "method_name": "_calculate_type_transition_prior",
+        "priority": 4,
+        "provides": "causal_extraction.calculate_type_transition_prior",
+        "role": "_calculate_type_transition_prior_calculation",
+        "description": "CausalExtractor._calculate_type_transition_prior"
+      },
+      {
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_identify_causal_edges",
+        "priority": 5,
+        "provides": "pdet_analysis.identify_causal_edges",
+        "role": "_identify_causal_edges_execution",
+        "description": "PDETMunicipalPlanAnalyzer._identify_causal_edges"
+      },
+      {
+        "class_name": "PDETMunicipalPlanAnalyzer",
+        "method_name": "_refine_edge_probabilities",
+        "priority": 6,
+        "provides": "pdet_analysis.refine_edge_probabilities",
+        "role": "_refine_edge_probabilities_execution",
+        "description": "PDETMunicipalPlanAnalyzer._refine_edge_probabilities"
+      },
+      {
+        "class_name": "BayesianCounterfactualAuditor",
+        "method_name": "construct_scm",
+        "priority": 7,
+        "provides": "bayesiancounterfactualauditor.construct_scm",
+        "role": "construct_scm_execution",
+        "description": "BayesianCounterfactualAuditor.construct_scm"
+      },
+      {
+        "class_name": "BayesianCounterfactualAuditor",
+        "method_name": "_create_default_equations",
+        "priority": 8,
+        "provides": "bayesiancounterfactualauditor.create_default_equations",
+        "role": "_create_default_equations_execution",
+        "description": "BayesianCounterfactualAuditor._create_default_equations"
+      },
+      {
+        "class_name": "SemanticAnalyzer",
+        "method_name": "extract_semantic_cube",
+        "priority": 9,
+        "provides": "semanticanalyzer.extract_semantic_cube",
+        "role": "extract_semantic_cube_extraction",
+        "description": "SemanticAnalyzer.extract_semantic_cube"
+      }
+    ],
+    "note": "All 9 methods extracted from D2_Q3_Executor in executors.py"
+  },
+  "question_context": {
+    "question_text": "¿El PDM vincula explícitamente las actividades (ej. ferias de empleo) con las 'causas raíz' de los problemas de la población migrante (ej. barreras de acceso al mercado laboral) identificadas en el diagnóstico?",
+    "question_type": "micro",
+    "scoring_modality": "TYPE_A",
+    "modality": "count_and_scale",
+    "expected_output_type": "score",
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-000",
+        "match_type": "REGEX",
+        "pattern": "para abordar las barreras de acceso|en respuesta a la xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-001",
+        "match_type": "REGEX",
+        "pattern": "la actividad de regularización ataca la causa de la informalidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031",
+        "pattern": "causa estructural|factor determinante|nudo crítico",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-003",
+        "match_type": "REGEX",
+        "pattern": "estatus migratorio irregular|falta del PPT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-004",
+        "match_type": "REGEX",
+        "pattern": "barreras de acceso a servicios básicos (salud, educación)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-005",
+        "match_type": "REGEX",
+        "pattern": "discriminación y xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-006",
+        "match_type": "REGEX",
+        "pattern": "desconocimiento de sus derechos y rutas de atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-007",
+        "match_type": "REGEX",
+        "pattern": "árbol de problemas|diagnóstico causal de la crisis migratoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "policy_area": "PA10"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "aborda_causa_raiz",
+        "minimum": 1
+      },
+      {
+        "required": true,
+        "type": "vinculo_diagnostico_actividad",
+        "minimum": 1
+      }
+    ],
+    "validations": {},
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q038-REQ"
+    }
+  },
+  "signal_requirements": {
+    "mandatory_signals": [],
+    "optional_signals": [],
+    "signal_aggregation": "weighted_mean",
+    "minimum_signal_threshold": 0.5,
+    "note": "Signal requirements are under development. Canonical mapping pending for PA10/DIM02; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "preferred_signal_types": [
+      "policy_instrument_detected",
+      "activity_specification_found",
+      "implementation_timeline_present"
+    ]
+  },
+  "evidence_assembly": {
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "elements",
+        "raw_results"
+      ],
+      "properties": {
+        "elements": {
+          "type": "array",
+          "description": "Lista de elementos de evidencia encontrados para esta micro-pregunta."
+        },
+        "raw_results": {
+          "type": "object",
+          "properties": {
+            "confidence_scores": {
+              "type": "array",
+              "description": "Scores de confianza usados por el scorer."
+            },
+            "semantic_similarity": {
+              "description": "Métrica de similitud semántica (si aplica)."
+            },
+            "pattern_matches": {
+              "type": "object",
+              "description": "Matches de patrones esperados vs texto."
+            },
+            "metadata": {
+              "type": "object",
+              "description": "Metadatos arbitrarios pasados al scorer."
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "assembly_rules": [
+      {
+        "target": "elements_found",
+        "sources": [
+          "bayesiancounterfactualauditor.construct_scm",
+          "bayesiancounterfactualauditor.create_default_equations",
+          "causal_extraction.calculate_composite_likelihood",
+          "causal_extraction.calculate_type_transition_prior",
+          "causal_extraction.extract_causal_links",
+          "causal_extraction.initialize_prior",
+          "pdet_analysis.identify_causal_edges",
+          "pdet_analysis.refine_edge_probabilities",
+          "semanticanalyzer.extract_semantic_cube"
+        ],
+        "merge_strategy": "concat",
+        "description": "Combine evidence elements from 9 method invocations"
+      },
+      {
+        "target": "confidence_scores",
+        "sources": [],
+        "merge_strategy": "weighted_mean",
+        "default": [],
+        "description": "Aggregate confidence scores across 9 methods"
+      },
+      {
+        "target": "pattern_matches",
+        "sources": [],
+        "merge_strategy": "concat",
+        "default": {},
+        "description": "Combine pattern matches across 9 methods"
+      },
+      {
+        "target": "metadata",
+        "sources": [],
+        "merge_strategy": "concat",
+        "description": "Combine metadata from 9 methods for full traceability"
+      }
+    ],
+    "engine": "EVIDENCE_NEXUS"
+  },
+  "output_contract": {
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "type": "object",
+      "required": [
+        "base_slot",
+        "question_id",
+        "question_global",
+        "evidence",
+        "validation"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string",
+          "description": "Debe coincidir con identity.base_slot.",
+          "const": "D2-Q3"
+        },
+        "question_id": {
+          "type": "string",
+          "description": "Debe coincidir con identity.question_id.",
+          "const": "Q038"
+        },
+        "question_global": {
+          "type": "integer",
+          "description": "Índice global de la pregunta (de questionnaire_monolith).",
+          "const": 38
+        },
+        "policy_area_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
+          "const": "PA10"
+        },
+        "dimension_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Dimensión canónica, coherente con identity.dimension_id.",
+          "const": "DIM02"
+        },
+        "cluster_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cluster de análisis según el monolith, si aplica.",
+          "const": "CL04"
+        },
+        "evidence": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Objeto de evidencia ensamblado por el EvidenceNexus; debe cumplir evidence_assembly.output_schema.",
+          "additionalProperties": true
+        },
+        "validation": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Resultado de validaciones lógicas de la respuesta (coherencia, integridad, etc.).",
+          "additionalProperties": true
+        },
+        "trace": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Información de trazabilidad (provenance, logs) específica de la ejecución.",
+          "additionalProperties": true
+        },
+        "metadata": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Metadatos adicionales de la pregunta para consumo posterior.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumer_modules": [
+      "src.farfan_core.core.phases.phase2_types.validate_phase2_result",
+      "src.farfan_core.core.orchestrator.core.Orchestrator._score_micro_results_async",
+      "src.farfan_core.analysis.scoring.MicroQuestionScorer"
+    ],
+    "human_readable_output": {
+      "format": "markdown",
+      "template": {
+        "title": "## Análisis Q038 (D2-Q3): ¿El PDM vincula explícitamente las actividades (ej. ferias de empleo) con las 'causas raíz' de los problemas de la población migrante (ej...",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Migración transfronteriza\n\n**Dimensión**: ACTIVIDADES\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
+        "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
+        "interpretation": "### Interpretación\n\n{methodological_interpretation}",
+        "recommendations": "### Recomendaciones\n\n{evidence.recommendations}"
+      },
+      "methodological_depth": {
+        "methods": [
+          {
+            "method_name": "_extract_causal_links",
+            "class_name": "CausalExtractor",
+            "priority": 1,
+            "role": "_extract_causal_links_extraction",
+            "epistemological_foundation": {
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._extract_causal_links",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _extract_causal_links implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "CausalExtractor._extract_causal_links algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run CausalExtractor._extract_causal_links using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _extract_causal_links"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _extract_causal_links results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_calculate_composite_likelihood",
+            "class_name": "CausalExtractor",
+            "priority": 2,
+            "role": "_calculate_composite_likelihood_calculation",
+            "epistemological_foundation": {
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._calculate_composite_likelihood",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _calculate_composite_likelihood implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "CausalExtractor._calculate_composite_likelihood algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run CausalExtractor._calculate_composite_likelihood using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _calculate_composite_likelihood"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _calculate_composite_likelihood results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_initialize_prior",
+            "class_name": "CausalExtractor",
+            "priority": 3,
+            "role": "_initialize_prior",
+            "epistemological_foundation": {
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._initialize_prior",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _initialize_prior implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "CausalExtractor._initialize_prior algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run CausalExtractor._initialize_prior using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _initialize_prior"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _initialize_prior results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_calculate_type_transition_prior",
+            "class_name": "CausalExtractor",
+            "priority": 4,
+            "role": "_calculate_type_transition_prior_calculation",
+            "epistemological_foundation": {
+              "paradigm": "CausalExtractor analytical paradigm",
+              "ontological_basis": "Analysis via CausalExtractor._calculate_type_transition_prior",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _calculate_type_transition_prior implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "CausalExtractor._calculate_type_transition_prior algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run CausalExtractor._calculate_type_transition_prior using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _calculate_type_transition_prior"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _calculate_type_transition_prior results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_identify_causal_edges",
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "priority": 5,
+            "role": "_identify_causal_edges_identification",
+            "epistemological_foundation": {
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._identify_causal_edges",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _identify_causal_edges implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "PDETMunicipalPlanAnalyzer._identify_causal_edges algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run PDETMunicipalPlanAnalyzer._identify_causal_edges using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _identify_causal_edges"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _identify_causal_edges results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_refine_edge_probabilities",
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "priority": 6,
+            "role": "_refine_edge_probabilities",
+            "epistemological_foundation": {
+              "paradigm": "PDETMunicipalPlanAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via PDETMunicipalPlanAnalyzer._refine_edge_probabilities",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _refine_edge_probabilities implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "PDETMunicipalPlanAnalyzer._refine_edge_probabilities algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run PDETMunicipalPlanAnalyzer._refine_edge_probabilities using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _refine_edge_probabilities"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _refine_edge_probabilities results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "construct_scm",
+            "class_name": "BayesianCounterfactualAuditor",
+            "priority": 7,
+            "role": "construct_scm_construction",
+            "epistemological_foundation": {
+              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
+              "ontological_basis": "Analysis via BayesianCounterfactualAuditor.construct_scm",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method construct_scm implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "BayesianCounterfactualAuditor.construct_scm algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run BayesianCounterfactualAuditor.construct_scm using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from construct_scm"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use construct_scm results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "_create_default_equations",
+            "class_name": "BayesianCounterfactualAuditor",
+            "priority": 8,
+            "role": "_create_default_equations",
+            "epistemological_foundation": {
+              "paradigm": "BayesianCounterfactualAuditor analytical paradigm",
+              "ontological_basis": "Analysis via BayesianCounterfactualAuditor._create_default_equations",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method _create_default_equations implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "BayesianCounterfactualAuditor._create_default_equations algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run BayesianCounterfactualAuditor._create_default_equations using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from _create_default_equations"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use _create_default_equations results for downstream analysis"
+              ]
+            }
+          },
+          {
+            "method_name": "extract_semantic_cube",
+            "class_name": "SemanticAnalyzer",
+            "priority": 9,
+            "role": "extract_semantic_cube_extraction",
+            "epistemological_foundation": {
+              "paradigm": "SemanticAnalyzer analytical paradigm",
+              "ontological_basis": "Analysis via SemanticAnalyzer.extract_semantic_cube",
+              "epistemological_stance": "Empirical-analytical approach",
+              "theoretical_framework": [
+                "Method extract_semantic_cube implements structured analysis for D2-Q3"
+              ],
+              "justification": "This method contributes to D2-Q3 analysis"
+            },
+            "technical_approach": {
+              "method_type": "analytical_processing",
+              "algorithm": "SemanticAnalyzer.extract_semantic_cube algorithm",
+              "steps": [
+                {
+                  "step": 1,
+                  "description": "Run SemanticAnalyzer.extract_semantic_cube using contract-scoped inputs and produce intermediate artifacts"
+                },
+                {
+                  "step": 2,
+                  "description": "Normalize artifacts into evidence candidates with confidence estimates"
+                },
+                {
+                  "step": 3,
+                  "description": "Emit structured outputs for downstream evidence fusion and validation"
+                }
+              ],
+              "assumptions": [
+                "Input data is preprocessed and valid"
+              ],
+              "limitations": [
+                "Method-specific limitations apply"
+              ],
+              "complexity": "O(n) where n=input size"
+            },
+            "output_interpretation": {
+              "output_structure": {
+                "result": "Structured output from extract_semantic_cube"
+              },
+              "interpretation_guide": {
+                "high_confidence": "≥0.8: Strong evidence",
+                "medium_confidence": "0.5-0.79: Moderate evidence",
+                "low_confidence": "<0.5: Weak evidence"
+              },
+              "actionable_insights": [
+                "Use extract_semantic_cube results for downstream analysis"
+              ]
+            }
+          }
+        ],
+        "method_combination_logic": {
+          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "rationale": "D2-Q3 (Q038) for PA10/DIM02 requires consistent extraction, validation, and synthesis across 9 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
+          "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
+          "execution_order": "Methods execute in priority order (1→9).",
+          "trade_offs": [
+            "Coverage vs. cost: using 9 methods increases coverage but raises computation and maintenance burden.",
+            "Recall vs. precision: multiple detectors increase recall but can introduce redundancy; deduplication and weighting mitigate this.",
+            "Sophistication vs. interpretability: advanced models can be less transparent; human_readable_output documents assumptions and limitations."
+          ]
+        }
+      }
+    }
+  },
+  "validation_rules": {
+    "na_policy": "abort_on_critical",
+    "rules": [
+      {
+        "description": "Auto-generated: require all required expected_elements types",
+        "field": "elements_found",
+        "must_contain": {
+          "count": 2,
+          "elements": [
+            "aborda_causa_raiz",
+            "vinculo_diagnostico_actividad"
+          ]
+        },
+        "type": "array"
+      },
+      {
+        "description": "Auto-generated: encourage optional evidence types when available",
+        "field": "elements_found",
+        "should_contain": [],
+        "type": "array"
+      }
+    ],
+    "engine": "VALIDATION_ENGINE",
+    "module": "canonic_phases.Phase_two.evidence_nexus",
+    "class_name": "ValidationEngine",
+    "method_name": "validate"
+  },
+  "traceability": {
+    "source_file": "data/questionnaire_monolith.json",
+    "json_path": "blocks.micro_questions[277]",
+    "method_source": "src/farfan_core/core/orchestrator/executors.py:D2_Q3_Executor",
+    "method_mapping_source": "executor_methods_mapping.json",
+    "ontology_source": "config/canonical_ontologies/policy_areas_and_dimensions.json",
+    "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
+    "contract_generation_method": "automated_specialization_from_monolith",
+    "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
+    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 9 methods from D2_Q3_Executor, and human_answer_structure documents the expected evidence output after execution.",
+    "source_question_id": "Q038",
+    "specialized_from_base_slot": "D2-Q3",
+    "specialization_timestamp": "2025-11-28T03:50:01.879244+00:00"
+  },
+  "error_handling": {
+    "on_method_not_found": "raise",
+    "on_method_failure": "propagate_with_trace",
+    "on_assembly_failure": "propagate_with_trace",
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-Q038-REQ"
+    }
+  },
+  "fallback_strategy": {
+    "use_llm_direct": false,
+    "use_heuristics": false,
+    "note": "No fallback strategies enabled. All failures propagate according to error_handling configuration."
+  },
+  "test_configuration": {
+    "test_files": [
+      "tests/core/orchestrator/test_executors_contract.py",
+      "tests/core/phases/test_phase2.py"
+    ],
+    "test_document_fixtures": [
+      "tests/fixtures/preprocessed_documents/sample_pdet_plan.json"
+    ],
+    "expected_test_coverage": ">=90%",
+    "integration_test_required": true
+  },
+  "compatibility": {
+    "orchestrator_min_version": "TODO_VERSION",
+    "signal_registry_min_version": "TODO_VERSION",
+    "method_executor_min_version": "TODO_VERSION",
+    "questionnaire_monolith_version": "3.0.0",
+    "phase2_types_version": "TODO_VERSION"
+  },
+  "calibration": {
+    "status": "placeholder",
+    "note": "Contract does not embed calibration scores. Actual calibration managed via src/farfan_core/core/calibration/ + config/intrinsic_calibration.json + config/fusion_specification.json",
+    "source": {
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "fusion_specification": "config/fusion_specification.json",
+      "layer_calibrations_dir": "config/layer_calibrations/",
+      "canonical_spec": "canonic_calibration_methods.md"
+    }
+  },
+  "human_answer_structure": {
+    "description": "Expected structure of evidence dict after all 9 methods execute and evidence is assembled according to assembly_rules",
+    "assembly_flow": {
+      "step_1_method_execution": "9 methods execute in priority order, outputs stored with dot-notation keys",
+      "step_2_evidence_assembly": "EvidenceNexus merges outputs according to assembly_rules",
+      "step_3_validation": "ValidationEngine checks against validation_rules",
+      "step_4_output_generation": "Phase2QuestionResult constructed with evidence, validation, trace"
+    },
+    "evidence_structure_schema": {
+      "type": "object",
+      "description": "Assembled evidence after all methods complete",
+      "properties": {
+        "elements_found": {
+          "type": "array",
+          "description": "Concatenated evidence elements from multiple methods (assembly_rules target)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "element_id": {
+                "type": "string",
+                "example": "E-001"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "fuentes_oficiales",
+                  "indicadores_cuantitativos",
+                  "series_temporales_años",
+                  "cobertura_territorial_especificada",
+                  "financial_amounts",
+                  "policy_goals",
+                  "causal_links"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "example": "DANE"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "source_method": {
+                "type": "string",
+                "example": "IndustrialPolicyProcessor._extract_point_evidence"
+              },
+              "sentence_id": {
+                "type": "integer"
+              },
+              "context": {
+                "type": "string"
+              }
+            }
+          },
+          "example_count": "Expected 15-50 elements for a complete diagnostic"
+        },
+        "elements_summary": {
+          "type": "object",
+          "properties": {
+            "total_count": {
+              "type": "integer"
+            },
+            "by_type": {
+              "type": "object",
+              "properties": {
+                "fuentes_oficiales": {
+                  "type": "integer",
+                  "minimum_expected": 2
+                },
+                "indicadores_cuantitativos": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "series_temporales_años": {
+                  "type": "integer",
+                  "minimum_expected": 3
+                },
+                "cobertura_territorial_especificada": {
+                  "type": "integer",
+                  "minimum_expected": 1
+                }
+              }
+            }
+          }
+        },
+        "confidence_scores": {
+          "type": "object",
+          "description": "Aggregated confidence metrics (weighted_mean strategy)",
+          "properties": {
+            "mean": {
+              "type": "number"
+            },
+            "std": {
+              "type": "number"
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "by_method": {
+              "type": "object",
+              "description": "Average confidence per analyzer class"
+            }
+          }
+        },
+        "pattern_matches": {
+          "type": "array",
+          "description": "Aggregated pattern matches from text mining methods",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern_id": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "avg_confidence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "critical_links": {
+          "type": "array",
+          "description": "Causal links extracted by TextMiningEngine",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cause": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string"
+              },
+              "criticality": {
+                "type": "number"
+              },
+              "coherence": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "financial_summary": {
+          "type": "object",
+          "description": "Aggregated financial data from FinancialAuditor and PDETMunicipalPlanAnalyzer",
+          "properties": {
+            "total_budget_cop": {
+              "type": "number"
+            },
+            "amounts_found": {
+              "type": "integer"
+            },
+            "by_category": {
+              "type": "object",
+              "properties": {
+                "SGR": {
+                  "type": "number"
+                },
+                "recursos_propios": {
+                  "type": "number"
+                },
+                "transferencias": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "goals_summary": {
+          "type": "object",
+          "description": "Policy goals extracted by CausalExtractor",
+          "properties": {
+            "total_goals": {
+              "type": "integer"
+            },
+            "quantified_goals": {
+              "type": "integer"
+            },
+            "goals_with_complete_context": {
+              "type": "integer"
+            }
+          }
+        },
+        "contradictions": {
+          "type": "object",
+          "description": "Results from PolicyContradictionDetector",
+          "properties": {
+            "found": {
+              "type": "integer"
+            },
+            "tests_performed": {
+              "type": "integer"
+            },
+            "interpretation": {
+              "type": "string"
+            }
+          }
+        },
+        "bayesian_insights": {
+          "type": "object",
+          "description": "Results from BayesianNumericalAnalyzer",
+          "properties": {
+            "metrics_with_high_uncertainty": {
+              "type": "array"
+            },
+            "significant_comparisons": {
+              "type": "integer"
+            }
+          }
+        },
+        "semantic_processing": {
+          "type": "object",
+          "description": "Results from SemanticProcessor",
+          "properties": {
+            "chunks_created": {
+              "type": "integer"
+            },
+            "embeddings_generated": {
+              "type": "integer"
+            },
+            "avg_semantic_similarity_to_query": {
+              "type": "number"
+            }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "methods_executed": {
+              "type": "integer",
+              "const": 9
+            },
+            "execution_time_ms": {
+              "type": "number"
+            },
+            "document_length": {
+              "type": "integer"
+            },
+            "analysis_timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "concrete_example": {
+      "elements_found": [
+        {
+          "element_id": "E-001",
+          "type": "fuentes_oficiales",
+          "value": "DANE",
+          "confidence": 0.95,
+          "source_method": "IndustrialPolicyProcessor._extract_point_evidence",
+          "source_sentence": "según datos de DANE para el año 2022",
+          "sentence_id": 45,
+          "position": {
+            "start": 123,
+            "end": 145
+          }
+        },
+        {
+          "element_id": "E-002",
+          "type": "indicadores_cuantitativos",
+          "value": "tasa de VBG: 12.3%",
+          "normalized_value": 12.3,
+          "unit": "%",
+          "confidence": 0.89,
+          "source_method": "PolicyContradictionDetector._extract_quantitative_claims",
+          "bayesian_posterior": {
+            "mean": 0.123,
+            "ci_95": [
+              0.11,
+              0.145
+            ]
+          },
+          "sentence_id": 45
+        },
+        {
+          "element_id": "E-003",
+          "type": "series_temporales_años",
+          "years": [
+            2020,
+            2021,
+            2022
+          ],
+          "confidence": 0.92,
+          "source_method": "TextMiningEngine.diagnose_critical_links"
+        },
+        {
+          "element_id": "E-004",
+          "type": "cobertura_territorial_especificada",
+          "coverage": "municipal - zona rural y urbana",
+          "confidence": 0.88,
+          "source_method": "CausalExtractor._parse_goal_context"
+        }
+      ],
+      "elements_summary": {
+        "total_count": 38,
+        "by_type": {
+          "fuentes_oficiales": 5,
+          "indicadores_cuantitativos": 12,
+          "series_temporales_años": 4,
+          "cobertura_territorial_especificada": 1,
+          "financial_amounts": 8,
+          "policy_goals": 7,
+          "causal_links": 5
+        }
+      },
+      "confidence_scores": {
+        "mean": 0.876,
+        "std": 0.089,
+        "min": 0.72,
+        "max": 0.98,
+        "by_method": {
+          "TextMiningEngine": 0.83,
+          "IndustrialPolicyProcessor": 0.91,
+          "CausalExtractor": 0.79,
+          "FinancialAuditor": 0.94,
+          "PDETMunicipalPlanAnalyzer": 0.88,
+          "PolicyContradictionDetector": 0.9,
+          "BayesianNumericalAnalyzer": 0.92,
+          "SemanticProcessor": 0.85
+        }
+      },
+      "pattern_matches": [
+        {
+          "pattern_id": "PAT-Q001-000",
+          "count": 3,
+          "avg_confidence": 0.87
+        },
+        {
+          "pattern_id": "PAT-Q001-002",
+          "count": 5,
+          "avg_confidence": 0.95
+        }
+      ],
+      "critical_links": [
+        {
+          "cause": "alta tasa de VBG",
+          "effect": "baja autonomía económica",
+          "criticality": 0.87,
+          "coherence": 0.82
+        }
+      ],
+      "financial_summary": {
+        "total_budget_cop": 850000000.0,
+        "amounts_found": 12,
+        "by_category": {
+          "SGR": 250000000.0,
+          "recursos_propios": 180000000.0
+        }
+      },
+      "goals_summary": {
+        "total_goals": 7,
+        "quantified_goals": 5,
+        "goals_with_complete_context": 4
+      },
+      "contradictions": {
+        "found": 0,
+        "tests_performed": 15,
+        "interpretation": "No statistical contradictions in quantitative claims"
+      },
+      "bayesian_insights": {
+        "metrics_with_high_uncertainty": [],
+        "significant_comparisons": 1
+      },
+      "semantic_processing": {
+        "chunks_created": 45,
+        "embeddings_generated": 45,
+        "avg_semantic_similarity_to_query": 0.78
+      },
+      "metadata": {
+        "methods_executed": 9,
+        "execution_time_ms": 2845,
+        "document_length": 15230,
+        "analysis_timestamp": "2025-11-26T12:34:56Z"
+      }
+    },
+    "validation_against_expected_elements": {
+      "cobertura_territorial_especificada": {
+        "required": true,
+        "found_in_example": true,
+        "example_element_id": "E-004"
+      },
+      "fuentes_oficiales": {
+        "minimum": 2,
+        "found_in_example": 5,
+        "status": "PASS"
+      },
+      "indicadores_cuantitativos": {
+        "minimum": 3,
+        "found_in_example": 12,
+        "status": "PASS"
+      },
+      "series_temporales_años": {
+        "minimum": 3,
+        "found_in_example": 4,
+        "status": "PASS"
+      },
+      "overall_validation_result": "PASS - All required and minimum elements present"
+    },
+    "template_variable_bindings": {
+      "description": "These variables are available for human_readable_output template",
+      "variables": {
+        "{evidence.elements_found_count}": 38,
+        "{score}": "Calculated by scorer based on elements",
+        "{quality_level}": "ALTO",
+        "{evidence.confidence_scores.mean}": "87.6%",
+        "{evidence.pattern_matches_count}": 14,
+        "{evidence.official_sources_count}": 5,
+        "{evidence.quantitative_indicators_count}": 12,
+        "{evidence.temporal_series_count}": 4,
+        "{evidence.territorial_coverage}": "municipal - zona rural y urbana"
+      }
+    },
+    "usage_notes": {
+      "for_developers": "This structure shows the expected evidence dict after BaseExecutorWithContract._execute_v3() completes all 17 method executions and evidence assembly.",
+      "for_validators": "Use this to verify that actual execution output matches expected structure.",
+      "for_auditors": "This provides traceability from raw method outputs to final assembled evidence."
+    }
+  },
+  "method_outputs": {
+    "CausalExtractor._extract_causal_links": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._extract_causal_links",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _extract_causal_links"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.extract_causal_links",
+        "merge_strategy": "concat"
+      }
+    },
+    "CausalExtractor._calculate_composite_likelihood": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_composite_likelihood",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_composite_likelihood"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_composite_likelihood",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._initialize_prior": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._initialize_prior",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _initialize_prior"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.initialize_prior",
+        "merge_strategy": "replace"
+      }
+    },
+    "CausalExtractor._calculate_type_transition_prior": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from CausalExtractor._calculate_type_transition_prior",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _calculate_type_transition_prior"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "causal_extraction.calculate_type_transition_prior",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._identify_causal_edges": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._identify_causal_edges",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _identify_causal_edges"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.identify_causal_edges",
+        "merge_strategy": "replace"
+      }
+    },
+    "PDETMunicipalPlanAnalyzer._refine_edge_probabilities": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from PDETMunicipalPlanAnalyzer._refine_edge_probabilities",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _refine_edge_probabilities"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "pdet_analysis.refine_edge_probabilities",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor.construct_scm": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor.construct_scm",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from construct_scm"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.construct_scm",
+        "merge_strategy": "replace"
+      }
+    },
+    "BayesianCounterfactualAuditor._create_default_equations": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from BayesianCounterfactualAuditor._create_default_equations",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from _create_default_equations"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "bayesiancounterfactualauditor.create_default_equations",
+        "merge_strategy": "replace"
+      }
+    },
+    "SemanticAnalyzer.extract_semantic_cube": {
+      "output_type": "dict",
+      "structure": {
+        "description": "Output from SemanticAnalyzer.extract_semantic_cube",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Result from extract_semantic_cube"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Execution metadata"
+          }
+        }
+      },
+      "validation": {
+        "required": true,
+        "non_empty": true
+      },
+      "usage_in_assembly": {
+        "provides_key": "semanticanalyzer.extract_semantic_cube",
+        "merge_strategy": "concat"
+      }
+    }
+  }
+}

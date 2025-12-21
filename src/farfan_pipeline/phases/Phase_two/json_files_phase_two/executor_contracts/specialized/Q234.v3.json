@@ -3,14 +3,14 @@
     "base_slot": "D5-Q4",
     "question_id": "Q234",
     "dimension_id": "DIM05",
-    "policy_area_id": "PA07",
+    "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "608389bd31ac16b2d72f5076da5e205817e094e61f3b1b617e108ae4fb908144",
+    "contract_hash": "d5a2a9090fe1979c812e9e0194fcee64b60ec8f9f8cb4ff66facd87e6b0c9212",
     "created_at": "2025-11-28T03:50:42.080076+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 234,
-    "updated_at": "2025-12-16T04:42:58.517829+00:00"
+    "updated_at": "2025-12-21T19:03:47.586126+00:00"
   },
   "executor_binding": {
     "executor_class": "D5_Q4_Executor",
@@ -98,7 +98,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -113,7 +113,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0093",
         "pattern": "riesgo sistémico|choque externo|crisis climática",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -127,7 +127,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -141,7 +141,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -155,7 +155,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -169,7 +169,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -183,7 +183,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       }
     ],
     "expected_elements": [
@@ -329,7 +329,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA07"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

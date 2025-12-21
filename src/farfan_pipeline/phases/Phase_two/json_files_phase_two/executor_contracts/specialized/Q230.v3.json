@@ -3,14 +3,14 @@
     "base_slot": "D4-Q5",
     "question_id": "Q230",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA07",
+    "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "0592196775185c2b9171ba1e699c2cfa3420ec82a78bbdf65f946d599802c677",
+    "contract_hash": "777ffa8c75de90806254c13fbc944d11f9158776012781ae8930b9590103977e",
     "created_at": "2025-11-28T03:50:42.065894+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 230,
-    "updated_at": "2025-12-16T04:42:58.497044+00:00"
+    "updated_at": "2025-12-21T19:03:47.573547+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q5_Executor",
@@ -90,7 +90,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -104,7 +104,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -118,7 +118,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -132,7 +132,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -146,7 +146,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       }
     ],
     "expected_elements": [
@@ -296,7 +296,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA07"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [

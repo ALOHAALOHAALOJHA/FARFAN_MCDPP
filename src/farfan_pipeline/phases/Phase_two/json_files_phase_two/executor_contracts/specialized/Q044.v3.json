@@ -3,14 +3,14 @@
     "base_slot": "D3-Q4",
     "question_id": "Q044",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA02",
     "contract_version": "3.0.0",
-    "contract_hash": "41a938736c01ce242bb9b7a40d5d7dc74ce8bd82094e7ac218c9aefb8b84d3c7",
+    "contract_hash": "6a55746dadbf4ae80d8147f5c2bae48a44d97bdd3b64cda87257632208694dc9",
     "created_at": "2025-11-28T03:50:05.929037+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL04",
     "question_global": 44,
-    "updated_at": "2025-12-16T04:42:57.529691+00:00"
+    "updated_at": "2025-12-21T19:03:46.996095+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -254,7 +254,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0066",
         "pattern": "factibilidad|viabilidad|es realista esperar que",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -268,7 +268,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -282,7 +282,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -296,7 +296,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -311,7 +311,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0045",
         "pattern": "contradictorio|poco probable|desproporcionado",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       },
       {
         "category": "GENERAL",
@@ -325,7 +325,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA10"
+        "policy_area": "PA02"
       }
     ],
     "expected_elements": [
@@ -495,7 +495,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA10"
+          "const": "PA02"
         },
         "dimension_id": {
           "type": [
