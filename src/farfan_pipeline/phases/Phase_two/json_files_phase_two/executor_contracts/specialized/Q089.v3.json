@@ -3,14 +3,14 @@
     "base_slot": "D6-Q4",
     "question_id": "Q089",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA02",
+    "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "8ccded1af813aa6b6b37b26151bb99b81e211d0134ba75e7d1a8d6c12c497c61",
+    "contract_hash": "6af8cfac7657d71be8461f55edebe24324bc99baa74e96e8094d33443520bea7",
     "created_at": "2025-11-28T03:50:13.374775+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 89,
-    "updated_at": "2025-12-17T17:33:57.856031+00:00"
+    "updated_at": "2025-12-21T19:03:47.133555+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q4_Executor",
@@ -98,7 +98,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -112,7 +112,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "INDICADOR",
@@ -126,7 +126,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -141,7 +141,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0079",
         "pattern": "mecanismo de ajuste|medida correctiva|reorientación de la estrategia",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -155,7 +155,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -170,7 +170,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0033",
         "pattern": "ciclos de aprendizaje|reuniones de revisión estratégica",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -184,7 +184,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       }
     ],
     "expected_elements": [
@@ -335,7 +335,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA02"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

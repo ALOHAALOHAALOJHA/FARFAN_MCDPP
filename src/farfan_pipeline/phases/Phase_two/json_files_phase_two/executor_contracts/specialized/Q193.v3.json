@@ -3,14 +3,14 @@
     "base_slot": "D3-Q3",
     "question_id": "Q193",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA06",
+    "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "1beee1f14243c15d31ba92e2a754225a75e2b7e307dd855809beb2979366da65",
+    "contract_hash": "fe88a9fc34e758efb481c6f3041e43cf0b5cdeeae50d8116000cb3bb026c6195",
     "created_at": "2025-11-28T03:50:31.889018+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 193,
-    "updated_at": "2025-12-17T14:44:57.288343+00:00"
+    "updated_at": "2025-12-21T19:03:47.456070+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q3_Executor",
@@ -218,7 +218,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -232,7 +232,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -246,7 +246,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -261,7 +261,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0090",
         "pattern": "responsable:|dependencia a cargo:|entidad ejecutora",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -276,7 +276,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0017",
         "pattern": "Secretaría de Desarrollo Social|Educación|Salud",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -290,7 +290,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -305,7 +305,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0048",
         "pattern": "convenio con|operado por",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       }
     ],
     "expected_elements": [
@@ -466,7 +466,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA06"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

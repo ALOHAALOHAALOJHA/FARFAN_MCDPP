@@ -1,0 +1,1705 @@
+{
+  "summary": {
+    "total_positions_checked": 30,
+    "total_questions_validated": 300,
+    "total_violations": 0,
+    "status": "PASS"
+  },
+  "invariants_validated": [
+    "Base slot (analytical position) remains constant within each positional set",
+    "Dimension (analytical axis) remains constant within each positional set",
+    "Method composition (class, method, priority, role) remains identical",
+    "Output structure (required fields) remains consistent",
+    "Scoring logic (scoring_definition_ref) remains constant",
+    "Epistemological role (implied by base_slot + dimension) remains constant",
+    "Causal logic (implied by method composition) remains constant"
+  ],
+  "variants_validated": [
+    "Policy area ID varies correctly from PA01 to PA10 for each position",
+    "Semantic surface (question wording) varies by policy area (not validated in contracts)",
+    "Sectoral language varies by policy area (not validated in contracts)"
+  ],
+  "detailed_checks": [
+    {
+      "position": 1,
+      "questions": [
+        "Q001",
+        "Q031",
+        "Q061",
+        "Q091",
+        "Q121",
+        "Q151",
+        "Q181",
+        "Q211",
+        "Q241",
+        "Q271"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D1-Q1",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM01",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 17,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 2,
+      "questions": [
+        "Q002",
+        "Q032",
+        "Q062",
+        "Q092",
+        "Q122",
+        "Q152",
+        "Q182",
+        "Q212",
+        "Q242",
+        "Q272"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D1-Q2",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM01",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 12,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 3,
+      "questions": [
+        "Q003",
+        "Q033",
+        "Q063",
+        "Q093",
+        "Q123",
+        "Q153",
+        "Q183",
+        "Q213",
+        "Q243",
+        "Q273"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D1-Q3",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM01",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 13,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 4,
+      "questions": [
+        "Q004",
+        "Q034",
+        "Q064",
+        "Q094",
+        "Q124",
+        "Q154",
+        "Q184",
+        "Q214",
+        "Q244",
+        "Q274"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D1-Q4",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM01",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 11,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 5,
+      "questions": [
+        "Q005",
+        "Q035",
+        "Q065",
+        "Q095",
+        "Q125",
+        "Q155",
+        "Q185",
+        "Q215",
+        "Q245",
+        "Q275"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D1-Q5",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM01",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 7,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 6,
+      "questions": [
+        "Q006",
+        "Q036",
+        "Q066",
+        "Q096",
+        "Q126",
+        "Q156",
+        "Q186",
+        "Q216",
+        "Q246",
+        "Q276"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D2-Q1",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM02",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 7,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 7,
+      "questions": [
+        "Q007",
+        "Q037",
+        "Q067",
+        "Q097",
+        "Q127",
+        "Q157",
+        "Q187",
+        "Q217",
+        "Q247",
+        "Q277"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D2-Q2",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM02",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 11,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 8,
+      "questions": [
+        "Q008",
+        "Q038",
+        "Q068",
+        "Q098",
+        "Q128",
+        "Q158",
+        "Q188",
+        "Q218",
+        "Q248",
+        "Q278"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D2-Q3",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM02",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 9,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 9,
+      "questions": [
+        "Q009",
+        "Q039",
+        "Q069",
+        "Q099",
+        "Q129",
+        "Q159",
+        "Q189",
+        "Q219",
+        "Q249",
+        "Q279"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D2-Q4",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM02",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 10,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 10,
+      "questions": [
+        "Q010",
+        "Q040",
+        "Q070",
+        "Q100",
+        "Q130",
+        "Q160",
+        "Q190",
+        "Q220",
+        "Q250",
+        "Q280"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D2-Q5",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM02",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 11,
+      "questions": [
+        "Q011",
+        "Q041",
+        "Q071",
+        "Q101",
+        "Q131",
+        "Q161",
+        "Q191",
+        "Q221",
+        "Q251",
+        "Q281"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D3-Q1",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM03",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 12,
+      "questions": [
+        "Q012",
+        "Q042",
+        "Q072",
+        "Q102",
+        "Q132",
+        "Q162",
+        "Q192",
+        "Q222",
+        "Q252",
+        "Q282"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D3-Q2",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM03",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 21,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 13,
+      "questions": [
+        "Q013",
+        "Q043",
+        "Q073",
+        "Q103",
+        "Q133",
+        "Q163",
+        "Q193",
+        "Q223",
+        "Q253",
+        "Q283"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D3-Q3",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM03",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 22,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 14,
+      "questions": [
+        "Q014",
+        "Q044",
+        "Q074",
+        "Q104",
+        "Q134",
+        "Q164",
+        "Q194",
+        "Q224",
+        "Q254",
+        "Q284"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D3-Q4",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM03",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 26,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 15,
+      "questions": [
+        "Q015",
+        "Q045",
+        "Q075",
+        "Q105",
+        "Q135",
+        "Q165",
+        "Q195",
+        "Q225",
+        "Q255",
+        "Q285"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D3-Q5",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM03",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 25,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 16,
+      "questions": [
+        "Q016",
+        "Q046",
+        "Q076",
+        "Q106",
+        "Q136",
+        "Q166",
+        "Q196",
+        "Q226",
+        "Q256",
+        "Q286"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D4-Q1",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM04",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 16,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 17,
+      "questions": [
+        "Q017",
+        "Q047",
+        "Q077",
+        "Q107",
+        "Q137",
+        "Q167",
+        "Q197",
+        "Q227",
+        "Q257",
+        "Q287"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D4-Q2",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM04",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 18,
+      "questions": [
+        "Q018",
+        "Q048",
+        "Q078",
+        "Q108",
+        "Q138",
+        "Q168",
+        "Q198",
+        "Q228",
+        "Q258",
+        "Q288"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D4-Q3",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM04",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 19,
+      "questions": [
+        "Q019",
+        "Q049",
+        "Q079",
+        "Q109",
+        "Q139",
+        "Q169",
+        "Q199",
+        "Q229",
+        "Q259",
+        "Q289"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D4-Q4",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM04",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 7,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 20,
+      "questions": [
+        "Q020",
+        "Q050",
+        "Q080",
+        "Q110",
+        "Q140",
+        "Q170",
+        "Q200",
+        "Q230",
+        "Q260",
+        "Q290"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D4-Q5",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM04",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 6,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 21,
+      "questions": [
+        "Q021",
+        "Q051",
+        "Q081",
+        "Q111",
+        "Q141",
+        "Q171",
+        "Q201",
+        "Q231",
+        "Q261",
+        "Q291"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D5-Q1",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM05",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 22,
+      "questions": [
+        "Q022",
+        "Q052",
+        "Q082",
+        "Q112",
+        "Q142",
+        "Q172",
+        "Q202",
+        "Q232",
+        "Q262",
+        "Q292"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D5-Q2",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM05",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 28,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 23,
+      "questions": [
+        "Q023",
+        "Q053",
+        "Q083",
+        "Q113",
+        "Q143",
+        "Q173",
+        "Q203",
+        "Q233",
+        "Q263",
+        "Q293"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D5-Q3",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM05",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 6,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 24,
+      "questions": [
+        "Q024",
+        "Q054",
+        "Q084",
+        "Q114",
+        "Q144",
+        "Q174",
+        "Q204",
+        "Q234",
+        "Q264",
+        "Q294"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D5-Q4",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM05",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 7,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 25,
+      "questions": [
+        "Q025",
+        "Q055",
+        "Q085",
+        "Q115",
+        "Q145",
+        "Q175",
+        "Q205",
+        "Q235",
+        "Q265",
+        "Q295"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D5-Q5",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM05",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 26,
+      "questions": [
+        "Q026",
+        "Q056",
+        "Q086",
+        "Q116",
+        "Q146",
+        "Q176",
+        "Q206",
+        "Q236",
+        "Q266",
+        "Q296"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D6-Q1",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM06",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 27,
+      "questions": [
+        "Q027",
+        "Q057",
+        "Q087",
+        "Q117",
+        "Q147",
+        "Q177",
+        "Q207",
+        "Q237",
+        "Q267",
+        "Q297"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D6-Q2",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM06",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 7,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 28,
+      "questions": [
+        "Q028",
+        "Q058",
+        "Q088",
+        "Q118",
+        "Q148",
+        "Q178",
+        "Q208",
+        "Q238",
+        "Q268",
+        "Q298"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D6-Q3",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM06",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 8,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 29,
+      "questions": [
+        "Q029",
+        "Q059",
+        "Q089",
+        "Q119",
+        "Q149",
+        "Q179",
+        "Q209",
+        "Q239",
+        "Q269",
+        "Q299"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D6-Q4",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM06",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 7,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    },
+    {
+      "position": 30,
+      "questions": [
+        "Q030",
+        "Q060",
+        "Q090",
+        "Q120",
+        "Q150",
+        "Q180",
+        "Q210",
+        "Q240",
+        "Q270",
+        "Q300"
+      ],
+      "checks": {
+        "base_slot": {
+          "status": "PASS",
+          "value": "D6-Q5",
+          "message": "Base slot invariant across all policy areas"
+        },
+        "dimension": {
+          "status": "PASS",
+          "value": "DIM06",
+          "message": "Dimension invariant across all policy areas"
+        },
+        "method_composition": {
+          "status": "PASS",
+          "method_count": 9,
+          "message": "Method composition invariant across all policy areas"
+        },
+        "output_structure": {
+          "status": "PASS",
+          "message": "Output structure invariant across all policy areas"
+        },
+        "scoring_logic": {
+          "status": "PASS",
+          "message": "Scoring logic invariant across all policy areas"
+        },
+        "policy_area_variance": {
+          "status": "PASS",
+          "values": [
+            "PA01",
+            "PA02",
+            "PA03",
+            "PA04",
+            "PA05",
+            "PA06",
+            "PA07",
+            "PA08",
+            "PA09",
+            "PA10"
+          ],
+          "message": "Policy areas vary correctly (PA01-PA10)"
+        }
+      }
+    }
+  ],
+  "violations": []
+}

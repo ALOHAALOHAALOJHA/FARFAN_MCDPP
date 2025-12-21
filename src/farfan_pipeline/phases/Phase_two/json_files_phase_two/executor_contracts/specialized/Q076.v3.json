@@ -3,14 +3,14 @@
     "base_slot": "D4-Q1",
     "question_id": "Q076",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA02",
+    "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "d1b082cc8742ec8a22382d302808193f2a45091ec5b9fee1632a5ca691ff0c32",
+    "contract_hash": "91a14b7ed0b1c7d7a7286e5300d3bd4bf810fa9311a9926ad2ce310e8f796bc9",
     "created_at": "2025-11-28T03:50:09.640982+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 76,
-    "updated_at": "2025-12-17T17:33:57.847728+00:00"
+    "updated_at": "2025-12-21T19:03:47.097669+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q1_Executor",
@@ -171,7 +171,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0074",
         "pattern": "indicador de resultado|indicador de efecto|outcome",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "INDICADOR",
@@ -185,7 +185,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -199,7 +199,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -214,7 +214,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0009",
         "pattern": "Línea Base:|LB:|valor\\\\s+(?:19|20)\\\\d{2}:",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "INDICADOR",
@@ -228,7 +228,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -243,7 +243,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0006",
         "pattern": "Fuente de verificación:|Medio de verificación:",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "INDICADOR",
@@ -258,7 +258,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0005",
         "pattern": "Ficha de Indicador de Resultado (KPT)",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "TEMPORAL",
@@ -273,7 +273,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0068",
         "pattern": "horizonte temporal|ventana de maduración|al final del periodo",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       }
     ],
     "expected_elements": [
@@ -438,7 +438,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA02"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

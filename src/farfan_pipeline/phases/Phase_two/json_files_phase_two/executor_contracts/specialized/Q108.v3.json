@@ -3,14 +3,14 @@
     "base_slot": "D4-Q3",
     "question_id": "Q108",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA03",
+    "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "173de34d8dc5e9b4af3cb00b7d120fa6de66d28e6c934da341d0aa38922dac8f",
+    "contract_hash": "3e549e4d24d47615ce437ed90d1e2f789af2559cf9dd47a0750ae9066d29365b",
     "created_at": "2025-11-28T03:50:31.263157+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 108,
-    "updated_at": "2025-12-16T04:42:57.855548+00:00"
+    "updated_at": "2025-12-21T19:03:47.195834+00:00"
   },
   "executor_binding": {
     "executor_class": "D4_Q3_Executor",
@@ -107,7 +107,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0083",
         "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -121,7 +121,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -136,7 +136,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0040",
         "pattern": "con la inversión de X se espera lograr una reducción de Y",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -150,7 +150,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -164,7 +164,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -178,7 +178,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -193,7 +193,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0025",
         "pattern": "análisis de viabilidad de la meta",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       }
     ],
     "expected_elements": [
@@ -345,7 +345,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA03"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

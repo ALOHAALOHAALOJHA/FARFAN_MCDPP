@@ -3,14 +3,14 @@
     "base_slot": "D3-Q4",
     "question_id": "Q104",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA03",
+    "policy_area_id": "PA04",
     "contract_version": "3.0.0",
-    "contract_hash": "cf5ddd902e3540d2dfa83bd5ee3644132b6c9495a00d98f6898477c2116c06dd",
+    "contract_hash": "1956631cf7b36248727abbfa2bed0f8fe52ee41be4feac6aba69efe21b48161b",
     "created_at": "2025-11-28T03:50:31.246585+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 104,
-    "updated_at": "2025-12-16T04:42:57.831319+00:00"
+    "updated_at": "2025-12-21T19:03:47.180452+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q4_Executor",
@@ -251,7 +251,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0066",
         "pattern": "factibilidad|viabilidad|es realista esperar que",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -265,7 +265,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -279,7 +279,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -293,7 +293,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -308,7 +308,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0045",
         "pattern": "contradictorio|poco probable|desproporcionado",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       },
       {
         "category": "GENERAL",
@@ -323,7 +323,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0042",
         "pattern": "con los recursos asignados se puede lograr",
-        "policy_area": "PA03"
+        "policy_area": "PA04"
       }
     ],
     "expected_elements": [
@@ -493,7 +493,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA03"
+          "const": "PA04"
         },
         "dimension_id": {
           "type": [

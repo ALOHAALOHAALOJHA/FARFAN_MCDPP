@@ -3,14 +3,14 @@
     "base_slot": "D3-Q5",
     "question_id": "Q075",
     "dimension_id": "DIM03",
-    "policy_area_id": "PA02",
+    "policy_area_id": "PA03",
     "contract_version": "3.0.0",
-    "contract_hash": "ebf26e1c55590ee35d17082ccd024dc1910f6bbfa5bdace886f21b0dfa756fad",
+    "contract_hash": "a191b86eaad6f0f2e48e76390de4c1fbcab219c1e983fcc50a5160933767232d",
     "created_at": "2025-11-28T03:50:09.636401+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 75,
-    "updated_at": "2025-12-16T04:42:57.683438+00:00"
+    "updated_at": "2025-12-21T19:03:47.093152+00:00"
   },
   "executor_binding": {
     "executor_class": "D3_Q5_Executor",
@@ -242,7 +242,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -257,7 +257,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0055",
         "pattern": "el mecanismo es|la lógica es que",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -271,7 +271,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -285,7 +285,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -300,7 +300,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0109",
         "pattern": "variable intermedia|mediador|eslabón causal",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       },
       {
         "category": "GENERAL",
@@ -315,7 +315,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0029",
         "pattern": "cadena de valor de la protección|ruta de cambio",
-        "policy_area": "PA02"
+        "policy_area": "PA03"
       }
     ],
     "expected_elements": [
@@ -479,7 +479,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA02"
+          "const": "PA03"
         },
         "dimension_id": {
           "type": [

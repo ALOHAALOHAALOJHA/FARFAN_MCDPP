@@ -3,14 +3,14 @@
     "base_slot": "D6-Q5",
     "question_id": "Q210",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA06",
+    "policy_area_id": "PA07",
     "contract_version": "3.0.0",
-    "contract_hash": "70ec6b759ed34c64c929daca2e85b12c5f8d675d7ea3e2c90f65aad8301d3d22",
+    "contract_hash": "e18145cd7ee66beb85d6fc1f397cf5eda5c629f37b08d88ea1d091f56124de06",
     "created_at": "2025-11-28T03:50:41.904857+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 210,
-    "updated_at": "2025-12-17T02:49:51.795149",
+    "updated_at": "2025-12-21T19:03:47.509007+00:00",
     "remediation_applied": [
       {
         "date": "2025-12-17T02:49:51.795153",
@@ -124,7 +124,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -138,7 +138,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -152,7 +152,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -166,7 +166,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -181,7 +181,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0044",
         "pattern": "contexto cultural|barreras culturales para la salud sexual",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "GENERAL",
@@ -195,7 +195,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       },
       {
         "category": "TERRITORIAL",
@@ -209,7 +209,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA06"
+        "policy_area": "PA07"
       }
     ],
     "expected_elements": [
@@ -359,7 +359,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA06"
+          "const": "PA07"
         },
         "dimension_id": {
           "type": [

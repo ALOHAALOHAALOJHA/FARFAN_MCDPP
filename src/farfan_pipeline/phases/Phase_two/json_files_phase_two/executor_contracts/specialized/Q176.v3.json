@@ -3,14 +3,14 @@
     "base_slot": "D6-Q1",
     "question_id": "Q176",
     "dimension_id": "DIM06",
-    "policy_area_id": "PA05",
+    "policy_area_id": "PA06",
     "contract_version": "3.0.0",
-    "contract_hash": "cbf452304e2c6c520b3693e2c40a5b6962f1f402fc2e1c01df227dbd9543cc9e",
+    "contract_hash": "e85f741fde36ba73da96f31bc748d64cb2a73063a7a7745872f172be1c4de2ef",
     "created_at": "2025-11-28T03:50:31.746232+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL02",
     "question_global": 176,
-    "updated_at": "2025-12-17T14:44:57.220314+00:00"
+    "updated_at": "2025-12-21T19:03:47.405092+00:00"
   },
   "executor_binding": {
     "executor_class": "D6_Q1_Executor",
@@ -106,7 +106,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "CAUSAL",
@@ -122,7 +122,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0051",
         "pattern": "diagrama causal|gráfico de la teoría de cambio|ruta causal",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -137,7 +137,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0032",
         "pattern": "causa raíz del conflicto|determinante estructural de la violencia",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -151,7 +151,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -165,7 +165,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       },
       {
         "category": "GENERAL",
@@ -180,7 +180,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0104",
         "pattern": "supuesto verificable|hipótesis a testear|premisa comprobable",
-        "policy_area": "PA05"
+        "policy_area": "PA06"
       }
     ],
     "expected_elements": [
@@ -332,7 +332,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA05"
+          "const": "PA06"
         },
         "dimension_id": {
           "type": [

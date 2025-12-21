@@ -3,14 +3,14 @@
     "base_slot": "D2-Q3",
     "question_id": "Q218",
     "dimension_id": "DIM02",
-    "policy_area_id": "PA07",
+    "policy_area_id": "PA08",
     "contract_version": "3.0.0",
-    "contract_hash": "6c27918a13bb899e31762a46fad3c0c38b6a56a3836dc6ca0ecfedc0ceba3f7e",
+    "contract_hash": "d56226c150ce40de1cfe36d671681fa604e19c6c82163b15bab0977a8b3d411f",
     "created_at": "2025-11-28T03:50:41.933465+00:00",
     "validated_against_schema": "executor_contract.v3.schema.json",
     "cluster_id": "CL01",
     "question_global": 218,
-    "updated_at": "2025-12-17T02:49:51.816667",
+    "updated_at": "2025-12-21T19:03:47.533385+00:00",
     "remediation_applied": [
       {
         "date": "2025-12-17T02:49:51.816671",
@@ -124,7 +124,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "TERRITORIAL",
@@ -138,7 +138,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -153,7 +153,7 @@
         "context_scope": "PARAGRAPH",
         "pattern_ref": "PAT-0031",
         "pattern": "causa estructural|factor determinante|nudo crítico",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -167,7 +167,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -181,7 +181,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -195,7 +195,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       },
       {
         "category": "GENERAL",
@@ -209,7 +209,7 @@
         "context_requirement": null,
         "semantic_expansion": null,
         "context_scope": "PARAGRAPH",
-        "policy_area": "PA07"
+        "policy_area": "PA08"
       }
     ],
     "expected_elements": [
@@ -357,7 +357,7 @@
             "null"
           ],
           "description": "PA canónica, debe ser coherente con identity.policy_area_id.",
-          "const": "PA07"
+          "const": "PA08"
         },
         "dimension_id": {
           "type": [
