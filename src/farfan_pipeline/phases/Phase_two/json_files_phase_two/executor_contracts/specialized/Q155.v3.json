@@ -428,7 +428,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q155 (D1-Q5): ¿El plan justifica su alcance en la política de víctimas mencionando el marco legal (Ley 1448, Decretos Ley) o reconociendo restricciones...",
+        "title": "## Análisis Q155: PA05 - D1-Q5",
         "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las víctimas y construcción de paz\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",

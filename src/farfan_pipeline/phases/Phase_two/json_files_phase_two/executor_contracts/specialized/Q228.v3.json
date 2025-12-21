@@ -3,7 +3,7 @@
     "base_slot": "D4-Q3",
     "question_id": "Q228",
     "dimension_id": "DIM04",
-    "policy_area_id": "PA08",
+    "policy_area_id": "PA07",
     "contract_version": "3.1.0-Jurist-Massive",
     "contract_hash": "5750d914f61c29a88db5da55d41b0366f05b05f633f6e8e0a05d0f915127653c",
     "created_at": "2025-11-28T03:50:42.059660+00:00",
@@ -210,7 +210,7 @@
     "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM04; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "note": "Signal requirements are under development. Canonical mapping pending for PA07/DIM04; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
     "preferred_signal_types": [
       "policy_instrument_detected",
       "activity_specification_found",
@@ -299,8 +299,8 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q228: PA08 - D4-Q3",
-        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: RESULTADOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Análisis Q228: PA07 - D4-Q3",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Tierras y territorios\n\n**Dimensión**: RESULTADOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "interpretation": "### Interpretación\n\n{methodological_interpretation}",
@@ -735,7 +735,7 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D4-Q3 (Q018) for PA01/DIM04 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "rationale": "D4-Q3 (Q228) for PA07/DIM04 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
           "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
           "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
           "execution_order": "Methods execute in priority order (1→8).",

@@ -391,7 +391,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q084 (D5-Q4): ¿Los impactos en la paz se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. resurgimiento de actores armados...",
+        "title": "## Análisis Q084: PA02 - D5-Q4",
         "summary": "### Resumen Ejecutivo\n\n**Área de política**: Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales\n\n**Dimensión**: IMPACTOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",

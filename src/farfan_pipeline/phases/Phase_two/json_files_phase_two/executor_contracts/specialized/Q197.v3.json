@@ -407,7 +407,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q197 (D4-Q2): ¿Se explicita la cadena causal que lleva a la mejora del bienestar juvenil, mencionando 'supuestos' clave (ej. 'si los jóvenes aplican a...",
+        "title": "## Análisis Q197: PA06 - D4-Q2",
         "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores\n\n**Dimensión**: RESULTADOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",

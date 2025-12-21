@@ -384,7 +384,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q160 (D2-Q5): ¿El conjunto de actividades para las víctimas demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. re...",
+        "title": "## Análisis Q160: PA05 - D2-Q5",
         "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las víctimas y construcción de paz\n\n**Dimensión**: ACTIVIDADES\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",

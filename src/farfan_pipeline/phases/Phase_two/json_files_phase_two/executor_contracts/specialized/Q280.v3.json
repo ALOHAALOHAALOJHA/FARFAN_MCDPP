@@ -3,7 +3,7 @@
     "base_slot": "D2-Q5",
     "question_id": "Q280",
     "dimension_id": "DIM02",
-    "policy_area_id": "PA10",
+    "policy_area_id": "PA09",
     "contract_version": "3.1.0-Jurist-Massive",
     "contract_hash": "e305ca21a5acdcd7e405932c7bf8454353f5de2f19ed35fae00d054d1fe94538",
     "created_at": "2025-11-28T03:50:42.406995+00:00",
@@ -205,7 +205,7 @@
     "optional_signals": [],
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5,
-    "note": "Signal requirements are under development. Canonical mapping pending for PA01/DIM02; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+    "note": "Signal requirements are under development. Canonical mapping pending for PA09/DIM02; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
     "preferred_signal_types": [
       "policy_instrument_detected",
       "activity_specification_found",
@@ -294,8 +294,8 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q280: PA10 - D2-Q5",
-        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: ACTIVIDADES\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
+        "title": "## Análisis Q280: PA09 - D2-Q5",
+        "summary": "### Resumen Ejecutivo\n\n**Área de política**: Crisis de derechos de personas privadas de la libertad\n\n**Dimensión**: ACTIVIDADES\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
         "interpretation": "### Interpretación\n\n{methodological_interpretation}",
@@ -730,7 +730,7 @@
         ],
         "method_combination_logic": {
           "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
-          "rationale": "D2-Q5 (Q010) for PA01/DIM02 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+          "rationale": "D2-Q5 (Q280) for PA09/DIM02 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
           "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
           "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
           "execution_order": "Methods execute in priority order (1→8).",

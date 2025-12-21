@@ -453,7 +453,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q062 (D1-Q2): ¿El texto dimensiona el problema de la violencia y el conflicto cuantificando la brecha o el aumento de casos? Se debe buscar si se menci...",
+        "title": "## Análisis Q062: PA02 - D1-Q2",
         "summary": "### Resumen Ejecutivo\n\n**Área de política**: Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales\n\n**Dimensión**: INSUMOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",

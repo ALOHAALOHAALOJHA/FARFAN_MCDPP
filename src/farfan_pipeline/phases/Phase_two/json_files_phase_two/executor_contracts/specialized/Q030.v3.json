@@ -412,7 +412,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q030 (D6-Q5): ¿La lógica causal para la equidad de género considera el contexto, reconociendo 'grupos afectados' (ej. mujeres rurales, víctimas, étnica...",
+        "title": "## Análisis Q030: PA01 - D6-Q5",
         "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: CAUSALIDAD\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
