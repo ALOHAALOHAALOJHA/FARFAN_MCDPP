@@ -587,7 +587,7 @@
     "source_hash": "9cbb485065ff803727b9b62408acb7223c0d9ab6dfe83cec6c82a7e4dade7d30",
     "contract_generation_method": "automated_specialization_from_monolith",
     "contract_author": "F.A.R.F.A.N Mechanistic Policy Pipeline",
-    "provenance_note": "This contract was generated with full multi-method orchestration support. The method_binding.methods array contains all 9 methods from D6_Q5_Executor, and human_answer_structure documents the expected evidence output after execution.",
+    "provenance_note": "This contract was originally generated in v3 with full multi-method orchestration support, where the method_binding.methods array contained all 9 methods from D6_Q5_Executor. In this v4 epistemological refactor, those methods are represented in method_binding.execution_graph, and human_answer_structure documents the expected evidence output after execution.",
     "source_question_id": "Q300",
     "specialized_from_base_slot": "D6-Q5",
     "specialization_timestamp": "2025-11-28T03:50:42.561075+00:00",
