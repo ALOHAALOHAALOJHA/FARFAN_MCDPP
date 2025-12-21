@@ -750,7 +750,7 @@
           }
         ],
         "method_combination_logic": {
-          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "combination_strategy": "Bayesian evidential aggregation across 8 epistemologically heterogeneous methods. Posterior distributions from each method are combined via hierarchical Bayesian updating, with conservative credence propagation. Integration sequence: (1) Financial data extraction and quantitative baseline establishment; (2) Bayesian probabilistic analysis (6 methods) generates posterior distributions over hypotheses; (3) Cross-validation between methods identifies convergent and divergent evidence; (4) Hierarchical Bayesian aggregation combines posteriors with conservative credence propagation. Data transformations: Bayesian outputs (posterior distributions) → probability mass functions over hypotheses; Financial outputs (numerical assessments) → calibrated quantitative scores. This particularized strategy respects the intrinsic epistemological nature of each method class and ensures authentic intersection of heterogeneous evidence types into a coherent, structured answer for Q295 in PA10/DIM05.",
           "rationale": "D5-Q5 (Q025) for PA01/DIM05 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
           "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
           "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",

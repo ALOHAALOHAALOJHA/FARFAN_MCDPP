@@ -797,7 +797,7 @@
           }
         ],
         "method_combination_logic": {
-          "combination_strategy": "Sequential multi-method pipeline with evidence fusion",
+          "combination_strategy": "Multi-method structured aggregation across 7 epistemologically heterogeneous methods. Diverse analytical outputs are normalized into canonical evidence structures and aggregated via confidence-weighted fusion. Integration sequence: (1) Financial data extraction and quantitative baseline establishment; (2) Analytical methods process extracted evidence into structured assessments; (3) Cross-validation between methods identifies convergent and divergent evidence; (4) Structured synthesis generates accountability matrices and integrated reports. Data transformations: Financial outputs (numerical assessments) → calibrated quantitative scores. This particularized strategy respects the intrinsic epistemological nature of each method class and ensures authentic intersection of heterogeneous evidence types into a coherent, structured answer for Q006 in PA01/DIM02.",
           "rationale": "D2-Q1 (Q006) for PA01/DIM02 requires consistent extraction, validation, and synthesis across 7 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
           "evidence_fusion": "Evidence from all methods is aggregated by the EvidenceNexus according to evidence_assembly. Overlaps are deduplicated where possible and confidence is propagated conservatively.",
           "confidence_aggregation": "Confidence is aggregated via contract-defined merge strategies, favoring calibrated methods when available.",
