@@ -3,7 +3,7 @@
     "base_slot": "D5-Q2",
     "question_id": "Q262",
     "dimension_id": "DIM05",
-    "policy_area_id": "PA09",
+    "policy_area_id": "PA08",
     "contract_version": "3.1.0-Jurist-Massive",
     "contract_hash": "7299535484255ae3a98d2489782e2c0d69e12a31948b9034f18fd489896b74a8",
     "created_at": "2025-11-28T03:50:42.343527+00:00",
@@ -481,7 +481,7 @@
     "human_readable_output": {
       "format": "markdown",
       "template": {
-        "title": "## Análisis Q262: PA09 - D5-Q2",
+        "title": "## Análisis Q262: PA08 - D5-Q2",
         "summary": "### Resumen Ejecutivo\n\n**Área de política**: Derechos de las mujeres e igualdad de género\n\n**Dimensión**: IMPACTOS\n\nSe analizó la presencia de **{evidence.elements_found_count}** elementos de evidencia relevantes.\n\n**Puntaje**: {score}/3.0 | **Calidad**: {quality_level}",
         "score_section": "### Evaluación\n\n- **Puntaje**: {score}/3.0\n- **Calidad**: {quality_level}\n- **Confianza promedio**: {evidence.confidence_scores.mean}\n- **Hash del grafo**: {evidence.graph_hash}",
         "elements_section": "### Evidencia Identificada\n\n{evidence.elements_found_list}\n\n**Elementos críticos faltantes**: {evidence.missing_required_elements}",
