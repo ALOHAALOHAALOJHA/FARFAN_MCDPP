@@ -27,7 +27,7 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Protocol, runtime_checkable, cast
+from typing import Any, Protocol, runtime_checkable
 
 import numpy as np  # type: ignore[import-untyped]
 import numpy.typing as npt
