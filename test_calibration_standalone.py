@@ -49,7 +49,7 @@ def test_micro_level_thresholds():
     
     # Invalid thresholds should raise
     try:
-        bad_thresholds = MicroLevelThresholds(
+        MicroLevelThresholds(
             excelente=0.70,
             bueno=0.85,  # Wrong order!
             aceptable=0.55,
