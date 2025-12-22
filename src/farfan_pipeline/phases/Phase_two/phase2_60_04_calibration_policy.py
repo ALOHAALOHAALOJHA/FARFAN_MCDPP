@@ -35,6 +35,31 @@ import numpy.typing as npt
 logger = logging.getLogger(__name__)
 
 
+@dataclass
+class CalibrationParameters:
+    """Calibration parameters for hierarchical configuration (global/dimension/PA/contract).
+    
+    Integrated from PR #276 (FARFAN-sensitive hierarchical calibration).
+    Supports context-aware parameter overrides at different scopes.
+    """
+    
+    confidence_threshold: float = 0.7
+    method_weights: dict[str, float] = field(default_factory=dict)
+    bayesian_priors: dict[str, Any] = field(default_factory=dict)  # noqa: ANN401
+    random_seed: int = 42
+    enable_belief_propagation: bool = True
+    dempster_shafer_enabled: bool = True
+    
+    def validate(self) -> None:
+        """Validate calibration parameters."""
+        if not 0 <= self.confidence_threshold <= 1:
+            raise ValueError(
+                f"confidence_threshold must be in [0, 1], got {self.confidence_threshold}"
+            )
+        if self.random_seed < 0:
+            raise ValueError(f"random_seed must be non-negative, got {self.random_seed}")
+
+
 class QualityLabel(str, Enum):
     """Quality labels with exact threshold semantics from questionnaire_monolith.json."""
     
@@ -276,6 +301,12 @@ class CalibrationPolicy:
         self._default_domain_weights = default_domain_weights
         self._audit_log: list[CalibrationProvenance] = []
         
+        # PHASE 1 INTEGRATION: Hierarchical configuration from PR #276
+        self._global_params = CalibrationParameters()
+        self._dimension_params: dict[str, CalibrationParameters] = {}
+        self._policy_area_params: dict[str, CalibrationParameters] = {}
+        self._contract_params: dict[str, CalibrationParameters] = {}
+        
         if abs(sum(default_domain_weights.values()) - 1.0) > 1e-6:
             raise ValueError("Domain weights must sum to 1.0")
     
@@ -318,6 +349,75 @@ class CalibrationPolicy:
         
         return cls(thresholds=thresholds, default_domain_weights=default_weights)
     
+    # PHASE 1 INTEGRATION: Hierarchical Parameter Management from PR #276
+    
+    def get_context_parameters(
+        self,
+        question_id: str,
+        dimension_id: str | None = None,
+        policy_area_id: str | None = None,
+    ) -> CalibrationParameters:
+        """Get context-specific calibration parameters with hierarchical resolution.
+        
+        Resolution order (highest to lowest priority):
+        1. Contract-specific (Q{i})
+        2. Policy area-specific (PA{j})
+        3. Dimension-specific (DIM{k})
+        4. Global defaults
+        
+        Args:
+            question_id: Question ID (e.g., "Q001", "Q233")
+            dimension_id: Optional dimension ID (e.g., "DIM01" for D1)
+            policy_area_id: Optional policy area ID (e.g., "PA01" for first policy area)
+            
+        Returns:
+            CalibrationParameters for this context
+        """
+        # Check contract-specific (highest priority)
+        if question_id in self._contract_params:
+            return self._contract_params[question_id]
+        
+        # Check policy area-specific
+        if policy_area_id and policy_area_id in self._policy_area_params:
+            return self._policy_area_params[policy_area_id]
+        
+        # Check dimension-specific
+        if dimension_id and dimension_id in self._dimension_params:
+            return self._dimension_params[dimension_id]
+        
+        # Return global defaults (lowest priority)
+        return self._global_params
+    
+    def set_global_parameters(self, params: CalibrationParameters) -> None:
+        """Set global calibration parameters (lowest priority)."""
+        params.validate()
+        self._global_params = params
+        logger.info("Set global calibration parameters")
+    
+    def set_dimension_parameters(
+        self, dimension_id: str, params: CalibrationParameters
+    ) -> None:
+        """Set calibration parameters for a specific dimension (D1-D6)."""
+        params.validate()
+        self._dimension_params[dimension_id] = params
+        logger.info(f"Set calibration parameters for dimension {dimension_id}")
+    
+    def set_policy_area_parameters(
+        self, policy_area_id: str, params: CalibrationParameters
+    ) -> None:
+        """Set calibration parameters for a specific policy area (PA01-PA10)."""
+        params.validate()
+        self._policy_area_params[policy_area_id] = params
+        logger.info(f"Set calibration parameters for policy area {policy_area_id}")
+    
+    def set_contract_parameters(
+        self, question_id: str, params: CalibrationParameters
+    ) -> None:
+        """Set calibration parameters for a specific contract (Q001-Q300)."""
+        params.validate()
+        self._contract_params[question_id] = params
+        logger.info(f"Set calibration parameters for contract {question_id}")
+    
     def calibrate_method_output(
         self,
         question_id: str,
@@ -329,9 +429,12 @@ class CalibrationPolicy:
     ) -> CalibratedOutput:
         """Main entry point: Calibrate a method output with full uncertainty propagation.
         
+        PHASE 1 INTEGRATION: Now supports hierarchical context-specific parameters.
+        
         Decision tree:
-        1. If method_instance implements CalibrableMethod protocol → DELEGATE
-        2. Else → Apply central MicroLevelThresholds with synthetic posterior
+        1. Get context-specific parameters (contract → PA → dimension → global)
+        2. If method_instance implements CalibrableMethod protocol → DELEGATE
+        3. Else → Apply central MicroLevelThresholds with synthetic posterior
         
         Args:
             question_id: The question being answered (e.g., "Q001")
@@ -339,7 +442,7 @@ class CalibrationPolicy:
             raw_score: The uncalibrated score from method execution, in [0.0, 1.0]
             method_instance: Optional method instance for delegation check
             posterior_samples: Optional posterior samples from method's Bayesian inference
-            context: Optional context dict with domain, policy_area_id, etc.
+            context: Optional context dict with dimension_id, policy_area_id, etc.
             
         Returns:
             CalibratedOutput with full uncertainty quantification and provenance
@@ -353,12 +456,29 @@ class CalibrationPolicy:
         if not 0.0 <= raw_score <= 1.0:
             raise ValueError(f"raw_score must be in [0.0, 1.0], got {raw_score}")
         
+        # PHASE 1: Get context-specific calibration parameters
+        dimension_id = context.get("dimension_id")
+        policy_area_id = context.get("policy_area_id")
+        context_params = self.get_context_parameters(
+            question_id=question_id,
+            dimension_id=dimension_id,
+            policy_area_id=policy_area_id,
+        )
+        
+        # Log hierarchical resolution for audit trail
+        logger.debug(
+            f"Calibration for {question_id}: "
+            f"confidence_threshold={context_params.confidence_threshold}, "
+            f"dimension={dimension_id}, policy_area={policy_area_id}"
+        )
+        
         if self._implements_calibrable_protocol(method_instance):
             method_result = self._delegate_to_method(
                 method_instance=method_instance,
                 raw_score=raw_score,
                 posterior_samples=posterior_samples,
                 context=context,
+                context_params=context_params,  # Pass hierarchical params
             )
             calibration_source = "method_delegation"
             transformation_applied = method_result.transformation_name
@@ -372,6 +492,7 @@ class CalibrationPolicy:
             central_result = self._apply_central_calibration(
                 raw_score=raw_score,
                 posterior_samples=posterior_samples,
+                context_params=context_params,  # Pass hierarchical params
             )
             calibration_source = "central_threshold"
             transformation_applied = "micro_level_threshold_with_synthetic_posterior"
@@ -449,12 +570,24 @@ class CalibrationPolicy:
         raw_score: float,
         posterior_samples: npt.NDArray[np.float64] | None,
         context: dict[str, Any],  # noqa: ANN401
+        context_params: CalibrationParameters,
     ) -> MethodCalibrationResult:
-        """Delegate calibration to method's calibrate_output()."""
+        """Delegate calibration to method's calibrate_output().
+        
+        PHASE 1 INTEGRATION: Now passes context_params to method if it uses them.
+        """
+        # Augment context with hierarchical parameters for method use
+        context_with_params = context.copy()
+        context_with_params["calibration_params"] = {
+            "confidence_threshold": context_params.confidence_threshold,
+            "bayesian_priors": context_params.bayesian_priors,
+            "method_weights": context_params.method_weights,
+        }
+        
         result: MethodCalibrationResult = method_instance.calibrate_output(
             raw_score=raw_score,
             posterior_samples=posterior_samples,
-            context=context,
+            context=context_with_params,
         )
         return result
     
@@ -462,15 +595,20 @@ class CalibrationPolicy:
         self,
         raw_score: float,
         posterior_samples: npt.NDArray[np.float64] | None,
+        context_params: CalibrationParameters,
     ) -> dict[str, Any]:  # noqa: ANN401
         """Apply central MicroLevelThresholds with synthetic posterior.
+        
+        PHASE 1 INTEGRATION: Uses context_params for posterior generation.
         
         Used when method does not implement CalibrableMethod protocol.
         Generates synthetic posterior to avoid false certainty.
         """
         if posterior_samples is None or len(posterior_samples) == 0:
+            # Use random_seed from context_params for reproducibility
+            rng = np.random.default_rng(context_params.random_seed)
             posterior_samples = np.clip(
-                np.random.normal(raw_score, 0.1, size=10000),
+                rng.normal(raw_score, 0.1, size=10000),
                 0.0,
                 1.0,
             )
