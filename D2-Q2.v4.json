@@ -1,0 +1,634 @@
+{
+  "identity": {
+    "base_slot": "D2-Q2",
+    "representative_question_id": "Q007",
+    "dimension_id": "DIM02",
+    "policy_area_ids_served": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+    "contracts_served": ["Q007", "Q037", "Q067", "Q097", "Q127", "Q157", "Q187", "Q217", "Q247", "Q277"],
+    "contract_type": "TYPE_B",
+    "contract_type_name": "Bayesiano",
+    "contract_type_focus": "Significancia estadística, intervalos de confianza, priors",
+    "contract_version": "4.0.0-epistemological",
+    "created_at": "2025-12-22T18:20:00Z",
+    "specification_source": "guia_diligenciamiento_contratos_v4.md"
+  },
+
+  "executor_binding": {
+    "executor_class": "D2_Q2_Executor",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors"
+  },
+
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_B",
+    "method_count": 11,
+    "execution_phases": {
+      "phase_A_construction": {
+        "description": "Empirical observation layer - direct signal consumption",
+        "level": "N1",
+        "level_name": "Base Empírica",
+        "epistemology": "Empirismo positivista",
+        "methods": [],
+        "dependencies": [],
+        "output_target": "raw_facts",
+        "note": "This contract consumes PreprocesadoMetadata directly in N2 phase - no N1 extraction needed"
+      },
+
+      "phase_B_computation": {
+        "description": "Inferential analysis layer - Bayesian mechanism inference",
+        "level": "N2",
+        "level_name": "Procesamiento Inferencial",
+        "epistemology": "Bayesianismo subjetivista",
+        "methods": [
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "infer_mechanisms",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.infer_mechanisms",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Infiere mecanismos causales usando inferencia bayesiana",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["mechanism_posterior_probabilities"]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_infer_single_mechanism",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.infer_single_mechanism",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Infiere un mecanismo individual con probabilidad posterior",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["single_mechanism_scores"]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_infer_chain_capacity_vector",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.infer_chain_capacity_vector",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Calcula vector de capacidad de cadena causal",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["chain_capacity_scores"]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_test_sufficiency",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.test_sufficiency",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Prueba suficiencia de mecanismo con scoring bayesiano",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["sufficiency_scores"]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_test_necessity",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.test_necessity",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Prueba necesidad de mecanismo con scoring bayesiano",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["necessity_scores"]
+          },
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "extract_causal_hierarchy",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.extract_causal_hierarchy",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Extrae jerarquía causal con scoring de relaciones",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["hierarchy_confidence_scores"]
+          },
+          {
+            "class_name": "TeoriaCambio",
+            "method_name": "construir_grafo_causal",
+            "mother_file": "teoria_cambio.py",
+            "provides": "teoriacambio.construir_grafo_causal",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Construye grafo causal con probabilidades de aristas",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["edge_probability_scores"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "construct_causal_dag",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.construct_causal_dag",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Construye DAG causal con pesos de nodos",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["dag_node_weights"]
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_analyze_causal_dimensions",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor.analyze_causal_dimensions",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Analiza dimensiones causales con scoring multidimensional",
+            "requires": ["PreprocesadoMetadata"],
+            "modifies": ["causal_dimension_scores"]
+          }
+        ],
+        "dependencies": ["PreprocesadoMetadata"],
+        "output_target": "inferred_parameters"
+      },
+
+      "phase_C_litigation": {
+        "description": "Audit layer - validation of causal connections and mechanism tests",
+        "level": "N3",
+        "level_name": "Auditoría y Robustez",
+        "epistemology": "Falsacionismo popperiano",
+        "methods": [
+          {
+            "class_name": "TeoriaCambio",
+            "method_name": "_es_conexion_valida",
+            "mother_file": "teoria_cambio.py",
+            "provides": "teoriacambio.es_conexion_valida",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Valida si conexión causal es lógicamente válida",
+            "requires": ["PreprocesadoMetadata", "inferred_parameters"],
+            "modulates": ["inferred_parameters.confidence"],
+            "veto_conditions": {
+              "invalid_causal_connection": {
+                "trigger": "connection validation returns False",
+                "action": "block_branch",
+                "scope": "invalid_causal_edges",
+                "confidence_multiplier": 0.0
+              },
+              "illogical_hierarchy": {
+                "trigger": "causal categories violate hierarchy rules",
+                "action": "block_branch",
+                "scope": "affected_subgraph",
+                "confidence_multiplier": 0.0
+              }
+            }
+          },
+          {
+            "class_name": "BeachEvidentialTest",
+            "method_name": "classify_test",
+            "mother_file": "derek_beach.py",
+            "provides": "beachevidentialtest.classify_test",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Clasifica tests evidenciales (hoop, smoking gun, doubly decisive, straw-in-the-wind)",
+            "requires": ["PreprocesadoMetadata", "inferred_parameters"],
+            "modulates": ["inferred_parameters.confidence"],
+            "veto_conditions": {
+              "insufficient_evidential_strength": {
+                "trigger": "test type indicates weak evidential value",
+                "action": "reduce_confidence",
+                "scope": "weak_evidence_mechanisms",
+                "confidence_multiplier": 0.5
+              },
+              "contradictory_test_results": {
+                "trigger": "sufficiency and necessity tests contradict",
+                "action": "block_branch",
+                "scope": "contradicting_mechanisms",
+                "confidence_multiplier": 0.0
+              }
+            }
+          }
+        ],
+        "dependencies": ["PreprocesadoMetadata", "inferred_parameters"],
+        "output_target": "validated_constraints"
+      }
+    }
+  },
+
+  "question_context": {
+    "monolith_ref": "Q007",
+    "overrides": null,
+    "failure_contract": {
+      "abort_if": ["missing_required_element", "incomplete_text", "no_causal_structure"],
+      "emit_code": "ABORT-D2-Q2-REQ"
+    }
+  },
+
+  "signal_requirements": {
+    "required_signals": ["PreprocesadoMetadata", "causal_graph"],
+    "optional_signals": ["mechanism_hypotheses", "prior_distributions"]
+  },
+
+  "evidence_assembly": {
+    "engine": "EVIDENCE_NEXUS",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "type_system": {
+      "FACT": {
+        "origin_level": "N1",
+        "fusion_operation": "graph_node_addition",
+        "merge_behavior": "additive",
+        "symbol": "⊕",
+        "description": "Se SUMA al grafo como nodo"
+      },
+      "PARAMETER": {
+        "origin_level": "N2",
+        "fusion_operation": "edge_weight_modification",
+        "merge_behavior": "multiplicative",
+        "symbol": "⊗",
+        "description": "MODIFICA pesos de aristas del grafo"
+      },
+      "CONSTRAINT": {
+        "origin_level": "N3",
+        "fusion_operation": "branch_filtering",
+        "merge_behavior": "gate",
+        "symbol": "⊘",
+        "description": "FILTRA/BLOQUEA ramas si validación falla"
+      },
+      "NARRATIVE": {
+        "origin_level": "N4",
+        "fusion_operation": "synthesis",
+        "merge_behavior": "terminal",
+        "symbol": "⊙",
+        "description": "CONSUME grafo para texto final"
+      }
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_empirical_basis",
+        "rule_type": "empirical_basis",
+        "target": "prior_distribution",
+        "sources": [],
+        "merge_strategy": "direct_signal_consumption",
+        "output_type": "FACT",
+        "note": "Phase A empty - consumes PreprocesadoMetadata directly in Phase B"
+      },
+      {
+        "rule_id": "R2_probabilistic_update",
+        "rule_type": "probabilistic_update",
+        "target": "posterior_belief",
+        "sources": [
+          "bayesianmechanisminference.infer_mechanisms",
+          "bayesianmechanisminference.infer_single_mechanism",
+          "bayesianmechanisminference.infer_chain_capacity_vector",
+          "bayesianmechanisminference.test_sufficiency",
+          "bayesianmechanisminference.test_necessity",
+          "causalextractor.extract_causal_hierarchy",
+          "teoriacambio.construir_grafo_causal",
+          "pdetmunicipalplananalyzer.construct_causal_dag",
+          "industrialpolicyprocessor.analyze_causal_dimensions"
+        ],
+        "input_dependencies": ["PreprocesadoMetadata"],
+        "merge_strategy": "bayesian_update",
+        "operation": "posterior = update_belief(prior, likelihood_from_mechanism_inference)",
+        "output_type": "PARAMETER"
+      },
+      {
+        "rule_id": "R3_robustness_gate",
+        "rule_type": "robustness_gate",
+        "target": "validated_posterior",
+        "sources": [
+          "teoriacambio.es_conexion_valida",
+          "beachevidentialtest.classify_test"
+        ],
+        "input_dependencies": ["posterior_belief"],
+        "merge_strategy": "veto_gate",
+        "gate_logic": {
+          "invalid_causal_connection": {
+            "condition": "es_conexion_valida returns False",
+            "action": "block_branch"
+          },
+          "illogical_hierarchy": {
+            "condition": "causal hierarchy violates rules",
+            "action": "invalidate_subgraph"
+          },
+          "insufficient_evidential_strength": {
+            "condition": "test classified as weak (straw-in-the-wind)",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          "contradictory_test_results": {
+            "condition": "sufficiency and necessity contradict",
+            "action": "block_branch"
+          }
+        },
+        "output_type": "CONSTRAINT"
+      },
+      {
+        "rule_id": "R4_synthesis",
+        "rule_type": "synthesis",
+        "target": "human_answer",
+        "sources": [],
+        "input_dependencies": ["validated_posterior"],
+        "merge_strategy": "carver_doctoral_synthesis",
+        "output_type": "NARRATIVE"
+      }
+    ]
+  },
+
+  "fusion_specification": {
+    "contract_type": "TYPE_B",
+    "primary_strategy": "bayesian_update",
+    "level_strategies": {
+      "N1_fact_fusion": {
+        "strategy": "direct_signal_consumption",
+        "behavior": "pass_through",
+        "note": "No N1 methods - PreprocesadoMetadata consumed directly by N2"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "bayesian_update",
+        "behavior": "multiplicative",
+        "conflict_resolution": "bayesian_combination",
+        "affects": ["mechanism_probabilities", "edge_weights"],
+        "formula": {
+          "description": "Posterior = Prior × Likelihood / Evidence",
+          "operation": "Bayesian belief update from multiple mechanism inference sources"
+        }
+      },
+      "N3_constraint_fusion": {
+        "strategy": "veto_gate",
+        "behavior": "gate",
+        "asymmetry_principle": "audit_dominates",
+        "propagation": {
+          "upstream": "confidence_backpropagation",
+          "downstream": "branch_blocking"
+        }
+      }
+    },
+    "cross_layer_effects": {
+      "N2_modifies_N1_confidence": false,
+      "N3_can_veto_N1_N2": true,
+      "N1_N2_cannot_veto_N3": true,
+      "note": "N2 operates directly on PreprocesadoMetadata"
+    },
+    "fusion_pipeline": {
+      "stage_1_fact_accumulation": {
+        "input": "PreprocesadoMetadata",
+        "operation": "PASS PreprocesadoMetadata to N2",
+        "output": "evidence_graph_v1",
+        "type_consumed": "SIGNAL",
+        "behavior": "pass_through"
+      },
+      "stage_2_parameter_application": {
+        "input": ["PreprocesadoMetadata", "phase_B_computation.outputs"],
+        "operation": "COMPUTE mechanism probabilities via Bayesian inference",
+        "output": "evidence_graph_v2_weighted",
+        "type_consumed": "PARAMETER",
+        "behavior": "multiplicative"
+      },
+      "stage_3_constraint_filtering": {
+        "input": ["evidence_graph_v2_weighted", "phase_C_litigation.outputs"],
+        "operation": "FILTER/BLOCK invalid causal connections",
+        "output": "evidence_graph_v3_validated",
+        "type_consumed": "CONSTRAINT",
+        "behavior": "gate",
+        "blocking_log": "audit_results.blocked_branches"
+      },
+      "stage_4_synthesis": {
+        "input": "evidence_graph_v3_validated",
+        "operation": "GENERATE narrative from validated mechanisms",
+        "output": "human_answer",
+        "type_produced": "NARRATIVE"
+      }
+    }
+  },
+
+  "cross_layer_fusion": {
+    "N1_to_N2": {
+      "relationship": "N2 reads PreprocesadoMetadata directly",
+      "effect": "N2 computes mechanism probabilities FROM raw signals",
+      "data_flow": "forward_propagation",
+      "note": "No N1 intermediary - direct signal consumption"
+    },
+    "N2_to_N1": {
+      "relationship": "Not applicable",
+      "effect": "N2 does not backpropagate to N1 (no N1 layer)",
+      "data_flow": "none"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can INVALIDATE N2 parameters",
+      "effect": "Failed validation nullifies mechanism probabilities",
+      "data_flow": "inference_modulation",
+      "asymmetry": "N2 CANNOT invalidate N3"
+    },
+    "all_to_N4": {
+      "relationship": "N4 consumes validated outputs from N2 and N3",
+      "effect": "Synthesis constructs narrative from validated mechanism inferences",
+      "data_flow": "terminal_aggregation"
+    },
+    "blocking_propagation_rules": {
+      "invalid_causal_connection": {
+        "triggered_by": "TeoriaCambio._es_conexion_valida",
+        "action": "block_branch",
+        "scope": "invalid_causal_edges",
+        "propagation": "downstream_only"
+      },
+      "illogical_hierarchy": {
+        "triggered_by": "TeoriaCambio._es_conexion_valida",
+        "action": "invalidate_subgraph",
+        "scope": "affected_subgraph",
+        "propagation": "both"
+      },
+      "contradictory_tests": {
+        "triggered_by": "BeachEvidentialTest.classify_test",
+        "action": "block_branch",
+        "scope": "contradicting_mechanisms",
+        "propagation": "total"
+      }
+    }
+  },
+
+  "human_answer_structure": {
+    "format": "markdown",
+    "template_mode": "epistemological_narrative",
+    "contract_type": "TYPE_B",
+    "sections": [
+      {
+        "section_id": "S1_verdict",
+        "title": "### Veredicto",
+        "layer": "N4",
+        "data_source": "synthesis_output",
+        "narrative_style": "declarative",
+        "argumentative_role": "SYNTHESIS"
+      },
+      {
+        "section_id": "S2_empirical_base",
+        "title": "### Base Empírica: Mecanismos Inferidos",
+        "layer": "N2",
+        "data_source": "inferred_parameters",
+        "narrative_style": "descriptive",
+        "argumentative_role": "INFERENTIAL_BRIDGE",
+        "note": "No N1 layer - showing N2 inferences as base"
+      },
+      {
+        "section_id": "S3_robustness_audit",
+        "title": "### Análisis de Robustez: Validación Causal",
+        "layer": "N3",
+        "data_source": "audit_results",
+        "narrative_style": "critical",
+        "argumentative_role": "ROBUSTNESS_QUALIFIER",
+        "veto_display": {
+          "if_veto_triggered": "⛔ ALERTA CRÍTICA: {veto_reason}. Conexiones causales INVÁLIDAS.",
+          "if_no_veto": "✅ Mecanismos causales validados."
+        }
+      },
+      {
+        "section_id": "S4_gaps",
+        "title": "### Puntos Ciegos: Mecanismos No Detectados",
+        "layer": "N4-META",
+        "data_source": "gap_analysis",
+        "narrative_style": "diagnostic",
+        "argumentative_role": "META_TRACEABILITY"
+      }
+    ],
+    "argumentative_roles": {
+      "N1_roles": [],
+      "N2_roles": [
+        {
+          "role": "INFERENTIAL_BRIDGE",
+          "description": "Mecanismo causal inferido bayesianamente",
+          "narrative_weight": "high"
+        }
+      ],
+      "N3_roles": [
+        {
+          "role": "ROBUSTNESS_QUALIFIER",
+          "description": "Validación de conexiones causales",
+          "narrative_weight": "critical"
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Detección de contradicciones en tests evidenciales",
+          "narrative_weight": "critical"
+        }
+      ],
+      "N4_roles": [
+        {
+          "role": "META_TRACEABILITY",
+          "description": "Completitud de inferencia mecanística",
+          "narrative_weight": "medium"
+        }
+      ]
+    },
+    "confidence_interpretation": {
+      "critical": {
+        "range": [0, 19],
+        "label": "INVÁLIDO",
+        "description": "Veto activado por conexiones causales inválidas.",
+        "display": "🔴"
+      },
+      "low": {
+        "range": [20, 49],
+        "label": "DÉBIL",
+        "description": "Evidencia insuficiente para mecanismos propuestos.",
+        "display": "🟠"
+      },
+      "medium": {
+        "range": [50, 79],
+        "label": "MODERADO",
+        "description": "Mecanismos plausibles con limitaciones evidenciales.",
+        "display": "🟡"
+      },
+      "high": {
+        "range": [80, 100],
+        "label": "ROBUSTO",
+        "description": "Mecanismos bayesianamente robustos y validados.",
+        "display": "🟢"
+      }
+    }
+  },
+
+  "output_contract": {
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "type": "object",
+      "required": ["base_slot", "question_id", "evidence", "score", "human_answer"],
+      "properties": {
+        "base_slot": {"type": "string", "const": "D2-Q2"},
+        "question_id": {"type": "string"},
+        "dimension_id": {"type": "string"},
+        "policy_area_id": {"type": "string"},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "confidence_label": {"type": "string", "enum": ["INVÁLIDO", "DÉBIL", "MODERADO", "ROBUSTO"]},
+        "evidence": {"type": "object"},
+        "human_answer": {"type": "string"},
+        "epistemological_trace": {
+          "type": "object",
+          "properties": {
+            "n1_facts_count": {"type": "number"},
+            "n2_inferences_count": {"type": "number"},
+            "n3_validations_count": {"type": "number"},
+            "veto_triggered": {"type": "boolean"},
+            "blocked_branches": {"type": "array"}
+          }
+        }
+      }
+    }
+  },
+
+  "validation_rules": {
+    "na_policy": "abort_on_critical",
+    "derivation_source": "expected_elements",
+    "engine": "VALIDATION_ENGINE",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "ValidationEngine",
+    "method_name": "validate"
+  },
+
+  "error_handling": {
+    "on_method_not_found": "raise",
+    "on_method_failure": "propagate_with_trace",
+    "on_assembly_failure": "propagate_with_trace",
+    "failure_contract": {
+      "abort_if": ["missing_required_element", "incomplete_text"],
+      "emit_code": "ABORT-D2-Q2-REQ"
+    }
+  },
+
+  "traceability": {
+    "canonical_sources": {
+      "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json",
+      "method_classification": "method_classification_all_30.json",
+      "epistemological_guide": "OPERACIONALIZACIÓN_CONTRATOS_VERSION_4"
+    },
+    "generation": {
+      "method": "v4_epistemological_generation",
+      "timestamp": "2025-12-22T18:20:00Z",
+      "generator_version": "1.0.0",
+      "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly. BeachEvidentialTest.classify_test treated as N3-AUD despite L3 layer inconsistency in source data."
+    }
+  },
+
+  "compatibility": {
+    "questionnaire_monolith_version": "3.0.0",
+    "version_detection": "runtime",
+    "minimum_requirements": {
+      "signal_registry": "MicroAnsweringSignalPack support",
+      "hydrator": "ContractHydrator v1.0.0",
+      "carver": "DoctoralCarverSynthesizer v3.0.0",
+      "evidence_nexus": "EvidenceNexus v2.0.0"
+    }
+  },
+
+  "calibration": {
+    "status": "runtime",
+    "sources": {
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "fusion_specification": "config/fusion_specification.json"
+    }
+  }
+}
