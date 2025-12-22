@@ -51,7 +51,7 @@
             "class_name": "SemanticAnalyzer",
             "method_name": "_empty_semantic_cube",
             "mother_file": "analyzer_one.py",
-            "provides": "semanticanalyzer_emptysematiccube",
+            "provides": "semanticanalyzer_emptysemanticcube",
             "level": "N1-EMP",
             "output_type": "FACT",
             "fusion_behavior": "additive",
@@ -75,7 +75,7 @@
             "fusion_behavior": "weighted_combination",
             "description": "Match programs to semantic nodes",
             "requires": [
-              "semanticanalyzer_emptysematiccube"
+              "semanticanalyzer_emptysemanticcube"
             ]
           },
           {
@@ -101,7 +101,7 @@
             "fusion_behavior": "weighted_combination",
             "description": "Consolidate identified entities semantically",
             "requires": [
-              "semanticanalyzer_emptysematiccube"
+              "semanticanalyzer_emptysemanticcube"
             ]
           },
           {
@@ -140,7 +140,7 @@
             "fusion_behavior": "weighted_combination",
             "description": "Process document to generate semantic embeddings",
             "requires": [
-              "semanticanalyzer_emptysematiccube"
+              "semanticanalyzer_emptysemanticcube"
             ]
           },
           {
@@ -179,7 +179,7 @@
             "fusion_behavior": "weighted_combination",
             "description": "Classify policy domain semantically",
             "requires": [
-              "semanticanalyzer_emptysematiccube"
+              "semanticanalyzer_emptysemanticcube"
             ]
           },
           {
@@ -353,7 +353,7 @@
         "rule_id": "R1_fact_aggregation",
         "description": "Union all N1 empirical facts without transformation",
         "sources": [
-          "semanticanalyzer_emptysematiccube"
+          "semanticanalyzer_emptysemanticcube"
         ],
         "operation": "set_union",
         "output_label": "fact_base"
