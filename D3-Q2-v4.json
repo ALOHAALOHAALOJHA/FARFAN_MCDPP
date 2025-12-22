@@ -85,7 +85,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Calculate Bayesian posterior probabilities",
-            "requires": ["pdetmunicipalplananalyzer_getspanishstopwords"]
+            "requires": [
+              "pdetmunicipalplananalyzer_getspanishstopwords"
+            ]
           },
           {
             "class_name": "AdvancedDAGValidator",
@@ -96,7 +98,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Calculate confidence intervals for estimates",
-            "requires": ["advanceddagvalidator_calculatebayesianposterior"]
+            "requires": [
+              "advanceddagvalidator_calculatebayesianposterior"
+            ]
           },
           {
             "class_name": "AdaptivePriorCalculator",
@@ -107,7 +111,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Adjust domain-specific weight parameters",
-            "requires": ["advanceddagvalidator_calculatebayesianposterior"]
+            "requires": [
+              "advanceddagvalidator_calculatebayesianposterior"
+            ]
           },
           {
             "class_name": "BayesianMechanismInference",
@@ -118,7 +124,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Log refactored Bayesian components",
-            "requires": ["adaptivepriorcalculator_adjustdomainweights"]
+            "requires": [
+              "adaptivepriorcalculator_adjustdomainweights"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -129,7 +137,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Analyze financial feasibility of municipal plan",
-            "requires": ["pdetmunicipalplananalyzer_getspanishstopwords"]
+            "requires": [
+              "pdetmunicipalplananalyzer_getspanishstopwords"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -140,7 +150,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Score financial indicators quantitatively",
-            "requires": ["pdetmunicipalplananalyzer_analyzefinancialfeasibility"]
+            "requires": [
+              "pdetmunicipalplananalyzer_analyzefinancialfeasibility"
+            ]
           },
           {
             "class_name": "FinancialAuditor",
@@ -151,7 +163,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Calculate financial sufficiency metric",
-            "requires": ["pdetmunicipalplananalyzer_scoreindicators"]
+            "requires": [
+              "pdetmunicipalplananalyzer_scoreindicators"
+            ]
           },
           {
             "class_name": "BayesianMechanismInference",
@@ -162,7 +176,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Test Bayesian sufficiency conditions",
-            "requires": ["financialauditor_calculatesufficiency"]
+            "requires": [
+              "financialauditor_calculatesufficiency"
+            ]
           },
           {
             "class_name": "BayesianMechanismInference",
@@ -173,7 +189,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Test Bayesian necessity conditions",
-            "requires": ["bayesianmechanisminference_testsufficiency"]
+            "requires": [
+              "bayesianmechanisminference_testsufficiency"
+            ]
           },
           {
             "class_name": "AdaptivePriorCalculator",
@@ -184,7 +202,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Calculate adaptive likelihood ratios",
-            "requires": ["bayesianmechanisminference_testnecessity"]
+            "requires": [
+              "bayesianmechanisminference_testnecessity"
+            ]
           },
           {
             "class_name": "IndustrialPolicyProcessor",
@@ -195,7 +215,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Calculate quality score for policy elements",
-            "requires": ["industrialpolicyprocessor_emptyresult"]
+            "requires": [
+              "industrialpolicyprocessor_emptyresult"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -206,7 +228,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Deduplicate financial tables",
-            "requires": ["pdetmunicipalplananalyzer_analyzefinancialfeasibility"]
+            "requires": [
+              "pdetmunicipalplananalyzer_analyzefinancialfeasibility"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -217,7 +241,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Generate financial recommendations based on analysis",
-            "requires": ["pdetmunicipalplananalyzer_scoreindicators"]
+            "requires": [
+              "pdetmunicipalplananalyzer_scoreindicators"
+            ]
           },
           {
             "class_name": "IndustrialPolicyProcessor",
@@ -228,7 +254,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Compile pattern matching registry",
-            "requires": ["industrialpolicyprocessor_emptyresult"]
+            "requires": [
+              "industrialpolicyprocessor_emptyresult"
+            ]
           },
           {
             "class_name": "IndustrialPolicyProcessor",
@@ -239,7 +267,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Build point-specific pattern structures",
-            "requires": ["industrialpolicyprocessor_compilepatternregistry"]
+            "requires": [
+              "industrialpolicyprocessor_compilepatternregistry"
+            ]
           }
         ]
       },
@@ -289,8 +319,13 @@
   },
   "signal_requirements": {
     "input_contract": {
-      "requires": ["PreprocesadoMetadata"],
-      "optional": ["ExternalFinancialData", "BudgetTables"],
+      "requires": [
+        "PreprocesadoMetadata"
+      ],
+      "optional": [
+        "ExternalFinancialData",
+        "BudgetTables"
+      ],
       "format": "structured_json"
     },
     "preprocessing_dependencies": [
@@ -343,7 +378,9 @@
       {
         "rule_id": "R3_constraint_application",
         "description": "Apply N3 sustainability audit as conjunctive filter with veto power",
-        "sources": ["pdetmunicipalplananalyzer_assessfinancialsustainability"],
+        "sources": [
+          "pdetmunicipalplananalyzer_assessfinancialsustainability"
+        ],
         "operation": "conjunctive_filter",
         "blocks_if": "veto_condition_triggered",
         "output_label": "audited_findings"
@@ -351,7 +388,11 @@
       {
         "rule_id": "R4_final_synthesis",
         "description": "Synthesize audited parameter space into human answer",
-        "sources": ["fact_base", "parameter_space", "audited_findings"],
+        "sources": [
+          "fact_base",
+          "parameter_space",
+          "audited_findings"
+        ],
         "operation": "cross_layer_fusion",
         "respects_veto": true,
         "output_label": "final_answer"
@@ -384,7 +425,11 @@
     }
   },
   "cross_layer_fusion": {
-    "fusion_order": ["N1", "N2", "N3"],
+    "fusion_order": [
+      "N1",
+      "N2",
+      "N3"
+    ],
     "asymmetry": {
       "N3_can_nullify_N1_N2": true,
       "N1_N2_cannot_override_N3": true,

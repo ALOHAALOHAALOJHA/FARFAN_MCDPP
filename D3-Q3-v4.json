@@ -74,7 +74,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Match programs to semantic nodes",
-            "requires": ["semanticanalyzer_emptysematiccube"]
+            "requires": [
+              "semanticanalyzer_emptysematiccube"
+            ]
           },
           {
             "class_name": "FinancialAuditor",
@@ -85,7 +87,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Match goals to budget allocations semantically",
-            "requires": ["financialauditor_matchprogramtonode"]
+            "requires": [
+              "financialauditor_matchprogramtonode"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -96,7 +100,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Consolidate identified entities semantically",
-            "requires": ["semanticanalyzer_emptysematiccube"]
+            "requires": [
+              "semanticanalyzer_emptysematiccube"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -107,7 +113,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Identify entities responsible for policy implementation",
-            "requires": ["pdetmunicipalplananalyzer_consolidateentities"]
+            "requires": [
+              "pdetmunicipalplananalyzer_consolidateentities"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -118,7 +126,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Score clarity of responsibility assignments",
-            "requires": ["pdetmunicipalplananalyzer_identifyresponsibleentities"]
+            "requires": [
+              "pdetmunicipalplananalyzer_identifyresponsibleentities"
+            ]
           },
           {
             "class_name": "PolicyAnalysisEmbedder",
@@ -129,7 +139,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Process document to generate semantic embeddings",
-            "requires": ["semanticanalyzer_emptysematiccube"]
+            "requires": [
+              "semanticanalyzer_emptysematiccube"
+            ]
           },
           {
             "class_name": "PolicyAnalysisEmbedder",
@@ -140,7 +152,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Perform semantic search on embedded documents",
-            "requires": ["policyanalysisembedder_processdocument"]
+            "requires": [
+              "policyanalysisembedder_processdocument"
+            ]
           },
           {
             "class_name": "PolicyAnalysisEmbedder",
@@ -151,7 +165,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Apply maximal marginal relevance to semantic results",
-            "requires": ["policyanalysisembedder_semanticsearch"]
+            "requires": [
+              "policyanalysisembedder_semanticsearch"
+            ]
           },
           {
             "class_name": "SemanticAnalyzer",
@@ -162,7 +178,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Classify policy domain semantically",
-            "requires": ["semanticanalyzer_emptysematiccube"]
+            "requires": [
+              "semanticanalyzer_emptysematiccube"
+            ]
           },
           {
             "class_name": "SemanticAnalyzer",
@@ -173,7 +191,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Classify cross-cutting thematic elements",
-            "requires": ["semanticanalyzer_classifypolicydomain"]
+            "requires": [
+              "semanticanalyzer_classifypolicydomain"
+            ]
           },
           {
             "class_name": "SemanticAnalyzer",
@@ -184,7 +204,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Classify value chain linkages semantically",
-            "requires": ["semanticanalyzer_classifycrosscuttingthemes"]
+            "requires": [
+              "semanticanalyzer_classifycrosscuttingthemes"
+            ]
           },
           {
             "class_name": "SemanticAnalyzer",
@@ -195,7 +217,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Process semantic text segments",
-            "requires": ["semanticanalyzer_classifyvaluechainlink"]
+            "requires": [
+              "semanticanalyzer_classifyvaluechainlink"
+            ]
           },
           {
             "class_name": "SemanticAnalyzer",
@@ -206,7 +230,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Calculate semantic complexity metrics",
-            "requires": ["semanticanalyzer_processsegment"]
+            "requires": [
+              "semanticanalyzer_processsegment"
+            ]
           },
           {
             "class_name": "IndustrialPolicyProcessor",
@@ -217,7 +243,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Compute confidence scores for semantic evidence",
-            "requires": ["policyanalysisembedder_applymmr"]
+            "requires": [
+              "policyanalysisembedder_applymmr"
+            ]
           },
           {
             "class_name": "AdaptivePriorCalculator",
@@ -228,7 +256,9 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Generate traceability records for semantic analysis",
-            "requires": ["semanticanalyzer_calculatesemanticcomplexity"]
+            "requires": [
+              "semanticanalyzer_calculatesemanticcomplexity"
+            ]
           }
         ]
       },
@@ -246,7 +276,9 @@
             "output_type": "CONSTRAINT",
             "fusion_behavior": "veto_gate",
             "description": "Audit extraction from responsibility tables - can veto if incomplete",
-            "requires": ["pdetmunicipalplananalyzer_scoreresponsibilityclarity"],
+            "requires": [
+              "pdetmunicipalplananalyzer_scoreresponsibilityclarity"
+            ],
             "veto_conditions": {
               "trigger": "responsibility_extraction_incomplete",
               "threshold": 0.7,
@@ -295,8 +327,13 @@
   },
   "signal_requirements": {
     "input_contract": {
-      "requires": ["PreprocesadoMetadata"],
-      "optional": ["SemanticEmbeddings", "ResponsibilityTables"],
+      "requires": [
+        "PreprocesadoMetadata"
+      ],
+      "optional": [
+        "SemanticEmbeddings",
+        "ResponsibilityTables"
+      ],
       "format": "structured_json"
     },
     "preprocessing_dependencies": [
@@ -315,7 +352,9 @@
       {
         "rule_id": "R1_fact_aggregation",
         "description": "Union all N1 empirical facts without transformation",
-        "sources": ["semanticanalyzer_emptysematiccube"],
+        "sources": [
+          "semanticanalyzer_emptysematiccube"
+        ],
         "operation": "set_union",
         "output_label": "fact_base"
       },
@@ -357,7 +396,11 @@
       {
         "rule_id": "R4_final_synthesis",
         "description": "Synthesize audited parameter space into human answer",
-        "sources": ["fact_base", "parameter_space", "audited_findings"],
+        "sources": [
+          "fact_base",
+          "parameter_space",
+          "audited_findings"
+        ],
         "operation": "cross_layer_fusion",
         "respects_veto": true,
         "output_label": "final_answer"
@@ -390,7 +433,11 @@
     }
   },
   "cross_layer_fusion": {
-    "fusion_order": ["N1", "N2", "N3"],
+    "fusion_order": [
+      "N1",
+      "N2",
+      "N3"
+    ],
     "asymmetry": {
       "N3_can_nullify_N1_N2": true,
       "N1_N2_cannot_override_N3": true,
