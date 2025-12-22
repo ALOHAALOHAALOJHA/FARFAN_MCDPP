@@ -1,0 +1,603 @@
+{
+  "identity": {
+    "base_slot": "D1-Q4",
+    "representative_question_id": "Q004",
+    "dimension_id": "DIM01",
+    "policy_area_ids_served": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+    "contracts_served": ["Q004", "Q034", "Q064", "Q094", "Q124", "Q154", "Q184", "Q214", "Q244", "Q274"],
+    "contract_type": "TYPE_D",
+    "contract_type_name": "Financiero",
+    "contract_type_focus": "Suficiencia presupuestal, coherencia costo-meta",
+    "contract_version": "4.0.0-epistemological",
+    "created_at": "2025-12-22T00:00:00Z",
+    "specification_source": "guia_diligenciamiento_contratos_v4.md"
+  },
+
+  "executor_binding": {
+    "executor_class": "D1_Q4_Executor",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors"
+  },
+
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_D",
+    "method_count": 11,
+    "execution_phases": {
+      "phase_A_construction": {
+        "description": "Empirical observation layer - entity extraction from documents",
+        "level": "N1",
+        "level_name": "Base Empírica",
+        "epistemology": "Empirismo positivista",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_entities_syntax",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.extract_entities_syntax",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae entidades responsables usando análisis sintáctico del texto",
+            "requires": []
+          },
+          {
+            "class_name": "MechanismPartExtractor",
+            "method_name": "_normalize_entity",
+            "mother_file": "derek_beach.py",
+            "provides": "mechanismpartextractor.normalize_entity",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Normaliza nombres de entidades a formato estándar",
+            "requires": []
+          }
+        ],
+        "dependencies": [],
+        "output_target": "raw_facts"
+      },
+
+      "phase_B_computation": {
+        "description": "Inferential analysis layer - entity classification and scoring",
+        "level": "N2",
+        "level_name": "Procesamiento Inferencial",
+        "epistemology": "Bayesianismo subjetivista",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "identify_responsible_entities",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.identify_responsible_entities",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Identifica y clasifica entidades responsables con scoring",
+            "requires": ["raw_facts"],
+            "modifies": ["entity_confidence_scores"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_entities_ner",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.extract_entities_ner",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Extrae entidades usando NER con scoring de confianza",
+            "requires": ["raw_facts"],
+            "modifies": ["ner_confidence_scores"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_classify_entity_type",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.classify_entity_type",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Clasifica tipo de entidad (pública, privada, mixta)",
+            "requires": ["raw_facts"],
+            "modifies": ["entity_type_classifications"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_score_entity_specificity",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.score_entity_specificity",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Calcula score de especificidad de entidades identificadas",
+            "requires": ["raw_facts"],
+            "modifies": ["specificity_scores"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_consolidate_entities",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.consolidate_entities",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Consolida entidades duplicadas y computa scores finales",
+            "requires": ["raw_facts"],
+            "modifies": ["consolidated_entity_scores"]
+          },
+          {
+            "class_name": "MechanismPartExtractor",
+            "method_name": "extract_entity_activity",
+            "mother_file": "derek_beach.py",
+            "provides": "mechanismpartextractor.extract_entity_activity",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Extrae pares entidad-actividad con scoring",
+            "requires": ["raw_facts"],
+            "modifies": ["entity_activity_scores"]
+          },
+          {
+            "class_name": "MechanismPartExtractor",
+            "method_name": "_calculate_ea_confidence",
+            "mother_file": "derek_beach.py",
+            "provides": "mechanismpartextractor.calculate_ea_confidence",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Calcula confianza de pares entidad-actividad",
+            "requires": ["raw_facts"],
+            "modifies": ["ea_confidence_scores"]
+          },
+          {
+            "class_name": "OperationalizationAuditor",
+            "method_name": "audit_evidence_traceability",
+            "mother_file": "derek_beach.py",
+            "provides": "operationalizationauditor.audit_evidence_traceability",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Audita trazabilidad de evidencia con scoring",
+            "requires": ["raw_facts"],
+            "modifies": ["traceability_scores"]
+          }
+        ],
+        "dependencies": ["raw_facts"],
+        "output_target": "inferred_parameters"
+      },
+
+      "phase_C_litigation": {
+        "description": "Audit layer - validation of entity-activity pairs",
+        "level": "N3",
+        "level_name": "Auditoría y Robustez",
+        "epistemology": "Falsacionismo popperiano",
+        "methods": [
+          {
+            "class_name": "MechanismPartExtractor",
+            "method_name": "_validate_entity_activity",
+            "mother_file": "derek_beach.py",
+            "provides": "mechanismpartextractor.validate_entity_activity",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Valida coherencia de pares entidad-actividad",
+            "requires": ["raw_facts", "inferred_parameters"],
+            "modulates": ["raw_facts.confidence", "inferred_parameters.confidence"],
+            "veto_conditions": {
+              "entity_activity_mismatch": {
+                "trigger": "entity type incompatible with assigned activity",
+                "action": "block_branch",
+                "scope": "affected_entity_activity_pairs",
+                "confidence_multiplier": 0.0
+              },
+              "unspecified_entity": {
+                "trigger": "entity lacks sufficient specificity for accountability",
+                "action": "reduce_confidence",
+                "scope": "low_specificity_entities",
+                "confidence_multiplier": 0.5
+              }
+            }
+          }
+        ],
+        "dependencies": ["raw_facts", "inferred_parameters"],
+        "output_target": "validated_constraints"
+      }
+    }
+  },
+
+  "question_context": {
+    "monolith_ref": "Q004",
+    "overrides": null,
+    "failure_contract": {
+      "abort_if": ["missing_required_element", "incomplete_text", "no_entities_identified"],
+      "emit_code": "ABORT-D1-Q4-REQ"
+    }
+  },
+
+  "signal_requirements": {
+    "required_signals": ["PreprocesadoMetadata", "text_chunks"],
+    "optional_signals": ["extracted_tables", "entity_mentions"]
+  },
+
+  "evidence_assembly": {
+    "engine": "EVIDENCE_NEXUS",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "type_system": {
+      "FACT": {
+        "origin_level": "N1",
+        "fusion_operation": "graph_node_addition",
+        "merge_behavior": "additive",
+        "symbol": "⊕",
+        "description": "Se SUMA al grafo como nodo"
+      },
+      "PARAMETER": {
+        "origin_level": "N2",
+        "fusion_operation": "edge_weight_modification",
+        "merge_behavior": "multiplicative",
+        "symbol": "⊗",
+        "description": "MODIFICA pesos de aristas del grafo"
+      },
+      "CONSTRAINT": {
+        "origin_level": "N3",
+        "fusion_operation": "branch_filtering",
+        "merge_behavior": "gate",
+        "symbol": "⊘",
+        "description": "FILTRA/BLOQUEA ramas si validación falla"
+      },
+      "NARRATIVE": {
+        "origin_level": "N4",
+        "fusion_operation": "synthesis",
+        "merge_behavior": "terminal",
+        "symbol": "⊙",
+        "description": "CONSUME grafo para texto final"
+      }
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_entity_extraction",
+        "rule_type": "empirical_basis",
+        "target": "extracted_entities",
+        "sources": [
+          "pdetmunicipalplananalyzer.extract_entities_syntax",
+          "mechanismpartextractor.normalize_entity"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT"
+      },
+      {
+        "rule_id": "R2_entity_classification",
+        "rule_type": "computation",
+        "target": "classified_entities",
+        "sources": [
+          "pdetmunicipalplananalyzer.identify_responsible_entities",
+          "pdetmunicipalplananalyzer.extract_entities_ner",
+          "pdetmunicipalplananalyzer.classify_entity_type",
+          "pdetmunicipalplananalyzer.score_entity_specificity",
+          "pdetmunicipalplananalyzer.consolidate_entities",
+          "mechanismpartextractor.extract_entity_activity",
+          "mechanismpartextractor.calculate_ea_confidence",
+          "operationalizationauditor.audit_evidence_traceability"
+        ],
+        "input_dependencies": ["extracted_entities"],
+        "merge_strategy": "weighted_mean",
+        "output_type": "PARAMETER"
+      },
+      {
+        "rule_id": "R3_entity_validation",
+        "rule_type": "financial_coherence_audit",
+        "target": "validated_entities",
+        "sources": [
+          "mechanismpartextractor.validate_entity_activity"
+        ],
+        "input_dependencies": ["extracted_entities", "classified_entities"],
+        "merge_strategy": "veto_gate",
+        "gate_logic": {
+          "entity_activity_mismatch": {
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          "unspecified_entity": {
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          }
+        },
+        "output_type": "CONSTRAINT"
+      },
+      {
+        "rule_id": "R4_synthesis",
+        "rule_type": "synthesis",
+        "target": "human_answer",
+        "sources": [],
+        "input_dependencies": ["validated_entities"],
+        "merge_strategy": "carver_doctoral_synthesis",
+        "output_type": "NARRATIVE"
+      }
+    ]
+  },
+
+  "fusion_specification": {
+    "contract_type": "TYPE_D",
+    "primary_strategy": "financial_coherence_audit",
+    "level_strategies": {
+      "N1_fact_fusion": {
+        "strategy": "concat",
+        "behavior": "additive",
+        "conflict_resolution": "corroborative_stacking",
+        "formula": "if same entity detected by multiple methods → confidence = 1 - ∏(1 - conf_i)"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "weighted_mean",
+        "behavior": "multiplicative",
+        "conflict_resolution": "weighted_voting",
+        "affects": ["N1_facts.confidence", "N1_facts.edge_weights"]
+      },
+      "N3_constraint_fusion": {
+        "strategy": "veto_gate",
+        "behavior": "gate",
+        "asymmetry_principle": "audit_dominates",
+        "propagation": {
+          "upstream": "confidence_backpropagation",
+          "downstream": "branch_blocking"
+        }
+      }
+    },
+    "cross_layer_effects": {
+      "N2_modifies_N1_confidence": true,
+      "N3_can_veto_N1_N2": true,
+      "N1_N2_cannot_veto_N3": true
+    },
+    "fusion_pipeline": {
+      "stage_1_fact_accumulation": {
+        "input": "phase_A_construction.outputs",
+        "operation": "BUILD evidence graph from extracted entities",
+        "output": "evidence_graph_v1",
+        "type_consumed": "FACT",
+        "behavior": "additive"
+      },
+      "stage_2_parameter_application": {
+        "input": ["evidence_graph_v1", "phase_B_computation.outputs"],
+        "operation": "MODIFY entity confidence based on classification scores",
+        "output": "evidence_graph_v2_weighted",
+        "type_consumed": "PARAMETER",
+        "behavior": "multiplicative"
+      },
+      "stage_3_constraint_filtering": {
+        "input": ["evidence_graph_v2_weighted", "phase_C_litigation.outputs"],
+        "operation": "FILTER/BLOCK entity-activity pairs that fail validation",
+        "output": "evidence_graph_v3_validated",
+        "type_consumed": "CONSTRAINT",
+        "behavior": "gate",
+        "blocking_log": "audit_results.blocked_branches"
+      },
+      "stage_4_synthesis": {
+        "input": "evidence_graph_v3_validated",
+        "operation": "GENERATE narrative from validated entities",
+        "output": "human_answer",
+        "type_produced": "NARRATIVE"
+      }
+    }
+  },
+
+  "cross_layer_fusion": {
+    "N1_to_N2": {
+      "relationship": "N2 reads N1 facts",
+      "effect": "N2 computes classification scores FROM N1 extracted entities",
+      "data_flow": "forward_propagation"
+    },
+    "N2_to_N1": {
+      "relationship": "N2 modifies N1 confidence",
+      "effect": "Classification scores adjust entity confidence",
+      "data_flow": "confidence_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK N1 facts",
+      "effect": "Failed validation removes entities from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can INVALIDATE N2 parameters",
+      "effect": "Failed constraints nullify classification scores",
+      "data_flow": "inference_modulation",
+      "asymmetry": "N2 CANNOT invalidate N3"
+    },
+    "all_to_N4": {
+      "relationship": "N4 consumes validated outputs from all layers",
+      "effect": "Synthesis constructs narrative from filtered graph",
+      "data_flow": "terminal_aggregation"
+    },
+    "blocking_propagation_rules": {
+      "entity_activity_mismatch": {
+        "triggered_by": "MechanismPartExtractor._validate_entity_activity",
+        "action": "block_branch",
+        "scope": "affected_entity_activity_pairs",
+        "propagation": "downstream_only"
+      },
+      "unspecified_entity": {
+        "triggered_by": "MechanismPartExtractor._validate_entity_activity",
+        "action": "flag_and_reduce",
+        "scope": "low_specificity_entities",
+        "propagation": "downstream_only",
+        "confidence_multiplier": 0.5
+      }
+    }
+  },
+
+  "human_answer_structure": {
+    "format": "markdown",
+    "template_mode": "epistemological_narrative",
+    "contract_type": "TYPE_D",
+    "sections": [
+      {
+        "section_id": "S1_verdict",
+        "title": "### Veredicto",
+        "layer": "N4",
+        "data_source": "synthesis_output",
+        "narrative_style": "declarative",
+        "argumentative_role": "SYNTHESIS"
+      },
+      {
+        "section_id": "S2_empirical_base",
+        "title": "### Base Empírica: Entidades Identificadas",
+        "layer": "N1",
+        "data_source": "validated_facts",
+        "narrative_style": "descriptive",
+        "argumentative_role": "EMPIRICAL_BASIS"
+      },
+      {
+        "section_id": "S3_robustness_audit",
+        "title": "### Análisis de Robustez: Validación de Responsabilidades",
+        "layer": "N3",
+        "data_source": "audit_results",
+        "narrative_style": "critical",
+        "argumentative_role": "ROBUSTNESS_QUALIFIER",
+        "veto_display": {
+          "if_veto_triggered": "⛔ ALERTA: {veto_reason}. Las asignaciones de responsabilidad son INVÁLIDAS.",
+          "if_no_veto": "✅ Todas las validaciones pasaron."
+        }
+      },
+      {
+        "section_id": "S4_gaps",
+        "title": "### Puntos Ciegos: Entidades Faltantes",
+        "layer": "N4-META",
+        "data_source": "gap_analysis",
+        "narrative_style": "diagnostic",
+        "argumentative_role": "META_TRACEABILITY"
+      }
+    ],
+    "argumentative_roles": {
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Entidad responsable identificada en documento",
+          "narrative_weight": "high"
+        }
+      ],
+      "N2_roles": [
+        {
+          "role": "INFERENTIAL_BRIDGE",
+          "description": "Clasificación y scoring de entidades",
+          "narrative_weight": "medium"
+        }
+      ],
+      "N3_roles": [
+        {
+          "role": "ROBUSTNESS_QUALIFIER",
+          "description": "Validación de coherencia entidad-actividad",
+          "narrative_weight": "critical"
+        }
+      ],
+      "N4_roles": [
+        {
+          "role": "META_TRACEABILITY",
+          "description": "Completitud de identificación de responsables",
+          "narrative_weight": "medium"
+        }
+      ]
+    },
+    "confidence_interpretation": {
+      "critical": {
+        "range": [0, 19],
+        "label": "INVÁLIDO",
+        "description": "Veto activado por N3. Asignaciones de responsabilidad técnicamente inválidas.",
+        "display": "🔴"
+      },
+      "low": {
+        "range": [20, 49],
+        "label": "DÉBIL",
+        "description": "Entidades insuficientemente especificadas o coherencia baja.",
+        "display": "🟠"
+      },
+      "medium": {
+        "range": [50, 79],
+        "label": "MODERADO",
+        "description": "Entidades identificadas con limitaciones de especificidad.",
+        "display": "🟡"
+      },
+      "high": {
+        "range": [80, 100],
+        "label": "ROBUSTO",
+        "description": "Entidades claramente identificadas y validadas.",
+        "display": "🟢"
+      }
+    }
+  },
+
+  "output_contract": {
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "type": "object",
+      "required": ["base_slot", "question_id", "evidence", "score", "human_answer"],
+      "properties": {
+        "base_slot": {"type": "string", "const": "D1-Q4"},
+        "question_id": {"type": "string"},
+        "dimension_id": {"type": "string"},
+        "policy_area_id": {"type": "string"},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "confidence_label": {"type": "string", "enum": ["INVÁLIDO", "DÉBIL", "MODERADO", "ROBUSTO"]},
+        "evidence": {"type": "object"},
+        "human_answer": {"type": "string"},
+        "epistemological_trace": {
+          "type": "object",
+          "properties": {
+            "n1_facts_count": {"type": "number"},
+            "n2_inferences_count": {"type": "number"},
+            "n3_validations_count": {"type": "number"},
+            "veto_triggered": {"type": "boolean"},
+            "blocked_branches": {"type": "array"}
+          }
+        }
+      }
+    }
+  },
+
+  "validation_rules": {
+    "na_policy": "abort_on_critical",
+    "derivation_source": "expected_elements",
+    "engine": "VALIDATION_ENGINE",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "ValidationEngine",
+    "method_name": "validate"
+  },
+
+  "error_handling": {
+    "on_method_not_found": "raise",
+    "on_method_failure": "propagate_with_trace",
+    "on_assembly_failure": "propagate_with_trace",
+    "failure_contract": {
+      "abort_if": ["missing_required_element", "incomplete_text"],
+      "emit_code": "ABORT-D1-Q4-REQ"
+    }
+  },
+
+  "traceability": {
+    "canonical_sources": {
+      "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json",
+      "method_classification": "method_classification_all_30.json",
+      "epistemological_guide": "OPERACIONALIZACIÓN_CONTRATOS_VERSION_4"
+    },
+    "generation": {
+      "method": "v4_epistemological_generation",
+      "timestamp": "2025-12-22T18:20:00Z",
+      "generator_version": "1.0.0"
+    }
+  },
+
+  "compatibility": {
+    "questionnaire_monolith_version": "3.0.0",
+    "version_detection": "runtime",
+    "minimum_requirements": {
+      "signal_registry": "MicroAnsweringSignalPack support",
+      "hydrator": "ContractHydrator v1.0.0",
+      "carver": "DoctoralCarverSynthesizer v3.0.0",
+      "evidence_nexus": "EvidenceNexus v2.0.0"
+    }
+  },
+
+  "calibration": {
+    "status": "runtime",
+    "sources": {
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "fusion_specification": "config/fusion_specification.json"
+    }
+  }
+}
