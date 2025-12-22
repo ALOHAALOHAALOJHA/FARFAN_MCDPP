@@ -79,7 +79,7 @@ AXIOMA: El nombre de cualquier artefacto debe comunicar CLARAMENTE:
 ```
 
 **Ejemplos de cumplimiento:**
-- ✅ `phase2_60.02_arg_router.py` → Fase 2, etapa 60, orden 02, enruta argumentos
+- ✅ `phase2_60_02_arg_router.py` → Fase 2, etapa 60, orden 02, enruta argumentos
 - ✅ `Q005_contract_validation_report.json` → Reporte de validación del contrato Q005
 - ✅ `AUDIT_EXECUTOR_CONTRACTS_V3_Q001_Q020_EXECUTIVE_SUMMARY.md` → Resumen ejecutivo de auditoría de contratos Q001-Q020 versión 3
 
@@ -133,7 +133,7 @@ Todos los artefactos nuevos deben:
 
 | Prefijo | Alcance | Formato | Ejemplo |
 |---------|---------|---------|---------|
-| `phase[0-9]_` | Código de fases | `phase{N}_*` | `phase2_60.02_arg_router.py` |
+| `phase[0-9]_` | Código de fases | `phase{N}_*` | `phase2_60_02_arg_router.py` |
 | `Q[0-9]{3}_` | Contratos/preguntas | `Q{NNN}_*` | `Q005_executor_contract.json` |
 | `FPN-` | Documentos de política | `FPN-{SCOPE}-{NNN}` | `FPN-GLOBAL-001.md` |
 | `AUDIT_` | Reportes de auditoría | `AUDIT_{TOPIC}_*` | `AUDIT_EXECUTOR_METHODS.md` |
@@ -178,7 +178,7 @@ Cada fase tiene su propia **taxonomía de etapas temporales** que reflejan su fl
 
 **Formato Canónico Universal:**
 ```
-phase{N}_{ETAPA}.{ORDEN}_{nombre_descriptivo}.py
+phase{N}_{ETAPA}_{ORDEN}_{nombre_descriptivo}.py
 ```
 
 **Componentes:**
@@ -190,7 +190,7 @@ phase{N}_{ETAPA}.{ORDEN}_{nombre_descriptivo}.py
 **Restricciones Técnicas (Universal):**
 - RT-001: El prefijo `phase{N}_` es OBLIGATORIO e INMUTABLE
 - RT-002: ETAPA y ORDEN deben ser integers de EXACTAMENTE 2 DÍGITOS (con leading zero)
-- RT-003: El separador entre ETAPA y ORDEN es PUNTO (.), no guión ni underscore
+- RT-003: El separador entre ETAPA y ORDEN es UNDERSCORE (_), no punto ni guión
 - RT-004: El nombre_descriptivo debe usar snake_case estricto (minúsculas, underscores, sin números al inicio)
 - RT-005: La longitud total del nombre de archivo no debe exceder 64 caracteres (excluyendo extensión)
 - RT-006: Caracteres permitidos en nombre_descriptivo: [a-z0-9_], sin caracteres especiales, espacios ni Unicode
@@ -199,7 +199,7 @@ phase{N}_{ETAPA}.{ORDEN}_{nombre_descriptivo}.py
 ```python
 PHASE_MODULE_PATTERN = re.compile(
     r'^phase(?P<fase>[0-9])_'
-    r'(?P<etapa>\d{2})\.(?P<orden>\d{2})_'
+    r'(?P<etapa>\d{2})_(?P<orden>\d{2})_'
     r'(?P<nombre>[a-z][a-z0-9_]+)\.py$'
 )
 ```
@@ -224,9 +224,9 @@ Cada fase define su propio mapa de etapas temporales. A continuación, las taxon
 
 **Ejemplo Phase 0:**
 ```python
-# phase0_10.00_contract_schema_validator.py
-# phase0_10.01_method_signature_validator.py
-# phase0_30.00_orchestrator_wiring_checker.py
+# phase0_10_00_contract_schema_validator.py
+# phase0_10_01_method_signature_validator.py
+# phase0_30_00_orchestrator_wiring_checker.py
 ```
 
 ##### **PHASE 1: Ingestion y Parsing**
@@ -269,10 +269,10 @@ Cada fase define su propio mapa de etapas temporales. A continuación, las taxon
 
 **Ejemplo Phase 2:**
 ```python
-# phase2_10.00_factory.py
-# phase2_40.03_irrigation_synchronizer.py
-# phase2_60.02_arg_router.py
-# phase2_80.00_evidence_nexus.py
+# phase2_10_00_factory.py
+# phase2_40_03_irrigation_synchronizer.py
+# phase2_60_02_arg_router.py
+# phase2_80_00_evidence_nexus.py
 ```
 
 ##### **PHASE 3: Semantic Analysis**

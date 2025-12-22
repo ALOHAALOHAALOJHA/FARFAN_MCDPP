@@ -1981,9 +1981,27 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type",
+            "produces_elements": [
+              "mecanismo_causal_completo"
+            ],
+            "technical_approach": {
+              "paradigm": "Bayesian classification of mechanism types",
+              "steps": [
+                "Classify mechanism as: direct, mediated, moderating, or confounded",
+                "Use pattern features (PAT-Q007-006 to PAT-Q007-008) to identify outcome language",
+                "Calculate Bayesian posterior for mechanism type given text features",
+                "Apply structural causal model (SCM) constraints to validate type"
+              ],
+              "complexity": "O(1) classification per mechanism with Bayesian update",
+              "assumptions": [
+                "Mechanism types are mutually exclusive",
+                "Text contains sufficient markers for type discrimination"
+              ]
+            }
           },
           {
             "class": "BayesianMechanismInference",
@@ -2179,6 +2197,30 @@
               "assumptions": [
                 "Policy interventions can be mapped to dimensional framework",
                 "Cross-dimensional effects are explicitly stated or inferable"
+              ]
+            }
+          },
+          {
+            "class": "SemanticProcessor",
+            "function": "extract_semantic_relationships",
+            "method_type": "extraction",
+            "priority": 12,
+            "description": "SemanticProcessor.extract_semantic_relationships",
+            "produces_elements": [
+              "logica_causal_explicita"
+            ],
+            "technical_approach": {
+              "paradigm": "Semantic embedding-based relationship extraction",
+              "steps": [
+                "Generate sentence embeddings for activity descriptions",
+                "Compute cosine similarity to canonical causal relationship templates",
+                "Extract implicit causal relationships via semantic proximity",
+                "Validate against pattern-based explicit extractions"
+              ],
+              "complexity": "O(n*d_emb) where n=sentences, d_emb=embedding dimension (typically 768)",
+              "assumptions": [
+                "Semantic embeddings capture causal relationships",
+                "Pre-trained models are adequate for policy domain"
               ]
             }
           }
@@ -6640,11 +6682,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -9120,9 +9162,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -13296,11 +13339,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -15748,9 +15791,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -19923,11 +19967,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -22396,9 +22440,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -26554,11 +26599,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -28991,9 +29036,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -33127,11 +33173,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -35613,9 +35659,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -39802,11 +39849,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -42253,9 +42300,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -46389,11 +46437,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -48860,9 +48908,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -53031,11 +53080,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -55529,9 +55578,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -59678,11 +59728,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",
@@ -62146,9 +62196,10 @@
           },
           {
             "class": "BayesianMechanismInference",
-            "function": "_infer_chain_capacity_vector",
-            "method_type": "primary",
-            "priority": 3
+            "function": "_infer_mechanism_type",
+            "method_type": "analysis",
+            "priority": 3,
+            "description": "BayesianMechanismInference._infer_mechanism_type"
           },
           {
             "class": "BayesianMechanismInference",
@@ -66337,11 +66388,11 @@
             "description": "TeoriaCambio.validacion_completa"
           },
           {
-            "class": "AdvancedDAGValidator",
+            "class": "TeoriaCambio",
             "function": "export_nodes",
             "method_type": "analysis",
-            "priority": 6,
-            "description": "AdvancedDAGValidator.export_nodes"
+            "priority": 3,
+            "description": "TeoriaCambio.export_nodes"
           },
           {
             "class": "ReportingEngine",

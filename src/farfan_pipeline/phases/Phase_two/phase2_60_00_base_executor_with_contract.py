@@ -994,7 +994,7 @@ class BaseExecutorWithContract(ABC):
                     import logging
                     logger = logging.getLogger(__name__)
                     logger.info(
-                        f"[{base_slot}] Calibration: {method_id} → {calibration_score:.3f}"
+                        f"[{base_slot}] Calibration: {method_id} -> {calibration_score:.3f}"
                     )
                     
                 except MethodBelowThresholdError as e:
@@ -1420,7 +1420,7 @@ class BaseExecutorWithContract(ABC):
                         import logging
                         logger = logging.getLogger(__name__)
                         logger.info(
-                            f"[{base_slot}] Calibration: {method_id} → {calibration_result.final_score:.3f}"
+                            f"[{base_slot}] Calibration: {method_id} -> {calibration_result.final_score:.3f}"
                         )
                         
                     except MethodBelowThresholdError as e:
@@ -1520,7 +1520,7 @@ class BaseExecutorWithContract(ABC):
                     import logging
                     logger = logging.getLogger(__name__)
                     logger.info(
-                        f"[{base_slot}] Calibration: {method_id} → {calibration_result.final_score:.3f}"
+                        f"[{base_slot}] Calibration: {method_id} -> {calibration_result.final_score:.3f}"
                     )
                     
                 except MethodBelowThresholdError as e:
@@ -2047,7 +2047,7 @@ class BaseExecutorWithContract(ABC):
     ) -> str:
         """Render methodological depth section with epistemological foundations.
 
-        Transforms v3 contract's methodological_depth into comprehensive documentation.
+        Transforms v3 contract methodological_depth into comprehensive documentation.
 
         Args:
             config: methodological_depth config from contract
@@ -2270,7 +2270,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
     The question_id is used to:
     1. Derive the base_slot (e.g., "Q001" -> "D1-Q1")
     2. Load the appropriate contract from executor_contracts/specialized/
-    3. Execute the contract's method_binding sequence
+    3. Execute the contract method_binding sequence
     
     Architecture Note:
     ==================
@@ -2340,7 +2340,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
     def _derive_base_slot(cls, question_id: str) -> str:
         """Derive base_slot from question_id.
         
-        Conversion: Q001 -> D1-Q1, Q006 -> D2-Q1, Q031 -> D1-Q1 (for 6 dimensions × 5 questions per area)
+        Conversion: Q001 -> D1-Q1, Q006 -> D2-Q1, Q031 -> D1-Q1 (for 6 dimensions x 5 questions per area)
         
         Args:
             question_id: Question identifier (e.g., "Q001", "Q150")
@@ -2359,7 +2359,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
             return cls._derive_base_slot_from_contract(question_id)
         
         # Calculate dimension and question within dimension
-        # Assuming 6 dimensions × 5 questions per policy area × 10 policy areas = 300 questions
+        # Assuming 6 dimensions x 5 questions per policy area x 10 policy areas = 300 questions
         # Pattern: D1-Q1 through D6-Q5, cycling through policy areas
         
         # Each "slot" covers 10 questions (one per policy area)
@@ -2374,7 +2374,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
     
     @classmethod
     def _derive_base_slot_from_contract(cls, question_id: str) -> str:
-        """Fallback: derive base_slot by loading the contract's identity.base_slot.
+        """Fallback: derive base_slot by loading the contract identity.base_slot.
         
         Args:
             question_id: Question identifier
@@ -2424,7 +2424,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
     ) -> dict[str, Any]:
         """Execute the contract for this question.
         
-        Overrides base to load contract using instance's question_id.
+        Overrides base to load contract using instance question_id.
         """
         if method_executor is not self.method_executor:
             raise RuntimeError(
