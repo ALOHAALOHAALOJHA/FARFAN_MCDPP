@@ -316,7 +316,7 @@
 
   "fusion_specification": {
     "contract_type": "TYPE_D",
-    "primary_strategy": "financial_coherence_audit",
+    "primary_strategy": "weighted_mean",
     "level_strategies": {
       "N1_fact_fusion": {
         "strategy": "concat",
