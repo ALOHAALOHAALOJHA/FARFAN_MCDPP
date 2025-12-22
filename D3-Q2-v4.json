@@ -1,0 +1,481 @@
+{
+  "contract_metadata": {
+    "contract_id": "D3-Q2-v4",
+    "base_question_id": "Q012",
+    "policy_area_expansion": [
+      "Q012",
+      "Q042",
+      "Q072",
+      "Q102",
+      "Q132",
+      "Q162",
+      "Q192",
+      "Q222",
+      "Q252",
+      "Q282"
+    ],
+    "version": "4.0.0",
+    "created_at": "2025-12-22T20:00:00Z",
+    "author": "F.A.R.F.A.N Epistemological Framework Generator",
+    "status": "active"
+  },
+  "identity": {
+    "name": "Financial Sustainability and Bayesian Sufficiency Assessment Contract",
+    "contract_type": "TYPE_D",
+    "primary_strategy": "weighted_mean",
+    "epistemic_commitment": "Falsificationist with financial coherence audit",
+    "scope": "Assess financial feasibility, sustainability, and sufficiency through Bayesian methods with veto gate",
+    "purpose": "Evaluate financial viability of policy proposals through multi-method financial analysis with audit oversight"
+  },
+  "executor_binding": {
+    "executor_class": "MethodPipelineExecutor",
+    "executor_module": "farfan_core.core.executor_framework",
+    "execution_mode": "epistemological_pipeline",
+    "parallelization": {
+      "phase_A": true,
+      "phase_B": true,
+      "phase_C": false
+    }
+  },
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_D",
+    "method_count": 18,
+    "execution_phases": {
+      "phase_A_construction": {
+        "level": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_get_spanish_stopwords",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_getspanishstopwords",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extract Spanish stopwords for text processing",
+            "requires": []
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_empty_result",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor_emptyresult",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Create empty result structure for initialization",
+            "requires": []
+          }
+        ]
+      },
+      "phase_B_computation": {
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "weighted_combination",
+        "methods": [
+          {
+            "class_name": "AdvancedDAGValidator",
+            "method_name": "_calculate_bayesian_posterior",
+            "mother_file": "teoria_cambio.py",
+            "provides": "advanceddagvalidator_calculatebayesianposterior",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Calculate Bayesian posterior probabilities",
+            "requires": ["pdetmunicipalplananalyzer_getspanishstopwords"]
+          },
+          {
+            "class_name": "AdvancedDAGValidator",
+            "method_name": "_calculate_confidence_interval",
+            "mother_file": "teoria_cambio.py",
+            "provides": "advanceddagvalidator_calculateconfidenceinterval",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Calculate confidence intervals for estimates",
+            "requires": ["advanceddagvalidator_calculatebayesianposterior"]
+          },
+          {
+            "class_name": "AdaptivePriorCalculator",
+            "method_name": "_adjust_domain_weights",
+            "mother_file": "derek_beach.py",
+            "provides": "adaptivepriorcalculator_adjustdomainweights",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Adjust domain-specific weight parameters",
+            "requires": ["advanceddagvalidator_calculatebayesianposterior"]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_log_refactored_components",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference_logrefactoredcomponents",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Log refactored Bayesian components",
+            "requires": ["adaptivepriorcalculator_adjustdomainweights"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "analyze_financial_feasibility",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_analyzefinancialfeasibility",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Analyze financial feasibility of municipal plan",
+            "requires": ["pdetmunicipalplananalyzer_getspanishstopwords"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_score_indicators",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_scoreindicators",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Score financial indicators quantitatively",
+            "requires": ["pdetmunicipalplananalyzer_analyzefinancialfeasibility"]
+          },
+          {
+            "class_name": "FinancialAuditor",
+            "method_name": "_calculate_sufficiency",
+            "mother_file": "derek_beach.py",
+            "provides": "financialauditor_calculatesufficiency",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Calculate financial sufficiency metric",
+            "requires": ["pdetmunicipalplananalyzer_scoreindicators"]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_test_sufficiency",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference_testsufficiency",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Test Bayesian sufficiency conditions",
+            "requires": ["financialauditor_calculatesufficiency"]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_test_necessity",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference_testnecessity",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Test Bayesian necessity conditions",
+            "requires": ["bayesianmechanisminference_testsufficiency"]
+          },
+          {
+            "class_name": "AdaptivePriorCalculator",
+            "method_name": "calculate_likelihood_adaptativo",
+            "mother_file": "derek_beach.py",
+            "provides": "adaptivepriorcalculator_calculatelikelihoodadaptativo",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Calculate adaptive likelihood ratios",
+            "requires": ["bayesianmechanisminference_testnecessity"]
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_calculate_quality_score",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor_calculatequalityscore",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Calculate quality score for policy elements",
+            "requires": ["industrialpolicyprocessor_emptyresult"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_deduplicate_tables",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_deduplicatetables",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Deduplicate financial tables",
+            "requires": ["pdetmunicipalplananalyzer_analyzefinancialfeasibility"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_generate_recommendations",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_generaterecommendations",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Generate financial recommendations based on analysis",
+            "requires": ["pdetmunicipalplananalyzer_scoreindicators"]
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_compile_pattern_registry",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor_compilepatternregistry",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Compile pattern matching registry",
+            "requires": ["industrialpolicyprocessor_emptyresult"]
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_build_point_patterns",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor_buildpointpatterns",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Build point-specific pattern structures",
+            "requires": ["industrialpolicyprocessor_compilepatternregistry"]
+          }
+        ]
+      },
+      "phase_C_litigation": {
+        "level": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "veto_gate",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_assess_financial_sustainability",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_assessfinancialsustainability",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "veto_gate",
+            "description": "Audit financial sustainability - can veto unsustainable findings",
+            "requires": [
+              "pdetmunicipalplananalyzer_scoreindicators",
+              "financialauditor_calculatesufficiency",
+              "bayesianmechanisminference_testsufficiency"
+            ],
+            "veto_conditions": {
+              "trigger": "sustainability_score_below_threshold",
+              "threshold": 0.6,
+              "consequence": "block_positive_findings_if_unsustainable",
+              "rationale": "Unsustainable financial plans cannot support policy recommendations regardless of other positive findings",
+              "override_possible": false
+            }
+          }
+        ]
+      }
+    },
+    "layer_dependencies": {
+      "N2_consumes_N1": true,
+      "N3_audits_N2": true,
+      "N3_can_veto_N1_and_N2": true
+    },
+    "notes": "TYPE_D contract with 2 N1, 15 N2, 1 N3 methods. Excludes 3 L4 synthesis methods per guide. Financial sustainability audit has veto capability over unsustainable findings."
+  },
+  "question_context": {
+    "monolith_ref": "Q012",
+    "dimension_primary": "Financial Feasibility",
+    "dimension_secondary": "Bayesian Sufficiency",
+    "epistemic_role": "Assess financial sustainability and sufficiency with probabilistic methods",
+    "human_readable_question": "Is the financial plan sustainable and sufficient to support the proposed policy objectives?"
+  },
+  "signal_requirements": {
+    "input_contract": {
+      "requires": ["PreprocesadoMetadata"],
+      "optional": ["ExternalFinancialData", "BudgetTables"],
+      "format": "structured_json"
+    },
+    "preprocessing_dependencies": [
+      "text_extraction",
+      "table_extraction",
+      "entity_recognition"
+    ]
+  },
+  "evidence_assembly": {
+    "type_system": {
+      "N1_facts": "additive_union",
+      "N2_parameters": "weighted_combination",
+      "N3_constraints": "conjunctive_filtering"
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_fact_aggregation",
+        "description": "Union all N1 empirical facts without transformation",
+        "sources": [
+          "pdetmunicipalplananalyzer_getspanishstopwords",
+          "industrialpolicyprocessor_emptyresult"
+        ],
+        "operation": "set_union",
+        "output_label": "fact_base"
+      },
+      {
+        "rule_id": "R2_parameter_weighting",
+        "description": "Weight N2 parameters by Bayesian confidence and financial coherence",
+        "sources": [
+          "advanceddagvalidator_calculatebayesianposterior",
+          "advanceddagvalidator_calculateconfidenceinterval",
+          "adaptivepriorcalculator_adjustdomainweights",
+          "bayesianmechanisminference_logrefactoredcomponents",
+          "pdetmunicipalplananalyzer_analyzefinancialfeasibility",
+          "pdetmunicipalplananalyzer_scoreindicators",
+          "financialauditor_calculatesufficiency",
+          "bayesianmechanisminference_testsufficiency",
+          "bayesianmechanisminference_testnecessity",
+          "adaptivepriorcalculator_calculatelikelihoodadaptativo",
+          "industrialpolicyprocessor_calculatequalityscore",
+          "pdetmunicipalplananalyzer_deduplicatetables",
+          "pdetmunicipalplananalyzer_generaterecommendations",
+          "industrialpolicyprocessor_compilepatternregistry",
+          "industrialpolicyprocessor_buildpointpatterns"
+        ],
+        "operation": "weighted_mean",
+        "weights": "confidence_scores",
+        "output_label": "parameter_space"
+      },
+      {
+        "rule_id": "R3_constraint_application",
+        "description": "Apply N3 sustainability audit as conjunctive filter with veto power",
+        "sources": ["pdetmunicipalplananalyzer_assessfinancialsustainability"],
+        "operation": "conjunctive_filter",
+        "blocks_if": "veto_condition_triggered",
+        "output_label": "audited_findings"
+      },
+      {
+        "rule_id": "R4_final_synthesis",
+        "description": "Synthesize audited parameter space into human answer",
+        "sources": ["fact_base", "parameter_space", "audited_findings"],
+        "operation": "cross_layer_fusion",
+        "respects_veto": true,
+        "output_label": "final_answer"
+      }
+    ]
+  },
+  "fusion_specification": {
+    "paradigm": "epistemological_pipeline",
+    "asymmetry_principle": "N3_veto_overrides_N1_N2",
+    "level_strategies": {
+      "N1_fact_fusion": {
+        "strategy": "set_union",
+        "rationale": "Facts are additive and non-conflicting at empirical level"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "weighted_mean",
+        "rationale": "Financial parameters combined by weighted average with Bayesian confidence",
+        "weight_source": "bayesian_posteriors_and_confidence_intervals"
+      },
+      "N3_constraint_fusion": {
+        "strategy": "financial_coherence_audit",
+        "rationale": "Sustainability audit acts as veto gate for unsustainable findings",
+        "veto_power": true,
+        "override": false
+      }
+    },
+    "conflict_resolution": {
+      "N2_conflicts": "defer_to_higher_confidence",
+      "N3_veto_final": true
+    }
+  },
+  "cross_layer_fusion": {
+    "fusion_order": ["N1", "N2", "N3"],
+    "asymmetry": {
+      "N3_can_nullify_N1_N2": true,
+      "N1_N2_cannot_override_N3": true,
+      "rationale": "Popperian falsificationism: one critical audit failure (N3) invalidates positive findings (N1, N2)"
+    },
+    "fusion_function": {
+      "description": "Sequential epistemological pipeline with veto gate",
+      "pseudocode": "if N3_veto: return BLOCKED else: return weighted_fusion(N1_facts, N2_parameters)"
+    }
+  },
+  "human_answer_structure": {
+    "sections": [
+      {
+        "section_id": "S1_empirical_base",
+        "title": "Empirical Financial Facts",
+        "content_source": "N1_fact_base",
+        "format": "bullet_list",
+        "epistemic_status": "observational"
+      },
+      {
+        "section_id": "S2_inferential_analysis",
+        "title": "Bayesian Financial Sufficiency Analysis",
+        "content_source": "N2_parameter_space",
+        "format": "quantitative_summary_with_confidence_intervals",
+        "epistemic_status": "probabilistic_inference"
+      },
+      {
+        "section_id": "S3_critical_audit",
+        "title": "Financial Sustainability Audit",
+        "content_source": "N3_audited_findings",
+        "format": "pass_fail_with_justification",
+        "epistemic_status": "falsificationist_constraint",
+        "veto_disclosed": true
+      },
+      {
+        "section_id": "S4_final_judgment",
+        "title": "Final Financial Feasibility Assessment",
+        "content_source": "final_answer",
+        "format": "conclusive_statement",
+        "epistemic_status": "post_audit_synthesis",
+        "respects_veto": true
+      }
+    ]
+  },
+  "output_contract": {
+    "output_type": "structured_json",
+    "schema_ref": "executor_output_schema_v4.json",
+    "required_fields": [
+      "empirical_facts",
+      "bayesian_parameters",
+      "audit_constraints",
+      "final_answer"
+    ],
+    "epistemic_metadata": {
+      "confidence_intervals": "required",
+      "veto_status": "required",
+      "method_provenance": "required"
+    }
+  },
+  "validation_rules": {
+    "pre_execution": [
+      "verify_all_18_methods_mapped_to_phases",
+      "verify_N1_methods_have_no_requires_or_only_preprocessing",
+      "verify_N2_methods_require_N1_outputs",
+      "verify_N3_method_has_veto_conditions"
+    ],
+    "post_execution": [
+      "verify_N3_veto_respected_in_final_answer",
+      "verify_confidence_intervals_present",
+      "verify_all_provides_match_sources_in_assembly_rules"
+    ]
+  },
+  "error_handling": {
+    "N1_failure": "skip_method_continue_with_available_facts",
+    "N2_failure": "propagate_uncertainty_increase_confidence_interval",
+    "N3_failure": "immediate_veto_all_findings_blocked",
+    "fallback_strategy": "return_partial_results_with_degraded_confidence"
+  },
+  "traceability": {
+    "method_provenance_required": true,
+    "audit_trail_format": "json_log",
+    "veto_decisions_logged": true
+  },
+  "compatibility": {
+    "executor_version": ">=4.0.0",
+    "schema_version": "4.0.0",
+    "backward_compatible": false
+  },
+  "calibration": {
+    "confidence_calibration": "required_for_N2",
+    "veto_threshold_tunable": false,
+    "rationale": "Financial sustainability threshold is normative policy constraint"
+  }
+}
