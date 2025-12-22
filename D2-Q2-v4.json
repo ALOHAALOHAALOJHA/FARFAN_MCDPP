@@ -609,7 +609,7 @@
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-22T18:20:00Z",
       "generator_version": "1.0.0",
-      "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly. BeachEvidentialTest.classify_test treated as N3-AUD despite L3 layer inconsistency in source data."
+      "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly. BeachEvidentialTest.classify_test is intentionally reclassified and treated as N3-AUD (audit/veto capability) overriding its L3 source-layer label; this override is governed by the v4 epistemological guide and the centralized method reclassification policy applied consistently across all 30 contracts."
     }
   },
 
