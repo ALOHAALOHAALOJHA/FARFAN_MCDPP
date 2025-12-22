@@ -400,6 +400,78 @@ assert all(k.startswith("PA") for k in CANON_POLICY_AREAS), "All PA keys must st
 assert all(k.startswith("DIM") for k in CANON_DIMENSIONS), "All DIM keys must start with 'DIM'"
 
 # ============================================================================
+# UNIT OF ANALYSIS SPECIFICATION - Colombian PDM/PDT Context
+# Source: canonic_description_unit_analysis.json + Ley 152 de 1994
+# ============================================================================
+
+UNIT_OF_ANALYSIS: Final[dict[str, any]] = {
+    "document_type": "Plan de Desarrollo Municipal/Territorial (PDM/PDT)",
+    "jurisdiction": "Colombian municipalities (especially PDET zones)",
+    "temporal_scope": "2024-2027 cuatrienio",
+    "legal_framework": "Ley 152 de 1994, Acuerdo de Paz, PDET",
+    "analysis_focus": "Peace accord implementation and territorial development",
+    "structure_elements": [
+        "Diagnóstico",  # H1 section
+        "Parte estratégica",  # H1 section
+        "Plan Plurianual de Inversiones (PPI)",  # H1 section
+        "Líneas estratégicas",  # H2 subsections
+        "Metas",  # H3 subsections
+        "Indicadores",  # H4 subsections
+    ],
+    "expected_sections": {
+        "h1_sections": ["Diagnóstico", "Parte estratégica", "PPI"],
+        "territorial_entities": ["PDET municipalities", "RRI zones"],
+        "peace_implementation_focus": [
+            "Derechos de las víctimas",
+            "Construcción de paz",
+            "Tierras y territorios",
+            "Líderes y defensores de derechos humanos",
+        ],
+    },
+    "validation_requirements": {
+        "min_h1_sections": 3,
+        "required_legal_compliance": "Ley 152 de 1994",
+        "pdet_context_mandatory": True,
+    },
+}
+
+# ============================================================================
+# INGESTION PHASE METHODS - Phase 1 Text Processing Priority
+# These methods dissect PDM into 60 canonic policy chunks
+# ============================================================================
+
+INGESTION_PHASE_METHODS: Final[frozenset[str]] = frozenset({
+    "semantic_chunking_policy",  # Must respect PDM H1-H4 hierarchy
+    "analyzer_one",              # Entity extraction for Colombian territorial units
+    "embedding_policy",          # Semantic space must cluster PDM sections
+})
+
+# Ingestion Phase Calibration Rules - Stricter validation for Phase 1
+INGESTION_CALIBRATION_RULES: Final[dict[str, dict[str, any]]] = {
+    "semantic_chunking_policy": {
+        "strict_structure_validation": True,
+        "expected_h1_sections": ["Diagnóstico", "Parte estratégica", "PPI"],
+        "chunk_boundaries": "respect_legal_structure",  # Ley 152 compliance
+        "min_confidence_threshold": 0.90,  # Stricter for ingestion
+        "pdm_structure_aware": True,
+    },
+    "analyzer_one": {
+        "territorial_entity_extraction": True,
+        "expected_entities": ["PDET municipalities", "RRI zones", "Colombian departments"],
+        "peace_terminology_required": True,
+        "min_confidence_threshold": 0.85,
+        "pdm_structure_aware": True,
+    },
+    "embedding_policy": {
+        "semantic_clustering": "pdm_sections",
+        "expected_clusters": ["Diagnóstico", "Estratégica", "Financiera"],
+        "peace_rights_semantic_focus": True,
+        "min_confidence_threshold": 0.85,
+        "pdm_structure_aware": True,
+    },
+}
+
+# ============================================================================
 # VALIDATION & DIAGNOSTICS
 # ============================================================================
 
@@ -483,6 +555,11 @@ __all__ = [
     # Organizational structure
     "CANON_POLICY_AREAS",
     "CANON_DIMENSIONS",
+    
+    # Unit of analysis
+    "UNIT_OF_ANALYSIS",
+    "INGESTION_PHASE_METHODS",
+    "INGESTION_CALIBRATION_RULES",
     
     # Validation
     "validate_canonical_specs",
