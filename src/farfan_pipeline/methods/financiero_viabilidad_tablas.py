@@ -345,6 +345,15 @@ class QualityScore:
 class PDETMunicipalPlanAnalyzer:
     """Analizador de vanguardia para Planes de Desarrollo Municipal PDET"""
 
+    calibration_params: dict[str, Any] = {
+        "domain": "financial",
+        "output_semantics": "bayesian_posterior",
+        "prior_alpha": 2.0,
+        "prior_beta": 5.0,
+        "logit_transform": False,
+        "thresholds_source": "questionnaire_monolith.json",
+    }
+
     def __init__(
         self,
         use_gpu: bool = True,
@@ -2514,6 +2523,109 @@ class PDETMunicipalPlanAnalyzer:
             )
 
         return recommendations
+
+    def calibrate_output(
+        self,
+        raw_score: float,
+        posterior_samples: np.ndarray | None = None,
+        context: dict[str, Any] | None = None,
+    ) -> Any:
+        """Apply financial domain calibration with Bayesian posterior propagation.
+
+        This method already does PyMC sampling in _bayesian_risk_inference().
+        We propagate those samples through calibration instead of discarding them.
+
+        Args:
+            raw_score: The uncalibrated score in [0.0, 1.0]
+            posterior_samples: Optional posterior samples from Bayesian inference
+            context: Optional context dict with question_id, policy_area_id, etc.
+
+        Returns:
+            MethodCalibrationResult with full uncertainty quantification
+        """
+        # Import here to avoid circular dependency
+        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+            LabelProbabilityMass,
+            MethodCalibrationResult,
+        )
+
+        # If we have posterior samples, compute label probabilities directly
+        if posterior_samples is not None and len(posterior_samples) > 0:
+            label_probs = self._compute_label_probabilities_from_posterior(
+                posterior_samples
+            )
+            calibrated_score = float(np.mean(posterior_samples))
+            ci_95 = (
+                float(np.percentile(posterior_samples, 2.5)),
+                float(np.percentile(posterior_samples, 97.5)),
+            )
+        else:
+            # Fallback: construct synthetic posterior from point estimate
+            # using prior parameters
+            alpha = self.calibration_params["prior_alpha"]
+            beta = self.calibration_params["prior_beta"]
+
+            # Beta posterior update with pseudo-observation
+            alpha_post = alpha + raw_score * 10  # pseudo-count = 10
+            beta_post = beta + (1 - raw_score) * 10
+
+            posterior_samples = np.random.beta(alpha_post, beta_post, size=10000)
+            label_probs = self._compute_label_probabilities_from_posterior(
+                posterior_samples
+            )
+            calibrated_score = alpha_post / (alpha_post + beta_post)
+            ci_95 = (
+                float(np.percentile(posterior_samples, 2.5)),
+                float(np.percentile(posterior_samples, 97.5)),
+            )
+
+        return MethodCalibrationResult(
+            calibrated_score=calibrated_score,
+            label_probabilities=label_probs,
+            transformation_name="beta_posterior_propagation",
+            transformation_parameters={
+                "prior_alpha": self.calibration_params["prior_alpha"],
+                "prior_beta": self.calibration_params["prior_beta"],
+                "sample_size": len(posterior_samples),
+            },
+            posterior_samples=posterior_samples,
+            credible_interval_95=ci_95,
+        )
+
+    def _compute_label_probabilities_from_posterior(
+        self,
+        samples: np.ndarray,
+    ) -> Any:
+        """Compute probability mass in each quality band from posterior samples.
+
+        Args:
+            samples: Posterior samples from Bayesian inference
+
+        Returns:
+            LabelProbabilityMass with probability distribution across labels
+        """
+        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+            LabelProbabilityMass,
+        )
+
+        n = len(samples)
+
+        # Thresholds from questionnaire_monolith.json (canonical values)
+        t_excelente = 0.85
+        t_bueno = 0.70
+        t_aceptable = 0.55
+
+        p_excelente = np.sum(samples >= t_excelente) / n
+        p_bueno = np.sum((samples >= t_bueno) & (samples < t_excelente)) / n
+        p_aceptable = np.sum((samples >= t_aceptable) & (samples < t_bueno)) / n
+        p_insuficiente = np.sum(samples < t_aceptable) / n
+
+        return LabelProbabilityMass(
+            excelente=float(p_excelente),
+            bueno=float(p_bueno),
+            aceptable=float(p_aceptable),
+            insuficiente=float(p_insuficiente),
+        )
 
 # ============================================================================
 # UTILIDADES Y HELPERS
