@@ -433,6 +433,15 @@
         "layer": "N4",
         "data_source": "synthesis_output",
         "narrative_style": "declarative",
+        "template": {
+          "structure": [
+            "**Conclusión**: {verdict_statement}",
+            "",
+            "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
+            "",
+            "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ]
+        },
         "argumentative_role": "SYNTHESIS"
       },
       {
@@ -441,7 +450,20 @@
         "layer": "N1",
         "data_source": "validated_facts",
         "narrative_style": "descriptive",
-        "argumentative_role": "EMPIRICAL_BASIS"
+        "template": {
+          "structure": [
+            "**Entidades Responsables**: {entity_count}",
+            "{entities_list}",
+            "",
+            "**Asignaciones Financieras**: {allocation_count}",
+            "{financial_allocations}"
+          ]
+        },
+        "argumentative_role": "EMPIRICAL_BASIS",
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "📋 *Nota: Entidades responsables identificadas directamente del documento fuente.*"
+        }
       },
       {
         "section_id": "S3_robustness_audit",
@@ -449,10 +471,29 @@
         "layer": "N3",
         "data_source": "audit_results",
         "narrative_style": "critical",
+        "template": {
+          "structure": [
+            "{veto_alert}",
+            "",
+            "**Validaciones Ejecutadas**: {validation_count}",
+            "",
+            "**Coherencia Entidad-Actividad**: {coherence_assessment}",
+            "",
+            "**Asignaciones Financieras Validadas**: {validated_allocations}",
+            "",
+            "**Limitaciones Metodológicas**:",
+            "{limitations_list}"
+          ]
+        },
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ ALERTA: {veto_reason}. Las asignaciones de responsabilidad son INVÁLIDAS.",
-          "if_no_veto": "✅ Todas las validaciones pasaron."
+          "if_veto_triggered": "⛔ **ASIGNACIONES INVÁLIDAS**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} asignaciones invalidadas.",
+          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todas las asignaciones de responsabilidad sobrevivieron auditoría."
+        },
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "🔬 *Nota: Validación financiera aplicada con estándares de auditoría.*"
         }
       },
       {
@@ -461,6 +502,15 @@
         "layer": "N4-META",
         "data_source": "gap_analysis",
         "narrative_style": "diagnostic",
+        "template": {
+          "structure": [
+            "**Métodos sin Resultados**: {empty_methods_count} de {total_methods}",
+            "{empty_methods_details}",
+            "",
+            "**Impacto en Confianza**:",
+            "{gap_impact_assessment}"
+          ]
+        },
         "argumentative_role": "META_TRACEABILITY"
       }
     ],
