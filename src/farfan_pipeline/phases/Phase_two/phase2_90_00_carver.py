@@ -41,14 +41,14 @@ Arquitectura v3.0:
 4. BayesianConfidenceEngine: Inferencia calibrada de confianza
 5. DimensionTheory: Estrategias teóricamente fundamentadas por D1-D6
 6. DoctoralRenderer: Prosa con fundamentos epistemológicos y citas
-7. MacroSynthesizer: Agregación holística con análisis PA×DIM
+7. MacroSynthesizer: Agregación holística con análisis PA-DIM
 
 Invariantes:
-[INV-001] Toda afirmación debe tener ≥1 evidencia citada
+[INV-001] Toda afirmación debe tener >=1 evidencia citada
 [INV-002] Gaps críticos siempre aparecen en respuesta
 [INV-003] Confianza debe ser calibrada (no optimista)
 [INV-004] Estilo Carver: oraciones cortas, verbos activos, sin adverbios
-[INV-005] Macro synthesis con divergencia PA×DIM explícita
+[INV-005] Macro synthesis con divergencia PA-DIM explícita
 [INV-006] v3.0: Fundamentos epistemológicos explícitos en síntesis doctoral
 [INV-007] v3.0: Limitaciones metodológicas como caveats honestos
 [INV-008] v3.0: Referencias teóricas en formato académico
@@ -1817,17 +1817,17 @@ class DoctoralRenderer:
         macro_question_text: str = "¿El Plan de Desarrollo presenta una visión integral y coherente?",
     ) -> Dict[str, Any]:
         """
-        Sintetiza respuesta macro-level con análisis de divergencia PA×DIM.
+        Sintetiza respuesta macro-level con análisis de divergencia PA-DIM.
         
         Agregación holística de múltiples meso-questions con:
-        - Análisis de cobertura PA×DIM (10 policy areas × 6 dimensions)
+        - Análisis de cobertura PA-DIM (10 policy areas × 6 dimensions)
         - Identificación de divergencias críticas
         - Cálculo de score holístico calibrado
         - Generación de hallazgos, fortalezas y debilidades
         
         Args:
             meso_results: Lista de resultados de meso-questions
-            coverage_matrix: Matriz PA×DIM con scores {("PA01", "DIM01"): 0.85, ...}
+            coverage_matrix: Matriz PA-DIM con scores {("PA01", "DIM01"): 0.85, ...}
             macro_question_text: Texto de la pregunta macro
             
         Returns:
@@ -1838,9 +1838,9 @@ class DoctoralRenderer:
                 - recomendaciones: Lista de recomendaciones priorizadas
                 - fortalezas: Fortalezas identificadas
                 - debilidades: Debilidades identificadas (gaps)
-                - divergence_analysis: Análisis PA×DIM detallado
+                - divergence_analysis: Análisis PA-DIM detallado
         """
-        # 1. Analizar cobertura PA×DIM si está disponible
+        # 1. Analizar cobertura PA-DIM si está disponible
         divergence_analysis = {}
         if coverage_matrix:
             divergence_analysis = self._analyze_pa_dim_divergence(coverage_matrix)
@@ -1865,7 +1865,7 @@ class DoctoralRenderer:
             coverage_score = divergence_analysis.get("overall_coverage", 1.0)
             critical_gaps_count = divergence_analysis.get("critical_gaps_count", 0)
             
-            # Penalizar gaps críticos en PA×DIM
+            # Penalizar gaps críticos en PA-DIM
             gap_penalty = min(0.25, critical_gaps_count * 0.05)
             
             # Score final como promedio ponderado
@@ -1925,7 +1925,7 @@ class DoctoralRenderer:
         coverage_matrix: Dict[Tuple[str, str], float]
     ) -> Dict[str, Any]:
         """
-        Analiza divergencia en matriz PA×DIM (10×6 = 60 células).
+        Analiza divergencia en matriz PA-DIM (10×6 = 60 células).
         
         Identifica:
         - Cobertura global (% de células con score >= threshold)
@@ -2073,14 +2073,14 @@ class DoctoralRenderer:
                     f"{len(low_scoring_mesos)} clusters requieren atención prioritaria."
                 )
         
-        # 3. Hallazgos de divergencia PA×DIM
+        # 3. Hallazgos de divergencia PA-DIM
         if divergence_analysis:
             coverage_pct = divergence_analysis.get("coverage_percentage", 0.0)
             critical_gaps = divergence_analysis.get("critical_gaps_count", 0)
             
             if coverage_pct >= 0.80:
                 hallazgos.append(
-                    f"Cobertura PA×DIM: {coverage_pct:.0%} de células con nivel aceptable."
+                    f"Cobertura PA-DIM: {coverage_pct:.0%} de células con nivel aceptable."
                 )
             else:
                 status = "✗"
@@ -2226,62 +2226,8 @@ class DoctoralCarverSynthesizer:
     Sintetizador Doctoral-Carver v3.0 FULL EXTRACTION.
 
     Combina rigor académico con prosa minimalista.
-    Cada afirmación respaldada. Cada gap recon// filepath: /Users/recovered/PycharmProjects/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/src/farfan_pipeline/phases/Phase_two/carver.py
+    Cada afirmación respaldada. Cada gap reconocido.
 """
-Doctoral-Carver Narrative Synthesizer v3.0 (FULL EXTRACTION Edition)
-=====================================================================
-
-Genera respuestas PhD-level con estilo minimalista Raymond Carver:
-- Precisión quirúrgica en cada afirmación
-- Sin adornos retóricos vacíos
-- Cada palabra respaldada por evidencia
-- Honestidad brutal sobre limitaciones
-- Razonamiento causal explícito
-
-CAMBIO MAYOR v3.0: Extracción COMPLETA del contrato v3
-------------------------------------------------------
-v2.1 extraía solo: dimension, expected_elements, question_text, method_count, top 5 methods
-v3.0 extrae TODO:
-- 17 métodos con epistemological_foundation completo
-- theoretical_framework con referencias académicas
-- technical_approach con algoritmos y limitaciones
-- output_interpretation con actionable_insights
-- assembly_flow de 5 pasos
-- concrete_example como benchmark
-- template_variable_bindings
-- validation_against_expected_elements
-
-Fundamentos Teóricos:
-- Rhetorical Structure Theory (Mann & Thompson, 1988)
-- Dempster-Shafer Evidence Theory (belief functions)
-- Causal Inference Framework (Pearl, 2009)
-- Argument Mining (Stab & Gurevych, 2017)
-- Calibrated Uncertainty Quantification (Gneiting & Raftery, 2007)
-
-Arquitectura v3.0:
-1. EnhancedContractInterpreter: Extrae TODA la semántica del contrato v3
-2. EvidenceAnalyzer: Construye grafo causal de evidencia
-3. GapAnalyzer: Análisis multi-dimensional de vacíos
-4. BayesianConfidenceEngine: Inferencia calibrada de confianza
-5. DimensionTheory: Estrategias teóricamente fundamentadas por D1-D6
-6. DoctoralRenderer: Prosa con fundamentos epistemológicos y citas
-7. MacroSynthesizer: Agregación holística con análisis PA×DIM
-
-Invariantes:
-[INV-001] Toda afirmación debe tener ≥1 evidencia citada
-[INV-002] Gaps críticos siempre aparecen en respuesta
-[INV-003] Confianza debe ser calibrada (no optimista)
-[INV-004] Estilo Carver: oraciones cortas, verbos activos, sin adverbios
-[INV-005] Macro synthesis con divergencia PA×DIM explícita
-[INV-006] v3.0: Fundamentos epistemológicos explícitos en síntesis doctoral
-[INV-007] v3.0: Limitaciones metodológicas como caveats honestos
-[INV-008] v3.0: Referencias teóricas en formato académico
-
-Author: F.A.R.F.A.N Pipeline
-Version: 3.0.0-FULL-EXTRACTION
-"""
-
-from __future__ import annotations
 
 import math
 import re

@@ -152,6 +152,12 @@ class PatternItem(BaseModel):
         "FUENTE_OFICIAL",
         "TERRITORIAL",
         "UNIDAD_MEDIDA",
+        "CAUSAL",
+        "CAUSAL_CONNECTOR",
+        "CAUSAL_OUTCOME",
+        "INSTRUMENTO",
+        "MECANISMO_COMPLETO",
+        "POBLACION",
     ] = Field(default="GENERAL", description="Pattern category")
     flags: str = Field(
         default="", pattern=r"^[imsx]*$", description="Regex flags (case-insensitive, etc.)"
@@ -309,6 +315,25 @@ class MicroAnsweringSignalPack(BaseModel):
     )
     pattern_weights: dict[str, float] = Field(
         default_factory=dict, description="Confidence weights per pattern ID"
+    )
+    
+    question_text: str | None = Field(
+        default=None, description="Full question text"
+    )
+    question_type: str | None = Field(
+        default=None, description="Question type (micro/meso/macro)"
+    )
+    dimension_id: str | None = Field(
+        default=None, description="Dimension ID (e.g., DIM04)"
+    )
+    policy_area_id: str | None = Field(
+        default=None, description="Policy Area ID (e.g., PA08)"
+    )
+    scoring_modality: str | None = Field(
+        default=None, description="Scoring modality (e.g., TYPE_A)"
+    )
+    modality: str | None = Field(
+        default=None, description="Alias for scoring_modality"
     )
     
     # Intelligence Layer metadata
@@ -1281,12 +1306,24 @@ class QuestionnaireSignalRegistry:
             question_id, dict(question)
         )
 
+        # Extract core question metadata for Carver
+        question_text = question.get("text")
+        dimension_id = question.get("dimension_id")
+        scoring_modality = question.get("scoring_modality")
+
         return MicroAnsweringSignalPack(
             question_patterns={question_id: patterns},
             expected_elements={question_id: elements},
             indicators_by_pa={pa: indicators},
             official_sources=official_sources,
             pattern_weights=pattern_weights,
+            # Core question metadata (required by Carver)
+            question_text=question_text,
+            question_type="micro",
+            dimension_id=dimension_id,
+            policy_area_id=pa,
+            scoring_modality=scoring_modality,
+            modality=scoring_modality,
             # Intelligence Layer metadata (100% utilization!)
             semantic_expansions=semantic_expansions,
             context_requirements=context_requirements,

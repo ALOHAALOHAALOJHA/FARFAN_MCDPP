@@ -20,6 +20,7 @@ File Sequence (a-z, aa-ac):
 - phase2_90_00_carver.py              : Narrative synthesis
 - phase2_60_04_calibration_policy.py  : Calibration policies
 - phase2_60_01_contract_validator_cqvr.py : Contract validation
+- phase2_95_00_contract_hydrator.py   : V4 Contract hydrator (Signal irrigation bridge)
 - phase2_80_00_evidence_nexus.py      : Evidence assembly
 - phase2_20_00_method_signature_validator.py : Signature validation
 - phase2_95_01_metrics_persistence.py : Metrics persistence
@@ -64,6 +65,13 @@ from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import (
     CarverAnswer,
 )
 
+# Contract Hydrator - V4 to Carver-compatible adapter
+from farfan_pipeline.phases.Phase_two.phase2_95_00_contract_hydrator import (
+    ContractHydrator,
+    ContractHydrationError,
+    HydrationResult,
+)
+
 # Executor configuration and base class
 from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import ExecutorConfig
 from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import (
@@ -79,6 +87,10 @@ __all__ = [
     # Narrative synthesis (Carver)
     "DoctoralCarverSynthesizer",
     "CarverAnswer",
+    # Contract Hydrator (Phase 2 - Step 95)
+    "ContractHydrator",
+    "ContractHydrationError",
+    "HydrationResult",
     # Executor configuration
     "ExecutorConfig",
     "BaseExecutorWithContract",

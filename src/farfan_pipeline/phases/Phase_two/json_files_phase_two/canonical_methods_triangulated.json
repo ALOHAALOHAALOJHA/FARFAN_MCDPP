@@ -1,0 +1,2978 @@
+[
+  {
+    "base_question": "01",
+    "contracts": [
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121",
+      "Q151",
+      "Q181",
+      "Q211",
+      "Q241",
+      "Q271"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_analyze_link_text",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "process",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_match_patterns_in_sentences",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_point_evidence",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_goals",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_parse_goal_context",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_parse_amount",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_financial_amounts",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_from_budget_table",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_extract_quantitative_claims",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_parse_number",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_statistical_significance_test",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "method": "evaluate_policy_metric",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "method": "compare_policies",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "chunk_text",
+        "mother_file": "semantic_chunking_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "embed_single",
+        "mother_file": "semantic_chunking_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "02",
+    "contracts": [
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122",
+      "Q152",
+      "Q182",
+      "Q212",
+      "Q242",
+      "Q272"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_direct_evidence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_detect_allocation_gaps",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_detect_gaps",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_optimal_remediations",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "counterfactual_query",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_detect_numerical_inconsistencies",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_numerical_divergence",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianConfidenceCalculator",
+        "method": "calculate_posterior",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "03",
+    "contracts": [
+      "Q033",
+      "Q063",
+      "Q093",
+      "Q123",
+      "Q153",
+      "Q183",
+      "Q213",
+      "Q243",
+      "Q273"
+    ],
+    "contracts_count": 9,
+    "canonical_methods": [
+      {
+        "class": "FinancialAuditor",
+        "method": "trace_financial_allocation",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_process_financial_table",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_program_to_node",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_goal_to_budget",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_perform_counterfactual_budget_check",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_budget_for_pillar",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_funding_source",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_analyze_funding_sources",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_financial_component",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 9
+      }
+    ]
+  },
+  {
+    "base_question": "04",
+    "contracts": [
+      "Q004",
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124",
+      "Q154",
+      "Q184",
+      "Q214",
+      "Q244",
+      "Q274"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "identify_responsible_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_ner",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_syntax",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_entity_type",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_entity_specificity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_consolidate_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "extract_entity_activity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_normalize_entity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_validate_entity_activity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_calculate_ea_confidence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_evidence_traceability",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "05",
+    "contracts": [
+      "Q005",
+      "Q035",
+      "Q065",
+      "Q095",
+      "Q125",
+      "Q155",
+      "Q185",
+      "Q215",
+      "Q245",
+      "Q275"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_check_deadline_constraints",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "verify_temporal_consistency",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "identify_failure_points",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_analyze_link_text",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_metadata",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "06",
+    "contracts": [
+      "Q006",
+      "Q036",
+      "Q066",
+      "Q096",
+      "Q126",
+      "Q156",
+      "Q186",
+      "Q216",
+      "Q246",
+      "Q276"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDFProcessor",
+        "method": "extract_tables",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_process_financial_table",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_deduplicate_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_is_likely_header",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_clean_dataframe",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_accountability_matrix",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "07",
+    "contracts": [
+      "Q007",
+      "Q037",
+      "Q067",
+      "Q097",
+      "Q127",
+      "Q157",
+      "Q187",
+      "Q217",
+      "Q247",
+      "Q277"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "BayesianMechanismInference",
+        "method": "infer_mechanisms",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_single_mechanism",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_chain_capacity_vector",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10,
+        "replaced_deprecated": "BayesianMechanismInference._infer_mechanism_type"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "construir_grafo_causal",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_es_conexion_valida",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "construct_causal_dag",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "method": "classify_test",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "08",
+    "contracts": [
+      "Q008",
+      "Q038",
+      "Q068",
+      "Q098",
+      "Q128",
+      "Q158",
+      "Q188",
+      "Q218",
+      "Q248",
+      "Q278"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_causal_links",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_composite_likelihood",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_initialize_prior",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_type_transition_prior",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_causal_edges",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_refine_edge_probabilities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_create_default_equations",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "extract_semantic_cube",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "09",
+    "contracts": [
+      "Q009",
+      "Q039",
+      "Q069",
+      "Q099",
+      "Q129",
+      "Q159",
+      "Q189",
+      "Q219",
+      "Q249",
+      "Q279"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_bayesian_risk_inference",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "sensitivity_analysis",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "10",
+    "contracts": [
+      "Q010",
+      "Q040",
+      "Q070",
+      "Q100",
+      "Q130",
+      "Q160",
+      "Q190",
+      "Q220",
+      "Q250",
+      "Q280"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_detect_logical_incompatibilities",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_coherence_metrics",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_objective_alignment",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_graph_fragmentation",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_sequence_logic",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_causal_coherence",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "calculate_likelihood_adaptativo",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "11",
+    "contracts": [
+      "Q011",
+      "Q041",
+      "Q071",
+      "Q101",
+      "Q131",
+      "Q161",
+      "Q191",
+      "Q221",
+      "Q251",
+      "Q281"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_evidence_traceability",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "assign_probative_value",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "method": "apply_test_logic",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_metadata",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_calculate_quality_score",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "12",
+    "contracts": [
+      "Q012",
+      "Q042",
+      "Q072",
+      "Q102",
+      "Q132",
+      "Q162",
+      "Q192",
+      "Q222",
+      "Q252",
+      "Q282"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_bayesian_posterior",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_confidence_interval",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_adjust_domain_weights",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_get_spanish_stopwords",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_log_refactored_components",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_assess_financial_sustainability",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "calculate_likelihood_adaptativo",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_calculate_quality_score",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_generar_sugerencias_internas",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_deduplicate_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_indicator_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_recommendations",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compile_pattern_registry",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_build_point_patterns",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_empty_result",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "13",
+    "contracts": [
+      "Q013",
+      "Q043",
+      "Q073",
+      "Q103",
+      "Q133",
+      "Q163",
+      "Q193",
+      "Q223",
+      "Q253",
+      "Q283"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_program_to_node",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_goal_to_budget",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_from_responsibility_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_consolidate_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "identify_responsible_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_responsibility_clarity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "process_document",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_generate_query_from_pdq",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "semantic_search",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_apply_mmr",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_empty_semantic_cube",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_policy_domain",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_cross_cutting_themes",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_value_chain_link",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_vectorize_segments",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_process_segment",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_calculate_semantic_complexity",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_evidence_confidence",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_entity_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "generate_pdq_report",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_accountability_matrix",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "14",
+    "contracts": [
+      "Q014",
+      "Q044",
+      "Q074",
+      "Q104",
+      "Q134",
+      "Q164",
+      "Q194",
+      "Q224",
+      "Q254",
+      "Q284"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "calculate_acyclicity_pvalue",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_is_acyclic",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "get_graph_stats",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_node_importance",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_generate_subgraph",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "add_node",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "add_edge",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_initialize_rng",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_statistical_power",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_get_node_validator",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_create_empty_result",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "execute_suite",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_connection_matrix",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "run_performance_benchmarks",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_benchmark_operation",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_log_metric",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_engine_readiness",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "_calculate_loss_functions",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_likelihood",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_causal_categories",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_extraer_categorias",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "15",
+    "contracts": [
+      "Q015",
+      "Q045",
+      "Q075",
+      "Q105",
+      "Q135",
+      "Q165",
+      "Q195",
+      "Q225",
+      "Q255",
+      "Q285"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_confounders",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_effect_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_scenario_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_recommendations",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_causal_nodes",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_evaluate_factual",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_evaluate_counterfactual",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_financial_consistency",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_activity_sequence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_generate_necessity_remediation",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_load_questionnaire",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "construct_causal_dag",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "estimate_causal_effects",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_counterfactuals",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_build_type_hierarchy",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_check_structural_violation",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_type_transition_prior",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_textual_proximity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_validar_orden_causal",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_refine_edge_probabilities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "compare_policy_interventions",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "infer_mechanisms",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "16",
+    "contracts": [
+      "Q016",
+      "Q046",
+      "Q076",
+      "Q106",
+      "Q136",
+      "Q166",
+      "Q196",
+      "Q226",
+      "Q256",
+      "Q286"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_syntax",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_ner",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_language_specificity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_composite_likelihood",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_semantic_distance",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_classify_temporal_type",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_outcome_mentions",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_temporal_consistency",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_goals",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_parse_goal_context",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_classify_goal_type",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_parse_temporal_marker",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_extract_resources",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "_generate_recommendations",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "17",
+    "contracts": [
+      "Q017",
+      "Q047",
+      "Q077",
+      "Q107",
+      "Q137",
+      "Q167",
+      "Q197",
+      "Q227",
+      "Q257",
+      "Q287"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "TeoriaCambio",
+        "method": "_encontrar_caminos_completos",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "validacion_completa",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "verify_conditional_independence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_generate_independence_tests",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_perform_sensitivity_analysis_internal",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesFactorTable",
+        "method": "get_bayes_factor",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "18",
+    "contracts": [
+      "Q018",
+      "Q048",
+      "Q078",
+      "Q108",
+      "Q138",
+      "Q168",
+      "Q198",
+      "Q228",
+      "Q258",
+      "Q288"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_get_prior_effect",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_estimate_effect_bayesian",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_statistical_power",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_aggregate_bayesian_confidence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "19",
+    "contracts": [
+      "Q019",
+      "Q049",
+      "Q079",
+      "Q109",
+      "Q139",
+      "Q169",
+      "Q199",
+      "Q229",
+      "Q259",
+      "Q289"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_objective_alignment",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_identify_affected_sections",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_generate_resolution_recommendations",
+        "mother_file": "contradiction_deteccion.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_generate_optimal_remediations",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_get_remediation_text",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_detect_allocation_gaps",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "20",
+    "contracts": [
+      "Q020",
+      "Q050",
+      "Q080",
+      "Q110",
+      "Q140",
+      "Q170",
+      "Q200",
+      "Q230",
+      "Q260",
+      "Q290"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_pdet_alignment",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_causal_coherence",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_validate_dnp_compliance",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_generate_dnp_report",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "21",
+    "contracts": [
+      "Q021",
+      "Q051",
+      "Q081",
+      "Q111",
+      "Q141",
+      "Q171",
+      "Q201",
+      "Q231",
+      "Q261",
+      "Q291"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_counterfactuals",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_scenario_narrative",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_mediator_mentions",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_validar_orden_causal",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_generate_interventions",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "22",
+    "contracts": [
+      "Q022",
+      "Q052",
+      "Q082",
+      "Q112",
+      "Q142",
+      "Q172",
+      "Q202",
+      "Q232",
+      "Q262",
+      "Q292"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "calculate_quality_score",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_estimate_score_confidence",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "_calculate_quality_score",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_aggregate_bayesian_confidence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "evaluate_policy_numerical_consistency",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "get_diagnostics",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "process_document",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_generate_query_from_pdq",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_filter_by_pdq",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_extract_numerical_values",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_embed_texts",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_compute_overall_confidence",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_overall_quality",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "normalize_unicode",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "segment_into_sentences",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_evidence_confidence",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_avg_confidence",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_quality_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_construct_evidence_bundle",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "compile_pattern",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "extract_contextual_window",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_executive_report",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "export_results",
+        "mother_file": "policy_processor.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "23",
+    "contracts": [
+      "Q023",
+      "Q053",
+      "Q083",
+      "Q113",
+      "Q143",
+      "Q173",
+      "Q203",
+      "Q233",
+      "Q263",
+      "Q293"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_semantic_distance",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "extract_semantic_cube",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_quantify_uncertainty",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_mediator_mentions",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "get_diagnostics",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_perturb_evidence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "24",
+    "contracts": [
+      "Q024",
+      "Q054",
+      "Q084",
+      "Q114",
+      "Q144",
+      "Q174",
+      "Q204",
+      "Q234",
+      "Q264",
+      "Q294"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_break_cycles",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "25",
+    "contracts": [
+      "Q025",
+      "Q055",
+      "Q085",
+      "Q115",
+      "Q145",
+      "Q175",
+      "Q205",
+      "Q235",
+      "Q265",
+      "Q295"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "posterior_predictive_check",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_ablation_analysis",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_waic_difference",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_add_ood_noise",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "26",
+    "contracts": [
+      "Q026",
+      "Q056",
+      "Q086",
+      "Q116",
+      "Q146",
+      "Q176",
+      "Q206",
+      "Q236",
+      "Q266",
+      "Q296"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "TeoriaCambio",
+        "method": "construir_grafo_causal",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "validacion_completa",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "export_nodes",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": false,
+        "contracts_present": 10
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_causal_diagram",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_causal_model_json",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "export_causal_network",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "27",
+    "contracts": [
+      "Q027",
+      "Q057",
+      "Q087",
+      "Q117",
+      "Q147",
+      "Q177",
+      "Q207",
+      "Q237",
+      "Q267",
+      "Q297"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "BeachEvidentialTest",
+        "method": "apply_test_logic",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_connection_matrix",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_compute_overall_confidence",
+        "mother_file": "embedding_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "28",
+    "contracts": [
+      "Q028",
+      "Q058",
+      "Q088",
+      "Q118",
+      "Q148",
+      "Q178",
+      "Q208",
+      "Q238",
+      "Q268",
+      "Q298"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "execute_suite",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_engine_readiness",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_benchmark_operation",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "calculate_acyclicity_pvalue",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "29",
+    "contracts": [
+      "Q029",
+      "Q059",
+      "Q089",
+      "Q119",
+      "Q149",
+      "Q179",
+      "Q209",
+      "Q239",
+      "Q269",
+      "Q299"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "ConfigLoader",
+        "method": "update_priors_from_feedback",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "check_uncertainty_reduction_criterion",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "_save_prior_history",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "_load_uncertainty_history",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_extract_feedback_from_audit",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_node_importance",
+        "mother_file": "teoria_cambio.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "BayesFactorTable",
+        "method": "get_bayes_factor",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  },
+  {
+    "base_question": "30",
+    "contracts": [
+      "Q030",
+      "Q060",
+      "Q090",
+      "Q120",
+      "Q150",
+      "Q180",
+      "Q210",
+      "Q240",
+      "Q270",
+      "Q300"
+    ],
+    "contracts_count": 10,
+    "canonical_methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_language_specificity",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "mother_file": "analyzer_one.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "identify_failure_points",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "_get_dynamics_pattern",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "chunk_text",
+        "mother_file": "semantic_chunking_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "_detect_pdm_structure",
+        "mother_file": "semantic_chunking_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "_detect_table",
+        "mother_file": "semantic_chunking_policy.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "mother_file": "derek_beach.py",
+        "existence_verified": true,
+        "contracts_present": 10
+      }
+    ]
+  }
+]
