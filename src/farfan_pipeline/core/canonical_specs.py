@@ -27,7 +27,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Final
-import math
 
 # ============================================================================
 # QUALITY THRESHOLDS - Cross-Method Standard (READ-ONLY)
