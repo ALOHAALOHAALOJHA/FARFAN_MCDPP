@@ -14,15 +14,35 @@ All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
 """
 from __future__ import annotations
 
+import json
 import logging
 import threading
 import time
 import weakref
 from dataclasses import dataclass
 from importlib import import_module
+from pathlib import Path
 from typing import Any, Callable
 
 logger = logging.getLogger(__name__)
+
+# Canonical inventory path
+_CANONICAL_INVENTORY_PATH = (
+    Path(__file__).parent / "json_files_phase_two" / "canonical_methods_triangulated.json"
+)
+
+# Mother file to module mapping
+_MOTHER_FILE_TO_MODULE: dict[str, str] = {
+    "derek_beach.py": "methods_dispensary.derek_beach",
+    "policy_processor.py": "methods_dispensary.policy_processor",
+    "teoria_cambio.py": "methods_dispensary.teoria_cambio",
+    "financiero_viabilidad_tablas.py": "methods_dispensary.financiero_viabilidad_tablas",
+    "embedding_policy.py": "methods_dispensary.embedding_policy",
+    "analyzer_one.py": "methods_dispensary.analyzer_one",
+    "contradiction_deteccion.py": "methods_dispensary.contradiction_deteccion",
+    "semantic_chunking_policy.py": "methods_dispensary.semantic_chunking_policy",
+    "bayesian_multilevel_system.py": "methods_dispensary.bayesian_multilevel_system",
+}
 
 
 class MethodRegistryError(RuntimeError):
@@ -558,8 +578,188 @@ def setup_default_instantiation_rules(registry: MethodRegistry) -> None:
     registry.register_instantiation_rule("PolicyTextProcessor", instantiate_policy_processor)
 
 
+def load_canonical_methods_inventory() -> list[dict[str, Any]]:
+    """Load the canonical methods inventory from JSON.
+    
+    Returns:
+        List of base question entries with canonical methods.
+        
+    Raises:
+        FileNotFoundError: If canonical inventory file not found.
+    """
+    if not _CANONICAL_INVENTORY_PATH.exists():
+        raise FileNotFoundError(
+            f"Canonical methods inventory not found: {_CANONICAL_INVENTORY_PATH}"
+        )
+    
+    with open(_CANONICAL_INVENTORY_PATH) as f:
+        return json.load(f)
+
+
+def inject_canonical_methods(registry: MethodRegistry) -> dict[str, Any]:
+    """Inject all canonical methods directly into registry.
+    
+    This is the DEFAULT operation for executor methods - bypasses class
+    instantiation entirely by importing methods as unbound functions and
+    wrapping them to handle 'self' parameter.
+    
+    The injection flow:
+    1. Load canonical_methods_triangulated.json
+    2. For each (class, method) pair:
+       a. Import the class from its mother module
+       b. Get the unbound method from the class
+       c. Create a wrapper that instantiates class lazily on first call
+       d. Inject wrapper into registry._direct_methods
+    3. When get_method() is called, wrapper is returned (no class instantiation)
+    4. When wrapper is called, it instantiates class ONCE and caches it
+    
+    Args:
+        registry: MethodRegistry to populate with canonical methods.
+        
+    Returns:
+        Statistics about injection results.
+    """
+    stats = {
+        "total_methods": 0,
+        "injected": 0,
+        "failed": 0,
+        "failures": [],
+        "classes_loaded": set(),
+    }
+    
+    try:
+        inventory = load_canonical_methods_inventory()
+    except FileNotFoundError as e:
+        logger.error("canonical_inventory_not_found error=%s", e)
+        return {"error": str(e), **stats}
+    
+    # Cache for class instances (lazy instantiation on first method call)
+    class_instances: dict[str, Any] = {}
+    class_types: dict[str, type] = {}
+    
+    # Collect unique (class, method, mother_file) tuples
+    unique_methods: dict[tuple[str, str], str] = {}
+    for entry in inventory:
+        for m in entry.get("canonical_methods", []):
+            key = (m["class"], m["method"])
+            if key not in unique_methods:
+                unique_methods[key] = m["mother_file"]
+    
+    stats["total_methods"] = len(unique_methods)
+    logger.info("canonical_injection_start total_methods=%d", len(unique_methods))
+    
+    for (class_name, method_name), mother_file in unique_methods.items():
+        try:
+            # Get module path from mother file
+            module_path = _MOTHER_FILE_TO_MODULE.get(mother_file)
+            if not module_path:
+                raise ValueError(f"Unknown mother file: {mother_file}")
+            
+            # Load class type if not cached
+            if class_name not in class_types:
+                module = import_module(module_path)
+                cls = getattr(module, class_name)
+                if not isinstance(cls, type):
+                    raise TypeError(f"{class_name} is not a class")
+                class_types[class_name] = cls
+                stats["classes_loaded"].add(class_name)
+            
+            cls = class_types[class_name]
+            
+            # Verify method exists on class
+            if not hasattr(cls, method_name):
+                raise AttributeError(f"Method {method_name} not found on {class_name}")
+            
+            # Create lazy wrapper that instantiates class on first call
+            def create_wrapper(cls_name: str, meth_name: str, cls_type: type) -> Callable:
+                """Create wrapper with closure over class info."""
+                def wrapper(*args: Any, **kwargs: Any) -> Any:
+                    # Lazy instantiation
+                    if cls_name not in class_instances:
+                        # Use special instantiation if available
+                        if cls_name in registry._special_instantiation:
+                            class_instances[cls_name] = registry._special_instantiation[cls_name](cls_type)
+                        else:
+                            try:
+                                class_instances[cls_name] = cls_type()
+                            except TypeError:
+                                # Class requires arguments - try common patterns
+                                class_instances[cls_name] = cls_type.__new__(cls_type)
+                        logger.debug("lazy_class_instantiated class=%s", cls_name)
+                    
+                    instance = class_instances[cls_name]
+                    method = getattr(instance, meth_name)
+                    return method(*args, **kwargs)
+                
+                wrapper.__name__ = f"{cls_name}.{meth_name}"
+                wrapper.__qualname__ = f"{cls_name}.{meth_name}"
+                return wrapper
+            
+            wrapped_method = create_wrapper(class_name, method_name, cls)
+            
+            # Inject into registry
+            registry.inject_method(class_name, method_name, wrapped_method)
+            stats["injected"] += 1
+            
+        except Exception as e:
+            stats["failed"] += 1
+            stats["failures"].append({
+                "class": class_name,
+                "method": method_name,
+                "error": str(e),
+            })
+            logger.warning(
+                "canonical_method_injection_failed class=%s method=%s error=%s",
+                class_name, method_name, e
+            )
+    
+    stats["classes_loaded"] = list(stats["classes_loaded"])
+    
+    logger.info(
+        "canonical_injection_complete injected=%d failed=%d classes=%d",
+        stats["injected"],
+        stats["failed"],
+        len(stats["classes_loaded"]),
+    )
+    
+    return stats
+
+
+def setup_registry_with_canonical_methods(
+    class_paths: dict[str, str] | None = None,
+    cache_ttl_seconds: float = 300.0,
+) -> tuple[MethodRegistry, dict[str, Any]]:
+    """Create and configure MethodRegistry with canonical methods pre-injected.
+    
+    This is the RECOMMENDED way to create a MethodRegistry for executor use.
+    All canonical methods are injected directly, bypassing class instantiation.
+    
+    Args:
+        class_paths: Optional class paths (uses default if None).
+        cache_ttl_seconds: Cache TTL for fallback instantiation.
+        
+    Returns:
+        Tuple of (configured MethodRegistry, injection statistics).
+    """
+    registry = MethodRegistry(
+        class_paths=class_paths,
+        cache_ttl_seconds=cache_ttl_seconds,
+    )
+    
+    # Setup special instantiation rules first (used by lazy wrappers)
+    setup_default_instantiation_rules(registry)
+    
+    # Inject all canonical methods
+    stats = inject_canonical_methods(registry)
+    
+    return registry, stats
+
+
 __all__ = [
     "MethodRegistry",
     "MethodRegistryError",
     "setup_default_instantiation_rules",
+    "inject_canonical_methods",
+    "setup_registry_with_canonical_methods",
+    "load_canonical_methods_inventory",
 ]

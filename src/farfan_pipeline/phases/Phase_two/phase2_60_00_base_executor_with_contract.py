@@ -632,7 +632,7 @@ class BaseExecutorWithContract(ABC):
             value: The value to set
 
         Example:
-            _set_nested_value(d, "a.b.c", 123) → d["a"]["b"]["c"] = 123
+            _set_nested_value(d, "a.b.c", 123) -> d["a"]["b"]["c"] = 123
         """
         keys = key_path.split(".")
         current = target_dict
@@ -701,7 +701,7 @@ class BaseExecutorWithContract(ABC):
             List of 300 contract dicts, ordered by question_id (Q001-Q300)
         
         Raises:
-            FileNotFoundError: If contracts directory doesn't exist
+            FileNotFoundError: If contracts directory does not exist
             ValueError: If any contract fails to load or validate
         
         Example:
@@ -773,7 +773,7 @@ class BaseExecutorWithContract(ABC):
             Contract dictionary
         
         Raises:
-            FileNotFoundError: If contract file doesn't exist
+            FileNotFoundError: If contract file does not exist
             json.JSONDecodeError: If contract JSON is invalid
             ValueError: If contract fails schema validation
         """

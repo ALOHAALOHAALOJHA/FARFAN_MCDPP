@@ -611,7 +611,7 @@
         "mother_file": "derek_beach.py",
         "existence_verified": true,
         "contracts_present": 10,
-        "replaced_deprecated": "BayesianMechanismInference._infer_mechanism_type"
+        "correction": "replaced_deprecated:BayesianMechanismInference._infer_mechanism_type"
       },
       {
         "class": "BayesianMechanismInference",
@@ -2643,11 +2643,12 @@
         "contracts_present": 10
       },
       {
-        "class": "TeoriaCambio",
+        "class": "AdvancedDAGValidator",
         "method": "export_nodes",
         "mother_file": "teoria_cambio.py",
-        "existence_verified": false,
-        "contracts_present": 10
+        "existence_verified": true,
+        "contracts_present": 10,
+        "correction": "corrected_from:TeoriaCambio.export_nodes"
       },
       {
         "class": "ReportingEngine",

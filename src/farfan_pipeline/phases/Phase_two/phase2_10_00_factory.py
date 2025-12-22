@@ -134,6 +134,12 @@ from orchestration.method_registry import (
     setup_default_instantiation_rules,
 )
 
+# Canonical method injection (direct method access, no class instantiation)
+from canonic_phases.Phase_two.methods_registry import (
+    inject_canonical_methods,
+    setup_registry_with_canonical_methods,
+)
+
 # SISAS - Signal Intelligence Layer (Nivel 2)
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
     EnrichedSignalPack,
@@ -840,95 +846,54 @@ class AnalysisPipelineFactory:
             return False
 
     def _build_method_executor(self) -> None:
-        """Build MethodExecutor with full dependency wiring.
+        """Build MethodExecutor with CANONICAL METHOD INJECTION.
         
-        CRITICAL INTEGRATION POINT - Method Dispensary Pattern:
-        =========================================================
+        CRITICAL INTEGRATION POINT - Direct Method Injection Pattern:
+        ==============================================================
         
-        This is where the "monolith dispensaries" get wired into the pipeline.
-        The 30 executors orchestrate methods from these dispensaries WITHOUT
-        direct imports or tight coupling to the monolith implementations.
+        This method now uses CANONICAL METHOD INJECTION as the default operation.
+        Instead of instantiating full classes to get methods, we:
+        
+        1. Load canonical_methods_triangulated.json (348 verified methods)
+        2. Import each method directly from its mother module
+        3. Wrap methods with lazy class instantiation (only on first call)
+        4. Inject wrapped methods into registry._direct_methods
+        
+        Benefits:
+        ---------
+        - NO upfront class instantiation (faster startup)
+        - Methods are verified to exist at load time
+        - Lazy instantiation only when method is actually called
+        - Single source of truth: canonical_methods_triangulated.json
+        
+        Fallback:
+        ---------
+        If canonical injection fails, falls back to class_registry which
+        loads classes on-demand via MethodRegistry._get_instance().
         
         Architecture Flow:
         -----------------
-        1. build_class_registry() loads the "method dispensaries" (monoliths):
-           - IndustrialPolicyProcessor: 17 methods used across D1-Q1, D1-Q5, D2-Q2, D3-Q1
-           - BayesianEvidenceScorer: 8 methods for confidence calculation
-           - PDETMunicipalPlanAnalyzer: 52+ methods (LARGEST dispensary)
-             Used in: D1-Q2, D1-Q3, D1-Q4, D2-Q1, D3-Q2, D3-Q3, D3-Q4, D3-Q5, 
-                      D4-Q1, D4-Q2, D4-Q3, D5-Q1, D5-Q2, D5-Q4, D5-Q5
-           - CausalExtractor: 28 methods for causal inference
-           - FinancialAuditor: 13 methods for financial analysis
-           - BayesianMechanismInference: 14 methods for mechanism testing
-           - [... 15+ more classes from farfan_core]
-           
-           Total: ~240 method pairs validated (see executor_factory_validation.json)
-           
-        2. These classes are NOT instantiated here - they're registered as TYPES.
-           Instantiation happens lazily via MethodRegistry when methods are called.
-           
-        3. ExtendedArgRouter receives the class registry and provides:
-           - 30+ special routes for high-traffic methods (see arg_router.py)
-           - Generic routing via signature inspection for all other methods
-           - Strict argument validation (no silent parameter drops)
-           - **kwargs awareness for forward compatibility
-           
-        4. MethodExecutor combines three critical components:
-           - MethodRegistry: Instantiation rules + shared instances (e.g., MunicipalOntology)
-           - ArgRouter: Method routing + argument validation
-           - SignalRegistry: Injected for signal-aware methods
-           
-        5. Each of the 30 Executors orchestrates methods via:
-           ```python
-           result = self.method_executor.execute(
-               class_name="PDETMunicipalPlanAnalyzer",
-               method_name="_score_indicators",
-               **payload  # document, question_id, signal_pack, etc.
-           )
-           ```
-           
-        Method Reuse Pattern:
-        --------------------
-        - Methods are PARTIALLY reused across executors (not fully shared)
-        - Example: "_score_indicators" used in D3-Q1, D3-Q2, D4-Q1
-        - Example: "_test_sufficiency" used in D2-Q2, D3-Q2, D3-Q4
-        - Each executor uses a DIFFERENT COMBINATION of methods
-        - Total unique combinations: 30 executors × avg 12 methods = ~360 method calls
-        
-        Not All Methods Are Used:
-        ------------------------
-        The monoliths contain MORE methods than executors need.
-        Only methods listed in executors_methods.json are actively used.
-        Phase 1 (ingestion) uses additional methods not in executor contracts.
-        
-        Validation:
-        ----------
-        - executor_factory_validation.json: 243 pairs validated, 14 failures
-        - Failures are methods NOT in catalog (likely private/deprecated)
-        - All executor contracts reference validated methods only
-        
-        Signal Registry Integration:
-        ---------------------------
-        Signal registry is injected so methods can access:
-        - Policy-area-specific patterns
-        - Expected elements for validation
-        - Semantic enrichment via intelligence layer
+        1. inject_canonical_methods(registry) pre-populates 348 methods
+        2. build_class_registry() provides fallback for non-canonical methods
+        3. ExtendedArgRouter handles argument routing
+        4. MethodExecutor.execute() calls registry.get_method() which:
+           a. First checks _direct_methods (canonical, fast path)
+           b. Falls back to _get_instance() if not found
         
         Raises:
             ExecutorConstructionError: If executor construction fails.
             
         See Also:
-            - executors_methods.json: Complete executor→methods mapping
-            - executor_factory_validation.json: Method catalog validation
-            - arg_router.py: Special routes and routing logic
-            - class_registry.py: Monolith class paths (_CLASS_PATHS)
+            - canonical_methods_triangulated.json: Verified method inventory
+            - inject_canonical_methods(): Direct injection logic
+            - phase2_10_02_methods_registry.py: Registry implementation
         """
         if self._signal_registry is None:
             raise ExecutorConstructionError(
                 "Cannot build method executor: signal registry not built"
             )
 
-        logger.info("method_executor_building_start dispensaries=loading")
+        logger.info("method_executor_building_start canonical_injection=enabled")
 
         try:
             # Step 1: Build method registry with special instantiation rules
@@ -939,17 +904,40 @@ class AnalysisPipelineFactory:
 
             logger.info("method_registry_built instantiation_rules=configured")
 
-            # Step 2: Build class registry - THE METHOD DISPENSARIES
-            # This loads ~20 monolith classes with 240+ methods total
-            # Each class is a "dispensary" that provides methods to executors
+            # Step 2: CANONICAL METHOD INJECTION (NEW DEFAULT)
+            # Inject all 348 canonical methods directly into registry
+            # This bypasses class instantiation - methods are pre-loaded as callables
+            # Classes are only instantiated lazily on first method call
+            try:
+                injection_stats = inject_canonical_methods(method_registry)
+                logger.info(
+                    "canonical_methods_injected injected=%d failed=%d classes=%d",
+                    injection_stats.get("injected", 0),
+                    injection_stats.get("failed", 0),
+                    len(injection_stats.get("classes_loaded", [])),
+                )
+                if injection_stats.get("failed", 0) > 0:
+                    logger.warning(
+                        "canonical_injection_failures count=%d first_failures=%s",
+                        injection_stats["failed"],
+                        injection_stats.get("failures", [])[:5],
+                    )
+            except Exception as e:
+                logger.warning(
+                    "canonical_injection_failed falling_back_to_class_instantiation error=%s",
+                    e
+                )
+
+            # Step 3: Build class registry - FALLBACK for non-canonical methods
+            # This loads ~30 monolith classes as backup for methods not in canonical inventory
             class_registry = build_class_registry()
 
             logger.info(
-                "class_registry_built dispensaries=%d total_methods=240+",
+                "class_registry_built dispensaries=%d fallback_mode=enabled",
                 len(class_registry)
             )
 
-            # Step 3: Build extended arg router with special routes
+            # Step 4: Build extended arg router with special routes
             # Handles 30+ high-traffic method routes + generic routing
             arg_router = ExtendedArgRouter(class_registry)
 
