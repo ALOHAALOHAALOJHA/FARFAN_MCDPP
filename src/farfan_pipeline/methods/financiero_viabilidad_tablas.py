@@ -345,11 +345,21 @@ class QualityScore:
 class PDETMunicipalPlanAnalyzer:
     """Analizador de vanguardia para Planes de Desarrollo Municipal PDET"""
 
+    # Calibration protocol parameters for delegation to CalibrationPolicy
+    # These parameters declare the method's calibration approach but do NOT
+    # override existing instance parameters (e.g., self.confidence_threshold)
+    # 
+    # Parameter Provenance (see CALIBRATION_PARAMETER_RATIONALITY_MATRIX.md):
+    # - prior_alpha, prior_beta: Uniform prior (1.0, 1.0) = weakly informative
+    #   Rationale: Conservative choice without domain-specific empirical data.
+    #   Alternative would be Jeffrey's prior (0.5, 0.5) for scale invariance.
+    # - thresholds_source: Quality labels (0.85/0.70/0.55) from questionnaire_monolith.json
+    #   are READ-ONLY and enforced in _compute_label_probabilities_from_posterior()
     calibration_params: dict[str, Any] = {
         "domain": "financial",
         "output_semantics": "bayesian_posterior",
-        "prior_alpha": 2.0,
-        "prior_beta": 5.0,
+        "prior_alpha": 1.0,  # Uniform prior - conservative, weakly informative
+        "prior_beta": 1.0,   # Uniform prior - conservative, weakly informative
         "logit_transform": False,
         "thresholds_source": "questionnaire_monolith.json",
     }
