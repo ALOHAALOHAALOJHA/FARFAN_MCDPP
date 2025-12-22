@@ -78,7 +78,7 @@ def test_label_probability_mass():
     
     # Invalid probabilities
     try:
-        bad_probs = LabelProbabilityMass(
+        LabelProbabilityMass(
             excelente=0.5,
             bueno=0.5,
             aceptable=0.5,
