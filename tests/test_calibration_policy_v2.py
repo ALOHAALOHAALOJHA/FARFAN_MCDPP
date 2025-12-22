@@ -27,7 +27,6 @@ from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
     CalibrationPolicy,
     CalibrationProvenance,
     CalibratedOutput,
-    CalibrableMethod,
     LabelProbabilityMass,
     MethodCalibrationResult,
     MicroLevelThresholds,
