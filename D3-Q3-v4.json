@@ -40,25 +40,13 @@
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_A",
-    "method_count": 18,
+    "method_count": 17,
     "execution_phases": {
       "phase_A_construction": {
         "level": "N1-EMP",
         "output_type": "FACT",
         "fusion_behavior": "additive",
-        "methods": [
-          {
-            "class_name": "SemanticAnalyzer",
-            "method_name": "_empty_semantic_cube",
-            "mother_file": "analyzer_one.py",
-            "provides": "semanticanalyzer_emptysemanticcube",
-            "level": "N1-EMP",
-            "output_type": "FACT",
-            "fusion_behavior": "additive",
-            "description": "Create empty semantic cube structure for initialization",
-            "requires": []
-          }
-        ]
+        "methods": []
       },
       "phase_B_computation": {
         "level": "N2-INF",
@@ -74,9 +62,7 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Match programs to semantic nodes",
-            "requires": [
-              "semanticanalyzer_emptysemanticcube"
-            ]
+            "requires": []
           },
           {
             "class_name": "FinancialAuditor",
@@ -100,9 +86,7 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "weighted_combination",
             "description": "Consolidate identified entities semantically",
-            "requires": [
-              "semanticanalyzer_emptysemanticcube"
-            ]
+            "requires": []
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -316,7 +300,7 @@
       "N3_audits_N2": true,
       "N3_can_veto_N1_and_N2": true
     },
-    "notes": "TYPE_A contract with 1 N1, 15 N2, 2 N3 methods. Excludes 4 L4 synthesis methods per guide. Semantic vectorization and responsibility extraction audits have veto capability."
+    "notes": "TYPE_A contract with 0 N1, 15 N2, 2 N3 methods (17 total). Excludes 4 L4 synthesis methods per guide. SOURCE DATA ERROR CORRECTED: Removed _empty_semantic_cube (private fallback method that returns empty dict when no segments - not a legitimate analytical capability). N2 consumes PreprocesadoMetadata directly. Semantic vectorization and responsibility extraction audits have veto capability."
   },
   "question_context": {
     "monolith_ref": "Q013",
@@ -351,12 +335,10 @@
     "assembly_rules": [
       {
         "rule_id": "R1_fact_aggregation",
-        "description": "Union all N1 empirical facts without transformation",
-        "sources": [
-          "semanticanalyzer_emptysemanticcube"
-        ],
-        "operation": "set_union",
-        "output_label": "fact_base"
+        "description": "No N1 facts - N2 methods consume PreprocesadoMetadata directly",
+        "sources": [],
+        "operation": "direct_metadata_consumption",
+        "output_label": "fact_base_empty"
       },
       {
         "rule_id": "R2_parameter_weighting",
