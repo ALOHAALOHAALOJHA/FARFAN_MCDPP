@@ -241,7 +241,7 @@
   {
     "base_question": "03",
     "contracts": [
-      "Q033",
+      "Q003""Q033",
       "Q063",
       "Q093",
       "Q123",
@@ -251,7 +251,7 @@
       "Q243",
       "Q273"
     ],
-    "contracts_count": 9,
+    "contracts_count": 10,
     "canonical_methods": [
       {
         "class": "FinancialAuditor",
