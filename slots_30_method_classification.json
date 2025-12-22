@@ -1,0 +1,2618 @@
+[
+  {
+    "BASE_SLOT": "D1-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q001",
+    "methods": [
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Analyzes and diagnoses critical links"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_analyze_link_text",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "process",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_match_patterns_in_sentences",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_point_evidence",
+        "layer": "L1_empirical",
+        "role": "L2-INF",
+        "rationale": "Extracts evidence from text"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_goals",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_parse_goal_context",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_parse_amount",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_financial_amounts",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_from_budget_table",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Extracts data from budget table"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_extract_quantitative_claims",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_parse_number",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_statistical_significance_test",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "method": "evaluate_policy_metric",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "method": "compare_policies",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "chunk_text",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "embed_single",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D1-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q002",
+    "methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_direct_evidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_detect_allocation_gaps",
+        "layer": "L3_audit",
+        "role": "L2-INF",
+        "rationale": "Detects gaps in financial allocation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_detect_gaps",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_optimal_remediations",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "counterfactual_query",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_detect_numerical_inconsistencies",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_numerical_divergence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianConfidenceCalculator",
+        "method": "calculate_posterior",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D1-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q003",
+    "methods": [
+      {
+        "class": "FinancialAuditor",
+        "method": "trace_financial_allocation",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_process_financial_table",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_program_to_node",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_goal_to_budget",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_perform_counterfactual_budget_check",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_budget_for_pillar",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_funding_source",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_tables",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_analyze_funding_sources",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_financial_component",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D1-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q004",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "identify_responsible_entities",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_ner",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_syntax",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_entity_type",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Entity classification logic"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_entity_specificity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_consolidate_entities",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "extract_entity_activity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_normalize_entity",
+        "layer": "L1_empirical",
+        "role": "L2-INF",
+        "rationale": "String parsing/extraction"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_validate_entity_activity",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_calculate_ea_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_evidence_traceability",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D1-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q005",
+    "methods": [
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_check_deadline_constraints",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Iterative data transformation"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "verify_temporal_consistency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "identify_failure_points",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_analyze_link_text",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_metadata",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D2-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q006",
+    "methods": [
+      {
+        "class": "PDFProcessor",
+        "method": "extract_tables",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Extracts tables from PDF"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_process_financial_table",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_deduplicate_tables",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_tables",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_is_likely_header",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_clean_dataframe",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_accountability_matrix",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D2-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q007",
+    "methods": [
+      {
+        "class": "BayesianMechanismInference",
+        "method": "infer_mechanisms",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_single_mechanism",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Infers single mechanism"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_chain_capacity_vector",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Bayesian inference computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Builds causal hierarchy with scoring"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "construir_grafo_causal",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Constructs causal graph with nodes/edges"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_es_conexion_valida",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "construct_causal_dag",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns analytical object"
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "method": "classify_test",
+        "layer": "L3_audit",
+        "role": "L2-INF",
+        "rationale": "Contains validation/assertion logic"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D2-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q008",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_causal_links",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_composite_likelihood",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_initialize_prior",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_type_transition_prior",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_causal_edges",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_refine_edge_probabilities",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_create_default_equations",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "extract_semantic_cube",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D2-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q009",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_bayesian_risk_inference",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "sensitivity_analysis",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Computes e-value and robustness"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D2-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q010",
+    "methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_detect_logical_incompatibilities",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_coherence_metrics",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_objective_alignment",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_graph_fragmentation",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_sequence_logic",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_causal_coherence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "calculate_likelihood_adaptativo",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D3-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q011",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_evidence_traceability",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "assign_probative_value",
+        "layer": "L3_audit",
+        "role": "L2-INF",
+        "rationale": "Contains validation/assertion logic"
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "method": "apply_test_logic",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Analyzes and diagnoses critical links"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_metadata",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_calculate_quality_score",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D3-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q012",
+    "methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_bayesian_posterior",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_confidence_interval",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_adjust_domain_weights",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_get_spanish_stopwords",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Returns static stopword list"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_log_refactored_components",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_assess_financial_sustainability",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "calculate_likelihood_adaptativo",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_calculate_quality_score",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_generar_sugerencias_internas",
+        "layer": "L4_synthesis",
+        "role": "L1-EMP",
+        "rationale": "Generates actionable suggestions"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_deduplicate_tables",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_indicator_to_dict",
+        "layer": "L4_synthesis",
+        "role": "L1-EMP",
+        "rationale": "Serializes indicator to output dict"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_recommendations",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compile_pattern_registry",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns analytical object"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_build_point_patterns",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Builds pattern matching structures"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_empty_result",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Creates empty result structure"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D3-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q013",
+    "methods": [
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_program_to_node",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_goal_to_budget",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_from_responsibility_tables",
+        "layer": "L3_audit",
+        "role": "L2-INF",
+        "rationale": "Contains validation/assertion logic"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_consolidate_entities",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "identify_responsible_entities",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_responsibility_clarity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "process_document",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_generate_query_from_pdq",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "semantic_search",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_apply_mmr",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_empty_semantic_cube",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Creates empty semantic cube structure"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_policy_domain",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_cross_cutting_themes",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_value_chain_link",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Scores and classifies segments"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_vectorize_segments",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_process_segment",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_calculate_semantic_complexity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_evidence_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_entity_to_dict",
+        "layer": "L4_synthesis",
+        "role": "L1-EMP",
+        "rationale": "Serializes entity to output dict"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "generate_pdq_report",
+        "layer": "L4_synthesis",
+        "role": "L2-INF",
+        "rationale": "Generates comprehensive analytical report"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_accountability_matrix",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D3-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q014",
+    "methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "calculate_acyclicity_pvalue",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_is_acyclic",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "get_graph_stats",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_node_importance",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_generate_subgraph",
+        "layer": "L2_inferential",
+        "role": "L1-EMP",
+        "rationale": "Generates subgraph from DAG"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "add_node",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Adds node with computed attributes"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "add_edge",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Computes scores/metrics"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_initialize_rng",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_statistical_power",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_get_node_validator",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns validation result type"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_create_empty_result",
+        "layer": "L1_empirical",
+        "role": "L2-INF",
+        "rationale": "Creates empty validation structure"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "execute_suite",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_connection_matrix",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "run_performance_benchmarks",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_benchmark_operation",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_log_metric",
+        "layer": "L4_synthesis",
+        "role": "L2-INF",
+        "rationale": "Formats output for presentation"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_engine_readiness",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "_calculate_loss_functions",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_likelihood",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_causal_categories",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_extraer_categorias",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Iterative data transformation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D3-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q015",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_confounders",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_effect_to_dict",
+        "layer": "L4_synthesis",
+        "role": "L1-EMP",
+        "rationale": "Serializes effect to output dict"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_scenario_to_dict",
+        "layer": "L4_synthesis",
+        "role": "L1-EMP",
+        "rationale": "Serializes scenario to output dict"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_recommendations",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_causal_nodes",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_evaluate_factual",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_evaluate_counterfactual",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_financial_consistency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_activity_sequence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_generate_necessity_remediation",
+        "layer": "L4_synthesis",
+        "role": "L2-INF",
+        "rationale": "Formats output for presentation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_load_questionnaire",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Loads JSON questionnaire data"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "construct_causal_dag",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns analytical object"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "estimate_causal_effects",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns analytical object"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_counterfactuals",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_build_type_hierarchy",
+        "layer": "L3_audit",
+        "role": "L2-INF",
+        "rationale": "Contains validation/assertion logic"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_check_structural_violation",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_type_transition_prior",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_textual_proximity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_validar_orden_causal",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Iterative data transformation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_refine_edge_probabilities",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "compare_policy_interventions",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Computes scores/metrics"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "infer_mechanisms",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D4-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q016",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_syntax",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_ner",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_language_specificity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_composite_likelihood",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_semantic_distance",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_classify_temporal_type",
+        "layer": "L1_empirical",
+        "role": "L2-INF",
+        "rationale": "String parsing/extraction"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_outcome_mentions",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_temporal_consistency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_goals",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_parse_goal_context",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_classify_goal_type",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_parse_temporal_marker",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_extract_resources",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "_generate_recommendations",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D4-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q017",
+    "methods": [
+      {
+        "class": "TeoriaCambio",
+        "method": "_encontrar_caminos_completos",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "validacion_completa",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns validation result type"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Builds causal hierarchy with scoring"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "verify_conditional_independence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_generate_independence_tests",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_perform_sensitivity_analysis_internal",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesFactorTable",
+        "method": "get_bayes_factor",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D4-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q018",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_get_prior_effect",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_estimate_effect_bayesian",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_statistical_power",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_aggregate_bayesian_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D4-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q019",
+    "methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_objective_alignment",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_identify_affected_sections",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Iterative data transformation"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_generate_resolution_recommendations",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains arithmetic/statistical operations"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_generate_optimal_remediations",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_get_remediation_text",
+        "layer": "L4_synthesis",
+        "role": "L2-INF",
+        "rationale": "Formats output for presentation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_detect_allocation_gaps",
+        "layer": "L3_audit",
+        "role": "L2-INF",
+        "rationale": "Detects gaps in financial allocation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D4-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q020",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_pdet_alignment",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_causal_coherence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_validate_dnp_compliance",
+        "layer": "L3_audit",
+        "role": "L2-INF",
+        "rationale": "Contains validation/assertion logic"
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_generate_dnp_report",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D5-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q021",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_counterfactuals",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_scenario_narrative",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_mediator_mentions",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_validar_orden_causal",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Iterative data transformation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_generate_interventions",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D5-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q022",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "calculate_quality_score",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_estimate_score_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "_calculate_quality_score",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_aggregate_bayesian_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "evaluate_policy_numerical_consistency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "get_diagnostics",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "process_document",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_generate_query_from_pdq",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_filter_by_pdq",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_extract_numerical_values",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_embed_texts",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_compute_overall_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_overall_quality",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "normalize_unicode",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "segment_into_sentences",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_evidence_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_avg_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_quality_to_dict",
+        "layer": "L4_synthesis",
+        "role": "L1-EMP",
+        "rationale": "Serializes quality to output dict"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_construct_evidence_bundle",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "compile_pattern",
+        "layer": "L1_empirical",
+        "role": "L2-INF",
+        "rationale": "Compiles regex pattern"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "extract_contextual_window",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_executive_report",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "export_results",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D5-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q023",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_semantic_distance",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "extract_semantic_cube",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_quantify_uncertainty",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_mediator_mentions",
+        "layer": "L1_empirical",
+        "role": "L1-EMP",
+        "rationale": "Transforms str to structured data"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "get_diagnostics",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_perturb_evidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D5-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q024",
+    "methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "Generates str output (report/summary)"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_break_cycles",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Graph cycle breaking algorithm"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D5-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q025",
+    "methods": [
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "posterior_predictive_check",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_ablation_analysis",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_waic_difference",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_add_ood_noise",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D6-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q026",
+    "methods": [
+      {
+        "class": "TeoriaCambio",
+        "method": "construir_grafo_causal",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Constructs causal graph with nodes/edges"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "validacion_completa",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns validation result type"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_causal_diagram",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_causal_model_json",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "export_causal_network",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Builds causal hierarchy with scoring"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D6-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q027",
+    "methods": [
+      {
+        "class": "BeachEvidentialTest",
+        "method": "apply_test_logic",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_connection_matrix",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_compute_overall_confidence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D6-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q028",
+    "methods": [
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "execute_suite",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_engine_readiness",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_benchmark_operation",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "calculate_acyclicity_pvalue",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Contains validation logic (assert/raise)"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D6-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q029",
+    "methods": [
+      {
+        "class": "ConfigLoader",
+        "method": "update_priors_from_feedback",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "check_uncertainty_reduction_criterion",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "_save_prior_history",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "_load_uncertainty_history",
+        "layer": "L4_synthesis",
+        "role": "L4-SYN",
+        "rationale": "IO operation producing final output"
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_extract_feedback_from_audit",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_node_importance",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "BayesFactorTable",
+        "method": "get_bayes_factor",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  },
+  {
+    "BASE_SLOT": "D6-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q030",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_language_specificity",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Returns numerical/analytical result"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Analyzes and diagnoses critical links"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "identify_failure_points",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "_get_dynamics_pattern",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Iterative data transformation"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "chunk_text",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "_detect_pdm_structure",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "_detect_table",
+        "layer": "L3_audit",
+        "role": "L3-AUD",
+        "rationale": "Returns bool (validation result)"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "layer": "L2_inferential",
+        "role": "L2-INF",
+        "rationale": "Contains numerical computation"
+      }
+    ]
+  }
+]
