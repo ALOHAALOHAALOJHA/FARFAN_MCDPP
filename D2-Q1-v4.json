@@ -3,8 +3,30 @@
     "base_slot": "D2-Q1",
     "representative_question_id": "Q006",
     "dimension_id": "DIM02",
-    "policy_area_ids_served": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
-    "contracts_served": ["Q006", "Q036", "Q066", "Q096", "Q126", "Q156", "Q186", "Q216", "Q246", "Q276"],
+    "policy_area_ids_served": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "contracts_served": [
+      "Q006",
+      "Q036",
+      "Q066",
+      "Q096",
+      "Q126",
+      "Q156",
+      "Q186",
+      "Q216",
+      "Q246",
+      "Q276"
+    ],
     "contract_type": "TYPE_D",
     "contract_type_name": "Financiero",
     "contract_type_focus": "Suficiencia presupuestal, coherencia costo-meta",
@@ -12,12 +34,10 @@
     "created_at": "2025-12-22T18:20:00Z",
     "specification_source": "guia_diligenciamiento_contratos_v4.md"
   },
-
   "executor_binding": {
     "executor_class": "D2_Q1_Executor",
     "executor_module": "farfan_pipeline.phases.Phase_two.executors"
   },
-
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_D",
@@ -44,7 +64,6 @@
         "dependencies": [],
         "output_target": "raw_facts"
       },
-
       "phase_B_computation": {
         "description": "Inferential analysis layer - table processing and classification",
         "level": "N2",
@@ -60,8 +79,12 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Procesa tablas financieras extrayendo métricas presupuestales",
-            "requires": ["raw_facts"],
-            "modifies": ["financial_metrics"]
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "financial_metrics"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -72,8 +95,12 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Elimina tablas duplicadas consolidando información",
-            "requires": ["raw_facts"],
-            "modifies": ["table_deduplication_scores"]
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "table_deduplication_scores"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -84,8 +111,12 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Clasifica tablas por tipo (presupuestal, cronograma, etc)",
-            "requires": ["raw_facts"],
-            "modifies": ["table_classification_scores"]
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "table_classification_scores"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -96,14 +127,19 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Limpia y normaliza dataframes para análisis",
-            "requires": ["raw_facts"],
-            "modifies": ["data_quality_scores"]
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "data_quality_scores"
+            ]
           }
         ],
-        "dependencies": ["raw_facts"],
+        "dependencies": [
+          "raw_facts"
+        ],
         "output_target": "inferred_parameters"
       },
-
       "phase_C_litigation": {
         "description": "Audit layer - validation of table structure and headers",
         "level": "N3",
@@ -119,8 +155,14 @@
             "output_type": "CONSTRAINT",
             "fusion_behavior": "gate",
             "description": "Valida si una fila es encabezado válido de tabla",
-            "requires": ["raw_facts", "inferred_parameters"],
-            "modulates": ["raw_facts.confidence", "inferred_parameters.confidence"],
+            "requires": [
+              "raw_facts",
+              "inferred_parameters"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferred_parameters.confidence"
+            ],
             "veto_conditions": {
               "invalid_header_structure": {
                 "trigger": "header validation returns False",
@@ -137,26 +179,36 @@
             }
           }
         ],
-        "dependencies": ["raw_facts", "inferred_parameters"],
+        "dependencies": [
+          "raw_facts",
+          "inferred_parameters"
+        ],
         "output_target": "validated_constraints"
       }
     }
   },
-
   "question_context": {
     "monolith_ref": "Q006",
     "overrides": null,
     "failure_contract": {
-      "abort_if": ["missing_required_element", "incomplete_text", "no_tables_found"],
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_tables_found"
+      ],
       "emit_code": "ABORT-D2-Q1-REQ"
     }
   },
-
   "signal_requirements": {
-    "required_signals": ["PreprocesadoMetadata", "pdf_document"],
-    "optional_signals": ["extracted_tables", "table_metadata"]
+    "required_signals": [
+      "PreprocesadoMetadata",
+      "pdf_document"
+    ],
+    "optional_signals": [
+      "extracted_tables",
+      "table_metadata"
+    ]
   },
-
   "evidence_assembly": {
     "engine": "EVIDENCE_NEXUS",
     "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
@@ -213,7 +265,9 @@
           "pdetmunicipalplananalyzer.classify_tables",
           "pdetmunicipalplananalyzer.clean_dataframe"
         ],
-        "input_dependencies": ["financial_facts"],
+        "input_dependencies": [
+          "financial_facts"
+        ],
         "merge_strategy": "weighted_mean",
         "output_type": "PARAMETER"
       },
@@ -224,7 +278,10 @@
         "sources": [
           "pdetmunicipalplananalyzer.is_likely_header"
         ],
-        "input_dependencies": ["financial_facts", "sufficiency_scores"],
+        "input_dependencies": [
+          "financial_facts",
+          "sufficiency_scores"
+        ],
         "merge_strategy": "veto_gate",
         "gate_logic": {
           "invalid_header_structure": {
@@ -243,13 +300,14 @@
         "rule_type": "synthesis",
         "target": "human_answer",
         "sources": [],
-        "input_dependencies": ["validated_financials"],
+        "input_dependencies": [
+          "validated_financials"
+        ],
         "merge_strategy": "carver_doctoral_synthesis",
         "output_type": "NARRATIVE"
       }
     ]
   },
-
   "fusion_specification": {
     "contract_type": "TYPE_D",
     "primary_strategy": "weighted_mean",
@@ -264,7 +322,10 @@
         "strategy": "weighted_mean",
         "behavior": "multiplicative",
         "conflict_resolution": "weighted_voting",
-        "affects": ["N1_facts.confidence", "N1_facts.edge_weights"]
+        "affects": [
+          "N1_facts.confidence",
+          "N1_facts.edge_weights"
+        ]
       },
       "N3_constraint_fusion": {
         "strategy": "veto_gate",
@@ -290,14 +351,20 @@
         "behavior": "additive"
       },
       "stage_2_parameter_application": {
-        "input": ["evidence_graph_v1", "phase_B_computation.outputs"],
+        "input": [
+          "evidence_graph_v1",
+          "phase_B_computation.outputs"
+        ],
         "operation": "MODIFY table confidence based on classification and cleaning",
         "output": "evidence_graph_v2_weighted",
         "type_consumed": "PARAMETER",
         "behavior": "multiplicative"
       },
       "stage_3_constraint_filtering": {
-        "input": ["evidence_graph_v2_weighted", "phase_C_litigation.outputs"],
+        "input": [
+          "evidence_graph_v2_weighted",
+          "phase_C_litigation.outputs"
+        ],
         "operation": "FILTER/BLOCK tables with invalid headers or structure",
         "output": "evidence_graph_v3_validated",
         "type_consumed": "CONSTRAINT",
@@ -312,7 +379,6 @@
       }
     }
   },
-
   "cross_layer_fusion": {
     "N1_to_N2": {
       "relationship": "N2 reads N1 facts",
@@ -357,7 +423,6 @@
       }
     }
   },
-
   "human_answer_structure": {
     "format": "markdown",
     "template_mode": "epistemological_narrative",
@@ -369,34 +434,84 @@
         "layer": "N4",
         "data_source": "synthesis_output",
         "narrative_style": "declarative",
+        "template": {
+          "structure": [
+            "**Conclusión**: {verdict_statement}",
+            "",
+            "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
+            "",
+            "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ]
+        },
         "argumentative_role": "SYNTHESIS"
       },
       {
         "section_id": "S2_empirical_base",
-        "title": "### Base Empírica: Tablas Extraídas",
+        "title": "### Base Empírica: Cobertura Financiera",
         "layer": "N1",
         "data_source": "validated_facts",
         "narrative_style": "descriptive",
-        "argumentative_role": "EMPIRICAL_BASIS"
+        "template": {
+          "structure": [
+            "**Actividades con Cobertura**: {covered_activities_count}",
+            "{covered_activities_list}",
+            "",
+            "**Actividades sin Cobertura**: {uncovered_activities_count}",
+            "{uncovered_activities_list}"
+          ]
+        },
+        "argumentative_role": "EMPIRICAL_BASIS",
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "📋 *Nota: Cobertura financiera identificada directamente del documento fuente.*"
+        }
       },
       {
         "section_id": "S3_robustness_audit",
-        "title": "### Análisis de Robustez: Validación de Estructura",
+        "title": "### Análisis de Robustez: Coherencia Financiera",
         "layer": "N3",
         "data_source": "audit_results",
         "narrative_style": "critical",
+        "template": {
+          "structure": [
+            "{veto_alert}",
+            "",
+            "**Validaciones Ejecutadas**: {validation_count}",
+            "",
+            "**Coherencia de Asignaciones**: {coherence_assessment}",
+            "",
+            "**Gaps de Cobertura**: {coverage_gaps}",
+            "",
+            "**Limitaciones Metodológicas**:",
+            "{limitations_list}"
+          ]
+        },
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ ALERTA: {veto_reason}. Tablas con estructura INVÁLIDA.",
-          "if_no_veto": "✅ Todas las tablas validadas correctamente."
+          "if_veto_triggered": "⛔ **COBERTURA INVÁLIDA**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} asignaciones invalidadas.",
+          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todas las asignaciones de cobertura sobrevivieron auditoría."
+        },
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "🔬 *Nota: Auditoría financiera aplicada con estándares de coherencia.*"
         }
       },
       {
         "section_id": "S4_gaps",
-        "title": "### Puntos Ciegos: Tablas Faltantes",
+        "title": "### Puntos Ciegos: Cobertura Faltante",
         "layer": "N4-META",
         "data_source": "gap_analysis",
         "narrative_style": "diagnostic",
+        "template": {
+          "structure": [
+            "**Métodos sin Resultados**: {empty_methods_count} de {total_methods}",
+            "{empty_methods_details}",
+            "",
+            "**Impacto en Confianza**:",
+            "{gap_impact_assessment}"
+          ]
+        },
         "argumentative_role": "META_TRACEABILITY"
       }
     ],
@@ -432,60 +547,111 @@
     },
     "confidence_interpretation": {
       "critical": {
-        "range": [0, 19],
+        "range": [
+          0,
+          19
+        ],
         "label": "INVÁLIDO",
         "description": "Veto activado por estructura tabular inválida.",
         "display": "🔴"
       },
       "low": {
-        "range": [20, 49],
+        "range": [
+          20,
+          49
+        ],
         "label": "DÉBIL",
         "description": "Tablas mal formadas o headers ambiguos.",
         "display": "🟠"
       },
       "medium": {
-        "range": [50, 79],
+        "range": [
+          50,
+          79
+        ],
         "label": "MODERADO",
         "description": "Tablas con limitaciones estructurales menores.",
         "display": "🟡"
       },
       "high": {
-        "range": [80, 100],
+        "range": [
+          80,
+          100
+        ],
         "label": "ROBUSTO",
         "description": "Tablas bien estructuradas y validadas.",
         "display": "🟢"
       }
     }
   },
-
   "output_contract": {
     "result_type": "Phase2QuestionResult",
     "schema": {
       "type": "object",
-      "required": ["base_slot", "question_id", "evidence", "score", "human_answer"],
+      "required": [
+        "base_slot",
+        "question_id",
+        "evidence",
+        "score",
+        "human_answer"
+      ],
       "properties": {
-        "base_slot": {"type": "string", "const": "D2-Q1"},
-        "question_id": {"type": "string"},
-        "dimension_id": {"type": "string"},
-        "policy_area_id": {"type": "string"},
-        "score": {"type": "number", "minimum": 0, "maximum": 1},
-        "confidence_label": {"type": "string", "enum": ["INVÁLIDO", "DÉBIL", "MODERADO", "ROBUSTO"]},
-        "evidence": {"type": "object"},
-        "human_answer": {"type": "string"},
+        "base_slot": {
+          "type": "string",
+          "const": "D2-Q1"
+        },
+        "question_id": {
+          "type": "string"
+        },
+        "dimension_id": {
+          "type": "string"
+        },
+        "policy_area_id": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confidence_label": {
+          "type": "string",
+          "enum": [
+            "INVÁLIDO",
+            "DÉBIL",
+            "MODERADO",
+            "ROBUSTO"
+          ]
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "human_answer": {
+          "type": "string"
+        },
         "epistemological_trace": {
           "type": "object",
           "properties": {
-            "n1_facts_count": {"type": "number"},
-            "n2_inferences_count": {"type": "number"},
-            "n3_validations_count": {"type": "number"},
-            "veto_triggered": {"type": "boolean"},
-            "blocked_branches": {"type": "array"}
+            "n1_facts_count": {
+              "type": "number"
+            },
+            "n2_inferences_count": {
+              "type": "number"
+            },
+            "n3_validations_count": {
+              "type": "number"
+            },
+            "veto_triggered": {
+              "type": "boolean"
+            },
+            "blocked_branches": {
+              "type": "array"
+            }
           }
         }
       }
     }
   },
-
   "validation_rules": {
     "na_policy": "abort_on_critical",
     "derivation_source": "expected_elements",
@@ -494,17 +660,18 @@
     "class_name": "ValidationEngine",
     "method_name": "validate"
   },
-
   "error_handling": {
     "on_method_not_found": "raise",
     "on_method_failure": "propagate_with_trace",
     "on_assembly_failure": "propagate_with_trace",
     "failure_contract": {
-      "abort_if": ["missing_required_element", "incomplete_text"],
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
       "emit_code": "ABORT-D2-Q1-REQ"
     }
   },
-
   "traceability": {
     "canonical_sources": {
       "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json",
@@ -518,7 +685,6 @@
       "notes": "L4 method generate_accountability_matrix excluded per guide (N4-SYN not in contracts)"
     }
   },
-
   "compatibility": {
     "questionnaire_monolith_version": "3.0.0",
     "version_detection": "runtime",
@@ -529,7 +695,6 @@
       "evidence_nexus": "EvidenceNexus v2.0.0"
     }
   },
-
   "calibration": {
     "status": "runtime",
     "sources": {
