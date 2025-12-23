@@ -4,26 +4,161 @@
     "contract_version": "4.0.0",
     "created_at": "2025-12-22T21:54:00Z",
     "question_id": "Q021",
-    "contract_type": "TYPE_E",
-    "primary_strategy": "weighted_mean"
+    "contract_type": "TYPE_D",
+    "primary_strategy": "financial_coherence_audit"
   },
   "executor_binding": {
     "executor_class": "D1_Q2_Executor",
     "executor_module": "farfan_pipeline. phases.Phase_two. executors"
   },
   "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_D",
     "method_count": 8,
     "execution_phases": {
       "phase_A_construction": {
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_find_mediator_mentions",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.findmediatorm entions",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extracts mediator mentions from text",
+            "requires": []
+          },
+          {
+            "class_name": "TextMiningEngine",
+            "method_name": "_generate_interventions",
+            "mother_file": "analyzer_one.py",
+            "provides": "textminingengine.generateinterventions",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Generates intervention data from document",
+            "requires": []
+          }
+        ],
         "output_type": "FACT"
       },
       "phase_B_computation": {
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "generate_counterfactuals",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.generatecounterfactuals",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Generates counterfactual scenarios",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_simulate_intervention",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.simulateintervention",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Simulates intervention scenarios",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_generate_scenario_narrative",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.generatescenarionarrative",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Generates narrative for scenarios",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "TeoriaCambio",
+            "method_name": "_validar_orden_causal",
+            "mother_file": "teoria_cambio.py",
+            "provides": "teoriacambio.validarordenсausal",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Validates causal order in graph",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights"
+            ]
+          },
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_assess_temporal_coherence",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.assesstemporalcoherence",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Assesses temporal coherence",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "confidence_scores"
+            ]
+          }
+        ],
         "output_type": "PARAMETER"
       },
       "phase_C_litigation": {
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "BayesianCounterfactualAuditor",
+            "method_name": "construct_scm",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesiancounterfactualauditor.constructscm",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Constructs structural causal model for validation",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "scm_construction_failed": {
+                "trigger": "SCM cannot be constructed",
+                "action": "block_branch",
+                "scope": "affected_subgraph",
+                "confidence_multiplier": 0.0
+              }
+            }
+          }
+        ],
         "output_type": "CONSTRAINT"
       }
     }
@@ -73,73 +208,58 @@
     },
     "assembly_rules": [
       {
-        "rule_id": "R1_empirical_extraction",
+        "rule_id": "R1_financial_extraction",
         "rule_type": "empirical_basis",
-        "target": "raw_facts",
+        "target": "financial_facts",
         "sources": [
-          "bayesianmechanisminference.detect_gaps",
-          "pdetmunicipalplananalyzer.generate_optimal_remediations"
+          "pdetmunicipalplananalyzer.findmediatormentions",
+          "textminingengine.generateinterventions"
         ],
-        "merge_strategy": "concat_with_deduplication",
-        "deduplication_key": "element_id",
+        "merge_strategy": "concat",
         "output_type": "FACT",
         "confidence_propagation": "preserve_individual"
       },
       {
-        "rule_id": "R2_bayesian_update",
-        "rule_type": "probabilistic_update",
-        "target": "posterior_belief",
+        "rule_id": "R2_sufficiency_analysis",
+        "rule_type": "computation",
+        "target": "sufficiency_scores",
         "sources": [
-          "operationalizationauditor.audit_direct_evidence",
-          "operationalizationauditor.audit_systemic_risk",
-          "pdetmunicipalplananalyzer.simulate_intervention",
-          "bayesiancounterfactualauditor.test_effect_stability",
-          "policycontradictiondetector.detect_numerical_inconsistencies",
-          "policycontradictiondetector.calculate_numerical_divergence",
-          "bayesianconfidencecalculator.calculate_posterior"
+          "pdetmunicipalplananalyzer.generatecounterfactuals",
+          "pdetmunicipalplananalyzer.simulateintervention",
+          "pdetmunicipalplananalyzer.generatescenarionarrative",
+          "teoriacambio.validarordenсausal",
+          "causalextractor.assesstemporalcoherence"
         ],
         "input_dependencies": [
-          "raw_facts"
+          "financial_facts"
         ],
-        "merge_strategy": "bayesian_update",
-        "operation": {
-          "description": "posterior = update_belief(prior, likelihood_from_evidence)",
-          "prior_source": "raw_facts",
-          "likelihood_source": "inferences"
-        },
+        "merge_strategy": "weighted_mean",
         "output_type": "PARAMETER",
-        "confidence_propagation": "conservative_bayesian"
+        "confidence_propagation": "weighted_averaging"
       },
       {
-        "rule_id": "R3_audit_gate",
-        "rule_type": "robustness_gate",
-        "target": "validated_posterior",
+        "rule_id": "R3_coherence_audit",
+        "rule_type": "financial_coherence_audit",
+        "target": "validated_financials",
         "sources": [
-          "financialauditor.detect_allocation_gaps",
-          "bayesiancounterfactualauditor.counterfactual_query",
-          "performanceanalyzer.analyze_performance"
+          "bayesiancounterfactualauditor.constructscm"
         ],
         "input_dependencies": [
-          "raw_facts",
-          "posterior_belief"
+          "financial_facts",
+          "sufficiency_scores"
         ],
         "merge_strategy": "veto_gate",
         "output_type": "CONSTRAINT",
         "gate_logic": {
-          "allocation_gap_critical": {
-            "action": "reduce_confidence",
-            "confidence_multiplier": 0.3,
-            "scope": "affected_goals"
-          },
-          "counterfactual_failed": {
+          "scm_construction_failed": {
             "action": "block_branch",
             "confidence_multiplier": 0.0,
-            "scope": "causal_claims"
+            "scope": "affected_subgraph"
           },
-          "performance_low": {
-            "action": "flag_caution",
-            "confidence_multiplier": 0.7,
-            "scope": "all_inferences"
+          "counterfactual_validation_low": {
+            "action": "reduce_confidence",
+            "confidence_multiplier": 0.5,
+            "scope": "causal_claims"
           }
         }
       },
@@ -149,7 +269,7 @@
         "target": "human_answer",
         "sources": [],
         "input_dependencies": [
-          "validated_posterior",
+          "validated_financials",
           "audit_results"
         ],
         "merge_strategy": "carver_doctoral_synthesis",
@@ -162,8 +282,8 @@
     ]
   },
   "fusion_specification": {
-    "contract_type": "TYPE_B",
-    "primary_strategy": "bayesian_update",
+    "contract_type": "TYPE_D",
+    "primary_strategy": "financial_coherence_audit",
     "level_strategies": {
       "N1_fact_fusion": {
         "strategy": "concat",
@@ -171,12 +291,12 @@
         "conflict_resolution": "preserve_all"
       },
       "N2_parameter_fusion": {
-        "strategy": "bayesian_update",
+        "strategy": "weighted_mean",
         "behavior": "multiplicative",
-        "conflict_resolution": "posterior_weighting",
+        "conflict_resolution": "weighted_voting",
         "affects": [
-          "N1_facts. confidence",
-          "posterior_distribution"
+          "N1_facts.confidence",
+          "sufficiency_scores"
         ]
       },
       "N3_constraint_fusion": {
@@ -186,7 +306,8 @@
         "propagation": {
           "upstream": "confidence_backpropagation",
           "downstream": "branch_blocking"
-        }
+        },
+        "financial_audit": "financial_coherence_audit"
       }
     },
     "fusion_pipeline": {

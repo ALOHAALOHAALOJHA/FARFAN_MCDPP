@@ -144,6 +144,34 @@ class ContractHydrator:
         "dimension_id",
         "policy_area_id",
     )
+
+    DEFAULT_TEMPLATE_BINDINGS: Dict[str, Dict[str, str]] = {
+        "variables": {
+            "verdict_statement": "synthesis.verdict",
+            "final_confidence_pct": "synthesis.confidence_score * 100",
+            "confidence_label": "synthesis.confidence_label",
+            "method_count": "execution_stats.methods_executed",
+            "audit_count": "execution_stats.validations_run",
+            "blocked_count": "execution_stats.branches_blocked",
+            "fact_count": "evidence_graph.nodes(type='FACT').count",
+            "document_coverage_pct": "evidence_graph.metadata.coverage",
+            "official_sources_list": "evidence_graph.nodes(type='FACT').groupby('source').list",
+            "quantitative_indicators_list": "evidence_graph.nodes(type='FACT', subtype='quantitative').list",
+            "veto_alert": "audit_results.veto_status",
+            "veto_reason": "audit_results.primary_veto_reason",
+            "validation_count": "audit_results.total_checks",
+            "contradiction_count": "audit_results.contradictions.count",
+            "contradiction_details": "audit_results.contradictions.list",
+            "suppressed_count": "audit_results.suppressed_nodes.count",
+            "suppression_details": "audit_results.suppressed_nodes.list",
+            "partial_veto_count": "audit_results.partial_vetos.count",
+            "empty_methods_count": "execution_stats.empty_methods",
+            "total_methods": "method_binding.method_count",
+            "empty_methods_details": "execution_stats.empty_methods_list",
+            "missing_elements_list": "gap_analysis.missing_expected.list",
+            "gap_impact_assessment": "gap_analysis.impact_statement"
+        }
+    }
     
     def __init__(self, signal_registry: SignalRegistryProtocol) -> None:
         """
@@ -220,6 +248,13 @@ class ContractHydrator:
                     identity[field] = signal_value
                     fields_injected.append(f"identity.{field}")
         hydrated["identity"] = identity
+        
+        # Inject template bindings for Carver v3.0 compatibility
+        human_answer = hydrated.get("human_answer_structure", {})
+        if "template_variable_bindings" not in human_answer:
+            human_answer["template_variable_bindings"] = self.DEFAULT_TEMPLATE_BINDINGS
+            fields_injected.append("human_answer_structure.template_variable_bindings")
+        hydrated["human_answer_structure"] = human_answer
         
         hydrated["_hydration_metadata"] = {
             "was_hydrated": True,

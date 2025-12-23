@@ -27,9 +27,9 @@
       "Q262",
       "Q292"
     ],
-    "contract_type": "TYPE_A",
-    "contract_type_name": "Semántico",
-    "contract_type_focus": "Coherencia narrativa, alineación temática, NLP",
+    "contract_type": "TYPE_D",
+    "contract_type_name": "Financiero",
+    "contract_type_focus": "Suficiencia presupuestal, coherencia costo-meta",
     "contract_version": "4.0.0-epistemological",
     "created_at": "2025-12-23T13:41:33.219846Z",
     "specification_source": "episte_refact.md"
@@ -40,7 +40,7 @@
   },
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
-    "contract_type": "TYPE_A",
+    "contract_type": "TYPE_D",
     "method_count": 24,
     "execution_phases": {
       "phase_A_construction": {
@@ -539,8 +539,8 @@
     ]
   },
   "fusion_specification": {
-    "contract_type": "TYPE_A",
-    "primary_strategy": "semantic_triangulation",
+    "contract_type": "TYPE_D",
+    "primary_strategy": "financial_coherence_audit",
     "level_strategies": {
       "N1_fact_fusion": {
         "strategy": "semantic_corroboration",
@@ -645,7 +645,7 @@
   "human_answer_structure": {
     "format": "markdown",
     "template_mode": "epistemological_narrative",
-    "contract_type": "TYPE_A",
+    "contract_type": "TYPE_D",
     "sections": [
       {
         "section_id": "S1_verdict",

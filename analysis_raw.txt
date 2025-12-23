@@ -1,0 +1,532 @@
+=== 1. EPISTE REFACT ANALYSIS ===
+    3002 episte_refact.md
+--- Template TYPE_D (lines 447-490) ---
+##### TYPE_D: Financiero
+
+```json
+"assembly_rules":  [
+  {
+    "rule_id": "R1_financial_extraction",
+    "rule_type": "empirical_basis",
+    "target": "financial_facts",
+    "sources": ["pdetmunicipalplananalyzer._extract_financial_amounts", "financialauditor._parse_amount", "<N1 methods>"],
+    "merge_strategy": "concat",
+    "output_type": "FACT"
+  },
+  {
+    "rule_id": "R2_sufficiency_analysis",
+    "rule_type": "computation",
+    "target":  "sufficiency_scores",
+    "sources": ["financialauditor._calculate_sufficiency", "<N2 methods>"],
+    "input_dependencies": ["financial_facts"],
+    "merge_strategy":  "weighted_mean",
+    "output_type": "PARAMETER"
+  },
+  {
+    "rule_id":  "R3_coherence_audit",
+    "rule_type": "financial_coherence_audit",
+    "target": "validated_financials",
+    "sources": ["financialauditor._detect_allocation_gaps", "<N3 methods>"],
+    "input_dependencies": ["financial_facts", "sufficiency_scores"],
+    "merge_strategy": "veto_gate",
+    "gate_logic": {
+      "budget_gap_detected": {"action": "flag_insufficiency", "multiplier": 0.3},
+      "allocation_mismatch": {"action": "reduce_confidence", "multiplier":  0.5}
+    },
+    "output_type":  "CONSTRAINT"
+  },
+  {
+    "rule_id": "R4_synthesis",
+    "rule_type":  "synthesis",
+    "target": "human_answer",
+    "input_dependencies":  ["validated_financials"],
+    "merge_strategy": "carver_doctoral_synthesis",
+    "output_type": "NARRATIVE"
+  }
+]
+```
+--- TYPE_D Definition ---
+| Financiero | TYPE_D | Q003, Q004, Q006, Q009, Q012, Q015, Q021, Q022 | Suficiencia presupuestal | `financial_coherence_audit` |
+| Lógico | TYPE_E | Q010, Q014, Q019, Q028 | Detección de contradicciones | `logical_consistency_validation` |
+
+### 1.2 Nivel Epistemológico de Cada Método
+
+| Nivel | Código | Función Cognitiva | Epistemología | Tipo de Output |
+|-------|--------|-------------------|---------------|----------------|
+| 0 | N0-INFRA | Soporte técnico sin juicio | Instrumentalismo | `INFRASTRUCTURE` |
+| 1 | N1-EMP | Extraer hechos brutos | Empirismo positivista | `FACT` |
+| 2 | N2-INF | Transformar datos en conocimiento probabilístico | Bayesianismo subjetivista | `PARAMETER` |
+| 3 | N3-AUD | Cuestionar, validar o refutar | Falsacionismo popperiano | `CONSTRAINT` |
+| 4 | N4-META | Analizar el propio proceso analítico | Reflexividad crítica | `META_ANALYSIS` |
+
+### 1.3 Tipo de Output por Método
+
+| Tipo Output | Nivel Origen | Comportamiento en Fusión | Símbolo |
+|-------------|--------------|--------------------------|---------|
+| `FACT` | N1 | Se SUMA al grafo como nodo | ⊕ |
+| `PARAMETER` | N2 | MODIFICA pesos de aristas | ⊗ |
+| `CONSTRAINT` | N3 | FILTRA/BLOQUEA ramas si falla | ⊘ |
+| `NARRATIVE` | N4 | CONSUME grafo para texto final | ⊙ |
+
+---
+
+## PARTE II: METHOD_BINDING
+
+### 2.1 Estructura Requerida
+
+```json
+"method_binding": {
+  "orchestration_mode": "epistemological_pipeline",
+  "contract_type": "<TYPE_A|TYPE_B|TYPE_C|TYPE_D|TYPE_E>",
+  "method_count": <N>,
+  "execution_phases": {
+    "phase_A_construction": { /* N1 methods */ },
+    "phase_B_computation": { /* N2 methods */ },
+    "phase_C_litigation": { /* N3 methods */ }
+  }
+}
+```
+
+### 2.2 Reglas de Diligenciamiento por Fase
+
+#### PHASE_A:  Construction (Nivel 1 - Empírico)
+
+**Propósito**:  Ejecutar todos los métodos que extraen hechos brutos. 
+
+**Criterios de inclusión**:
+- Método lee directamente `PreprocesadoMetadata` o documento raw
+- Output son literales:  strings, números, listas de entidades observadas
+--- Assembly Rules TYPE_D ---
+##### TYPE_D: Financiero
+
+```json
+"assembly_rules":  [
+  {
+    "rule_id": "R1_financial_extraction",
+    "rule_type": "empirical_basis",
+    "target": "financial_facts",
+    "sources": ["pdetmunicipalplananalyzer._extract_financial_amounts", "financialauditor._parse_amount", "<N1 methods>"],
+    "merge_strategy": "concat",
+    "output_type": "FACT"
+  },
+  {
+    "rule_id": "R2_sufficiency_analysis",
+    "rule_type": "computation",
+    "target":  "sufficiency_scores",
+    "sources": ["financialauditor._calculate_sufficiency", "<N2 methods>"],
+    "input_dependencies": ["financial_facts"],
+    "merge_strategy":  "weighted_mean",
+    "output_type": "PARAMETER"
+  },
+  {
+    "rule_id":  "R3_coherence_audit",
+    "rule_type": "financial_coherence_audit",
+    "target": "validated_financials",
+    "sources": ["financialauditor._detect_allocation_gaps", "<N3 methods>"],
+    "input_dependencies": ["financial_facts", "sufficiency_scores"],
+    "merge_strategy": "veto_gate",
+    "gate_logic": {
+      "budget_gap_detected": {"action": "flag_insufficiency", "multiplier": 0.3},
+      "allocation_mismatch": {"action": "reduce_confidence", "multiplier":  0.5}
+    },
+    "output_type":  "CONSTRAINT"
+  },
+  {
+    "rule_id": "R4_synthesis",
+    "rule_type":  "synthesis",
+    "target": "human_answer",
+    "input_dependencies":  ["validated_financials"],
+    "merge_strategy": "carver_doctoral_synthesis",
+    "output_type": "NARRATIVE"
+  }
+]
+```
+
+##### TYPE_E:  Lógico
+
+```json
+"assembly_rules": [
+  {
+    "rule_id": "R1_statement_extraction",
+    "rule_type": "empirical_basis",
+    "target": "policy_statements",
+    "sources": ["<N1 methods>"],
+    "merge_strategy": "concat",
+    "output_type": "FACT"
+  },
+  {
+    "rule_id": "R2_coherence_computation",
+    "rule_type": "computation",
+    "target": "coherence_metrics",
+    "sources": ["policycontradictiondetector._calculate_coherence_metrics", "<N2 methods>"],
+    "input_dependencies":  ["policy_statements"],
+    "merge_strategy": "weighted_mean",
+    "output_type": "PARAMETER"
+  },
+  {
+    "rule_id": "R3_contradiction_detection",
+    "rule_type":  "logical_consistency_validation",
+    "target": "validated_statements",
+    "sources": ["policycontradictiondetector._detect_logical_incompatibilities", "operationalizationauditor. audit_sequence_logic", "<N3 methods>"],
+    "input_dependencies": ["policy_statements", "coherence_metrics"],
+    "merge_strategy": "veto_gate",
+    "gate_logic": {
+      "logical_contradiction":  {"action": "suppress_contradicting_nodes", "multiplier":  0.0},
+      "sequence_violation": {"action": "flag_invalid_sequence", "multiplier": 0.2}
+    },
+    "output_type": "CONSTRAINT"
+  },
+  {
+    "rule_id": "R4_synthesis",
+    "rule_type": "synthesis",
+    "target": "human_answer",
+    "input_dependencies": ["validated_statements"],
+    "merge_strategy": "carver_doctoral_synthesis",
+    "output_type": "NARRATIVE"
+  }
+]
+```
+
+---
+
+## PARTE IV:  FUSION_SPECIFICATION
+
+### 4.1 Estructura Requerida
+
+```json
+"fusion_specification": {
+  "contract_type": "<TYPE_A|TYPE_B|TYPE_C|TYPE_D|TYPE_E>",
+  "primary_strategy": "<strategy_name>",
+--- Taxonomies ---
+ANEXO DE TAXONOMÍAS
+
+
+TAXONOMÍAS EPISTEMOLÓGICAS COMPLETAS - F.A.R.F.A.N
+
+1. TAXONOMÍA EPISTEMOLÓGICA DE MÉTODOS (Función Cognitiva)
+NIVEL 0: Infraestructura Metodológica
+Función: Soporte técnico sin juicio analítico. Epistemología: Instrumentalismo puro - herramientas sin carga teórica.
+Clase	Métodos	Rol
+ConfigLoader	load, validate	Carga configuración
+PDETMunicipalPlanAnalyzer	_get_spanish_stopwords, _deduplicate_tables, _indicator_to_dict	Normalización
+AdaptivePriorCalculator	generate_traceability_record	Logging
+NIVEL 1: Base Empírica (Detection & Extraction)
+Función: Extraer hechos brutos sin emitir juicios de valor. Epistemología: Empirismo positivista - los datos existen independientemente del observador.
+Clase	Métodos Clave	Paradigma
+TextMiningEngine	diagnose_critical_links, _analyze_link_text	Minería textual crítica
+IndustrialPolicyProcessor	process, _extract_point_evidence, _match_patterns	Pattern matching industrial
+CausalExtractor	_extract_goals, _parse_goal_context, _calculate_language_specificity	Análisis del discurso causal
+PDETMunicipalPlanAnalyzer	_extract_financial_amounts, _extract_from_budget_table	Extracción estructurada
+SemanticProcessor	chunk_text, embed_single, _detect_pdm_structure	Preprocesamiento semántico
+SemanticAnalyzer	analyze_coherence, extract_themes	Análisis temático
+NIVEL 2: Procesamiento Inferencial (Computation & Synthesis)
+Función: Transformar datos en conocimiento probabilístico. Epistemología: Bayesianismo subjetivista - creencias actualizables por evidencia.
+Clase	Métodos Clave	Paradigma
+BayesianNumericalAnalyzer	evaluate_policy_metric, compare_policies	Comparación bayesiana de políticas
+AdaptivePriorCalculator	calculate_likelihood_adaptativo, _adjust_domain_weights, sensitivity_analysis	Priors adaptativos contextuales
+HierarchicalGenerativeModel	verify_conditional_independence, _generate_independence_tests, calculate_r_hat	Modelos jerárquicos generativos
+BayesFactorTable	get_bayes_factor	Cuantificación de evidencia relativa
+BayesianMechanismInference	aggregate_confidence, _test_sufficiency, _test_necessity, _calculate_coherence_factor	Inferencia mecanística
+TeoriaCambio	_encontrar_caminos_completos, validacion_completa, _extraer_categorias, _generar_sugerencias	Reconstrucción de teorías de cambio
+NIVEL 3: Auditoría y Robustez (Refutation & Control)
+Función: Cuestionar, validar o refutar hallazgos. Actúan como "Veto Gates". Epistemología: Falsacionismo popperiano - el conocimiento se fortalece por intentos de refutación.
+Clase	Métodos Clave	Paradigma
+PolicyContradictionDetector	_detect_logical_incompatibilities, _calculate_coherence_metrics, _statistical_significance_test	Detección de inconsistencias lógicas
+FinancialAuditor	_parse_amount, _calculate_sufficiency	Validación de viabilidad financiera
+IndustrialGradeValidator	execute_suite, validate_connection_matrix	Validación industrial rigurosa
+AdvancedDAGValidator	_calculate_bayesian_posterior, _calculate_confidence_interval, is_acyclic, _perform_sensitivity_analysis	Validación de grafos causales
+BayesianCounterfactualAuditor	construct_scm	Auditoría contrafactual
+OperationalizationAuditor	audit_sequence_logic	Validación de secuencias lógicas
+TemporalLogicVerifier	verify_temporal_consistency	Verificación de coherencia temporal
+NIVEL 4: Meta-Análisis (Identificación de Fallas)
+Función: Analizar el propio proceso analítico y detectar puntos de quiebre. Epistemología: Reflexividad crítica - el sistema observa sus propias limitaciones.
+Clase	Métodos Clave	Paradigma
+CausalInferenceSetup	identify_failure_points, _get_dynamics_pattern	Detección de vulnerabilidades causales
+PerformanceAnalyzer	analyze_performance, loss_functions	Evaluación del rendimiento analítico
+2. TIPOLOGÍA DE CONTRATOS (Clusters Funcionales)
+TIPO A: Semánticos (Text-Heavy) - 6.7%
+Contratos: Q001, Q013 Foco: Coherencia narrativa, alineación temática, NLP. Clases Dominantes: SemanticAnalyzer, TextMiningEngine, SemanticProcessor Estrategia de Fusión: Triangulación semántica
+
+TIPO B: Bayesianos (Probabilistic) - 40.0%
+Contratos: Q002, Q005, Q007, Q011, Q017, Q018, Q020, Q023, Q024, Q025, Q027, Q029 Foco: Significancia estadística, intervalos de confianza, priors. Clases Dominantes: BayesianMechanismInference, HierarchicalGenerativeModel, AdaptivePriorCalculator Estrategia de Fusión: Actualización bayesiana de creencias
+
+TIPO C: Causales (Graph-Native) - 13.3%
+Contratos: Q008, Q016, Q026, Q030 Foco: Topología de grafos, cadenas causales, DAGs. Clases Dominantes: CausalExtractor, TeoriaCambio, AdvancedDAGValidator Estrategia de Fusión: Superposición topológica
+
+TIPO D: Financieros (Finance-Heavy) - 26.7%
+Contratos: Q003, Q004, Q006, Q009, Q012, Q015, Q021, Q022 Foco: Suficiencia presupuestal, coherencia costo-meta. Clases Dominantes: FinancialAuditor, PDETMunicipalPlanAnalyzer Estrategia de Fusión: Consistencia contable
+
+TIPO E: Lógicos (Logic-Heavy) - 13.3%
+Contratos: Q010, Q014, Q019, Q028 Foco: Complementariedad, secuencia lógica, detección de contradicciones. Clases Dominantes: PolicyContradictionDetector, IndustrialGradeValidator, OperationalizationAuditor Estrategia de Fusión: Validación de consistencia lógica
+
+SUBTIPO F: Detección de Fallas - 6.7%
+Contratos: Q005, Q030 Foco: Puntos de falla, restricciones, riesgos estructurales. Clases: CausalInferenceSetup Estrategia de Fusión: Mapeo de vulnerabilidades
+
+3. TAXONOMÍA DE ESTRATEGIAS DE FUSIÓN
+Estrategia	Nivel	Función	Uso
+concat	1	Concatenar evidencia de múltiples fuentes	74.8%
+weighted_mean	2	Promediar confianza con pesos	24.9%
+semantic_corroboration	1	Fusionar nodos si dicen lo mismo → mayor peso	Tipo A
+bayesian_update	2	Prior + Likelihood → Posterior	Tipo B
+topological_overlay	1+3	Fusionar grafos detectando ciclos	Tipo C
+financial_coherence_audit	3	Validar coherencia presupuestal	Tipo D
+veto_gate	3	Si auditoría falla → bloquear rama de evidencia	Todos
+confidence_modulation	3	Penalizar score si auditoría débil (×0.5)	Todos
+graph_construction	1	Construir grafo de evidencia	Q001
+edge_inference	2	Inferir relaciones entre nodos	Q001
+dempster_shafer	2	Propagación de creencia combinatoria	Q001
+carver_doctoral_synthesis	4	Síntesis narrativa PhD-style	Q001
+4. TAXONOMÍA DE ROLES ARGUMENTATIVOS
+Rol	Nivel Origen	Función en Narrativa	Ejemplo
+EMPIRICAL_BASIS	1	Hecho observable innegable	"Se encontraron 15 menciones a VBG"
+INFERENTIAL_BRIDGE	2	Conexión lógica derivada	"Con 95% confianza, el prior se actualiza"
+ROBUSTNESS_QUALIFIER	3	Advertencia de calidad/limitación	"La muestra es pequeña (n=5)"
+REFUTATIONAL_SIGNAL	3	Evidencia negativa que contradice	"Meta A incompatible con Meta B"
+CONTEXTUAL_QUALIFIER	2+3	Condiciona validez a contexto	"Válido solo en zona rural"
+FINANCIAL_CONSTRAINT	3	Límites presupuestales a viabilidad	"Presupuesto insuficiente para meta"
+LOGICAL_INCONSISTENCY	3	Contradicción lógica interna	"Secuencia de actividades inválida"
+META_TRACEABILITY	4	Calidad del proceso analítico	"95% cobertura de patterns"
+
+=== 2. CONTRACT ANALYSIS (D5) ===
+>>> D5-Q1-v4.json
+Identity:
+TYPE_D / 
+Methods Count by Level:
+[
+  {
+    "level": "N1-EMP",
+    "count": 2
+  },
+  {
+    "level": "N2-INF",
+    "count": 5
+  },
+  {
+    "level": "N3-AUD",
+    "count": 1
+  }
+]
+Assembly Rules:
+{
+  "rule_id": "R1_financial_extraction",
+  "rule_type": "empirical_basis",
+  "merge_strategy": "concat"
+}
+{
+  "rule_id": "R2_sufficiency_analysis",
+  "rule_type": "computation",
+  "merge_strategy": "weighted_mean"
+}
+{
+  "rule_id": "R3_coherence_audit",
+  "rule_type": "financial_coherence_audit",
+  "merge_strategy": "veto_gate"
+}
+{
+  "rule_id": "R4_narrative_synthesis",
+  "rule_type": "synthesis",
+  "merge_strategy": "carver_doctoral_synthesis"
+}
+>>> D5-Q2-v4.json
+Identity:
+TYPE_A / 
+Methods Count by Level:
+[]
+Assembly Rules:
+{
+  "rule_id": "R1_empirical_extraction",
+  "rule_type": "empirical_basis",
+  "merge_strategy": "concat_with_deduplication"
+}
+{
+  "rule_id": "R2_bayesian_update",
+  "rule_type": "probabilistic_update",
+  "merge_strategy": "bayesian_update"
+}
+{
+  "rule_id": "R3_audit_gate",
+  "rule_type": "robustness_gate",
+  "merge_strategy": "veto_gate"
+}
+{
+  "rule_id": "R4_narrative_synthesis",
+  "rule_type": "synthesis",
+  "merge_strategy": "carver_doctoral_synthesis"
+}
+>>> D5-Q3-v4.json
+Identity:
+TYPE_B / 
+Methods Count by Level:
+[]
+Assembly Rules:
+{
+  "rule_id": "R1_empirical_extraction",
+  "rule_type": "empirical_basis",
+  "merge_strategy": "concat_with_deduplication"
+}
+{
+  "rule_id": "R2_bayesian_update",
+  "rule_type": "probabilistic_update",
+  "merge_strategy": "bayesian_update"
+}
+{
+  "rule_id": "R3_audit_gate",
+  "rule_type": "robustness_gate",
+  "merge_strategy": "veto_gate"
+}
+{
+  "rule_id": "R4_narrative_synthesis",
+  "rule_type": "synthesis",
+  "merge_strategy": "carver_doctoral_synthesis"
+}
+>>> D5-Q4-v4.json
+Identity:
+TYPE_C / 
+Methods Count by Level:
+[]
+Assembly Rules:
+{
+  "rule_id": "R1_empirical_extraction",
+  "rule_type": "empirical_basis",
+  "merge_strategy": "concat_with_deduplication"
+}
+{
+  "rule_id": "R2_bayesian_update",
+  "rule_type": "probabilistic_update",
+  "merge_strategy": "bayesian_update"
+}
+{
+  "rule_id": "R3_audit_gate",
+  "rule_type": "robustness_gate",
+  "merge_strategy": "veto_gate"
+}
+{
+  "rule_id": "R4_narrative_synthesis",
+  "rule_type": "synthesis",
+  "merge_strategy": "carver_doctoral_synthesis"
+}
+>>> D5-Q5-v4.json
+Identity:
+TYPE_D / 
+Methods Count by Level:
+[]
+Assembly Rules:
+{
+  "rule_id": "R1_empirical_extraction",
+  "rule_type": "empirical_basis",
+  "merge_strategy": "concat_with_deduplication"
+}
+{
+  "rule_id": "R2_bayesian_update",
+  "rule_type": "probabilistic_update",
+  "merge_strategy": "bayesian_update"
+}
+{
+  "rule_id": "R3_audit_gate",
+  "rule_type": "robustness_gate",
+  "merge_strategy": "veto_gate"
+}
+{
+  "rule_id": "R4_narrative_synthesis",
+  "rule_type": "synthesis",
+  "merge_strategy": "carver_doctoral_synthesis"
+}
+
+=== 3. FINANCIAL METHODS CHECK ===
+Methods with 'financial' in mother_file:
+{
+  "class_name": "PDETMunicipalPlanAnalyzer",
+  "method_name": "_find_mediator_mentions",
+  "mother_file": "financiero_viabilidad_tablas.py",
+  "provides": "pdetmunicipalplananalyzer.findmediatorm entions",
+  "level": "N1-EMP",
+  "output_type": "FACT",
+  "fusion_behavior": "additive",
+  "description": "Extracts mediator mentions from text",
+  "requires": []
+}
+{
+  "class_name": "PDETMunicipalPlanAnalyzer",
+  "method_name": "generate_counterfactuals",
+  "mother_file": "financiero_viabilidad_tablas.py",
+  "provides": "pdetmunicipalplananalyzer.generatecounterfactuals",
+  "level": "N2-INF",
+  "output_type": "PARAMETER",
+  "fusion_behavior": "multiplicative",
+  "description": "Generates counterfactual scenarios",
+  "requires": [
+    "raw_facts"
+  ],
+  "modifies": [
+    "edge_weights",
+    "confidence_scores"
+  ]
+}
+{
+  "class_name": "PDETMunicipalPlanAnalyzer",
+  "method_name": "_simulate_intervention",
+  "mother_file": "financiero_viabilidad_tablas.py",
+  "provides": "pdetmunicipalplananalyzer.simulateintervention",
+  "level": "N2-INF",
+  "output_type": "PARAMETER",
+  "fusion_behavior": "multiplicative",
+  "description": "Simulates intervention scenarios",
+  "requires": [
+    "raw_facts"
+  ],
+  "modifies": [
+    "edge_weights",
+    "confidence_scores"
+  ]
+}
+{
+  "class_name": "PDETMunicipalPlanAnalyzer",
+  "method_name": "_generate_scenario_narrative",
+  "mother_file": "financiero_viabilidad_tablas.py",
+  "provides": "pdetmunicipalplananalyzer.generatescenarionarrative",
+  "level": "N2-INF",
+  "output_type": "PARAMETER",
+  "fusion_behavior": "multiplicative",
+  "description": "Generates narrative for scenarios",
+  "requires": [
+    "raw_facts"
+  ],
+  "modifies": [
+    "confidence_scores"
+  ]
+}
+
+=== 4. DIM05 CHECK ===
+./archive/v3_contracts_20251222_025508/Q112.v3.json:    "dimension_id": "DIM05",
+./archive/v3_contracts_20251222_025508/Q112.v3.json:    "note": "Signal requirements are under development. Canonical mapping pending for PA03/DIM05; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+./archive/v3_contracts_20251222_025508/Q112.v3.json:          "const": "DIM05"
+./archive/v3_contracts_20251222_025508/Q112.v3.json:          "rationale": "D5-Q2 (Q112) for PA03/DIM05 requires consistent extraction, validation, and synthesis across 28 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+./archive/v3_contracts_20251222_025508/Q264.v3.json:    "dimension_id": "DIM05",
+./archive/v3_contracts_20251222_025508/Q264.v3.json:    "note": "Signal requirements are under development. Canonical mapping pending for PA08/DIM05; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+./archive/v3_contracts_20251222_025508/Q264.v3.json:          "const": "DIM05"
+./archive/v3_contracts_20251222_025508/Q264.v3.json:          "rationale": "D5-Q4 (Q264) for PA08/DIM05 requires consistent extraction, validation, and synthesis across 7 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+./archive/v3_contracts_20251222_025508/Q055.v3.json:    "dimension_id": "DIM05",
+./archive/v3_contracts_20251222_025508/Q055.v3.json:    "note": "Signal requirements are under development. Canonical mapping pending for PA10/DIM05; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+./archive/v3_contracts_20251222_025508/Q055.v3.json:          "const": "DIM05"
+./archive/v3_contracts_20251222_025508/Q055.v3.json:          "rationale": "D5-Q5 (Q055) for PA10/DIM05 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+./archive/v3_contracts_20251222_025508/Q231.v3.json:    "dimension_id": "DIM05",
+./archive/v3_contracts_20251222_025508/Q231.v3.json:    "note": "Signal requirements are under development. Canonical mapping pending for PA07/DIM05; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+./archive/v3_contracts_20251222_025508/Q231.v3.json:          "const": "DIM05"
+./archive/v3_contracts_20251222_025508/Q231.v3.json:          "rationale": "D5-Q1 (Q231) for PA07/DIM05 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+./archive/v3_contracts_20251222_025508/Q171.v3.json:    "dimension_id": "DIM05",
+./archive/v3_contracts_20251222_025508/Q171.v3.json:    "note": "Signal requirements are under development. Canonical mapping pending for PA05/DIM05; mandatory_signals and optional_signals are intentionally empty to avoid blocking execution.",
+./archive/v3_contracts_20251222_025508/Q171.v3.json:          "const": "DIM05"
+./archive/v3_contracts_20251222_025508/Q171.v3.json:          "rationale": "D5-Q1 (Q171) for PA05/DIM05 requires consistent extraction, validation, and synthesis across 8 methods. This block documents how the pipeline combines method outputs into a single evidence product.",
+
+=== 5. EXISTING TYPE_D SEARCH ===
+./D5-Q5-v4.json
+./D2-Q4-v4.json
+./D3-Q2-v4.json
+./D1_Q3_v4.json
+./contracts_v4/D5-Q2-v4.json
+./contracts_v4/D5-Q1-v4.json
+./D1-Q4-v4.json
+./D4-Q5-v4.json
+./D2-Q1-v4.json
+./D6-Q5-v4.json
+./D5-Q1-v4.json

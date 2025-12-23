@@ -27,9 +27,9 @@
       "Q260",
       "Q290"
     ],
-    "contract_type": "TYPE_A",
-    "contract_type_name": "Semántico",
-    "contract_type_focus": "Coherencia narrativa, alineación temática, NLP",
+    "contract_type": "TYPE_B",
+    "contract_type_name": "Bayesiano",
+    "contract_type_focus": "Significancia estadística, intervalos de confianza, priors",
     "contract_version": "4.0.0-epistemological",
     "created_at": "2025-12-23T13:41:33.216904Z",
     "specification_source": "episte_refact.md"
@@ -40,7 +40,7 @@
   },
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
-    "contract_type": "TYPE_A",
+    "contract_type": "TYPE_B",
     "method_count": 5,
     "execution_phases": {
       "phase_A_construction": {
@@ -66,10 +66,15 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "description": "Calcula alineación PDET mediante scoring probabilístico",
             "requires": [
               "raw_facts"
-            ]
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ],
+            "classification_rationale": "Patrón 'score_*' + output numérico derivado → N2-INF (PARTE II, Sec 2.2)"
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -79,10 +84,15 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "description": "Calcula coherencia causal mediante scoring inferencial",
             "requires": [
               "raw_facts"
-            ]
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ],
+            "classification_rationale": "Patrón 'score_*' + output numérico derivado → N2-INF (PARTE II, Sec 2.2)"
           },
           {
             "class_name": "IndustrialPolicyProcessor",
@@ -92,10 +102,15 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "description": "Analiza dimensiones causales para inferir relaciones",
             "requires": [
               "raw_facts"
-            ]
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ],
+            "classification_rationale": "Patrón 'analyze_*' → N2-INF (PARTE II, Sec 2.2)"
           }
         ],
         "dependencies": [
@@ -238,30 +253,32 @@
     },
     "assembly_rules": [
       {
-        "rule_id": "R1_empirical_extraction",
+        "rule_id": "R1_empirical_basis",
         "rule_type": "empirical_basis",
-        "target": "raw_facts",
+        "target": "prior_distribution",
         "sources": [],
-        "merge_strategy": "concat_with_deduplication",
-        "deduplication_key": "element_id",
+        "merge_strategy": "concat",
         "output_type": "FACT",
-        "confidence_propagation": "preserve_individual"
+        "confidence_propagation": "preserve_individual",
+        "rationale": "Según PARTE III, Sec 3.3: TYPE_B usa concat para R1 - base empírica para prior"
       },
       {
-        "rule_id": "R2_inferential_aggregation",
-        "rule_type": "corroboration",
-        "target": "triangulated_facts",
+        "rule_id": "R2_probabilistic_update",
+        "rule_type": "probabilistic_update",
+        "target": "posterior_belief",
         "sources": [
           "pdetmunicipalplananalyzer.score_pdet_alignment",
           "pdetmunicipalplananalyzer.score_causal_coherence",
           "industrialpolicyprocessor.analyze_causal_dimensions"
         ],
         "input_dependencies": [
-          "raw_facts"
+          "prior_distribution"
         ],
-        "merge_strategy": "semantic_triangulation",
+        "merge_strategy": "bayesian_update",
+        "operation": "posterior = update_belief(prior, likelihood_from_evidence)",
         "output_type": "PARAMETER",
-        "confidence_propagation": "conservative_bayesian"
+        "confidence_propagation": "bayesian_posterior",
+        "rationale": "Según PARTE III, Sec 3.3: TYPE_B usa bayesian_update para R2"
       },
       {
         "rule_id": "R3_audit_gate",
@@ -315,22 +332,28 @@
     ]
   },
   "fusion_specification": {
-    "contract_type": "TYPE_A",
-    "primary_strategy": "semantic_triangulation",
+    "contract_type": "TYPE_B",
+    "primary_strategy": "bayesian_update",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "semantic_corroboration",
+        "strategy": "concat",
         "behavior": "additive",
-        "conflict_resolution": "corroborative_stacking"
+        "conflict_resolution": "preserve_all",
+        "rationale": "PARTE IV, Sec 4.3: TYPE_B usa concat para N1, actualización bayesiana en N2"
       },
       "N2_parameter_fusion": {
-        "strategy": "dempster_shafer",
+        "strategy": "bayesian_update",
         "behavior": "multiplicative",
-        "conflict_resolution": "belief_combination",
+        "conflict_resolution": "posterior_weighting",
         "affects": [
           "N1_facts.confidence",
           "N1_facts.edge_weights"
-        ]
+        ],
+        "formula": {
+          "description": "Actualización bayesiana de creencias",
+          "expression": "P(H|E) = P(E|H) * P(H) / P(E)"
+        },
+        "rationale": "PARTE IV, Sec 4.3: TYPE_B usa bayesian_update para N2"
       },
       "N3_constraint_fusion": {
         "strategy": "veto_gate",
@@ -339,7 +362,8 @@
         "propagation": {
           "upstream": "confidence_backpropagation",
           "downstream": "branch_blocking"
-        }
+        },
+        "rationale": "PARTE IV, Sec 4.3: TODOS los tipos usan veto_gate para N3"
       }
     },
     "fusion_pipeline": {
@@ -347,7 +371,8 @@
         "input": "phase_A_construction.outputs",
         "operation": "BUILD evidence graph from extracted facts",
         "output": "evidence_graph_v1",
-        "type_consumed": "FACT"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
       "stage_2_parameter_application": {
         "input": [
@@ -356,7 +381,8 @@
         ],
         "operation": "MODIFY edge weights based on inferred parameters",
         "output": "evidence_graph_v2_weighted",
-        "type_consumed": "PARAMETER"
+        "type_consumed": "PARAMETER",
+        "behavior": "multiplicative"
       },
       "stage_3_constraint_filtering": {
         "input": [
@@ -365,7 +391,8 @@
         ],
         "operation": "FILTER/BLOCK branches that fail validation",
         "output": "evidence_graph_v3_validated",
-        "type_consumed": "CONSTRAINT"
+        "type_consumed": "CONSTRAINT",
+        "behavior": "gate"
       },
       "stage_4_synthesis": {
         "input": "evidence_graph_v3_validated",
@@ -421,7 +448,7 @@
   "human_answer_structure": {
     "format": "markdown",
     "template_mode": "epistemological_narrative",
-    "contract_type": "TYPE_A",
+    "contract_type": "TYPE_B",
     "sections": [
       {
         "section_id": "S1_verdict",
@@ -486,7 +513,8 @@
         "veto_display": {
           "if_veto_triggered": "⛔ **MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
-          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todos los hallazgos sobrevivieron refutación."
+          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todos los hallazgos sobrevivieron refutación.",
+          "confidence_override": 0
         },
         "epistemological_note": {
           "include_in_output": true,
@@ -561,7 +589,9 @@
           19
         ],
         "label": "INVÁLIDO",
-        "display": "🔴"
+        "display": "🔴",
+        "description": "Hallazgos refutados o insuficientes. VETO activado.",
+        "action_required": "NO usar para toma de decisiones. Requiere nueva evidencia."
       },
       "low": {
         "range": [
@@ -569,7 +599,9 @@
           49
         ],
         "label": "DÉBIL",
-        "display": "🟠"
+        "display": "🟠",
+        "description": "Evidencia insuficiente o contradicciones parciales.",
+        "action_required": "Usar con extrema cautela. Buscar corroboración adicional."
       },
       "medium": {
         "range": [
@@ -577,7 +609,9 @@
           79
         ],
         "label": "MODERADO",
-        "display": "🟡"
+        "display": "🟡",
+        "description": "Evidencia presente pero con limitaciones identificadas.",
+        "action_required": "Aceptable para decisiones preliminares con seguimiento."
       },
       "high": {
         "range": [
@@ -585,7 +619,9 @@
           100
         ],
         "label": "ROBUSTO",
-        "display": "🟢"
+        "display": "🟢",
+        "description": "Evidencia sólida, validada por N3, sin contradicciones.",
+        "action_required": "Apto para toma de decisiones con alta confianza."
       }
     }
   },
@@ -666,10 +702,15 @@
       "method_inventory": "epistemological_classification_v4.json",
       "epistemological_guide": "episte_refact.md"
     },
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "flat_method_arrays": "FORBIDDEN",
+      "untyped_outputs": "FORBIDDEN"
+    },
     "generation": {
       "method": "v4_epistemological_generation",
-      "timestamp": "2025-12-23T13:41:33.216904Z",
-      "generator_version": "1.0.0"
+      "timestamp": "2025-12-23T15:21:00Z",
+      "generator_version": "1.1.0"
     },
     "refactoring_history": [
       {

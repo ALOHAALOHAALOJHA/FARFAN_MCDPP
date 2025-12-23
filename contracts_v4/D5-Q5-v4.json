@@ -27,9 +27,9 @@
       "Q265",
       "Q295"
     ],
-    "contract_type": "TYPE_A",
-    "contract_type_name": "Semántico",
-    "contract_type_focus": "Coherencia narrativa, alineación temática, NLP",
+    "contract_type": "TYPE_B",
+    "contract_type_name": "Bayesiano",
+    "contract_type_focus": "Significancia estadística, intervalos de confianza, priors",
     "contract_version": "4.0.0-epistemological",
     "created_at": "2025-12-23T13:41:33.223795Z",
     "specification_source": "episte_refact.md"
@@ -40,7 +40,7 @@
   },
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
-    "contract_type": "TYPE_A",
+    "contract_type": "TYPE_B",
     "method_count": 8,
     "execution_phases": {
       "phase_A_construction": {
@@ -338,8 +338,8 @@
     ]
   },
   "fusion_specification": {
-    "contract_type": "TYPE_A",
-    "primary_strategy": "semantic_triangulation",
+    "contract_type": "TYPE_B",
+    "primary_strategy": "bayesian_update",
     "level_strategies": {
       "N1_fact_fusion": {
         "strategy": "semantic_corroboration",
@@ -444,7 +444,7 @@
   "human_answer_structure": {
     "format": "markdown",
     "template_mode": "epistemological_narrative",
-    "contract_type": "TYPE_A",
+    "contract_type": "TYPE_B",
     "sections": [
       {
         "section_id": "S1_verdict",
