@@ -79,7 +79,7 @@ def test_ingestion_method_stricter_threshold():
     
     # Test with score=0.75 - should be INSUFICIENTE for ingestion
     result = policy.calibrate_method_output(
-        contract_id="Q001",
+        "Q001",
         method_instance=method,
         raw_score=0.75,
         context={"execution_phase": "ingestion"},
@@ -198,7 +198,7 @@ def test_phase_context_propagation():
     
     # Test ingestion phase context
     result = policy.calibrate_method_output(
-        contract_id="Q001",
+        "Q001",
         method_instance=method,
         raw_score=0.70,
         context={"execution_phase": "ingestion"},
@@ -207,7 +207,7 @@ def test_phase_context_propagation():
     
     # Test answering phase context
     result = policy.calibrate_method_output(
-        contract_id="Q001",
+        "Q001",
         method_instance=method,
         raw_score=0.70,
         context={"execution_phase": "answering"},
