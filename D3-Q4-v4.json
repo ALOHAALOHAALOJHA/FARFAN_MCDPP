@@ -1,0 +1,284 @@
+{
+  "contract_version": "4.0.0",
+  "epistemological_framework": "N1_empirical|N2_inferential|N3_audit",
+  "identity": {
+    "contract_id": "D3-Q4-v4",
+    "question_id": "Q014",
+    "base_question": "14",
+    "derived_slot": "D3-Q4",
+    "policy_areas": ["Q014", "Q044", "Q074", "Q104", "Q134", "Q164", "Q194", "Q224", "Q254", "Q284"],
+    "contract_type": "TYPE_C_CAUSAL_TOPOLOGICAL",
+    "primary_strategy": "topological_overlay",
+    "created_at": "2025-12-22T21:00:00Z",
+    "version": "4.0.0"
+  },
+  "executor_binding": {
+    "executor_class": "QuestionExecutor",
+    "execution_mode": "phase_coordinated",
+    "phase_sequence": ["phase_A_construction", "phase_B_computation", "phase_C_litigation"],
+    "coordination_protocol": "sequential_with_veto"
+  },
+  "method_binding": {
+    "method_count": 9,
+    "execution_phases": {
+      "phase_A_construction": {
+        "layer": "N1_empirical",
+        "output_type": "FACT",
+        "methods": [],
+        "phase_description": "No empirical extraction - N2 consumes PreprocesadoMetadata directly"
+      },
+      "phase_B_computation": {
+        "layer": "N2_inferential",
+        "output_type": "PARAMETER",
+        "methods": [
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "calculate_acyclicity_pvalue",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_acyclicitypvalue",
+            "requires": ["PreprocesadoMetadata"]
+          },
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "get_graph_stats",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_graphstats",
+            "requires": ["PreprocesadoMetadata"]
+          },
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "_calculate_node_importance",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_nodeimportance",
+            "requires": ["PreprocesadoMetadata"]
+          },
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "_generate_subgraph",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_subgraph",
+            "requires": ["PreprocesadoMetadata"]
+          },
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "add_node",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_addnode",
+            "requires": ["PreprocesadoMetadata"]
+          },
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "add_edge",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_addedge",
+            "requires": ["PreprocesadoMetadata"]
+          },
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "export_nodes",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_exportnodes",
+            "requires": ["advanceddagvalidator_acyclicitypvalue", "advanceddagvalidator_graphstats"]
+          },
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "export_edges",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_exportedges",
+            "requires": ["advanceddagvalidator_addnode", "advanceddagvalidator_addedge"]
+          }
+        ],
+        "phase_description": "Inferential causal topology analysis"
+      },
+      "phase_C_litigation": {
+        "layer": "N3_audit",
+        "output_type": "CONSTRAINT",
+        "methods": [
+          {
+            "class": "AdvancedDAGValidator",
+            "method": "_is_acyclic",
+            "module": "farfan_core.analysis.teoria_cambio",
+            "provides": "advanceddagvalidator_isacyclic",
+            "requires": ["advanceddagvalidator_exportnodes", "advanceddagvalidator_exportedges"],
+            "veto_conditions": {
+              "trigger": "acyclicity_violation",
+              "blocked_layers": ["N1", "N2"],
+              "veto_message": "Causal graph contains cycles - invalid causal structure",
+              "recovery_protocol": "reject_cyclic_dag"
+            }
+          }
+        ],
+        "phase_description": "Audit layer with veto power over causal topology"
+      }
+    },
+    "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly. TYPE_C causal contract with topological overlay strategy."
+  },
+  "question_context": {
+    "monolith_ref": "Q014",
+    "semantic_domain": "causal_topology_validation",
+    "question_type": "causal_dag_analysis"
+  },
+  "signal_requirements": {
+    "required_signals": ["PreprocesadoMetadata"],
+    "optional_signals": [],
+    "signal_dependencies": {}
+  },
+  "evidence_assembly": {
+    "type_system": "N1_FACT|N2_PARAMETER|N3_CONSTRAINT",
+    "assembly_rules": [
+      {
+        "rule_id": "R1_empirical_foundation",
+        "layer": "N1",
+        "sources": ["PreprocesadoMetadata"],
+        "operation": "direct_consumption",
+        "output_type": "metadata_input",
+        "description": "No N1 methods - N2 consumes preprocessing metadata directly"
+      },
+      {
+        "rule_id": "R2_inferential_fusion",
+        "layer": "N2",
+        "sources": ["advanceddagvalidator_acyclicitypvalue", "advanceddagvalidator_graphstats", "advanceddagvalidator_nodeimportance", "advanceddagvalidator_subgraph", "advanceddagvalidator_addnode", "advanceddagvalidator_addedge", "advanceddagvalidator_exportnodes", "advanceddagvalidator_exportedges"],
+        "operation": "topological_overlay",
+        "output_type": "causal_topology_parameters",
+        "description": "Fuse causal topology parameters using topological overlay"
+      },
+      {
+        "rule_id": "R3_audit_constraint",
+        "layer": "N3",
+        "sources": ["advanceddagvalidator_isacyclic"],
+        "operation": "veto_gate",
+        "output_type": "acyclicity_constraint",
+        "description": "Apply Popperian falsification - veto if DAG contains cycles"
+      },
+      {
+        "rule_id": "R4_final_synthesis",
+        "layer": "OUTPUT",
+        "sources": ["N2_parameters", "N3_constraints"],
+        "operation": "conditional_assembly",
+        "output_type": "human_answer",
+        "description": "Assemble human answer only if N3 constraints are satisfied"
+      }
+    ]
+  },
+  "fusion_specification": {
+    "primary_strategy": "topological_overlay",
+    "level_strategies": {
+      "N1_fact_aggregation": "none",
+      "N2_parameter_fusion": "topological_overlay",
+      "N3_constraint_application": "acyclicity_veto_gate"
+    },
+    "fusion_parameters": {
+      "topological_overlay": {
+        "graph_construction_method": "incremental_dag_assembly",
+        "acyclicity_enforcement": "monte_carlo_validation",
+        "node_importance_weighting": "centrality_based",
+        "subgraph_generation": "pruning_based"
+      }
+    }
+  },
+  "cross_layer_fusion": {
+    "asymmetry_principle": "Popperian: N3 can veto N2, N2 cannot override N3",
+    "veto_mechanism": "acyclicity_validation",
+    "veto_propagation": "immediate_halt"
+  },
+  "human_answer_structure": {
+    "sections": [
+      {
+        "section_id": "S1_empirical_base",
+        "title": "Causal Structure Foundation",
+        "layer_source": "N1",
+        "template": {
+          "structure": [
+            "## Causal Structure Foundation\n",
+            "**Data Source**: {preprocessing_metadata_source}\n",
+            "**Nodes Identified**: {node_count}\n",
+            "**Edges Identified**: {edge_count}\n"
+          ],
+          "assembly_instruction": "markdown_concatenation",
+          "epistemological_note": "N1 layer: No empirical extraction - relies on preprocessing metadata"
+        },
+        "required_fields": ["preprocessing_metadata_source", "node_count", "edge_count"]
+      },
+      {
+        "section_id": "S2_inferential_analysis",
+        "title": "Causal Topology Analysis",
+        "layer_source": "N2",
+        "template": {
+          "structure": [
+            "## Causal Topology Analysis\n",
+            "**Acyclicity P-Value**: {acyclicity_pvalue}\n",
+            "**Graph Statistics**: {graph_stats}\n",
+            "**Node Importance Scores**: {node_importance}\n",
+            "**Critical Subgraphs**: {critical_subgraphs}\n",
+            "\n",
+            "**Causal Topology Assessment**: {topology_assessment}\n"
+          ],
+          "assembly_instruction": "topological_overlay_markdown"
+        },
+        "required_fields": ["acyclicity_pvalue", "graph_stats", "node_importance", "critical_subgraphs", "topology_assessment"]
+      },
+      {
+        "section_id": "S3_audit_constraints",
+        "title": "Causal Validity Audit",
+        "layer_source": "N3",
+        "template": {
+          "structure": [
+            "## Causal Validity Audit\n",
+            "**Acyclicity Status**: {acyclicity_status}\n",
+            "**Validation Result**: {validation_result}\n",
+            "\n",
+            "{veto_display}\n"
+          ],
+          "assembly_instruction": "constraint_display",
+          "epistemological_note": "N3 audit: Popperian falsification - vetoes if cycles detected",
+          "veto_display": "⚠️ **CAUSAL STRUCTURE REJECTED**: {veto_reason}"
+        },
+        "required_fields": ["acyclicity_status", "validation_result", "veto_display"]
+      },
+      {
+        "section_id": "S4_synthesis",
+        "title": "Causal Structure Conclusion",
+        "layer_source": "OUTPUT",
+        "template": {
+          "structure": [
+            "## Causal Structure Conclusion\n",
+            "**Overall Assessment**: {overall_assessment}\n",
+            "**Causal Validity**: {causal_validity}\n",
+            "**Confidence Level**: {confidence_level}\n"
+          ],
+          "assembly_instruction": "conditional_synthesis"
+        },
+        "required_fields": ["overall_assessment", "causal_validity", "confidence_level"]
+      }
+    ]
+  },
+  "output_contract": {
+    "output_format": "structured_markdown",
+    "output_schema": "human_answer_v4",
+    "validation_required": true
+  },
+  "validation_rules": {
+    "N3_veto_enforcement": "mandatory",
+    "output_completeness": "all_sections_required",
+    "evidence_traceability": "full_chain_required"
+  },
+  "error_handling": {
+    "N3_veto_behavior": "halt_and_report",
+    "missing_evidence_behavior": "report_gap",
+    "fusion_failure_behavior": "escalate"
+  },
+  "traceability": {
+    "evidence_chain_tracking": "enabled",
+    "method_provenance": "enabled",
+    "veto_audit_trail": "enabled"
+  },
+  "compatibility": {
+    "executor_version": ">=4.0.0",
+    "framework_version": "4.0.0"
+  },
+  "calibration": {
+    "confidence_threshold": 0.7,
+    "veto_sensitivity": "high",
+    "parameter_stability": "required"
+  }
+}

@@ -1,0 +1,516 @@
+{
+  "contract_metadata": {
+    "contract_id": "D3-Q3-v4",
+    "base_question_id": "Q013",
+    "policy_area_expansion": [
+      "Q013",
+      "Q043",
+      "Q073",
+      "Q103",
+      "Q133",
+      "Q163",
+      "Q193",
+      "Q223",
+      "Q253",
+      "Q283"
+    ],
+    "version": "4.0.0",
+    "created_at": "2025-12-22T20:00:00Z",
+    "author": "F.A.R.F.A.N Epistemological Framework Generator",
+    "status": "active"
+  },
+  "identity": {
+    "name": "Semantic Coherence and Responsibility Analysis Contract",
+    "contract_type": "TYPE_A",
+    "primary_strategy": "dempster_shafer",
+    "epistemic_commitment": "Falsificationist with semantic triangulation",
+    "scope": "Assess semantic coherence, narrative alignment, and entity responsibility through NLP with vectorization audit",
+    "purpose": "Evaluate semantic quality and coherence of policy documents through multi-method semantic analysis with audit oversight"
+  },
+  "executor_binding": {
+    "executor_class": "MethodPipelineExecutor",
+    "executor_module": "farfan_core.core.executor_framework",
+    "execution_mode": "epistemological_pipeline",
+    "parallelization": {
+      "phase_A": true,
+      "phase_B": true,
+      "phase_C": false
+    }
+  },
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_A",
+    "method_count": 17,
+    "execution_phases": {
+      "phase_A_construction": {
+        "level": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "methods": []
+      },
+      "phase_B_computation": {
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "weighted_combination",
+        "methods": [
+          {
+            "class_name": "FinancialAuditor",
+            "method_name": "_match_program_to_node",
+            "mother_file": "derek_beach.py",
+            "provides": "financialauditor_matchprogramtonode",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Match programs to semantic nodes",
+            "requires": []
+          },
+          {
+            "class_name": "FinancialAuditor",
+            "method_name": "_match_goal_to_budget",
+            "mother_file": "derek_beach.py",
+            "provides": "financialauditor_matchgoaltobudget",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Match goals to budget allocations semantically",
+            "requires": [
+              "financialauditor_matchprogramtonode"
+            ]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_consolidate_entities",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_consolidateentities",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Consolidate identified entities semantically",
+            "requires": []
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "identify_responsible_entities",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_identifyresponsibleentities",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Identify entities responsible for policy implementation",
+            "requires": [
+              "pdetmunicipalplananalyzer_consolidateentities"
+            ]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_score_responsibility_clarity",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_scoreresponsibilityclarity",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Score clarity of responsibility assignments",
+            "requires": [
+              "pdetmunicipalplananalyzer_identifyresponsibleentities"
+            ]
+          },
+          {
+            "class_name": "PolicyAnalysisEmbedder",
+            "method_name": "process_document",
+            "mother_file": "policy_processor.py",
+            "provides": "policyanalysisembedder_processdocument",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Process document to generate semantic embeddings",
+            "requires": [
+              "semanticanalyzer_emptysemanticcube"
+            ]
+          },
+          {
+            "class_name": "PolicyAnalysisEmbedder",
+            "method_name": "semantic_search",
+            "mother_file": "policy_processor.py",
+            "provides": "policyanalysisembedder_semanticsearch",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Perform semantic search on embedded documents",
+            "requires": [
+              "policyanalysisembedder_processdocument"
+            ]
+          },
+          {
+            "class_name": "PolicyAnalysisEmbedder",
+            "method_name": "_apply_mmr",
+            "mother_file": "policy_processor.py",
+            "provides": "policyanalysisembedder_applymmr",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Apply maximal marginal relevance to semantic results",
+            "requires": [
+              "policyanalysisembedder_semanticsearch"
+            ]
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_classify_policy_domain",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer_classifypolicydomain",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Classify policy domain semantically",
+            "requires": [
+              "semanticanalyzer_emptysemanticcube"
+            ]
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_classify_cross_cutting_themes",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer_classifycrosscuttingthemes",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Classify cross-cutting thematic elements",
+            "requires": [
+              "semanticanalyzer_classifypolicydomain"
+            ]
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_classify_value_chain_link",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer_classifyvaluechainlink",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Classify value chain linkages semantically",
+            "requires": [
+              "semanticanalyzer_classifycrosscuttingthemes"
+            ]
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_process_segment",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer_processsegment",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Process semantic text segments",
+            "requires": [
+              "semanticanalyzer_classifyvaluechainlink"
+            ]
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_calculate_semantic_complexity",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer_calculatesemanticcomplexity",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Calculate semantic complexity metrics",
+            "requires": [
+              "semanticanalyzer_processsegment"
+            ]
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_compute_evidence_confidence",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor_computeevidenceconfidence",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Compute confidence scores for semantic evidence",
+            "requires": [
+              "policyanalysisembedder_applymmr"
+            ]
+          },
+          {
+            "class_name": "AdaptivePriorCalculator",
+            "method_name": "generate_traceability_record",
+            "mother_file": "derek_beach.py",
+            "provides": "adaptivepriorcalculator_generatetraceabilityrecord",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "weighted_combination",
+            "description": "Generate traceability records for semantic analysis",
+            "requires": [
+              "semanticanalyzer_calculatesemanticcomplexity"
+            ]
+          }
+        ]
+      },
+      "phase_C_litigation": {
+        "level": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "veto_gate",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_from_responsibility_tables",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer_extractfromresponsibilitytables",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "veto_gate",
+            "description": "Audit extraction from responsibility tables - can veto if incomplete",
+            "requires": [
+              "pdetmunicipalplananalyzer_scoreresponsibilityclarity"
+            ],
+            "veto_conditions": {
+              "trigger": "responsibility_extraction_incomplete",
+              "threshold": 0.7,
+              "consequence": "block_responsibility_findings_if_extraction_failed",
+              "rationale": "Incomplete responsibility extraction cannot support accountability analysis",
+              "override_possible": false
+            }
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_vectorize_segments",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer_vectorizesegments",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "veto_gate",
+            "description": "Audit semantic vectorization quality - can veto low-quality embeddings",
+            "requires": [
+              "semanticanalyzer_processsegment",
+              "policyanalysisembedder_processdocument"
+            ],
+            "veto_conditions": {
+              "trigger": "vectorization_quality_below_threshold",
+              "threshold": 0.65,
+              "consequence": "block_semantic_findings_if_embeddings_unreliable",
+              "rationale": "Low-quality semantic vectors cannot support reliable semantic analysis",
+              "override_possible": false
+            }
+          }
+        ]
+      }
+    },
+    "layer_dependencies": {
+      "N2_consumes_N1": true,
+      "N3_audits_N2": true,
+      "N3_can_veto_N1_and_N2": true
+    },
+    "notes": "TYPE_A contract with 0 N1, 15 N2, 2 N3 methods (17 total). Excludes 4 L4 synthesis methods per guide. SOURCE DATA ERROR CORRECTED: Removed _empty_semantic_cube (private fallback method that returns empty dict when no segments - not a legitimate analytical capability). N2 consumes PreprocesadoMetadata directly. Semantic vectorization and responsibility extraction audits have veto capability."
+  },
+  "question_context": {
+    "monolith_ref": "Q013",
+    "dimension_primary": "Semantic Coherence",
+    "dimension_secondary": "Entity Responsibility",
+    "epistemic_role": "Assess semantic quality, narrative alignment, and entity accountability",
+    "human_readable_question": "Is the policy document semantically coherent and are responsible entities clearly identified?"
+  },
+  "signal_requirements": {
+    "input_contract": {
+      "requires": [
+        "PreprocesadoMetadata"
+      ],
+      "optional": [
+        "SemanticEmbeddings",
+        "ResponsibilityTables"
+      ],
+      "format": "structured_json"
+    },
+    "preprocessing_dependencies": [
+      "text_extraction",
+      "entity_recognition",
+      "table_extraction"
+    ]
+  },
+  "evidence_assembly": {
+    "type_system": {
+      "N1_facts": "additive_union",
+      "N2_parameters": "weighted_combination",
+      "N3_constraints": "conjunctive_filtering"
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_fact_aggregation",
+        "description": "No N1 facts - N2 methods consume PreprocesadoMetadata directly",
+        "sources": [],
+        "operation": "direct_metadata_consumption",
+        "output_label": "fact_base_empty"
+      },
+      {
+        "rule_id": "R2_parameter_weighting",
+        "description": "Weight N2 parameters by Dempster-Shafer belief mass",
+        "sources": [
+          "financialauditor_matchprogramtonode",
+          "financialauditor_matchgoaltobudget",
+          "pdetmunicipalplananalyzer_consolidateentities",
+          "pdetmunicipalplananalyzer_identifyresponsibleentities",
+          "pdetmunicipalplananalyzer_scoreresponsibilityclarity",
+          "policyanalysisembedder_processdocument",
+          "policyanalysisembedder_semanticsearch",
+          "policyanalysisembedder_applymmr",
+          "semanticanalyzer_classifypolicydomain",
+          "semanticanalyzer_classifycrosscuttingthemes",
+          "semanticanalyzer_classifyvaluechainlink",
+          "semanticanalyzer_processsegment",
+          "semanticanalyzer_calculatesemanticcomplexity",
+          "industrialpolicyprocessor_computeevidenceconfidence",
+          "adaptivepriorcalculator_generatetraceabilityrecord"
+        ],
+        "operation": "dempster_shafer",
+        "weights": "belief_mass",
+        "output_label": "parameter_space"
+      },
+      {
+        "rule_id": "R3_constraint_application",
+        "description": "Apply N3 semantic audits as conjunctive filters with veto power",
+        "sources": [
+          "pdetmunicipalplananalyzer_extractfromresponsibilitytables",
+          "semanticanalyzer_vectorizesegments"
+        ],
+        "operation": "conjunctive_filter",
+        "blocks_if": "veto_condition_triggered",
+        "output_label": "audited_findings"
+      },
+      {
+        "rule_id": "R4_final_synthesis",
+        "description": "Synthesize audited parameter space into human answer",
+        "sources": [
+          "fact_base",
+          "parameter_space",
+          "audited_findings"
+        ],
+        "operation": "cross_layer_fusion",
+        "respects_veto": true,
+        "output_label": "final_answer"
+      }
+    ]
+  },
+  "fusion_specification": {
+    "paradigm": "epistemological_pipeline",
+    "asymmetry_principle": "N3_veto_overrides_N1_N2",
+    "level_strategies": {
+      "N1_fact_fusion": {
+        "strategy": "set_union",
+        "rationale": "Facts are additive and non-conflicting at empirical level"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "dempster_shafer",
+        "rationale": "Semantic parameters combined using Dempster-Shafer theory of evidence",
+        "weight_source": "belief_mass_assignments"
+      },
+      "N3_constraint_fusion": {
+        "strategy": "semantic_triangulation",
+        "rationale": "Semantic audits act as veto gates for low-quality embeddings and incomplete data",
+        "veto_power": true,
+        "override": false
+      }
+    },
+    "conflict_resolution": {
+      "N2_conflicts": "defer_to_higher_belief_mass",
+      "N3_veto_final": true
+    }
+  },
+  "cross_layer_fusion": {
+    "fusion_order": [
+      "N1",
+      "N2",
+      "N3"
+    ],
+    "asymmetry": {
+      "N3_can_nullify_N1_N2": true,
+      "N1_N2_cannot_override_N3": true,
+      "rationale": "Popperian falsificationism: failed semantic quality audits (N3) invalidate positive findings (N1, N2)"
+    },
+    "fusion_function": {
+      "description": "Sequential epistemological pipeline with dual veto gates",
+      "pseudocode": "if N3_veto: return BLOCKED else: return dempster_shafer_fusion(N1_facts, N2_parameters)"
+    }
+  },
+  "human_answer_structure": {
+    "sections": [
+      {
+        "section_id": "S1_empirical_base",
+        "title": "Empirical Semantic Facts",
+        "content_source": "N1_fact_base",
+        "format": "bullet_list",
+        "epistemic_status": "observational"
+      },
+      {
+        "section_id": "S2_inferential_analysis",
+        "title": "Semantic Coherence and Responsibility Analysis",
+        "content_source": "N2_parameter_space",
+        "format": "quantitative_summary_with_belief_masses",
+        "epistemic_status": "probabilistic_inference"
+      },
+      {
+        "section_id": "S3_critical_audit",
+        "title": "Semantic Quality and Data Completeness Audit",
+        "content_source": "N3_audited_findings",
+        "format": "pass_fail_with_justification",
+        "epistemic_status": "falsificationist_constraint",
+        "veto_disclosed": true
+      },
+      {
+        "section_id": "S4_final_judgment",
+        "title": "Final Semantic Coherence Assessment",
+        "content_source": "final_answer",
+        "format": "conclusive_statement",
+        "epistemic_status": "post_audit_synthesis",
+        "respects_veto": true
+      }
+    ]
+  },
+  "output_contract": {
+    "output_type": "structured_json",
+    "schema_ref": "executor_output_schema_v4.json",
+    "required_fields": [
+      "empirical_facts",
+      "semantic_parameters",
+      "audit_constraints",
+      "final_answer"
+    ],
+    "epistemic_metadata": {
+      "belief_masses": "required",
+      "veto_status": "required",
+      "method_provenance": "required"
+    }
+  },
+  "validation_rules": {
+    "pre_execution": [
+      "verify_all_18_methods_mapped_to_phases",
+      "verify_N1_methods_have_no_requires_or_only_preprocessing",
+      "verify_N2_methods_require_N1_outputs",
+      "verify_N3_methods_have_veto_conditions"
+    ],
+    "post_execution": [
+      "verify_N3_veto_respected_in_final_answer",
+      "verify_belief_masses_present",
+      "verify_all_provides_match_sources_in_assembly_rules"
+    ]
+  },
+  "error_handling": {
+    "N1_failure": "skip_method_continue_with_available_facts",
+    "N2_failure": "propagate_uncertainty_reduce_belief_mass",
+    "N3_failure": "immediate_veto_all_findings_blocked",
+    "fallback_strategy": "return_partial_results_with_degraded_confidence"
+  },
+  "traceability": {
+    "method_provenance_required": true,
+    "audit_trail_format": "json_log",
+    "veto_decisions_logged": true
+  },
+  "compatibility": {
+    "executor_version": ">=4.0.0",
+    "schema_version": "4.0.0",
+    "backward_compatible": false
+  },
+  "calibration": {
+    "confidence_calibration": "required_for_N2",
+    "veto_threshold_tunable": false,
+    "rationale": "Semantic quality thresholds are normative epistemic constraints"
+  }
+}
