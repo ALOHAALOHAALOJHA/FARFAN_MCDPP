@@ -1,0 +1,3872 @@
+[
+  {
+    "BASE_SLOT": "D1-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q001",
+    "methods": [
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'diagnose_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_analyze_link_text",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "process",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'process*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_match_patterns_in_sentences",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_match_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_point_evidence",
+        "mother_file": "policy_processor.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_goals",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_parse_goal_context",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'parse_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_parse_amount",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'parse_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_financial_amounts",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_from_budget_table",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_extract_quantitative_claims",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_parse_number",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'parse_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_statistical_significance_test",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern '_statistical_significance*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "method": "evaluate_policy_metric",
+        "mother_file": "embedding_policy.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'evaluate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "method": "compare_policies",
+        "mother_file": "embedding_policy.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'compare_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "chunk_text",
+        "mother_file": "semantic_chunking_policy.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'chunk_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "embed_single",
+        "mother_file": "semantic_chunking_policy.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'embed_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 9,
+      "N2-INF": 7,
+      "N3-AUD": 1,
+      "N4-SYN": 0
+    },
+    "method_count": 17
+  },
+  {
+    "BASE_SLOT": "D1-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q002",
+    "methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_direct_evidence",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_detect_allocation_gaps",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_detect_gaps",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_optimal_remediations",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_simulate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "counterfactual_query",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'counterfactual_*'; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_test_effect*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_detect_numerical_inconsistencies",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_numerical_divergence",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianConfidenceCalculator",
+        "method": "calculate_posterior",
+        "mother_file": "embedding_policy.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Method not found in source; using lexical",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'analyze_*'; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 4,
+      "N3-AUD": 7,
+      "N4-SYN": 1
+    },
+    "method_count": 12
+  },
+  {
+    "BASE_SLOT": "D1-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q003",
+    "methods": [
+      {
+        "class": "FinancialAuditor",
+        "method": "trace_financial_allocation",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_process_financial_table",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'process*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_program_to_node",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_match_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_goal_to_budget",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern '_match_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_perform_counterfactual_budget_check",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'counterfactual_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_budget_for_pillar",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_funding_source",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_analyze_funding_sources",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_financial_component",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 3,
+      "N2-INF": 9,
+      "N3-AUD": 1,
+      "N4-SYN": 0
+    },
+    "method_count": 13
+  },
+  {
+    "BASE_SLOT": "D1-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q004",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "identify_responsible_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_ner",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_syntax",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_entity_type",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_entity_specificity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_consolidate_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "extract_entity_activity",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_normalize_entity",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_validate_entity_activity",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "MechanismPartExtractor",
+        "method": "_calculate_ea_confidence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_evidence_traceability",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*'",
+        "confidence": "MEDIUM"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 4,
+      "N2-INF": 5,
+      "N3-AUD": 2,
+      "N4-SYN": 0
+    },
+    "method_count": 11
+  },
+  {
+    "BASE_SLOT": "D1-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q005",
+    "methods": [
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_check_deadline_constraints",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'check_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "verify_temporal_consistency",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'verify_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "identify_failure_points",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_analyze_link_text",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_metadata",
+        "mother_file": "policy_processor.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 2,
+      "N2-INF": 3,
+      "N3-AUD": 2,
+      "N4-SYN": 0
+    },
+    "method_count": 7
+  },
+  {
+    "BASE_SLOT": "D2-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q006",
+    "methods": [
+      {
+        "class": "PDFProcessor",
+        "method": "extract_tables",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_process_financial_table",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'process*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_deduplicate_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_classify_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_is_likely_header",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern '_is_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_clean_dataframe",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_accountability_matrix",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Synthesis method with formatting patterns",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 3,
+      "N2-INF": 2,
+      "N3-AUD": 1,
+      "N4-SYN": 1
+    },
+    "method_count": 7
+  },
+  {
+    "BASE_SLOT": "D2-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q007",
+    "methods": [
+      {
+        "class": "BayesianMechanismInference",
+        "method": "infer_mechanisms",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'infer_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_single_mechanism",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'infer_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_chain_capacity_vector",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'infer_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "construir_grafo_causal",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_es_conexion_valida",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "construct_causal_dag",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "method": "classify_test",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 1,
+      "N2-INF": 10,
+      "N3-AUD": 0,
+      "N4-SYN": 0
+    },
+    "method_count": 11
+  },
+  {
+    "BASE_SLOT": "D2-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q008",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_causal_links",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'extract_*'; Functional: Contains validation pattern: veto",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_composite_likelihood",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_initialize_prior",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_type_transition_prior",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_causal_edges",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_refine_edge_probabilities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_refine_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_create_default_equations",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "extract_semantic_cube",
+        "mother_file": "analyzer_one.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 2,
+      "N2-INF": 5,
+      "N3-AUD": 2,
+      "N4-SYN": 0
+    },
+    "method_count": 9
+  },
+  {
+    "BASE_SLOT": "D2-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q009",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_bayesian_risk_inference",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_bayesian_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "sensitivity_analysis",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern '_interpret_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern '_interpret_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 7,
+      "N3-AUD": 1,
+      "N4-SYN": 2
+    },
+    "method_count": 10
+  },
+  {
+    "BASE_SLOT": "D2-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q010",
+    "methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_detect_logical_incompatibilities",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_coherence_metrics",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_objective_alignment",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_graph_fragmentation",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_sequence_logic",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_causal_coherence",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "calculate_likelihood_adaptativo",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 6,
+      "N3-AUD": 2,
+      "N4-SYN": 0
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D3-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q011",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "audit_evidence_traceability",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "assign_probative_value",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BeachEvidentialTest",
+        "method": "apply_test_logic",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'diagnose_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_extract_metadata",
+        "mother_file": "policy_processor.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_calculate_quality_score",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 1,
+      "N2-INF": 5,
+      "N3-AUD": 1,
+      "N4-SYN": 1
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D3-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q012",
+    "methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_bayesian_posterior",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_confidence_interval",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_adjust_domain_weights",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_get_spanish_stopwords",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_log_refactored_components",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern '_interpret_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_assess_financial_sustainability",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "calculate_likelihood_adaptativo",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_calculate_quality_score",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_generar_sugerencias_internas",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_deduplicate_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_indicator_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_recommendations",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compile_pattern_registry",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_build_point_patterns",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_empty_result",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 19,
+      "N3-AUD": 0,
+      "N4-SYN": 2
+    },
+    "method_count": 21
+  },
+  {
+    "BASE_SLOT": "D3-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q013",
+    "methods": [
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_program_to_node",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_match_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_match_goal_to_budget",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern '_match_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_from_responsibility_tables",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_consolidate_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "identify_responsible_entities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_responsibility_clarity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "process_document",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'process*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_generate_query_from_pdq",
+        "mother_file": "unknown.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "semantic_search",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_apply_mmr",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_empty_semantic_cube",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_policy_domain",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_cross_cutting_themes",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_classify_value_chain_link",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_vectorize_segments",
+        "mother_file": "analyzer_one.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_process_segment",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'process*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "_calculate_semantic_complexity",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_evidence_confidence",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_entity_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "generate_pdq_report",
+        "mother_file": "unknown.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_accountability_matrix",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Synthesis method with formatting patterns",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 2,
+      "N2-INF": 15,
+      "N3-AUD": 1,
+      "N4-SYN": 4
+    },
+    "method_count": 22
+  },
+  {
+    "BASE_SLOT": "D3-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q014",
+    "methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "calculate_acyclicity_pvalue",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_is_acyclic",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern '_is_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "get_graph_stats",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_node_importance",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_generate_subgraph",
+        "mother_file": "unknown.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "add_node",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "add_edge",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_initialize_rng",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_statistical_power",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_get_node_validator",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_create_empty_result",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "execute_suite",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_connection_matrix",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "run_performance_benchmarks",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_benchmark_operation",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_log_metric",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_engine_readiness",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'analyze_*'; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "_calculate_loss_functions",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_likelihood",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_causal_categories",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_extraer_categorias",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 20,
+      "N3-AUD": 5,
+      "N4-SYN": 1
+    },
+    "method_count": 26
+  },
+  {
+    "BASE_SLOT": "D3-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q015",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_confounders",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_effect_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_scenario_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_simulate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_recommendations",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_identify_causal_nodes",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_evaluate_factual",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'evaluate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_evaluate_counterfactual",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'evaluate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_financial_consistency",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_infer_activity_sequence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'infer_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_generate_necessity_remediation",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_load_questionnaire",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "analyze_financial_feasibility",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "construct_causal_dag",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "estimate_causal_effects",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_counterfactuals",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Synthesis method with formatting patterns",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_build_type_hierarchy",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_check_structural_violation",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'check_*'; Functional: Contains validation pattern: veto",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_type_transition_prior",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_textual_proximity",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_validar_orden_causal",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_refine_edge_probabilities",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_refine_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "compare_policy_interventions",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'compare_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "infer_mechanisms",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'infer_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 21,
+      "N3-AUD": 1,
+      "N4-SYN": 3
+    },
+    "method_count": 25
+  },
+  {
+    "BASE_SLOT": "D4-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q016",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_syntax",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_extract_entities_ner",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_language_specificity",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_composite_likelihood",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_semantic_distance",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'calculate_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_classify_temporal_type",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_indicators",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_outcome_mentions",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_temporal_consistency",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_extract_goals",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_parse_goal_context",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'parse_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_classify_goal_type",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_parse_temporal_marker",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'parse_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_extract_resources",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'analyze_*'; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "_generate_recommendations",
+        "mother_file": "analyzer_one.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 7,
+      "N2-INF": 7,
+      "N3-AUD": 1,
+      "N4-SYN": 1
+    },
+    "method_count": 16
+  },
+  {
+    "BASE_SLOT": "D4-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q017",
+    "methods": [
+      {
+        "class": "TeoriaCambio",
+        "method": "_encontrar_caminos_completos",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "validacion_completa",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "verify_conditional_independence",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'verify_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_generate_independence_tests",
+        "mother_file": "unknown.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_perform_sensitivity_analysis_internal",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesFactorTable",
+        "method": "get_bayes_factor",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 1,
+      "N2-INF": 4,
+      "N3-AUD": 2,
+      "N4-SYN": 1
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D4-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q018",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_get_prior_effect",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_estimate_effect_bayesian",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_statistical_power",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_aggregate_bayesian_confidence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 8,
+      "N3-AUD": 0,
+      "N4-SYN": 0
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D4-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q019",
+    "methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_calculate_objective_alignment",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_identify_affected_sections",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_generate_resolution_recommendations",
+        "mother_file": "contradiction_deteccion.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_generate_optimal_remediations",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_get_remediation_text",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_detect_allocation_gaps",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_*'",
+        "confidence": "MEDIUM"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 4,
+      "N3-AUD": 1,
+      "N4-SYN": 2
+    },
+    "method_count": 7
+  },
+  {
+    "BASE_SLOT": "D4-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q020",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_pdet_alignment",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_score_causal_coherence",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_validate_dnp_compliance",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_generate_dnp_report",
+        "mother_file": "unknown.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_analyze_causal_dimensions",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'analyze_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'",
+        "confidence": "MEDIUM"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 3,
+      "N3-AUD": 2,
+      "N4-SYN": 1
+    },
+    "method_count": 6
+  },
+  {
+    "BASE_SLOT": "D5-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q021",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_counterfactuals",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Synthesis method with formatting patterns",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_simulate_intervention",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_simulate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_generate_scenario_narrative",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_mediator_mentions",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "_validar_orden_causal",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "_generate_interventions",
+        "mother_file": "analyzer_one.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "construct_scm",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 4,
+      "N3-AUD": 1,
+      "N4-SYN": 3
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D5-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q022",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "calculate_quality_score",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_estimate_score_confidence",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'score_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern '_interpret_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "_calculate_quality_score",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_aggregate_bayesian_confidence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "evaluate_policy_numerical_consistency",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'evaluate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "get_diagnostics",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "process_document",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'process*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_generate_query_from_pdq",
+        "mother_file": "unknown.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_filter_by_pdq",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_extract_numerical_values",
+        "mother_file": "unknown.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_embed_texts",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'embed_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_compute_overall_confidence",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_overall_quality",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern '_interpret_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "aggregate_risk_and_prioritize",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "normalize_unicode",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "segment_into_sentences",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_evidence_confidence",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_compute_avg_confidence",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_quality_to_dict",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "_construct_evidence_bundle",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "compile_pattern",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "method": "extract_contextual_window",
+        "mother_file": "unknown.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "generate_executive_report",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Synthesis method with formatting patterns",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "method": "export_results",
+        "mother_file": "policy_processor.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 2,
+      "N2-INF": 22,
+      "N3-AUD": 0,
+      "N4-SYN": 4
+    },
+    "method_count": 28
+  },
+  {
+    "BASE_SLOT": "D5-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q023",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_semantic_distance",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'calculate_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "method": "extract_semantic_cube",
+        "mother_file": "analyzer_one.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_quantify_uncertainty",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_find_mediator_mentions",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "get_diagnostics",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_perturb_evidence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 2,
+      "N2-INF": 4,
+      "N3-AUD": 0,
+      "N4-SYN": 0
+    },
+    "method_count": 6
+  },
+  {
+    "BASE_SLOT": "D5-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q024",
+    "methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "method": "_audit_systemic_risk",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "refutation_and_sanity_checks",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_test_effect*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_risk",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern '_interpret_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_interpret_sensitivity",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern '_interpret_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_break_cycles",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "sensitivity_analysis",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 4,
+      "N3-AUD": 1,
+      "N4-SYN": 2
+    },
+    "method_count": 7
+  },
+  {
+    "BASE_SLOT": "D5-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q025",
+    "methods": [
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "posterior_predictive_check",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_ablation_analysis",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_waic_difference",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "_add_ood_noise",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_e_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "_compute_robustness_value",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 7,
+      "N3-AUD": 1,
+      "N4-SYN": 0
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D6-Q1",
+    "REPRESENTATIVE_QUESTION_ID": "Q026",
+    "methods": [
+      {
+        "class": "TeoriaCambio",
+        "method": "construir_grafo_causal",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TeoriaCambio",
+        "method": "validacion_completa",
+        "mother_file": "teoria_cambio.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_causal_diagram",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Synthesis method with formatting patterns",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "ReportingEngine",
+        "method": "generate_causal_model_json",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'; Functional: Synthesis method with formatting patterns",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "export_nodes",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "method": "export_causal_network",
+        "mother_file": "financiero_viabilidad_tablas.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "extract_causal_hierarchy",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 1,
+      "N2-INF": 5,
+      "N3-AUD": 0,
+      "N4-SYN": 2
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D6-Q2",
+    "REPRESENTATIVE_QUESTION_ID": "Q027",
+    "methods": [
+      {
+        "class": "BeachEvidentialTest",
+        "method": "apply_test_logic",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_necessity",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_test_sufficiency",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "method": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "method": "_test_effect_stability",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_test_effect*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_connection_matrix",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "method": "_compute_overall_confidence",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern '_compute_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 6,
+      "N3-AUD": 1,
+      "N4-SYN": 0
+    },
+    "method_count": 7
+  },
+  {
+    "BASE_SLOT": "D6-Q3",
+    "REPRESENTATIVE_QUESTION_ID": "Q028",
+    "methods": [
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "execute_suite",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "validate_engine_readiness",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "method": "_benchmark_operation",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "validate_quality_criteria",
+        "mother_file": "derek_beach.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'validate_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_r_hat",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "method": "_calculate_ess",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "calculate_acyclicity_pvalue",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "method": "analyze_performance",
+        "mother_file": "analyzer_one.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'analyze_*'; Functional: Contains validation pattern: \\braise\\s+\\w+Error",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 0,
+      "N2-INF": 5,
+      "N3-AUD": 3,
+      "N4-SYN": 0
+    },
+    "method_count": 8
+  },
+  {
+    "BASE_SLOT": "D6-Q4",
+    "REPRESENTATIVE_QUESTION_ID": "Q029",
+    "methods": [
+      {
+        "class": "ConfigLoader",
+        "method": "update_priors_from_feedback",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "check_uncertainty_reduction_criterion",
+        "mother_file": "unknown.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'check_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "_save_prior_history",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "ConfigLoader",
+        "method": "_load_uncertainty_history",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CDAFFramework",
+        "method": "_extract_feedback_from_audit",
+        "mother_file": "unknown.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'extract_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "method": "_calculate_node_importance",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "BayesFactorTable",
+        "method": "get_bayes_factor",
+        "mother_file": "unknown.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Functional: Source file not found; using lexical classification",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 1,
+      "N2-INF": 5,
+      "N3-AUD": 1,
+      "N4-SYN": 0
+    },
+    "method_count": 7
+  },
+  {
+    "BASE_SLOT": "D6-Q5",
+    "REPRESENTATIVE_QUESTION_ID": "Q030",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "method": "_calculate_language_specificity",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'calculate_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "TextMiningEngine",
+        "method": "diagnose_critical_links",
+        "mother_file": "analyzer_one.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern 'diagnose_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "identify_failure_points",
+        "mother_file": "derek_beach.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "method": "_get_dynamics_pattern",
+        "mother_file": "derek_beach.py",
+        "layer": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "rationale": "Methods that transform observations into analytical constructs",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "chunk_text",
+        "mother_file": "semantic_chunking_policy.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'chunk_*'",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "_detect_pdm_structure",
+        "mother_file": "semantic_chunking_policy.py",
+        "layer": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "rationale": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern 'detect_*'; Functional: Contains extraction patterns without computation",
+        "confidence": "HIGH"
+      },
+      {
+        "class": "SemanticProcessor",
+        "method": "_detect_table",
+        "mother_file": "semantic_chunking_policy.py",
+        "layer": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "rationale": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_*'",
+        "confidence": "MEDIUM"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "method": "generate_traceability_record",
+        "mother_file": "derek_beach.py",
+        "layer": "N4-SYN",
+        "output_type": "NARRATIVE",
+        "fusion_behavior": "terminal",
+        "rationale": "Methods that construct human-readable output; Lexical: Method name matches pattern 'generate_*'",
+        "confidence": "HIGH"
+      }
+    ],
+    "layer_summary": {
+      "N1-EMP": 3,
+      "N2-INF": 4,
+      "N3-AUD": 1,
+      "N4-SYN": 1
+    },
+    "method_count": 9
+  }
+]

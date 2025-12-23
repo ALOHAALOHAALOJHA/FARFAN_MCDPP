@@ -1,0 +1,891 @@
+{
+  "identity": {
+    "base_slot": "D1-Q2",
+    "representative_question_id": "Q002",
+    "dimension_id": "DIM01",
+    "policy_area_ids_served": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "contracts_served": [
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122",
+      "Q152",
+      "Q182",
+      "Q212",
+      "Q242",
+      "Q272"
+    ],
+    "contract_type": "TYPE_B",
+    "contract_type_name": "Bayesiano",
+    "contract_type_focus": "Significancia estadística, intervalos de confianza, priors",
+    "contract_version": "4.0.0-epistemological",
+    "created_at": "2025-12-23T13:41:33.193153Z",
+    "specification_source": "episte_refact.md"
+  },
+  "executor_binding": {
+    "executor_class": "D1_Q2_Executor",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors"
+  },
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_B",
+    "method_count": 11,
+    "execution_phases": {
+      "phase_A_construction": {
+        "description": "Empirical observation layer - direct document extraction without interpretation",
+        "level": "N1",
+        "level_name": "Base Empírica",
+        "epistemology": "Empirismo positivista",
+        "methods": [],
+        "dependencies": [],
+        "output_target": "raw_facts"
+      },
+      "phase_B_computation": {
+        "description": "Inferential analysis layer - transformation of observations into analytical constructs",
+        "level": "N2",
+        "level_name": "Procesamiento Inferencial",
+        "epistemology": "Bayesianismo subjetivista",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_simulate_intervention",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.simulate_intervention",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "requires": [
+              "raw_facts"
+            ]
+          },
+          {
+            "class_name": "BayesianCounterfactualAuditor",
+            "method_name": "_test_effect_stability",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesiancounterfactualauditor.test_effect_stability",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "requires": [
+              "raw_facts"
+            ]
+          },
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_calculate_numerical_divergence",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.calculate_numerical_divergence",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "requires": [
+              "raw_facts"
+            ]
+          },
+          {
+            "class_name": "BayesianConfidenceCalculator",
+            "method_name": "calculate_posterior",
+            "mother_file": "embedding_policy.py",
+            "provides": "bayesianconfidencecalculator.calculate_posterior",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "requires": [
+              "raw_facts"
+            ]
+          }
+        ],
+        "dependencies": [
+          "phase_A_construction"
+        ],
+        "output_target": "inferences"
+      },
+      "phase_C_litigation": {
+        "description": "Audit layer - validation gates that can VETO findings",
+        "level": "N3",
+        "level_name": "Auditoría y Robustez",
+        "epistemology": "Falsacionismo popperiano",
+        "asymmetry_principle": "N3 can invalidate N1/N2 findings, but N1/N2 CANNOT invalidate N3",
+        "methods": [
+          {
+            "class_name": "OperationalizationAuditor",
+            "method_name": "_audit_direct_evidence",
+            "mother_file": "derek_beach.py",
+            "provides": "operationalizationauditor.audit_direct_evidence",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          },
+          {
+            "class_name": "OperationalizationAuditor",
+            "method_name": "_audit_systemic_risk",
+            "mother_file": "derek_beach.py",
+            "provides": "operationalizationauditor.audit_systemic_risk",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'audit_*",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          },
+          {
+            "class_name": "FinancialAuditor",
+            "method_name": "_detect_allocation_gaps",
+            "mother_file": "derek_beach.py",
+            "provides": "financialauditor.detect_allocation_gaps",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_detect_gaps",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.detect_gaps",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          },
+          {
+            "class_name": "BayesianCounterfactualAuditor",
+            "method_name": "counterfactual_query",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesiancounterfactualauditor.counterfactual_query",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'counter",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          },
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_detect_numerical_inconsistencies",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.detect_numerical_inconsistencies",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'detect_",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          },
+          {
+            "class_name": "PerformanceAnalyzer",
+            "method_name": "analyze_performance",
+            "mother_file": "analyzer_one.py",
+            "provides": "performanceanalyzer.analyze_performance",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern 'analyze",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          }
+        ],
+        "dependencies": [
+          "phase_A_construction",
+          "phase_B_computation"
+        ],
+        "output_target": "audit_results",
+        "fusion_mode": "modulation"
+      }
+    }
+  },
+  "question_context": {
+    "monolith_ref": "Q002",
+    "overrides": null,
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_quantitative_data"
+      ],
+      "emit_code": "ABORT-D1-Q2-REQ"
+    }
+  },
+  "signal_requirements": {
+    "derivation_source": "expected_elements",
+    "derivation_rules": {
+      "mandatory": "expected_elements[required=true].type → detection_{type}",
+      "optional": "expected_elements[required=false].type → detection_{type}"
+    },
+    "signal_aggregation": "weighted_mean",
+    "minimum_signal_threshold": 0.5
+  },
+  "evidence_assembly": {
+    "engine": "EVIDENCE_NEXUS",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "type_system": {
+      "FACT": {
+        "origin_level": "N1",
+        "fusion_operation": "graph_node_addition",
+        "merge_behavior": "additive",
+        "symbol": "⊕"
+      },
+      "PARAMETER": {
+        "origin_level": "N2",
+        "fusion_operation": "edge_weight_modification",
+        "merge_behavior": "multiplicative",
+        "symbol": "⊗"
+      },
+      "CONSTRAINT": {
+        "origin_level": "N3",
+        "fusion_operation": "branch_filtering",
+        "merge_behavior": "gate",
+        "symbol": "⊘"
+      },
+      "NARRATIVE": {
+        "origin_level": "N4",
+        "fusion_operation": "synthesis",
+        "merge_behavior": "terminal",
+        "symbol": "⊙"
+      }
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_empirical_extraction",
+        "rule_type": "empirical_basis",
+        "target": "raw_facts",
+        "sources": [],
+        "merge_strategy": "concat_with_deduplication",
+        "deduplication_key": "element_id",
+        "output_type": "FACT",
+        "confidence_propagation": "preserve_individual"
+      },
+      {
+        "rule_id": "R2_inferential_aggregation",
+        "rule_type": "probabilistic_update",
+        "target": "triangulated_facts",
+        "sources": [
+          "pdetmunicipalplananalyzer.simulate_intervention",
+          "bayesiancounterfactualauditor.test_effect_stability",
+          "policycontradictiondetector.calculate_numerical_divergence",
+          "bayesianconfidencecalculator.calculate_posterior"
+        ],
+        "input_dependencies": [
+          "raw_facts"
+        ],
+        "merge_strategy": "bayesian_update",
+        "output_type": "PARAMETER",
+        "confidence_propagation": "conservative_bayesian"
+      },
+      {
+        "rule_id": "R3_audit_gate",
+        "rule_type": "robustness_gate",
+        "target": "validated_facts",
+        "sources": [
+          "operationalizationauditor.audit_direct_evidence",
+          "operationalizationauditor.audit_systemic_risk",
+          "financialauditor.detect_allocation_gaps",
+          "bayesianmechanisminference.detect_gaps",
+          "bayesiancounterfactualauditor.counterfactual_query",
+          "policycontradictiondetector.detect_numerical_inconsistencies",
+          "performanceanalyzer.analyze_performance"
+        ],
+        "input_dependencies": [
+          "raw_facts",
+          "triangulated_facts"
+        ],
+        "merge_strategy": "veto_gate",
+        "output_type": "CONSTRAINT",
+        "gate_logic": {
+          "contradiction_detected": {
+            "action": "suppress_fact",
+            "confidence_multiplier": 0.0,
+            "scope": "contradicting_nodes"
+          },
+          "low_coherence": {
+            "action": "reduce_confidence",
+            "confidence_multiplier": 0.5,
+            "scope": "affected_subgraph"
+          },
+          "significance_failed": {
+            "action": "flag_caution",
+            "confidence_multiplier": 0.7,
+            "scope": "source_facts"
+          }
+        }
+      },
+      {
+        "rule_id": "R4_narrative_synthesis",
+        "rule_type": "synthesis",
+        "target": "human_answer",
+        "sources": [],
+        "input_dependencies": [
+          "validated_facts",
+          "triangulated_facts",
+          "audit_results"
+        ],
+        "merge_strategy": "carver_doctoral_synthesis",
+        "output_type": "NARRATIVE",
+        "external_handler": {
+          "class": "DoctoralCarverSynthesizer",
+          "module": "farfan_pipeline.phases.Phase_two.carver"
+        }
+      }
+    ]
+  },
+  "fusion_specification": {
+    "contract_type": "TYPE_B",
+    "primary_strategy": "bayesian_update",
+    "level_strategies": {
+      "N1_fact_fusion": {
+        "strategy": "concat",
+        "behavior": "additive",
+        "conflict_resolution": "preserve_all"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "bayesian_update",
+        "behavior": "multiplicative",
+        "conflict_resolution": "posterior_weighting",
+        "affects": [
+          "N1_facts.confidence",
+          "N1_facts.edge_weights"
+        ]
+      },
+      "N3_constraint_fusion": {
+        "strategy": "veto_gate",
+        "behavior": "gate",
+        "asymmetry_principle": "audit_dominates",
+        "propagation": {
+          "upstream": "confidence_backpropagation",
+          "downstream": "branch_blocking"
+        }
+      }
+    },
+    "fusion_pipeline": {
+      "stage_1_fact_accumulation": {
+        "input": "phase_A_construction.outputs",
+        "operation": "BUILD evidence graph from extracted facts",
+        "output": "evidence_graph_v1",
+        "type_consumed": "FACT"
+      },
+      "stage_2_parameter_application": {
+        "input": [
+          "evidence_graph_v1",
+          "phase_B_computation.outputs"
+        ],
+        "operation": "MODIFY edge weights based on inferred parameters",
+        "output": "evidence_graph_v2_weighted",
+        "type_consumed": "PARAMETER"
+      },
+      "stage_3_constraint_filtering": {
+        "input": [
+          "evidence_graph_v2_weighted",
+          "phase_C_litigation.outputs"
+        ],
+        "operation": "FILTER/BLOCK branches that fail validation",
+        "output": "evidence_graph_v3_validated",
+        "type_consumed": "CONSTRAINT"
+      },
+      "stage_4_synthesis": {
+        "input": "evidence_graph_v3_validated",
+        "operation": "GENERATE narrative from validated graph",
+        "output": "human_answer",
+        "type_produced": "NARRATIVE"
+      }
+    }
+  },
+  "cross_layer_fusion": {
+    "N1_to_N2": {
+      "relationship": "N2 reads N1 facts",
+      "effect": "N2 computes parameters FROM N1 observations",
+      "data_flow": "forward_propagation"
+    },
+    "N2_to_N1": {
+      "relationship": "N2 modifies N1 confidence",
+      "effect": "Edge weights adjust fact confidence scores",
+      "data_flow": "confidence_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK N1 facts",
+      "effect": "Failed constraints remove facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can INVALIDATE N2 parameters",
+      "effect": "Failed constraints nullify parameter modifications",
+      "data_flow": "inference_modulation",
+      "asymmetry": "N2 CANNOT invalidate N3"
+    },
+    "all_to_N4": {
+      "relationship": "N4 consumes validated outputs from all layers",
+      "effect": "Synthesis constructs narrative from filtered graph",
+      "data_flow": "terminal_aggregation"
+    },
+    "blocking_propagation_rules": {
+      "validation_failed": {
+        "triggered_by": "N3_audit_methods",
+        "action": "reduce_confidence",
+        "scope": "affected_claims",
+        "propagation": "downstream_only"
+      },
+      "critical_violation": {
+        "triggered_by": "N3_audit_methods",
+        "action": "block_branch",
+        "scope": "source_facts",
+        "propagation": "both"
+      }
+    }
+  },
+  "human_answer_structure": {
+    "format": "markdown",
+    "template_mode": "epistemological_narrative",
+    "contract_type": "TYPE_B",
+    "sections": [
+      {
+        "section_id": "S1_verdict",
+        "title": "### Veredicto",
+        "layer": "N4",
+        "data_source": "synthesis_output",
+        "narrative_style": "declarative",
+        "template": {
+          "structure": [
+            "**Conclusión**: {verdict_statement}",
+            "",
+            "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
+            "",
+            "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ]
+        },
+        "argumentative_role": "SYNTHESIS"
+      },
+      {
+        "section_id": "S2_empirical_base",
+        "title": "### Base Empírica: Hechos Observados",
+        "layer": "N1",
+        "data_source": "validated_facts",
+        "narrative_style": "descriptive",
+        "template": {
+          "structure": [
+            "**Elementos Detectados**: {fact_count} hechos extraídos de {document_coverage_pct}% del texto.",
+            "",
+            "**Fuentes Oficiales Identificadas**:",
+            "{official_sources_list}",
+            "",
+            "**Indicadores Cuantitativos**:",
+            "{quantitative_indicators_list}"
+          ]
+        },
+        "argumentative_role": "EMPIRICAL_BASIS",
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "📋 *Nota: Observaciones directas del documento fuente, verificables en texto original.*"
+        }
+      },
+      {
+        "section_id": "S3_robustness_audit",
+        "title": "### Análisis de Robustez: Validación y Limitaciones",
+        "layer": "N3",
+        "data_source": "audit_results",
+        "narrative_style": "critical",
+        "template": {
+          "structure": [
+            "{veto_alert}",
+            "",
+            "**Validaciones Ejecutadas**: {validation_count} pruebas de robustez",
+            "",
+            "**Contradicciones Detectadas**: {contradiction_count}",
+            "{contradiction_details}",
+            "",
+            "**Hechos Suprimidos**: {suppressed_count} observaciones eliminadas",
+            "{suppression_details}"
+          ]
+        },
+        "argumentative_role": "ROBUSTNESS_QUALIFIER",
+        "veto_display": {
+          "if_veto_triggered": "⛔ **MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
+          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todos los hallazgos sobrevivieron refutación."
+        },
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "🔬 *Nota: Falsacionismo popperiano aplicado. Lo que sobrevive el escrutinio es epistemológicamente robusto.*"
+        }
+      },
+      {
+        "section_id": "S4_gaps",
+        "title": "### Puntos Ciegos: Evidencia Faltante",
+        "layer": "N4-META",
+        "data_source": "gap_analysis",
+        "narrative_style": "diagnostic",
+        "template": {
+          "structure": [
+            "**Métodos sin Resultados**: {empty_methods_count} de {total_methods}",
+            "{empty_methods_details}",
+            "",
+            "**Elementos Esperados no Encontrados**:",
+            "{missing_elements_list}",
+            "",
+            "**Impacto en Confianza**:",
+            "{gap_impact_assessment}"
+          ]
+        },
+        "argumentative_role": "META_TRACEABILITY",
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "🔍 *Nota: Reflexividad crítica. Reportamos lo que NO encontramos y su impacto.*"
+        }
+      }
+    ],
+    "argumentative_roles": {
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Hecho observable",
+          "narrative_weight": "high"
+        }
+      ],
+      "N2_roles": [
+        {
+          "role": "INFERENTIAL_BRIDGE",
+          "description": "Conexión derivada",
+          "narrative_weight": "medium"
+        }
+      ],
+      "N3_roles": [
+        {
+          "role": "ROBUSTNESS_QUALIFIER",
+          "description": "Advertencia de limitación",
+          "narrative_weight": "high"
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Evidencia que contradice",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        }
+      ],
+      "N4_roles": [
+        {
+          "role": "META_TRACEABILITY",
+          "description": "Calidad del proceso",
+          "narrative_weight": "medium"
+        }
+      ]
+    },
+    "confidence_interpretation": {
+      "critical": {
+        "range": [
+          0,
+          19
+        ],
+        "label": "INVÁLIDO",
+        "display": "🔴"
+      },
+      "low": {
+        "range": [
+          20,
+          49
+        ],
+        "label": "DÉBIL",
+        "display": "🟠"
+      },
+      "medium": {
+        "range": [
+          50,
+          79
+        ],
+        "label": "MODERADO",
+        "display": "🟡"
+      },
+      "high": {
+        "range": [
+          80,
+          100
+        ],
+        "label": "ROBUSTO",
+        "display": "🟢"
+      }
+    }
+  },
+  "output_contract": {
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "type": "object",
+      "required": [
+        "base_slot",
+        "question_id",
+        "evidence",
+        "score",
+        "human_answer"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string",
+          "const": "D1-Q2"
+        },
+        "question_id": {
+          "type": "string"
+        },
+        "dimension_id": {
+          "type": "string"
+        },
+        "policy_area_id": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confidence_label": {
+          "type": "string",
+          "enum": [
+            "INVÁLIDO",
+            "DÉBIL",
+            "MODERADO",
+            "ROBUSTO"
+          ]
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "human_answer": {
+          "type": "string"
+        },
+        "epistemological_trace": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "validation_rules": {
+    "na_policy": "abort_on_critical",
+    "derivation_source": "expected_elements",
+    "engine": "VALIDATION_ENGINE",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "ValidationEngine",
+    "method_name": "validate"
+  },
+  "error_handling": {
+    "on_method_not_found": "raise",
+    "on_method_failure": "propagate_with_trace",
+    "on_assembly_failure": "propagate_with_trace",
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text"
+      ],
+      "emit_code": "ABORT-D1-Q2-REQ"
+    }
+  },
+  "traceability": {
+    "canonical_sources": {
+      "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json",
+      "method_inventory": "epistemological_classification_v4.json",
+      "epistemological_guide": "episte_refact.md"
+    },
+    "generation": {
+      "method": "v4_epistemological_generation",
+      "timestamp": "2025-12-23T13:41:33.193153Z",
+      "generator_version": "1.0.0"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-23T13:41:33.193153Z",
+        "changes": [
+          "Introduced execution_phases (A/B/C) replacing flat methods array",
+          "Classified methods by epistemological level (N1/N2/N3/N4)",
+          "Typed outputs (FACT/PARAMETER/CONSTRAINT/NARRATIVE)",
+          "Implemented asymmetric veto_gate for N3",
+          "Restructured assembly_rules into 4 typed rules"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ]
+  },
+  "compatibility": {
+    "questionnaire_monolith_version": "3.0.0",
+    "version_detection": "runtime",
+    "minimum_requirements": {
+      "signal_registry": "MicroAnsweringSignalPack support",
+      "hydrator": "ContractHydrator v1.0.0",
+      "carver": "DoctoralCarverSynthesizer v3.0.0",
+      "evidence_nexus": "EvidenceNexus v2.0.0"
+    }
+  },
+  "calibration": {
+    "status": "runtime",
+    "sources": {
+      "intrinsic_calibration": "config/intrinsic_calibration.json",
+      "fusion_specification": "config/fusion_specification.json"
+    }
+  }
+}
