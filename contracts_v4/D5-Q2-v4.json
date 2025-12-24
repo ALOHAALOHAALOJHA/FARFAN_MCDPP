@@ -41,7 +41,7 @@
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_D",
-    "method_count": 24,
+    "method_count": 25,
     "execution_phases": {
       "phase_A_construction": {
         "description": "Empirical observation layer - direct document extraction without interpretation",
@@ -379,7 +379,40 @@
         "level_name": "Auditoría y Robustez",
         "epistemology": "Falsacionismo popperiano",
         "asymmetry_principle": "N3 can invalidate N1/N2 findings, but N1/N2 CANNOT invalidate N3",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "FinancialAuditor",
+            "method_name": "_detect_financial_gaps",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "financialauditor.detect_financial_gaps",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Detecta brechas financieras que invalidan la suficiencia presupuestal",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "budget_gap_critical": {
+                "trigger": "gap > 50%",
+                "action": "block_branch",
+                "scope": "affected_goals",
+                "confidence_multiplier": 0.0
+              },
+              "allocation_mismatch": {
+                "trigger": "mismatch_detected",
+                "action": "reduce_confidence",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.5
+              }
+            }
+          }
+        ],
         "dependencies": [
           "phase_A_construction",
           "phase_B_computation"
@@ -456,9 +489,9 @@
         "confidence_propagation": "preserve_individual"
       },
       {
-        "rule_id": "R2_inferential_aggregation",
-        "rule_type": "corroboration",
-        "target": "triangulated_facts",
+        "rule_id": "R2_financial_sufficiency_analysis",
+        "rule_type": "computation",
+        "target": "sufficiency_scores",
         "sources": [
           "pdetmunicipalplananalyzer.calculate_quality_score",
           "pdetmunicipalplananalyzer.estimate_score_confidence",
@@ -486,36 +519,35 @@
         "input_dependencies": [
           "raw_facts"
         ],
-        "merge_strategy": "semantic_triangulation",
+        "merge_strategy": "weighted_mean",
         "output_type": "PARAMETER",
-        "confidence_propagation": "conservative_bayesian"
+        "confidence_propagation": "weighted_average"
       },
       {
-        "rule_id": "R3_audit_gate",
-        "rule_type": "robustness_gate",
-        "target": "validated_facts",
-        "sources": [],
+        "rule_id": "R3_financial_coherence_audit",
+        "rule_type": "financial_coherence_audit",
+        "target": "validated_financials",
+        "sources": [
+          "financialauditor.detect_financial_gaps"
+        ],
         "input_dependencies": [
           "raw_facts",
-          "triangulated_facts"
+          "sufficiency_scores"
         ],
         "merge_strategy": "veto_gate",
         "output_type": "CONSTRAINT",
         "gate_logic": {
-          "contradiction_detected": {
-            "action": "suppress_fact",
-            "confidence_multiplier": 0.0,
-            "scope": "contradicting_nodes"
+          "budget_gap_critical": {
+            "trigger": "gap > 50%",
+            "action": "block_branch",
+            "scope": "affected_goals",
+            "confidence_multiplier": 0.0
           },
-          "low_coherence": {
+          "allocation_mismatch": {
+            "trigger": "mismatch_detected",
             "action": "reduce_confidence",
-            "confidence_multiplier": 0.5,
-            "scope": "affected_subgraph"
-          },
-          "significance_failed": {
-            "action": "flag_caution",
-            "confidence_multiplier": 0.7,
-            "scope": "source_facts"
+            "scope": "source_facts",
+            "confidence_multiplier": 0.5
           }
         }
       },
@@ -543,12 +575,12 @@
     "primary_strategy": "financial_coherence_audit",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "semantic_corroboration",
+        "strategy": "concat",
         "behavior": "additive",
         "conflict_resolution": "corroborative_stacking"
       },
       "N2_parameter_fusion": {
-        "strategy": "dempster_shafer",
+        "strategy": "weighted_mean",
         "behavior": "multiplicative",
         "conflict_resolution": "belief_combination",
         "affects": [
@@ -811,6 +843,36 @@
         "label": "ROBUSTO",
         "display": "🟢"
       }
+    },
+    "template_variable_bindings": {
+      "variables": {
+        "verdict_statement": "synthesis.verdict",
+        "final_confidence_pct": "synthesis.confidence_score * 100",
+        "confidence_label": "synthesis.confidence_label",
+        "method_count": "execution_stats.methods_executed",
+        "audit_count": "execution_stats.validations_run",
+        "fact_count": "evidence_graph.nodes(type='FACT').count",
+        "official_sources_list": "evidence_graph.nodes(type='FACT').groupby('source').list",
+        "veto_alert": "audit_results.veto_status",
+        "veto_reason": "audit_results.primary_veto_reason",
+        "contradiction_count": "audit_results.contradictions.count",
+        "validation_count": "audit_results.validations_executed",
+        "contradiction_details": "audit_results.contradictions.list",
+        "suppressed_count": "audit_results.suppressed_facts.count",
+        "suppression_details": "audit_results.suppressed_facts.list",
+        "confidence_adjustments": "audit_results.confidence_modulations.list",
+        "limitations_list": "audit_results.methodological_limitations.list",
+        "empty_methods_count": "gap_analysis.empty_methods.count",
+        "total_methods": "method_binding.method_count",
+        "empty_methods_details": "gap_analysis.empty_methods.list",
+        "missing_elements_list": "gap_analysis.missing_expected_elements.list",
+        "patterns_executed": "gap_analysis.patterns_matched",
+        "patterns_total": "question_context.patterns.count",
+        "pattern_coverage_pct": "gap_analysis.pattern_coverage_percentage",
+        "sources_found": "gap_analysis.official_sources_found",
+        "sources_expected": "question_context.expected_elements.sources_expected",
+        "gap_impact_assessment": "gap_analysis.impact_statement"
+      }
     }
   },
   "output_contract": {
@@ -893,7 +955,10 @@
     "generation": {
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-23T13:41:33.219846Z",
-      "generator_version": "1.0.0"
+      "generator_version": "1.0.0",
+      "prohibitions": {
+        "v3_recovery": "FORBIDDEN"
+      }
     },
     "refactoring_history": [
       {

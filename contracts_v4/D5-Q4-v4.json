@@ -48,7 +48,30 @@
         "level": "N1",
         "level_name": "Base Empírica",
         "epistemology": "Empirismo positivista",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_calculate_semantic_distance",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.calculate_semantic_distance",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "extract_semantic_cube",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer.extract_semantic_cube",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          }
+        ],
         "dependencies": [],
         "output_target": "raw_facts"
       },
@@ -222,16 +245,19 @@
         "rule_id": "R1_empirical_extraction",
         "rule_type": "empirical_basis",
         "target": "raw_facts",
-        "sources": [],
+        "sources": [
+          "causalextractor.calculate_semantic_distance",
+          "semanticanalyzer.extract_semantic_cube"
+        ],
         "merge_strategy": "concat_with_deduplication",
         "deduplication_key": "element_id",
         "output_type": "FACT",
         "confidence_propagation": "preserve_individual"
       },
       {
-        "rule_id": "R2_inferential_aggregation",
-        "rule_type": "corroboration",
-        "target": "triangulated_facts",
+        "rule_id": "R2_bayesian_aggregation",
+        "rule_type": "probabilistic_update",
+        "target": "posterior_beliefs",
         "sources": [
           "bayesiancounterfactualauditor.refutation_and_sanity_checks",
           "bayesiancounterfactualauditor.test_effect_stability",
@@ -241,9 +267,9 @@
         "input_dependencies": [
           "raw_facts"
         ],
-        "merge_strategy": "semantic_triangulation",
+        "merge_strategy": "bayesian_update",
         "output_type": "PARAMETER",
-        "confidence_propagation": "conservative_bayesian"
+        "confidence_propagation": "bayesian_posterior"
       },
       {
         "rule_id": "R3_audit_gate",
@@ -300,12 +326,12 @@
     "primary_strategy": "bayesian_update",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "semantic_corroboration",
+        "strategy": "concat",
         "behavior": "additive",
         "conflict_resolution": "corroborative_stacking"
       },
       "N2_parameter_fusion": {
-        "strategy": "dempster_shafer",
+        "strategy": "bayesian_update",
         "behavior": "multiplicative",
         "conflict_resolution": "belief_combination",
         "affects": [
@@ -568,6 +594,36 @@
         "label": "ROBUSTO",
         "display": "🟢"
       }
+    },
+    "template_variable_bindings": {
+      "variables": {
+        "verdict_statement": "synthesis.verdict",
+        "final_confidence_pct": "synthesis.confidence_score * 100",
+        "confidence_label": "synthesis.confidence_label",
+        "method_count": "execution_stats.methods_executed",
+        "audit_count": "execution_stats.validations_run",
+        "fact_count": "evidence_graph.nodes(type='FACT').count",
+        "official_sources_list": "evidence_graph.nodes(type='FACT').groupby('source').list",
+        "veto_alert": "audit_results.veto_status",
+        "veto_reason": "audit_results.primary_veto_reason",
+        "contradiction_count": "audit_results.contradictions.count",
+        "validation_count": "audit_results.validations_executed",
+        "contradiction_details": "audit_results.contradictions.list",
+        "suppressed_count": "audit_results.suppressed_facts.count",
+        "suppression_details": "audit_results.suppressed_facts.list",
+        "confidence_adjustments": "audit_results.confidence_modulations.list",
+        "limitations_list": "audit_results.methodological_limitations.list",
+        "empty_methods_count": "gap_analysis.empty_methods.count",
+        "total_methods": "method_binding.method_count",
+        "empty_methods_details": "gap_analysis.empty_methods.list",
+        "missing_elements_list": "gap_analysis.missing_expected_elements.list",
+        "patterns_executed": "gap_analysis.patterns_matched",
+        "patterns_total": "question_context.patterns.count",
+        "pattern_coverage_pct": "gap_analysis.pattern_coverage_percentage",
+        "sources_found": "gap_analysis.official_sources_found",
+        "sources_expected": "question_context.expected_elements.sources_expected",
+        "gap_impact_assessment": "gap_analysis.impact_statement"
+      }
     }
   },
   "output_contract": {
@@ -650,7 +706,10 @@
     "generation": {
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-23T13:41:33.222692Z",
-      "generator_version": "1.0.0"
+      "generator_version": "1.0.0",
+      "prohibitions": {
+        "v3_recovery": "FORBIDDEN"
+      }
     },
     "refactoring_history": [
       {
