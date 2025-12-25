@@ -37,8 +37,9 @@
             "level": "N1-EMP",
             "output_type": "FACT",
             "fusion_behavior": "additive",
-            "description": "Extrae entidades responsables usando análisis sintáctico del texto",
-            "requires": []
+            "description": "Extrae entidades responsables usando análisis sintáctico de documentos financieros",
+            "requires": [],
+            "classification_rationale": "Extrae entidades directamente de documentos sin inferencia → N1-EMP (PARTE II, Sección 2.2). Nota: Método semántico aplicado a dominio financiero."
           },
           {
             "class_name": "MechanismPartExtractor",
@@ -48,8 +49,9 @@
             "level": "N1-EMP",
             "output_type": "FACT",
             "fusion_behavior": "additive",
-            "description": "Normaliza nombres de entidades a formato estándar",
-            "requires": []
+            "description": "Normaliza nombres de entidades responsables usando aliases y mapeo semántico",
+            "requires": [],
+            "classification_rationale": "Normaliza formato de entidades identificadas sin inferencia → N1-EMP (PARTE II, Sección 2.2). Nota: Entity normalization (NLP) aplicado a entidades financieras."
           }
         ],
         "dependencies": [],
@@ -70,7 +72,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Identifica y clasifica entidades responsables con scoring",
+            "description": "Evalúa y clasifica entidades responsables calculando scoring",
             "requires": ["raw_facts"],
             "modifies": ["entity_confidence_scores"]
           },
@@ -82,7 +84,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Extrae entidades usando NER con scoring de confianza",
+            "description": "Analiza y extrae entidades usando NER evaluando scoring de confianza",
             "requires": ["raw_facts"],
             "modifies": ["ner_confidence_scores"]
           },
@@ -94,7 +96,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Clasifica tipo de entidad (pública, privada, mixta)",
+            "description": "Evalúa y clasifica tipo de entidad (pública, privada, mixta)",
             "requires": ["raw_facts"],
             "modifies": ["entity_type_classifications"]
           },
@@ -118,7 +120,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Consolida entidades duplicadas y computa scores finales",
+            "description": "Evalúa y consolida entidades duplicadas calculando scores finales",
             "requires": ["raw_facts"],
             "modifies": ["consolidated_entity_scores"]
           },
@@ -130,7 +132,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Extrae pares entidad-actividad con scoring",
+            "description": "Extrae pares entidad-actividad usando NLP (spaCy) y calcula scoring de plausibilidad semántica",
             "requires": ["raw_facts"],
             "modifies": ["entity_activity_scores"]
           },
@@ -142,7 +144,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Calcula confianza de pares entidad-actividad",
+            "description": "Calcula confianza de pares entidad-actividad usando heurísticas de información extraction",
             "requires": ["raw_facts"],
             "modifies": ["ea_confidence_scores"]
           },
@@ -154,12 +156,12 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Audita trazabilidad de evidencia con scoring",
+            "description": "Evalúa y audita trazabilidad de evidencia calculando scoring",
             "requires": ["raw_facts"],
             "modifies": ["traceability_scores"]
           }
         ],
-        "dependencies": ["raw_facts"],
+        "dependencies": ["phase_A_construction"],
         "output_target": "inferred_parameters"
       },
 
@@ -168,6 +170,7 @@
         "level": "N3",
         "level_name": "Auditoría y Robustez",
         "epistemology": "Falsacionismo popperiano",
+        "asymmetry_principle": "N3 can invalidate N1/N2 findings, but N1/N2 CANNOT invalidate N3",
         "methods": [
           {
             "class_name": "MechanismPartExtractor",
@@ -177,9 +180,10 @@
             "level": "N3-AUD",
             "output_type": "CONSTRAINT",
             "fusion_behavior": "gate",
-            "description": "Valida coherencia de pares entidad-actividad",
+            "description": "Valida coherencia conceptual de pares entidad-actividad usando reglas de dominio semántico",
             "requires": ["raw_facts", "inferred_parameters"],
             "modulates": ["raw_facts.confidence", "inferred_parameters.confidence"],
+            "classification_rationale": "Valida coherencia conceptual consumiendo N1 y N2 → N3-AUD (PARTE II, Sección 2.2). Nota: Validación semántica aplicada a relaciones financieras.",
             "veto_conditions": {
               "entity_activity_mismatch": {
                 "trigger": "entity type incompatible with assigned activity",
@@ -196,7 +200,7 @@
             }
           }
         ],
-        "dependencies": ["raw_facts", "inferred_parameters"],
+        "dependencies": ["phase_A_construction", "phase_B_computation"],
         "output_target": "validated_constraints"
       }
     }
@@ -293,11 +297,11 @@
         "gate_logic": {
           "entity_activity_mismatch": {
             "action": "block_branch",
-            "multiplier": 0.0
+            "confidence_multiplier": 0.0
           },
           "unspecified_entity": {
             "action": "reduce_confidence",
-            "multiplier": 0.5
+            "confidence_multiplier": 0.4
           }
         },
         "output_type": "CONSTRAINT"
@@ -440,7 +444,33 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
-          ]
+          ],
+          "placeholders": {
+            "verdict_statement": {
+              "type": "string",
+              "source": "synthesis_output.verdict"
+            },
+            "final_confidence_pct": {
+              "type": "number",
+              "source": "synthesis_output.confidence_pct"
+            },
+            "confidence_label": {
+              "type": "enum",
+              "source": "synthesis_output.confidence_label"
+            },
+            "method_count": {
+              "type": "integer",
+              "source": "pipeline_stats.total_methods"
+            },
+            "audit_count": {
+              "type": "integer",
+              "source": "pipeline_stats.n3_validations"
+            },
+            "blocked_count": {
+              "type": "integer",
+              "source": "pipeline_stats.blocked_branches"
+            }
+          }
         },
         "argumentative_role": "SYNTHESIS"
       },
@@ -487,7 +517,7 @@
         },
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **ASIGNACIONES INVÁLIDAS**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_veto_triggered": "⛔ **ALERTA: ASIGNACIONES INVÁLIDAS**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} asignaciones invalidadas.",
           "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todas las asignaciones de responsabilidad sobrevivieron auditoría."
         },
@@ -534,6 +564,18 @@
           "role": "ROBUSTNESS_QUALIFIER",
           "description": "Validación de coherencia entidad-actividad",
           "narrative_weight": "critical"
+        },
+        {
+          "role": "FINANCIAL_CONSTRAINT",
+          "description": "Límite financiero o presupuestal",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Señal de refutación para hallazgos financieros inválidos",
+          "narrative_weight": "critical",
+          "triggers_veto": true
         }
       ],
       "N4_roles": [
@@ -622,13 +664,38 @@
   "traceability": {
     "canonical_sources": {
       "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json",
-      "method_classification": "method_classification_all_30.json",
-      "epistemological_guide": "OPERACIONALIZACIÓN_CONTRATOS_VERSION_4"
+      "method_inventory": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/method_classification_all_30.json",
+      "epistemological_guide": "guia_diligenciamiento_contratos_v4.md"
     },
     "generation": {
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-22T18:20:00Z",
       "generator_version": "1.0.0"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T18:20:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Typed fusion",
+          "Veto gates",
+          "Weighted mean strategy"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
     }
   },
 

@@ -58,7 +58,8 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "description": "Extrae tablas estructuradas de documentos PDF",
-            "requires": []
+            "requires": [],
+            "classification_rationale": "Extrae tablas directamente del documento sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
           }
         ],
         "dependencies": [],
@@ -78,7 +79,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Procesa tablas financieras extrayendo métricas presupuestales",
+            "description": "Evalúa y procesa tablas financieras calculando métricas presupuestales",
             "requires": [
               "raw_facts"
             ],
@@ -94,7 +95,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Elimina tablas duplicadas consolidando información",
+            "description": "Evalúa y elimina tablas duplicadas consolidando información",
             "requires": [
               "raw_facts"
             ],
@@ -110,7 +111,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Clasifica tablas por tipo (presupuestal, cronograma, etc)",
+            "description": "Evalúa y clasifica tablas por tipo (presupuestal, cronograma, etc)",
             "requires": [
               "raw_facts"
             ],
@@ -126,7 +127,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Limpia y normaliza dataframes para análisis",
+            "description": "Evalúa y normaliza dataframes calculando métricas de calidad para análisis",
             "requires": [
               "raw_facts"
             ],
@@ -136,7 +137,7 @@
           }
         ],
         "dependencies": [
-          "raw_facts"
+          "phase_A_construction"
         ],
         "output_target": "inferred_parameters"
       },
@@ -159,6 +160,7 @@
               "raw_facts",
               "inferred_parameters"
             ],
+            "classification_rationale": "Valida estructura tabular aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)",
             "modulates": [
               "raw_facts.confidence",
               "inferred_parameters.confidence"
@@ -180,9 +182,10 @@
           }
         ],
         "dependencies": [
-          "raw_facts",
-          "inferred_parameters"
+          "phase_A_construction",
+          "phase_B_computation"
         ],
+        "asymmetry_principle": "ASIMETRÍA EXPLÍCITA: N3 can invalidate resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae tablas sin validación y N2 procesa sin verificar estructura, N3 aplica criterios de falsación popperiana. CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa",
         "output_target": "validated_constraints"
       }
     }
@@ -285,8 +288,10 @@
         "merge_strategy": "veto_gate",
         "gate_logic": {
           "invalid_header_structure": {
+            "trigger": "header validation returns False",
             "action": "block_branch",
-            "multiplier": 0.0
+            "scope": "tables_with_invalid_headers",
+            "confidence_multiplier": 0.0
           },
           "malformed_table": {
             "action": "reduce_confidence",
