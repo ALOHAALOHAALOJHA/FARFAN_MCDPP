@@ -1,8 +1,8 @@
 {
   "identity": {
-    "base_slot": "D3-Q2",
-    "representative_question_id": "Q012",
-    "dimension_id": "DIM03",
+    "base_slot": "D1-Q1",
+    "representative_question_id": "Q001",
+    "dimension_id": "DIM01",
     "policy_area_ids_served": [
       "PA01",
       "PA02",
@@ -16,39 +16,139 @@
       "PA10"
     ],
     "contracts_served": [
-      "Q012",
-      "Q042",
-      "Q072",
-      "Q102",
-      "Q132",
-      "Q162",
-      "Q192",
-      "Q222",
-      "Q252",
-      "Q282"
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121",
+      "Q151",
+      "Q181",
+      "Q211",
+      "Q241",
+      "Q271"
     ],
     "contract_type": "TYPE_A",
     "contract_type_name": "Semántico",
     "contract_type_focus": "Coherencia narrativa, alineación temática, NLP",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2025-12-23T13:41:33.204812Z",
+    "created_at": "2025-12-23T13:41:33.190495Z",
     "specification_source": "episte_refact.md"
   },
   "executor_binding": {
-    "executor_class": "D3_Q2_Executor",
+    "executor_class": "D1_Q1_Executor",
     "executor_module": "farfan_pipeline.phases.Phase_two.executors"
   },
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_A",
-    "method_count": 19,
+    "method_count": 17,
     "execution_phases": {
       "phase_A_construction": {
         "description": "Empirical observation layer - direct document extraction without interpretation",
         "level": "N1",
         "level_name": "Base Empírica",
         "epistemology": "Empirismo positivista",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_extract_point_evidence",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor.extract_point_evidence",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_extract_goals",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.extract_goals",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_parse_goal_context",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.parse_goal_context",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "FinancialAuditor",
+            "method_name": "_parse_amount",
+            "mother_file": "derek_beach.py",
+            "provides": "financialauditor.parse_amount",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_financial_amounts",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.extract_financial_amounts",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_from_budget_table",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.extract_from_budget_table",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_extract_quantitative_claims",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.extract_quantitative_claims",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_parse_number",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.parse_number",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          },
+          {
+            "class_name": "SemanticProcessor",
+            "method_name": "chunk_text",
+            "mother_file": "semantic_chunking_policy.py",
+            "provides": "semanticprocessor.chunk_text",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Methods that perform direct observation without interpretation; Lexical: Method name matches pattern",
+            "requires": []
+          }
+        ],
         "dependencies": [],
         "output_target": "raw_facts"
       },
@@ -59,250 +159,122 @@
         "epistemology": "Bayesianismo subjetivista",
         "methods": [
           {
-            "class_name": "AdvancedDAGValidator",
-            "method_name": "_calculate_bayesian_posterior",
-            "mother_file": "unknown.py",
-            "provides": "advanceddagvalidator.calculate_bayesian_posterior",
+            "class_name": "TextMiningEngine",
+            "method_name": "diagnose_critical_links",
+            "mother_file": "analyzer_one.py",
+            "provides": "textminingengine.diagnose_critical_links",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
             "requires": [
               "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
             ]
           },
           {
-            "class_name": "AdvancedDAGValidator",
-            "method_name": "_calculate_confidence_interval",
-            "mother_file": "unknown.py",
-            "provides": "advanceddagvalidator.calculate_confidence_interval",
+            "class_name": "TextMiningEngine",
+            "method_name": "_analyze_link_text",
+            "mother_file": "analyzer_one.py",
+            "provides": "textminingengine.analyze_link_text",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
             "requires": [
               "raw_facts"
-            ]
-          },
-          {
-            "class_name": "AdaptivePriorCalculator",
-            "method_name": "_adjust_domain_weights",
-            "mother_file": "derek_beach.py",
-            "provides": "adaptivepriorcalculator.adjust_domain_weights",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "method_name": "_get_spanish_stopwords",
-            "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer.get_spanish_stopwords",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "BayesianMechanismInference",
-            "method_name": "_log_refactored_components",
-            "mother_file": "derek_beach.py",
-            "provides": "bayesianmechanisminference.log_refactored_components",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "method_name": "analyze_financial_feasibility",
-            "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer.analyze_financial_feasibility",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "method_name": "_score_indicators",
-            "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer.score_indicators",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "FinancialAuditor",
-            "method_name": "_calculate_sufficiency",
-            "mother_file": "derek_beach.py",
-            "provides": "financialauditor.calculate_sufficiency",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "BayesianMechanismInference",
-            "method_name": "_test_sufficiency",
-            "mother_file": "derek_beach.py",
-            "provides": "bayesianmechanisminference.test_sufficiency",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "BayesianMechanismInference",
-            "method_name": "_test_necessity",
-            "mother_file": "derek_beach.py",
-            "provides": "bayesianmechanisminference.test_necessity",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "method_name": "_assess_financial_sustainability",
-            "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer.assess_financial_sustainability",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "AdaptivePriorCalculator",
-            "method_name": "calculate_likelihood_adaptativo",
-            "mother_file": "derek_beach.py",
-            "provides": "adaptivepriorcalculator.calculate_likelihood_adaptativo",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
-            "requires": [
-              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
             ]
           },
           {
             "class_name": "IndustrialPolicyProcessor",
-            "method_name": "_calculate_quality_score",
+            "method_name": "process",
             "mother_file": "policy_processor.py",
-            "provides": "industrialpolicyprocessor.calculate_quality_score",
+            "provides": "industrialpolicyprocessor.process",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
             "requires": [
               "raw_facts"
-            ]
-          },
-          {
-            "class_name": "TeoriaCambio",
-            "method_name": "_generar_sugerencias_internas",
-            "mother_file": "teoria_cambio.py",
-            "provides": "teoriacambio.generar_sugerencias_internas",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "method_name": "_deduplicate_tables",
-            "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer.deduplicate_tables",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
-            ]
-          },
-          {
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "method_name": "_indicator_to_dict",
-            "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer.indicator_to_dict",
-            "level": "N2-INF",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
-            "requires": [
-              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
             ]
           },
           {
             "class_name": "IndustrialPolicyProcessor",
-            "method_name": "_compile_pattern_registry",
+            "method_name": "_match_patterns_in_sentences",
             "mother_file": "policy_processor.py",
-            "provides": "industrialpolicyprocessor.compile_pattern_registry",
+            "provides": "industrialpolicyprocessor.match_patterns_in_sentences",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
             "requires": [
               "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
             ]
           },
           {
-            "class_name": "IndustrialPolicyProcessor",
-            "method_name": "_build_point_patterns",
-            "mother_file": "policy_processor.py",
-            "provides": "industrialpolicyprocessor.build_point_patterns",
+            "class_name": "BayesianNumericalAnalyzer",
+            "method_name": "evaluate_policy_metric",
+            "mother_file": "embedding_policy.py",
+            "provides": "bayesiannumericalanalyzer.evaluate_policy_metric",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
             "requires": [
               "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
             ]
           },
           {
-            "class_name": "IndustrialPolicyProcessor",
-            "method_name": "_empty_result",
-            "mother_file": "policy_processor.py",
-            "provides": "industrialpolicyprocessor.empty_result",
+            "class_name": "BayesianNumericalAnalyzer",
+            "method_name": "compare_policies",
+            "mother_file": "embedding_policy.py",
+            "provides": "bayesiannumericalanalyzer.compare_policies",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Methods that transform observations into analytical constructs",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
             "requires": [
               "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "SemanticProcessor",
+            "method_name": "embed_single",
+            "mother_file": "semantic_chunking_policy.py",
+            "provides": "semanticprocessor.embed_single",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Methods that transform observations into analytical constructs; Lexical: Method name matches pattern",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
             ]
           }
         ],
@@ -317,7 +289,40 @@
         "level_name": "Auditoría y Robustez",
         "epistemology": "Falsacionismo popperiano",
         "asymmetry_principle": "N3 can invalidate N1/N2 findings, but N1/N2 CANNOT invalidate N3",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_statistical_significance_test",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.statistical_significance_test",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Methods that validate/refute findings with veto power; Lexical: Method name matches pattern '_statis",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "raw_facts.confidence",
+              "inferences.confidence"
+            ],
+            "veto_conditions": {
+              "validation_failure": {
+                "trigger": "validation_failed",
+                "action": "reduce_confidence",
+                "scope": "affected_claims",
+                "confidence_multiplier": 0.5
+              },
+              "critical_violation": {
+                "trigger": "critical_threshold_exceeded",
+                "action": "block_branch",
+                "scope": "source_facts",
+                "confidence_multiplier": 0.0
+              }
+            }
+          }
+        ],
         "dependencies": [
           "phase_A_construction",
           "phase_B_computation"
@@ -328,7 +333,7 @@
     }
   },
   "question_context": {
-    "monolith_ref": "Q012",
+    "monolith_ref": "Q001",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
@@ -336,7 +341,7 @@
         "incomplete_text",
         "no_quantitative_data"
       ],
-      "emit_code": "ABORT-D3-Q2-REQ"
+      "emit_code": "ABORT-D1-Q1-REQ"
     }
   },
   "signal_requirements": {
@@ -358,25 +363,29 @@
         "origin_level": "N1",
         "fusion_operation": "graph_node_addition",
         "merge_behavior": "additive",
-        "symbol": "⊕"
+        "symbol": "⊕",
+        "description": "Se SUMA al grafo como nodo"
       },
       "PARAMETER": {
         "origin_level": "N2",
         "fusion_operation": "edge_weight_modification",
         "merge_behavior": "multiplicative",
-        "symbol": "⊗"
+        "symbol": "⊗",
+        "description": "MODIFICA pesos de aristas del grafo"
       },
       "CONSTRAINT": {
         "origin_level": "N3",
         "fusion_operation": "branch_filtering",
         "merge_behavior": "gate",
-        "symbol": "⊘"
+        "symbol": "⊘",
+        "description": "FILTRA/BLOQUEA ramas si validación falla"
       },
       "NARRATIVE": {
         "origin_level": "N4",
         "fusion_operation": "synthesis",
         "merge_behavior": "terminal",
-        "symbol": "⊙"
+        "symbol": "⊙",
+        "description": "CONSUME grafo para texto final"
       }
     },
     "assembly_rules": [
@@ -384,7 +393,17 @@
         "rule_id": "R1_empirical_extraction",
         "rule_type": "empirical_basis",
         "target": "raw_facts",
-        "sources": [],
+        "sources": [
+          "industrialpolicyprocessor.extract_point_evidence",
+          "causalextractor.extract_goals",
+          "causalextractor.parse_goal_context",
+          "financialauditor.parse_amount",
+          "pdetmunicipalplananalyzer.extract_financial_amounts",
+          "pdetmunicipalplananalyzer.extract_from_budget_table",
+          "policycontradictiondetector.extract_quantitative_claims",
+          "policycontradictiondetector.parse_number",
+          "semanticprocessor.chunk_text"
+        ],
         "merge_strategy": "concat_with_deduplication",
         "deduplication_key": "element_id",
         "output_type": "FACT",
@@ -395,25 +414,13 @@
         "rule_type": "corroboration",
         "target": "triangulated_facts",
         "sources": [
-          "advanceddagvalidator.calculate_bayesian_posterior",
-          "advanceddagvalidator.calculate_confidence_interval",
-          "adaptivepriorcalculator.adjust_domain_weights",
-          "pdetmunicipalplananalyzer.get_spanish_stopwords",
-          "bayesianmechanisminference.log_refactored_components",
-          "pdetmunicipalplananalyzer.analyze_financial_feasibility",
-          "pdetmunicipalplananalyzer.score_indicators",
-          "financialauditor.calculate_sufficiency",
-          "bayesianmechanisminference.test_sufficiency",
-          "bayesianmechanisminference.test_necessity",
-          "pdetmunicipalplananalyzer.assess_financial_sustainability",
-          "adaptivepriorcalculator.calculate_likelihood_adaptativo",
-          "industrialpolicyprocessor.calculate_quality_score",
-          "teoriacambio.generar_sugerencias_internas",
-          "pdetmunicipalplananalyzer.deduplicate_tables",
-          "pdetmunicipalplananalyzer.indicator_to_dict",
-          "industrialpolicyprocessor.compile_pattern_registry",
-          "industrialpolicyprocessor.build_point_patterns",
-          "industrialpolicyprocessor.empty_result"
+          "textminingengine.diagnose_critical_links",
+          "textminingengine.analyze_link_text",
+          "industrialpolicyprocessor.process",
+          "industrialpolicyprocessor.match_patterns_in_sentences",
+          "bayesiannumericalanalyzer.evaluate_policy_metric",
+          "bayesiannumericalanalyzer.compare_policies",
+          "semanticprocessor.embed_single"
         ],
         "input_dependencies": [
           "raw_facts"
@@ -426,7 +433,9 @@
         "rule_id": "R3_audit_gate",
         "rule_type": "robustness_gate",
         "target": "validated_facts",
-        "sources": [],
+        "sources": [
+          "policycontradictiondetector.statistical_significance_test"
+        ],
         "input_dependencies": [
           "raw_facts",
           "triangulated_facts"
@@ -759,7 +768,7 @@
       "properties": {
         "base_slot": {
           "type": "string",
-          "const": "D3-Q2"
+          "const": "D1-Q1"
         },
         "question_id": {
           "type": "string"
@@ -813,7 +822,7 @@
         "missing_required_element",
         "incomplete_text"
       ],
-      "emit_code": "ABORT-D3-Q2-REQ"
+      "emit_code": "ABORT-D1-Q1-REQ"
     }
   },
   "traceability": {
@@ -824,14 +833,14 @@
     },
     "generation": {
       "method": "v4_epistemological_generation",
-      "timestamp": "2025-12-23T13:41:33.204812Z",
+      "timestamp": "2025-12-23T13:41:33.190495Z",
       "generator_version": "1.0.0"
     },
     "refactoring_history": [
       {
         "from_version": "3.0.0",
         "to_version": "4.0.0-epistemological",
-        "date": "2025-12-23T13:41:33.204812Z",
+        "date": "2025-12-23T13:41:33.190495Z",
         "changes": [
           "Introduced execution_phases (A/B/C) replacing flat methods array",
           "Classified methods by epistemological level (N1/N2/N3/N4)",
