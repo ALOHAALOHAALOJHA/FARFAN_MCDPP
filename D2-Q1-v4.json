@@ -446,6 +446,14 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
           ]
         },
         "argumentative_role": "SYNTHESIS"
@@ -493,7 +501,7 @@
         },
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **COBERTURA INVÁLIDA**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_veto_triggered": "⛔ **ALERTA: COBERTURA INVÁLIDA**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} asignaciones invalidadas.",
           "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todas las asignaciones de cobertura sobrevivieron auditoría."
         },
@@ -539,6 +547,17 @@
         {
           "role": "ROBUSTNESS_QUALIFIER",
           "description": "Validación de estructura tabular",
+          "narrative_weight": "critical"
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Señal de refutación para hallazgos financieros inválidos",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        },
+        {
+          "role": "FINANCIAL_CONSTRAINT",
+          "description": "Restricción financiera aplicada a validación de estructura tabular",
           "narrative_weight": "critical"
         }
       ],
@@ -686,8 +705,32 @@
     "generation": {
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-22T18:20:00Z",
-      "generator_version": "1.0.0",
-      "notes": "L4 method generate_accountability_matrix excluded per guide (N4-SYN not in contracts)"
+      "generator_version": "1.0.0"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T18:20:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Typed fusion",
+          "Veto gates",
+          "Weighted mean strategy"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
     }
   },
   "compatibility": {
