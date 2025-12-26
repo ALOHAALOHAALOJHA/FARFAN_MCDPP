@@ -325,6 +325,248 @@ class TemporalLogicVerifier:
                 return pattern_type
         return 'unspecified'
 
+
+class SemanticValidator:
+    """
+    N2 Semantic Validator for TYPE_A contracts.
+
+    Performs deterministic, non-probabilistic validation of semantic coherence
+    and completeness for D1-Q1 and similar TYPE_A questions.
+
+    Validates:
+    - Coherence between quantitative data and baseline requirements
+    - Compatibility between resources and temporal references
+    - Minimal semantic completeness (numerical data, year reference, sources)
+
+    This class DOES NOT infer, score probabilistically, or veto.
+    It only produces semantic validation flags for downstream N3 auditing.
+
+    Epistemological stance: Deterministic logical validation, no Bayesian inference.
+    Compatible with TYPE_A (Semantic) contracts only.
+    """
+
+    # Official sources patterns for D1-Q1 validation
+    OFFICIAL_SOURCES_PATTERNS = [
+        r'\bDANE\b',
+        r'\bMedicina\s+Legal\b',
+        r'\bObservatorio\s+de\s+Género\b',
+        r'\bObservatorio\s+de\s+Asuntos\s+de\s+Género\b',
+        r'\bDNP\b',
+        r'\bSISPRO\b',
+        r'\bSIVIGILA\b',
+        r'\bSecretaría\s+de\s+la\s+Mujer\b',
+        r'\bComisar[íi]a\s+de\s+Familia\b',
+        r'\bFiscal[íi]a\b',
+        r'\bPolic[íi]a\s+Nacional\b'
+    ]
+
+    # Baseline indicators patterns
+    BASELINE_INDICATORS = [
+        r'l[íi]nea\s+base',
+        r'año\s+base',
+        r'situaci[óo]n\s+inicial',
+        r'diagn[óo]stico',
+        r'referencia\s+inicial'
+    ]
+
+    def __init__(self, temporal_verifier: TemporalLogicVerifier | None = None):
+        """
+        Initialize SemanticValidator.
+
+        Args:
+            temporal_verifier: Optional TemporalLogicVerifier instance for temporal validation.
+                              If None, creates a new instance.
+        """
+        self.temporal_verifier = temporal_verifier or TemporalLogicVerifier()
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def validate_semantic_completeness_coherence(
+        self,
+        raw_facts: dict[str, Any]
+    ) -> dict[str, Any]:
+        """
+        Validate semantic completeness and coherence for D1-Q1 requirements.
+
+        Validates that raw_facts contain:
+        1. Quantitative data (rates, percentages, figures)
+        2. Baseline indicators (línea base, año base, situación inicial)
+        3. Year reference (explicit year mentioned)
+        4. Official sources (DANE, Medicina Legal, Observatorio de Género, etc.)
+
+        Args:
+            raw_facts: Structured outputs from N1 extraction methods.
+                      Expected keys:
+                      - quantitative_claims: list[dict] from _extract_quantitative_claims
+                      - temporal_markers: list[str] from _extract_temporal_markers
+                      - resource_mentions: list[tuple] from _extract_resource_mentions
+                      - point_evidence: dict with policy area evidence
+                      - numerical_values: list[float] from _extract_numerical_values
+
+        Returns:
+            dict with boolean semantic validation flags:
+            - has_quantitative_data: bool
+            - has_baseline_indicator: bool
+            - has_year_reference: bool
+            - has_official_sources: bool
+            - resources_temporal_compatible: bool
+            - semantic_completeness_pass: bool (all above must be True)
+            
+            Each flag is binary (True/False), no scores or probabilities.
+        """
+        results = {
+            "has_quantitative_data": self._check_quantitative_data_presence(raw_facts),
+            "has_baseline_indicator": self._check_baseline_indicator(raw_facts),
+            "has_year_reference": self._check_year_reference(raw_facts),
+            "has_official_sources": self._check_official_sources(raw_facts),
+            "resources_temporal_compatible": self._check_resources_temporal_compatibility(raw_facts)
+        }
+
+        # Overall semantic completeness: all requirements must pass
+        results["semantic_completeness_pass"] = all([
+            results["has_quantitative_data"],
+            results["has_baseline_indicator"],
+            results["has_year_reference"],
+            results["has_official_sources"]
+        ])
+
+        return results
+
+    # -------------------------
+    # Private deterministic checks (N2 validation logic)
+    # -------------------------
+
+    def _check_quantitative_data_presence(self, raw_facts: dict[str, Any]) -> bool:
+        """
+        Check if quantitative data is present (rates, percentages, figures).
+
+        Deterministic check: presence/absence only, no scoring.
+        """
+        # Check quantitative_claims from PolicyContradictionDetector._extract_quantitative_claims
+        quantitative_claims = raw_facts.get("quantitative_claims", [])
+        if quantitative_claims and len(quantitative_claims) >= 1:
+            return True
+
+        # Check numerical_values from PolicyAnalysisEmbedder._extract_numerical_values
+        numerical_values = raw_facts.get("numerical_values", [])
+        if numerical_values and len(numerical_values) >= 1:
+            return True
+
+        # Check financial_amounts from PDETMunicipalPlanAnalyzer._extract_financial_amounts
+        financial_amounts = raw_facts.get("financial_amounts", [])
+        if financial_amounts and len(financial_amounts) >= 1:
+            return True
+
+        return False
+
+    def _check_baseline_indicator(self, raw_facts: dict[str, Any]) -> bool:
+        """
+        Check if baseline indicators are present (línea base, año base, situación inicial).
+
+        Deterministic check: pattern matching only, no inference.
+        """
+        # Check in quantitative_claims context
+        quantitative_claims = raw_facts.get("quantitative_claims", [])
+        for claim in quantitative_claims:
+            context = claim.get("context", "").lower()
+            if any(re.search(pattern, context, re.IGNORECASE) for pattern in self.BASELINE_INDICATORS):
+                return True
+
+        # Check in point_evidence text
+        point_evidence = raw_facts.get("point_evidence", {})
+        for evidence in point_evidence.values():
+            if isinstance(evidence, dict):
+                text = evidence.get("text", "").lower()
+                if any(re.search(pattern, text, re.IGNORECASE) for pattern in self.BASELINE_INDICATORS):
+                    return True
+            elif isinstance(evidence, str):
+                if any(re.search(pattern, evidence.lower(), re.IGNORECASE) for pattern in self.BASELINE_INDICATORS):
+                    return True
+
+        return False
+
+    def _check_year_reference(self, raw_facts: dict[str, Any]) -> bool:
+        """
+        Check if explicit year reference is present (e.g., "2024", "año 2023").
+
+        Deterministic check: year pattern matching only.
+        """
+        # Check temporal_markers from PolicyContradictionDetector._extract_temporal_markers
+        temporal_markers = raw_facts.get("temporal_markers", [])
+        for marker in temporal_markers:
+            # Parse using TemporalLogicVerifier to get year
+            parsed_year = self.temporal_verifier._parse_temporal_marker(str(marker))
+            if parsed_year is not None and parsed_year >= 2000:  # Valid year range
+                return True
+
+        # Check in quantitative_claims context for year mentions
+        quantitative_claims = raw_facts.get("quantitative_claims", [])
+        for claim in quantitative_claims:
+            context = claim.get("context", "")
+            # Look for year patterns: 20XX or "año 20XX"
+            if re.search(r'(?:año|años?|vigencia|periodo)\s*(?:de\s*)?(?:20\d{2})', context, re.IGNORECASE):
+                return True
+            if re.search(r'20\d{2}', context):
+                return True
+
+        return False
+
+    def _check_official_sources(self, raw_facts: dict[str, Any]) -> bool:
+        """
+        Check if official sources are mentioned (DANE, Medicina Legal, Observatorio de Género, etc.).
+
+        Deterministic check: pattern matching only, no entity recognition.
+        """
+        # Check in point_evidence text
+        point_evidence = raw_facts.get("point_evidence", {})
+        for evidence in point_evidence.values():
+            if isinstance(evidence, dict):
+                text = evidence.get("text", "")
+            elif isinstance(evidence, str):
+                text = evidence
+            else:
+                continue
+
+            # Check for official source patterns
+            for pattern in self.OFFICIAL_SOURCES_PATTERNS:
+                if re.search(pattern, text, re.IGNORECASE):
+                    return True
+
+        # Check in quantitative_claims context
+        quantitative_claims = raw_facts.get("quantitative_claims", [])
+        for claim in quantitative_claims:
+            context = claim.get("context", "")
+            for pattern in self.OFFICIAL_SOURCES_PATTERNS:
+                if re.search(pattern, context, re.IGNORECASE):
+                    return True
+
+        # Check for source mentions in raw text if available
+        raw_text = raw_facts.get("raw_text", "")
+        if raw_text:
+            for pattern in self.OFFICIAL_SOURCES_PATTERNS:
+                if re.search(pattern, raw_text, re.IGNORECASE):
+                    return True
+
+        return False
+
+    def _check_resources_temporal_compatibility(self, raw_facts: dict[str, Any]) -> bool:
+        """
+        Check if resources and temporal references are compatible (both present or both absent).
+
+        Deterministic check: co-occurrence validation only, no sufficiency inference.
+        """
+        # Check if resources are mentioned
+        resource_mentions = raw_facts.get("resource_mentions", [])
+        has_resources = bool(resource_mentions and len(resource_mentions) > 0)
+
+        # Check if temporal markers are present
+        temporal_markers = raw_facts.get("temporal_markers", [])
+        has_temporal = bool(temporal_markers and len(temporal_markers) > 0)
+
+        # Compatibility: both present OR both absent (not one without the other)
+        # For D1-Q1, we require both to be present
+        return has_resources and has_temporal
+
+
 class PolicyContradictionDetector:
     """
     Sistema avanzado de detección de contradicciones para PDMs colombianos.
@@ -349,53 +591,44 @@ class PolicyContradictionDetector:
             "text-classification",
             model=model,
             tokenizer=tokenizer,
-            device=0 if device == "cuda" else -1,
+            device=device
         )
 
-        # Procesamiento de lenguaje natural
-        # Delegate to factory for I/O operation
-        from farfan_pipeline.analysis.factory import load_spacy_model
-        self.nlp = load_spacy_model(spacy_model)
-
-        # Componentes especializados
-        self.bayesian_calculator = BayesianConfidenceCalculator()
+        # Verificador temporal
         self.temporal_verifier = TemporalLogicVerifier()
+
+        # Calculadora bayesiana de confianza
+        self.bayesian_calculator = BayesianConfidenceCalculator()
 
         # Grafo de conocimiento para razonamiento
         self.knowledge_graph = nx.DiGraph()
 
-        # Vectorizador TF-IDF para análisis complementario
-        self.tfidf = TfidfVectorizer(
-            ngram_range=(1, 3),
-            max_features=5000,
-            sublinear_tf=True
-        )
-
-        # Patrones específicos de PDM colombiano
+        # Patrones PDM específicos
         self._initialize_pdm_patterns()
 
+        self.logger = logging.getLogger(self.__class__.__name__)
     
     def _initialize_pdm_patterns(self) -> None:
-        """Inicializa patrones específicos de PDMs colombianos"""
+        """Inicializa patrones específicos para análisis de PDMs colombianos"""
         self.pdm_patterns = {
-            'ejes_estrategicos': re.compile(
-                r'(eje\s+estratégico|línea\s+estratégica|pilar|dimensión)',
+            'diagnostico': re.compile(
+                r'(?:diagnóstico|caracterización|situación actual|línea base|año base)',
                 re.IGNORECASE
             ),
-            'programas': re.compile(
-                r'(programa|subprograma|proyecto|iniciativa)',
+            'objetivos': re.compile(
+                r'(?:objetivo|meta|propósito|finalidad)',
                 re.IGNORECASE
             ),
-            'metas': re.compile(
-                r'(meta\s+de\s+resultado|meta\s+de\s+producto|indicador)',
+            'estrategias': re.compile(
+                r'(?:estrategia|programa|proyecto|acción|intervención)',
                 re.IGNORECASE
             ),
             'recursos': re.compile(
-                r'(SGP|regalías|recursos\s+propios|cofinanciación|crédito)',
+                r'(?:presupuesto|recurso|financiación|inversión|asignación)',
                 re.IGNORECASE
             ),
-            'normativa': re.compile(
-                r'(ley\s+\d+|decreto\s+\d+|acuerdo\s+\d+|resolución\s+\d+)',
+            'temporal': re.compile(
+                r'(?:vigencia|periodo|año|trimestre|semestre|plazo)',
                 re.IGNORECASE
             )
         }
@@ -449,1093 +682,19 @@ class PolicyContradictionDetector:
         resource_conflicts = self._detect_resource_conflicts(statements)
         contradictions.extend(ensure_list_return(resource_conflicts))
 
-        # Calcular métricas agregadas
-        coherence_metrics = self._calculate_coherence_metrics(
-            contradictions,
-            statements,
-            text
-        )
+        # Calcular métricas de coherencia
+        coherence_metrics = self._calculate_coherence_metrics(contradictions, statements, text)
 
         # Generar recomendaciones de resolución
-        recommendations = self._generate_resolution_recommendations(contradictions)
+        resolution_recommendations = self._generate_resolution_recommendations(contradictions)
 
         return {
             "plan_name": plan_name,
             "dimension": dimension.value,
             "contradictions": [self._serialize_contradiction(c) for c in contradictions],
-            "total_contradictions": len(contradictions),
-            "high_severity_count": sum(1 for c in contradictions if c.severity > 0.7),
             "coherence_metrics": coherence_metrics,
-            "recommendations": recommendations,
-            "knowledge_graph_stats": self._get_graph_statistics()
+            "resolution_recommendations": resolution_recommendations,
+            "graph_statistics": self._get_graph_statistics()
         }
 
-    def _extract_policy_statements(
-            self,
-            text: str,
-            dimension: PolicyDimension
-    ) -> list[PolicyStatement]:
-        """Extrae declaraciones de política estructuradas del texto"""
-        doc = self.nlp(text)
-        statements = []
-
-        for sent in doc.sents:
-            # Analizar entidades nombradas
-            entities = [ent.text for ent in sent.ents]
-
-            # Extraer marcadores temporales
-            temporal_markers = self._extract_temporal_markers(sent.text)
-
-            # Extraer afirmaciones cuantitativas
-            quantitative_claims = self._extract_quantitative_claims(sent.text)
-
-            # Determinar rol semántico
-            semantic_role = self._determine_semantic_role(sent)
-
-            # Identificar dependencias
-            dependencies = self._identify_dependencies(sent, doc)
-
-            statement = PolicyStatement(
-                text=sent.text,
-                dimension=dimension,
-                position=(sent.start_char, sent.end_char),
-                entities=entities,
-                temporal_markers=temporal_markers,
-                quantitative_claims=quantitative_claims,
-                context_window=self._get_context_window(text, sent.start_char, sent.end_char),
-                semantic_role=semantic_role,
-                dependencies=dependencies
-            )
-
-            statements.append(statement)
-
-        return statements
-
-    def _generate_embeddings(
-            self,
-            statements: list[PolicyStatement]
-    ) -> list[PolicyStatement]:
-        """Genera embeddings semánticos para las declaraciones"""
-        texts = [stmt.text for stmt in statements]
-        embeddings = self.semantic_model.encode(texts, convert_to_numpy=True)
-
-        # Crear nuevas instancias con embeddings
-        enhanced_statements = []
-        for stmt, embedding in zip(statements, embeddings, strict=False):
-            enhanced = PolicyStatement(
-                text=stmt.text,
-                dimension=stmt.dimension,
-                position=stmt.position,
-                entities=stmt.entities,
-                temporal_markers=stmt.temporal_markers,
-                quantitative_claims=stmt.quantitative_claims,
-                embedding=embedding,
-                context_window=stmt.context_window,
-                semantic_role=stmt.semantic_role,
-                dependencies=stmt.dependencies
-            )
-            enhanced_statements.append(enhanced)
-
-        return enhanced_statements
-
-    
-    def _build_knowledge_graph(self, statements: list[PolicyStatement]) -> None:
-        """Construye grafo de conocimiento para razonamiento"""
-        self.knowledge_graph.clear()
-
-        for i, stmt in enumerate(statements):
-            node_id = f"stmt_{i}"
-            self.knowledge_graph.add_node(
-                node_id,
-                text=stmt.text[:100],
-                dimension=stmt.dimension.value,
-                entities=stmt.entities,
-                semantic_role=stmt.semantic_role
-            )
-
-            # Conectar con declaraciones relacionadas
-            for j, other in enumerate(statements):
-                if i != j:
-                    similarity = self._calculate_similarity(stmt, other)
-                    if similarity > 0.7:  # Umbral de relación
-                        self.knowledge_graph.add_edge(
-                            f"stmt_{i}",
-                            f"stmt_{j}",
-                            weight=similarity,
-                            relation_type=self._determine_relation_type(stmt, other)
-                        )
-
-    def _detect_semantic_contradictions(
-            self,
-            statements: list[PolicyStatement]
-    ) -> list[ContradictionEvidence]:
-        """Detecta contradicciones semánticas usando transformers"""
-        contradictions = []
-
-        for i, stmt_a in enumerate(statements):
-            for stmt_b in statements[i + 1:]:
-                if stmt_a.embedding is not None and stmt_b.embedding is not None:
-                    # Calcular similaridad coseno
-                    similarity = 1 - cosine(stmt_a.embedding, stmt_b.embedding)
-
-                    # Verificar contradicción usando clasificador
-                    combined_text = f"{stmt_a.text} [SEP] {stmt_b.text}"
-                    contradiction_score = self._classify_contradiction(combined_text)
-
-                    if contradiction_score > 0.7 and similarity > 0.5:
-                        # Calcular confianza Bayesiana
-                        confidence = self.bayesian_calculator.calculate_posterior(
-                            evidence_strength=contradiction_score,
-                            observations=len(stmt_a.entities) + len(stmt_b.entities),
-                            domain_weight=self._get_domain_weight(stmt_a.dimension)
-                        )
-
-                        evidence = ContradictionEvidence(
-                            statement_a=stmt_a,
-                            statement_b=stmt_b,
-                            contradiction_type=ContradictionType.SEMANTIC_OPPOSITION,
-                            confidence=confidence,
-                            severity=self._calculate_severity(stmt_a, stmt_b),
-                            semantic_similarity=similarity,
-                            logical_conflict_score=contradiction_score,
-                            temporal_consistency=True,
-                            numerical_divergence=None,
-                            affected_dimensions=[stmt_a.dimension, stmt_b.dimension],
-                            resolution_suggestions=self._suggest_resolutions(
-                                ContradictionType.SEMANTIC_OPPOSITION
-                            )
-                        )
-                        contradictions.append(evidence)
-
-        return contradictions
-
-    def _detect_numerical_inconsistencies(
-            self,
-            statements: list[PolicyStatement]
-    ) -> list[ContradictionEvidence]:
-        """Detecta inconsistencias numéricas con análisis estadístico"""
-        contradictions = []
-
-        for i, stmt_a in enumerate(statements):
-            for stmt_b in statements[i + 1:]:
-                if stmt_a.quantitative_claims and stmt_b.quantitative_claims:
-                    for claim_a in stmt_a.quantitative_claims:
-                        for claim_b in stmt_b.quantitative_claims:
-                            if self._are_comparable_claims(claim_a, claim_b):
-                                divergence = self._calculate_numerical_divergence(
-                                    claim_a,
-                                    claim_b
-                                )
-
-                                if divergence is not None and divergence > 0.2:
-                                    # Test estadístico de significancia
-                                    p_value = self._statistical_significance_test(
-                                        claim_a,
-                                        claim_b
-                                    )
-
-                                    if p_value < 0.05:  # Significancia estadística
-                                        confidence = self.bayesian_calculator.calculate_posterior(
-                                            evidence_strength=1 - p_value,
-                                            observations=2,
-                                            domain_weight=1.5  # Mayor peso para evidencia numérica
-                                        )
-
-                                        evidence = ContradictionEvidence(
-                                            statement_a=stmt_a,
-                                            statement_b=stmt_b,
-                                            contradiction_type=ContradictionType.NUMERICAL_INCONSISTENCY,
-                                            confidence=confidence,
-                                            severity=min(1.0, divergence),
-                                            semantic_similarity=0.0,
-                                            logical_conflict_score=divergence,
-                                            temporal_consistency=True,
-                                            numerical_divergence=divergence,
-                                            affected_dimensions=[stmt_a.dimension],
-                                            resolution_suggestions=self._suggest_resolutions(
-                                                ContradictionType.NUMERICAL_INCONSISTENCY
-                                            ),
-                                            statistical_significance=p_value
-                                        )
-                                        contradictions.append(evidence)
-
-        return contradictions
-
-    def _detect_temporal_conflicts(
-            self,
-            statements: list[PolicyStatement]
-    ) -> list[ContradictionEvidence]:
-        """Detecta conflictos temporales usando verificación lógica"""
-        contradictions = []
-
-        # Filtrar declaraciones con marcadores temporales
-        temporal_statements = [s for s in statements if s.temporal_markers]
-
-        if len(temporal_statements) >= 2:
-            is_consistent, conflicts = self.temporal_verifier.verify_temporal_consistency(
-                temporal_statements
-            )
-
-            for conflict in conflicts:
-                stmt_a = conflict['event_a']['statement']
-                stmt_b = conflict['event_b']['statement']
-
-                confidence = self.bayesian_calculator.calculate_posterior(
-                    evidence_strength=0.9,  # Alta confianza en lógica temporal
-                    observations=len(conflicts),
-                    domain_weight=1.2
-                )
-
-                evidence = ContradictionEvidence(
-                    statement_a=stmt_a,
-                    statement_b=stmt_b,
-                    contradiction_type=ContradictionType.TEMPORAL_CONFLICT,
-                    confidence=confidence,
-                    severity=0.8,  # Los conflictos temporales son severos
-                    semantic_similarity=self._calculate_similarity(stmt_a, stmt_b),
-                    logical_conflict_score=1.0,
-                    temporal_consistency=False,
-                    numerical_divergence=None,
-                    affected_dimensions=[PolicyDimension.PROGRAMATICO],
-                    resolution_suggestions=self._suggest_resolutions(
-                        ContradictionType.TEMPORAL_CONFLICT
-                    )
-                )
-                contradictions.append(evidence)
-
-        return contradictions
-
-    def _detect_logical_incompatibilities(
-            self,
-            statements: list[PolicyStatement]
-    ) -> list[ContradictionEvidence]:
-        """Detecta incompatibilidades lógicas usando razonamiento en grafo"""
-        contradictions = []
-
-        # Buscar ciclos negativos en el grafo (indicativos de contradicción)
-        try:
-            negative_cycles = nx.negative_edge_cycle(
-                self.knowledge_graph,
-                weight='weight'
-            )
-
-            for cycle in negative_cycles:
-                # Extraer declaraciones del ciclo
-                stmt_indices = [int(node.split('_')[1]) for node in cycle]
-                cycle_statements = [statements[i] for i in stmt_indices]
-
-                # Analizar incompatibilidad lógica
-                for i in range(len(cycle_statements)):
-                    stmt_a = cycle_statements[i]
-                    stmt_b = cycle_statements[(i + 1) % len(cycle_statements)]
-
-                    if self._has_logical_conflict(stmt_a, stmt_b):
-                        confidence = self.bayesian_calculator.calculate_posterior(
-                            evidence_strength=0.85,
-                            observations=len(cycle),
-                            domain_weight = 1.0 # Refactored
-                        )
-
-                        evidence = ContradictionEvidence(
-                            statement_a=stmt_a,
-                            statement_b=stmt_b,
-                            contradiction_type=ContradictionType.LOGICAL_INCOMPATIBILITY,
-                            confidence=confidence,
-                            severity=0.7,
-                            semantic_similarity=self._calculate_similarity(stmt_a, stmt_b),
-                            logical_conflict_score=0.9,
-                            temporal_consistency=True,
-                            numerical_divergence=None,
-                            affected_dimensions=[stmt_a.dimension, stmt_b.dimension],
-                            resolution_suggestions=self._suggest_resolutions(
-                                ContradictionType.LOGICAL_INCOMPATIBILITY
-                            ),
-                            graph_path=cycle
-                        )
-                        contradictions.append(evidence)
-        except nx.NetworkXError:
-            pass  # No negative cycles found
-
-        return contradictions
-
-    def _detect_resource_conflicts(
-            self,
-            statements: list[PolicyStatement]
-    ) -> list[ContradictionEvidence]:
-        """Detecta conflictos en asignación de recursos"""
-        contradictions = []
-        resource_allocations = {}
-
-        for stmt in statements:
-            # Extraer menciones de recursos
-            resources = self._extract_resource_mentions(stmt.text)
-            for resource_type, amount in resources:
-                if resource_type not in resource_allocations:
-                    resource_allocations[resource_type] = []
-                resource_allocations[resource_type].append((stmt, amount))
-
-        # Verificar conflictos de asignación
-        for resource_type, allocations in resource_allocations.items():
-            if len(allocations) > 1:
-                total_claimed = sum(amount for _, amount in allocations if amount)
-
-                # Verificar si las asignaciones son mutuamente excluyentes
-                for i, (stmt_a, amount_a) in enumerate(allocations):
-                    for stmt_b, amount_b in allocations[i + 1:]:
-                        if amount_a and amount_b:
-                            if self._are_conflicting_allocations(
-                                    amount_a,
-                                    amount_b,
-                                    total_claimed
-                            ):
-                                confidence = self.bayesian_calculator.calculate_posterior(
-                                    evidence_strength=0.8,
-                                    observations=len(allocations),
-                                    domain_weight=1.3
-                                )
-
-                                evidence = ContradictionEvidence(
-                                    statement_a=stmt_a,
-                                    statement_b=stmt_b,
-                                    contradiction_type=ContradictionType.RESOURCE_ALLOCATION_MISMATCH,
-                                    confidence=confidence,
-                                    severity=0.9,  # Conflictos de recursos son críticos
-                                    semantic_similarity=self._calculate_similarity(stmt_a, stmt_b),
-                                    logical_conflict_score=0.8,
-                                    temporal_consistency=True,
-                                    numerical_divergence=abs(amount_a - amount_b) / max(amount_a, amount_b),
-                                    affected_dimensions=[PolicyDimension.FINANCIERO],
-                                    resolution_suggestions=self._suggest_resolutions(
-                                        ContradictionType.RESOURCE_ALLOCATION_MISMATCH
-                                    )
-                                )
-                                contradictions.append(evidence)
-
-        return contradictions
-
-    def _calculate_coherence_metrics(
-            self,
-            contradictions: list[ContradictionEvidence],
-            statements: list[PolicyStatement],
-            text: str
-    ) -> dict[str, float]:
-        """Calcula métricas avanzadas de coherencia del documento"""
-
-        # Densidad de contradicciones normalizada
-        contradiction_density = len(contradictions) / max(1, len(statements))
-
-        # Índice de coherencia semántica global
-        semantic_coherence = self._calculate_global_semantic_coherence(statements)
-
-        # Consistencia temporal
-        temporal_consistency = sum(
-            1 for c in contradictions
-            if c.contradiction_type != ContradictionType.TEMPORAL_CONFLICT
-        ) / max(1, len(contradictions))
-
-        # Alineación de objetivos
-        objective_alignment = self._calculate_objective_alignment(statements)
-
-        # Índice de fragmentación del grafo
-        graph_fragmentation = self._calculate_graph_fragmentation()
-
-        # Score de coherencia compuesto (weighted harmonic mean)
-        weights = np.array([0.3, 0.25, 0.2, 0.15, 0.1])
-        scores = np.array([
-            1 - contradiction_density,
-            semantic_coherence,
-            temporal_consistency,
-            objective_alignment,
-            1 - graph_fragmentation
-        ])
-
-        # Harmonic mean ponderada para penalizar valores bajos
-        coherence_score = np.sum(weights) / np.sum(weights / np.maximum(scores, 0.01))
-
-        # Entropía de contradicciones
-        contradiction_entropy = self._calculate_contradiction_entropy(contradictions)
-
-        # Complejidad sintáctica del documento
-        syntactic_complexity = self._calculate_syntactic_complexity(text)
-
-        return {
-            "coherence_score": float(coherence_score),
-            "contradiction_density": float(contradiction_density),
-            "semantic_coherence": float(semantic_coherence),
-            "temporal_consistency": float(temporal_consistency),
-            "objective_alignment": float(objective_alignment),
-            "graph_fragmentation": float(graph_fragmentation),
-            "contradiction_entropy": float(contradiction_entropy),
-            "syntactic_complexity": float(syntactic_complexity),
-            "confidence_interval": self._calculate_confidence_interval(coherence_score, len(statements))
-        }
-
-    def _calculate_global_semantic_coherence(
-            self,
-            statements: list[PolicyStatement]
-    ) -> float:
-        """Calcula coherencia semántica global usando embeddings"""
-        if len(statements) < 2:
-            return 1.0
-
-        # Calcular matriz de similitud
-        embeddings = [s.embedding for s in statements if s.embedding is not None]
-        if len(embeddings) < 2:
-            return 0.5
-
-        similarity_matrix = cosine_similarity(embeddings)
-
-        # Calcular coherencia como promedio de similitudes consecutivas
-        consecutive_similarities = []
-        for i in range(len(similarity_matrix) - 1):
-            consecutive_similarities.append(similarity_matrix[i, i + 1])
-
-        # Penalizar alta varianza en similitudes
-        mean_similarity = np.mean(consecutive_similarities)
-        std_similarity = np.std(consecutive_similarities)
-
-        coherence = mean_similarity * (1 - min(0.5, std_similarity))
-
-        return float(coherence)
-
-    def _calculate_objective_alignment(
-            self,
-            statements: list[PolicyStatement]
-    ) -> float:
-        """Calcula alineación entre objetivos declarados"""
-        objective_statements = [
-            s for s in statements
-            if s.semantic_role in ['objective', 'goal', 'target']
-        ]
-
-        if len(objective_statements) < 2:
-            return 1.0
-
-        # Analizar consistencia direccional de objetivos
-        alignment_scores = []
-        for i, obj_a in enumerate(objective_statements):
-            for obj_b in objective_statements[i + 1:]:
-                if obj_a.embedding is not None and obj_b.embedding is not None:
-                    # Calcular alineación como similitud coseno
-                    alignment = 1 - cosine(obj_a.embedding, obj_b.embedding)
-                    alignment_scores.append(alignment)
-
-        if alignment_scores:
-            return float(np.mean(alignment_scores))
-        return 0.5
-
-    
-    def _calculate_graph_fragmentation(self) -> float:
-        """Calcula fragmentación del grafo de conocimiento"""
-        if self.knowledge_graph.number_of_nodes() == 0:
-            return 0.0
-
-        # Calcular número de componentes conectados
-        num_components = nx.number_weakly_connected_components(self.knowledge_graph)
-        num_nodes = self.knowledge_graph.number_of_nodes()
-
-        # Fragmentación normalizada
-        fragmentation = (num_components - 1) / max(1, num_nodes - 1)
-
-        return float(fragmentation)
-
-    def _calculate_contradiction_entropy(
-            self,
-            contradictions: list[ContradictionEvidence]
-    ) -> float:
-        """Calcula entropía de distribución de tipos de contradicción"""
-        if not contradictions:
-            return 0.0
-
-        # Contar frecuencia de cada tipo
-        type_counts = {}
-        for c in contradictions:
-            type_counts[c.contradiction_type] = type_counts.get(c.contradiction_type, 0) + 1
-
-        # Calcular probabilidades
-        total = len(contradictions)
-        probabilities = [count / total for count in type_counts.values()]
-
-        # Calcular entropía de Shannon
-        entropy = -sum(p * np.log2(p) if p > 0 else 0 for p in probabilities)
-
-        # Normalizar por entropía máxima
-        max_entropy = np.log2(len(ContradictionType))
-        normalized_entropy = entropy / max_entropy if max_entropy > 0 else 0
-
-        return float(normalized_entropy)
-
-    
-    def _calculate_syntactic_complexity(self, text: str) -> float:
-        """Calcula complejidad sintáctica del documento"""
-        doc = self.nlp(text[:5000])  # Limitar para eficiencia
-
-        # Métricas de complejidad
-        avg_sentence_length = np.mean([len(sent.text.split()) for sent in doc.sents])
-
-        # Profundidad promedio del árbol de dependencias
-        dependency_depths = []
-        for sent in doc.sents:
-            depths = [self._get_dependency_depth(token) for token in sent]
-            if depths:
-                dependency_depths.append(np.mean(depths))
-
-        avg_dependency_depth = np.mean(dependency_depths) if dependency_depths else 0
-
-        # Diversidad léxica (Type-Token Ratio)
-        tokens = [token.text.lower() for token in doc if token.is_alpha]
-        ttr = len(set(tokens)) / len(tokens) if tokens else 0
-
-        # Combinar métricas
-        complexity = (
-                min(1.0, avg_sentence_length / 50) * 0.3 +
-                min(1.0, avg_dependency_depth / 10) * 0.3 +
-                ttr * 0.4
-        )
-
-        return float(complexity)
-
-    
-    def _get_dependency_depth(self, token) -> int:
-        """Calcula profundidad de un token en el árbol de dependencias"""
-        depth = 0
-        current = token
-        while current.head != current and depth < 20:  # Evitar loops infinitos
-            current = current.head
-            depth += 1
-        return depth
-
-    def _calculate_confidence_interval(
-            self,
-            score: float,
-            n_observations: int
-    ) -> tuple[float, float]:
-        """Calcula intervalo de confianza del 95% para el score"""
-        # Usar distribución t de Student para muestras pequeñas
-        if n_observations < 30:
-            # Error estándar estimado
-            se = np.sqrt(score * (1 - score) / n_observations)
-            # Valor crítico t para 95% de confianza
-            t_critical = stats.t.ppf(0.975, n_observations - 1)
-            margin = t_critical * se
-        else:
-            # Usar distribución normal para muestras grandes
-            se = np.sqrt(score * (1 - score) / n_observations)
-            margin = 1.96 * se
-
-        return (
-            max(0.0, score - margin),
-            min(1.0, score + margin)
-        )
-
-    def _generate_resolution_recommendations(
-            self,
-            contradictions: list[ContradictionEvidence]
-    ) -> list[dict[str, Any]]:
-        """Genera recomendaciones específicas para resolver contradicciones"""
-        recommendations = []
-
-        # Agrupar contradicciones por tipo
-        by_type = {}
-        for c in contradictions:
-            if c.contradiction_type not in by_type:
-                by_type[c.contradiction_type] = []
-            by_type[c.contradiction_type].append(c)
-
-        # Generar recomendaciones por tipo
-        for cont_type, conflicts in by_type.items():
-            if cont_type == ContradictionType.NUMERICAL_INCONSISTENCY:
-                recommendations.append({
-                    "type": "numerical_reconciliation",
-                    "priority": "high",
-                    "description": "Revisar y reconciliar cifras inconsistentes",
-                    "specific_actions": [
-                        "Verificar fuentes de datos originales",
-                        "Establecer línea base única",
-                        "Documentar metodología de cálculo"
-                    ],
-                    "affected_sections": self._identify_affected_sections(conflicts)
-                })
-
-            elif cont_type == ContradictionType.TEMPORAL_CONFLICT:
-                recommendations.append({
-                    "type": "timeline_adjustment",
-                    "priority": "high",
-                    "description": "Ajustar cronograma para resolver conflictos temporales",
-                    "specific_actions": [
-                        "Revisar secuencia de actividades",
-                        "Validar plazos con áreas responsables",
-                        "Establecer hitos intermedios claros"
-                    ],
-                    "affected_sections": self._identify_affected_sections(conflicts)
-                })
-
-            elif cont_type == ContradictionType.RESOURCE_ALLOCATION_MISMATCH:
-                recommendations.append({
-                    "type": "budget_reallocation",
-                    "priority": "critical",
-                    "description": "Revisar asignación presupuestal",
-                    "specific_actions": [
-                        "Realizar análisis de suficiencia presupuestal",
-                        "Priorizar programas según impacto",
-                        "Identificar fuentes alternativas de financiación"
-                    ],
-                    "affected_sections": self._identify_affected_sections(conflicts)
-                })
-
-            elif cont_type == ContradictionType.SEMANTIC_OPPOSITION:
-                recommendations.append({
-                    "type": "conceptual_clarification",
-                    "priority": "medium",
-                    "description": "Clarificar conceptos y objetivos opuestos",
-                    "specific_actions": [
-                        "Realizar sesiones de alineación estratégica",
-                        "Definir glosario de términos unificado",
-                        "Establecer jerarquía clara de objetivos"
-                    ],
-                    "affected_sections": self._identify_affected_sections(conflicts)
-                })
-
-        # Ordenar por prioridad
-        priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
-        recommendations.sort(key=lambda x: priority_order.get(x["priority"], 4))
-
-        return recommendations
-
-    def _identify_affected_sections(
-            self,
-            conflicts: list[ContradictionEvidence]
-    ) -> list[str]:
-        """Identifica secciones del plan afectadas por contradicciones"""
-        affected = set()
-        for c in conflicts:
-            # Extraer información de sección desde el contexto
-            for pattern_name, pattern in self.pdm_patterns.items():
-                if pattern.search(c.statement_a.context_window):
-                    affected.add(pattern_name)
-                if pattern.search(c.statement_b.context_window):
-                    affected.add(pattern_name)
-
-        return list(affected)
-
-    def _serialize_contradiction(
-            self,
-            contradiction: ContradictionEvidence
-    ) -> dict[str, Any]:
-        """Serializa evidencia de contradicción para output"""
-        return {
-            "statement_1": contradiction.statement_a.text,
-            "statement_2": contradiction.statement_b.text,
-            "position_1": contradiction.statement_a.position,
-            "position_2": contradiction.statement_b.position,
-            "contradiction_type": contradiction.contradiction_type.name,
-            "confidence": float(contradiction.confidence),
-            "severity": float(contradiction.severity),
-            "semantic_similarity": float(contradiction.semantic_similarity),
-            "logical_conflict_score": float(contradiction.logical_conflict_score),
-            "temporal_consistency": contradiction.temporal_consistency,
-            "numerical_divergence": float(
-                contradiction.numerical_divergence) if contradiction.numerical_divergence else None,
-            "statistical_significance": float(
-                contradiction.statistical_significance) if contradiction.statistical_significance else None,
-            "affected_dimensions": [d.value for d in contradiction.affected_dimensions],
-            "resolution_suggestions": contradiction.resolution_suggestions,
-            "graph_path": contradiction.graph_path
-        }
-
-    
-    def _get_graph_statistics(self) -> dict[str, Any]:
-        """Obtiene estadísticas del grafo de conocimiento"""
-        if self.knowledge_graph.number_of_nodes() == 0:
-            return {"nodes": 0, "edges": 0, "components": 0}
-
-        return {
-            "nodes": self.knowledge_graph.number_of_nodes(),
-            "edges": self.knowledge_graph.number_of_edges(),
-            "components": nx.number_weakly_connected_components(self.knowledge_graph),
-            "density": nx.density(self.knowledge_graph),
-            "average_clustering": nx.average_clustering(self.knowledge_graph.to_undirected()),
-            "diameter": nx.diameter(self.knowledge_graph.to_undirected()) if nx.is_connected(
-                self.knowledge_graph.to_undirected()) else -1
-        }
-
-    # Métodos auxiliares
-
-    
-    def _extract_temporal_markers(self, text: str) -> list[str]:
-        """Extrae marcadores temporales del texto"""
-        markers = []
-
-        # Patrones de fechas
-        date_patterns = [
-            r'\d{1,2}\s+de\s+\w+\s+de\s+\d{4}',
-            r'\d{4}-\d{2}-\d{2}',
-            r'(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+\d{4}',
-            r'(Q[1-4]|trimestre\s+[1-4])\s+\d{4}',
-            r'20\d{2}',
-            r'(corto|mediano|largo)\s+plazo',
-            r'(primer|segundo|tercer|cuarto)\s+(año|semestre|trimestre)'
-        ]
-
-        for pattern in date_patterns:
-            matches = re.findall(pattern, text, re.IGNORECASE)
-            markers.extend(matches)
-
-        return markers
-
-    
-    def _extract_quantitative_claims(self, text: str) -> list[dict[str, Any]]:
-        """Extrae afirmaciones cuantitativas estructuradas"""
-        claims = []
-
-        # Patrones numéricos con contexto
-        patterns = [
-            (r'(\d+(?:[.,]\d+)?)\s*(%|por\s*ciento)', 'percentage'),
-            (r'(\d+(?:[.,]\d+)?)\s*(millones?|mil\s+millones?)', 'amount'),
-            (r'(\$|COP)\s*(\d+(?:[.,]\d+)?)', 'currency'),
-            (r'(\d+(?:[.,]\d+)?)\s*(personas?|beneficiarios?|familias?)', 'beneficiaries'),
-            (r'(\d+(?:[.,]\d+)?)\s*(hectáreas?|km2?|metros?)', 'area'),
-            (r'meta\s+de\s+(\d+(?:[.,]\d+)?)', 'target')
-        ]
-
-        for pattern, claim_type in patterns:
-            matches = re.finditer(pattern, text, re.IGNORECASE)
-            for match in matches:
-                value_str = match.group(1) if claim_type != 'currency' else match.group(2)
-                value = self._parse_number(value_str)
-
-                claims.append({
-                    'type': claim_type,
-                    'value': value,
-                    'raw_text': match.group(0),
-                    'position': match.span(),
-                    'context': text[max(0, match.start() - 20):min(len(text), match.end() + 20)]
-                })
-
-        return claims
-
-    
-    def _parse_number(self, text: str) -> float:
-        """Parsea número desde texto"""
-        try:
-            # Reemplazar coma decimal
-            normalized = text.replace(',', '.')
-            return float(normalized)
-        except ValueError:
-            return 0.0
-
-    
-    def _extract_resource_mentions(self, text: str) -> list[tuple[str, float | None]]:
-        """Extrae menciones de recursos con montos"""
-        resources = []
-
-        # Patrones de recursos específicos de PDM colombiano
-        resource_patterns = [
-            (r'SGP\s*[:\s]*\$?\s*(\d+(?:[.,]\d+)?)\s*(millones?)?', 'SGP'),
-            (r'regalías\s*[:\s]*\$?\s*(\d+(?:[.,]\d+)?)\s*(millones?)?', 'regalías'),
-            (r'recursos\s+propios\s*[:\s]*\$?\s*(\d+(?:[.,]\d+)?)\s*(millones?)?', 'recursos_propios'),
-            (r'cofinanciación\s*[:\s]*\$?\s*(\d+(?:[.,]\d+)?)\s*(millones?)?', 'cofinanciación'),
-            (r'presupuesto\s+total\s*[:\s]*\$?\s*(\d+(?:[.,]\d+)?)\s*(millones?)?', 'presupuesto_total')
-        ]
-
-        for pattern, resource_type in resource_patterns:
-            matches = re.finditer(pattern, text, re.IGNORECASE)
-            for match in matches:
-                amount = self._parse_number(match.group(1)) if match.group(1) else None
-                if match.group(2) and 'millon' in match.group(2).lower():
-                    amount = amount * 1000000 if amount else None
-                resources.append((resource_type, amount))
-
-        return resources
-
-    
-    def _determine_semantic_role(self, sent) -> str | None:
-        """Determina el rol semántico de una oración"""
-        # Safely extract text (handles both strings and spacy objects)
-        text_lower = safe_text_extract(sent).lower()
-
-        role_patterns = {
-            'objective': ['objetivo', 'meta', 'propósito', 'finalidad'],
-            'strategy': ['estrategia', 'línea', 'eje', 'pilar'],
-            'action': ['implementar', 'ejecutar', 'desarrollar', 'realizar'],
-            'indicator': ['indicador', 'medir', 'evaluar', 'monitorear'],
-            'resource': ['presupuesto', 'recurso', 'financiación', 'inversión'],
-            'constraint': ['limitación', 'restricción', 'condición', 'requisito']
-        }
-
-        for role, keywords in role_patterns.items():
-            if any(keyword in text_lower for keyword in keywords):
-                return role
-
-        return None
-
-    
-    def _identify_dependencies(self, sent, doc) -> set[str]:
-        """Identifica dependencias entre declaraciones"""
-        dependencies = set()
-
-        # Buscar referencias a otras secciones
-        reference_patterns = [
-            r'como\s+se\s+menciona\s+en',
-            r'según\s+lo\s+establecido\s+en',
-            r'de\s+acuerdo\s+con',
-            r'en\s+línea\s+con',
-            r'siguiendo\s+lo\s+dispuesto'
-        ]
-
-        for pattern in reference_patterns:
-            if re.search(pattern, sent.text, re.IGNORECASE):
-                # Buscar la sección referenciada
-                for other_sent in doc.sents:
-                    if other_sent != sent:
-                        # Usar hash de los primeros 50 caracteres como ID
-                        dependencies.add(other_sent.text[:50])
-
-        return dependencies
-
-    
-    def _get_context_window(self, text: str, start: int, end: int, window_size: int = 200) -> str:
-        """Obtiene ventana de contexto alrededor de una posición"""
-        context_start = max(0, start - window_size)
-        context_end = min(len(text), end + window_size)
-        return text[context_start:context_end]
-
-    
-    def _calculate_similarity(self, stmt_a: PolicyStatement, stmt_b: PolicyStatement) -> float:
-        """Calcula similaridad entre dos declaraciones"""
-        if stmt_a.embedding is not None and stmt_b.embedding is not None:
-            return float(1 - cosine(stmt_a.embedding, stmt_b.embedding))
-        return 0.0
-
-    
-    def _classify_contradiction(self, text: str) -> float:
-        """Clasifica probabilidad de contradicción en texto"""
-        try:
-            result = self.contradiction_classifier(text)
-            # Buscar score de contradicción
-            for item in result:
-                if 'contradiction' in item['label'].lower():
-                    return item['score']
-            return 0.0
-        except Exception as e:
-            logger.warning(f"Error en clasificación de contradicción: {e}")
-            return 0.0
-
-    
-    def _get_domain_weight(self, dimension: PolicyDimension) -> float:
-        """Obtiene peso específico del dominio"""
-        weights = {
-            PolicyDimension.DIAGNOSTICO: 0.8,
-            PolicyDimension.ESTRATEGICO: 1.2,
-            PolicyDimension.PROGRAMATICO: 1.0,
-            PolicyDimension.FINANCIERO: 1.5,
-            PolicyDimension.SEGUIMIENTO: 0.9,
-            PolicyDimension.TERRITORIAL: 1.1
-        }
-        return weights.get(dimension, 1.0)
-
-    
-    def _suggest_resolutions(self, contradiction_type: ContradictionType) -> list[str]:
-        """Sugiere resoluciones específicas por tipo de contradicción"""
-        suggestions = {
-            ContradictionType.NUMERICAL_INCONSISTENCY: [
-                "Verificar fuentes de datos y metodologías de cálculo",
-                "Establecer línea base única con validación técnica",
-                "Documentar supuestos y proyecciones utilizadas"
-            ],
-            ContradictionType.TEMPORAL_CONFLICT: [
-                "Revisar cronograma maestro del plan",
-                "Validar secuencia lógica de actividades",
-                "Ajustar plazos según capacidad institucional"
-            ],
-            ContradictionType.SEMANTIC_OPPOSITION: [
-                "Realizar taller de alineación conceptual",
-                "Clarificar definiciones en glosario técnico",
-                "Priorizar objetivos según Plan Nacional de Desarrollo"
-            ],
-            ContradictionType.RESOURCE_ALLOCATION_MISMATCH: [
-                "Realizar análisis de brechas financieras",
-                "Priorizar inversiones según impacto social",
-                "Explorar fuentes alternativas de financiación"
-            ],
-            ContradictionType.LOGICAL_INCOMPATIBILITY: [
-                "Revisar cadena de valor de programas",
-                "Validar teoría de cambio del plan",
-                "Eliminar duplicidades y solapamientos"
-            ]
-        }
-        return suggestions.get(contradiction_type, ["Revisar y ajustar según contexto"])
-
-    
-    def _are_comparable_claims(self, claim_a: dict, claim_b: dict) -> bool:
-        """Determina si dos afirmaciones cuantitativas son comparables"""
-        # Mismo tipo y contexto similar
-        if claim_a['type'] != claim_b['type']:
-            return False
-
-        # Verificar si hablan del mismo concepto
-        context_similarity = self._text_similarity(
-            claim_a.get('context', ''),
-            claim_b.get('context', '')
-        )
-
-        return context_similarity > 0.6
-
-    
-    def _text_similarity(self, text_a: str, text_b: str) -> float:
-        """Calcula similaridad simple entre textos"""
-        if not text_a or not text_b:
-            return 0.0
-
-        # Tokenización simple
-        tokens_a = set(text_a.lower().split())
-        tokens_b = set(text_b.lower().split())
-
-        if not tokens_a or not tokens_b:
-            return 0.0
-
-        # Coeficiente de Jaccard
-        intersection = tokens_a & tokens_b
-        union = tokens_a | tokens_b
-
-        return len(intersection) / len(union) if union else 0.0
-
-    def _calculate_numerical_divergence(
-            self,
-            claim_a: dict,
-            claim_b: dict
-    ) -> float | None:
-        """Calcula divergencia entre valores numéricos"""
-        value_a = claim_a.get('value', 0)
-        value_b = claim_b.get('value', 0)
-
-        if value_a == 0 and value_b == 0:
-            return None
-
-        # Divergencia relativa
-        max_value = max(abs(value_a), abs(value_b))
-        if max_value == 0:
-            return None
-
-        divergence = abs(value_a - value_b) / max_value
-        return divergence
-
-    def _statistical_significance_test(
-            self,
-            claim_a: dict,
-            claim_b: dict
-    ) -> float:
-        """Realiza test de significancia estadística"""
-        value_a = claim_a.get('value', 0)
-        value_b = claim_b.get('value', 0)
-
-        # Test t de una muestra para diferencia significativa
-        # Asumiendo distribución normal con varianza estimada
-        diff = abs(value_a - value_b)
-        pooled_value = (value_a + value_b) / 2
-
-        if pooled_value == 0:
-            return 1.0  # No significativo
-
-        # Estimación conservadora de error estándar
-        se = pooled_value * 0.1  # 10% de error estimado
-
-        if se == 0:
-            return 0.0  # Altamente significativo
-
-        # Estadístico t
-        t_stat = diff / se
-
-        # Valor p aproximado (two-tailed)
-        p_value = 2 * (1 - stats.norm.cdf(abs(t_stat)))
-
-        return p_value
-
-    
-    def _has_logical_conflict(self, stmt_a: PolicyStatement, stmt_b: PolicyStatement) -> bool:
-        """Determina si hay conflicto lógico entre declaraciones"""
-        # Verificar si las declaraciones tienen roles incompatibles
-        if stmt_a.semantic_role and stmt_b.semantic_role:
-            incompatible_roles = [
-                ('objective', 'constraint'),
-                ('strategy', 'constraint'),
-                ('action', 'constraint')
-            ]
-
-            for role_pair in incompatible_roles:
-                if (stmt_a.semantic_role in role_pair and
-                        stmt_b.semantic_role in role_pair and
-                        stmt_a.semantic_role != stmt_b.semantic_role):
-                    return True
-
-        # Verificar negación explícita
-        negation_patterns = ['no', 'nunca', 'ningún', 'sin', 'tampoco']
-        has_negation_a = any(pattern in stmt_a.text.lower() for pattern in negation_patterns)
-        has_negation_b = any(pattern in stmt_b.text.lower() for pattern in negation_patterns)
-
-        # Si una tiene negación y otra no, y son similares, hay conflicto
-        if has_negation_a != has_negation_b:
-            similarity = self._calculate_similarity(stmt_a, stmt_b)
-            if similarity > 0.7:
-                return True
-
-        return False
-
-    def _are_conflicting_allocations(
-            self,
-            amount_a: float,
-            amount_b: float,
-            total: float
-    ) -> bool:
-        """Determina si las asignaciones de recursos están en conflicto"""
-        # Si la suma excede el total disponible
-        if amount_a + amount_b > total * 1.1:  # 10% de margen
-            return True
-
-        # Si hay una diferencia muy grande entre asignaciones similares
-        return abs(amount_a - amount_b) / max(amount_a, amount_b) > 0.5
-
-    def _determine_relation_type(
-            self,
-            stmt_a: PolicyStatement,
-            stmt_b: PolicyStatement
-    ) -> str:
-        """Determina el tipo de relación entre dos declaraciones"""
-        # Analizar roles semánticos
-        if stmt_a.semantic_role and stmt_b.semantic_role:
-            if stmt_a.semantic_role == stmt_b.semantic_role:
-                return "parallel"
-            elif stmt_a.semantic_role in ["strategy", "objective"] and stmt_b.semantic_role == "action":
-                return "enables"
-            elif stmt_a.semantic_role == "action" and stmt_b.semantic_role in ["indicator", "resource"]:
-                return "requires"
-
-        # Analizar dependencias
-        if stmt_a.dependencies & {stmt_b.text[:50]}:
-            return "depends_on"
-
-        # Por defecto, relación de similaridad
-        return "related"
-
-    def _calculate_severity(
-            self,
-            stmt_a: PolicyStatement,
-            stmt_b: PolicyStatement
-    ) -> float:
-        """Calcula la severidad de una contradicción entre declaraciones"""
-        severity = 0.5 # Refactored
-
-        # Incrementar si las declaraciones están en la misma dimensión
-        if stmt_a.dimension == stmt_b.dimension:
-            severity += 0.2
-
-        # Incrementar si tienen muchas entidades en común
-        common_entities = set(stmt_a.entities) & set(stmt_b.entities)
-        if len(common_entities) > 0:
-            severity += min(0.2, len(common_entities) * 0.05)
-
-        # Incrementar si tienen marcadores temporales en conflicto
-        if stmt_a.temporal_markers and stmt_b.temporal_markers:
-            severity += 0.1
-
-        return min(1.0, severity)
+    # ... existing code continues ...

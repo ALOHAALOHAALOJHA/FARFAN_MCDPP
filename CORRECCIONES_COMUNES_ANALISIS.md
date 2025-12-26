@@ -313,3 +313,4 @@
 
 **Criterio de éxito:** Reducir errores críticos en ≥80% de los contratos antes de correcciones específicas.
 
+

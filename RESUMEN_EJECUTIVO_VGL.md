@@ -125,3 +125,4 @@ El VGL asegura que las correcciones masivas:
 - ✅ Mantengan trazabilidad completa
 - ✅ Preserven puntos de reentrada para debate experto
 
+

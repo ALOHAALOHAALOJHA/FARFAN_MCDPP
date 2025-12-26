@@ -1,0 +1,260 @@
+{
+  "summary": {
+    "total_relevant": 16,
+    "by_level": {
+      "N1": 11,
+      "N2": 1,
+      "N3": 4
+    },
+    "top_scoring": [
+      {
+        "method": "OperationalizationAuditor.audit_evidence_traceability",
+        "d1q1_score": 0.387,
+        "level": "N3",
+        "file": "src/farfan_pipeline/methods/derek_beach.py"
+      },
+      {
+        "method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+        "d1q1_score": 0.35,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py"
+      },
+      {
+        "method": "PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency",
+        "d1q1_score": 0.275,
+        "level": "N3",
+        "file": "src/farfan_pipeline/methods/embedding_policy.py"
+      },
+      {
+        "method": "PolicyContradictionDetector._extract_quantitative_claims",
+        "d1q1_score": 0.262,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py"
+      },
+      {
+        "method": "PolicyAnalysisEmbedder._extract_numerical_values",
+        "d1q1_score": 0.262,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/embedding_policy.py"
+      },
+      {
+        "method": "PolicyContradictionDetector._extract_temporal_markers",
+        "d1q1_score": 0.2,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py"
+      },
+      {
+        "method": "TemporalLogicVerifier._parse_temporal_marker",
+        "d1q1_score": 0.2,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py"
+      },
+      {
+        "method": "FinancialAuditor._parse_amount",
+        "d1q1_score": 0.175,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/derek_beach.py"
+      },
+      {
+        "method": "CDAFFramework._generate_extraction_report",
+        "d1q1_score": 0.175,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/derek_beach.py"
+      },
+      {
+        "method": "FinancialAuditor._calculate_sufficiency",
+        "d1q1_score": 0.175,
+        "level": "N3",
+        "file": "src/farfan_pipeline/methods/derek_beach.py"
+      },
+      {
+        "method": "PolicyContradictionDetector._parse_number",
+        "d1q1_score": 0.175,
+        "level": "N3",
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py"
+      },
+      {
+        "method": "ReconciliationValidator.validate_period",
+        "d1q1_score": 0.163,
+        "level": "N2",
+        "file": "src/farfan_pipeline/methods/bayesian_multilevel_system.py"
+      },
+      {
+        "method": "PolicyContradictionDetector._extract_resource_mentions",
+        "d1q1_score": 0.15,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py"
+      },
+      {
+        "method": "TemporalLogicVerifier._build_timeline",
+        "d1q1_score": 0.15,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py"
+      },
+      {
+        "method": "CDAFFramework._validate_dnp_compliance",
+        "d1q1_score": 0.15,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/derek_beach.py"
+      },
+      {
+        "method": "SemanticProcessor.chunk_text",
+        "d1q1_score": 0.138,
+        "level": "N1",
+        "file": "src/farfan_pipeline/methods/semantic_chunking_policy.py"
+      }
+    ]
+  },
+  "methods_by_level": {
+    "N1": [
+      {
+        "method": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+        "d1q1_score": 0.35,
+        "confidence": 0.433,
+        "n1_score": 0.433,
+        "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+        "line_range": "650-695",
+        "docstring": ""
+      },
+      {
+        "method": "PolicyContradictionDetector._extract_quantitative_claims",
+        "d1q1_score": 0.262,
+        "confidence": 0.417,
+        "n1_score": 0.417,
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+        "line_range": "1187-1215",
+        "docstring": "Extrae afirmaciones cuantitativas estructuradas"
+      },
+      {
+        "method": "PolicyAnalysisEmbedder._extract_numerical_values",
+        "d1q1_score": 0.262,
+        "confidence": 0.383,
+        "n1_score": 0.383,
+        "file": "src/farfan_pipeline/methods/embedding_policy.py",
+        "line_range": "1466-1518",
+        "docstring": "Extract numerical values using patterns loaded from JSON."
+      },
+      {
+        "method": "PolicyContradictionDetector._extract_temporal_markers",
+        "d1q1_score": 0.2,
+        "confidence": 0.4,
+        "n1_score": 0.4,
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+        "line_range": "1165-1184",
+        "docstring": "Extrae marcadores temporales del texto"
+      },
+      {
+        "method": "TemporalLogicVerifier._parse_temporal_marker",
+        "d1q1_score": 0.2,
+        "confidence": 0.3,
+        "n1_score": 0.3,
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+        "line_range": "229-254",
+        "docstring": "Parse temporal marker to numeric timestamp.\n\nImplements Colombian policy document temporal format parsing.\n\nArgs:\n    marker: Temporal marker string (..."
+      },
+      {
+        "method": "FinancialAuditor._parse_amount",
+        "d1q1_score": 0.175,
+        "confidence": 0.1,
+        "n1_score": 0.1,
+        "file": "src/farfan_pipeline/methods/derek_beach.py",
+        "line_range": "3415-3428",
+        "docstring": "Parse monetary amount from various formats"
+      },
+      {
+        "method": "CDAFFramework._generate_extraction_report",
+        "d1q1_score": 0.175,
+        "confidence": 0.1,
+        "n1_score": 0.1,
+        "file": "src/farfan_pipeline/methods/derek_beach.py",
+        "line_range": "6484-6532",
+        "docstring": "Generate extraction confidence report.\n\nArgs:\n    nodes: Dictionary of nodes\n    graph: Causal graph\n    policy_code: Policy code"
+      },
+      {
+        "method": "PolicyContradictionDetector._extract_resource_mentions",
+        "d1q1_score": 0.15,
+        "confidence": 0.483,
+        "n1_score": 0.483,
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+        "line_range": "1228-1249",
+        "docstring": "Extrae menciones de recursos con montos"
+      },
+      {
+        "method": "TemporalLogicVerifier._build_timeline",
+        "d1q1_score": 0.15,
+        "confidence": 0.4,
+        "n1_score": 0.4,
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+        "line_range": "204-226",
+        "docstring": "Build timeline from policy statements.\n\nExtracts temporal markers and organizes them chronologically.\n\nArgs:\n    statements: List of policy statements..."
+      },
+      {
+        "method": "CDAFFramework._validate_dnp_compliance",
+        "d1q1_score": 0.15,
+        "confidence": 0.2,
+        "n1_score": 0.2,
+        "file": "src/farfan_pipeline/methods/derek_beach.py",
+        "line_range": "6159-6233",
+        "docstring": "Validate DNP compliance for all nodes/projects\nGenerates DNP compliance report"
+      },
+      {
+        "method": "SemanticProcessor.chunk_text",
+        "d1q1_score": 0.138,
+        "confidence": 0.367,
+        "n1_score": 0.367,
+        "file": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+        "line_range": "188-230",
+        "docstring": "Policy-aware semantic chunking:\n- Respects section boundaries (numbered lists, headers)\n- Maintains table integrity\n- Preserves reference links betwee..."
+      }
+    ],
+    "N2": [
+      {
+        "method": "ReconciliationValidator.validate_period",
+        "d1q1_score": 0.163,
+        "confidence": 0.2,
+        "n2_score": 0.2,
+        "file": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+        "line_range": "156-172",
+        "docstring": "Validate temporal period matches expected period"
+      }
+    ],
+    "N3": [
+      {
+        "method": "OperationalizationAuditor.audit_evidence_traceability",
+        "d1q1_score": 0.387,
+        "confidence": 0.32,
+        "n3_score": 0.32,
+        "file": "src/farfan_pipeline/methods/derek_beach.py",
+        "line_range": "3687-3815",
+        "docstring": "Audit evidence traceability for all nodes\n\nEnhanced with D3-Q1 Ficha Técnica validation:\n- Cross-checks baseline/target against extracted quantitative..."
+      },
+      {
+        "method": "PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency",
+        "d1q1_score": 0.275,
+        "confidence": 0.12,
+        "n3_score": 0.12,
+        "file": "src/farfan_pipeline/methods/embedding_policy.py",
+        "line_range": "1136-1186",
+        "docstring": "Bayesian evaluation of numerical consistency for policy metric.\n\nExtracts numerical values from chunks matching policy×dimension context,\nperforms rig..."
+      },
+      {
+        "method": "FinancialAuditor._calculate_sufficiency",
+        "d1q1_score": 0.175,
+        "confidence": 0.06,
+        "n3_score": 0.06,
+        "file": "src/farfan_pipeline/methods/derek_beach.py",
+        "line_range": "3578-3597",
+        "docstring": "Calculate if financial allocation is sufficient for target.\n\nArgs:\n    allocation: Financial allocation amount\n    target: Target value\n\nReturns:\n    ..."
+      },
+      {
+        "method": "PolicyContradictionDetector._parse_number",
+        "d1q1_score": 0.175,
+        "confidence": 0.06,
+        "n3_score": 0.06,
+        "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+        "line_range": "1218-1225",
+        "docstring": "Parsea número desde texto"
+      }
+    ]
+  }
+}
