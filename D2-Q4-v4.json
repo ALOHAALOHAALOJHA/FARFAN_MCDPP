@@ -44,14 +44,26 @@
     "method_count": 8,
     "execution_phases": {
       "phase_A_construction": {
-        "description": "Empirical observation layer - direct signal consumption",
+        "description": "Empirical observation layer - financial data extraction",
         "level": "N1",
         "level_name": "Base Empírica",
         "epistemology": "Empirismo positivista",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_financial_amounts",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.extract_financial_amounts",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae montos financieros del texto como observación directa",
+            "requires": [],
+            "classification_rationale": "Extrae montos directamente del documento sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          }
+        ],
         "dependencies": [],
-        "output_target": "raw_facts",
-        "note": "This contract consumes PreprocesadoMetadata directly in N2 phase - no N1 extraction needed"
+        "output_target": "raw_facts"
       },
       "phase_B_computation": {
         "description": "Inferential analysis layer - Bayesian risk analysis and sensitivity testing",
@@ -69,7 +81,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Infiere riesgos financieros usando análisis bayesiano",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "risk_posterior_probabilities"
@@ -85,12 +97,12 @@
             "fusion_behavior": "multiplicative",
             "description": "Analiza sensibilidad de parámetros financieros",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "sensitivity_scores"
             ]
-          },
+          
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
             "method_name": "_compute_robustness_value",
@@ -101,7 +113,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Computa valor de robustez de estimaciones financieras",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "robustness_scores"
@@ -117,7 +129,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Computa E-value para análisis de sensibilidad",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "e_value_scores"
@@ -133,7 +145,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Audita riesgo sistémico computando métricas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "systemic_risk_scores"
@@ -149,7 +161,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Agrega y prioriza riesgos identificados",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "aggregated_risk_scores"
@@ -165,7 +177,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Analiza sensibilidad de priors bayesianos",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "prior_sensitivity_scores"
@@ -173,7 +185,7 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata"
+          "phase_A_construction"
         ],
         "output_target": "inferred_parameters"
       },
