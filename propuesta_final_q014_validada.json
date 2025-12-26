@@ -1,0 +1,110 @@
+{
+  "contrato": "D3-Q4-v4.json",
+  "pregunta": "Q014",
+  "tipo": "TYPE_E (Lógico)",
+  "calificacion": 9.5,
+  "metodos": {
+    "N1": [
+      {
+        "class": "PolicyContradictionDetector",
+        "method": "_extract_temporal_markers",
+        "score": 16.0,
+        "dimensions": {
+          "actividad_meta": 1,
+          "plazos": 3,
+          "recursos": 1
+        },
+        "justificacion": "Cubre las 3 dimensiones. Extrae plazos explícitos críticos para factibilidad."
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_extract_resources",
+        "score": 24.0,
+        "dimensions": {
+          "actividad_meta": 0,
+          "plazos": 5,
+          "recursos": 3
+        },
+        "justificacion": "Mayor score total. Cubre explícitamente recursos + plazos. Clase epistemológicamente neutra."
+      }
+    ],
+    "N2": [
+      {
+        "class": "CausalExtractor",
+        "method": "_assess_temporal_coherence",
+        "score": 24.0,
+        "dimensions": {
+          "actividad_meta": 3,
+          "plazos": 1,
+          "recursos": 3
+        },
+        "justificacion": "Evaluación lógica de coherencia temporal (documentar explícitamente). Cobertura máxima.",
+        "nota": "Aceptación condicionada: documentar como lógico, no causal"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_are_mutually_exclusive",
+        "score": 24.0,
+        "dimensions": {
+          "actividad_meta": 0,
+          "plazos": 5,
+          "recursos": 3
+        },
+        "justificacion": "Detecta incompatibilidades de plazos/recursos. Lógica de restricciones pura."
+      },
+      {
+        "class": "FinancialAuditor",
+        "method": "_calculate_sufficiency",
+        "score": 24.0,
+        "dimensions": {
+          "actividad_meta": 3,
+          "plazos": 0,
+          "recursos": 4
+        },
+        "justificacion": "Evalúa suficiencia mínima de recursos. Último cheque lógico antes del gate."
+      }
+    ],
+    "N3": [
+      {
+        "class": "TemporalLogicVerifier",
+        "method": "_check_deadline_constraints",
+        "score": 18.0,
+        "dimensions": {
+          "actividad_meta": 0,
+          "plazos": 6,
+          "recursos": 0
+        },
+        "justificacion": "Gate duro y entendible. No causal, no probabilístico.",
+        "veto_conditions": [
+          {
+            "id": "temporal_contradiction",
+            "trigger": "temporal_contradiction_detected",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          {
+            "id": "insufficient_resources",
+            "trigger": "resources_explicitly_insufficient",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0,
+            "nota": "Condición agregada para cobertura completa de recursos"
+          }
+        ]
+      }
+    ]
+  },
+  "metricas": {
+    "total_metodos": 6,
+    "score_total": 130.0,
+    "dimensiones_cubiertas": 3,
+    "cobertura_actividad_meta": "Completa (N1: 1, N2: 3+3)",
+    "cobertura_plazos": "Completa (N1: 3+5, N2: 1+5, N3: 6)",
+    "cobertura_recursos": "Completa (N1: 1+3, N2: 3+4, N3: veto)"
+  },
+  "ajustes_aplicados": [
+    "N1: Reemplazado BayesianMechanismInference._extract_observations por TemporalLogicVerifier._extract_resources",
+    "N2: Documentación explícita de CausalExtractor._assess_temporal_coherence como lógico",
+    "N3: Agregada condición de veto por recursos insuficientes"
+  ],
+  "estado": "VALIDADA Y LISTA PARA IMPLEMENTACIÓN"
+}

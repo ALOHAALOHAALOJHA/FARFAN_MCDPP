@@ -1,8 +1,21 @@
 {
-  "contract_metadata": {
-    "contract_id": "D3-Q3-v4",
-    "base_question_id": "Q013",
-    "policy_area_expansion": [
+  "identity": {
+    "base_slot": "D3-Q3",
+    "representative_question_id": "Q013",
+    "dimension_id": "DIM03",
+    "policy_area_ids_served": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "contracts_served": [
       "Q013",
       "Q043",
       "Q073",
@@ -14,42 +27,48 @@
       "Q253",
       "Q283"
     ],
-    "version": "4.0.0",
-    "created_at": "2025-12-22T20:00:00Z",
-    "author": "F.A.R.F.A.N Epistemological Framework Generator",
-    "status": "active"
-  },
-  "identity": {
-    "name": "Semantic Coherence and Responsibility Analysis Contract",
     "contract_type": "TYPE_A",
-    "primary_strategy": "dempster_shafer",
-    "epistemic_commitment": "Falsificationist with semantic triangulation",
-    "scope": "Assess semantic coherence, narrative alignment, and entity responsibility through NLP with vectorization audit",
-    "purpose": "Evaluate semantic quality and coherence of policy documents through multi-method semantic analysis with audit oversight"
+    "contract_type_name": "Semántico",
+    "contract_type_focus": "Análisis de coherencia semántica y responsabilidad de entidades mediante NLP",
+    "contract_version": "4.0.0-epistemological",
+    "created_at": "2025-12-22T20:00:00Z",
+    "specification_source": "guia_diligenciamiento_contratos_v4.md"
   },
   "executor_binding": {
-    "executor_class": "MethodPipelineExecutor",
-    "executor_module": "farfan_core.core.executor_framework",
-    "execution_mode": "epistemological_pipeline",
-    "parallelization": {
-      "phase_A": true,
-      "phase_B": true,
-      "phase_C": false
-    }
+    "executor_class": "D3_Q3_Executor",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors"
   },
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_A",
-    "method_count": 17,
+    "method_count": 18,
     "execution_phases": {
       "phase_A_construction": {
-        "level": "N1-EMP",
+        "level": "N1",
         "output_type": "FACT",
         "fusion_behavior": "additive",
-        "methods": []
+        "methods": [
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_extract_semantic_segments",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer.extract_semantic_segments",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae segmentos semánticos del texto como observación directa",
+            "requires": [],
+            "classification_rationale": "Extrae segmentos semánticos directamente del documento sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          }
+        ],
+        "description": "Empirical observation layer - semantic data extraction",
+        "level_name": "Base Empírica",
+        "epistemology": "Empirismo positivista",
+        "dependencies": [],
+        "output_target": "raw_facts"
       },
       "phase_B_computation": {
-        "level": "N2-INF",
+        "level": "N2",
         "output_type": "PARAMETER",
         "fusion_behavior": "weighted_combination",
         "methods": [
@@ -60,9 +79,14 @@
             "provides": "financialauditor_matchprogramtonode",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Match programs to semantic nodes",
-            "requires": []
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y relaciona programas con nodos semánticos mediante matching semántico",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_matches"
+            ]
           },
           {
             "class_name": "FinancialAuditor",
@@ -71,10 +95,13 @@
             "provides": "financialauditor_matchgoaltobudget",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Match goals to budget allocations semantically",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y relaciona objetivos con asignaciones mediante matching semántico de términos presupuestarios",
             "requires": [
-              "financialauditor_matchprogramtonode"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_matches"
             ]
           },
           {
@@ -84,9 +111,14 @@
             "provides": "pdetmunicipalplananalyzer_consolidateentities",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Consolidate identified entities semantically",
-            "requires": []
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y consolidate identified entities semantically",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "entity_consolidations"
+            ]
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
@@ -95,10 +127,13 @@
             "provides": "pdetmunicipalplananalyzer_identifyresponsibleentities",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Identify entities responsible for policy implementation",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y identify entities responsible for policy implementation",
             "requires": [
-              "pdetmunicipalplananalyzer_consolidateentities"
+              "raw_facts"
+            ],
+            "modifies": [
+              "entity_identifications"
             ]
           },
           {
@@ -108,10 +143,13 @@
             "provides": "pdetmunicipalplananalyzer_scoreresponsibilityclarity",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Score clarity of responsibility assignments",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y score clarity of responsibility assignments",
             "requires": [
-              "pdetmunicipalplananalyzer_identifyresponsibleentities"
+              "raw_facts"
+            ],
+            "modifies": [
+              "responsibility_scores"
             ]
           },
           {
@@ -121,10 +159,13 @@
             "provides": "policyanalysisembedder_processdocument",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Process document to generate semantic embeddings",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y process document to generate semantic embeddings",
             "requires": [
-              "semanticanalyzer_emptysemanticcube"
+              "raw_facts"
+            ],
+            "modifies": [
+              "document_embeddings"
             ]
           },
           {
@@ -134,10 +175,13 @@
             "provides": "policyanalysisembedder_semanticsearch",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Perform semantic search on embedded documents",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y realiza búsqueda semántica en documentos embebidos",
             "requires": [
-              "policyanalysisembedder_processdocument"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_parameters"
             ]
           },
           {
@@ -147,10 +191,13 @@
             "provides": "policyanalysisembedder_applymmr",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Apply maximal marginal relevance to semantic results",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y aplica relevancia marginal máxima a resultados semánticos",
             "requires": [
-              "policyanalysisembedder_semanticsearch"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_parameters"
             ]
           },
           {
@@ -160,10 +207,13 @@
             "provides": "semanticanalyzer_classifypolicydomain",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Classify policy domain semantically",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y clasifica dominio de política semánticamente",
             "requires": [
-              "semanticanalyzer_emptysemanticcube"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_classifications"
             ]
           },
           {
@@ -173,10 +223,13 @@
             "provides": "semanticanalyzer_classifycrosscuttingthemes",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Classify cross-cutting thematic elements",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y clasifica elementos temáticos transversales",
             "requires": [
-              "semanticanalyzer_classifypolicydomain"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_classifications"
             ]
           },
           {
@@ -186,10 +239,13 @@
             "provides": "semanticanalyzer_classifyvaluechainlink",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Classify value chain linkages semantically",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y clasifica enlaces de cadena de valor semánticamente",
             "requires": [
-              "semanticanalyzer_classifycrosscuttingthemes"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_classifications"
             ]
           },
           {
@@ -199,10 +255,13 @@
             "provides": "semanticanalyzer_processsegment",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Process semantic text segments",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y process semantic text segments",
             "requires": [
-              "semanticanalyzer_classifyvaluechainlink"
+              "raw_facts"
+            ],
+            "modifies": [
+              "document_embeddings"
             ]
           },
           {
@@ -212,10 +271,13 @@
             "provides": "semanticanalyzer_calculatesemanticcomplexity",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Calculate semantic complexity metrics",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y calculate semantic complexity metrics",
             "requires": [
-              "semanticanalyzer_processsegment"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_calculations"
             ]
           },
           {
@@ -225,10 +287,13 @@
             "provides": "industrialpolicyprocessor_computeevidenceconfidence",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Compute confidence scores for semantic evidence",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y compute confidence scores for semantic evidence",
             "requires": [
-              "policyanalysisembedder_applymmr"
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_computations"
             ]
           },
           {
@@ -238,16 +303,26 @@
             "provides": "adaptivepriorcalculator_generatetraceabilityrecord",
             "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior": "weighted_combination",
-            "description": "Generate traceability records for semantic analysis",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y genera registros de trazabilidad para análisis semántico",
             "requires": [
-              "semanticanalyzer_calculatesemanticcomplexity"
+              "raw_facts"
+            ],
+            "modifies": [
+              "traceability_records"
             ]
           }
-        ]
+        ],
+        "description": "Inferential analysis layer - semantic inference",
+        "level_name": "Procesamiento Inferencial",
+        "epistemology": "Bayesianismo subjetivista",
+        "dependencies": [
+          "phase_A_construction"
+        ],
+        "output_target": "inferred_parameters"
       },
       "phase_C_litigation": {
-        "level": "N3-AUD",
+        "level": "N3",
         "output_type": "CONSTRAINT",
         "fusion_behavior": "veto_gate",
         "methods": [
@@ -258,17 +333,40 @@
             "provides": "pdetmunicipalplananalyzer_extractfromresponsibilitytables",
             "level": "N3-AUD",
             "output_type": "CONSTRAINT",
-            "fusion_behavior": "veto_gate",
+            "fusion_behavior": "gate",
             "description": "Audit extraction from responsibility tables - can veto if incomplete",
             "requires": [
-              "pdetmunicipalplananalyzer_scoreresponsibilityclarity"
+              "raw_facts",
+              "inferred_parameters"
             ],
             "veto_conditions": {
-              "trigger": "responsibility_extraction_incomplete",
-              "threshold": 0.7,
-              "consequence": "block_responsibility_findings_if_extraction_failed",
-              "rationale": "Incomplete responsibility extraction cannot support accountability analysis",
-              "override_possible": false
+              "quality_below_threshold": {
+                "trigger": "semantic_quality_below_threshold",
+                "action": "block_branch",
+                "scope": "low_quality_semantic_analysis",
+                "confidence_multiplier": 0.0
+              },
+              "incomplete_extraction": {
+                "trigger": "semantic_extraction_incomplete",
+                "action": "invalidate_graph",
+                "scope": "incomplete_semantic_data",
+                "confidence_multiplier": 0.0
+              }
+            },
+            "classification_rationale": "Valida calidad semántica aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)",
+            "gate_logic": {
+              "quality_below_threshold": {
+                "trigger": "semantic_quality_below_threshold",
+                "action": "block_branch",
+                "scope": "low_quality_semantic_analysis",
+                "confidence_multiplier": 0.0
+              },
+              "incomplete_extraction": {
+                "trigger": "semantic_extraction_incomplete",
+                "action": "invalidate_graph",
+                "scope": "incomplete_semantic_data",
+                "confidence_multiplier": 0.0
+              }
             }
           },
           {
@@ -278,71 +376,118 @@
             "provides": "semanticanalyzer_vectorizesegments",
             "level": "N3-AUD",
             "output_type": "CONSTRAINT",
-            "fusion_behavior": "veto_gate",
+            "fusion_behavior": "gate",
             "description": "Audit semantic vectorization quality - can veto low-quality embeddings",
             "requires": [
-              "semanticanalyzer_processsegment",
-              "policyanalysisembedder_processdocument"
+              "raw_facts",
+              "inferred_parameters"
             ],
             "veto_conditions": {
-              "trigger": "vectorization_quality_below_threshold",
-              "threshold": 0.65,
-              "consequence": "block_semantic_findings_if_embeddings_unreliable",
-              "rationale": "Low-quality semantic vectors cannot support reliable semantic analysis",
-              "override_possible": false
+              "quality_below_threshold": {
+                "trigger": "semantic_quality_below_threshold",
+                "action": "block_branch",
+                "scope": "low_quality_semantic_analysis",
+                "confidence_multiplier": 0.0
+              },
+              "incomplete_extraction": {
+                "trigger": "semantic_extraction_incomplete",
+                "action": "invalidate_graph",
+                "scope": "incomplete_semantic_data",
+                "confidence_multiplier": 0.0
+              }
+            },
+            "classification_rationale": "Valida calidad semántica aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)",
+            "gate_logic": {
+              "quality_below_threshold": {
+                "trigger": "semantic_quality_below_threshold",
+                "action": "block_branch",
+                "scope": "low_quality_semantic_analysis",
+                "confidence_multiplier": 0.0
+              },
+              "incomplete_extraction": {
+                "trigger": "semantic_extraction_incomplete",
+                "action": "invalidate_graph",
+                "scope": "incomplete_semantic_data",
+                "confidence_multiplier": 0.0
+              }
             }
           }
-        ]
+        ],
+        "description": "Audit layer - semantic quality validation with veto power",
+        "level_name": "Auditoría y Robustez",
+        "epistemology": "Falsacionismo popperiano",
+        "dependencies": [
+          "phase_A_construction",
+          "phase_B_computation"
+        ],
+        "output_target": "validated_constraints",
+        "asymmetry_principle": "ASIMETRÍA EXPLÍCITA: N3 can invalidate resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae datos semánticos y N2 realiza inferencia semántica, N3 aplica criterios de falsación popperiana. CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa"
       }
-    },
-    "layer_dependencies": {
-      "N2_consumes_N1": true,
-      "N3_audits_N2": true,
-      "N3_can_veto_N1_and_N2": true
     },
     "notes": "TYPE_A contract with 0 N1, 15 N2, 2 N3 methods (17 total). Excludes 4 L4 synthesis methods per guide. SOURCE DATA ERROR CORRECTED: Removed _empty_semantic_cube (private fallback method that returns empty dict when no segments - not a legitimate analytical capability). N2 consumes PreprocesadoMetadata directly. Semantic vectorization and responsibility extraction audits have veto capability."
   },
   "question_context": {
     "monolith_ref": "Q013",
-    "dimension_primary": "Semantic Coherence",
-    "dimension_secondary": "Entity Responsibility",
-    "epistemic_role": "Assess semantic quality, narrative alignment, and entity accountability",
-    "human_readable_question": "Is the policy document semantically coherent and are responsible entities clearly identified?"
-  },
-  "signal_requirements": {
-    "input_contract": {
-      "requires": [
-        "PreprocesadoMetadata"
+    "overrides": null,
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_semantic_data"
       ],
-      "optional": [
-        "SemanticEmbeddings",
-        "ResponsibilityTables"
-      ],
-      "format": "structured_json"
-    },
-    "preprocessing_dependencies": [
-      "text_extraction",
-      "entity_recognition",
-      "table_extraction"
-    ]
+      "emit_code": "ABORT-D3-Q3-REQ"
+    }
   },
   "evidence_assembly": {
+    "engine": "EVIDENCE_NEXUS",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
     "type_system": {
-      "N1_facts": "additive_union",
-      "N2_parameters": "weighted_combination",
-      "N3_constraints": "conjunctive_filtering"
+      "FACT": {
+        "origin_level": "N1",
+        "fusion_operation": "graph_node_addition",
+        "merge_behavior": "additive",
+        "symbol": "⊕",
+        "description": "Se SUMA al grafo como nodo"
+      },
+      "PARAMETER": {
+        "origin_level": "N2",
+        "fusion_operation": "edge_weight_modification",
+        "merge_behavior": "multiplicative",
+        "symbol": "⊗",
+        "description": "MODIFICA pesos de aristas del grafo"
+      },
+      "CONSTRAINT": {
+        "origin_level": "N3",
+        "fusion_operation": "branch_filtering",
+        "merge_behavior": "gate",
+        "symbol": "⊘",
+        "description": "FILTRA/BLOQUEA ramas si validación falla"
+      },
+      "NARRATIVE": {
+        "origin_level": "N4",
+        "fusion_operation": "synthesis",
+        "merge_behavior": "terminal",
+        "symbol": "⊙",
+        "description": "CONSUME grafo para texto final"
+      }
     },
     "assembly_rules": [
       {
-        "rule_id": "R1_fact_aggregation",
-        "description": "No N1 facts - N2 methods consume PreprocesadoMetadata directly",
-        "sources": [],
-        "operation": "direct_metadata_consumption",
-        "output_label": "fact_base_empty"
+        "rule_id": "R1_empirical_basis",
+        "rule_type": "empirical_basis",
+        "target": "prior_distribution",
+        "sources": [
+          "semanticanalyzer.extract_semantic_segments"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT"
       },
       {
         "rule_id": "R2_parameter_weighting",
-        "description": "Weight N2 parameters by Dempster-Shafer belief mass",
+        "rule_type": "coherence_computation",
+        "target": "logical_coherence",
         "sources": [
           "financialauditor_matchprogramtonode",
           "financialauditor_matchgoaltobudget",
@@ -360,153 +505,327 @@
           "industrialpolicyprocessor_computeevidenceconfidence",
           "adaptivepriorcalculator_generatetraceabilityrecord"
         ],
-        "operation": "dempster_shafer",
-        "weights": "belief_mass",
-        "output_label": "parameter_space"
+        "merge_strategy": "semantic_triangulation",
+        "output_type": "PARAMETER"
       },
       {
         "rule_id": "R3_constraint_application",
-        "description": "Apply N3 semantic audits as conjunctive filters with veto power",
+        "rule_type": "semantic_coherence_audit",
+        "target": "validated_constraints",
         "sources": [
           "pdetmunicipalplananalyzer_extractfromresponsibilitytables",
           "semanticanalyzer_vectorizesegments"
         ],
-        "operation": "conjunctive_filter",
-        "blocks_if": "veto_condition_triggered",
-        "output_label": "audited_findings"
+        "merge_strategy": "veto_gate",
+        "output_type": "CONSTRAINT",
+        "gate_logic": {
+          "quality_below_threshold": {
+            "trigger": "semantic_quality_below_threshold",
+            "scope": "low_quality_semantic_analysis",
+            "confidence_multiplier": 0.0
+          },
+          "incomplete_extraction": {
+            "trigger": "semantic_extraction_incomplete",
+            "scope": "incomplete_semantic_data",
+            "confidence_multiplier": 0.0
+          }
+        }
       },
       {
         "rule_id": "R4_final_synthesis",
-        "description": "Synthesize audited parameter space into human answer",
+        "rule_type": "synthesis",
+        "target": "final_answer",
         "sources": [
           "fact_base",
           "parameter_space",
           "audited_findings"
         ],
-        "operation": "cross_layer_fusion",
-        "respects_veto": true,
-        "output_label": "final_answer"
+        "merge_strategy": "carver_doctoral_synthesis",
+        "output_type": "NARRATIVE"
       }
     ]
   },
   "fusion_specification": {
-    "paradigm": "epistemological_pipeline",
-    "asymmetry_principle": "N3_veto_overrides_N1_N2",
+    "contract_type": "TYPE_A",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "set_union",
-        "rationale": "Facts are additive and non-conflicting at empirical level"
+        "strategy": "semantic_corroboration",
+        "behavior": "additive"
       },
       "N2_parameter_fusion": {
         "strategy": "dempster_shafer",
-        "rationale": "Semantic parameters combined using Dempster-Shafer theory of evidence",
-        "weight_source": "belief_mass_assignments"
+        "behavior": "multiplicative"
       },
       "N3_constraint_fusion": {
-        "strategy": "semantic_triangulation",
-        "rationale": "Semantic audits act as veto gates for low-quality embeddings and incomplete data",
-        "veto_power": true,
-        "override": false
+        "strategy": "veto_gate",
+        "behavior": "gate",
+        "asymmetry_principle": "audit_dominates"
       }
     },
-    "conflict_resolution": {
-      "N2_conflicts": "defer_to_higher_belief_mass",
-      "N3_veto_final": true
+    "fusion_pipeline": {
+      "stage_1_fact_accumulation": {
+        "input": "raw_facts",
+        "operation": "Accumulate semantic facts with corroboration from N1 methods",
+        "output": "evidence_graph_v1",
+        "type_consumed": "FACT",
+        "behavior": "additive"
+      },
+      "stage_2_parameter_application": {
+        "input": "evidence_graph_v1",
+        "operation": "Apply semantic inference to compute parameters",
+        "output": "evidence_graph_v2",
+        "type_consumed": "PARAMETER",
+        "behavior": "multiplicative"
+      },
+      "stage_3_constraint_filtering": {
+        "input": "evidence_graph_v2",
+        "operation": "Apply semantic quality audit with veto gates",
+        "output": "evidence_graph_v3",
+        "type_consumed": "CONSTRAINT",
+        "behavior": "gate"
+      },
+      "stage_4_synthesis": {
+        "input": "evidence_graph_v3",
+        "operation": "Synthesize final narrative",
+        "output": "final_evidence_graph",
+        "type_produced": "NARRATIVE",
+        "behavior": "terminal"
+      }
     }
   },
   "cross_layer_fusion": {
-    "fusion_order": [
-      "N1",
-      "N2",
-      "N3"
-    ],
-    "asymmetry": {
-      "N3_can_nullify_N1_N2": true,
-      "N1_N2_cannot_override_N3": true,
-      "rationale": "Popperian falsificationism: failed semantic quality audits (N3) invalidate positive findings (N1, N2)"
+    "N1_to_N2": {
+      "relationship": "N1 feeds facts to N2",
+      "effect": "N2 processes N1 facts to infer parameters",
+      "data_flow": "forward_propagation"
     },
-    "fusion_function": {
-      "description": "Sequential epistemological pipeline with dual veto gates",
-      "pseudocode": "if N3_veto: return BLOCKED else: return dempster_shafer_fusion(N1_facts, N2_parameters)"
+    "N2_to_N1": {
+      "relationship": "N2 backpropagates confidence to N1",
+      "effect": "N2 confidence scores modulate N1 fact confidence",
+      "data_flow": "confidence_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK or INVALIDATE N1 facts",
+      "effect": "Failed validation removes invalid facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can BLOCK or INVALIDATE N2 parameters",
+      "effect": "Failed validation removes invalid parameters from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N2 CANNOT invalidate N3"
+    },
+    "all_to_N4": {
+      "relationship": "All layers feed to N4 synthesis",
+      "effect": "N4 synthesizes final narrative from all layers",
+      "data_flow": "terminal_aggregation"
+    },
+    "blocking_propagation_rules": {
+      "low_semantic_quality": {
+        "condition": "semantic quality below threshold",
+        "action": "block_propagation"
+      },
+      "incomplete_extraction": {
+        "condition": "semantic extraction incomplete",
+        "action": "block_propagation"
+      }
     }
   },
   "human_answer_structure": {
+    "contract_type": "TYPE_A",
+    "format": "markdown",
+    "template_mode": "epistemological_narrative",
     "sections": [
       {
-        "section_id": "S1_empirical_base",
-        "title": "Empirical Semantic Facts",
-        "content_source": "N1_fact_base",
-        "format": "bullet_list",
-        "epistemic_status": "observational"
+        "section_id": "S1_verdict",
+        "layer": "N4",
+        "narrative_style": "declarative",
+        "argumentative_role": "SYNTHESIS",
+        "template": {
+          "structure": [
+            "{verdict_statement}",
+            "Confianza final: {final_confidence_pct}% ({confidence_label})",
+            "Métodos aplicados: {method_count}",
+            "Auditorías realizadas: {audit_count}"
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
+          ]
+        }
       },
       {
-        "section_id": "S2_inferential_analysis",
-        "title": "Semantic Coherence and Responsibility Analysis",
-        "content_source": "N2_parameter_space",
-        "format": "quantitative_summary_with_belief_masses",
-        "epistemic_status": "probabilistic_inference"
+        "section_id": "S2_empirical_base",
+        "layer": "N1",
+        "data_source": "validated_facts",
+        "argumentative_role": "EMPIRICAL_BASIS",
+        "epistemological_note": {
+          "include_in_output": true,
+          "note": "Datos semánticos extraídos directamente de documentos"
+        }
       },
       {
-        "section_id": "S3_critical_audit",
-        "title": "Semantic Quality and Data Completeness Audit",
-        "content_source": "N3_audited_findings",
-        "format": "pass_fail_with_justification",
-        "epistemic_status": "falsificationist_constraint",
-        "veto_disclosed": true
+        "section_id": "S3_robustness_audit",
+        "layer": "N3",
+        "argumentative_role": "ROBUSTNESS_QUALIFIER",
+        "veto_display": {
+          "if_veto_triggered": "⛔ **ALERTA: ANÁLISIS SEMÁNTICO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_no_veto": "✅ Análisis semántico pasa auditoría de calidad"
+        }
       },
       {
-        "section_id": "S4_final_judgment",
-        "title": "Final Semantic Coherence Assessment",
-        "content_source": "final_answer",
-        "format": "conclusive_statement",
-        "epistemic_status": "post_audit_synthesis",
-        "respects_veto": true
+        "section_id": "S4_gaps",
+        "layer": "N4-META",
+        "argumentative_role": "META_TRACEABILITY"
       }
-    ]
-  },
-  "output_contract": {
-    "output_type": "structured_json",
-    "schema_ref": "executor_output_schema_v4.json",
-    "required_fields": [
-      "empirical_facts",
-      "semantic_parameters",
-      "audit_constraints",
-      "final_answer"
     ],
-    "epistemic_metadata": {
-      "belief_masses": "required",
-      "veto_status": "required",
-      "method_provenance": "required"
+    "argumentative_roles": {
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Base empírica de datos semánticos extraídos",
+          "narrative_weight": "high"
+        }
+      ],
+      "N2_roles": [
+        {
+          "role": "INFERENTIAL_BRIDGE",
+          "description": "Inferencia semántica sobre coherencia y responsabilidad",
+          "narrative_weight": "high"
+        }
+      ],
+      "N3_roles": [
+        {
+          "role": "ROBUSTNESS_QUALIFIER",
+          "description": "Auditoría de calidad semántica",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Señal de refutación cuando calidad semántica es baja",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        }
+      ],
+      "N4_roles": [
+        {
+          "role": "SYNTHESIS",
+          "description": "Síntesis final post-auditoría",
+          "narrative_weight": "critical"
+        }
+      ]
+    },
+    "confidence_interpretation": {
+      "critical": {
+        "range": [
+          0,
+          19
+        ],
+        "label": "INVÁLIDO",
+        "description": "Análisis semántico inválido - veto aplicado. NO usar para toma de decisiones.",
+        "display": "🔴"
+      },
+      "low": {
+        "range": [
+          20,
+          49
+        ],
+        "label": "DÉBIL",
+        "description": "Confianza baja - calidad semántica cuestionable",
+        "display": "🟡"
+      },
+      "medium": {
+        "range": [
+          50,
+          79
+        ],
+        "label": "MODERADO",
+        "description": "Confianza moderada - calidad semántica aceptable con reservas",
+        "display": "🟠"
+      },
+      "high": {
+        "range": [
+          80,
+          100
+        ],
+        "label": "ROBUSTO",
+        "description": "Confianza alta - calidad semántica robusta y confiable",
+        "display": "🟢"
+      }
     }
   },
-  "validation_rules": {
-    "pre_execution": [
-      "verify_all_18_methods_mapped_to_phases",
-      "verify_N1_methods_have_no_requires_or_only_preprocessing",
-      "verify_N2_methods_require_N1_outputs",
-      "verify_N3_methods_have_veto_conditions"
-    ],
-    "post_execution": [
-      "verify_N3_veto_respected_in_final_answer",
-      "verify_belief_masses_present",
-      "verify_all_provides_match_sources_in_assembly_rules"
-    ]
-  },
-  "error_handling": {
-    "N1_failure": "skip_method_continue_with_available_facts",
-    "N2_failure": "propagate_uncertainty_reduce_belief_mass",
-    "N3_failure": "immediate_veto_all_findings_blocked",
-    "fallback_strategy": "return_partial_results_with_degraded_confidence"
+  "output_contract": {
+    "schema": {
+      "required": [
+        "base_slot",
+        "question_id",
+        "evidence",
+        "score",
+        "human_answer"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string"
+        },
+        "question_id": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "score": {
+          "type": "number"
+        },
+        "human_answer": {
+          "type": "string"
+        },
+        "epistemological_trace": {
+          "type": "object"
+        }
+      }
+    }
   },
   "traceability": {
-    "method_provenance_required": true,
-    "audit_trail_format": "json_log",
-    "veto_decisions_logged": true
-  },
-  "compatibility": {
-    "executor_version": ">=4.0.0",
-    "schema_version": "4.0.0",
-    "backward_compatible": false
+    "canonical_sources": {
+      "epistemological_guide": "guia_diligenciamiento_contratos_v4.md",
+      "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json"
+    },
+    "generation": {
+      "method": "v4_epistemological_framework",
+      "date": "2025-12-22T20:00:00Z"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T20:00:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Semantic inference layer",
+          "Quality audit",
+          "Veto gates",
+          "Cross-layer fusion"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
+    }
   },
   "calibration": {
     "confidence_calibration": "required_for_N2",

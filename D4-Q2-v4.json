@@ -1,3 +1,23 @@
 {
-  "note": "Q017 TYPE_A contract"
+  "note": "Q017 TYPE_A contract",
+  "traceability": {
+    "refactoring_history": [
+      {
+        "timestamp": "2025-12-26T11:54:39.844252Z",
+        "action": "common_corrections_batch_applied",
+        "description": "Aplicadas correcciones comunes mediante VGL",
+        "epistemic_impact": "NONE",
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "N/A",
+          "N3": "Falsacionismo popperiano"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "automatic_method_addition": "FORBIDDEN",
+      "semantic_modification_without_review": "FORBIDDEN"
+    }
+  }
 }

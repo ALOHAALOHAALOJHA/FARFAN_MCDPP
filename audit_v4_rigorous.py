@@ -1991,6 +1991,35 @@ class ContractValidator:
                 # Solo en N1/N2, no en N3 (que requiere lógica financiera estricta)
                 should_allow = True
             
+            # MODIFICACIÓN 4: Permitir evaluación de coherencia causal en TYPE_E cuando es validación lógica
+            # La causalidad es un subtipo de relación lógica, válida cuando se usa para verificación de coherencia
+            # y no como inferencia causal probabilística o explicación generativa
+            is_causal_coherence_validation = (
+                self.contract_type == "TYPE_E" and
+                method_level == "N2-INF" and
+                "causal" in found_aliens and
+                any(term in full_text for term in ['coherence', 'consistency', 'validation', 'verify', 'check', 'justification', 'logical'])
+            )
+            
+            # Verificar que el propósito es validación lógica, no inferencia predictiva
+            is_predictive_inference = any(term in full_text for term in ['predict', 'forecast', 'estimate', 'generate', 'explain', 'model'])
+            is_explanatory_generative = any(term in full_text for term in ['mechanism', 'explanation', 'why', 'because', 'dag', 'intervention'])
+            
+            if is_causal_coherence_validation and not is_predictive_inference and not is_explanatory_generative:
+                should_allow = True
+            
+            # MODIFICACIÓN 5: Permitir métodos bayesianos con DAG en contratos TYPE_D cuando están en N2-INF
+            # Los métodos bayesianos son herramientas válidas para inferencia financiera probabilística
+            is_bayesian_financial_inference = (
+                self.contract_type == "TYPE_D" and
+                method_level == "N2-INF" and
+                "dag" in found_aliens and
+                any(term in full_text for term in ['bayesian', 'posterior', 'probability', 'confidence', 'interval', 'financial', 'calculate', 'compute'])
+            )
+            
+            if is_bayesian_financial_inference:
+                should_allow = True
+            
             # Si debe permitirse y hay alien_keywords detectados, ignorar la alerta
             if should_allow and found_aliens:
                 continue

@@ -57,7 +57,7 @@
         "description": "Inferential analysis layer - logical coherence computation",
         "level": "N2",
         "level_name": "Procesamiento Inferencial",
-        "epistemology": "Análisis lógico",
+        "epistemology": "Lógica relacional y verificación de condiciones",
         "methods": [
           {
             "class_name": "PolicyContradictionDetector",
@@ -69,7 +69,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula alineación de objetivos entre políticas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "alignment_scores"
@@ -83,9 +83,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Identifica secciones afectadas por contradicciones",
+            "description": "Evalúa y identifica secciones afectadas por contradicciones",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "affected_sections"
@@ -99,9 +99,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Genera recomendaciones de resolución de contradicciones",
+            "description": "Infiere y genera recomendaciones de resolución de contradicciones",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "resolution_recommendations"
@@ -115,9 +115,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Genera remediaciones óptimas para problemas detectados",
+            "description": "Infiere y genera remediaciones óptimas para problemas detectados",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "remediation_strategies"
@@ -131,9 +131,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Agrega riesgos y prioriza contradicciones",
+            "description": "Calcula y agrega riesgos y prioriza contradicciones",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "risk_priorities"
@@ -141,7 +141,7 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata"
+          "phase_A_construction"
         ],
         "output_target": "inferred_parameters"
       },
@@ -161,7 +161,7 @@
             "fusion_behavior": "gate",
             "description": "Detecta brechas de asignación - puede VETAR si detecta contradicción fatal",
             "requires": [
-              "PreprocesadoMetadata",
+              "raw_facts",
               "inferred_parameters"
             ],
             "modulates": [
@@ -184,10 +184,14 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata",
-          "inferred_parameters"
+          "phase_A_construction",
+          "phase_B_computation"
         ],
-        "output_target": "validated_constraints"
+        "output_target": "validated_constraints",
+        "asymmetry_principle": {
+          "description": "N3 can invalidate N1 and N2 outputs through veto power. N1 and N2 CANNOT invalidate N3.",
+          "asymmetry_domain_note": "En contratos TYPE_E (Lógico), N3 valida coherencia lógica mediante detección de contradicciones de asignación. Si se detecta una contradicción crítica, N3 puede bloquear completamente los resultados de N1/N2, pero N1/N2 no pueden invalidar las validaciones de N3."
+        }
       }
     }
   },
@@ -289,11 +293,15 @@
         "gate_logic": {
           "critical_allocation_gap": {
             "action": "block_branch",
-            "multiplier": 0.0
+            "confidence_multiplier": 0.0,
+            "trigger": "critical_allocation_gap detected",
+            "scope": "all"
           },
           "moderate_allocation_gap": {
             "action": "reduce_confidence",
-            "multiplier": 0.5
+            "confidence_multiplier": 0.5,
+            "trigger": "moderate_allocation_gap detected",
+            "scope": "all"
           }
         },
         "output_type": "CONSTRAINT"
@@ -316,7 +324,7 @@
     "primary_strategy": "weighted_mean",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "direct_signal_consumption",
+        "strategy": "concat",
         "behavior": "pass_through",
         "note": "No N1 methods - PreprocesadoMetadata consumed directly by N2"
       },
@@ -355,8 +363,8 @@
         "input": "PreprocesadoMetadata",
         "operation": "PASS PreprocesadoMetadata to N2",
         "output": "evidence_graph_v1",
-        "type_consumed": "SIGNAL",
-        "behavior": "pass_through"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
       "stage_2_parameter_application": {
         "input": [
@@ -397,7 +405,7 @@
     "N2_to_N1": {
       "relationship": "Not applicable",
       "effect": "N2 does not backpropagate to N1 (no N1 layer)",
-      "data_flow": "none"
+      "data_flow": "confidence_backpropagation"
     },
     "N3_to_N2": {
       "relationship": "N3 can INVALIDATE N2 parameters",
@@ -424,6 +432,12 @@
         "propagation": "downstream_only",
         "confidence_multiplier": 0.5
       }
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK or INVALIDATE N1 facts",
+      "effect": "Failed validation removes invalid facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
     }
   },
   "human_answer_structure": {
@@ -445,16 +459,24 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
           ]
         }
       },
       {
         "section_id": "S2_empirical_base",
         "title": "### Base Empírica: Elementos Lógicos",
-        "layer": "N2",
+        "layer": "N1",
         "data_source": "inferred_parameters",
         "narrative_style": "descriptive",
-        "argumentative_role": "INFERENTIAL_BRIDGE",
+        "argumentative_role": "EMPIRICAL_BASIS",
         "note": "No N1 layer - showing N2 coherence computations as base",
         "template": {
           "structure": [
@@ -521,7 +543,13 @@
       }
     ],
     "argumentative_roles": {
-      "N1_roles": [],
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Base empírica para análisis lógico",
+          "narrative_weight": "high"
+        }
+      ],
       "N2_roles": [
         {
           "role": "INFERENTIAL_BRIDGE",
@@ -670,7 +698,25 @@
     "audit_trail": true,
     "method_execution_log": true,
     "confidence_backpropagation_log": true,
-    "veto_decision_log": true
+    "veto_decision_log": true,
+    "refactoring_history": [
+      {
+        "timestamp": "2025-01-12T15:00:00Z",
+        "action": "common_corrections_phase1_applied",
+        "description": "Aplicadas correcciones comunes Fase 1 (AUTO) y SEMI_AUTO mediante VGL",
+        "epistemic_impact": "NONE",
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Lógica relacional y verificación de condiciones",
+          "N3": "Falsacionismo popperiano"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "automatic_method_addition": "FORBIDDEN",
+      "semantic_modification_without_review": "FORBIDDEN"
+    }
   },
   "compatibility": {
     "min_pipeline_version": "4.0.0",

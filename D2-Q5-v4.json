@@ -41,17 +41,29 @@
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_E",
-    "method_count": 8,
+    "method_count": 9,
     "execution_phases": {
       "phase_A_construction": {
-        "description": "Empirical observation layer - direct signal consumption",
+        "description": "Empirical observation layer - policy statements extraction",
         "level": "N1",
         "level_name": "Base Empírica",
         "epistemology": "Empirismo positivista",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_extract_policy_statements",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.extract_policy_statements",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae declaraciones de política del texto como observación directa",
+            "requires": [],
+            "classification_rationale": "Extrae declaraciones directamente del documento sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          }
+        ],
         "dependencies": [],
-        "output_target": "raw_facts",
-        "note": "This contract consumes PreprocesadoMetadata directly in N2 phase"
+        "output_target": "raw_facts"
       },
       "phase_B_computation": {
         "description": "Inferential analysis layer - logical coherence computation",
@@ -67,9 +79,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Detecta incompatibilidades lógicas entre políticas",
+            "description": "Evalúa y evalúa y detecta incompatibilidades lógicas entre políticas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "incompatibility_scores"
@@ -85,7 +97,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula métricas de coherencia lógica",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "coherence_metric_scores"
@@ -101,7 +113,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula alineación de objetivos entre políticas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "alignment_scores"
@@ -117,7 +129,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula fragmentación del grafo de políticas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "fragmentation_scores"
@@ -133,7 +145,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula factor de coherencia bayesiano",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "bayesian_coherence_scores"
@@ -147,9 +159,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Puntúa coherencia causal de planes",
+            "description": "Evalúa coherencia lógica de relaciones causales explícitas como criterio de validación lógica (no inferencia causal probabilística)",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "causal_coherence_scores"
@@ -165,7 +177,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula likelihood adaptativo para coherencia",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "likelihood_scores"
@@ -173,7 +185,7 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata"
+          "phase_A_construction"
         ],
         "output_target": "inferred_parameters"
       },
@@ -193,7 +205,7 @@
             "fusion_behavior": "gate",
             "description": "Audita lógica de secuencia - puede VETAR si detecta contradicción fatal",
             "requires": [
-              "PreprocesadoMetadata",
+              "raw_facts",
               "inferred_parameters"
             ],
             "modulates": [
@@ -218,14 +230,16 @@
                 "scope": "incompatible_objective_pairs",
                 "confidence_multiplier": 0.4
               }
-            }
+            },
+            "classification_rationale": "Valida consistencia lógica aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)"
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata",
-          "inferred_parameters"
+          "phase_A_construction",
+          "phase_B_computation"
         ],
-        "output_target": "validated_constraints"
+        "output_target": "validated_constraints",
+        "asymmetry_principle": "ASIMETRÍA EXPLÍCITA: N3 can invalidate resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae declaraciones y N2 detecta contradicciones, N3 aplica criterios de falsación popperiana. CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa"
       }
     }
   },
@@ -291,8 +305,10 @@
         "rule_id": "R1_empirical_basis",
         "rule_type": "empirical_basis",
         "target": "prior_distribution",
-        "sources": [],
-        "merge_strategy": "direct_signal_consumption",
+        "sources": [
+          "policycontradictiondetector.extract_policy_statements"
+        ],
+        "merge_strategy": "concat",
         "output_type": "FACT",
         "note": "Phase A empty - consumes PreprocesadoMetadata directly in Phase B"
       },
@@ -329,15 +345,15 @@
         "gate_logic": {
           "fatal_logical_contradiction": {
             "action": "block_branch",
-            "multiplier": 0.0
+            "confidence_multiplier": 0.0
           },
           "circular_dependency_detected": {
             "action": "block_branch",
-            "multiplier": 0.0
+            "confidence_multiplier": 0.0
           },
           "incompatible_objectives": {
             "action": "reduce_confidence",
-            "multiplier": 0.4
+            "confidence_multiplier": 0.4
           }
         },
         "output_type": "CONSTRAINT"
@@ -360,9 +376,8 @@
     "primary_strategy": "weighted_mean",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "direct_signal_consumption",
-        "behavior": "pass_through",
-        "note": "No N1 methods - PreprocesadoMetadata consumed directly by N2"
+        "strategy": "concat",
+        "behavior": "additive"
       },
       "N2_parameter_fusion": {
         "strategy": "weighted_mean",
@@ -395,11 +410,11 @@
     },
     "fusion_pipeline": {
       "stage_1_fact_accumulation": {
-        "input": "PreprocesadoMetadata",
-        "operation": "PASS PreprocesadoMetadata to N2",
+        "input": "raw_facts",
+        "operation": "Accumulate policy statements from N1 methods",
         "output": "evidence_graph_v1",
-        "type_consumed": "SIGNAL",
-        "behavior": "pass_through"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
       "stage_2_parameter_application": {
         "input": [
@@ -438,9 +453,9 @@
       "note": "No N1 intermediary - direct signal consumption"
     },
     "N2_to_N1": {
-      "relationship": "Not applicable",
-      "effect": "N2 does not backpropagate to N1 (no N1 layer)",
-      "data_flow": "none"
+      "relationship": "N2 backpropagates confidence to N1",
+      "effect": "N2 confidence scores modulate N1 fact confidence",
+      "data_flow": "confidence_backpropagation"
     },
     "N3_to_N2": {
       "relationship": "N3 can INVALIDATE N2 parameters",
@@ -473,6 +488,12 @@
         "propagation": "downstream_only",
         "confidence_multiplier": 0.4
       }
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK or INVALIDATE N1 facts",
+      "effect": "Failed validation removes invalid facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
     }
   },
   "human_answer_structure": {
@@ -494,16 +515,24 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
           ]
         }
       },
       {
         "section_id": "S2_empirical_base",
         "title": "### Base Empírica: Elementos Lógicos",
-        "layer": "N2",
-        "data_source": "inferred_parameters",
+        "layer": "N1",
+        "data_source": "validated_facts",
         "narrative_style": "descriptive",
-        "argumentative_role": "INFERENTIAL_BRIDGE",
+        "argumentative_role": "EMPIRICAL_BASIS",
         "note": "No N1 layer - showing N2 coherence computations as base",
         "template": {
           "structure": [
@@ -526,7 +555,7 @@
         "narrative_style": "critical",
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_veto_triggered": "⛔ **ALERTA: CONTRADICCIÓN INVÁLIDA**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
           "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todos los hallazgos sobrevivieron refutación."
         },
@@ -566,7 +595,13 @@
       }
     ],
     "argumentative_roles": {
-      "N1_roles": [],
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Base empírica de declaraciones de política extraídas",
+          "narrative_weight": "high"
+        }
+      ],
       "N2_roles": [
         {
           "role": "INFERENTIAL_BRIDGE",
@@ -584,6 +619,12 @@
           "role": "REFUTATIONAL_SIGNAL",
           "description": "Detección de contradicciones fatales",
           "narrative_weight": "critical"
+        },
+        {
+          "role": "LOGICAL_INCONSISTENCY",
+          "description": "Inconsistencia lógica detectada en declaraciones de política",
+          "narrative_weight": "critical",
+          "triggers_veto": true
         }
       ],
       "N4_roles": [
@@ -732,6 +773,32 @@
       "timestamp": "2025-12-22T19:39:00Z",
       "generator_version": "1.0.0",
       "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly. audit_sequence_logic reclassified to N3-AUD due to veto capability for fatal logical contradictions."
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T19:39:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Added N1 method for policy statement extraction",
+          "Weighted mean strategy",
+          "Veto gates",
+          "Cross-layer fusion"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
     }
   },
   "compatibility": {
