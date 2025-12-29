@@ -1,76 +1,32 @@
 {
-  "pipeline_verified": false,
-  "fatal_error": {
-    "error_id": "EPISTEMIC_DRIFT_EXCEEDED",
-    "message": "[FATAL:EPISTEMIC_DRIFT_EXCEEDED] Degradation ratio 7.59% exceeds threshold 5%",
-    "context": {
-      "degradation_count": 44,
-      "method_count": 580,
-      "threshold": 0.05,
-      "sample_degradations": [
-        {
-          "method": "_contains_table",
-          "class": "AdvancedSemanticChunker",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "_contains_list",
-          "class": "AdvancedSemanticChunker",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "check_sum_to_one",
-          "class": "MechanismTypeConfig",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "_validate_config",
-          "class": "ConfigLoader",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "check_uncertainty_reduction_criterion",
-          "class": "ConfigLoader",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "_check_structural_violation",
-          "class": "CausalExtractor",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "_calculate_language_specificity",
-          "class": "CausalExtractor",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "_validate_entity_activity",
-          "class": "MechanismPartExtractor",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "trace_financial_allocation",
-          "class": "FinancialAuditor",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        },
-        {
-          "method": "_perform_counterfactual_budget_check",
-          "class": "FinancialAuditor",
-          "from": "N3-AUD",
-          "to": "N2-INF"
-        }
-      ]
-    },
-    "timestamp": "2025-12-29T15:33:30.434580+00:00"
+  "pipeline_verified": true,
+  "session_id": "forensic_20251229_164857_488519",
+  "started_at": "2025-12-29T16:48:57.488908+00:00",
+  "completed_at": "2025-12-29T16:48:57.695001+00:00",
+  "input_file": "/Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/METHODS_DISPENSARY_SIGNATURES.json",
+  "input_hash": "2bd77fdbed453ed8fade549291bb277f32f5b45f65b98c706f1025e5a38524cf",
+  "output_file": "/Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/METHODS_DISPENSARY_SIGNATURES_ENRICHED_FORENSIC.json",
+  "output_hash": "6fb027a082269f1c159feb62cab8c55e6f6d2df07308ac38cdabf5ef4eec74de",
+  "output_bytes": 4884827,
+  "rulebook_version": "5.0.0",
+  "rulebook_hash": "14ddfb673d68ca2424b723c3f0ff6edf5e56cdad0e67d9ea3e43bcf2c29ee5f3",
+  "code_hash": "0948dca364c4edd2",
+  "method_count": 580,
+  "class_count": 127,
+  "quality_metrics": {
+    "total_classes": 127,
+    "total_methods": 580,
+    "infrastructure_methods": 485,
+    "n1_methods": 0,
+    "n2_methods": 64,
+    "n3_methods": 2,
+    "n4_methods": 29,
+    "methods_with_veto": 2,
+    "degradation_count": 44,
+    "degradation_ratio": 0.07586206896551724,
+    "n3_without_veto": 0,
+    "orphan_methods": 0,
+    "validation_errors": []
   },
-  "aborted_at": "2025-12-29T15:33:30.434617+00:00"
+  "fatal_errors": []
 }
