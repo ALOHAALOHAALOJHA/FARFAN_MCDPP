@@ -1,0 +1,76 @@
+{
+  "pipeline_verified": false,
+  "fatal_error": {
+    "error_id": "EPISTEMIC_DRIFT_EXCEEDED",
+    "message": "[FATAL:EPISTEMIC_DRIFT_EXCEEDED] Degradation ratio 7.59% exceeds threshold 5%",
+    "context": {
+      "degradation_count": 44,
+      "method_count": 580,
+      "threshold": 0.05,
+      "sample_degradations": [
+        {
+          "method": "_contains_table",
+          "class": "AdvancedSemanticChunker",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "_contains_list",
+          "class": "AdvancedSemanticChunker",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "check_sum_to_one",
+          "class": "MechanismTypeConfig",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "_validate_config",
+          "class": "ConfigLoader",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "check_uncertainty_reduction_criterion",
+          "class": "ConfigLoader",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "_check_structural_violation",
+          "class": "CausalExtractor",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "_calculate_language_specificity",
+          "class": "CausalExtractor",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "_validate_entity_activity",
+          "class": "MechanismPartExtractor",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "trace_financial_allocation",
+          "class": "FinancialAuditor",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        },
+        {
+          "method": "_perform_counterfactual_budget_check",
+          "class": "FinancialAuditor",
+          "from": "N3-AUD",
+          "to": "N2-INF"
+        }
+      ]
+    },
+    "timestamp": "2025-12-29T15:33:30.434580+00:00"
+  },
+  "aborted_at": "2025-12-29T15:33:30.434617+00:00"
+}
