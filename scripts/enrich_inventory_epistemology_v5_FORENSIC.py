@@ -136,6 +136,56 @@ LEVEL_REQUIRED_OUTPUTS: Final[dict[str, frozenset[str]]] = {
     "INFRASTRUCTURE": frozenset(),
 }
 
+# Mapeo canónico de clase → contract_type (episte_refact + audit_v4)
+CONTRACT_HINTS: Final[dict[str, str]] = {
+    # TYPE_A: Semántico
+    "SemanticAnalyzer": "TYPE_A",
+    "SemanticProcessor": "TYPE_A",
+    "TextMiningEngine": "TYPE_A",
+    "PolicyAnalysisEmbedder": "TYPE_A",
+    "AdvancedSemanticChunker": "TYPE_A",
+    "EmbeddingProtocol": "TYPE_A",
+    "EmbeddingPolicy": "TYPE_A",
+    # TYPE_B: Bayesiano
+    "BayesianNumericalAnalyzer": "TYPE_B",
+    "AdaptivePriorCalculator": "TYPE_B",
+    "HierarchicalGenerativeModel": "TYPE_B",
+    "BayesianMechanismInference": "TYPE_B",
+    "BayesianCounterfactualAuditor": "TYPE_B",
+    # TYPE_C: Causal
+    "CausalExtractor": "TYPE_C",
+    "TeoriaCambio": "TYPE_C",
+    "AdvancedDAGValidator": "TYPE_C",
+    "MechanismPartExtractor": "TYPE_C",
+    "MechanismTypeConfig": "TYPE_C",
+    "MechanismGraphBuilder": "TYPE_C",
+    # TYPE_D: Financiero
+    "FinancialAuditor": "TYPE_D",
+    "PDETMunicipalPlanAnalyzer": "TYPE_D",
+    # TYPE_E: Lógico
+    "PolicyContradictionDetector": "TYPE_E",
+    "IndustrialGradeValidator": "TYPE_E",
+    "OperationalizationAuditor": "TYPE_E",
+    "TemporalLogicVerifier": "TYPE_E",
+}
+
+# Palabras clave por ruta/clase para inferir contrato cuando no hay hint directo
+CONTRACT_KEYWORDS: Final[dict[str, str]] = {
+    "semantic": "TYPE_A",
+    "embedding": "TYPE_A",
+    "nlp": "TYPE_A",
+    "bayesian": "TYPE_B",
+    "probabilistic": "TYPE_B",
+    "causal": "TYPE_C",
+    "dag": "TYPE_C",
+    "mechanism": "TYPE_C",
+    "financial": "TYPE_D",
+    "budget": "TYPE_D",
+    "contradiction": "TYPE_E",
+    "validator": "TYPE_E",
+    "consistency": "TYPE_E",
+}
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SECCIÓN 3: RULEBOOK VERSIONADO - FINGERPRINT OBLIGATORIO
@@ -228,8 +278,8 @@ CANONICAL_RULEBOOK = Rulebook(
         # ─── N3-AUD (validación/auditoría) ───
         Rule(
             rule_id="N3_001_BOOL_VALIDATE",
-            description="Métodos bool + validate/check/verify son N3-AUD",
-            triggers=("return_type:bool", "validate", "check", "verify", "detect", "audit"),
+            description="Bool + validate/check/verify/test/audit ⇒ N3-AUD",
+            triggers=("return_type:bool", "validate", "check", "verify", "test", "audit"),
             anti_triggers=(),
             target_level="N3-AUD",
             target_epistemology="POPPERIAN_FALSIFICATIONIST",
@@ -300,6 +350,15 @@ CANONICAL_RULEBOOK = Rulebook(
             target_level="N1-EMP",
             target_epistemology="POSITIVIST_EMPIRICAL",
             priority=50,
+        ),
+        Rule(
+            rule_id="N1_001B_DETECT_OBSERVABLE",
+            description="detect_* que busca señales observables es N1-EMP",
+            triggers=("detect",),
+            anti_triggers=("contradiction", "conflict", "violation", "inconsistency", "temporal"),
+            target_level="N1-EMP",
+            target_epistemology="POSITIVIST_EMPIRICAL",
+            priority=48,
         ),
         Rule(
             rule_id="N1_002_RAW",
@@ -792,49 +851,45 @@ def infer_contract_compatibility(
     blob: str,
     level: str,
     epistemology: str,
+    class_name: str = "",
+    file_path: str = "",
 ) -> dict[str, bool]:
-    """Infiere compatibilidad de contrato basado en señales EXPLÍCITAS del método.
-    
-    CIENTÍFICO: Solo usa señales del blob del método (docstring, return_type, params).
-    NO usa class_name ni file_path - eso sería INVENTAR compatibilidad.
-    Si no hay señales → el método es huérfano → el invariante DEBE fallar.
+    """Infiere contract_type con prioridad canónica (clase → keywords → señales).
+
+    - Primero usa mapeo explícito de clase (CONTRACT_HINTS)
+    - Luego palabras clave en class_name/file_path (CONTRACT_KEYWORDS)
+    - Finalmente señales en el blob del método
     """
     compat = {"TYPE_A": False, "TYPE_B": False, "TYPE_C": False, "TYPE_D": False, "TYPE_E": False}
 
-    blob_lower = blob.lower()
+    # 1) Hint directo por clase
+    hint = CONTRACT_HINTS.get(class_name)
+    if hint:
+        compat[hint] = True
 
-    # Señales para cada tipo - SOLO del método
-    # Justificación epistemológica de cada señal:
-    # TYPE_A: Procesamiento semántico/textual → coherencia de texto
-    # TYPE_B: Razonamiento probabilístico → distribuciones/posteriors
-    # TYPE_C: Razonamiento causal → DAGs/intervenciones
-    # TYPE_D: Razonamiento financiero → presupuestos/asignaciones
-    # TYPE_E: Validación/auditoría → consistencia lógica
+    # 2) Palabras clave en class_name o ruta
+    lowered = f"{class_name} {file_path}".lower()
+    for kw, ctype in CONTRACT_KEYWORDS.items():
+        if kw in lowered:
+            compat[ctype] = True
+
+    # 3) Señales en blob
+    blob_lower = blob.lower()
     type_signals = {
-        "TYPE_A": (
-            "semantic", "chunk", "embed", "text", "coherence", "nlp", "vector", 
-            "similarity", "query", "report", "summary", "narrative", "synthesis",
-            "recommendation", "recomendation", "generate", "format", "render",
-            "pdq", "response", "answer", "output", "produce",
-        ),
+        "TYPE_A": ("semantic", "chunk", "embed", "text", "coherence", "nlp", "vector", "similarity", "query"),
         "TYPE_B": ("bayesian", "posterior", "prior", "credible", "distribution", "probabilistic", "uncertainty"),
         "TYPE_C": ("causal", "dag", "mechanism", "counterfactual", "path", "intervention", "effect", "treatment"),
         "TYPE_D": ("financial", "budget", "allocation", "cost", "amount", "monto", "presupuesto", "sufficiency", "fiscal", "expenditure"),
-        "TYPE_E": ("contradiction", "consistency", "logical", "valid", "validate", "verify", "check", "audit", "constraint", "rule"),
+        "TYPE_E": ("contradiction", "consistency", "logical", "validate", "verify", "check", "audit", "constraint", "temporal"),
     }
-
     for type_key, signals in type_signals.items():
         for signal in signals:
             if signal in blob_lower:
                 compat[type_key] = True
                 break
 
-    # Enforcement epistemológico
     if epistemology == "BAYESIAN_PROBABILISTIC":
         compat["TYPE_B"] = True
-
-    # NO HAY ORPHAN PREVENTION SILENCIOSA
-    # Si no hay compatibilidad Y nivel != INFRASTRUCTURE → FALLA
 
     return compat
 
@@ -1036,7 +1091,6 @@ def enrich_inventory(
             # Clasificar método
             decision = evaluate_rules(method_name, method, class_name, rulebook)
 
-            # Manejar N3-AUD sin veto observable: DEGRADAR a N2-INF
             veto_conditions = extract_veto_conditions(
                 decision.level,
                 _norm(method.get("docstring")),
@@ -1047,32 +1101,13 @@ def enrich_inventory(
             current_epistemology = decision.epistemology
 
             if current_level == "N3-AUD" and veto_conditions is None:
-                # DEGRADACIÓN EXPLÍCITA: N3→N2 con registro forense
-                degradation_record = DegradationRecord(
-                    method_id=method_name,
+                fatal(
+                    "N3_MISSING_VETO",
+                    "N3-AUD method lacks explicit veto conditions",
+                    method=method_name,
                     class_name=class_name,
-                    original_level="N3-AUD",
-                    degraded_to="N2-INF",
-                    original_epistemology=current_epistemology,
-                    degraded_epistemology="DETERMINISTIC_LOGICAL",
-                    reason="N3-AUD lacks observable veto conditions in docstring",
-                    timestamp=datetime.now(timezone.utc).isoformat(),
+                    docstring=_norm(method.get("docstring")),
                 )
-                session.add_degradation(degradation_record)
-
-                # Crear nueva decisión degradada (no podemos mutar frozen dataclass)
-                decision = MethodDecision(
-                    method_id=method_name,
-                    class_name=class_name,
-                    level="N2-INF",
-                    epistemology="DETERMINISTIC_LOGICAL",
-                    selected_rule_id=f"{decision.selected_rule_id}→DEGRADED",
-                    all_evaluations=decision.all_evaluations,
-                    input_hash=decision.input_hash,
-                )
-                current_level = "N2-INF"
-                current_epistemology = "DETERMINISTIC_LOGICAL"
-                veto_conditions = None  # N2 no tiene veto
 
             # Mapear nivel a outputs
             output_type, fusion_behavior, phase_assignment = map_level_to_output(current_level)
@@ -1083,38 +1118,22 @@ def enrich_inventory(
 
             # Contract compatibility
             blob = _compute_blob(method_name, method)
-            contract_compat = infer_contract_compatibility(blob, current_level, current_epistemology)
+            contract_compat = infer_contract_compatibility(
+                blob,
+                current_level,
+                current_epistemology,
+                class_name=class_name,
+                file_path=file_path,
+            )
             
-            # CIENTÍFICO: Si no-INFRASTRUCTURE sin contrato → DEGRADAR a INFRASTRUCTURE
-            # con registro forense (no falla silenciosa, no inventa contrato)
             if current_level != "INFRASTRUCTURE" and not any(contract_compat.values()):
-                orphan_degradation = DegradationRecord(
-                    method_id=method_name,
+                fatal(
+                    "ORPHAN_METHOD",
+                    "Non-INFRASTRUCTURE method MUST map to at least one contract type",
+                    method=method_name,
                     class_name=class_name,
-                    original_level=current_level,
-                    degraded_to="INFRASTRUCTURE",
-                    original_epistemology=current_epistemology,
-                    degraded_epistemology="NONE",
-                    reason="NO_CONTRACT_SIGNALS_IN_SIGNATURE",
-                    timestamp=datetime.now(timezone.utc).isoformat(),
-                )
-                session.add_degradation(orphan_degradation)
-                current_level = "INFRASTRUCTURE"
-                current_epistemology = "NONE"
-                degradation_record = orphan_degradation
-                # Recalcular outputs para INFRASTRUCTURE
-                output_type, fusion_behavior, phase_assignment = map_level_to_output(current_level)
-                requires = ()
-                produces = ()
-                # Crear decision degradada para classify_class
-                decision = MethodDecision(
-                    method_id=method_name,
-                    class_name=class_name,
-                    level="INFRASTRUCTURE",
-                    epistemology="NONE",
-                    selected_rule_id=f"{decision.selected_rule_id}→ORPHAN_DEGRADED",
-                    all_evaluations=decision.all_evaluations,
-                    input_hash=decision.input_hash,
+                    level=current_level,
+                    blob=blob,
                 )
 
             # Añadir decision DESPUÉS de posibles degradaciones
