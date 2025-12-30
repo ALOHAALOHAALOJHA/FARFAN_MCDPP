@@ -101,11 +101,41 @@ Design Principles (Factory Pattern + DI):
    - Injected into Orchestrator for Phase 1 chunk validation
    - Execution FAILS if contracts violated
 
+8. PHASE 0 INTEGRATION:
+   - RuntimeConfig loaded from environment (or passed explicitly)
+   - Phase 0 boot checks validate system dependencies
+   - Phase 0 exit gates (7 gates) ensure all prerequisites are met
+   - Phase0ValidationResult passed to Orchestrator for runtime validation
+   - Factory controls Phase 0 execution via run_phase0_validation parameter
+
+Phase 0 Sequence (when run_phase0_validation=True):
+    P0.0: Bootstrap (RuntimeConfig.from_env(), SeedRegistry initialization)
+    P0.1: Input Verification (SHA256 hashes of PDF and questionnaire)
+    P0.2: Boot Checks (Python version, packages, calibration files)
+    P0.3: Determinism (RNG seeding: random, numpy mandatory)
+    Exit Gates: 7 gates checked (bootstrap, input_verification, boot_checks,
+                 determinism, questionnaire_integrity, method_registry, smoke_tests)
+
+Factory Usage:
+    # With Phase 0 validation (recommended for production)
+    factory = AnalysisPipelineFactory(
+        questionnaire_path="path/to/questionnaire.json",
+        run_phase0_validation=True,  # Run Phase 0 before orchestrator creation
+        strict_validation=True,
+    )
+
+    # Without Phase 0 (for testing/development)
+    factory = AnalysisPipelineFactory(
+        questionnaire_path="path/to/questionnaire.json",
+        run_phase0_validation=False,
+    )
+
 SIN_CARRETA Compliance:
 - All construction paths emit structured telemetry with timestamps and hashes
 - Determinism enforced via explicit validation of canonical questionnaire integrity
 - Contract assertions guard all factory outputs (no silent degradation)
 - Auditability via immutable ProcessorBundle with provenance metadata
+- Phase 0 validation ensures system readiness before pipeline execution
 """
 
 from __future__ import annotations
@@ -172,6 +202,19 @@ SEED_REGISTRY_AVAILABLE = True
 # CP-0.1 & CP-0.2: Phase 1 Validation
 from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValidator
 from farfan_pipeline.core.types import PreprocessedDocument
+
+# Phase 0 integration
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import (
+    RuntimeConfig,
+    RuntimeMode,
+    get_runtime_config,
+)
+from canonic_phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
+    VerifiedPipelineRunner,
+)
+from canonic_phases.Phase_zero.phase0_50_01_exit_gates import (
+    check_all_gates,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -447,22 +490,26 @@ class AnalysisPipelineFactory:
         *,
         questionnaire_path: str | None = None,
         expected_questionnaire_hash: str | None = None,
+        runtime_config: RuntimeConfig | None = None,
         executor_config: ExecutorConfig | None = None,
         validation_constants: dict[str, Any] | None = None,
         enable_intelligence_layer: bool = True,
         seed_for_determinism: int | None = None,
         strict_validation: bool = True,
+        run_phase0_validation: bool = True,
     ):
         """Initialize the Analysis Pipeline Factory.
-        
+
         Args:
             questionnaire_path: Path to canonical questionnaire JSON.
             expected_questionnaire_hash: Expected SHA-256 hash for integrity check.
+            runtime_config: Optional RuntimeConfig (defaults to from_env() if None).
             executor_config: Custom executor configuration (if None, uses default).
             validation_constants: Phase 1 validation constants (if None, loads from config).
             enable_intelligence_layer: Whether to build enriched signal packs.
             seed_for_determinism: Seed for SeedRegistry singleton.
             strict_validation: If True, fail on any validation error.
+            run_phase0_validation: If True, run Phase 0 boot checks and exit gates.
         """
         self._questionnaire_path = questionnaire_path
         self._expected_hash = expected_questionnaire_hash
@@ -471,6 +518,26 @@ class AnalysisPipelineFactory:
         self._enable_intelligence = enable_intelligence_layer
         self._seed = seed_for_determinism
         self._strict = strict_validation
+        self._run_phase0 = run_phase0_validation
+
+        # Initialize RuntimeConfig (load from env if not provided)
+        if runtime_config is None:
+            try:
+                self._runtime_config = get_runtime_config()
+                logger.info(
+                    "factory_runtime_config_loaded mode=%s",
+                    self._runtime_config.mode.value
+                )
+            except Exception as e:
+                if run_phase0_validation:
+                    raise FactoryError(
+                        f"Failed to load RuntimeConfig and Phase 0 validation requested: {e}"
+                    ) from e
+                # In non-Phase0 mode, continue without RuntimeConfig
+                self._runtime_config = None
+                logger.warning("factory_runtime_config_not_loaded phase0_disabled")
+        else:
+            self._runtime_config = runtime_config
 
         # Internal state (set during construction)
         self._canonical_questionnaire: CanonicalQuestionnaire | None = None
@@ -506,6 +573,15 @@ class AnalysisPipelineFactory:
         logger.info("factory_create_orchestrator_start timestamp=%s", timestamp_utc)
 
         try:
+            # Step 0: Run Phase 0 validation (boot checks + exit gates)
+            phase0_validation = None
+            if self._run_phase0:
+                phase0_validation = self._run_phase0_validation()
+                logger.info(
+                    "factory_phase0_complete passed=%s",
+                    phase0_validation.all_passed
+                )
+
             # Step 1: Load canonical questionnaire (ONCE, with integrity check)
             self._load_canonical_questionnaire()
 
@@ -530,7 +606,8 @@ class AnalysisPipelineFactory:
             # Step 8: Build orchestrator with full DI
             orchestrator = self._build_orchestrator(
                 executor_config=executor_config,
-                validation_constants=validation_constants,
+                runtime_config=self._runtime_config,
+                phase0_validation=phase0_validation,
             )
 
             # Step 9: Assemble provenance metadata
@@ -550,6 +627,11 @@ class AnalysisPipelineFactory:
                 "strict_validation": self._strict,
                 "factory_instantiation_confirmed": True,  # Critical for bundle validation
                 "factory_class": "AnalysisPipelineFactory",
+                # Phase 0 metadata
+                "phase0_validation_ran": self._run_phase0,
+                "phase0_validation_passed": phase0_validation.all_passed if phase0_validation else None,
+                "phase0_gate_count": len(phase0_validation.gate_results) if phase0_validation else 0,
+                "runtime_mode": self._runtime_config.mode.value if self._runtime_config else None,
             }
 
             # Step 10: Build complete bundle
@@ -703,6 +785,99 @@ class AnalysisPipelineFactory:
             if isinstance(e, (IntegrityError, SingletonViolationError, QuestionnaireValidationError)):
                 raise
             raise QuestionnaireValidationError(f"Failed to load questionnaire: {e}") from e
+
+    def _run_phase0_validation(
+        self,
+        plan_pdf_path: Path | None = None,
+    ):
+        """
+        Run complete Phase 0 validation (boot checks + exit gates).
+
+        This method executes the full Phase 0 sequence:
+        P0.0: Bootstrap (RuntimeConfig, SeedRegistry)
+        P0.1: Input Verification (SHA256 hashes)
+        P0.2: Boot Checks (dependencies, PROD: fatal, DEV: warn)
+        P0.3: Determinism (RNG seeding)
+        Exit Gates: All 7 gates checked
+
+        Args:
+            plan_pdf_path: Path to input PDF for hashing (optional)
+
+        Returns:
+            Phase0ValidationResult with gate check results
+
+        Raises:
+            FactoryError: If Phase 0 validation fails and strict_validation=True
+        """
+        from orchestration.orchestrator import Phase0ValidationResult
+        from datetime import datetime, timezone
+
+        logger.info("factory_phase0_validation_start")
+
+        # Use default PDF path if not provided
+        if plan_pdf_path is None:
+            plan_pdf_path = Path("input_plan.pdf")
+            if not plan_pdf_path.exists():
+                # Create dummy path for gate validation (won't be hashed)
+                plan_pdf_path = Path("/dev/null")
+
+        # Use questionnaire path from factory
+        questionnaire_path = Path(self._questionnaire_path or CANONICAL_QUESTIONNAIRE_PATH)
+
+        # Create Phase 0 runner
+        runner = VerifiedPipelineRunner(
+            plan_pdf_path=plan_pdf_path,
+            artifacts_dir=Path.cwd() / "artifacts" / "phase0",
+            questionnaire_path=questionnaire_path,
+            runtime_config=self._runtime_config,
+        )
+
+        # Run Phase 0 (async method)
+        try:
+            import asyncio
+            phase0_passed = asyncio.run(runner.run_phase_zero())
+        except Exception as e:
+            error_msg = f"Phase 0 execution failed: {e}"
+            logger.error("factory_phase0_execution_failed error=%s", error_msg)
+
+            if self._strict:
+                raise FactoryError(error_msg) from e
+
+            # In non-strict mode, create failed result
+            return Phase0ValidationResult(
+                all_passed=False,
+                gate_results=[],
+                validation_time=datetime.now(timezone.utc).isoformat(),
+            )
+
+        # Check exit gates
+        all_passed, gate_results = check_all_gates(runner)
+
+        # Create Phase0ValidationResult
+        validation_result = Phase0ValidationResult(
+            all_passed=all_passed,
+            gate_results=gate_results,
+            validation_time=datetime.now(timezone.utc).isoformat(),
+        )
+
+        # Log results
+        logger.info(
+            "factory_phase0_validation_complete passed=%s gates=%d/%d",
+            all_passed,
+            sum(1 for g in gate_results if g.passed),
+            len(gate_results),
+        )
+
+        # Fail if gates failed and strict mode is on
+        if not all_passed and self._strict:
+            failed_gates = validation_result.get_failed_gates()
+            failed_names = [g.gate_name for g in failed_gates]
+            raise FactoryError(
+                f"Phase 0 exit gates failed: {failed_names}. "
+                f"Bootstrap must complete successfully before pipeline execution."
+            )
+
+        return validation_result
 
     def _build_signal_registry(self) -> None:
         """Build signal registry from canonical questionnaire.
@@ -1078,23 +1253,29 @@ class AnalysisPipelineFactory:
     def _build_orchestrator(
         self,
         executor_config: ExecutorConfig,
-        validation_constants: dict[str, Any],
+        runtime_config: RuntimeConfig | None = None,
+        phase0_validation: Any = None,  # Phase0ValidationResult from orchestrator module
     ) -> Orchestrator:
         """Build Orchestrator with full dependency injection.
-        
-        CRITICAL: Orchestrator receives:
-        1. questionnaire: CanonicalQuestionnaire (NOT file path)
-        2. method_executor: MethodExecutor
+
+        CRITICAL: Orchestrator receives (in order):
+        1. method_executor: MethodExecutor
+        2. questionnaire: CanonicalQuestionnaire
         3. executor_config: ExecutorConfig
-        4. validation_constants: dict (Phase 1 hard contracts)
-        
+        4. runtime_config: RuntimeConfig | None
+        5. phase0_validation: Phase0ValidationResult | None
+
+        Note: signal_registry is accessed via method_executor.signal_registry
+        Note: validation_constants are NOT passed to Orchestrator (not in signature)
+
         Args:
             executor_config: ExecutorConfig instance.
-            validation_constants: Phase 1 validation constants.
-            
+            runtime_config: RuntimeConfig for phase execution control.
+            phase0_validation: Phase0ValidationResult with gate check results.
+
         Returns:
             Orchestrator: Fully configured orchestrator.
-            
+
         Raises:
             ExecutorConstructionError: If orchestrator construction fails.
         """
@@ -1110,11 +1291,13 @@ class AnalysisPipelineFactory:
             # Local import to avoid circular dependency
             from orchestration.orchestrator import Orchestrator
             orchestrator = Orchestrator(
-                questionnaire=self._canonical_questionnaire,  # DI: inject questionnaire object
-                method_executor=self._method_executor,  # DI: inject method executor
-                executor_config=executor_config,  # DI: inject config
-                validation_constants=validation_constants,  # DI: inject Phase 1 contracts
-                signal_registry=self._signal_registry,  # DI: inject signal registry
+                method_executor=self._method_executor,       # 1st parameter - correct order
+                questionnaire=self._canonical_questionnaire,  # 2nd parameter - correct order
+                executor_config=executor_config,              # 3rd parameter - correct order
+                runtime_config=runtime_config,                # 4th parameter - Phase 0 integration
+                phase0_validation=phase0_validation,          # 5th parameter - Phase 0 integration
+                # signal_registry is accessed via method_executor.signal_registry
+                # validation_constants NOT in Orchestrator signature
             )
 
             logger.info("orchestrator_built_successfully")
@@ -1233,39 +1416,48 @@ def create_analysis_pipeline(
     questionnaire_path: str | None = None,
     expected_hash: str | None = None,
     seed: int | None = None,
+    runtime_config: RuntimeConfig | None = None,
+    run_phase0: bool = True,
 ) -> ProcessorBundle:
     """Convenience function to create complete analysis pipeline.
-    
+
     This is the RECOMMENDED entry point for most use cases.
-    
+
     Args:
         questionnaire_path: Path to canonical questionnaire JSON.
         expected_hash: Expected SHA-256 hash for integrity check.
         seed: Seed for reproducibility.
-        
+        runtime_config: Optional RuntimeConfig (defaults to from_env()).
+        run_phase0: Whether to run Phase 0 validation (default: True).
+
     Returns:
         ProcessorBundle with Orchestrator ready to use.
     """
     factory = AnalysisPipelineFactory(
         questionnaire_path=questionnaire_path,
         expected_questionnaire_hash=expected_hash,
+        runtime_config=runtime_config,
         seed_for_determinism=seed,
         enable_intelligence_layer=True,
         strict_validation=True,
+        run_phase0_validation=run_phase0,
     )
     return factory.create_orchestrator()
 
 
 def create_minimal_pipeline(
     questionnaire_path: str | None = None,
+    run_phase0: bool = False,
 ) -> ProcessorBundle:
     """Create minimal pipeline without intelligence layer.
-    
+
     Useful for testing or when enriched signals are not needed.
-    
+    Phase 0 validation is disabled by default for minimal pipelines.
+
     Args:
         questionnaire_path: Path to canonical questionnaire JSON.
-        
+        run_phase0: Whether to run Phase 0 validation (default: False).
+
     Returns:
         ProcessorBundle with basic dependencies only.
     """
@@ -1273,6 +1465,7 @@ def create_minimal_pipeline(
         questionnaire_path=questionnaire_path,
         enable_intelligence_layer=False,
         strict_validation=False,
+        run_phase0_validation=run_phase0,
     )
     return factory.create_orchestrator()
 
