@@ -1,0 +1,264 @@
+# GNEA Enforcement Pipeline
+# Document: FPN-GNEA-001
+# Version: 2.0.0
+
+name: GNEA Enforcement Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, develop]
+
+env:
+  ENFORCEMENT_LEVEL: L2_ENFORCED
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  nomenclature_enforcement:
+    name: GNEA Nomenclature Enforcement
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt || true
+          pip install pydantic rich
+
+      - name: Run GNEA Nomenclature Enforcer
+        id: nomenclature
+        run: |
+          python scripts/enforcement/gnea_enforcer.py \
+            --level=${{ env.ENFORCEMENT_LEVEL }} \
+            --path=. \
+            --report=gnea_nomenclature_report.json
+        continue-on-error: true
+
+      - name: Run Semantic Validator
+        id: semantic
+        run: |
+          python scripts/enforcement/semantic_validator.py \
+            --path=. \
+            --threshold=0.3 \
+            --output=gnea_semantic_report.json
+        continue-on-error: true
+
+      - name: Run Hierarchy Guardian
+        id: hierarchy
+        run: |
+          python scripts/enforcement/hierarchy_guardian.py \
+            --path=. \
+            --output=gnea_hierarchy_report.json
+        continue-on-error: true
+
+      - name: Generate Compliance Summary
+        id: summary
+        run: |
+          python -c "
+          import json
+          from pathlib import Path
+
+          reports = {}
+          for name in ['nomenclature', 'semantic', 'hierarchy']:
+              path = Path(f'gnea_{name}_report.json')
+              if path.exists():
+                  with open(path) as f:
+                      reports[name] = json.load(f)
+
+          nomenclature_score = reports.get('nomenclature', {}).get('compliance_score', 0)
+          semantic_score = reports.get('semantic', {}).get('average_score', 0) * 100
+          hierarchy_valid = reports.get('hierarchy', {}).get('valid', False)
+
+          overall_score = (nomenclature_score + semantic_score + (100 if hierarchy_valid else 0)) / 3
+
+          summary = {
+              'overall_score': round(overall_score, 2),
+              'nomenclature_score': round(nomenclature_score, 2),
+              'semantic_score': round(semantic_score, 2),
+              'hierarchy_valid': hierarchy_valid,
+              'passed': overall_score >= 95
+          }
+
+          with open('gnea_summary.json', 'w') as f:
+              json.dump(summary, f, indent=2)
+
+          print(f'Overall Compliance Score: {overall_score:.1f}%')
+          print(f'Nomenclature: {nomenclature_score:.1f}%')
+          print(f'Semantic: {semantic_score:.1f}%')
+          print(f'Hierarchy: {\"PASS\" if hierarchy_valid else \"FAIL\"}')"
+
+      - name: Upload Compliance Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnea-compliance-${{ github.run_id }}
+          path: |
+            gnea_nomenclature_report.json
+            gnea_semantic_report.json
+            gnea_hierarchy_report.json
+            gnea_summary.json
+          retention-days: 90
+
+      - name: Post PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let summary = {};
+            try {
+              summary = JSON.parse(fs.readFileSync('gnea_summary.json', 'utf8'));
+            } catch (e) {
+              summary = { overall_score: 0, passed: false };
+            }
+
+            const icon = summary.passed ? '✅' : '❌';
+            const status = summary.passed ? 'PASSED' : 'FAILED';
+
+            const comment = `## ${icon} GNEA Compliance Report
+
+            **Overall Score:** ${summary.overall_score}%
+            **Status:** ${status}
+
+            | Metric | Score |
+            |--------|-------|
+            | Nomenclature | ${summary.nomenclature_score || 0}% |
+            | Semantic | ${summary.semantic_score || 0}% |
+            | Hierarchy | ${summary.hierarchy_valid ? 'PASS' : 'FAIL'} |
+
+            ${!summary.passed ? '### ⚠️ Action Required\nPlease fix violations before merging.' : ''}
+
+            [View Detailed Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Enforce Compliance Gate
+        run: |
+          python -c "
+          import json
+          import sys
+
+          with open('gnea_summary.json') as f:
+              summary = json.load(f)
+
+          if not summary['passed']:
+              print('❌ GNEA Compliance Gate FAILED')
+              print(f'Overall Score: {summary[\"overall_score\"]}%')
+              print('Required: 95%')
+              sys.exit(1)
+          else:
+              print('✅ GNEA Compliance Gate PASSED')
+          "
+
+  phase_structure_validation:
+    name: Phase Structure Validation
+    runs-on: ubuntu-latest
+    needs: nomenclature_enforcement
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Validate Phase Structure
+        run: |
+          python -c "
+          from pathlib import Path
+          import sys
+
+          phases_dir = Path('src/farfan_pipeline/phases')
+          if not phases_dir.exists():
+              print('Phases directory not found')
+              sys.exit(0)
+
+          phase_map = {
+              'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4,
+              'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9
+          }
+
+          errors = []
+          for phase_dir in phases_dir.iterdir():
+              if not phase_dir.is_dir() or not phase_dir.name.startswith('Phase_'):
+                  continue
+
+              phase_name = phase_dir.name.replace('Phase_', '').lower()
+              phase_num = phase_map.get(phase_name)
+              if phase_num is None:
+                  continue
+
+              required = [
+                  f'PHASE_{phase_num}_MANIFEST.json',
+                  f'PHASE_{phase_num}_CONSTANTS.py',
+                  'README.md',
+                  '__init__.py'
+              ]
+
+              for req in required:
+                  if not (phase_dir / req).exists():
+                      errors.append(f'{phase_dir.name}: Missing {req}')
+
+          if errors:
+              print('Phase Structure Violations:')
+              for e in errors:
+                  print(f'  ❌ {e}')
+              sys.exit(1)
+          else:
+              print('✅ All phase structures valid')
+          "
+
+  contract_validation:
+    name: Contract Validation
+    runs-on: ubuntu-latest
+    needs: nomenclature_enforcement
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Validate Contract Naming
+        run: |
+          python -c "
+          from pathlib import Path
+          import re
+          import sys
+
+          pattern = re.compile(r'^Q\d{3}_executor_contract\.json$')
+          errors = []
+
+          for contract in Path('.').rglob('*executor_contract*.json'):
+              if not pattern.match(contract.name):
+                  errors.append(f'{contract}: Invalid name format')
+
+          if errors:
+              print('Contract Naming Violations:')
+              for e in errors:
+                  print(f'  ❌ {e}')
+              sys.exit(1)
+          else:
+              print('✅ All contracts properly named')
+          "

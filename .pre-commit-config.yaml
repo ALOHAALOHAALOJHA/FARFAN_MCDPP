@@ -1,0 +1,135 @@
+# Pre-commit configuration for GNEA enforcement
+# Document: FPN-GNEA-001
+# Version: 2.0.0
+
+default_stages: [commit]
+fail_fast: false
+minimum_pre_commit_version: '3.5.0'
+
+repos:
+  # Standard hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  # GNEA Local Enforcement Hooks
+  - repo: local
+    hooks:
+      # Layer 1: GNEA Nomenclature Enforcer
+      - id: gnea-nomenclature-enforcer
+        name: GNEA Nomenclature Enforcer
+        entry: python scripts/enforcement/gnea_enforcer.py
+        language: python
+        pass_filenames: true
+        require_serial: true
+        stages: [commit]
+        args: ['--level=L1', '--auto-fix']
+        files: \.(py|json|md)$
+        exclude: |
+          (?x)^(
+            .*__pycache__.*|
+            .*\.git.*|
+            .*\.pytest_cache.*|
+            .*-env/.*|
+            .*venv/.*
+          )$
+
+      # Layer 1: Semantic Validator
+      - id: gnea-semantic-validator
+        name: GNEA Semantic Name Validator
+        entry: python scripts/enforcement/semantic_validator.py
+        language: python
+        files: \.py$
+        exclude: |
+          (?x)^(
+            .*__pycache__.*|
+            .*test_.*|
+            .*_test\.py$|
+            setup\.py$
+          )$
+
+      # Layer 1: Hierarchy Guardian
+      - id: gnea-hierarchy-guardian
+        name: GNEA Hierarchy Guardian
+        entry: python scripts/enforcement/hierarchy_guardian.py
+        language: python
+        pass_filenames: false
+        always_run: true
+
+      # Phase module metadata check
+      - id: gnea-phase-metadata
+        name: GNEA Phase Module Metadata
+        entry: python -c "
+import sys, re
+for f in sys.argv[1:]:
+    if 'phases' in f and f.endswith('.py') and 'phase' in f.split('/')[-1]:
+        content = open(f).read()
+        required = ['__version__', '__phase__', '__stage__']
+        missing = [r for r in required if r not in content]
+        if missing:
+            print(f'Missing metadata in {f}: {missing}')
+            sys.exit(1)
+"
+        language: python
+        files: ^src/farfan_pipeline/phases/.*/phase.*\.py$
+
+      # Contract naming validation
+      - id: gnea-contract-naming
+        name: GNEA Contract Naming
+        entry: python -c "
+import sys, re
+pattern = re.compile(r'^Q\d{3}_executor_contract\.json$')
+for f in sys.argv[1:]:
+    name = f.split('/')[-1]
+    if 'executor_contract' in name and not pattern.match(name):
+        print(f'Invalid contract name: {name}')
+        print('Expected format: Q###_executor_contract.json')
+        sys.exit(1)
+"
+        language: python
+        files: .*executor_contract.*\.json$
+
+      # Root documentation naming
+      - id: gnea-root-doc-naming
+        name: GNEA Root Documentation Naming
+        entry: python -c "
+import sys, re
+pattern = re.compile(r'^[A-Z][A-Z0-9_]+\.(md|txt)$')
+allowed = {'README.md', 'CHANGELOG.md', 'README.ES.md'}
+for f in sys.argv[1:]:
+    parts = f.split('/')
+    if len(parts) == 1 and f.endswith('.md'):
+        name = parts[0]
+        if name not in allowed and not pattern.match(name):
+            print(f'Root doc must use UPPER_SNAKE_CASE: {name}')
+            sys.exit(1)
+"
+        language: python
+        files: ^[^/]+\.md$
+
+  # Python code quality
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.8
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.1
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - pydantic>=2.0
+          - types-all
+        args: [--ignore-missing-imports]
+        files: ^src/

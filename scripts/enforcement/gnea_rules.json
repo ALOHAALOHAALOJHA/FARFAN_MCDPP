@@ -1,0 +1,115 @@
+{
+  "$schema": "gnea_rules_schema.json",
+  "version": "2.0.0",
+  "rules": {
+    "phase_module": {
+      "pattern": "^phase(?P<phase>[0-9])_(?P<stage>\\d{2})_(?P<order>\\d{2})_(?P<name>[a-z][a-z0-9_]+)\\.py$",
+      "description": "Phase module naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": true,
+      "examples": {
+        "valid": ["phase2_60_02_arg_router.py", "phase0_10_00_paths.py"],
+        "invalid": ["phase2_arg_router.py", "Phase2_60_02_ArgRouter.py"]
+      }
+    },
+    "contract": {
+      "pattern": "^Q(?P<num>\\d{3})_executor_contract\\.json$",
+      "description": "Executor contract naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": true,
+      "examples": {
+        "valid": ["Q001_executor_contract.json", "Q300_executor_contract.json"],
+        "invalid": ["Q1_contract.json", "contract_Q001.json"]
+      }
+    },
+    "documentation_root": {
+      "pattern": "^[A-Z][A-Z0-9_]+\\.(md|txt)$",
+      "description": "Root-level documentation naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": true,
+      "exceptions": ["README.md", "CHANGELOG.md", "README.ES.md"]
+    },
+    "python_module": {
+      "pattern": "^[a-z][a-z0-9_]+\\.py$",
+      "description": "Python module naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": true
+    },
+    "script": {
+      "pattern": "^[a-z][a-z0-9_]+\\.(py|sh)$",
+      "description": "Script naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": true
+    },
+    "manifest": {
+      "pattern": "^(PHASE_[0-9]_MANIFEST|STAGE_\\d{2}_MANIFEST|TEST_MANIFEST)\\.json$",
+      "description": "Manifest file naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": false
+    },
+    "constants": {
+      "pattern": "^PHASE_[0-9]_CONSTANTS\\.py$",
+      "description": "Phase constants file naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": false
+    },
+    "certificate": {
+      "pattern": "^(PHASE_[0-9]_CERTIFICATE|TRANSITION_CERTIFICATE_\\d_TO_\\d|CERTIFICATE_DURALEX_\\d{2}_[A-Z]+)\\.json$",
+      "description": "Certificate file naming pattern",
+      "severity": "ERROR",
+      "auto_fixable": false
+    }
+  },
+  "hierarchy": {
+    "max_depth": 5,
+    "forbidden_directories": ["temp", "tmp", "backup", "old", "misc", "other", "stuff", "things"],
+    "required_phase_structure": {
+      "files": [
+        "PHASE_{N}_MANIFEST.json",
+        "PHASE_{N}_CONSTANTS.py",
+        "README.md",
+        "__init__.py"
+      ],
+      "directories": [
+        "tests",
+        "contracts",
+        "docs"
+      ]
+    }
+  },
+  "metadata": {
+    "required_python_metadata": [
+      "__version__",
+      "__phase__",
+      "__stage__",
+      "__order__",
+      "__criticality__",
+      "__execution_pattern__"
+    ],
+    "valid_criticality": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+    "valid_execution_patterns": ["Singleton", "Per-Task", "Continuous", "On-Demand", "Parallel"],
+    "valid_module_types": ["AUTH", "REG", "CFG", "VAL", "MGR", "EXEC", "ORCH", "ANAL", "SYNT", "PROF", "UTIL"]
+  },
+  "enforcement_levels": {
+    "L0_ADVISORY": {
+      "action": "warn",
+      "auto_fix": true
+    },
+    "L1_GUIDED": {
+      "action": "block_with_suggestion",
+      "auto_fix": true
+    },
+    "L2_ENFORCED": {
+      "action": "hard_fail",
+      "auto_fix": false
+    },
+    "L3_SEALED": {
+      "action": "reject_deployment",
+      "auto_fix": false
+    },
+    "L4_FORENSIC": {
+      "action": "retroactive_correction",
+      "auto_fix": false
+    }
+  }
+}
